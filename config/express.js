@@ -6,7 +6,9 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     session = require('express-session'),
     passport = require('passport'),
-	exphbs = require('express-handlebars');
+    expressValidator = require('express-validator'),
+    flash = require('express-flash'),
+    exphbs = require('express-handlebars');
 
 module.exports = function(app, config) {
 	app.set('port', config.port);
@@ -24,6 +26,7 @@ module.exports = function(app, config) {
     app.use(logger('dev'));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(expressValidator());
     app.use(session({
         secret: 'the secret key',
         resave: false,
@@ -31,5 +34,6 @@ module.exports = function(app, config) {
     }));
     app.use(passport.initialize());
     app.use(passport.session());
+    app.use(flash());
     app.use(express.static(config.rootPath + '/public'));
 }

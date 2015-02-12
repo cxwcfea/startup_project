@@ -11,7 +11,9 @@
 	<!-- favicon
 	<link rel="alternate icon" type="image/png" href="assets/i/favicon.png">
 	-->
+    <link rel="stylesheet" href="/vendor/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/vendor/amazeui/dist/css/amazeui.min.css">
+    <link rel="stylesheet" href="/css/admin.css">
 	<link rel="stylesheet" href="/css/site.css">
 </head>
 <body>
@@ -31,20 +33,9 @@
 				<ul class="am-nav am-nav-pills am-topbar-nav">
 					<li class="am-active"><a href="/">首页</a></li>
 					<li><a href="#">项目</a></li>
-					<li class="am-dropdown" data-am-dropdown>
-					<a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
-						下拉菜单 <span class="am-icon-caret-down"></span>
-					</a>
-					<ul class="am-dropdown-content">
-						<li class="am-dropdown-header">标题</li>
-						<li><a href="#">1. 默认样式</a></li>
-						<li><a href="#">2. 基础设置</a></li>
-						<li><a href="#">3. 文字排版</a></li>
-						<li><a href="#">4. 网格系统</a></li>
-					</ul>
-					</li>
 				</ul>
 
+            {{#unless user}}
 				<div class="am-topbar-right login-elem">
 					<a href="/signup" class="am-btn am-btn-secondary am-topbar-btn am-btn-sm"><span class="am-icon-pencil"></span> 注册</a>
 				</div>
@@ -52,10 +43,21 @@
 				<div class="am-topbar-right login-elem">
 					<a href="/login" class="am-btn am-btn-primary am-topbar-btn am-btn-sm"><span class="am-icon-user"></span> 登录</a>
 				</div>
+            {{else}}
+                <div class="am-topbar-right">
+                    <div class="am-dropdown" data-am-dropdown="{boundary: '.am-topbar'}">
+                        <button class="am-btn am-btn-secondary am-topbar-btn am-btn-sm am-dropdown-toggle" data-am-dropdown-toggle> {{#if user.profile.name}} {{user.profile.name}} {{else}} {{user.mobile}} {{/if}} <span class="am-icon-caret-down"></span></button>
+                        <ul class="am-dropdown-content">
+                            <li><a href="/logout">退出登录</a></li>
+                        </ul>
+                    </div>
+                </div>
+            {{/unless}}
 			</div>
 		</div>
 	</header>
-	
+
+    {{> flash}}
 	{{{body}}}
 
 	<footer class="footer">
@@ -73,6 +75,7 @@
 
 <!--[if (gte IE 9)|!(IE)]><!-->
 <script src="/vendor/jquery/dist/jquery.js"></script>
+<script src="/vendor/bootstrap/dist/js/bootstrap.js"></script>
 <script src="/vendor/amazeui/dist/js/amazeui.js"></script>
 <!--<![endif]-->
 </body>

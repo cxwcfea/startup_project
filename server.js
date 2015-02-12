@@ -5,13 +5,11 @@ var express = require('express'),
 
 require('./config/express')(app, config);
 
-app.get('/', function (req, res) {
-    res.render('home');
-});
+require('./config/mongoose')(config);
 
-app.get('/signup', function(req, res) {
-    res.render('user/signup');
-});
+require('./config/passport')();
+
+require('./config/routes')(app);
 
 // custom 404 page
 app.use(function(req, res){
