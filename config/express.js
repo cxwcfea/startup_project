@@ -14,7 +14,12 @@ module.exports = function(app, config) {
 	app.set('port', config.port);
 	var handlebars = exphbs.create({ 
 		layoutsDir: config.rootPath + '/views/layouts/',
-		defaultLayout: 'main'
+		defaultLayout: 'main',
+        helpers: {
+            static: function(name) {
+                return require('../lib/static.js').map(name);
+            }
+        }
 	});
 	app.engine('handlebars', handlebars.engine);
 	app.set('views', config.rootPath + '/views');

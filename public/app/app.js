@@ -1,13 +1,18 @@
-angular.module('app', ['ngResource', 'ngRoute']);
+angular.module('myApp', ['ngResource', 'ngRoute']);
 
-angular.module('app').config(function($routeProvider, $locationProvider) {
+angular.module('myApp').config(function($routeProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
     $routeProvider
-        .when('/', { templateUrl: '/partials/landing', controller: 'gbMainCtrl' });
-        /*
-        .when('/signup', { templateUrl: '/partials/account/signup',
-            controller: 'gbSignupCtrl'
+        .when('/user/index', { templateUrl: '/user/home',
+            controller: 'UserMainController'
         })
+        .when('/user/profile', { templateUrl: '/user/profile',
+            controller: 'UserProfileController'
+        })
+        .otherwise({
+            redirectTo: '/'
+        });
+    /*
         .when('/login', { templateUrl: '/partials/account/login',
             controller: 'gbLoginCtrl'
         })

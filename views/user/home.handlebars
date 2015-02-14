@@ -1,0 +1,112 @@
+<div class="am-cf am-padding">
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">账户总览</strong> </div>
+</div>
+
+<div class="am-g">
+    <div class="am-u-md-6">
+        <div class="am-panel am-panel-default">
+            <div class="am-panel-bd">
+                <div class="am-g">
+                    <div class="am-u-md-4">
+                        <img class="am-img-circle am-img-thumbnail" src="http://amui.qiniudn.com/bw-2014-06-19.jpg?imageView/1/w/1000/h/1000/q/80" alt=""/>
+                    </div>
+                    <div class="am-u-md-8">
+                        <strong class="am-text-primary am-text">cxwcfea</strong>
+                        <br>
+                    </div>
+                    <div class="am-u-md-8">
+                        <strong class="am-text-primary am-text-lg">注册日期</strong><span id="my-endDate">2014-12-25</span>
+                        <br>
+                    </div>
+                    <div class="am-u-md-8">
+                        <strong class="am-text-primary am-text-lg">安全等级:</strong><span class="am-text-danger" id="my-endDate"> 中等</span>
+                        <br>
+                    </div>
+                    <div class="am-u-md-8">
+                        <a class="am-btn am-btn-lg am-btn-warning" href="#">
+                            <i class="am-icon-money"></i>
+                            充值
+                        </a>
+                        <a class="am-btn am-btn-lg am-btn-warning" href="#">
+                            <i class="am-icon-shopping-cart"></i>
+                            提现
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ul class="am-avg-sm-1 am-avg-md-4 am-margin am-padding am-text-center admin-content-list ">
+    <li><a href="#" class="am-text-success"><span class="am-icon-btn am-icon-money"></span><br/>保证金<br/>2300</a></li>
+    <li><a href="#" class="am-text-warning"><span class="am-icon-btn am-icon-shopping-cart"></span><br/>配资资产<br/>308</a></li>
+    <li><a href="#" class="am-text-danger"><span class="am-icon-btn am-icon-rmb"></span><br/>可用资产<br/>80082</a></li>
+    <li><a href="#" class="am-text-secondary"><span class="am-icon-btn am-icon-line-chart"></span><br/>股票市值<br/>3000</a></li>
+</ul>
+
+<div class="am-g">
+    <div class="am-u-md-10">
+        <div id="main-chart" style="height: 380px;"></div>
+    </div>
+    <script src="/vendor/echarts-all.js"></script>
+    <script>
+        var myChart = echarts.init(document.getElementById('main-chart'));
+        var option = {
+            title : {
+                text: '最近一周收益'
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['收益率']
+            },
+            toolbox: {
+                show : false,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line', 'bar']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    boundaryGap : false,
+                    data : ['周一','周二','周三','周四','周五','周六','周日']
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+                    axisLabel : {
+                        formatter: '{value} %'
+                    }
+                }
+            ],
+            series : [
+                {
+                    name:'收益率',
+                    type:'line',
+                    data:[11, 11, 15, 13, 12, 13, 10],
+                    markPoint : {
+                        data : [
+                            {type : 'max', name: '最大值'},
+                            {type : 'min', name: '最小值'}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name: '平均值'}
+                        ]
+                    }
+                },
+            ]
+        };
+        myChart.setOption(option);
+    </script>
+</div>

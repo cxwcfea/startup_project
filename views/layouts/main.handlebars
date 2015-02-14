@@ -11,16 +11,15 @@
 	<!-- favicon
 	<link rel="alternate icon" type="image/png" href="assets/i/favicon.png">
 	-->
-    <link rel="stylesheet" href="/vendor/bootstrap/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/vendor/amazeui/dist/css/amazeui.min.css">
-    <link rel="stylesheet" href="/css/admin.css">
-	<link rel="stylesheet" href="/css/site.css">
+    <link rel="stylesheet" href="{{static '/vendor/bootstrap/dist/css/bootstrap.min.css'}}">
+    <link rel="stylesheet" href="{{static '/vendor/amazeui/dist/css/amazeui.min.css'}}">
+    <link rel="stylesheet" href="{{static '/css/site.css'}}">
 </head>
 <body>
 	<header class="am-topbar am-topbar-fixed-top">
 		<div class="am-container">
 			<h1 class="am-topbar-brand">
-				<a href="#">Amaze UI</a>
+				<a href="#">牛金网</a>
 			</h1>
 
 			<button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-secondary am-show-sm-only"
@@ -32,7 +31,7 @@
 			<div class="am-collapse am-topbar-collapse" id="collapse-head">
 				<ul class="am-nav am-nav-pills am-topbar-nav">
 					<li class="am-active"><a href="/">首页</a></li>
-					<li><a href="#">项目</a></li>
+					<li><a href="/user/index">个人中心</a></li>
 				</ul>
 
             {{#unless user}}
@@ -68,15 +67,15 @@
 <!--[if lt IE 9]>
 <script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
 <script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
-<script src="/js/legacy/rem.min.js"></script>
-<script src="/js/legacy/respond.min.js"></script>
-<script src="/js/legacy/amazeui.legacy.js"></script>
+<script src="{{static '/js/legacy/rem.min.js'}}"></script>
+<script src="{{static '/js/legacy/respond.min.js'}}"></script>
+<script src="{{static '/js/legacy/amazeui.legacy.js'}}"></script>
 <![endif]-->
 
 <!--[if (gte IE 9)|!(IE)]><!-->
-<script src="/vendor/jquery/dist/jquery.js"></script>
-<script src="/vendor/bootstrap/dist/js/bootstrap.js"></script>
-<script src="/vendor/amazeui/dist/js/amazeui.js"></script>
+<script src="{{static '/vendor/jquery/dist/jquery.js'}}"></script>
+<script src="{{static '/vendor/bootstrap/dist/js/bootstrap.js'}}"></script>
+<script src="{{static '/vendor/amazeui/dist/js/amazeui.js'}}"></script>
 <!--<![endif]-->
 </body>
 </html>

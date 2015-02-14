@@ -21,7 +21,7 @@ module.exports.postLogin = function(req, res, next) {
         }
         req.login(user, function(err) {
             if (err) {return next(err);}
-            res.redirect('/profile');
+            res.redirect('/user/index');
         });
     });
     auth(req, res, next);
@@ -55,7 +55,7 @@ module.exports.postSignup = function(req, res, next) {
             if (err) return next(err);
             req.logIn(user, function(err) {
                 if (err) return next(err);
-                res.redirect('/');
+                res.redirect('/user/index');
             });
         });
     });
@@ -66,14 +66,19 @@ module.exports.logout = function(req, res) {
     res.redirect('/');
 };
 
-module.exports.getProfile = function(req, res) {
-    res.render('user/profile');
-}
+module.exports.postLogout = function(req, res) {
+    req.logout();
+    res.send();
+};
 
-/**
- * Login Required middleware.
- */
-module.exports.isAuthenticated = function(req, res, next) {
-    if (req.isAuthenticated()) return next();
-    res.redirect('/login');
+module.exports.getIndex = function(req, res) {
+    res.render('user/index', { layout: null });
+};
+
+module.exports.getHome = function(req, res) {
+    res.render('user/home', {layout:null});
+};
+
+module.exports.getProfile = function(req, res) {
+    res.render('user/profile', {layout:null});
 };

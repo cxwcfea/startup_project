@@ -1,4 +1,4 @@
-angular.module('app').controller('gbMainCtrl', ['$scope', function($scope) {
+angular.module('myApp').controller('UserMainController', ['$scope', function($scope) {
     $scope.finances = [
         {
             "user": "Mr.Wang",
@@ -114,4 +114,5 @@ angular.module('app').controller('gbMainCtrl', ['$scope', function($scope) {
             "period": 3
         }
     ];
+    $scope.abc = "Hello Angular";
 }]);

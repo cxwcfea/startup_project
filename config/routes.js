@@ -1,4 +1,6 @@
-var users = require('../controllers/user');
+var users = require('../controllers/user'),
+    passportConf = require('./passport');
+
 
 module.exports = function(app) {
     app.use(function(req, res, next) {
@@ -11,18 +13,24 @@ module.exports = function(app) {
     });
 
     app.get('/signup', function (req, res) {
-        res.render('user/signup');
+        res.render('register/signup');
     });
 
     app.post('/signup', users.postSignup);
 
     app.get('/login', function (req, res) {
-        res.render('user/login');
+        res.render('register/login');
     });
 
     app.post('/login', users.postLogin);
 
     app.get('/logout', users.logout);
 
-    app.get('/profile', users.getProfile);
-}
+    app.post('/logout', users.postLogout);
+
+    app.get('/user/index', passportConf.isAuthenticated, users.getIndex);
+
+    app.get('/user/home', passportConf.isAuthenticated, users.getHome);
+
+    app.get('/user/profile', passportConf.isAuthenticated, users.getProfile);
+};
