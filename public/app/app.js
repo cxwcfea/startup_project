@@ -4,26 +4,27 @@ angular.module('myApp').config(function($routeProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
     $routeProvider
         .when('/user/index', { templateUrl: '/user/home',
-            controller: 'UserMainController'
+            controller: 'UserMainController as homeVM'
         })
         .when('/user/profile', { templateUrl: '/user/profile',
-            controller: 'UserProfileController'
+            controller: 'UserProfileController as profileVM'
+        })
+        .when('/user/orders', { templateUrl: '/user/orders',
+            controller: 'UserOrderController as ordersVM'
+        })
+        .when('/user/security', { templateUrl: '/user/security',
+            controller: 'UserSecurityController as securityVM'
+        })
+        .when('/user/identity', { templateUrl: '/user/identity',
+            controller: 'UserIdentityController as identityVM'
+        })
+        .when('/user/mypay', { templateUrl: '/user/mypay',
+            controller: 'UserPayController as mypayVM'
+        })
+        .when('/user/withdraw', { templateUrl: '/user/withdraw',
+            controller: 'UserWithdrawController as withdrawVM'
         })
         .otherwise({
-            redirectTo: '/'
+            redirectTo: '/user/index'
         });
-    /*
-        .when('/login', { templateUrl: '/partials/account/login',
-            controller: 'gbLoginCtrl'
-        })
-        .when('/admin/users', { templateUrl: '/partials/admin/user-list',
-            controller: 'gbUserListCtrl', resolve: routeRoleChecks.admin
-        })
-        .when('/funding/applyPay', { templateUrl: '/partials/funding/applyPay',
-            controller: 'gbApplyPayCtrl'
-        })
-        .when('/funding/applyByDay', { templateUrl: '/partials/funding/applyByDay',
-            controller: 'gbApplyCtrl'
-        });
-        */
 });

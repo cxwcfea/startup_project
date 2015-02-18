@@ -7,12 +7,12 @@ passport.use(new LocalStrategy({ usernameField: 'mobile' },
     function(mobile, password, done) {
         User.findOne({ mobile: mobile }, function(err, user) {
             if (err) { return done(err); }
-            if (!user) return done(null, false, { message: 'User ' + mobile + ' not found'});
+            if (!user) return done(null, false, { message: '手机号码 ' + mobile + ' 不存在'});
             user.comparePassword(password, function(err, isMatch) {
                 if (isMatch) {
                     return done(null, user);
                 } else {
-                    return done(null, false, { message: 'Invalid mobile or password.' });
+                    return done(null, false, { message: '密码错误.' });
                 }
             });
         });

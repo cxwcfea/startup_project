@@ -1,0 +1,38 @@
+<div class="am-cf am-padding">
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">安全设置</strong></div>
+</div>
+
+<ul class="am-avg-sm-2 am-avg-md-2 am-avg-lg-2 am-margin gallery-list">
+    <li ng-repeat="obj in securityVM.securityObjects">
+        <span class=\{{obj.class}}></span>
+        <div class="">\{{obj.title}}</div>
+        <span class="am-text-success">\{{obj.status}}</span>
+        <span class="am-btn am-btn-link" ng-if="obj.show"><a href="\{{obj.url}}">\{{obj.action}}</a></span>
+    </li>
+    <!--
+    <li>
+        <span class="am-icon-user-secret am-icon-lg"></span>
+        <div class="">实名认证</div>
+        <span class="am-text-success">未认证</span>
+        <span class=""><a href="#">去认证</a></span>
+    </li>
+    <li>
+        <span class="am-icon-mobile am-icon-lg"></span>
+        <div class="">绑定手机</div>
+        <span class="am-text-success">已认证</span>
+        <span class=""><a href="#">修改</a></span>
+    </li>
+    <li>
+        <span class="am-icon-envelope am-icon-lg"></span>
+        <div class="">验证邮箱</div>
+        <span class="am-text-success">未验证</span>
+        <span class=""><a href="#">修改</a></span>
+    </li>
+    <li>
+        <span class="am-icon-key am-icon-lg"></span>
+        <div class="">登录密码</div>
+        <span class=""></span>
+        <span class=""><a href="#">修改</a></span>
+    </li>
+    -->
+</ul>

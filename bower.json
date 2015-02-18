@@ -20,6 +20,7 @@
     "moment": "~2.9.0",
     "bootstrap": "~3.3.2",
     "angular-strap": "~2.1.6",
-    "angular-ui-router": "~0.2.13"
+    "angular-ui-router": "~0.2.13",
+    "lodash": "~3.2.0"
   }
 }

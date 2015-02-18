@@ -1,9 +1,12 @@
-angular.module('myApp').controller('UserIndexController', ['$scope', '$location', '$http', function($scope, $location, $http) {
-    $scope.gotoRoot = function() {
+'use strict';
+angular.module('myApp').controller('UserIndexController', ['$location', '$http', function($location, $http) {
+    var vm = this;
+
+    vm.gotoRoot = function() {
         window.location = '/';
     };
 
-    $scope.signout = function() {
+    vm.signout = function() {
         console.log('run index ctrl');
         $http.post('/logout', {logout:true})
             .then(function() {

@@ -1,12 +1,23 @@
 var mongoose = require('mongoose'),
-    User = require('../models/User');
+    User = require('../models/User'),
+    Order = require('../models/Order');
 
 function createDefaultUsers() {
-    User.find({}).exec(function(err, collection) {
+    User.find({}).exec(function (err, collection) {
         if (collection.length === 0) {
-            User.create({mobile:13439695920, password:'xxx', roles: ['admin']});
+            User.create({mobile: 13439695920, password: 'xxx', profile: {name:'cxwcfea', picture: 'http://amui.qiniudn.com/bw-2014-06-19.jpg?imageView/1/w/1000/h/1000/q/80'}, roles: ['admin']}, function (err, user) {
+                if (err) console.log('create & find user err:' + err);
+                if (user) {
+                    createOrderDefaultUsers(user._id);
+                }
+            });
         }
     });
+}
+
+function createOrderDefaultUsers(uID) {
+    Order.create({userID:uID, dealType:'充值', amount:1000, status:true, description: '10倍配资'});
+    Order.create({userID:uID, dealType:'提现', amount:500, status:true, description: '10倍配资'});
 }
 
 var options = {

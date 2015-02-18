@@ -111,3 +111,16 @@ footer p {
 .login-header p {
 	font-size: 14px;
 }
+
+.toast-top-right {
+    top: 70px;
+}
+.toast-success {
+    background-color: #13987e;
+}
+
+/*
+.gallery-list li {
+    background-color: #808080;
+}
+*/

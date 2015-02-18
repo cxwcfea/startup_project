@@ -1,5 +1,5 @@
 <div class="am-cf am-padding">
-    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">账户总览</strong> </div>
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg"> \{{homeVM.displayName()}} </strong> </div>
 </div>
 
 <div class="am-g">
@@ -8,26 +8,28 @@
             <div class="am-panel-bd">
                 <div class="am-g">
                     <div class="am-u-md-4">
-                        <img class="am-img-circle am-img-thumbnail" src="http://amui.qiniudn.com/bw-2014-06-19.jpg?imageView/1/w/1000/h/1000/q/80" alt=""/>
+                        <img class="am-img-circle am-img-thumbnail" ng-src=\{{homeVM.user.profile.picture}} alt=""/>
                     </div>
                     <div class="am-u-md-8">
-                        <strong class="am-text-primary am-text">cxwcfea</strong>
+                        <strong class="am-text-warning am-text">
+                            余额: \{{homeVM.user.finance.balance}}
+                        </strong>
                         <br>
                     </div>
                     <div class="am-u-md-8">
-                        <strong class="am-text-primary am-text-lg">注册日期</strong><span id="my-endDate">2014-12-25</span>
+                        <strong class="am-text-primary am-text-lg">注册日期</strong><span id="my-regDate"> \{{homeVM.registerDate()}}</span>
                         <br>
                     </div>
                     <div class="am-u-md-8">
-                        <strong class="am-text-primary am-text-lg">安全等级:</strong><span class="am-text-danger" id="my-endDate"> 中等</span>
+                        <strong class="am-text-primary am-text-lg">安全等级:</strong><span class="am-text-danger" id="my-secureLevel"> 中等</span>
                         <br>
                     </div>
                     <div class="am-u-md-8">
-                        <a class="am-btn am-btn-lg am-btn-warning" href="#">
+                        <a class="am-btn am-btn-lg am-btn-warning" href="/user/mypay">
                             <i class="am-icon-money"></i>
                             充值
                         </a>
-                        <a class="am-btn am-btn-lg am-btn-warning" href="#">
+                        <a class="am-btn am-btn-lg am-btn-warning" href="/user/withdraw">
                             <i class="am-icon-shopping-cart"></i>
                             提现
                         </a>
@@ -39,14 +41,14 @@
 </div>
 
 <ul class="am-avg-sm-1 am-avg-md-4 am-margin am-padding am-text-center admin-content-list ">
-    <li><a href="#" class="am-text-success"><span class="am-icon-btn am-icon-money"></span><br/>保证金<br/>2300</a></li>
-    <li><a href="#" class="am-text-warning"><span class="am-icon-btn am-icon-shopping-cart"></span><br/>配资资产<br/>308</a></li>
-    <li><a href="#" class="am-text-danger"><span class="am-icon-btn am-icon-rmb"></span><br/>可用资产<br/>80082</a></li>
-    <li><a href="#" class="am-text-secondary"><span class="am-icon-btn am-icon-line-chart"></span><br/>股票市值<br/>3000</a></li>
+    <li><a href="#" class="am-text-success"><span class="am-icon-btn am-icon-money"></span><br/>保证金<br/>\{{homeVM.user.finance.deposit}}</a></li>
+    <li><a href="#" class="am-text-warning"><span class="am-icon-btn am-icon-shopping-cart"></span><br/>配资资产<br/>\{{homeVM.user.finance.total_capital}}</a></li>
+    <li><a href="#" class="am-text-danger"><span class="am-icon-btn am-icon-rmb"></span><br/>可用资产<br/>\{{homeVM.user.finance.available_capital}}</a></li>
+    <li><a href="#" class="am-text-secondary"><span class="am-icon-btn am-icon-line-chart"></span><br/>股票市值<br/>\{{homeVM.user.finance.market_value}}</a></li>
 </ul>
 
 <div class="am-g">
-    <div class="am-u-md-10">
+    <div class="am-u-md-12 am-u-sm-12">
         <div id="main-chart" style="height: 380px;"></div>
     </div>
     <script src="/vendor/echarts-all.js"></script>

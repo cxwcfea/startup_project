@@ -1,0 +1,164 @@
+
+<div class="am-cf am-padding">
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">提现</strong></div>
+</div>
+
+<div class="am-margin" id="accordion">
+    <div class="am-panel am-panel-default">
+        <div class="am-panel-hd">
+            <h4 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#add-card'}">
+                添加银行卡
+            </h4>
+        </div>
+        <div id="add-card" class="am-panel-collapse am-collapse am-out">
+            <div class="am-panel-bd">
+                <form class="am-form am-form-horizontal" name="cardForm">
+                    <div class="am-form-group">
+                        <div class="am-u-sm-offset-2 am-u-sm-8 am-u-end am-input-group am-input-group-primary">
+                            <span class="am-input-group-label"><i class="am-icon-bank"></i></span>
+                            <input type="text" class="am-form-field" placeholder="开户银行, 具体到支行的名称" ng-model="withdrawVM.card.bankName" required>
+                        </div>
+                        <!--
+                        <label for="bank-name" class="am-u-sm-2 am-form-label">开户银行</label>
+                        <div class="am-u-sm-6 am-u-end">
+                            <input type="text" id="bank-name" placeholder="具体到支行的名称">
+                        </div>
+                        -->
+                    </div>
+
+                    <div class="am-form-group">
+                        <div class="am-u-sm-offset-2 am-u-sm-8 am-u-end am-input-group am-input-group-primary">
+                            <span class="am-input-group-label"><i class="am-icon-credit-card"></i></span>
+                            <input type="number" class="am-form-field" placeholder="输入你的银行卡号" ng-model="withdrawVM.card.cardID" required>
+                        </div>
+                        <!--
+                        <label for="card-number" class="am-u-sm-2 am-form-label">银行卡号</label>
+                        <div class="am-u-sm-6 am-u-end">
+                            <input type="number" id="card-number" placeholder="输入你的银行卡号">
+                        </div>
+                        -->
+                    </div>
+
+                    <div class="am-form-group">
+                        <div class="am-u-sm-offset-2 am-u-sm-8 am-u-end am-input-group am-input-group-primary">
+                            <span class="am-input-group-label"><i class="am-icon-user"></i></span>
+                            <input type="text" class="am-form-field" placeholder="开户人，此项必须为此账户真实姓名" ng-model="withdrawVM.card.userName">
+                        </div>
+                        <!--
+                        <label class="am-u-sm-2 am-form-label">开户人</label>
+                        <div class="am-u-sm-6 am-u-end">
+                            <input type="text" id="account-name" placeholder="输入你的银行卡号">
+                            <p class="am-form-help"> 此项必须为此账户真实姓名 </p>
+                        </div>
+                        -->
+                    </div>
+
+                    <div class="am-form-group">
+                        <div class="am-u-sm-10 am-u-sm-offset-2">
+                            <button type="submit" class="am-btn am-btn-warning" ng-click="withdrawVM.addCard()" ng-disabled="cardForm.$invalid">添加银行卡</button>
+                            <a href="/user/identity" class="am-btn am-btn-warning" ng-hide="withdrawVM.user.identity.id">去实名认证</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="am-margin">
+    <p>选择提现银行卡</p>
+</div>
+
+<ul class="am-avg-sm-2 am-avg-md-2 am-avg-lg-4 am-margin gallery-list">
+    <li ng-repeat="card in withdrawVM.cards">
+        <div class="am-panel am-panel-secondary">
+            <a href="#">
+                <span class="am-icon-credit-card am-icon-lg"></span>
+                <br>
+                <div>
+                    <div class="gallery-title">\{{card.bankName}}</div>
+                    <div class="gallery-desc">卡号：\{{card.cardID}}</div>
+                </div>
+            </a>
+        </div>
+    </li>
+    <!--
+    <li>
+        <div class="am-panel am-panel-secondary">
+            <a href="#">
+                <span class="am-icon-credit-card am-icon-lg"></span>
+                <div>
+                    <span class="am-text-success">招商银行</span>
+                    <h3>4420 xxxx xxxx xxxx xxxx</h3>
+                </div>
+            </a>
+        </div>
+    </li>
+    <li>
+        <div class="am-panel am-panel-secondary">
+            <a href="#">
+                <span class="am-icon-credit-card am-icon-lg"></span>
+                <div>
+                    <span class="am-text-success">招商银行</span>
+                    <h3>4420 xxxx xxxx xxxx xxxx</h3>
+                </div>
+            </a>
+        </div>
+    </li>
+    <li>
+        <div class="am-panel am-panel-secondary">
+            <a href="#">
+                <span class="am-icon-credit-card am-icon-lg"></span>
+                <div>
+                    <span class="am-text-success">招商银行</span>
+                    <h3>4420 xxxx xxxx xxxx xxxx</h3>
+                </div>
+            </a>
+        </div>
+    </li>
+    <li>
+        <div class="am-panel am-panel-secondary">
+            <a href="#">
+                <span class="am-icon-credit-card am-icon-lg"></span>
+                <div>
+                    <span class="am-text-success">招商银行</span>
+                    <h3>4420 xxxx xxxx xxxx xxxx</h3>
+                </div>
+            </a>
+        </div>
+    </li>
+    -->
+</ul>
+
+<div class="am-margin am-cf">
+
+    <form class="am-form am-form-horizontal">
+        <div class="am-form-group">
+            <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">可提现金</label>
+            <div class="am-u-sm-10">
+                <label class="am-form-label">50000</label> 元
+            </div>
+        </div>
+
+        <div class="am-form-group">
+            <label for="withdraw-amount" class="am-u-sm-2 am-form-label">提现金额</label>
+            <div class="am-u-sm-10">
+                <input type="number" id="withdraw-amount" placeholder="大于等于可提现金" min="1">
+            </div>
+        </div>
+
+        <div class="am-form-group">
+            <div class="am-u-sm-10 am-u-sm-offset-2">
+                <a class="am-btn am-btn-warning" href="#">
+                    <i class="am-icon-shopping-cart"></i>
+                    确定
+                </a>
+            </div>
+        </div>
+    </form>
+   <!--
+    <span>可提现金：</span> <span>200.00</span>
+    <span>提现金额：</span> <input type="number">
+    -->
+</div>
+
