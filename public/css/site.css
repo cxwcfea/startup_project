@@ -119,6 +119,14 @@ footer p {
     background-color: #13987e;
 }
 
+div .card {
+    cursor: pointer;
+}
+
+div .active {
+    background: #FFC url(/images/check.png) right bottom no-repeat;
+}
+
 /*
 .gallery-list li {
     background-color: #808080;

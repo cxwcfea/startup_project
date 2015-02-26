@@ -124,7 +124,9 @@ module.exports.getUser = function(req, res, next) {
 module.exports.updateUser = function(req, res, next) {
     var userData = req.body;
     User.update({_id:req.params.id}, userData, function (err, numberAffected, raw) {
-        if (err) next(err);
+        if (err) {
+            return res.send({success:false, reason:err.toString()});
+        }
         res.send({success:true});
     });
 };

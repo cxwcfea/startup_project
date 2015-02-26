@@ -1,6 +1,7 @@
 var express = require('express'),
     path = require('path'),
     logger = require('morgan'),
+    compress = require('compression'),
     bodyParser = require('body-parser'),
     connectAssets = require('connect-assets'),
     cookieParser = require('cookie-parser'),
@@ -24,11 +25,12 @@ module.exports = function(app, config) {
 	app.engine('handlebars', handlebars.engine);
 	app.set('views', config.rootPath + '/views');
 	app.set('view engine', 'handlebars');
+    app.use(compress());
     app.use(connectAssets({
         paths: [path.join(config.rootPath, '/public/css')]
     }));
-    app.use(cookieParser());
     app.use(logger('dev'));
+    app.use(cookieParser());
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(expressValidator());

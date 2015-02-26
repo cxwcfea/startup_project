@@ -14,7 +14,7 @@
             <div class="am-panel-bd">
                 <form class="am-form am-form-horizontal" name="cardForm">
                     <div class="am-form-group">
-                        <div class="am-u-sm-offset-2 am-u-sm-8 am-u-end am-input-group am-input-group-primary">
+                        <div class="am-u-sm-12 am-u-md-offset-2 am-u-md-8 am-u-end am-input-group am-input-group-primary">
                             <span class="am-input-group-label"><i class="am-icon-bank"></i></span>
                             <input type="text" class="am-form-field" placeholder="开户银行, 具体到支行的名称" ng-model="withdrawVM.card.bankName" required>
                         </div>
@@ -27,7 +27,7 @@
                     </div>
 
                     <div class="am-form-group">
-                        <div class="am-u-sm-offset-2 am-u-sm-8 am-u-end am-input-group am-input-group-primary">
+                        <div class="am-u-sm-12 am-u-md-offset-2 am-u-md-8 am-u-end am-input-group am-input-group-primary">
                             <span class="am-input-group-label"><i class="am-icon-credit-card"></i></span>
                             <input type="number" class="am-form-field" placeholder="输入你的银行卡号" ng-model="withdrawVM.card.cardID" required>
                         </div>
@@ -40,7 +40,7 @@
                     </div>
 
                     <div class="am-form-group">
-                        <div class="am-u-sm-offset-2 am-u-sm-8 am-u-end am-input-group am-input-group-primary">
+                        <div class="am-u-sm-12 am-u-md-offset-2 am-u-md-8 am-u-end am-input-group am-input-group-primary">
                             <span class="am-input-group-label"><i class="am-icon-user"></i></span>
                             <input type="text" class="am-form-field" placeholder="开户人，此项必须为此账户真实姓名" ng-model="withdrawVM.card.userName">
                         </div>
@@ -71,94 +71,42 @@
 
 <ul class="am-avg-sm-2 am-avg-md-2 am-avg-lg-4 am-margin gallery-list">
     <li ng-repeat="card in withdrawVM.cards">
-        <div class="am-panel am-panel-secondary">
-            <a href="#">
-                <span class="am-icon-credit-card am-icon-lg"></span>
-                <br>
-                <div>
-                    <div class="gallery-title">\{{card.bankName}}</div>
-                    <div class="gallery-desc">卡号：\{{card.cardID}}</div>
-                </div>
-            </a>
+        <div class="am-panel am-panel-secondary card" ng-class="{active : withdrawVM.isSelected(card)}" ng-click="withdrawVM.selectCard(card)">
+            <span class="am-icon-credit-card am-icon-lg"></span>
+            <br>
+            <div>
+                <div class="gallery-title">\{{card.bankName}}</div>
+                <div class="gallery-desc">卡号：\{{card.cardID}}</div>
+            </div>
         </div>
     </li>
-    <!--
-    <li>
-        <div class="am-panel am-panel-secondary">
-            <a href="#">
-                <span class="am-icon-credit-card am-icon-lg"></span>
-                <div>
-                    <span class="am-text-success">招商银行</span>
-                    <h3>4420 xxxx xxxx xxxx xxxx</h3>
-                </div>
-            </a>
-        </div>
-    </li>
-    <li>
-        <div class="am-panel am-panel-secondary">
-            <a href="#">
-                <span class="am-icon-credit-card am-icon-lg"></span>
-                <div>
-                    <span class="am-text-success">招商银行</span>
-                    <h3>4420 xxxx xxxx xxxx xxxx</h3>
-                </div>
-            </a>
-        </div>
-    </li>
-    <li>
-        <div class="am-panel am-panel-secondary">
-            <a href="#">
-                <span class="am-icon-credit-card am-icon-lg"></span>
-                <div>
-                    <span class="am-text-success">招商银行</span>
-                    <h3>4420 xxxx xxxx xxxx xxxx</h3>
-                </div>
-            </a>
-        </div>
-    </li>
-    <li>
-        <div class="am-panel am-panel-secondary">
-            <a href="#">
-                <span class="am-icon-credit-card am-icon-lg"></span>
-                <div>
-                    <span class="am-text-success">招商银行</span>
-                    <h3>4420 xxxx xxxx xxxx xxxx</h3>
-                </div>
-            </a>
-        </div>
-    </li>
-    -->
 </ul>
 
 <div class="am-margin am-cf">
 
-    <form class="am-form am-form-horizontal">
+    <form class="am-form am-form-horizontal" name="withdrawForm">
         <div class="am-form-group">
-            <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">可提现金</label>
-            <div class="am-u-sm-10">
-                <label class="am-form-label">50000</label> 元
+            <label for="doc-ipt-3" class="am-u-sm-4 am-u-md-2 am-form-label">可提现金</label>
+            <div class="am-u-sm-8 am-u-md-10">
+                <label class="am-form-label">\{{withdrawVM.user.finance.balance}}</label> 元
             </div>
         </div>
 
         <div class="am-form-group">
-            <label for="withdraw-amount" class="am-u-sm-2 am-form-label">提现金额</label>
-            <div class="am-u-sm-10">
-                <input type="number" id="withdraw-amount" placeholder="大于等于可提现金" min="1">
+            <label for="withdraw-amount" class="am-u-sm-4 am-u-md-2 am-form-label">提现金额</label>
+            <div class="am-u-sm-8 am-u-md-6 am-u-end">
+                <input type="number" id="withdraw-amount" placeholder="小于等于可提现金" min="1" ng-model="withdrawVM.amount" required="">
             </div>
         </div>
 
         <div class="am-form-group">
-            <div class="am-u-sm-10 am-u-sm-offset-2">
-                <a class="am-btn am-btn-warning" href="#">
+            <div class="am-u-sm-8 am-u-sm-offset-4 am-u-md-10 am-u-md-offset-2">
+                <button class="am-btn am-btn-warning" ng-click="withdrawVM.withdraw()" ng-disabled="withdrawForm.$invalid">
                     <i class="am-icon-shopping-cart"></i>
                     确定
-                </a>
+                </button>
             </div>
         </div>
     </form>
-   <!--
-    <span>可提现金：</span> <span>200.00</span>
-    <span>提现金额：</span> <input type="number">
-    -->
 </div>
 

@@ -1,5 +1,6 @@
 var users = require('../controllers/user'),
     cards = require('../controllers/card'),
+    orders = require('../controllers/order'),
     passportConf = require('./passport');
 
 
@@ -53,6 +54,11 @@ module.exports = function(app) {
 
     app.post('/api/cards', cards.addCard);
 
+    app.get('/api/orders/:id', orders.getOrderById);
+
+    app.post('/api/orders', orders.addOrder);
+
+    app.put('/api/orders', orders.updateOrder);
     //app.post('/api/users', users.createUser);
 
 };
