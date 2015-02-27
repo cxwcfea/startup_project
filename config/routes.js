@@ -10,11 +10,11 @@ module.exports = function(app) {
         next();
     });
 
-    app.get('/', function (req, res) {
+    app.get('/', function(req, res) {
         res.render('home');
     });
 
-    app.get('/signup', function (req, res) {
+    app.get('/signup', function(req, res) {
         res.render('register/signup');
     });
 
@@ -22,6 +22,10 @@ module.exports = function(app) {
 
     app.get('/login', function (req, res) {
         res.render('register/login');
+    });
+
+    app.get('/forgot', function(req, res) {
+        res.render('register/forgot');
     });
 
     app.post('/login', users.postLogin);
@@ -45,6 +49,12 @@ module.exports = function(app) {
     app.get('/user/mypay', passportConf.isAuthenticated, users.getUserPay);
 
     app.get('/user/withdraw', passportConf.isAuthenticated, users.getWithdraw);
+
+    app.get('/user/verify_email', passportConf.isAuthenticated, users.getVerifyEmail);
+
+    app.get('/user/change_pass', passportConf.isAuthenticated, users.getResetPassword);
+
+    app.post('/user/change_pass', passportConf.isAuthenticated, users.postUpdatePassword);
 
     app.get('/api/users/:id', users.getUser);
 

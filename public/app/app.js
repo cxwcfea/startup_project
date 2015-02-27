@@ -24,6 +24,12 @@ angular.module('myApp').config(function($routeProvider, $locationProvider) {
         .when('/user/withdraw', { templateUrl: '/user/withdraw',
             controller: 'UserWithdrawController as withdrawVM'
         })
+        .when('/user/verify_email', { templateUrl: '/user/verify_email',
+            controller: 'UserEmailController as emailVM'
+        })
+        .when('/user/change_pass', { templateUrl: '/user/change_pass',
+            controller: 'UserResetPasswordController as passVM'
+        })
         .otherwise({
             redirectTo: '/user/index'
         });

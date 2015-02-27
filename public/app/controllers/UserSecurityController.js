@@ -23,16 +23,16 @@ angular.module('myApp').controller('UserSecurityController', ['gbIdentity', func
         {
             class: "am-icon-envelope am-icon-lg",
             title: "验证邮箱",
-            status: vm.user.profile.email ? "已验证" : "未验证",
-            url: "#",
-            action: "修改",
-            show: true
+            status: vm.user.profile.email_verified ? "已验证" : "未验证",
+            url: "/user/verify_email",
+            action: "去验证",
+            show: vm.user.profile.email_verified ? false : true
         },
         {
             class: "am-icon-key am-icon-lg",
             title: "登录密码",
             status: "已设置",
-            url: "#",
+            url: "/user/change_pass",
             action: "修改",
             show: true
         }

@@ -20,6 +20,7 @@ var userSchema = new mongoose.Schema({
 	},
 
     profile: {
+        email_verified: {type: Boolean, default: false},
         email: {type: String, lowercase: true},
         name: String,
         gender: {type: String, default: 'M'},
@@ -35,6 +36,7 @@ var userSchema = new mongoose.Schema({
         idType: {type: Number, default: 1}
     },
 
+    verifyEmailToken: String,
     resetPasswordToken: String,
     resetPasswordExpires: Date
 });
