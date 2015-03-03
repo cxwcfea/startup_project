@@ -3,6 +3,7 @@ var passport = require('passport'),
     userViewModel = require('../viewModels/user'),
     nodemailer = require('nodemailer'),
     crypto = require('crypto'),
+    sms = require('../lib/sms'),
     async = require('async');
 
 
@@ -48,7 +49,6 @@ module.exports.postSignup = function(req, res, next) {
         mobile: req.body.mobile,
         password: req.body.password
     });
-
 
     User.findOne({ mobile: req.body.mobile }, function(err, existingUser) {
         if (err) {
@@ -227,4 +227,48 @@ module.exports.postUpdatePassword = function(req, res, next) {
         });
 
     });
+};
+
+module.exports.resetPassword = function(req, res, next) {
+    console.log(req.body);
+    console.log(req.session.sms_code);
+    req.assert('verify_code', '验证码错误').equals(req.session.sms_code);
+    req.assert('confirm_password', '两次密码不匹配').equals(req.body.password);
+
+    var errors = req.validationErrors();
+
+    if (errors) {
+        req.flash('errors', errors);
+        return res.redirect('/forgot');
+    }
+
+    User.findOne({ mobile: req.body.mobile }, function(err, user) {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            req.flash('errors', { msg: '该手机号还未注册.' });
+            return res.redirect('/forgot');
+        }
+        user.password = req.body.password;
+        user.save(function (err) {
+            if (err) {
+                req.flash('errors', { msg: err.toString() });
+                return res.redirect('/forgot');
+            }
+            req.flash('info', { msg: '您的密码已经修改成功!' });
+            res.redirect('/login');
+        });
+    });
+};
+
+module.exports.sendVerifyCode = function(req, res, next) {
+    if (!req.query.mobile) {
+        return res.send({success:false, reason:'no mobile specified'});
+    }
+    var code = sms.generateVerifyCode();
+    sms.sendSMS(req.query.mobile, code);
+    req.session.sms_code = code;
+    res.send({success:true});
+    //res.send({success:true, verifyCode:code});
 };

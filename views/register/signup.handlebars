@@ -1,44 +1,42 @@
 <div class="header login-header">
-  <div class="am-g">
-      <h1>互联网金融</h1>
-      <p>股票融资，交易管理，资金增值，理财产品，证券</p>
-  </div>
-  <hr />
+    <div class="am-g">
+        <h1>互联网金融</h1>
+        <p>股票融资，交易管理，资金增值，理财产品，证券</p>
+    </div>
+    <hr />
 </div>
 <div class="am-g">
-  <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
-    <h3>用户注册</h3>
-    <hr>
-    <div class="am-btn-group">
-      <a href="#" class="am-btn am-btn-secondary am-btn-sm"><i class="am-icon-github am-icon-sm"></i> Github</a>
-      <a href="#" class="am-btn am-btn-success am-btn-sm"><i class="am-icon-google-plus-square am-icon-sm"></i> Google+</a>
-      <a href="#" class="am-btn am-btn-primary am-btn-sm"><i class="am-icon-stack-overflow am-icon-sm"></i> stackOverflow</a>
-    </div>
-    <br>
-    <br>
+    <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
+        <h3>用户注册</h3>
+        <hr>
 
-    <form method="post" class="am-form">
-      <label for="mobile">手机号码:</label>
-      <input type="tel" name="mobile" id="mobile" maxlength=11 autofocus required>
-      <br>
-      <label for="verify-code">验证码:</label>
-      <input type="number" name="verify-code" id="verify-code" required>
-      <br>
-      <label for="password">密码:</label>
-      <input type="password" name="password" id="password" required>
-      <br>
-      <label for="confirm-password">确认密码:</label>
-      <input type="password" name="confirm-password" id="confirm-password" required>
-      <br>
-      <label for="remember-me">
-        <input id="remember-me" type="checkbox">
-		<small>同意并愿意遵守 <a href="#">用户协议和隐私政策</a> </small>
-      </label>
-      <br />
-      <div class="am-cf">
-        <input type="submit" name="" value="立即注册" class="am-btn am-btn-primary am-btn-sm am-fl">
-      </div>
-    </form>
-    <hr>
-  </div>
+        <form method="POST" class="am-form" data-am-validator>
+            <label for="mobile">手机号码:</label>
+            <input type="tel" name="mobile" id="mobile" maxlength=11 pattern="1[3|5|7|8|][0-9]{9}" autofocus required>
+            <br>
+            <label for="password">密码:</label>
+            <input type="password" name="password" id="password" required>
+            <br>
+            <label for="confirm-password">确认密码:</label>
+            <input type="password" name="confirm-password" id="confirm-password" required>
+            <br>
+            <div class="am-form-group">
+                <label for="verify-code">验证码:</label>
+                <input type="number" name="verify-code" id="verify-code" required>
+                <button id="signup-verify-code-btn" type="submit" class="verify-code-btn am-btn am-btn-success am-btn-block am-fl" data-am-loading="{spinner: 'circle-o-notch', loadingText: '没收到?60秒后再试'}">获取验证码</button>
+            </div>
+            <br>
+            <label for="remember-me">
+                <input id="remember-me" type="checkbox" checked>
+                <small>同意并愿意遵守 <a href="#">用户协议和隐私政策</a> </small>
+            </label>
+            <br />
+            <br />
+            <div class="am-cf">
+                <input type="submit" value="立即注册" class="am-btn am-btn-primary am-fl">
+            </div>
+        </form>
+        <hr>
+    </div>
+    {{> mobile_num_alert}}
 </div>

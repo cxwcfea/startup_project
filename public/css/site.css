@@ -127,6 +127,10 @@ div .active {
     background: #FFC url(/images/check.png) right bottom no-repeat;
 }
 
+.errorMsg {color: red}
+
+.invalidElem {border: medium solid red}
+
 /*
 .gallery-list li {
     background-color: #808080;

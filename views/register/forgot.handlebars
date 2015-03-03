@@ -1,16 +1,22 @@
+<div class="header login-header">
+    <div class="am-g">
+        <h1>互联网金融</h1>
+        <p>股票融资，交易管理，资金增值，理财产品，证券</p>
+    </div>
+    <hr />
+</div>
 <div class="am-g">
     <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
-        <hr>
         <h3>找回密码</h3>
-        <br>
+        <hr>
 
-        <form class="am-form" name="passForm">
+        <form method="POST" class="am-form" name="passForm" data-am-validator>
             <div class="am-g am-margin-top">
                 <div class="am-u-sm-4 am-u-md-2 am-text-right">
                     手机号码
                 </div>
                 <div class="am-u-sm-8 am-u-md-6 am-u-end">
-                    <input type="number" class="am-input-sm" placeholder="请输入您的手机号码" required autofocus>
+                    <input id="mobile" name="mobile" type="tel" pattern="1[3|5|7|8|][0-9]{9}" class="am-input-sm" placeholder="请输入您的手机号码" required autofocus>
                 </div>
             </div>
 
@@ -18,10 +24,10 @@
                 <div class="am-u-sm-4 am-u-md-2 am-text-right">
                     验证码
                 </div>
-                <div class="am-form-group am-u-sm-8 am-u-md-3 am-u-end">
-                    <input type="number" class="am-input-sm" required>
+                <div class="am-form-group am-u-sm-8 am-u-md-2 am-u-end">
+                    <input name="verify_code" type="number" class="am-input-sm" required>
                 </div>
-                <input id="forgot-get-verify-code-btn" type="submit" class="am-btn am-btn-sm am-btn-success am-u-sm-offset-5 am-u-sm-6 am-u-md-offset-0 am-u-md-2 am-u-end" value="获取验证码" />
+                <button id="forgot-verify-code-btn" type="submit" class="verify-code-btn am-btn am-btn-sm am-btn-success am-u-sm-offset-5 am-u-sm-6 am-u-md-offset-0 am-u-md-3 am-u-end" data-am-loading="{spinner: 'circle-o-notch', loadingText: '没收到?60秒后再试'}">获取验证码</button>
             </div>
 
             <div class="am-g am-margin-top">
@@ -29,7 +35,7 @@
                     新密码
                 </div>
                 <div class="am-u-sm-8 am-u-md-6 am-u-end">
-                    <input type="password" class="am-input-sm" required>
+                    <input name="password" type="password" class="am-input-sm" required>
                 </div>
             </div>
 
@@ -38,7 +44,7 @@
                     重复密码
                 </div>
                 <div class="am-u-sm-8 am-u-md-6 am-u-end">
-                    <input type="password" class="am-input-sm" required>
+                    <input name="confirm_password" type="password" class="am-input-sm" required>
                 </div>
             </div>
 
@@ -51,4 +57,5 @@
         </form>
     </div>
     <br>
+    {{> mobile_num_alert}}
 </div>

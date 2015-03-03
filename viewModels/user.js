@@ -7,6 +7,7 @@ var privateProperties = [
 ];
 
 function getUserViewModel(user, orders){
+    user.profile.picture = user.gravatar();
     var realUser = user._doc;
     var vm = _.omit(realUser, privateProperties);
     return _.extend(vm, {

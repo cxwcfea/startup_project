@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 function createDefaultUsers() {
     User.find({}).exec(function (err, collection) {
         if (collection.length === 0) {
-            User.create({mobile: 13439695920, password: 'xxx', profile: {name:'cxwcfea', picture: 'http://amui.qiniudn.com/bw-2014-06-19.jpg?imageView/1/w/1000/h/1000/q/80'}, roles: ['admin']}, function (err, user) {
+            User.create({mobile: 13439695920, password: 'xxx', profile: {name:'cxwcfea'}, roles: ['admin']}, function (err, user) {
                 if (err) console.log('create & find user err:' + err);
                 if (user) {
                     createOrderDefaultUsers(user._id);

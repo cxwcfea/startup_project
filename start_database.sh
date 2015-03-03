@@ -1,1 +1,1 @@
-mongod -dbpath db --rest
+mongod -dbpath data --rest

@@ -1,6 +1,7 @@
 var users = require('../controllers/user'),
     cards = require('../controllers/card'),
     orders = require('../controllers/order'),
+    sms = require('../lib/sms'),
     passportConf = require('./passport');
 
 
@@ -27,6 +28,8 @@ module.exports = function(app) {
     app.get('/forgot', function(req, res) {
         res.render('register/forgot');
     });
+
+    app.post('/forgot', users.resetPassword);
 
     app.post('/login', users.postLogin);
 
@@ -71,4 +74,5 @@ module.exports = function(app) {
     app.put('/api/orders', orders.updateOrder);
     //app.post('/api/users', users.createUser);
 
+    app.get('/api/send_sms_verify_code', users.sendVerifyCode);
 };

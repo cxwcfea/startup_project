@@ -18,7 +18,7 @@ angular.module('myApp').controller('UserSecurityController', ['gbIdentity', func
             status: "已认证",
             url: "#",
             action: "修改",
-            show: true
+            show: false
         },
         {
             class: "am-icon-envelope am-icon-lg",
