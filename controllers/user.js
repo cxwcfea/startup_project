@@ -28,7 +28,7 @@ module.exports.postLogin = function(req, res, next) {
         }
         req.login(user, function(err) {
             if (err) {return next(err);}
-            res.redirect('/user/index');
+            res.redirect('/user');
         });
     });
     auth(req, res, next);
@@ -62,7 +62,7 @@ module.exports.postSignup = function(req, res, next) {
             if (err) return next(err);
             req.logIn(user, function(err) {
                 if (err) return next(err);
-                res.redirect('/user/index');
+                res.redirect('/user');
             });
         });
     });

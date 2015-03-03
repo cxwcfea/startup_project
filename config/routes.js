@@ -37,7 +37,7 @@ module.exports = function(app) {
 
     app.post('/logout', users.postLogout);
 
-    app.get('/user/index', passportConf.isAuthenticated, users.getIndex);
+    app.get('/user', passportConf.isAuthenticated, users.getIndex);
 
     app.get('/user/home', passportConf.isAuthenticated, users.getHome);
 

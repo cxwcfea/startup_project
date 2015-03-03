@@ -8,7 +8,7 @@ angular.module('myApp').controller('UserSecurityController', ['gbIdentity', func
             class: "am-icon-user-secret am-icon-lg",
             title: "实名认证",
             status: vm.user.identity.id ? "已认证" : "未认证",
-            url: "/user/identity",
+            url: "/user#/identity",
             action: "去认证",
             show: vm.user.identity.id ? false : true
         },
@@ -24,7 +24,7 @@ angular.module('myApp').controller('UserSecurityController', ['gbIdentity', func
             class: "am-icon-envelope am-icon-lg",
             title: "验证邮箱",
             status: vm.user.profile.email_verified ? "已验证" : "未验证",
-            url: "/user/verify_email",
+            url: "/user#/verify_email",
             action: "去验证",
             show: vm.user.profile.email_verified ? false : true
         },
@@ -32,7 +32,7 @@ angular.module('myApp').controller('UserSecurityController', ['gbIdentity', func
             class: "am-icon-key am-icon-lg",
             title: "登录密码",
             status: "已设置",
-            url: "/user/change_pass",
+            url: "/user#/change_pass",
             action: "修改",
             show: true
         }
