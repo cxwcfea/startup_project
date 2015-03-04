@@ -127,9 +127,221 @@ div .active {
     background: #FFC url(/images/check.png) right bottom no-repeat;
 }
 
-.errorMsg {color: red}
+.apply li a {
+    border-radius: 5px;
+    border: 1px solid #dedede;
+    padding-top: 10px;
+    text-align: center;
+    display: inline-block;
+    height: 80px;
+    width: 110px;
+    color: #777;
+    font-size: 16px;
+}
 
-.invalidElem {border: medium solid red}
+.apply li a span {
+    border-radius: 5px;
+    display: block;
+    color: #444;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.apply li .selected {
+    border-radius: 5px;
+    display: inline-block;
+    background-color: #CF1B14;
+    height: 80px;
+    width: 110px;
+    border: 1px #dedede solid;
+    color: #ffffff;
+}
+
+.apply li a:link {
+    text-decoration: none;
+}
+
+.apply li a:visited {
+    text-decoration: none;
+}
+
+.apply li a:active {
+    text-decoration: none;
+}
+
+.apply li .selected span {
+    border-radius: 5px;
+    display: block;
+    color: #ffffff;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.apply li a:hover {
+    border-radius: 5px;
+    padding-top: 10px;
+    display: inline-block;
+    height: 80px;
+    width: 110px;
+    border: 1px #dedede solid;
+    text-decoration: none;
+}
+
+
+.apply .day li a {
+    border-radius: 5px;
+    border: 1px solid #dedede;
+    padding-top: 10px;
+    text-align: center;
+    display: inline-block;
+    height: 50px;
+    width: 110px;
+    color: #777;
+    font-size: 12px;
+}
+
+.apply .day li a span {
+    border-radius: 5px;
+    display: block;
+    color: #444;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.apply .day li .selected {
+    border-radius: 5px;
+    display: inline-block;
+    background-color: #CF1B14;
+    height: 50px;
+    width: 110px;
+    border: 1px #dedede solid;
+    color: #ffffff;
+}
+
+.apply .day li a:link {
+    text-decoration: none;
+}
+
+.apply .day li a:visited {
+    text-decoration: none;
+}
+
+.apply .day li a:active {
+    text-decoration: none;
+}
+
+.apply .day li .selected span {
+    border-radius: 5px;
+    display: block;
+    color: #ffffff;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.apply .day li a:hover {
+    border-radius: 5px;
+    padding-top: 10px;
+    display: inline-block;
+    height: 50px;
+    width: 110px;
+    border: 1px #dedede solid;
+    text-decoration: none;
+}
+
+.money_showtab {
+    border-radius: 5px;
+    margin-top: 8px;
+    font-family: "Microsoft Yahei";
+    min-height: 10px;
+    height: auto;
+    display: table;
+    border: 1px #CF1B14 solid;
+    background-color: #FFFDEF;
+    padding: 15px;
+}
+
+.mstit {
+    font-weight: bold;
+    font-size: 18px;
+    font-family: "Microsoft Yahei";
+    height: 40px;
+    color: #666666;
+}
+
+.msbom2 {
+    line-height: 190%;
+}
+
+.msbom2 ul li.msli {
+    color: #777;
+    padding-left: 15px;
+    font-size: 14px;
+    float: left;
+}
+
+.msbom2 ul {
+    padding: 0px;
+    margin: 0px;
+}
+
+.msbom2 ul li {
+    color: #777;
+    padding-left: 15px;
+    font-size: 14px;
+    float: left;
+}
+
+.apply ul, li {
+    list-style: none;
+}
+
+.apply .money_js {
+    line-height: 200%;
+    text-align: right;
+    font-family: "Microsoft Yahei";
+    color: #444;
+    font-size: 16px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px #ECE9E9 solid;
+}
+
+.apply .money_js span {
+    color: #c10000;
+    font-size: 20px;
+}
+
+.apply .money_je {
+    line-height: 200%;
+    text-align: right;
+    font-family: "Microsoft Yahei";
+    color: #444;
+    font-size: 20px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    height: 32px;
+}
+
+.apply .money_je span {
+    color: #c10000;
+    font-size: 30px;
+}
+
+.apply form {
+    text-align: right;
+}
+
+.confirm-apply p {
+    display: inline;
+}
+
+.confirm-apply {
+    border-radius: 5px;
+    border: 1px solid #CF1B14;
+    padding: 5px;
+}
 
 /*
 .gallery-list li {

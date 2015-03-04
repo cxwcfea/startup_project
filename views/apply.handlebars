@@ -1,0 +1,93 @@
+<div class="header login-header">
+    <div class="am-g">
+        <h1>我要操盘</h1>
+    </div>
+    <hr />
+</div>
+<div class="am-g" ng-app="applyApp" ng-controller="ApplyController as vm">
+    <div class="am-u-lg-10 am-u-md-10 am-u-sm-centered">
+        <section class="am-panel am-panel-default">
+            <header class="am-panel-hd">
+                <h3 class="am-panel-title">选择操盘资金</h3>
+            </header>
+            <div class="am-panel-bd apply">
+                <span>请选择申请资金:</span>
+                <ul class="am-avg-sm-1 am-avg-md-7 am-margin am-padding am-text-center admin-content-list">
+                    <li ng-repeat="item in vm.amountList">
+                        <a href="javascript:;" ng-click="vm.selectAmount(item)" ng-class="{selected: item.select}"><span>\{{item.name}}</span>实盘资金</a>
+                    </li>
+                    <li class="am-vertical-align" style="height: 80px;"><button id="apply-other-amount" type="button" class="am-btn am-btn-danger am-vertical-align-middle" ng-click="vm.toggleOtherAmount()">其他金额</button></li>
+                </ul>
+                <div class="am-margin am-padding am-text-center am-panel-group" id="accordion" ng-show="vm.showOtherAmount">
+                    <div class="am-panel am-panel-default">
+                        <div class="am-panel-hd">
+                            <h4 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#other-amount'}">
+                                其他金额
+                            </h4>
+                        </div>
+                        <div id="other-amount" class="am-panel-collapse am-collapse am-in">
+                            <div class="am-panel-bd">
+                                <form class="am-form am-form-horizontal">
+                                    <div class="am-form-group">
+                                        <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">输入需要的金额：</label>
+                                        <div class="am-u-sm-10 am-input-group">
+                                            <input type="number" placeholder="最少两千，最多三十万" class="am-form-field" min="2000" max="300000" ng-model="vm.otherAmount" ng-blur="vm.finishOtherAmount()">
+                                            <span class="am-input-group-label">元</span>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <span>请选择使用天数:</span>
+                <ul class="am-avg-sm-1 am-avg-md-8 am-margin am-padding am-text-center admin-content-list day">
+                    <li ng-repeat="day in vm.dayList">
+                        <a href="javascript:;" id="2000" ng-click="vm.selectDay(day)" ng-class="{selected: day.select}"><span>\{{day.value}}/交易日</span></a>
+                    </li>
+                </ul>
+
+                <div class="am-g">
+                    <div class="money_showtab am-margin am-padding am-u-sm-11">
+                        <div class="mstit">申请说明</div>
+                        <div class="msbom2">
+                            <ul>
+                                <li class="msli">操盘须知：<span>投资沪深A股，仓位不限制，盈利全归您</span></li>
+                                <br/>
+                                <li>申请金额：<span><span>￥<span id="span_amount" class="am-text-danger am-text-xl">\{{vm.summery.amount}}</span></span>元</span></li>
+                                <li>使用天数：<span><span id="span_usetrem" class="am-text-danger am-text-xl">\{{vm.summery.day}}</span>天</span></li>
+                                <li class="msli">资金使用时间：<span>截至<span id="span_endtime" class="am-text-danger am-text-xl">2015-03-10</span>下午14:54:59（可延期）</span></li>
+                                <li>警戒线 <span id="tip" data-text="当保证金为实盘资金的5%为警戒线" class="am-text-danger am-text-xl"></span>：<span><span>￥<span id="span_warn" class="am-text-danger am-text-xl">\{{vm.summery.warnValue}}</span></span>元</span></li>
+                                <li>平仓线 <span id="tip1" data-text="当保证金为实盘资金的3%为平仓线" class="am-text-danger am-text-xl"></span>：<span><span>￥<span id="span_sell" class="am-text-danger am-text-xl">\{{vm.summery.sellValue}}</span></span>元</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="am-g">
+                    <div class="money_js am-margin am-padding am-u-sm-11">
+                        冻结保证金 <span id="tip2" data-text="您申请实盘资金所需要支付的保证金，为实盘资金的1/10，用于盈亏结算。" class="icon icon-help-s" style="cursor: pointer;"></span>：<span>￥</span><span id="span_bond">\{{vm.summery.deposit}}</span>元<br>
+                        预存账户管理费(按天收取，周末节假日免费) <span id="tip3" data-text="您申请使用牛操盘实盘资金和账户所需要支付的账户管理费，用几天算几天，先使用、后扣费。" class="icon icon-help-s" style="cursor: pointer;"></span>：<span>￥</span><span id="span_rate">\{{vm.summery.charge}}</span>元
+                    </div>
+                </div>
+
+                <div class="am-g">
+                    <div class="money_je am-u-sm-11"> <span>￥</span><span id="span_all">\{{vm.summery.total}}</span>元</div>
+                </div>
+
+                <div class="am-g">
+                    <form class="am-form-inline am-u-sm-11" role="form" data-am-validator name="applyForm">
+                        <div class="am-checkbox">
+                            <label>
+                                <input name="agree" type="checkbox" required ng-model="vm.agree"> 我同意<a href="#">《牛金网配资参与规则》</a>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="am-btn am-btn-warning" ng-click="vm.submitApply()" ng-disabled="applyForm.$invalid">立即提交申请</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

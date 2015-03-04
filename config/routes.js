@@ -1,6 +1,7 @@
 var users = require('../controllers/user'),
     cards = require('../controllers/card'),
     orders = require('../controllers/order'),
+    applys = require('../controllers/apply'),
     sms = require('../lib/sms'),
     passportConf = require('./passport');
 
@@ -15,21 +16,43 @@ module.exports = function(app) {
         res.render('home');
     });
 
+    app.get('/apply_confirm', passportConf.isAuthenticated, function(req, res) {
+        if (!req.session.applySummary) {
+            res.render('apply');
+        } else {
+            res.locals.applySummary = req.session.applySummary;
+            req.session.applySummary = null;
+            res.locals.applySummary.balance = req.user.finance.balance;
+            res.locals.applySummary.shouldPay = res.locals.applySummary.total - res.locals.applySummary.balance;
+            res.render('apply_confirm');
+        }
+    });
+
+    app.get('/third_party_pay', function(req, res) {
+        res.render('third_party_pay', {layout:null});
+    });
+
     app.get('/signup', function(req, res) {
         res.render('register/signup');
     });
 
     app.post('/signup', users.postSignup);
 
-    app.get('/login', function (req, res) {
-        res.render('register/login');
-    });
-
     app.get('/forgot', function(req, res) {
         res.render('register/forgot');
     });
 
     app.post('/forgot', users.resetPassword);
+
+    app.get('/apply', function(req, res) {
+        res.render('apply');
+    });
+
+    app.post('/apply', applys.placeApply);
+
+    app.get('/login', function (req, res) {
+        res.render('register/login');
+    });
 
     app.post('/login', users.postLogin);
 

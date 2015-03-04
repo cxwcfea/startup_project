@@ -1,3 +1,5 @@
+angular.module('applyApp', []);
+
 $(document).ready(function() {
     moment.locale('zh-cn');
 
@@ -23,6 +25,44 @@ $(document).ready(function() {
         });
     });
 
+    $('#go-to-pay').on('click', function(e) {
+        e.preventDefault();
+        window.open('/third_party_pay');
+        $('#pay-confirm').modal({
+            relatedTarget: this,
+            onConfirm: function(options) {
+                /*
+                var $link = $(this.relatedTarget).prev('a');
+                var msg = $link.length ? '你要删除的链接 ID 为 ' + $link.data('id') :
+                    '确定了，但不知道要整哪样';
+                alert(msg);
+                */
+                alert('成功');
+            },
+            onCancel: function() {
+                alert('算求，不弄了');
+            }
+        });
+    });
+
+/*
+    $('.apply li a').click(function (e) {
+        var x = $('.apply li a');
+        x.each(function(index, elem) {
+            $(elem).removeClass("selected");
+        });
+        console.log(x);
+        $(this).addClass("selected");
+    });
+*/
+    /*
+    $('#apply-other-amount').click(function (e) {
+        var x = $('.apply li a');
+        x.each(function(index, elem) {
+            $(elem).removeClass("selected");
+        });
+    });
+    */
     /*
     $("#signup-verify-code-btn").bind("click", function(e) {
         e.preventDefault();

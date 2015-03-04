@@ -67,3 +67,7 @@ var sendSMS = function(mobile_num){
 };
 
 sendSMS(123);
+
+var timevalue = moment().format("YYYYMMDDHHmmSSS");
+timevalue += getRandomInt(0,9);
+console.log(timevalue);

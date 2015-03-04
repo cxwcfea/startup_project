@@ -28,7 +28,13 @@ module.exports.postLogin = function(req, res, next) {
         }
         req.login(user, function(err) {
             if (err) {return next(err);}
-            res.redirect('/user');
+            if (req.session.lastLocation) {
+                var location = req.session.lastLocation;
+                req.session.lastLocation = null;
+                res.redirect(location);
+            } else {
+                res.redirect('/user');
+            }
         });
     });
     auth(req, res, next);

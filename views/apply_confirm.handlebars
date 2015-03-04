@@ -1,0 +1,52 @@
+<div class="am-g">
+    <br>
+    <div class="am-panel am-panel-default am-u-sm-8 am-u-sm-centered">
+        <div class="am-panel-hd">支付保证金和账户管理费</div>
+        <div class="am-panel-bd">
+            <div class="confirm-apply">
+                <p>申请操盘资金：</p>
+                <p><strong class="am-text-danger am-text-xl"><span class="am-icon-rmb"></span>{{applySummary.amount}}</strong>元 </p>
+                <div class="pull-right">
+                    <p>冻结保证金：</p>
+                    <p><strong class="am-text-danger am-text-xl"><span class="am-icon-rmb"></span>{{applySummary.deposit}}</strong>元 </p>
+                    <p>预存账户管理费：</p>
+                    <p><strong class="am-text-danger am-text-xl"><span class="am-icon-rmb"></span>{{applySummary.charge}}</strong>元 </p>
+                </div>
+            </div>
+            <div class="apply am-g">
+                <div class="money_je am-u-sm-10 pull-right"> 总金额：<span class="am-icon-rmb"></span><span id="span_all">{{applySummary.total}}</span>元</div>
+            </div>
+            <div class="apply am-g">
+                <div class="money_je am-u-sm-10 pull-right"> 账户可用余额：<span class="am-icon-rmb"></span><span id="span_all">{{applySummary.balance}}</span>元</div>
+            </div>
+            <hr>
+            <div class="apply am-g">
+                <div class="money_je am-u-sm-10 pull-right"> 还需支付：<span class="am-icon-rmb"></span><span id="span_all">{{applySummary.shouldPay}}</span>元</div>
+            </div>
+
+            <div class="am-g">
+                <div class="am-u-sm-10 am-u-sm-centered">
+                    <button id="go-to-pay" type="submit" class="am-btn am-btn-warning pull-right"> 确认支付 </button>
+                </div>
+                <!--
+                <form method="POST" class="am-form-inline am-u-sm-10 am-u-sm-centered" role="form" name="applyForm">
+                    <button id="go-to-pay" type="submit" class="am-btn am-btn-warning pull-right"> 确认支付 </button>
+                </form>
+                -->
+            </div>
+
+            <div class="am-modal am-modal-confirm" tabindex="-1" id="pay-confirm">
+                <div class="am-modal-dialog">
+                    <div class="am-modal-hd">牛金网</div>
+                    <div class="am-modal-bd">
+                        已完成支付？
+                    </div>
+                    <div class="am-modal-footer">
+                        <span class="am-modal-btn" data-am-modal-cancel>支付遇到问题</span>
+                        <span class="am-modal-btn" data-am-modal-confirm>成功</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
