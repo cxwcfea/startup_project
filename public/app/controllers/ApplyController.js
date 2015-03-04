@@ -10,18 +10,18 @@ angular.module('applyApp').controller('ApplyController', ['$http', '$location', 
     vm.showOtherAmount = false;
     vm.otherAmount = 0;
 
-    vm.summery = {
+    vm.summary = {
         day: 5,
         amount: 50000
     };
 
     function calculateSummery() {
-        vm.summery.warnValue = vm.summery.amount * warnFactor;
-        vm.summery.sellValue = vm.summery.amount * sellFactor;
-        vm.summery.deposit = vm.summery.amount * depositFactor;
-        var charge = vm.summery.amount / 10000 * serviceCharge * vm.summery.day;
-        vm.summery.charge = charge.toFixed(2);
-        vm.summery.total = (vm.summery.deposit + charge).toFixed(2);
+        vm.summary.warnValue = vm.summary.amount * warnFactor;
+        vm.summary.sellValue = vm.summary.amount * sellFactor;
+        vm.summary.deposit = vm.summary.amount * depositFactor;
+        var charge = vm.summary.amount / 10000 * serviceCharge * vm.summary.day;
+        vm.summary.charge = charge.toFixed(2);
+        vm.summary.total = (vm.summary.deposit + charge).toFixed(2);
     }
 
     calculateSummery();
@@ -87,33 +87,33 @@ angular.module('applyApp').controller('ApplyController', ['$http', '$location', 
         vm.showOtherAmount = false;
         vm.otherAmount = 0;
         item.select = true;
-        vm.summery.amount = item.value;
+        vm.summary.amount = item.value;
         calculateSummery();
     };
 
     vm.selectDay = function(day) {
         unselectDay();
         day.select = true;
-        vm.summery.day = day.value;
+        vm.summary.day = day.value;
         calculateSummery();
     };
 
     vm.toggleOtherAmount = function() {
         unselectAll();
         vm.showOtherAmount = !vm.showOtherAmount;
-        vm.summery.amount = vm.otherAmount;
+        vm.summary.amount = vm.otherAmount;
     };
 
     vm.finishOtherAmount = function() {
-        vm.summery.amount = vm.otherAmount;
+        vm.summary.amount = vm.otherAmount;
         calculateSummery();
     };
 
     vm.submitApply = function() {
-        $http.post('/apply', vm.summery)
+        $http.post('/apply', vm.summary)
             .then(function(response) {
                 if (response.data.success) {
-                    $window.location.href = '/apply_confirm';
+                    $window.location.href = '/apply_confirm/' + response.data.apply_id;
                 } else {
                     if (response.data.reason === 'not authenticate') {
                         $window.location.href = '/login';

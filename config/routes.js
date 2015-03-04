@@ -1,7 +1,7 @@
 var users = require('../controllers/user'),
     cards = require('../controllers/card'),
     orders = require('../controllers/order'),
-    applys = require('../controllers/apply'),
+    applies = require('../controllers/apply'),
     sms = require('../lib/sms'),
     passportConf = require('./passport');
 
@@ -16,20 +16,20 @@ module.exports = function(app) {
         res.render('home');
     });
 
-    app.get('/apply_confirm', passportConf.isAuthenticated, function(req, res) {
-        if (!req.session.applySummary) {
-            res.render('apply');
-        } else {
-            res.locals.applySummary = req.session.applySummary;
-            req.session.applySummary = null;
-            res.locals.applySummary.balance = req.user.finance.balance;
-            res.locals.applySummary.shouldPay = res.locals.applySummary.total - res.locals.applySummary.balance;
-            res.render('apply_confirm');
-        }
-    });
+    app.get('/apply_confirm/:id', passportConf.isAuthenticated, applies.confirmApply);
 
     app.get('/third_party_pay', function(req, res) {
         res.render('third_party_pay', {layout:null});
+    });
+
+    app.get('/thank_you_for_pay', function(req, res) {
+        res.render('thank_you_for_pay');
+    });
+
+    app.get('/failed_to_pay', function(req, res) {
+        req.locals.pay_error = req.session.pay_error;
+        req.session.pay_error = null;
+        res.render('failed_to_pay');
     });
 
     app.get('/signup', function(req, res) {
@@ -48,7 +48,7 @@ module.exports = function(app) {
         res.render('apply');
     });
 
-    app.post('/apply', applys.placeApply);
+    app.post('/apply', applies.placeApply);
 
     app.get('/login', function (req, res) {
         res.render('register/login');
@@ -82,6 +82,10 @@ module.exports = function(app) {
 
     app.post('/user/change_pass', passportConf.isAuthenticated, users.postUpdatePassword);
 
+    app.get('/user/apply_list', passportConf.isAuthenticated, users.getApplyList);
+
+    app.post('/api/user/pay_by_balance', passportConf.isAuthenticated, users.payByBalance);
+
     app.get('/api/users/:id', users.getUser);
 
     app.post('/api/users/:id', users.updateUser);
@@ -95,7 +99,8 @@ module.exports = function(app) {
     app.post('/api/orders', orders.addOrder);
 
     app.put('/api/orders', orders.updateOrder);
-    //app.post('/api/users', users.createUser);
 
     app.get('/api/send_sms_verify_code', users.sendVerifyCode);
+
+    app.get('/api/applies/:uid/apply', applies.getAppliesForUser);
 };

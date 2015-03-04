@@ -21,12 +21,24 @@
             </div>
             <hr>
             <div class="apply am-g">
+            {{#unless applySummary.useBalance}}
                 <div class="money_je am-u-sm-10 pull-right"> 还需支付：<span class="am-icon-rmb"></span><span id="span_all">{{applySummary.shouldPay}}</span>元</div>
+            {{else}}
+                <div class="money_je am-u-sm-10 pull-right"> 余额支付：<span class="am-icon-rmb"></span><span id="span_all">{{applySummary.total}}</span>元</div>
+            {{/unless}}
             </div>
 
             <div class="am-g">
                 <div class="am-u-sm-10 am-u-sm-centered">
+                <form name="financingForm">
+                    <input type="hidden" name="pay_amount" id="pay_amount" value="{{applySummary.total}}">
+                    <input type="hidden" name="apply_id" id="apply_id" value="{{applySummary.serialID}}">
+                </form>
+                {{#unless applySummary.useBalance}}
                     <button id="go-to-pay" type="submit" class="am-btn am-btn-warning pull-right"> 确认支付 </button>
+                {{else}}
+                    <button id="go-to-use-balance" type="submit" class="am-btn am-btn-warning pull-right"> 余额支付 </button>
+                {{/unless}}
                 </div>
                 <!--
                 <form method="POST" class="am-form-inline am-u-sm-10 am-u-sm-centered" role="form" name="applyForm">

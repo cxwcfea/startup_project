@@ -71,3 +71,7 @@ sendSMS(123);
 var timevalue = moment().format("YYYYMMDDHHmmSSS");
 timevalue += getRandomInt(0,9);
 console.log(timevalue);
+
+var xD = new Date();
+var otherValue = moment(xD).add(7, 'days');
+console.log(otherValue.format("YYYYMMDDHHmmSSS"));

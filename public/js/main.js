@@ -45,6 +45,19 @@ $(document).ready(function() {
         });
     });
 
+
+    $('#go-to-use-balance').on('click', function(e) {
+        e.preventDefault();
+        var formData = $("form").serialize();
+        $.post("/api/user/pay_by_balance", formData, function (data) {
+            if (data.success) {
+                window.location.replace('/thank_you_for_pay');
+            } else {
+                window.location.replace('/failed_to_pay');
+            }
+        });
+    });
+
 /*
     $('.apply li a').click(function (e) {
         var x = $('.apply li a');

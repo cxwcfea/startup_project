@@ -11,5 +11,8 @@ module.exports = {
         rootPath: rootPath,
         db: 'mongodb://cxwcfea:goldenbull@ds063240.mongolab.com:63240/goldenbull',
         port: process.env.PORT || 80
+    },
+    parameters: {
+        serviceCharge: 18.8
     }
 }

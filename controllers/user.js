@@ -1,5 +1,6 @@
 var passport = require('passport'),
     User = require('../models/User'),
+    Apply = require('../models/Apply'),
     userViewModel = require('../viewModels/user'),
     nodemailer = require('nodemailer'),
     crypto = require('crypto'),
@@ -188,6 +189,10 @@ module.exports.getResetPassword = function(req, res) {
     res.render('user/change_pass', {layout:null});
 };
 
+module.exports.getApplyList = function(req, res) {
+    res.render('user/apply_list', {layout:null});
+};
+
 module.exports.getUser = function(req, res, next) {
     User.findById(req.params.id, function(err, user) {
         if (err) next(err);
@@ -231,7 +236,6 @@ module.exports.postUpdatePassword = function(req, res, next) {
                 });
             }
         });
-
     });
 };
 
@@ -277,4 +281,57 @@ module.exports.sendVerifyCode = function(req, res, next) {
     req.session.sms_code = code;
     res.send({success:true});
     //res.send({success:true, verifyCode:code});
+};
+
+module.exports.payByBalance = function(req, res, next) {
+    if (!req.user) {
+        return res.send({success:false, reason:'无效的用户!'});
+    }
+    var data = req.body;
+
+    User.findById(req.user.id, function(err, user) {
+        if (err) {
+            res.status(500);
+            req.session.pay_error = {
+                reason: err.toString()
+            };
+            return res.send({success:false, reason:err.toString()});
+        }
+        if (!user) {
+            req.session.pay_error = {
+                reason: '无效的用户!'
+            };
+            return res.send({success:false, reason:'无效的用户!'});
+        }
+        if (user.finance.balance < data.pay_amount) {
+            req.session.pay_error = {
+                reason: '余额不足，支付失败!'
+            };
+            return res.send({success:false, reason:'余额不足，支付失败!'});
+        }
+        user.finance.balance -= data.pay_amount;
+        if (data.apply_id) {
+            Apply.findOne({serialID:data.apply_id}, function(err, apply) {
+                if (err) {
+                    return res.send({success:false, reason:err.toString()});
+                }
+                apply.status = 2;
+                apply.save(function (err) {
+                    if (err) {
+                        return res.send({success:false, reason:err.toString()});
+                    }
+                });
+            });
+        }
+        user.save(function (err) {
+            if (err) {
+                res.status(500);
+                req.session.pay_error = {
+                    reason: err.toString()
+                };
+                return res.send({success:false, reason:err.toString()});
+            }
+            return res.send({success:true, data:user.finance.balance});
+        });
+    });
 };
