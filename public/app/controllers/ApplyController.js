@@ -7,6 +7,7 @@ angular.module('applyApp').controller('ApplyController', ['$http', '$location', 
     var depositFactor = 0.1;
     var serviceCharge = 18.8;
 
+    vm.agree = true;
     vm.showOtherAmount = false;
     vm.otherAmount = 2000;
 

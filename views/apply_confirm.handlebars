@@ -1,14 +1,18 @@
 <div class="am-g">
     <br>
-    <div class="am-panel am-panel-default am-u-sm-8 am-u-sm-centered">
+    <div class="am-panel am-panel-default am-u-sm-12 am-u-md-8 am-u-md-centered">
         <div class="am-panel-hd">支付保证金和账户管理费</div>
         <div class="am-panel-bd">
-            <div class="confirm-apply">
-                <p>申请操盘资金：</p>
-                <p><strong class="am-text-danger am-text-xl"><span class="am-icon-rmb"></span>{{applySummary.amount}}</strong>元 </p>
-                <div class="pull-right">
+            <div class="am-g confirm-apply">
+                <div class="am-u-sm-12 am-u-md-4">
+                    <p class="">申请操盘资金：</p>
+                    <p class=""><strong class="am-text-danger am-text-xl"><span class="am-icon-rmb"></span>{{applySummary.amount}}</strong>元 </p>
+                </div>
+                <div class="am-u-sm-12 am-u-md-4">
                     <p>冻结保证金：</p>
                     <p><strong class="am-text-danger am-text-xl"><span class="am-icon-rmb"></span>{{applySummary.deposit}}</strong>元 </p>
+                </div>
+                <div class="am-u-sm-12 am-u-md-4">
                     <p>预存账户管理费：</p>
                     <p><strong class="am-text-danger am-text-xl"><span class="am-icon-rmb"></span>{{applySummary.charge}}</strong>元 </p>
                 </div>

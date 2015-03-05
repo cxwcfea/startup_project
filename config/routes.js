@@ -38,6 +38,14 @@ module.exports = function(app) {
 
     app.get('/apply_detail/:id', passportConf.isAuthenticated, applies.getApplyDetail);
 
+    app.get('/company_intro', function(req, res) {
+        res.render('article/company_intro', {layout:'article_main'});
+    });
+
+    app.get('/QandA', function(req, res) {
+        res.render('article/QandA', {layout:'article_main'});
+    });
+
     app.get('/signup', function(req, res) {
         res.render('register/signup');
     });
