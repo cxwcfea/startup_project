@@ -8,7 +8,7 @@ angular.module('applyApp').controller('ApplyController', ['$http', '$location', 
     var serviceCharge = 18.8;
 
     vm.showOtherAmount = false;
-    vm.otherAmount = 0;
+    vm.otherAmount = 2000;
 
     vm.summary = {
         day: 5,
@@ -20,8 +20,8 @@ angular.module('applyApp').controller('ApplyController', ['$http', '$location', 
         vm.summary.sellValue = vm.summary.amount * sellFactor;
         vm.summary.deposit = vm.summary.amount * depositFactor;
         var charge = vm.summary.amount / 10000 * serviceCharge * vm.summary.day;
-        vm.summary.charge = charge.toFixed(2);
-        vm.summary.total = (vm.summary.deposit + charge).toFixed(2);
+        vm.summary.charge = charge;
+        vm.summary.total = vm.summary.deposit + charge;
     }
 
     calculateSummery();
@@ -82,6 +82,15 @@ angular.module('applyApp').controller('ApplyController', ['$http', '$location', 
         });
     }
 
+    function tryOtherAmount() {
+        if (vm.otherAmount >= 2000) {
+            vm.summary.amount = Math.floor(vm.otherAmount);
+        } else {
+            vm.summary.amount = vm.otherAmount = 2000;
+        }
+        calculateSummery();
+    }
+
     vm.selectAmount = function(item) {
         unselectAll();
         vm.showOtherAmount = false;
@@ -101,12 +110,11 @@ angular.module('applyApp').controller('ApplyController', ['$http', '$location', 
     vm.toggleOtherAmount = function() {
         unselectAll();
         vm.showOtherAmount = !vm.showOtherAmount;
-        vm.summary.amount = vm.otherAmount;
+        tryOtherAmount();
     };
 
     vm.finishOtherAmount = function() {
-        vm.summary.amount = vm.otherAmount;
-        calculateSummery();
+        tryOtherAmount();
     };
 
     vm.submitApply = function() {

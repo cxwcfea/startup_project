@@ -201,8 +201,12 @@ module.exports.getUser = function(req, res, next) {
 };
 
 module.exports.updateUser = function(req, res, next) {
+    var uid = req.params.id ? req.params.id : req.user.id;
+    if (req.params.id && req.params.id !== req.user.id) {
+        return res.send({success:false, reason:'无效的用户！'});
+    }
     var userData = req.body;
-    User.update({_id:req.params.id}, userData, function (err, numberAffected, raw) {
+    User.update({_id:uid}, userData, function (err, numberAffected, raw) {
         if (err) {
             return res.send({success:false, reason:err.toString()});
         }
@@ -315,7 +319,7 @@ module.exports.payByBalance = function(req, res, next) {
                 if (err) {
                     return res.send({success:false, reason:err.toString()});
                 }
-                apply.status = 2;
+                apply.status = 4;
                 apply.save(function (err) {
                     if (err) {
                         return res.send({success:false, reason:err.toString()});
@@ -332,6 +336,46 @@ module.exports.payByBalance = function(req, res, next) {
                 return res.send({success:false, reason:err.toString()});
             }
             return res.send({success:true, data:user.finance.balance});
+        });
+    });
+};
+
+module.exports.updateBalance = function (req, res, next) {
+    if (!req.user) {
+        return res.send({success:false, reason:'无效的用户!'});
+    }
+    var data = req.body;
+    var pay_amount = Number(data.pay_amount);
+    console.log(pay_amount);
+    if (pay_amount <= 0) {
+        return res.send({success:false, reason:'无效的支付额:'+pay_amount});
+    }
+
+    User.findById(req.user.id, function(err, user) {
+        if (err) {
+            res.status(500);
+            req.session.pay_error = {
+                reason: err.toString()
+            };
+            return res.send({success:false, reason:err.toString()});
+        }
+        if (!user) {
+            req.session.pay_error = {
+                reason: '无效的用户!'
+            };
+            return res.send({success:false, reason:'无效的用户!'});
+        }
+
+        user.finance.balance += pay_amount;
+
+        user.save(function (err) {
+            if (err) {
+                req.session.pay_error = {
+                    reason: err.toString()
+                };
+                return res.send({success:false, reason:err.toString()});
+            }
+            return res.send({success:true});
         });
     });
 };

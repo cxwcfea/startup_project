@@ -35,6 +35,14 @@ angular.module('myApp').controller('UserSecurityController', ['gbIdentity', func
             url: "/user#/change_pass",
             action: "修改",
             show: true
+        },
+        {
+            class: "am-icon-money am-icon-lg",
+            title: "提现密码",
+            status: "未设置",
+            url: "/#",
+            action: "设置",
+            show: true
         }
     ];
 }]);

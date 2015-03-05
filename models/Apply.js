@@ -6,7 +6,7 @@ var applySchema = mongoose.Schema({
     amount: {type:Number, required:'{PATH} is required!'},
     deposit: {type:Number, required:'{PATH} is required!'},
     period: {type:Number, required:'{PATH} is required!'},
-    status: {type:Number, required:'{PATH} is required!', default: 1}, // 1 means pending, 2 means proccessing, 3 means end, 4 means failed
+    status: {type:Number, required:'{PATH} is required!', default: 1}, // 1 means pending, 2 means proccessing, 3 means end, 4 means checking, 5 means failed
     applyAt: {type:Date, default: Date.now()}
 });
 

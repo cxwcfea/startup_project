@@ -44,7 +44,7 @@ exports.confirmApply = function(req, res, next) {
         }
         var serviceFee = collection.amount / 10000 * config.parameters.serviceCharge * collection.period;
         var total = collection.deposit + serviceFee;
-        var shouldPay = serviceFee - req.user.finance.balance;
+        var shouldPay = total - req.user.finance.balance;
         res.locals.applySummary = {
             amount: collection.amount.toFixed(2),
             deposit: collection.deposit.toFixed(2),

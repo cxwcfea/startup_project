@@ -31,8 +31,9 @@
             <div class="am-g">
                 <div class="am-u-sm-10 am-u-sm-centered">
                 <form name="financingForm">
-                    <input type="hidden" name="pay_amount" id="pay_amount" value="{{applySummary.total}}">
+                    <input type="hidden" name="pay_amount" id="pay_amount" value="{{applySummary.shouldPay}}">
                     <input type="hidden" name="apply_id" id="apply_id" value="{{applySummary.serialID}}">
+                    <input type="hidden" name="total_amount" id="total_amount" value="{{applySummary.total}}">
                 </form>
                 {{#unless applySummary.useBalance}}
                     <button id="go-to-pay" type="submit" class="am-btn am-btn-warning pull-right"> 确认支付 </button>
@@ -40,22 +41,18 @@
                     <button id="go-to-use-balance" type="submit" class="am-btn am-btn-warning pull-right"> 余额支付 </button>
                 {{/unless}}
                 </div>
-                <!--
-                <form method="POST" class="am-form-inline am-u-sm-10 am-u-sm-centered" role="form" name="applyForm">
-                    <button id="go-to-pay" type="submit" class="am-btn am-btn-warning pull-right"> 确认支付 </button>
-                </form>
-                -->
             </div>
 
             <div class="am-modal am-modal-confirm" tabindex="-1" id="pay-confirm">
                 <div class="am-modal-dialog">
-                    <div class="am-modal-hd">牛金网</div>
+                    <div class="am-modal-hd">充值确认</div>
                     <div class="am-modal-bd">
-                        已完成支付？
+                        <h2>请您在新打开的第三方支付页面上完成前请不要关闭此窗口</h2>
+                        完成支付后请根据您的情况点击下面的按钮：
                     </div>
                     <div class="am-modal-footer">
                         <span class="am-modal-btn" data-am-modal-cancel>支付遇到问题</span>
-                        <span class="am-modal-btn" data-am-modal-confirm>成功</span>
+                        <span class="am-modal-btn" data-am-modal-confirm>已完成支付</span>
                     </div>
                 </div>
             </div>

@@ -27,9 +27,13 @@ module.exports = function(app) {
     });
 
     app.get('/failed_to_pay', function(req, res) {
-        req.locals.pay_error = req.session.pay_error;
+        res.locals.pay_error = req.session.pay_error;
         req.session.pay_error = null;
         res.render('failed_to_pay');
+    });
+
+    app.get('/support_contact', function(req, res) {
+        res.render('support_contact');
     });
 
     app.get('/signup', function(req, res) {
@@ -84,11 +88,13 @@ module.exports = function(app) {
 
     app.get('/user/apply_list', passportConf.isAuthenticated, users.getApplyList);
 
-    app.post('/api/user/pay_by_balance', passportConf.isAuthenticated, users.payByBalance);
+    app.post('/api/users/pay_by_balance', passportConf.isAuthenticated, users.payByBalance);
 
     app.get('/api/users/:id', users.getUser);
 
-    app.post('/api/users/:id', users.updateUser);
+    app.post('/api/users/update_balance', passportConf.isAuthenticated, users.updateBalance);
+
+    app.post('/api/users/:id', passportConf.isAuthenticated, users.updateUser);
 
     app.get('/api/cards/:uid', cards.getCardsForUser);
 

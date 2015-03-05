@@ -4,7 +4,7 @@ angular.module('myApp').controller('UserApplyListController', ['gbIdentity', '$h
     vm.user = gbIdentity.currentUser;
 
     vm.pageChanged = function() {
-        var start = 0 + (vm.currentPage - 1) * vm.itemsPerPage;
+        var start = (vm.currentPage - 1) * vm.itemsPerPage;
         var end = start + vm.itemsPerPage;
         if (end > vm.totalItems) {
             end = vm.totalItems;
@@ -30,16 +30,20 @@ angular.module('myApp').controller('UserApplyListController', ['gbIdentity', '$h
                 value: 0
             },
             {
-                name: '当前操盘',
-                value: 2
-            },
-            {
                 name: '待支付',
                 value: 1
             },
             {
+                name: '当前操盘',
+                value: 2
+            },
+            {
                 name: '已结算',
                 value: 3
+            },
+            {
+                name: '审核中',
+                value: 4
             }
         ];
     };
@@ -59,6 +63,9 @@ angular.module('myApp').controller('UserApplyListController', ['gbIdentity', '$h
                 item.status_str = "已结算";
                 break;
             case 4:
+                item.status_str = "审核中";
+                break;
+            case 5:
                 item.status_str = "失败";
                 break;
         }
