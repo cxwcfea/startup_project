@@ -12,11 +12,12 @@ var userSchema = new mongoose.Schema({
     registerAt: {type:Date, default: Date.now()},
 
 	finance: {
-		balance: { type: Number, default: 0 },
-		deposit: { type: Number, default: 0 },
-		total_capital: { type: Number, default: 0 },
-		available_capital: { type: Number, default: 0 },
-		market_value: { type: Number, default: 0 }	
+        password: String,
+        balance: { type: Number, default: 0 },
+        deposit: { type: Number, default: 0 },
+        total_capital: { type: Number, default: 0 },
+        available_capital: { type: Number, default: 0 },
+        market_value: { type: Number, default: 0 }
 	},
 
     profile: {
@@ -46,14 +47,22 @@ var userSchema = new mongoose.Schema({
  */
 userSchema.pre('save', function(next) {
 	var user = this;
-	if (!user.isModified('password')) return next();
+	if (!user.isModified('password') && !user.isModified('finance.password')) return next();
 	bcrypt.genSalt(5, function(err, salt) {
 		if (err) return next(err);
-		bcrypt.hash(user.password, salt, null, function(err, hash) {
-			if (err) return next(err);
-			user.password = hash;
-			next();
-		});
+        if (user.isModified('password')) {
+            bcrypt.hash(user.password, salt, null, function(err, hash) {
+                if (err) return next(err);
+                user.password = hash;
+                next();
+            });
+        } else {
+            bcrypt.hash(user.finance.password, salt, null, function(err, hash) {
+                if (err) return next(err);
+                user.finance.password = hash;
+                next();
+            });
+        }
 	});
 });
 
@@ -67,6 +76,12 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
 	});
 };
 
+userSchema.methods.compareFinancePassword = function(candidatePassword, cb) {
+    bcrypt.compare(candidatePassword, this.finance.password, function(err, isMatch) {
+        if (err) return cb(err);
+        cb(null, isMatch);
+    });
+};
 
 /**
  * Helper method for getting user's gravatar.
@@ -77,7 +92,6 @@ userSchema.methods.gravatar = function(size) {
     var md5 = crypto.createHash('md5').update(this.profile.email).digest('hex');
     return 'https://gravatar.com/avatar/' + md5 + '?s=' + size + '&d=retro';
 };
-
 
 userSchema.methods.getOrders = function(cb){
     return Order.find({ userID: this._id }, cb);

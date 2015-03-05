@@ -42,7 +42,7 @@
                     <div class="am-form-group">
                         <div class="am-u-sm-12 am-u-md-offset-2 am-u-md-8 am-u-end am-input-group am-input-group-primary">
                             <span class="am-input-group-label"><i class="am-icon-user"></i></span>
-                            <input type="text" class="am-form-field" placeholder="开户人，此项必须为此账户真实姓名" ng-model="withdrawVM.card.userName">
+                            <input type="text" class="am-form-field" placeholder="开户人，此项必须为此账户真实姓名" ng-model="withdrawVM.card.userName" disabled>
                         </div>
                         <!--
                         <label class="am-u-sm-2 am-form-label">开户人</label>
@@ -56,7 +56,6 @@
                     <div class="am-form-group">
                         <div class="am-u-sm-10 am-u-sm-offset-2">
                             <button type="submit" class="am-btn am-btn-warning" ng-click="withdrawVM.addCard()" ng-disabled="cardForm.$invalid">添加银行卡</button>
-                            <a href="/user#/identity" class="am-btn am-btn-warning" ng-hide="withdrawVM.user.identity.id">去实名认证</a>
                         </div>
                     </div>
                 </form>
@@ -95,11 +94,34 @@
         <div class="am-form-group">
             <label for="withdraw-amount" class="am-u-sm-4 am-u-md-2 am-form-label">提现金额</label>
             <div class="am-u-sm-8 am-u-md-6 am-u-end">
-                <input type="number" id="withdraw-amount" placeholder="小于等于可提现金" min="1" ng-model="withdrawVM.amount" required="">
+                <input type="number" id="withdraw-amount" placeholder="小于等于可提现金" min="1" ng-model="withdrawVM.amount" required>
             </div>
         </div>
 
         <div class="am-form-group">
+            <label for="withdraw-password" class="am-u-sm-4 am-u-md-2 am-form-label">提现密码</label>
+            <div class="am-u-sm-8 am-u-md-6 am-u-end">
+                <input type="password" id="withdraw-password" placeholder="您的提现密码" ng-model="withdrawVM.password" required>
+            </div>
+        </div>
+
+        <div class="am-form-group" ng-hide="withdrawVM.user.finance.password">
+            <div class="am-u-sm-8 am-u-sm-offset-4 am-u-md-10 am-u-md-offset-2">
+                <label class="am-form-label am-text-center">您还未设置提现密码</label>
+                <button class="am-btn am-btn-warning" ng-click="withdrawVM.setPassword()">
+                    设置提现密码
+                </button>
+            </div>
+        </div>
+
+        <div class="am-form-group" ng-hide="withdrawVM.user.identity.id">
+            <div class="am-u-sm-8 am-u-sm-offset-4 am-u-md-10 am-u-md-offset-2">
+                <label class="am-form-label am-text-center">您还未实名认证</label>
+                <a href="/user#/identity" class="am-btn am-btn-warning">去实名认证</a>
+            </div>
+        </div>
+
+        <div class="am-form-group" ng-show="withdrawVM.user.finance.password && withdrawVM.user.identity.id">
             <div class="am-u-sm-8 am-u-sm-offset-4 am-u-md-10 am-u-md-offset-2">
                 <button class="am-btn am-btn-warning" ng-click="withdrawVM.withdraw()" ng-disabled="withdrawForm.$invalid">
                     <i class="am-icon-shopping-cart"></i>

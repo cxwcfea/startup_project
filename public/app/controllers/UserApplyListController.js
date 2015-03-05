@@ -86,6 +86,8 @@ angular.module('myApp').controller('UserApplyListController', ['gbIdentity', '$h
     vm.manageApply = function(apply) {
         if (apply.status === 1) {
             $window.location.assign('/apply_confirm/' + apply.serialID);
+        } else {
+            $window.location.assign('/apply_detail/' + apply.serialID);
         }
     };
 }]);

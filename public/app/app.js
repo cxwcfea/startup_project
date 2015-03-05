@@ -30,6 +30,9 @@ angular.module('myApp').config(function($routeProvider, $locationProvider) {
         .when('/change_pass', { templateUrl: '/user/change_pass',
             controller: 'UserResetPasswordController as passVM'
         })
+        .when('/change_finance_pass', { templateUrl: '/user/change_finance_pass',
+            controller: 'UserResetPasswordController as passVM'
+        })
         .when('/apply_list', { templateUrl: '/user/apply_list',
             controller: 'UserApplyListController as applyVM'
         })

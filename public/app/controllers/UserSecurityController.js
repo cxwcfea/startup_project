@@ -39,9 +39,9 @@ angular.module('myApp').controller('UserSecurityController', ['gbIdentity', func
         {
             class: "am-icon-money am-icon-lg",
             title: "提现密码",
-            status: "未设置",
-            url: "/#",
-            action: "设置",
+            status: vm.user.finance.password ? "已设置" : "未设置",
+            url: "/user#/change_finance_pass",
+            action: vm.user.finance.password ? "修改" : "设置",
             show: true
         }
     ];

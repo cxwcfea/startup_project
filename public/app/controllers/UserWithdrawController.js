@@ -1,5 +1,5 @@
 'use strict';
-angular.module('myApp').controller('UserWithdrawController', ['gbIdentity', 'gbNotifier', '$location', 'gbCard', 'gbCachedCards', 'gbOrder', function(gbIdentity, gbNotifier, $location, gbCard, gbCachedCards, gbOrder) {
+angular.module('myApp').controller('UserWithdrawController', ['gbIdentity', 'gbNotifier', '$location', 'gbCard', 'gbCachedCards', 'gbOrder', '$http', function(gbIdentity, gbNotifier, $location, gbCard, gbCachedCards, gbOrder, $http) {
     var vm = this;
     vm.user = gbIdentity.currentUser;
 
@@ -42,26 +42,37 @@ angular.module('myApp').controller('UserWithdrawController', ['gbIdentity', 'gbN
             if (vm.amount <= 0 || vm.amount > vm.user.finance.balance) {
                 gbNotifier.error('无效的提现金额：' + vm.amount);
             } else {
-                var order = {
-                    userID: vm.user._id,
-                    dealType: '提现',
-                    amount: vm.amount,
-                    description: '10倍配资'
-                };
-                var newOrder = new gbOrder(order);
-                newOrder.$save().then(function(response) {
-                    gbNotifier.notify('提现申请提交成功');
-                    if (response.order.status) {
-                        response.order.status = '交易成功';
-                    } else {
-                        response.order.status = '交易失败';
-                    }
-                    vm.user.orders.push(response.order);
-                }, function(response) {
-                    gbNotifier.error('提现申请提交失败 ' + response.data.reason);
-                });
-                gbNotifier.notify('提现 ' + vm.amount);
+                $http.post('/user/verify_finance_password', {password:vm.password})
+                    .then(function(response) {
+                        if (response.data.success) {
+                            var order = {
+                                userID: vm.user._id,
+                                dealType: '提现',
+                                amount: vm.amount,
+                                description: '10倍配资'
+                            };
+                            var newOrder = new gbOrder(order);
+                            newOrder.$save().then(function(response) {
+                                gbNotifier.notify('提现申请提交成功');
+                                if (response.order.status) {
+                                    response.order.status = '交易成功';
+                                } else {
+                                    response.order.status = '处理中';
+                                }
+                                vm.user.orders.push(response.order);
+                            }, function(response) {
+                                gbNotifier.error('提现申请提交失败 ' + response.data.reason);
+                            });
+                            gbNotifier.notify('提现 ' + vm.amount);
+                        } else {
+                            gbNotifier.error('提现申请提交失败 ' + response.data.reason);
+                        }
+                    });
             }
         }
-    }
+    };
+
+    vm.setPassword = function() {
+        $location.path('/change_finance_pass');
+    };
 }]);

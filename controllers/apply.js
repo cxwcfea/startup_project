@@ -61,3 +61,29 @@ exports.confirmApply = function(req, res, next) {
         res.render('apply_confirm');
     });
 };
+
+exports.getApplyDetail = function (req, res, next) {
+    Apply.findOne({serialID:req.params.id}, function(err, collection) {
+        if (err) {
+            next();
+        }
+        console.log(collection);
+        var serviceFee = collection.amount / 10000 * config.parameters.serviceCharge * collection.period;
+        var warnValue = config.parameters.warnFactor * collection.amount;
+        var sellValue = config.parameters.sellFactor * collection.amount;
+        var date = moment(collection.applyAt);
+        res.locals.applySummary = {
+            amount: collection.amount.toFixed(2),
+            deposit: collection.deposit.toFixed(2),
+            charge: serviceFee.toFixed(2),
+            balance: req.user.finance.balance.toFixed(2),
+            warnValue: warnValue.toFixed(2),
+            sellValue: sellValue.toFixed(2),
+            startDate: date.format("YYYY-MM-DD HH:mm"),
+            endDate: date.add(collection.period, 'days').format("YYYY-MM-DD HH:mm"),
+            serialID: collection.serialID
+        };
+
+        res.render('apply_detail');
+    });
+};

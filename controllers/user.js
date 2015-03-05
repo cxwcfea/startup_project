@@ -227,10 +227,11 @@ module.exports.postUpdatePassword = function(req, res, next) {
 
     User.findById(req.user.id, function(err, user) {
         if (err) return res.send({success: false, reason: err.toString()});
+        if (!user) return res.send({success: false, reason: '无效的用户！'});
         user.comparePassword(req.body.old_password, function (err, isMatch) {
             if (err) return res.send({success: false, reason: err.toString()});
             if (!isMatch) {
-                return res.send({success: false, reason: '无效的旧密码'});
+                return res.send({success: false, reason: '旧密码错误'});
             } else {
                 user.password = req.body.password;
 
@@ -376,6 +377,57 @@ module.exports.updateBalance = function (req, res, next) {
                 return res.send({success:false, reason:err.toString()});
             }
             return res.send({success:true});
+        });
+    });
+};
+
+module.exports.getResetFinancePassword = function(req, res) {
+    res.render('user/change_finance_pass', {layout:null});
+};
+
+module.exports.postUpdateFinancePassword = function(req, res, next) {
+    req.assert('new_password', '密码至少需要6位').len(6);
+    req.assert('confirm_password', '两次密码不匹配').equals(req.body.new_password);
+
+    var errors = req.validationErrors();
+
+    if (errors) {
+        return res.send({success:false, reason:errors[0].msg});
+    }
+
+    User.findById(req.user.id, function(err, user) {
+        if (err) return res.send({success: false, reason: err.toString()});
+        if (!user) return res.send({success: false, reason: '无效的用户！'});
+        user.comparePassword(req.body.password, function (err, isMatch) {
+            if (err) return res.send({success: false, reason: err.toString()});
+            if (!isMatch) {
+                return res.send({success: false, reason: '登录密码错误!'});
+            } else {
+                user.finance.password = req.body.new_password;
+
+                user.save(function (err) {
+                    if (err) return res.send({success: false, reason: err.toString()});
+                    res.send({success: true});
+                });
+            }
+        });
+    });
+};
+
+module.exports.verifyFinancePassword = function(req, res, next) {
+    if (!req.user) {
+        return res.send({success:false, reason:'无效的用户!'});
+    }
+    User.findById(req.user.id, function(err, user) {
+        if (err) return res.send({success: false, reason: err.toString()});
+        if (!user) return res.send({success: false, reason: '无效的用户！'});
+        user.compareFinancePassword(req.body.password, function (err, isMatch) {
+            if (err) return res.send({success: false, reason: err.toString()});
+            if (!isMatch) {
+                return res.send({success: false, reason: '提现密码错误!'});
+            } else {
+                res.send({success: true});
+            }
         });
     });
 };

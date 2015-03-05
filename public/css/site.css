@@ -90,7 +90,7 @@ footer p {
 	text-align: center;
 }
 
-.footer p {
+.footer {
 	color: #7f8c8d;
 	margin: 0;
 	padding: 15px 0;
@@ -360,6 +360,24 @@ a:active {
     border: 1px solid #CF1B14;
     padding: 5px;
 }
+
+#apply_operation_div {
+    background-color: #ffffcc;
+    border: 1px solid #CF1B14;
+    border-radius: 5px;
+}
+
+.apply-prompt {
+    background-color: #ffffff;
+}
+
+/*
+footer {
+    padding: 20px 0 10px;
+    background: #555;
+    color: #999;
+}
+*/
 
 /*
 .gallery-list li {

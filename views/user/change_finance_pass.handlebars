@@ -1,0 +1,41 @@
+<div class="am-cf am-padding">
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">修改提现密码</strong></div>
+</div>
+
+<div class="am-margin">
+    <form class="am-form" name="financePassForm">
+        <div class="am-g am-margin-top">
+            <div class="am-u-sm-4 am-u-md-2 am-text-right">
+                您的登录密码
+            </div>
+            <div class="am-u-sm-8 am-u-md-4 am-u-end">
+                <input type="password" class="am-input-sm" ng-model="passVM.login_pass" required autofocus>
+            </div>
+        </div>
+
+        <div class="am-g am-margin-top">
+            <div class="am-u-sm-4 am-u-md-2 am-text-right">
+                新提现密码
+            </div>
+            <div class="am-u-sm-8 am-u-md-4 am-u-end">
+                <input type="password" class="am-input-sm" ng-model="passVM.new_finance_pass" required>
+            </div>
+        </div>
+
+        <div class="am-g am-margin-top">
+            <div class="am-u-sm-4 am-u-md-2 am-text-right">
+                再输一遍
+            </div>
+            <div class="am-u-sm-8 am-u-md-4 am-u-end">
+                <input type="password" class="am-input-sm" ng-model="passVM.confirm_finance_pass" required>
+            </div>
+        </div>
+
+        <div class="am-g am-margin-top">
+            <div class="am-u-sm-offset-4 am-u-md-offset-2 am-u-sm-8 am-u-md-4 am-u-end col-end">
+                <button type="submit" class="am-btn am-btn-primary" ng-click="passVM.changeFinancePass()" ng-disabled="financePassForm.$invalid">修改密码</button>
+            </div>
+        </div>
+
+    </form>
+</div>

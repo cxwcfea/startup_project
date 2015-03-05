@@ -13,6 +13,8 @@ module.exports = {
         port: process.env.PORT || 80
     },
     parameters: {
-        serviceCharge: 18.8
+        serviceCharge: 18.8,
+        warnFactor: 0.93,
+        sellFactor: 0.95
     }
 }

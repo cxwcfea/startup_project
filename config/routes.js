@@ -36,6 +36,8 @@ module.exports = function(app) {
         res.render('support_contact');
     });
 
+    app.get('/apply_detail/:id', passportConf.isAuthenticated, applies.getApplyDetail);
+
     app.get('/signup', function(req, res) {
         res.render('register/signup');
     });
@@ -86,7 +88,13 @@ module.exports = function(app) {
 
     app.post('/user/change_pass', passportConf.isAuthenticated, users.postUpdatePassword);
 
+    app.get('/user/change_finance_pass', passportConf.isAuthenticated, users.getResetFinancePassword);
+
+    app.post('/user/change_finance_pass', passportConf.isAuthenticated, users.postUpdateFinancePassword);
+
     app.get('/user/apply_list', passportConf.isAuthenticated, users.getApplyList);
+
+    app.post('/user/verify_finance_password', passportConf.isAuthenticated, users.verifyFinancePassword);
 
     app.post('/api/users/pay_by_balance', passportConf.isAuthenticated, users.payByBalance);
 
