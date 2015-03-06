@@ -1,6 +1,6 @@
 angular.module('myApp', ['ngResource', 'ngRoute', 'ui.bootstrap']);
 
-angular.module('myApp').config(function($routeProvider, $locationProvider) {
+angular.module('myApp').config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     //$locationProvider.html5Mode(true);
     $routeProvider
         .when('/index', { templateUrl: '/user/home',
@@ -39,4 +39,4 @@ angular.module('myApp').config(function($routeProvider, $locationProvider) {
         .otherwise({
             redirectTo: '/index'
         });
-});
+}]);

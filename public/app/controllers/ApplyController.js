@@ -1,4 +1,5 @@
 'use strict';
+angular.module('applyApp', []);
 angular.module('applyApp').controller('ApplyController', ['$http', '$location', '$window', function($http, $location, $window) {
     var vm = this;
 

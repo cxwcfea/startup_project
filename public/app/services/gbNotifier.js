@@ -1,6 +1,6 @@
 angular.module('myApp').value('gbToastr', toastr);
 
-angular.module('myApp').factory('gbNotifier', function(gbToastr) {
+angular.module('myApp').factory('gbNotifier', ['gbToastr', function(gbToastr) {
     return {
         notify: function(msg) {
             gbToastr.success(msg);
@@ -11,4 +11,4 @@ angular.module('myApp').factory('gbNotifier', function(gbToastr) {
             console.log(msg);
         }
     }
-});
+}]);

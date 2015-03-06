@@ -1,5 +1,3 @@
-angular.module('applyApp', []);
-
 $(document).ready(function() {
     moment.locale('zh-cn');
 

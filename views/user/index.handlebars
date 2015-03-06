@@ -14,9 +14,12 @@
     -->
     <link rel="stylesheet" href="{{static '/vendor/bootstrap/dist/css/bootstrap.min.css'}}">
     <link rel="stylesheet" href="{{static '/vendor/amazeui/dist/css/amazeui.min.css'}}">
-    <link rel="stylesheet" href="{{static '/vendor/toastr/toastr.css'}}">
     <link rel="stylesheet" href="{{static '/css/admin.css'}}">
+    <!--
+    <link rel="stylesheet" href="{{static '/vendor/toastr/toastr.css'}}">
     <link rel="stylesheet" href="{{static '/css/site.css'}}">
+    -->
+    <link rel="stylesheet" href="{{static '/css/niujinwang.min.9336c65c.css'}}">
     {{#if bootstrappedUser}}
         <script> window.bootstrappedUserObject = {{{bootstrappedUser}}} </script>
     {{/if}}
@@ -117,6 +120,7 @@
 <![endif]-->
 
 <!--[if (gte IE 9)|!(IE)]><!-->
+<!--
 <script src="{{static '/vendor/jquery/dist/jquery.js'}}"></script>
 <script src="{{static '/vendor/bootstrap/dist/js/bootstrap.js'}}"></script>
 <script src="{{static '/vendor/amazeui/dist/js/amazeui.js'}}"></script>
@@ -125,9 +129,6 @@
 <script src="{{static '/vendor/moment/locale/zh-cn.js'}}"></script>
 <script src="{{static '/vendor/angular/angular.js'}}"></script>
 <script src="{{static '/vendor/angular-route/angular-route.js'}}"></script>
-<!--
-<script src="{{static '/vendor/angular-ui-router/release/angular-ui-router.js'}}"></script>
--->
 <script src="{{static '/vendor/angular-resource/angular-resource.js'}}"></script>
 <script src="{{static '/vendor/angular-bootstrap/ui-bootstrap-tpls.js'}}"></script>
 <script src="{{static '/js/main.js'}}"></script>
@@ -149,5 +150,17 @@
 <script src="{{static '/app/controllers/UserEmailController.js'}}"></script>
 <script src="{{static '/app/controllers/UserResetPasswordController.js'}}"></script>
 <script src="{{static '/app/controllers/UserApplyListController.js'}}"></script>
+-->
+<script src="{{static '/vendor/jquery/dist/jquery.min.js'}}"></script>
+<script src="{{static '/vendor/amazeui/dist/js/amazeui.min.js'}}"></script>
+<script src="{{static '/vendor/moment/min/moment.min.js'}}"></script>
+<script src="{{static '/vendor/moment/min/locales.min.js'}}"></script>
+<script src="{{static '/vendor/toastr/toastr.min.js'}}"></script>
+<script src="{{static '/vendor/angular/angular.min.js'}}"></script>
+<script src="{{static '/vendor/angular-route/angular-route.min.js'}}"></script>
+<script src="{{static '/vendor/angular-resource/angular-resource.min.js'}}"></script>
+<script src="{{static '/vendor/angular-bootstrap/ui-bootstrap-tpls.min.js'}}"></script>
+<script src="{{static '/js.min/niujinwang-angular.min.6452dc25.js'}}"></script>
+<script src="{{static '/js.min/niujinwang.min.483f2d8a.js'}}"></script>
 <!--<![endif]-->
 </body>
