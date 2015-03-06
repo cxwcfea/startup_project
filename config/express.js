@@ -9,6 +9,8 @@ var express = require('express'),
     passport = require('passport'),
     expressValidator = require('express-validator'),
     flash = require('express-flash'),
+    credentials = require('../credentials.js'),
+    mongoSessionStore = require('session-mongoose')(require('connect')),
     exphbs = require('express-handlebars');
 
 module.exports = function(app, config) {
@@ -30,11 +32,15 @@ module.exports = function(app, config) {
         paths: [path.join(config.rootPath, '/public/css')]
     }));
     app.use(logger('dev'));
-    app.use(cookieParser());
+
+    var sessionStore = new mongoSessionStore({ url: config.db });
+
+    app.use(cookieParser(credentials.cookieSecret));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(expressValidator());
     app.use(session({
+        store: sessionStore,
         secret: 'the secret key',
         resave: false,
         saveUninitialized: false
@@ -43,4 +49,4 @@ module.exports = function(app, config) {
     app.use(passport.session());
     app.use(flash());
     app.use(express.static(config.rootPath + '/public'));
-}
+};

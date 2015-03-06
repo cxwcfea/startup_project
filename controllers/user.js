@@ -44,6 +44,7 @@ module.exports.postLogin = function(req, res, next) {
 module.exports.postSignup = function(req, res, next) {
     req.assert('mobile', '无效的手机号码').len(11, 11).isInt();
     req.assert('password', '密码不能为空').notEmpty();
+    req.assert('password', '密码至少需要6位').len(6);
     req.assert('confirm-password', '两次密码不匹配').equals(req.body.password);
 
     var errors = req.validationErrors();
@@ -123,8 +124,7 @@ module.exports.postVerifyEmail = function(req, res, next) {
     var errors = req.validationErrors();
 
     if (errors) {
-        req.flash('errors', errors);
-        return res.redirect('/user/verify_email');
+        return res.send({success:false, reason:errors[0].msg});
     }
 
     var user = req.user;
@@ -148,8 +148,8 @@ module.exports.postVerifyEmail = function(req, res, next) {
                 secureConnection: true,
                 port: 465,
                 auth: {
-                    user: "xxxxxxxx@qq.com",
-                    pass: "xxxxxxxx"
+                    user: "niu_jin_wang@qq.com",
+                    pass: "so6UoWg6"
                 }
             });
             var mailOptions = {
@@ -168,8 +168,8 @@ module.exports.postVerifyEmail = function(req, res, next) {
             });
         }
     ], function(err) {
-        if (err) return next(err);
-        res.redirect('/user/verify_email');
+        if (err) return res.send({success:false, reason:err.toString()});
+        res.send({success:true});
     });
 };
 
@@ -215,14 +215,13 @@ module.exports.updateUser = function(req, res, next) {
 };
 
 module.exports.postUpdatePassword = function(req, res, next) {
-    //req.assert('password', 'Password must be at least 4 characters long').len(4);
+    req.assert('password', '密码至少需要6位').len(6);
     req.assert('confirm_password', '两次密码不匹配').equals(req.body.password);
 
     var errors = req.validationErrors();
 
     if (errors) {
-        res.status(400);
-        return res.send({success:false, reason:errors});
+        return res.send({success:false, reason:errors[0].msg});
     }
 
     User.findById(req.user.id, function(err, user) {
@@ -245,9 +244,8 @@ module.exports.postUpdatePassword = function(req, res, next) {
 };
 
 module.exports.resetPassword = function(req, res, next) {
-    console.log(req.body);
-    console.log(req.session.sms_code);
     req.assert('verify_code', '验证码错误').equals(req.session.sms_code);
+    req.assert('password', '密码至少需要6位').len(6);
     req.assert('confirm_password', '两次密码不匹配').equals(req.body.password);
 
     var errors = req.validationErrors();

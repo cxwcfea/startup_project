@@ -5,7 +5,7 @@
     <hr />
 </div>
 <div class="am-g" ng-app="applyApp" ng-controller="ApplyController as vm">
-    <div class="am-u-lg-10 am-u-md-10 am-u-sm-centered">
+    <div class="am-u-sm-12 am-u-md-10 am-u-sm-centered">
         <section class="am-panel am-panel-default">
             <header class="am-panel-hd">
                 <h3 class="am-panel-title">选择操盘资金</h3>
@@ -49,26 +49,31 @@
                 </ul>
 
                 <div class="am-g">
-                    <div class="money_showtab am-margin am-padding am-u-sm-11">
+                    <div class="money_showtab am-margin am-u-sm-11">
                         <div class="mstit">申请说明</div>
-                        <div class="msbom2">
-                            <ul>
-                                <li class="msli">操盘须知：<span>投资沪深A股，仓位不限制，盈利全归您</span></li>
-                                <br/>
-                                <li>申请金额：<span><span>￥<span id="span_amount" class="am-text-danger am-text-xl">\{{vm.summary.amount}}</span></span>元</span></li>
-                                <li>使用天数：<span><span id="span_usetrem" class="am-text-danger am-text-xl">\{{vm.summary.day}}</span>天</span></li>
-                                <li class="msli">资金使用时间：<span>截至<span id="span_endtime" class="am-text-danger am-text-xl">2015-03-10</span>下午14:54:59（可延期）</span></li>
-                                <li>警戒线 <span id="tip" data-text="当保证金为实盘资金的5%为警戒线" class="am-text-danger am-text-xl"></span>：<span><span>￥<span id="span_warn" class="am-text-danger am-text-xl">\{{vm.summary.warnValue.toFixed(2)}}</span></span>元</span></li>
-                                <li>平仓线 <span id="tip1" data-text="当保证金为实盘资金的3%为平仓线" class="am-text-danger am-text-xl"></span>：<span><span>￥<span id="span_sell" class="am-text-danger am-text-xl">\{{vm.summary.sellValue.toFixed(2)}}</span></span>元</span></li>
-                            </ul>
-                        </div>
+                        <table class="apply_table" rules="none">
+                            <tbody>
+                            <tr>
+                                <td class="msli">操盘须知：<span>投资沪深A股，仓位不限制，盈利全归您</span></td>
+                                <td>申请金额：<span><span>￥<span id="span_amount" class="am-text-danger am-text-xl">\{{vm.summary.amount}}</span></span>元</span></td>
+                            </tr>
+                            <tr>
+                                <td class="msli">资金使用时间：<span>截至<span id="span_endtime" class="am-text-danger am-text-xl">2015-03-10</span>下午14:54:59（可延期）</span></td>
+                                <td>使用天数：<span><span id="span_usetrem" class="am-text-danger am-text-xl">\{{vm.summary.day}}</span>天</span></td>
+                            </tr>
+                            <tr>
+                                <td>警戒线<span id="tip" data-am-popover="{content: '当保证金为实盘资金的5%为警戒线', trigger: 'hover focus'}" class="am-icon-question-circle" style="cursor: pointer;"></span>：<span><span>￥<span id="span_warn" class="am-text-danger am-text-xl">\{{vm.summary.warnValue.toFixed(2)}}</span></span>元</span></td>
+                                <td>平仓线<span id="tip1" data-am-popover="{content: '当保证金为实盘资金的3%为平仓线', trigger: 'hover focus'}" class="am-icon-question-circle" style="cursor: pointer;"></span>：<span><span>￥<span id="span_sell" class="am-text-danger am-text-xl">\{{vm.summary.sellValue.toFixed(2)}}</span></span>元</span></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
                 <div class="am-g">
                     <div class="money_js am-margin am-padding am-u-sm-11">
-                        冻结保证金 <span id="tip2" data-text="您申请实盘资金所需要支付的保证金，为实盘资金的1/10，用于盈亏结算。" class="icon icon-help-s" style="cursor: pointer;"></span>：<span>￥</span><span id="span_bond">\{{vm.summary.deposit.toFixed(2)}}</span>元<br>
-                        预存账户管理费(按天收取，周末节假日免费) <span id="tip3" data-text="您申请使用牛操盘实盘资金和账户所需要支付的账户管理费，用几天算几天，先使用、后扣费。" class="icon icon-help-s" style="cursor: pointer;"></span>：<span>￥</span><span id="span_rate">\{{vm.summary.charge.toFixed(2)}}</span>元
+                        冻结保证金 <i id="bond_tip" data-am-popover="{content: '您需要支付的保证金，为实盘资金的1/10，用于盈亏结算。', trigger: 'hover focus'}" class="am-icon-question-circle" style="cursor: pointer;"></i>：<span>￥</span><span id="span_bond">\{{vm.summary.deposit.toFixed(2)}}</span>元<br>
+                        预存账户管理费(按天收取，周末节假日免费) <i id="rate_tip" data-am-popover="{content: '您需要支付的账户管理费，用几天算几天，先使用、后扣费。', trigger: 'hover focus'}" class="am-icon-question-circle" style="cursor: pointer;"></i>：<span>￥</span><span id="span_rate">\{{vm.summary.charge.toFixed(2)}}</span>元
                     </div>
                 </div>
 

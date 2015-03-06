@@ -3,17 +3,15 @@ angular.module('myApp').controller('UserEmailController', ['gbIdentity', '$http'
     var vm = this;
     vm.user = gbIdentity.currentUser;
 
-    vm.submitRequest = function() {
-        /*
-        $http.post('/api/users/' + vm.user._id, {identity:vm.user.identity})
+    vm.verifyEmail = function() {
+        console.log('verify email');
+        $http.post('/user/verify_email', {email:vm.user.profile.email})
             .then(function(response) {
                 if (response.data.success) {
-                    gbNotifier.notify('实名认证成功');
-                    $location.path('/user/security');
+                    gbNotifier.notify('email send success');
                 } else {
-                    gbNotifier.error('实名认证失败');
+                    gbNotifier.error('email send fail ' + response.data.reason);
                 }
             });
-            */
     };
 }]);

@@ -286,30 +286,7 @@ a:active {
     color: #666666;
 }
 
-.msbom2 {
-    line-height: 190%;
-}
-
-.msbom2 ul li.msli {
-    color: #777;
-    padding-left: 15px;
-    font-size: 14px;
-    float: left;
-}
-
-.msbom2 ul {
-    padding: 0px;
-    margin: 0px;
-}
-
-.msbom2 ul li {
-    color: #777;
-    padding-left: 15px;
-    font-size: 14px;
-    float: left;
-}
-
-.apply ul, li {
+.apply ul li {
     list-style: none;
 }
 
@@ -369,6 +346,11 @@ a:active {
 
 .apply-prompt {
     background-color: #ffffff;
+}
+
+.apply_table tr td {
+    padding: 5px;
+    word-break: break-all;
 }
 
 /*

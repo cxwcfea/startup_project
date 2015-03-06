@@ -108,6 +108,8 @@ module.exports = function(app) {
 
     app.get('/user/verify_email', passportConf.isAuthenticated, users.getVerifyEmail);
 
+    app.post('/user/verify_email', passportConf.isAuthenticated, users.postVerifyEmail);
+
     app.get('/user/change_pass', passportConf.isAuthenticated, users.getResetPassword);
 
     app.post('/user/change_pass', passportConf.isAuthenticated, users.postUpdatePassword);
