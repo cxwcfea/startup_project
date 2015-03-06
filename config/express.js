@@ -3,7 +3,7 @@ var express = require('express'),
     logger = require('morgan'),
     compress = require('compression'),
     bodyParser = require('body-parser'),
-    connectAssets = require('connect-assets'),
+    //connectAssets = require('connect-assets'),
     cookieParser = require('cookie-parser'),
     session = require('express-session'),
     passport = require('passport'),
@@ -28,9 +28,11 @@ module.exports = function(app, config) {
 	app.set('views', config.rootPath + '/views');
 	app.set('view engine', 'handlebars');
     app.use(compress());
+    /*
     app.use(connectAssets({
         paths: [path.join(config.rootPath, '/public/css')]
     }));
+    */
 
     switch(app.get('env')){
         case 'development':
@@ -43,7 +45,7 @@ module.exports = function(app, config) {
             break;
     }
 
-    var sessionStore = new mongoSessionStore({ url: config.db });
+    var sessionStore = new mongoSessionStore({ url: config.db, autoReconnect: true });
 
     app.use(cookieParser(credentials.cookieSecret));
     app.use(bodyParser.json());
