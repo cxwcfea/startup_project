@@ -41,6 +41,8 @@
 
         <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
             <li><a href="/apply"> 我要操盘 </a></li>
+            <li><a href="#" ng-click="indexVM.signout()"> 安全退出 </a></li>
+            <!--
             <li><a href="javascript:;"><span class="am-icon-envelope-o"></span> 收件箱 <span class="am-badge am-badge-warning">5</span></a></li>
             <li class="am-dropdown" data-am-dropdown>
                 <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
@@ -52,6 +54,7 @@
                     <li><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
                 </ul>
             </li>
+            -->
         </ul>
     </div>
 </header>
@@ -62,28 +65,30 @@
         <div class="am-offcanvas-bar admin-offcanvas-bar">
             <ul class="am-list admin-sidebar-list">
                 <li class="admin-parent">
-                    <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 账户中心 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
+                    <a class="am-cf" data-am-collapse="{target: '#'}"><span class="am-icon-file"></span> 账户中心 </a>
                     <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav">
-                        <li><a href="/user#/index" class="am-cf"><span class="am-icon-book"></span> 账户总览</a></li>
-                        <li><a href="/user#/mypay"><span class="am-icon-credit-card"></span> 充值</a></li>
-                        <li><a href="/user#/withdraw"><span class="am-icon-bank"></span> 提现<span class="am-fr am-margin-right admin-icon-yellow"></span></a></li>
+                        <li><a href="/user#/index" class="am-cf"><!--<span class="am-icon-book"></span>--> 账户总览</a></li>
+                        <li><a href="/user#/mypay"><!--<span class="am-icon-credit-card"></span>--> 充值</a></li>
+                        <li><a href="/user#/withdraw"><!--<span class="am-icon-bank"></span>--> 提现</a></li>
                     </ul>
                 </li>
                 <li class="admin-parent">
-                    <a class="am-cf" data-am-collapse="{target: '#collapse-nav2'}"><span class="am-icon-file"></span> 个人中心 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
+                    <a class="am-cf" data-am-collapse="{target: '#'}"><span class="am-icon-file"></span> 个人中心 </a>
                     <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav2">
-                        <li><a href="/user#/profile" class="am-cf"><span class="am-icon-user"></span> 个人资料</a></li>
-                        <li><a href="/user#/security"><span class="am-icon-key"></span> 安全设置</a></li>
+                        <li><a href="/user#/profile" class="am-cf"><!--<span class="am-icon-user"></span>--> 个人资料</a></li>
+                        <li><a href="/user#/security"><!--<span class="am-icon-key"></span>--> 安全设置</a></li>
                     </ul>
                 </li>
                 <li class="admin-parent">
-                    <a class="am-cf" data-am-collapse="{target: '#collapse-nav3'}"><span class="am-icon-file"></span> 财务中心 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
+                    <a class="am-cf" data-am-collapse="{target: '#'}"><span class="am-icon-file"></span> 财务中心 </a>
                     <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav3">
-                        <li><a href="/user#/orders"><span class="am-icon-calendar"></span> 资金流水</a></li>
-                        <li><a href="/user#/apply_list" class="am-cf"><span class="am-icon-bar-chart"></span> 操盘记录</a></li>
+                        <li><a href="/user#/orders"><!--<span class="am-icon-calendar"></span>--> 资金流水</a></li>
+                        <li><a href="/user#/apply_list" class="am-cf"><!--<span class="am-icon-bar-chart"></span>--> 操盘记录</a></li>
                     </ul>
                 </li>
+                <!--
                 <li><a href="#" ng-click="indexVM.signout()"><span class="am-icon-sign-out"></span> 注销</a></li>
+                -->
             </ul>
 
             <div class="am-panel am-panel-default admin-sidebar-panel">

@@ -31,7 +31,17 @@ module.exports = function(app, config) {
     app.use(connectAssets({
         paths: [path.join(config.rootPath, '/public/css')]
     }));
-    app.use(logger('dev'));
+
+    switch(app.get('env')){
+        case 'development':
+            // compact, colorful dev logging
+            app.use(logger('dev'));
+            break;
+        case 'production':
+            // module 'express-logger' supports daily log rotation
+            app.use(require('express-logger')({ path: config.rootPath + '/log/requests.log'}));
+            break;
+    }
 
     var sessionStore = new mongoSessionStore({ url: config.db });
 
