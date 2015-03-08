@@ -1,6 +1,8 @@
 var express = require('express'),
     app = express(),
     env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
+    log4js = require('log4js'),
+    logger = log4js.getLogger(),
     config = require('./config/config')[env];
 
 require('./config/express')(app, config);
@@ -27,6 +29,6 @@ app.use(function(err, req, res, next){
 });
 
 app.listen(app.get('port'), function(){
-	console.log( 'Express started on ' + app.get('port') + '; press Ctrl-C to terminate.' );
+    logger.info('Express started on ' + app.get('port') + '; press Ctrl-C to terminate.');
 });
 

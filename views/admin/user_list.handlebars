@@ -1,0 +1,73 @@
+<div class="am-cf am-padding">
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">用户列表</strong> / <small>Users</small></div>
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12 am-u-md-3">
+        <div class="am-input-group am-input-group-sm">
+            <input type="text" class="am-form-field" placeholder="输入用户手机号" ng-model="userVM.searchKey">
+            <span class="am-input-group-btn">
+                <button class="am-btn am-btn-default" type="button" ng-click="userVM.searchUser()">搜索</button>
+                <button class="am-btn am-btn-default" type="button" ng-click="userVM.showAllUsers()">全部</button>
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12">
+        <form class="am-form">
+            <table class="am-table am-table-striped am-table-hover table-main">
+                <thead>
+                <tr>
+                    <th class="table-id">手机号</th><th class="table-title">姓名</th><th class="table-type">身份证号</th><th class="table-id">QQ号</th><th class="table-author">邮件</th><th class="table-id">余额</th><th class="table-id">保证金</th><th class="table-date">注册日期</th><th class="table-set">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="user in userVM.currentUsers">
+                    <td>\{{user.mobile}}</td>
+                    <td>\{{user.identity.name || 'N/A'}}</td>
+                    <td>\{{user.identity.id || 'N/A'}}</td>
+                    <td>\{{user.profile.qq || 'N/A'}}</td>
+                    <td>\{{user.profile.email || 'N/A'}}</td>
+                    <td>\{{user.finance.balance}}</td>
+                    <td>\{{user.finance.deposit}}</td>
+                    <td>\{{userVM.registerDate(user.registerAt)}}</td>
+                    <td>
+                        <div class="am-btn-toolbar">
+                            <div class="am-btn-group am-btn-group-xs">
+                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="userVM.open(user.mobile)"><span class="am-icon-envelope"></span> 发短信</button>
+                                <button class="am-btn am-btn-default am-btn-xs" ng-click="userVM.showApplies(user)"><span class="am-icon-bar-chart"></span> 配资</button>
+                                <button class="am-btn am-btn-default am-btn-xs am-text-danger"><span class="am-icon-money"></span> 交易</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="am-cf">
+                共 \{{userVM.currentUsers.length}} 条记录
+                <div class="am-fr">
+                    <pagination previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="userVM.itemsPerPage" total-items="userVM.totalItems" ng-model="userVM.currentPage" ng-change="userVM.pageChanged()"></pagination>
+                </div>
+            </div>
+            <hr />
+        </form>
+    </div>
+</div>
+
+<script type="text/ng-template" id="smsModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">发送短信</h3>
+    </div>
+    <div class="modal-body">
+        <div class="am-form-group">
+            <label for="sms-content">短信内容</label>
+            <textarea class="" rows="6" id="sms-content" ng-model="sms_content"></textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">发送</button>
+        <button class="btn btn-warning" ng-click="cancel()">取消</button>
+    </div>
+</script>

@@ -9,14 +9,22 @@
                 <div class="am-panel-bd">
                     <p>实盘账户登录信息:</p>
                 </div>
-                <ul class="am-list am-list-static am-list-border">
-                    <li>交易账户:<strong>61876273</strong></li>
-                    <li>交易密码:<strong>909306</strong></li>
-                </ul>
+                {{#if applySummary.checking}}
+                    <ul class="am-list am-list-static am-list-border">
+                        <li>正在为您分配账户，请稍后再查看</li>
+                    </ul>
+                {{else}}
+                    <ul class="am-list am-list-static am-list-border">
+                        <li>交易账户:<strong>{{applySummary.account}}</strong></li>
+                        <li>交易密码:<strong>{{applySummary.password}}</strong></li>
+                    </ul>
+                {{/if}}
                 <div class="am-panel-footer">
+                {{#unless applySummary.checking}}
                     <p class="am-text-center">股票操盘软件下载</p>
                     <button type="button" class="am-btn am-btn-success am-radius am-center">进入下载页面</button>
                     <p class="am-text-center">下载软件后，用上面账户信息登录即可操作股票</p>
+                {{/unless}}
                 </div>
             </div>
         </div>
@@ -51,6 +59,7 @@
                 </table>
             </div>
 
+            {{#unless applySummary.checking}}
             <div id="apply_operation_div" class="am-u-sm-12">
                 <ul class="am-avg-sm-1 am-avg-md-5 am-margin am-padding am-text-center admin-content-list">
                     <li><br/><button type="button" class="am-btn am-btn-danger am-radius">我要延期</button><br/><span class="apply-prompt">提示：保证金余额不低于80%时才可以申请延期。</span></li>
@@ -60,6 +69,7 @@
                     <li><br/><button type="button" class="am-btn am-btn-danger am-radius">我要结算</button><br/><span class="apply-prompt">提示：如果还要购股票，可以不用结算，继续使用HOMS。</span></li>
                 </ul>
             </div>
+            {{/unless}}
         </div>
     </div>
     <hr>

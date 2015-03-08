@@ -3,6 +3,11 @@ var Apply = require('../models/Apply'),
     config = require('../config/config'),
     util = require('../lib/util');
 
+exports.getApplyPage = function(req, res, next) {
+    res.locals.apply_menu = true;
+    res.render('apply');
+};
+
 exports.placeApply = function(req, res, next) {
     if (!req.isAuthenticated()) {
         req.session.lastLocation = '/apply';
@@ -19,7 +24,6 @@ exports.placeApply = function(req, res, next) {
 
     Apply.create(applyData, function(err, apply) {
         if(err) {
-            res.status(500);
             return res.send({success:false, reason:err.toString()});
         }
         //req.session.applySummary = req.body;
@@ -30,14 +34,14 @@ exports.placeApply = function(req, res, next) {
 exports.getAppliesForUser = function(req, res, next) {
     Apply.find({userID:req.params.uid}, function(err, collection) {
         if (err) {
-            res.status(400);
-            return res.send({success:false})
+            return res.send({success:false, reason:err.toString()});
         }
         res.send(collection);
     });
 };
 
 exports.confirmApply = function(req, res, next) {
+    res.locals.apply_menu = true;
     Apply.findOne({serialID:req.params.id}, function(err, collection) {
         if (err) {
             next();
@@ -81,6 +85,9 @@ exports.getApplyDetail = function (req, res, next) {
             sellValue: sellValue.toFixed(2),
             startDate: date.format("YYYY-MM-DD HH:mm"),
             endDate: date.add(collection.period, 'days').format("YYYY-MM-DD HH:mm"),
+            checking: collection.status === 4,
+            account: collection.account,
+            password: collection.password,
             serialID: collection.serialID
         };
 

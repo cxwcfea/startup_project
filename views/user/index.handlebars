@@ -33,15 +33,24 @@
 <header class="am-topbar admin-header">
     <div class="am-topbar-brand">
         <strong><a href="/" ng-click="indexVM.gotoRoot()">牛金网</a></strong>
+        <span class="am-icon-phone"></span>客服热线:<strong class="am-text-danger">400-692-1388</strong>
     </div>
 
     <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
 
     <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
-
         <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
+            <li><a href="/" ng-click="indexVM.gotoRoot()"> 首页 </a></li>
             <li><a href="/apply"> 我要操盘 </a></li>
-            <li><a href="#" ng-click="indexVM.signout()"> 安全退出 </a></li>
+            <li class="am-active"><a href="/#"> 个人中心 </a></li>
+            <div class="am-topbar-right">
+                <div class="am-dropdown" data-am-dropdown="{boundary: '.am-topbar'}">
+                    <button class="am-btn am-btn-secondary am-topbar-btn am-btn-sm am-dropdown-toggle" data-am-dropdown-toggle> {{#if user.profile.name}} {{user.profile.name}} {{else}} {{user.mobile}} {{/if}} <span class="am-icon-caret-down"></span></button>
+                    <ul class="am-dropdown-content">
+                        <li><a href="#" ng-click="indexVM.signout()"> 安全退出 </a></li>
+                    </ul>
+                </div>
+            </div>
             <!--
             <li><a href="javascript:;"><span class="am-icon-envelope-o"></span> 收件箱 <span class="am-badge am-badge-warning">5</span></a></li>
             <li class="am-dropdown" data-am-dropdown>
@@ -164,6 +173,6 @@
 <script src="{{static '/vendor/angular-resource/angular-resource.min.js'}}"></script>
 <script src="{{static '/vendor/angular-bootstrap/ui-bootstrap-tpls.min.js'}}"></script>
 <script src="{{static '/js.min/niujinwang-angular.min.6452dc25.js'}}"></script>
-<script src="{{static '/js.min/niujinwang.min.87d168d7.js'}}"></script>
+<script src="{{static '/js.min/niujinwang.min.f9f2289f.js'}}"></script>
 <!--<![endif]-->
 </body>

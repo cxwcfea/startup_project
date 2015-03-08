@@ -42,3 +42,14 @@ module.exports.isAuthenticated = function(req, res, next) {
     if (req.isAuthenticated()) return next();
     res.redirect('/login');
 };
+
+module.exports.requiresRole = function(role) {
+    return function (req, res, next) {
+        if (!req.isAuthenticated() || req.user.roles.indexOf(role) === -1) {
+            res.status(403);
+            res.end('需要管理员权限');
+        } else {
+            next();
+        }
+    }
+};

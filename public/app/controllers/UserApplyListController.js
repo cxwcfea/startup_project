@@ -2,26 +2,23 @@
 angular.module('myApp').controller('UserApplyListController', ['gbIdentity', '$http', 'gbNotifier', '$location', 'gbApply', '$window', function(gbIdentity, $http, gbNotifier, $location, gbApply, $window) {
     var vm = this;
     vm.user = gbIdentity.currentUser;
+    var apply_list = {};
+    var currentApplies;
+    vm.itemsPerPage = 15;
 
-    vm.pageChanged = function() {
-        var start = (vm.currentPage - 1) * vm.itemsPerPage;
-        var end = start + vm.itemsPerPage;
-        if (end > vm.totalItems) {
-            end = vm.totalItems;
-        }
-        vm.currentApplies = vm.applies.slice(start, end);
-    };
+    function pageReset() {
+        vm.totalItems = currentApplies.length;
+        vm.currentPage = 1;
+        vm.pageChanged();
+    }
 
     function initData() {
-        gbApply.query({uid:vm.user._id}, function (data) {
-            angular.forEach(data, function(value, key) {
+        apply_list = gbApply.query({uid:vm.user._id}, function () {
+            angular.forEach(apply_list, function(value, key) {
                 formatData(value);
             });
-            vm.applies = data;
-            vm.totalItems = vm.applies.length;
-            vm.currentPage = 1;
-            vm.itemsPerPage = 15;
-            vm.pageChanged();
+            currentApplies = apply_list;
+            pageReset();
         });
 
         vm.queryItems = [
@@ -74,13 +71,20 @@ angular.module('myApp').controller('UserApplyListController', ['gbIdentity', '$h
     initData();
 
     vm.queryItem = function(item) {
-        console.log('run');
-        vm.currentApplies = vm.applies.filter(function (elem) {
+        currentApplies = apply_list.filter(function (elem) {
             if (!item.value) return true;
             return elem.status === item.value;
         });
-        vm.totalItems = vm.currentApplies.length;
-        vm.currentPage = 1;
+        pageReset();
+    };
+
+    vm.pageChanged = function() {
+        var start = (vm.currentPage - 1) * vm.itemsPerPage;
+        var end = start + vm.itemsPerPage;
+        if (end > vm.totalItems) {
+            end = vm.totalItems;
+        }
+        vm.showingItems = currentApplies.slice(start, end);
     };
 
     vm.manageApply = function(apply) {

@@ -7,7 +7,9 @@ var applySchema = mongoose.Schema({
     deposit: {type:Number, required:'{PATH} is required!'},
     period: {type:Number, required:'{PATH} is required!'},
     status: {type:Number, required:'{PATH} is required!', default: 1}, // 1 means pending, 2 means proccessing, 3 means end, 4 means checking, 5 means failed
-    applyAt: {type:Date, default: Date.now()}
+    applyAt: {type:Date, default: Date.now()},
+    account: String,
+    password: String
 });
 
 var Apply = mongoose.model('Apply', applySchema);

@@ -3,8 +3,8 @@ var users = require('../controllers/user'),
     orders = require('../controllers/order'),
     applies = require('../controllers/apply'),
     sms = require('../lib/sms'),
+    admin = require('../controllers/admin'),
     passportConf = require('./passport');
-
 
 module.exports = function(app) {
     app.use(function(req, res, next) {
@@ -13,6 +13,7 @@ module.exports = function(app) {
     });
 
     app.get('/', function(req, res) {
+        res.locals.main_menu = true;
         res.render('home');
     });
 
@@ -74,9 +75,7 @@ module.exports = function(app) {
 
     app.post('/forgot', users.resetPassword);
 
-    app.get('/apply', function(req, res) {
-        res.render('apply');
-    });
+    app.get('/apply', applies.getApplyPage);
 
     app.post('/apply', applies.placeApply);
 
@@ -143,4 +142,6 @@ module.exports = function(app) {
     app.get('/api/send_sms_verify_code', users.sendVerifyCode);
 
     app.get('/api/applies/:uid/apply', applies.getAppliesForUser);
+
+    admin.registerRoutes(app, passportConf);
 };

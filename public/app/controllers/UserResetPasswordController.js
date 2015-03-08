@@ -27,6 +27,7 @@ angular.module('myApp').controller('UserResetPasswordController', ['gbIdentity',
         $http.post('/user/change_finance_pass', {password:vm.login_pass, new_password:vm.new_finance_pass, confirm_password:vm.confirm_finance_pass})
             .then(function(response) {
                 if (response.data.success) {
+                    vm.user.finance.password = response.data.result;
                     gbNotifier.notify('密码设置成功');
                     $location.path('/security');
                 } else {

@@ -424,7 +424,7 @@ module.exports.verifyFinancePassword = function(req, res, next) {
             if (!isMatch) {
                 return res.send({success: false, reason: '提现密码错误!'});
             } else {
-                res.send({success: true});
+                res.send({success: true, result: user.finance.password});
             }
         });
     });
