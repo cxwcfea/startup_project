@@ -9,6 +9,9 @@ angular.module('adminApp').config(['$routeProvider', '$locationProvider', functi
         .when('/applies/:uid', { templateUrl: '/admin/apply_list',
             controller: 'AdminApplyListCtrl as applyVM'
         })
+        .when('/orders/:uid', { templateUrl: '/admin/order_list',
+            controller: 'AdminOrderListCtrl as orderVM'
+        })
         .otherwise({
             redirectTo: '/users'
         });

@@ -35,13 +35,18 @@ angular.module('adminApp').controller('AdminUserListCtrl', ['$scope', '$http', '
                 vm.currentUsers.push(vm.users[key]);
                 break;
             }
-        };
+        }
         vm.totalItems = vm.currentUsers.length;
     };
 
     vm.showApplies = function(user) {
         $scope.data.selectedUser = user;
         $location.path('/applies/' + user._id);
+    };
+
+    vm.showOrders = function(user) {
+        $scope.data.selectedUser = user;
+        $location.path('/orders/' + user._id);
     };
 
     vm.open = function (mobile) {

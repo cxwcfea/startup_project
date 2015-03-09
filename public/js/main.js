@@ -11,10 +11,25 @@ $(document).ready(function() {
             return;
         }
 
+        var count = 0;
+        $btn.addClass('am-disabled');
+        $btn[0].innerText = '60秒后重试';
+        var timeId = setInterval(function() {
+            ++count;
+            $btn[0].innerText = 60-count + '秒后重试';
+            if (count == 60) {
+                clearInterval(timeId);
+                $btn[0].innerText = '获取验证码';
+                $btn.removeClass('am-disabled');
+            }
+        }, 1000);
+
+        /*
         $btn.button('loading');
         setTimeout(function(){
             $btn.button('reset');
         }, 60000);
+        */
         var requestData = {
             mobile: mobile.trim()
         };

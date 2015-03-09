@@ -1,5 +1,6 @@
 var User = require('../models/User'),
     Apply = require('../models/Apply'),
+    Order = require('../models/Order'),
     log4js = require('log4js'),
     logger = log4js.getLogger('admin'),
     sms = require('../lib/sms');
@@ -16,16 +17,13 @@ module.exports = {
 
         app.post('/admin/api/user/:uid/applies/:id', passportConf.requiresRole('admin'), this.updateApplyForUser);
 
+        app.get('/admin/api/user/:uid/orders', passportConf.requiresRole('admin'), this.fetchOrdersForUser);
+
+        //app.post('/admin/api/user/:uid/orders/:id', passportConf.requiresRole('admin'), this.updateOrderForUser);
+
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
         });
-        /*
-        app.get('/customer/:id', this.home);
-        app.get('/customer/:id/preferences', this.preferences);
-        app.get('/orders/:id', this.orders);
-
-        app.post('/customer/:id/update', this.ajaxUpdate);
-        */
     },
 
     main: function(req, res, next) {
@@ -87,80 +85,17 @@ module.exports = {
                 return res.send(apply);
             });
         });
-    }
-
-    /*
-    register: function(req, res, next) {
-        res.render('customer/register');
     },
 
-    processRegister: function(req, res, next) {
-        // TODO: back-end validation (safety)
-        var c = new Customer({
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            email: req.body.email,
-            address1: req.body.address1,
-            address2: req.body.address2,
-            city: req.body.city,
-            state: req.body.state,
-            zip: req.body.zip,
-            phone: req.body.phone,
-        });
-        c.save(function(err) {
-            if(err) return next(err);
-            res.redirect(303, '/customer/' + c._id);
-        });
-    },
-
-    home: function(req, res, next) {
-        Customer.findById(req.params.id, function(err, customer) {
-            if(err) return next(err);
-            if(!customer) return next(); 	// pass this on to 404 handler
-            customer.getOrders(function(err, orders) {
-                if(err) return next(err);
-                res.render('customer/home', customerViewModel(customer, orders));
-            });
-        });
-    },
-
-    preferences: function(req, res, next) {
-        Customer.findById(req.params.id, function(err, customer) {
-            if(err) return next(err);
-            if(!customer) return next(); 	// pass this on to 404 handler
-            customer.getOrders(function(err, orders) {
-                if(err) return next(err);
-                res.render('customer/preferences', customerViewModel(customer, orders));
-            });
-        });
-    },
-
-    orders: function(req, res, next) {
-        Customer.findById(req.params.id, function(err, customer) {
-            if(err) return next(err);
-            if(!customer) return next(); 	// pass this on to 404 handler
-            customer.getOrders(function(err, orders) {
-                if(err) return next(err);
-                res.render('customer/preferences', customerViewModel(customer, orders));
-            });
-        });
-    },
-
-    ajaxUpdate: function(req, res) {
-        Customer.findById(req.params.id, function(err, customer) {
-            if(err) return next(err);
-            if(!customer) return next(); 	// pass this on to 404 handler
-            if(req.body.firstName){
-                if(typeof req.body.firstName !== 'string' ||
-                    req.body.firstName.trim() === '')
-                    return res.json({ error: 'Invalid name.'});
-                customer.firstName = req.body.firstName;
+    fetchOrdersForUser: function(req, res) {
+        logger.debug(req.params.uid);
+        Order.find({userID:req.params.uid}, function(err, order) {
+            if (err) {
+                logger.error(err.toString());
+                res.status(500);
+                return res.send({success:false, reason:err.toString()});
             }
-            // and so on....
-            customer.save(function(err) {
-                return err ? res.json({ error: 'Unable to update customer.' }) : res.json({ success: true });
-            });
+            res.send(order);
         });
-    }
-    */
+    },
 };
