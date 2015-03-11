@@ -8,8 +8,11 @@ var applySchema = mongoose.Schema({
     period: {type:Number, required:'{PATH} is required!'},
     status: {type:Number, required:'{PATH} is required!', default: 1}, // 1 means pending, 2 means proccessing, 3 means end, 4 means checking, 5 means failed
     applyAt: {type:Date, default: Date.now()},
+    startTime: Date,
+    endTime: Date,
     account: String,
-    password: String
+    password: String,
+    orderID: String
 });
 
 var Apply = mongoose.model('Apply', applySchema);

@@ -12,7 +12,7 @@
             </header>
             <div class="am-panel-bd apply">
                 <span>请选择申请资金:</span>
-                <ul class="am-avg-sm-1 am-avg-md-7 am-margin am-padding am-text-center admin-content-list">
+                <ul class="am-avg-sm-2 am-avg-md-4 am-margin am-padding am-text-center admin-content-list">
                     <li ng-repeat="item in vm.amountList">
                         <a href="javascript:;" ng-click="vm.selectAmount(item)" ng-class="{selected: item.select}"><span>\{{item.name}}</span>实盘资金</a>
                     </li>
@@ -42,7 +42,7 @@
                 </div>
 
                 <span>请选择使用天数:</span>
-                <ul class="am-avg-sm-1 am-avg-md-8 am-margin am-padding am-text-center admin-content-list day">
+                <ul class="am-avg-sm-2 am-avg-md-4 am-margin am-padding am-text-center admin-content-list day">
                     <li ng-repeat="day in vm.dayList">
                         <a href="javascript:;" id="2000" ng-click="vm.selectDay(day)" ng-class="{selected: day.select}"><span>\{{day.value}}/交易日</span></a>
                     </li>

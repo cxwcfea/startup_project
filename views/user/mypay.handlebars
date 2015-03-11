@@ -4,7 +4,7 @@
 
 <div class="am-tabs am-margin" data-am-tabs>
     <ul class="am-tabs-nav am-nav am-nav-tabs">
-        <li class="am-active"><a href="#tab1">网上支付</a></li>
+        <li class="am-active"><a href="#tab1">在线支付</a></li>
         <li><a href="#tab2">银行汇款</a></li>
     </ul>
 
@@ -12,15 +12,9 @@
         <div class="am-tab-panel am-fade am-in am-active" id="tab1">
             <div class="am-g am-margin-top">
                 <form class="am-form" name="payForm">
-                    <div class="am-g am-margin-top">
-                        <div class="am-u-sm-4 am-u-md-2 am-text-right">充值方式</div>
-                        <div class="am-u-sm-8 am-u-md-4 am-u-end">
-                            <select am-input-sm data-am-selected="{btnSize: 'sm'}" ng-model="mypayVM.testValue">
-                                <option value="option1" selected>网银</option>
-                                <option value="option2">支付宝</option>
-                                <option value="option3">财付通</option>
-                            </select>
-                        </div>
+                    <div class="am-g am-margin am-padding">
+                        <div class="am-u-sm-4 am-u-md-2 am-text-right">当前余额</div>
+                        <span class="am-icon-rmb">\{{mypayVM.user.finance.balance}}</span>
                     </div>
 
                     <div class="am-g am-margin-top">
@@ -35,7 +29,7 @@
                     <br>
                     <div class="am-g am-margin-top">
                         <div class="am-u-sm-offset-4 am-u-md-offset-2 am-u-sm-8 am-u-md-4 am-u-end col-end">
-                            <button type="submit" class="am-btn am-btn-primary" ng-click="mypayVM.submitRequest()" ng-disabled="payForm.$invalid">立即充值</button>
+                            <button type="submit" class="am-btn am-btn-primary" ng-click="mypayVM.gotoPay()" ng-disabled="payForm.$invalid">立即充值</button>
                         </div>
                     </div>
                 </form>

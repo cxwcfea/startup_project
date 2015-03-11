@@ -1,13 +1,16 @@
 'use strict';
-angular.module('myApp').controller('UserOrderController', ['gbIdentity', function(gbIdentity) {
+angular.module('myApp').controller('UserOrderController', ['$window', 'gbIdentity', 'gbOrder', function($window, gbIdentity, gbOrder) {
     var vm = this;
     var currentOrders;
+    var order_list;
     vm.user = gbIdentity.currentUser;
     vm.itemsPerPage = 15;
 
     function initData() {
-        currentOrders = vm.user.orders;
-        pageReset();
+        order_list = gbOrder.query({uid:vm.user._id}, function () {
+            currentOrders = order_list;
+            pageReset();
+        });
 
         vm.queryItems = [
             {
@@ -32,7 +35,7 @@ angular.module('myApp').controller('UserOrderController', ['gbIdentity', functio
     }
 
     vm.queryItem = function (item) {
-        currentOrders = vm.user.orders.filter(function (elem) {
+        currentOrders = order_list.filter(function (elem) {
             if (item.value === 1) {
                 return elem.dealType === '充值';
             }
@@ -53,8 +56,10 @@ angular.module('myApp').controller('UserOrderController', ['gbIdentity', functio
         vm.showingItems = currentOrders.slice(start, end);
     };
 
-    vm.formatDate = function(dateStr) {
-        return moment(dateStr).format("YYYY-MM-DD HH:mm");
+    vm.manageOrder = function(order) {
+        if (!order.status && order.dealType === '充值') {
+            $window.location.assign('/pay_confirm/' + order._id);
+        }
     };
 
     initData();

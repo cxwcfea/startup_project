@@ -1,6 +1,9 @@
 var Apply = require('../models/Apply'),
+    Order = require('../models/Order'),
     moment = require('moment'),
     config = require('../config/config'),
+    log4js = require('log4js'),
+    logger = log4js.getLogger('admin');
     util = require('../lib/util');
 
 exports.getApplyPage = function(req, res, next) {
@@ -56,13 +59,26 @@ exports.confirmApply = function(req, res, next) {
             total: total.toFixed(2),
             balance: req.user.finance.balance.toFixed(2),
             shouldPay: shouldPay.toFixed(2),
-            serialID: collection.serialID
+            serialID: collection.serialID,
+            orderID: collection.orderID
         };
 
         if (shouldPay <= 0) {
             res.locals.applySummary.useBalance = true;
         }
-        res.render('apply_confirm');
+
+        if (collection.orderID) {
+            Order.findById(collection.orderID, function(err, order) {
+                if (order && order.transID) {
+                    if (shouldPay === order.amount) {
+                        res.locals.applySummary.transID = order.transID;
+                    }
+                }
+                res.render('apply_confirm');
+            });
+        } else {
+            res.render('apply_confirm');
+        }
     });
 };
 
@@ -85,7 +101,7 @@ exports.getApplyDetail = function (req, res, next) {
             sellValue: sellValue.toFixed(2),
             startDate: date.format("YYYY-MM-DD HH:mm"),
             endDate: date.add(collection.period, 'days').format("YYYY-MM-DD HH:mm"),
-            checking: collection.status === 4,
+            checking: collection.status === 4 || collection.status === 1,
             account: collection.account,
             password: collection.password,
             serialID: collection.serialID

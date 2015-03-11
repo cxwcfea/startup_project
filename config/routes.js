@@ -24,6 +24,9 @@ module.exports = function(app) {
     });
 
     app.get('/thank_you_for_pay', function(req, res) {
+        if (req.query.apply_id) {
+            return res.render('thank_you_for_pay', {apply_id:req.query.apply_id});
+        }
         res.render('thank_you_for_pay');
     });
 
@@ -64,7 +67,11 @@ module.exports = function(app) {
     });
 
     app.get('/signup', function(req, res) {
-        res.render('register/signup');
+        if (req.isAuthenticated()) {
+            res.redirect('/');
+        } else {
+            res.render('register/signup');
+        }
     });
 
     app.post('/signup', users.postSignup);
@@ -80,7 +87,11 @@ module.exports = function(app) {
     app.post('/apply', applies.placeApply);
 
     app.get('/login', function (req, res) {
-        res.render('register/login');
+        if (req.isAuthenticated()) {
+            res.redirect('/');
+        } else {
+            res.render('register/login');
+        }
     });
 
     app.post('/login', users.postLogin);
@@ -123,6 +134,8 @@ module.exports = function(app) {
 
     app.post('/api/users/pay_by_balance', passportConf.isAuthenticated, users.payByBalance);
 
+    app.get('/pay_confirm/:orderID', orders.confirmPayOrder);
+
     app.get('/api/users/:id', users.getUser);
 
     app.post('/api/users/update_balance', passportConf.isAuthenticated, users.updateBalance);
@@ -135,13 +148,21 @@ module.exports = function(app) {
 
     app.get('/api/orders/:id', orders.getOrderById);
 
-    app.post('/api/orders', orders.addOrder);
+    app.get('/api/user/:uid/orders', orders.fetchOrdersForUser);
 
-    app.put('/api/orders', orders.updateOrder);
+    app.post('/api/user/:uid/orders', orders.addOrderForUser);
+
+    app.post('/api/orders/:id', orders.updateOrder);
 
     app.get('/api/send_sms_verify_code', users.sendVerifyCode);
 
     app.get('/api/applies/:uid/apply', applies.getAppliesForUser);
+
+    app.post('/api/user_pay', users.getPayTransid);
+
+    app.post('/api/pay_feedback', users.payFeedback);
+
+    app.post('/api/users/pay_success/:order_id', passportConf.isAuthenticated, users.paySuccess);
 
     admin.registerRoutes(app, passportConf);
 };

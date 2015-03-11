@@ -5,15 +5,53 @@
 
 	<title>Test</title>
 	<script type="text/javascript" src="/vendor/moment/moment.js"></script>	
+	<script src="http://web.iapppay.com/h5/v1.0/js/aibei_v1.js"></script>
+	<script type="text/javascript" src="/vendor/jquery/dist/jquery.js"></script>	
+	<style>
+		button{height:40px;width:300px; margin:5px;}
+	</style>
 </head>
+
 <body>
 
-<script type="text/javascript" charset="utf-8">
-	
-moment.locale('zh-cn');
-console.log(moment().startOf('hour').fromNow());
-console.log(moment(Date.now()).format('ll'));
-</script>
+		<button onclick="showResult();">商品测试1</button>
+		<a class='aibei-pay' aibei-data='showResult()' href='#' aibei-callback='theCallback()'>商品名称</a>
+		
 	
 </body>
+<script>
+	function showResult() {
+		console.log('showResult');
+		showPayWindow('123',aibeiNotify);
+		return 1;
+	}
+	function aibeiNotify(data){
+		alert("RetCode=" + data.RetCode+":TransId=" + data.TransId + ":OrderStatus=" + data.OrderStatus);
+	}
+
+	function theCallback(data) {
+		console.log('theCallback ' + data);
+	}
+	function serverOrder(waresid) {
+		$.ajax({
+			url : '/order?waresid=' + waresid,
+			type : 'POST',
+			dataType : 'json',
+			success : function(data) {
+				if (data.transid !== undefined) {
+					showPayWindow(data.transid,aibeiNotify);
+				} else {
+					console.log(data);
+				}
+			},
+			error : function(e) {
+				console.log(e);
+			}
+		});
+	}
+	
+	function aibeiNotify(data){
+		alert("RetCode=" + data.RetCode+":TransId=" + data.TransId + ":OrderStatus=" + data.OrderStatus);
+	}
+</script>
 </html>

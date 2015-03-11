@@ -1,5 +1,6 @@
 var mongoose = require('mongoose'),
     User = require('../models/User'),
+    Homas = require('../models/Homas'),
     Order = require('../models/Order');
 
 function createDefaultUsers() {
@@ -11,13 +12,34 @@ function createDefaultUsers() {
                     createOrderDefaultUsers(user._id);
                 }
             });
+
+            Homas.create({account: '123450', password: '111111'});
+            Homas.create({account: '123451', password: '111111'});
+            Homas.create({account: '123452', password: '111111'});
+            Homas.create({account: '123453', password: '111111'});
+            Homas.create({account: '123454', password: '111111'});
+            Homas.create({account: '123455', password: '111111'});
+            Homas.create({account: '123456', password: '111111'});
+            Homas.create({account: '123457', password: '111111'});
+            Homas.create({account: '123458', password: '111111'});
+            Homas.create({account: '123459', password: '111111'});
+            Homas.create({account: '123460', password: '111111'});
+            Homas.create({account: '123461', password: '111111'});
+            Homas.create({account: '123462', password: '111111'});
+            Homas.create({account: '123463', password: '111111'});
+            Homas.create({account: '123464', password: '111111'});
+            Homas.create({account: '123465', password: '111111'});
+            Homas.create({account: '123466', password: '111111'});
+            Homas.create({account: '123467', password: '111111'});
+            Homas.create({account: '123468', password: '111111'});
+            Homas.create({account: '123469', password: '111111'});
         }
     });
 }
 
 function createOrderDefaultUsers(uID) {
-    Order.create({userID:uID, dealType:'充值', amount:1000, status:true, description: '10倍配资'});
-    Order.create({userID:uID, dealType:'提现', amount:500, status:true, description: '10倍配资'});
+    Order.create({userID:uID, dealType:'充值', amount:1000, status:1, description: '网站充值'});
+    Order.create({userID:uID, dealType:'提现', amount:500, status:1, description: '提现'});
 }
 
 var options = {

@@ -353,7 +353,11 @@ a:active {
     word-break: break-all;
 }
 
+
 /*
+.admin-sidebar {
+    width: 230px;
+}
 footer {
     padding: 20px 0 10px;
     background: #555;

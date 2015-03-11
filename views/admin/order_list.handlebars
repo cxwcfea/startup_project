@@ -34,7 +34,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="order in orderVM.showingItems">
-                    <td>\{{order.date | displayDate}}</td>
+                    <td>\{{order.createdAt | displayDate}}</td>
                     <td>\{{order.dealType}}</td>
                     <td>\{{order.amount}}</td>
                     <td>\{{order.status | orderStatus}}</td>

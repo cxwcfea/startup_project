@@ -1,10 +1,16 @@
 var passport = require('passport'),
     User = require('../models/User'),
+    Order = require('../models/Order'),
     Apply = require('../models/Apply'),
+    Homas = require('../models/Homas'),
     userViewModel = require('../viewModels/user'),
     nodemailer = require('nodemailer'),
     crypto = require('crypto'),
     sms = require('../lib/sms'),
+    needle = require('needle'),
+    ursa = require('ursa'),
+    log4js = require('log4js'),
+    logger = log4js.getLogger('admin');
     async = require('async');
 
 
@@ -312,30 +318,47 @@ module.exports.payByBalance = function(req, res, next) {
             };
             return res.send({success:false, reason:'余额不足，支付失败!'});
         }
-        user.finance.balance -= data.pay_amount;
         if (data.apply_id) {
             Apply.findOne({serialID:data.apply_id}, function(err, apply) {
                 if (err) {
                     return res.send({success:false, reason:err.toString()});
                 }
                 apply.status = 4;
-                apply.save(function (err) {
-                    if (err) {
-                        return res.send({success:false, reason:err.toString()});
+                Homas.findOne({using:false}, function(err, homas) {
+                    if (err || !homas) {
+                        logger.warn('failed to assign homas account to apply:' + apply._id);
                     }
+                    homas.using = true;
+                    homas.assignAt = Date.now();
+                    homas.applyID = apply._id;
+                    homas.save(function(err) {
+                        if (err) {
+                            logger.warn('failed to assign homas account to apply:' + apply._id);
+                        } else {
+                            apply.status = 2;
+                            apply.account = homas.account;
+                            apply.password = homas.password;
+                        }
+                        apply.save(function (err) {
+                            if (err) {
+                                return res.send({success:false, reason:err.toString()});
+                            }
+                        });
+                        user.finance.balance -= data.pay_amount;
+                        user.save(function (err) {
+                            if (err) {
+                                res.status(500);
+                                req.session.pay_error = {
+                                    reason: err.toString()
+                                };
+                                return res.send({success:false, reason:err.toString()});
+                            }
+                            return res.send({success:true, data:user.finance.balance});
+                        });
+                    });
                 });
             });
         }
-        user.save(function (err) {
-            if (err) {
-                res.status(500);
-                req.session.pay_error = {
-                    reason: err.toString()
-                };
-                return res.send({success:false, reason:err.toString()});
-            }
-            return res.send({success:true, data:user.finance.balance});
-        });
     });
 };
 
@@ -426,6 +449,140 @@ module.exports.verifyFinancePassword = function(req, res, next) {
             } else {
                 res.send({success: true, result: user.finance.password});
             }
+        });
+    });
+};
+
+module.exports.getPayTransid = function(req, res) {
+    console.log('getPayTransid');
+    var orderID = req.body.id;
+    var price = req.body.price;
+    var uid = req.body.uid;
+    var data = {
+        appid: '3002011663',
+        waresid: 1,
+        waresname: '股票配资',
+        cporderid: orderID,
+        price: Number(price),
+        currency: 'RMB',
+        appuserid: uid
+    };
+    /*
+    needle.post('http://ipay.iapppay.com:9999/payapi/order', data, { multipart: true })
+        .on('readable', function() {
+            while (result = this.read()) {
+                console.log(result.toString());
+            }
+        })
+        .on('end', function() {
+            console.log('Ready-o, friend-o.');
+            res.send({success:true});
+        });
+     */
+    var jsonData = JSON.stringify(data);
+    //console.log(jsonData);
+    var client_private = '-----BEGIN RSA PRIVATE KEY-----\n'+
+        'MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAOW3mZeDOg58WF61\n'+
+        '8rD4RN8plLAOOgOH1QAAR3y+vVQCxZpVvjLPLDZP0EBdWfSlFpkLIBaVPBiNq6dx\n'+
+        'fyzrG04lX1EftmQyost7s9vkkjPj7fdbnQhVGvdee3f3/bLr0rC7By6qxiv5PCWF\n'+
+        'mE1Asb9CnK/DlUPrCb8QE0Vf2fkbAgMBAAECgYEA3LdI2xwaFzsASZf2pHUW73jr\n'+
+        'RTGWKjhDvumFxmUaUnMLW9vQkM8gAtszE/Td7sMEcG4RGcGv6UONz6escwM+ykdn\n'+
+        'qpiqBo2aX3UYv6YJy2HV/9RmIS99dny/H6gRzMCyomPfyqXPLbmCNTcotb6zVs+h\n'+
+        'lPN5o925veq1Y0TlF3kCQQD+0rgkWfrWt/7uVzkI7aXlewgTrvg5dJ0wdcDcSew/\n'+
+        'AEbW2K1B1wB9fkNPKFgbp3PhSGjQba3ZvHfRQGo5/y1/AkEA5scylT3NNHpneE5L\n'+
+        'TOKiDfk5LHraRS4k1N8pGpUXKFmwQDDvPq+1nBhe1KiR6ZggDep4aAPKzseheR4V\n'+
+        'gcH6ZQJAIpj1i2n0FqcQo8eP5NhvR8L2i8WbyiE9HlE+iCo5OyyMcasliuToGiHE\n'+
+        'fcDahZassw+ju3jIu+FM20pFoe41fQJARWfXQKcrlgLSJ450exUV49n2Zfg0uOWd\n'+
+        '0h+jfwkjw9Dlfwi4i0PQ/LcfnhlseLJ1wXmo6K9rSTEk0QZJNZMfOQJBAO78rY7M\n'+
+        '17fetd0VcaWnraXNBC22pWrQnLo9QpskV5hOu5gxW4FbED4L5NA0JeI1nyFLZGr/\n'+
+        'PBBcfmNYWA6LmzQ=\n'+
+        '-----END RSA PRIVATE KEY-----';
+    var priv = ursa.createPrivateKey(new Buffer(client_private));
+    var content = new Buffer(jsonData);
+    var sig = priv.hashAndSign('md5', content, 'utf8', 'base64');
+    var data = 'transdata=' + jsonData + '&sign=' + sig + '&signtype=RSA';
+    /*
+    console.log(sig);
+    var otherData = 'transdata={"appid":"3002011663","waresid":1,"waresname":"股票配资","cporderid":"54feadf6154755cd492fb0b6","price":107.52,"currency":"RMB","appuserid":"54f51b9d0fb27dbf0a402666"}&sign=E1qEtYQKW1VLf0mn0OT05AMYv77xh0ramUAENOPS59jDKY4dViaIu0pDOzTGJGxeCLzfjCG0dfzXlNd5ofhGiHsVwh7TwvoVkqhb1dkyWNqvxKkrCWCvotKysJlZg5dh0O+VUQj0xUph1FOwEhJFNoX1gAabFkZb01mQlP/4QPI=&signtype=RSA';
+    console.log(otherData);
+    */
+    needle.post('http://ipay.iapppay.com:9999/payapi/order', data, function(err, resp, body) {
+        logger.debug(body);
+        if (body) {
+            var index = body.indexOf('{');
+            var index2 = body.indexOf('}');
+            var len = index2 - index + 1;
+            var result = body.substr(index, len);
+            var obj = JSON.parse(result);
+            //transdata={"code":1002,"errmsg":"请求参数错误"}
+            logger.info(obj);
+            if (obj.transid) {
+                res.send({success:true, transid:obj.transid});
+                var orderData = {
+                    transID: obj.transid
+                };
+                Order.update({_id:orderID}, orderData, function (err, numberAffected, raw) {
+                    if (err) {
+                        logger.warn('error when updateOrder:' + err.toString());
+                    }
+                });
+            } else {
+                res.send({success:false});
+            }
+        } else {
+            logger.debug(error);
+            logger.debug(resp);
+            res.send({success:false});
+        }
+    });
+};
+
+module.exports.payFeedback = function(req, res) {
+    logger.debug(req.body);
+};
+
+module.exports.paySuccess = function(req, res, next) {
+    if (!req.user) {
+        return res.send({success:false, reason:'无效的用户!'});
+    }
+
+    var data = req.body;
+    Order.findById(req.params.order_id, function(err, order) {
+        if (err) {
+            logger.error('error update user balance when paySuccess:' + err.toString());
+            return res.send({success:false, reason:err.toString()});
+        }
+        if (!order) {
+            logger.error('error update user balance when paySuccess:order not found');
+            return res.send({success:false, reason:'order not found'});
+        }
+        var pay_amount = Number(data.pay_amount);
+        if (pay_amount <= 0) {
+            logger.error('error update user balance when paySuccess:pay_amount not valid:' + pay_amount);
+            return res.send({success:false, reason:'无效的支付额:'+pay_amount});
+        }
+        if (order.amount !== pay_amount) {
+            logger.error('error update user balance when paySuccess:pay_amount not match order\'s amount');
+            return res.send({success:false, reason:"pay_amount not match order's amount"});
+        }
+        order.status = 1;
+        order.save(function (err) {
+            if (err) {
+                logger.warn('error update order when paySuccess:' + err.toString());
+            }
+        });
+        logger.info("pay success for order:" + data.order_id + " by " + pay_amount);
+        var userData = {
+            finance: {
+                balance: req.user.finance.balance + pay_amount
+            }
+        };
+        User.update({_id:req.user.id}, userData, function (err, numberAffected, raw) {
+            if (err) {
+                logger.error('error update user balance when paySuccess:' + err.toString());
+                return res.send({success:false, reason:err.toString()});
+            }
+            res.send({success:true});
         });
     });
 };

@@ -38,6 +38,13 @@
                     <input type="hidden" name="pay_amount" id="pay_amount" value="{{applySummary.shouldPay}}">
                     <input type="hidden" name="apply_id" id="apply_id" value="{{applySummary.serialID}}">
                     <input type="hidden" name="total_amount" id="total_amount" value="{{applySummary.total}}">
+                    <input type="hidden" name="user_id" id="user_id" value="{{user._id}}">
+                    {{#if applySummary.orderID}}
+                        <input type="hidden" name="order_id" id="order_id" value="{{applySummary.orderID}}">
+                    {{/if}}
+                    {{#if applySummary.transID}}
+                        <input type="hidden" name="trans_id" id="trans_id" value="{{applySummary.transID}}">
+                    {{/if}}
                 </form>
                 {{#unless applySummary.useBalance}}
                     <button id="go-to-pay" type="submit" class="am-btn am-btn-warning pull-right"> 确认支付 </button>

@@ -10,6 +10,7 @@ function getUserViewModel(user, orders){
     var realUser = user._doc;
     var vm = _.omit(realUser, privateProperties);
     return _.extend(vm, {
+        /*
         orders: orders.map(function(order){
             return {
                 date: order.createdAt,
@@ -19,6 +20,7 @@ function getUserViewModel(user, orders){
                 description: order.description
             };
         })
+        */
     });
 }
 
