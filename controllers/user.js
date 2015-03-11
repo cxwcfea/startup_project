@@ -539,6 +539,59 @@ module.exports.getPayTransid = function(req, res) {
 
 module.exports.payFeedback = function(req, res) {
     logger.debug(req.body);
+    if (req.body.transdata) {
+        var result = JSON.parse(req.body.transdata);
+        logger.debug(result);
+        Order.findById(result.cporderid, function(err, order) {
+            if (err) {
+                logger.error('error update user balance when payFeedback:' + err.toString());
+                return;
+            }
+            if (!order) {
+                logger.error('error update user balance when payFeedback:order not found');
+                return;
+            }
+            if (order.status === 1) {
+                logger.warn('payFeedback order already paied:' + order._id);
+                return;
+            }
+            var pay_amount = Number(result.money);
+            if (pay_amount <= 0) {
+                logger.error('error update user balance when payFeedback:pay_amount not valid:' + pay_amount);
+                return;
+            }
+            if (order.amount !== pay_amount) {
+                logger.error('error update user balance when payFeedback:pay_amount not match order\'s amount');
+                return;
+            }
+            order.status = 1;
+            order.save(function (err) {
+                if (err) {
+                    logger.warn('error update order when payFeedback:' + err.toString());
+                }
+            });
+            logger.info("pay success for order:" + order._id + " by " + pay_amount);
+
+            User.findById(result.appuserid, function(err, user) {
+                if (err) {
+                    logger.error('error update user balance when payFeedback:' + err.toString());
+                    return;
+                }
+                if (!user) {
+                    logger.error('error update user balance when payFeedback can not find user:' + result.appuserid);
+                    return;
+                }
+                user.finance.balance += pay_amount;
+                user.save(function(err) {
+                    if (err) {
+                        logger.error('error update user balance when payFeedback' + err.toString());
+                        return;
+                    }
+                    logger.debug('payFeedback success update user:' + user._id + ' and order:' + order._id);
+                });
+            });
+        });
+    }
 };
 
 module.exports.paySuccess = function(req, res, next) {
@@ -555,6 +608,10 @@ module.exports.paySuccess = function(req, res, next) {
         if (!order) {
             logger.error('error update user balance when paySuccess:order not found');
             return res.send({success:false, reason:'order not found'});
+        }
+        if (order.status === 1) {
+            logger.warn('paySuccess order already paied:' + order._id);
+            return res.send({success:false, reason:'paySuccess order already paied:' + order._id});
         }
         var pay_amount = Number(data.pay_amount);
         if (pay_amount <= 0) {
@@ -582,6 +639,7 @@ module.exports.paySuccess = function(req, res, next) {
                 logger.error('error update user balance when paySuccess:' + err.toString());
                 return res.send({success:false, reason:err.toString()});
             }
+            logger.debug('paySuccess success update user:' + user._id + ' and order:' + order._id);
             res.send({success:true});
         });
     });
