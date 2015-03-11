@@ -13,6 +13,11 @@ function createDefaultUsers() {
                 }
             });
 
+            User.create({mobile: 13121909306, password: 'xxxxxx', roles: ['admin']});
+            User.create({mobile: 13810655219, password: 'xxxxxx', roles: ['admin']});
+            User.create({mobile: 18911535534, password: 'xxxxxx', roles: ['admin']});
+            User.create({mobile: 18612921262, password: 'xxxxxx', roles: ['admin']});
+
             Homas.create({account: '123450', password: '111111'});
             Homas.create({account: '123451', password: '111111'});
             Homas.create({account: '123452', password: '111111'});
