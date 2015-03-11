@@ -134,7 +134,7 @@ module.exports = function(app) {
 
     app.post('/api/users/pay_by_balance', passportConf.isAuthenticated, users.payByBalance);
 
-    app.get('/pay_confirm/:orderID', orders.confirmPayOrder);
+    app.get('/pay_confirm/:orderID', passportConf.isAuthenticated, orders.confirmPayOrder);
 
     app.get('/api/users/:id', users.getUser);
 
