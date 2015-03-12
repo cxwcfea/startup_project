@@ -157,12 +157,13 @@ $(document).ready(function() {
         var NotifyUrl = $('#NotifyUrl')[0].value;
         var BuyerIp = returnCitySN["cip"];
         var ProductName = $('#ProductName')[0].value;
+        var Ext1 = $('#Ext1')[0].value;
         var SignType = $('#SignType')[0].value;
         var md5Key = 'shengfutongSHENGFUTONGtest';
 
 
         var sign_origin = Name+Version+Charset+MsgSender+OrderNo+OrderAmount+OrderTime+
-                PageUrl+BackUrl+NotifyUrl+ProductName+BuyerIp+SignType+md5Key;
+                PageUrl+BackUrl+NotifyUrl+ProductName+BuyerIp+Ext1+SignType+md5Key;
         var SignMsg = SparkMD5.hash(sign_origin);
         SignMsg = SignMsg.toUpperCase();
         console.log(SignMsg);

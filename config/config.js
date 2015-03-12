@@ -4,7 +4,7 @@ var path = require('path'),
 module.exports = {
     development: {
         rootPath: rootPath,
-        db: 'mongodb://localhost/goldenbull',
+        db: 'mongodb://goldenbull:JDYWNeDM64G9d1aPJ4TeXxOlOK7cbZbjrbNgkyGwwtg@localhost/goldenbull',
         port: process.env.PORT || 3000
     },
     production: {

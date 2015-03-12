@@ -12,6 +12,7 @@ var passport = require('passport'),
     log4js = require('log4js'),
     logger = log4js.getLogger('admin'),
     util = require('../lib/util'),
+    config = require('../config/config'),
     async = require('async');
 
 
@@ -311,23 +312,25 @@ module.exports.payByBalance = function(req, res, next) {
             req.session.pay_error = {
                 reason: '无效的用户!'
             };
+            logger.warn('payByBalance error. no enough balance to pay apply:' + apply_id);
             return res.send({success:false, reason:'无效的用户!'});
-        }
-        if (user.finance.balance < data.pay_amount) {
-            req.session.pay_error = {
-                reason: '余额不足，支付失败!'
-            };
-            return res.send({success:false, reason:'余额不足，支付失败!'});
         }
         if (data.apply_id) {
             Apply.findOne({serialID:data.apply_id}, function(err, apply) {
                 if (err) {
                     return res.send({success:false, reason:err.toString()});
                 }
+                var serviceFee = apply.amount / 10000 * config.parameters.serviceCharge * apply.period;
+                var total = apply.deposit + serviceFee;
+                if (user.finance.balance < total) {
+                    logger.warn('payByBalance error. no enough balance to pay apply:' + apply_id);
+                    return res.send({success:false, reason:'payApply error. no enough balance to pay apply:' + apply_id});
+                }
                 apply.status = 4;
                 Homas.findOne({using:false}, function(err, homas) {
                     if (err || !homas) {
                         logger.warn('failed to assign homas account to apply:' + apply._id);
+                        return res.send({success:false, reason:'failed to assign homas account to apply:' + apply._id});
                     }
                     homas.using = true;
                     homas.assignAt = Date.now();
@@ -345,16 +348,18 @@ module.exports.payByBalance = function(req, res, next) {
                         }
                         apply.save(function (err) {
                             if (err) {
+                                logger.warn('payByBalance failed:' + err.toString());
                                 return res.send({success:false, reason:err.toString()});
                             }
                         });
-                        user.finance.balance -= data.pay_amount;
+                        user.finance.balance -= total;
                         user.save(function (err) {
                             if (err) {
                                 res.status(500);
                                 req.session.pay_error = {
                                     reason: err.toString()
                                 };
+                                logger.warn('payByBalance failed:' + err.toString());
                                 return res.send({success:false, reason:err.toString()});
                             }
                             return res.send({success:true, data:user.finance.balance});
@@ -569,6 +574,7 @@ module.exports.payFeedback = function(req, res) {
                 return;
             }
             order.status = 1;
+            order.payType = 0;
             order.save(function (err) {
                 if (err) {
                     logger.warn('error update order when payFeedback:' + err.toString());
@@ -627,6 +633,7 @@ module.exports.paySuccess = function(req, res, next) {
             return res.send({success:false, reason:"pay_amount not match order's amount"});
         }
         order.status = 1;
+        order.payType = 0;
         order.save(function (err) {
             if (err) {
                 logger.warn('error update order when paySuccess:' + err.toString());
@@ -678,4 +685,122 @@ module.exports.thankYouForPay = function(req, res, next) {
 module.exports.shengpayFeedback = function(req, res, next) {
     logger.debug('shengpayFeedback');
     logger.debug(req.body);
+    var result = req.body;
+    var apply_id = null;
+    if (result.TransStatus && result.TransStatus === '01') {
+        Order.findById(result.OrderNo, function(err, order) {
+            if (err) {
+                logger.error('error update user balance when shengpayFeedback:' + err.toString());
+                return;
+            }
+            if (!order) {
+                logger.error('error update user balance when shengpayFeedback:order not found');
+                return;
+            }
+            if (order.status === 1) {
+                logger.warn('shengpayFeedback order already paied:' + order._id);
+                return;
+            }
+            var pay_amount = Number(result.TransAmount);
+            if (pay_amount <= 0) {
+                logger.error('error update user balance when shengpayFeedback:pay_amount not valid:' + pay_amount);
+                return;
+            }
+            if (order.amount !== pay_amount) {
+                logger.error('error update user balance when shengpayFeedback:pay_amount not match order\'s amount: ' + order.amount + ' vs ' + pay_amount);
+                return;
+            }
+            order.status = 1;
+            order.payType = 1;
+            order.transID = result.TransNo;
+            order.save(function (err) {
+                if (err) {
+                    logger.warn('error update order when shengpayFeedback:' + err.toString());
+                }
+            });
+            logger.info("pay success for order:" + order._id + " by " + pay_amount);
+
+            User.findById(order.userID, function(err, user) {
+                if (err) {
+                    logger.error('error update user balance when shengpayFeedback:' + err.toString());
+                    return;
+                }
+                if (!user) {
+                    logger.error('error update user balance when shengpayFeedback can not find user:' + order.userID);
+                    return;
+                }
+                user.finance.balance += pay_amount;
+                user.save(function(err) {
+                    if (err) {
+                        logger.error('error update user balance when shengpayFeedback' + err.toString());
+                        return;
+                    }
+                    logger.debug('shengpayFeedback success update user:' + user._id + ' and order:' + order._id);
+                    if (apply_id) {
+                        logger.info('shengpayFeedback pay apply');
+                        payApply(user, apply_id);
+                    }
+                });
+            });
+        });
+    } else {
+        logger.warn('shengpayFeedback pay failed for order:' + result.OrderNo + ' status:' + result.TransStatus + ' error:' + ErrorCode + ' ' + ErrorMsg);
+    }
+
+    res.send('OK');
 };
+
+
+function payApply(user, apply_id) {
+    if (!user) {
+        return;
+    }
+
+    Apply.findById(apply_id, function(err, apply) {
+        if (err || !apply) {
+            logger.warn('payApply error. not found apply:' + apply_id + ' or ' + err.toString());
+            return;
+        }
+        var serviceFee = apply.amount / 10000 * config.parameters.serviceCharge * apply.period;
+        var total = apply.deposit + serviceFee;
+        if (user.finance.balance < total) {
+            logger.warn('payApply error. no enough balance to pay apply:' + apply_id);
+            return;
+        }
+        apply.status = 4;
+        Homas.findOne({using:false}, function(err, homas) {
+            if (err || !homas) {
+                logger.warn('failed to assign homas account to apply:' + apply._id);
+                return res.send({success:false, reason:'failed to assign homas account to apply:' + apply._id});
+            }
+            homas.using = true;
+            homas.assignAt = Date.now();
+            homas.applyID = apply._id;
+            homas.save(function(err) {
+                if (err) {
+                    logger.warn('failed to assign homas account to apply:' + apply._id);
+                } else {
+                    apply.status = 2;
+                    apply.account = homas.account;
+                    apply.password = homas.password;
+                    var startDay = util.getStartDay();
+                    apply.startTime = startDay.toDate();
+                    apply.endTime = util.getEndDay(startDay, apply.period).toDate();
+                }
+                apply.save(function (err) {
+                    if (err) {
+                        logger.warn('payApply error. ' + err.toString());
+                        return;
+                    }
+                });
+                user.finance.balance -= total;
+                user.save(function (err) {
+                    if (err) {
+                        logger.warn('payApply error when save user:' + err.toString());
+                        return;
+                    }
+                });
+            });
+        });
+    });
+}

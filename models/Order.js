@@ -12,7 +12,8 @@ var orderSchema = mongoose.Schema({
         bankName: String,
         cardID: Number,
         userName: String
-    }
+    },
+    payType: Number  // 0 means iapppay, 1 means shengpay, undefine means withdraw
 });
 
 var Order = mongoose.model('Order', orderSchema);
