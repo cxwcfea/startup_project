@@ -5,7 +5,7 @@ angular.module('myApp').controller('UserPayController', ['gbIdentity', '$http', 
     vm.pay_option = 'option1';
 
     vm.gotoPay = function() {
-        if (!vm.payAmount || vm.payAmount < 1) {
+        if (!vm.payAmount || vm.payAmount < 0) {
             gbNotifier.error('无效的充值金额');
             return;
         }
