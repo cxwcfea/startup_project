@@ -1,4 +1,4 @@
-angular.module('myApp', ['ngResource', 'ngRoute', 'ui.bootstrap']);
+angular.module('myApp', ['ngResource', 'ngRoute', 'ui.bootstrap', 'commonApp']);
 
 angular.module('myApp').config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     //$locationProvider.html5Mode(true);
@@ -41,6 +41,7 @@ angular.module('myApp').config(['$routeProvider', '$locationProvider', function(
         });
 }]);
 
+/*
 angular.module('myApp').filter("displayDate", function () {
     return function (input) {
         return moment(input).format("YYYY-MM-DD HH:mm");
@@ -54,3 +55,4 @@ angular.module('myApp').filter("displayDate", function () {
         }
     };
 });
+*/

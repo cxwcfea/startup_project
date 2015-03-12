@@ -91,7 +91,14 @@ exports.getApplyDetail = function (req, res, next) {
         var serviceFee = collection.amount / 10000 * config.parameters.serviceCharge * collection.period;
         var warnValue = config.parameters.warnFactor * collection.amount;
         var sellValue = config.parameters.sellFactor * collection.amount;
-        var date = moment(collection.applyAt);
+        var startTime, endTime;
+        if (collection.startTime) {
+            startTime = moment(collection.startTime);
+            endTime = moment(collection.endTime);
+        } else {
+            startTime = util.getStartDay();
+            endTime = util.getEndDay(startTime, collection.period);
+        }
         res.locals.applySummary = {
             amount: collection.amount.toFixed(2),
             deposit: collection.deposit.toFixed(2),
@@ -99,8 +106,8 @@ exports.getApplyDetail = function (req, res, next) {
             balance: req.user.finance.balance.toFixed(2),
             warnValue: warnValue.toFixed(2),
             sellValue: sellValue.toFixed(2),
-            startDate: date.format("YYYY-MM-DD HH:mm"),
-            endDate: date.add(collection.period, 'days').format("YYYY-MM-DD HH:mm"),
+            startDate: startTime.format("YYYY-MM-DD HH:mm"),
+            endDate: endTime.format("YYYY-MM-DD HH:mm"),
             checking: collection.status === 4 || collection.status === 1,
             account: collection.account,
             password: collection.password,

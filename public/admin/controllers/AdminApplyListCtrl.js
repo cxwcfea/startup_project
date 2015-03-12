@@ -1,5 +1,5 @@
 'use strict';
-angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', '$location', '$routeParams', '$modal', 'adminApply', 'gbNotifier', function($scope, $http, $location, $routeParams, $modal, adminApply, gbNotifier) {
+angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', '$location', '$routeParams', '$modal', 'adminApply', 'gbNotifier', 'days', function($scope, $http, $location, $routeParams, $modal, adminApply, gbNotifier, days) {
     var vm = this;
     var apply_list = {};
     var currentApplies;
@@ -52,9 +52,8 @@ angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', 
     };
 
     function formatData (item) {
-        var date = moment(item.applyAt);
-        item.start_date = date.format("YYYY-MM-DD HH:mm");
-        item.end_date = date.add(item.period, 'days').format("YYYY-MM-DD HH:mm");
+        item.start_date = item.startTime ? item.startTime : days.startTime();
+        item.end_date = item.endTime ? item.endTime : days.endTime(item.start_date, item.period);
         switch (item.status) {
             case 1:
                 item.status_str = "待支付";

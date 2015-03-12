@@ -7,7 +7,12 @@ var orderSchema = mongoose.Schema({
     amount: {type:Number, required:'{PATH} is required!'},
     status: {type:Number, default: 0}, // 0 not pay, 1 pay success, 2 otherwise
     description: {type:String, required:'{PATH} is required!'},
-    transID: String
+    transID: String,
+    cardInfo: {
+        bankName: String,
+        cardID: Number,
+        userName: String
+    }
 });
 
 var Order = mongoose.model('Order', orderSchema);

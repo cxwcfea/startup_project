@@ -49,7 +49,12 @@ angular.module('myApp').controller('UserWithdrawController', ['gbIdentity', 'gbN
                                 userID: vm.user._id,
                                 dealType: '提现',
                                 amount: vm.amount,
-                                description: '10倍配资'
+                                description: '余额提现',
+                                cardInfo: {
+                                    bankName: vm.selected.bankName,
+                                    cardID: vm.selected.cardID,
+                                    userName: vm.selected.userName
+                                }
                             };
                             var newOrder = new gbOrder(order);
                             newOrder.$save().then(function(response) {

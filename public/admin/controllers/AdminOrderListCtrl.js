@@ -1,5 +1,5 @@
 'use strict';
-angular.module('adminApp').controller('AdminOrderListCtrl', ['$scope', '$location', '$routeParams', 'adminOrder', function($scope, $location, $routeParams, adminOrder) {
+angular.module('adminApp').controller('AdminOrderListCtrl', ['$scope', '$location', '$routeParams', '$modal', 'adminOrder', function($scope, $location, $routeParams, $modal, adminOrder) {
     var vm = this;
     var order_list = {};
     var currentOrders;
@@ -60,5 +60,36 @@ angular.module('adminApp').controller('AdminOrderListCtrl', ['$scope', '$locatio
             end = vm.totalItems;
         }
         vm.showingItems = currentOrders.slice(start, end);
+    };
+
+
+    vm.handleWithdraw = function(order) {
+        var modalInstance = $modal.open({
+            templateUrl: 'withdrawModal.html',
+            controller: 'WithdrawModalCtrl',
+            resolve: {}
+        });
+
+        modalInstance.result.then(function (content) {
+            apply.$save(function(data) {
+                gbNotifier.notify('更新成功!');
+            }, function(response) {
+                console.log(response);
+                gbNotifier.error('更新失败:');
+            });
+        }, function () {
+        });
+    };
+}]);
+
+angular.module('adminApp').controller('WithdrawModalCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+    //$scope.sms_content = '您好,您在牛金网的一笔配资【单号:' + serialID + '】,保证金已不足，请补足到保证金的80%。';
+
+    $scope.ok = function () {
+        $modalInstance.close($scope.sms_content);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
     };
 }]);

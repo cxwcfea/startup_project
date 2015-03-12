@@ -1,5 +1,5 @@
 'use strict';
-angular.module('myApp').controller('UserApplyListController', ['gbIdentity', '$http', 'gbNotifier', '$location', 'gbApply', '$window', function(gbIdentity, $http, gbNotifier, $location, gbApply, $window) {
+angular.module('myApp').controller('UserApplyListController', ['gbIdentity', '$http', 'gbNotifier', '$location', 'gbApply', '$window', 'days', function(gbIdentity, $http, gbNotifier, $location, gbApply, $window, days) {
     var vm = this;
     vm.user = gbIdentity.currentUser;
     var apply_list = {};
@@ -46,9 +46,8 @@ angular.module('myApp').controller('UserApplyListController', ['gbIdentity', '$h
     };
 
     function formatData (item) {
-        var date = moment(item.applyAt);
-        item.start_date = date.format("YYYY-MM-DD HH:mm");
-        item.end_date = date.add(item.period, 'days').format("YYYY-MM-DD HH:mm");
+        item.start_date = item.startTime ? item.startTime : days.startTime();
+        item.end_date = item.endTime ? item.endTime : days.endTime(item.start_date, item.period);
         switch (item.status) {
             case 1:
                 item.status_str = "待支付";

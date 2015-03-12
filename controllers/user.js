@@ -10,7 +10,8 @@ var passport = require('passport'),
     needle = require('needle'),
     ursa = require('ursa'),
     log4js = require('log4js'),
-    logger = log4js.getLogger('admin');
+    logger = log4js.getLogger('admin'),
+    util = require('../lib/util'),
     async = require('async');
 
 
@@ -338,6 +339,9 @@ module.exports.payByBalance = function(req, res, next) {
                             apply.status = 2;
                             apply.account = homas.account;
                             apply.password = homas.password;
+                            var startDay = util.getStartDay();
+                            apply.startTime = startDay.toDate();
+                            apply.endTime = util.getEndDay(startDay, apply.period).toDate();
                         }
                         apply.save(function (err) {
                             if (err) {
@@ -611,7 +615,7 @@ module.exports.paySuccess = function(req, res, next) {
         }
         if (order.status === 1) {
             logger.warn('paySuccess order already paied:' + order._id);
-            return res.send({success:false, reason:'paySuccess order already paied:' + order._id});
+            return res.send({success:true, reason:'paySuccess order already paied:' + order._id});
         }
         var pay_amount = Number(data.pay_amount);
         if (pay_amount <= 0) {
@@ -643,4 +647,30 @@ module.exports.paySuccess = function(req, res, next) {
             res.send({success:true});
         });
     });
+};
+
+module.exports.payByShengpay = function(req, res, next) {
+    logger.debug('payByShengpay');
+    needle.get('http://api.shengpay.com/mas/v1/timestamp?merchantNo=100894', function(error, response) {
+        if (!error && response.statusCode == 200) {
+            if (response.body.timestamp) {
+                console.log(response.body.timestamp);
+                //https://mas.sdo.com/web-acquire-channel/cashier.htm
+                /*
+                var data = 'B2CPayment' + 'V4.1.1.1.1' + 'UTF-8' + '100894' + response.body.timestamp +
+                        order_id + amount + moment().format("YYYYMMDDHHmmss") + 'returnToOrder' + 'returnToOrder' + 'http://niujinwang/shengpay_feedback'
+                        */
+            }
+        }
+    });
+    res.send({success:true});
+};
+
+module.exports.thankYouForPay = function(req, res, next) {
+    logger.debug('thankYouForPay');
+    logger.debug(req.body);
+    if (req.query.apply_id) {
+        return res.render('thank_you_for_pay', {apply_id:req.query.apply_id});
+    }
+    res.render('thank_you_for_pay');
 };

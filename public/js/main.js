@@ -33,10 +33,10 @@ $(document).ready(function() {
     });
 
     window.aibeiNotify = function(data) {
-        //alert("RetCode=" + data.RetCode+":TransId=" + data.TransId + ":OrderStatus=" + data.OrderStatus);
+        console.log("RetCode=" + data.RetCode+":TransId=" + data.TransId + ":OrderStatus=" + data.OrderStatus);
         if (data.RetCode === 0) {
             console.log('pay complete');
-            if (data.OrderStatus === 1) {
+            if (data.OrderStatus === 0) {
                 console.log('pay success');
                 var apply_id = $('#apply_id')[0] ? $('#apply_id')[0].value : null;
                 if (window.niujin_data && window.niujin_data.paying_order) {
@@ -118,22 +118,6 @@ $(document).ready(function() {
                 console.log('error');
             }
         });
-        /*
-        var data = {
-            appid: '3002011663',
-            waresid: 1,
-            waresname: '股票配资',
-            cporderid: order_id,
-            price: pay_amount,
-            currency: 'RMB',
-            appuserid: user_id
-        };
-        $.post('http://ipay.iapppay.com:9999/payapi/order', data, function(data) {
-            //console.log(err);
-            //console.log(resp);
-            console.log(data);
-        });
-        */
     }
 
     function placeOrder(uid, pay_amount, apply_id) {
@@ -156,16 +140,37 @@ $(document).ready(function() {
                 console.log(e);
             }
         });
+    }
 
-        /*
-        $.post("/api/user/" + uid + "/orders", order, function (data) {
-            if (data.success) {
-                window.location.replace('/thank_you_for_pay');
-            } else {
-                window.location.replace('/failed_to_pay');
-            }
-        });
-        */
+
+    function payByShengpay() {
+        console.log('payByShengpay');
+        var Name = $('#Name')[0].value;
+        var Version = $('#Version')[0].value;
+        var Charset = $('#Charset')[0].value;
+        var MsgSender = $('#MsgSender')[0].value;
+        var OrderNo = $('#OrderNo')[0].value;
+        var OrderAmount = $('#OrderAmount')[0].value;
+        var OrderTime = $('#OrderTime')[0].value;
+        var PageUrl = $('#PageUrl')[0].value;
+        var BackUrl = $('#BackUrl')[0].value;
+        var NotifyUrl = $('#NotifyUrl')[0].value;
+        var BuyerIp = returnCitySN["cip"];
+        var ProductName = $('#ProductName')[0].value;
+        var SignType = $('#SignType')[0].value;
+        var md5Key = 'shengfutongSHENGFUTONGtest';
+
+
+        var sign_origin = Name+Version+Charset+MsgSender+OrderNo+OrderAmount+OrderTime+
+                PageUrl+BackUrl+NotifyUrl+ProductName+BuyerIp+SignType+md5Key;
+        var SignMsg = SparkMD5.hash(sign_origin);
+        SignMsg = SignMsg.toUpperCase();
+        console.log(SignMsg);
+
+        $('#BuyerIp')[0].value = BuyerIp;
+        $('#SignMsg')[0].value = SignMsg;
+
+        $('#shengPayForm')[0].submit();
     }
 
     $('#go-to-pay').on('click', function(e) {
@@ -174,38 +179,19 @@ $(document).ready(function() {
         var pay_amount = $('#pay_amount')[0].value;
         var apply_id = $('#apply_id')[0] ? $('#apply_id')[0].value : null;
         var order_id = $('#order_id')[0] ? $('#order_id')[0].value : null;
+
+        var pay_option = $('#pay-select')[0].value;
+        console.log('pay option:' + pay_option);
+        if (pay_option === 'option1') {
+            payByShengpay();
+            return;
+        }
+
         if (order_id) {
             getTransId(order_id, uid, pay_amount);
         } else {
             placeOrder(uid, pay_amount, apply_id);
         }
-        /*
-        window.open('/third_party_pay');
-        $('#pay-confirm').modal({
-            relatedTarget: this,
-            onConfirm: function(options) {
-                var pay_amount = $('#pay_amount')[0].value;
-                $.post('/api/users/update_balance', {pay_amount:pay_amount}, function(data) {
-                    if (data.success) {
-                        var pay_amount = $('#total_amount')[0].value;
-                        var apply_id = $('#apply_id')[0].value;
-                        $.post('/api/users/pay_by_balance', {pay_amount:pay_amount, apply_id:apply_id}, function(data) {
-                            if (data.success) {
-                                window.location.replace('/thank_you_for_pay');
-                            } else {
-                                window.location.replace('/failed_to_pay');
-                            }
-                        });
-                    } else {
-                        window.location.replace('/failed_to_pay');
-                    }
-                });
-            },
-            onCancel: function() {
-                window.location.replace('/support_contact');
-            }
-        });
-        */
     });
 
 

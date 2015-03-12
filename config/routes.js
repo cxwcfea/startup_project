@@ -23,13 +23,6 @@ module.exports = function(app) {
         res.render('third_party_pay', {layout:null});
     });
 
-    app.get('/thank_you_for_pay', function(req, res) {
-        if (req.query.apply_id) {
-            return res.render('thank_you_for_pay', {apply_id:req.query.apply_id});
-        }
-        res.render('thank_you_for_pay');
-    });
-
     app.get('/failed_to_pay', function(req, res) {
         res.locals.pay_error = req.session.pay_error;
         req.session.pay_error = null;
@@ -65,6 +58,10 @@ module.exports = function(app) {
     app.get('/partners', function(req, res) {
         res.render('article/partners', {layout:'article_main'});
     });
+
+    app.get('/thank_you_for_pay', users.thankYouForPay);
+
+    app.post('/thank_you_for_pay', users.thankYouForPay);
 
     app.get('/signup', function(req, res) {
         if (req.isAuthenticated()) {
@@ -163,6 +160,8 @@ module.exports = function(app) {
     app.post('/api/pay_feedback', users.payFeedback);
 
     app.post('/api/users/pay_success/:order_id', passportConf.isAuthenticated, users.paySuccess);
+
+    app.post('/api/pay_by_shengpay', passportConf.isAuthenticated, users.payByShengpay);
 
     admin.registerRoutes(app, passportConf);
 };

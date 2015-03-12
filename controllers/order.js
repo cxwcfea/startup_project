@@ -1,6 +1,7 @@
 var Order = require('../models/Order'),
     Apply = require('../models/Apply'),
     log4js = require('log4js'),
+    moment = require('moment'),
     logger = log4js.getLogger('admin');
 
 exports.fetchOrdersForUser = function(req, res) {
@@ -72,6 +73,7 @@ exports.confirmPayOrder = function(req, res, next) {
         }
         res.locals.order = order;
         res.locals.balance = req.user.finance.balance;
+        res.locals.shengOrderTime = moment().format("YYYYMMDDHHmmss");
         res.render('pay_confirm');
     })
 };
