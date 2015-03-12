@@ -674,3 +674,8 @@ module.exports.thankYouForPay = function(req, res, next) {
     }
     res.render('thank_you_for_pay');
 };
+
+module.exports.shengpayFeedback = function(req, res, next) {
+    logger.debug('shengpayFeedback');
+    logger.debug(req.body);
+};

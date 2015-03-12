@@ -163,5 +163,7 @@ module.exports = function(app) {
 
     app.post('/api/pay_by_shengpay', passportConf.isAuthenticated, users.payByShengpay);
 
+    app.post('api/shengpay_feedback', users.shengpayFeedback);
+
     admin.registerRoutes(app, passportConf);
 };
