@@ -656,23 +656,6 @@ module.exports.paySuccess = function(req, res, next) {
     });
 };
 
-module.exports.payByShengpay = function(req, res, next) {
-    logger.debug('payByShengpay');
-    needle.get('http://api.shengpay.com/mas/v1/timestamp?merchantNo=100894', function(error, response) {
-        if (!error && response.statusCode == 200) {
-            if (response.body.timestamp) {
-                console.log(response.body.timestamp);
-                //https://mas.sdo.com/web-acquire-channel/cashier.htm
-                /*
-                var data = 'B2CPayment' + 'V4.1.1.1.1' + 'UTF-8' + '100894' + response.body.timestamp +
-                        order_id + amount + moment().format("YYYYMMDDHHmmss") + 'returnToOrder' + 'returnToOrder' + 'http://niujinwang/shengpay_feedback'
-                        */
-            }
-        }
-    });
-    res.send({success:true});
-};
-
 module.exports.thankYouForPay = function(req, res, next) {
     logger.debug('thankYouForPay');
     logger.debug(req.body);

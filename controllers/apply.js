@@ -60,8 +60,10 @@ exports.confirmApply = function(req, res, next) {
             balance: req.user.finance.balance.toFixed(2),
             shouldPay: shouldPay.toFixed(2),
             serialID: collection.serialID,
-            orderID: collection.orderID
+            orderID: collection.orderID,
+            applyID: collection._id
         };
+        res.locals.shengOrderTime = moment().format("YYYYMMDDHHmmss");
 
         if (shouldPay <= 0) {
             res.locals.applySummary.useBalance = true;

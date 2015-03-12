@@ -63,27 +63,35 @@ angular.module('adminApp').controller('AdminOrderListCtrl', ['$scope', '$locatio
     };
 
 
-    vm.handleWithdraw = function(order) {
-        var modalInstance = $modal.open({
-            templateUrl: 'withdrawModal.html',
-            controller: 'WithdrawModalCtrl',
-            resolve: {}
-        });
-
-        modalInstance.result.then(function (content) {
-            apply.$save(function(data) {
-                gbNotifier.notify('更新成功!');
-            }, function(response) {
-                console.log(response);
-                gbNotifier.error('更新失败:');
+    vm.handleOrder = function(order) {
+        if (order.dealType === '提现') {
+            var modalInstance = $modal.open({
+                templateUrl: 'withdrawModal.html',
+                controller: 'WithdrawModalCtrl',
+                resolve: {
+                    order: function () {
+                        return order;
+                    }
+                }
             });
-        }, function () {
-        });
+
+            modalInstance.result.then(function (content) {
+                apply.$save(function(data) {
+                    gbNotifier.notify('更新成功!');
+                }, function(response) {
+                    console.log(response);
+                    gbNotifier.error('更新失败:');
+                });
+            }, function () {
+            });
+        }
     };
 }]);
 
-angular.module('adminApp').controller('WithdrawModalCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-    //$scope.sms_content = '您好,您在牛金网的一笔配资【单号:' + serialID + '】,保证金已不足，请补足到保证金的80%。';
+angular.module('adminApp').controller('WithdrawModalCtrl', ['$scope', '$modalInstance', 'order', function ($scope, $modalInstance, order) {
+    $scope.bankName = order.cardInfo.bankName;
+    $scope.cardID = order.cardInfo.cardID;
+    $scope.userName = order.cardInfo.userName;
 
     $scope.ok = function () {
         $modalInstance.close($scope.sms_content);

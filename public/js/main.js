@@ -120,7 +120,7 @@ $(document).ready(function() {
         });
     }
 
-    function placeOrder(uid, pay_amount, apply_id) {
+    function placeOrder(uid, pay_amount, apply_id, shengpay) {
         var order = {
             userID: uid,
             dealType: '充值',
@@ -134,7 +134,11 @@ $(document).ready(function() {
             data: order,
             success : function(response) {
                 console.log(response._id);
-                getTransId(response._id, uid, pay_amount);
+                if (shengpay) {
+                    payByShengpay(response._id);
+                } else {
+                    getTransId(response._id, uid, pay_amount);
+                }
             },
             error : function(e) {
                 console.log(e);
@@ -142,13 +146,15 @@ $(document).ready(function() {
         });
     }
 
-
-    function payByShengpay() {
+    function payByShengpay(order_id) {
         console.log('payByShengpay');
         var Name = $('#Name')[0].value;
         var Version = $('#Version')[0].value;
         var Charset = $('#Charset')[0].value;
         var MsgSender = $('#MsgSender')[0].value;
+        if (order_id) {
+            $('#OrderNo')[0].value = order_id;
+        }
         var OrderNo = $('#OrderNo')[0].value;
         var OrderAmount = $('#OrderAmount')[0].value;
         var OrderTime = $('#OrderTime')[0].value;
@@ -160,7 +166,6 @@ $(document).ready(function() {
         var Ext1 = $('#Ext1')[0].value;
         var SignType = $('#SignType')[0].value;
         var md5Key = 'shengfutongSHENGFUTONGtest';
-
 
         var sign_origin = Name+Version+Charset+MsgSender+OrderNo+OrderAmount+OrderTime+
                 PageUrl+BackUrl+NotifyUrl+ProductName+BuyerIp+Ext1+SignType+md5Key;
@@ -184,7 +189,11 @@ $(document).ready(function() {
         var pay_option = $('#pay-select')[0].value;
         console.log('pay option:' + pay_option);
         if (pay_option === 'option1') {
-            payByShengpay();
+            if (order_id) {
+                payByShengpay();
+            } else {
+                placeOrder(uid, pay_amount, apply_id, true);
+            }
             return;
         }
 
