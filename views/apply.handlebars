@@ -50,7 +50,7 @@
 
                 <div class="am-g">
                     <div class="money_showtab am-margin am-u-sm-11">
-                        <div class="mstit">申请说明</div>
+                        <div class="mstit">申请确认</div>
                         <table class="apply_table" rules="none">
                             <tbody>
                             <tr>
@@ -58,13 +58,15 @@
                                 <td>申请金额：<span><span>￥<span id="span_amount" class="am-text-danger am-text-xl">\{{vm.summary.amount}}</span></span>元</span></td>
                             </tr>
                             <tr>
-                                <td class="msli">资金使用时间：<span>截至<span id="span_endtime" class="am-text-danger am-text-xl">2015-03-10</span>下午14:54:59（可延期）</span></td>
                                 <td>使用天数：<span><span id="span_usetrem" class="am-text-danger am-text-xl">\{{vm.summary.day}}</span>天</span></td>
+                                <td class="msli">资金使用时间：<span>截至<span id="span_endtime" class="am-text-danger am-text-xl">2015-03-10</span>下午14:54:59（可延期）</span></td>
                             </tr>
+                            <!--
                             <tr>
                                 <td>警戒线<span id="tip" data-am-popover="{content: '当保证金为实盘资金的5%为警戒线', trigger: 'hover focus'}" class="am-icon-question-circle" style="cursor: pointer;"></span>：<span><span>￥<span id="span_warn" class="am-text-danger am-text-xl">\{{vm.summary.warnValue.toFixed(2)}}</span></span>元</span></td>
                                 <td>平仓线<span id="tip1" data-am-popover="{content: '当保证金为实盘资金的3%为平仓线', trigger: 'hover focus'}" class="am-icon-question-circle" style="cursor: pointer;"></span>：<span><span>￥<span id="span_sell" class="am-text-danger am-text-xl">\{{vm.summary.sellValue.toFixed(2)}}</span></span>元</span></td>
                             </tr>
+                            -->
                             </tbody>
                         </table>
                     </div>

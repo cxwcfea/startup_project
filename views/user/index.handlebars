@@ -44,7 +44,7 @@
             <li class="am-active"><a href="/#"> 个人中心 </a></li>
             <div class="am-topbar-right">
                 <div class="am-dropdown" data-am-dropdown="{boundary: '.am-topbar'}">
-                    <button class="am-btn am-btn-secondary am-topbar-btn am-btn-sm am-dropdown-toggle" data-am-dropdown-toggle> {{#if user.profile.name}} {{user.profile.name}} {{else}} {{user.mobile}} {{/if}} <span class="am-icon-caret-down"></span></button>
+                    <button class="am-btn am-btn-default am-topbar-btn am-btn-sm am-dropdown-toggle" data-am-dropdown-toggle> {{#if user.profile.name}} {{user.profile.name}} {{else}} {{user.mobile}} {{/if}} <span class="am-icon-caret-down"></span></button>
                     <ul class="am-dropdown-content">
                         <li><a href="#" ng-click="indexVM.signout()"> 安全退出 </a></li>
                     </ul>
@@ -76,22 +76,26 @@
                     <a class="am-cf" data-am-collapse="{target: '#'}"><span class="am-icon-file"></span> 账户中心 </a>
                     <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav">
                         <li><a href="/user#/index" class="am-cf"><!--<span class="am-icon-book"></span>--> 账户总览</a></li>
-                        <li><a href="/user#/mypay"><!--<span class="am-icon-credit-card"></span>--> 充值</a></li>
-                        <li><a href="/user#/withdraw"><!--<span class="am-icon-bank"></span>--> 提现</a></li>
+                        <li><a href="/user#/apply_list" class="am-cf"><!--<span class="am-icon-bar-chart"></span>--> 配资记录</a></li>
+                        <li><a href="/user#/" class="am-cf"><!--<span class="am-icon-bar-chart"></span>--> 加配</a></li>
+                        <li><a href="/user#/" class="am-cf"><!--<span class="am-icon-bar-chart"></span>--> 减配</a></li>
                     </ul>
                 </li>
                 <li class="admin-parent">
-                    <a class="am-cf" data-am-collapse="{target: '#'}"><span class="am-icon-file"></span> 个人中心 </a>
+                    <a class="am-cf" data-am-collapse="{target: '#'}"><span class="am-icon-file"></span> 我的资料 </a>
                     <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav2">
                         <li><a href="/user#/profile" class="am-cf"><!--<span class="am-icon-user"></span>--> 个人资料</a></li>
                         <li><a href="/user#/security"><!--<span class="am-icon-key"></span>--> 安全设置</a></li>
                     </ul>
                 </li>
                 <li class="admin-parent">
-                    <a class="am-cf" data-am-collapse="{target: '#'}"><span class="am-icon-file"></span> 财务中心 </a>
+                    <a class="am-cf" data-am-collapse="{target: '#'}"><span class="am-icon-file"></span> 资金记录 </a>
                     <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav3">
+                        <li><a href="/user#/mypay"><!--<span class="am-icon-credit-card"></span>--> 充值</a></li>
+                        <li><a href="/user#/withdraw"><!--<span class="am-icon-bank"></span>--> 提现</a></li>
+                        <li><a href="/user#/"><!--<span class="am-icon-bank"></span>--> 盈利提取</a></li>
                         <li><a href="/user#/orders"><!--<span class="am-icon-calendar"></span>--> 资金流水</a></li>
-                        <li><a href="/user#/apply_list" class="am-cf"><!--<span class="am-icon-bar-chart"></span>--> 操盘记录</a></li>
+                        <li><a href="/user#/"><!--<span class="am-icon-bank"></span>--> 我的银行卡</a></li>
                     </ul>
                 </li>
                 <!--
@@ -100,11 +104,13 @@
             </ul>
 
             <div class="am-panel am-panel-default admin-sidebar-panel">
-                <div class="am-panel-bd">
-                    <p><span class="am-icon-bookmark"></span> 公告</p>
-                    <p>感谢您使用牛金网!</p>
-                    <p>时光静好，与君语；细水流年，与君同。—— 牛金网</p>
-                </div>
+                <!--
+                    <div class="am-panel-bd">
+                        <p><span class="am-icon-bookmark"></span> 公告</p>
+                        <p>感谢您使用牛金网!</p>
+                        <p>时光静好，与君语；细水流年，与君同。—— 牛金网</p>
+                    </div>
+                -->
             </div>
 
         </div>
