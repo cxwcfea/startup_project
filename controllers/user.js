@@ -724,7 +724,7 @@ module.exports.shengpayFeedback2 = function(req, res, next) {
                     logger.info('shengpayFeedback pay apply');
                     callback(user, apply_id);
                 } else {
-                    callback('done');
+                    callback(null, 'done');
                 }
             },
             function(user, apply_id, callback) {
