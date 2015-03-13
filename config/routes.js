@@ -163,5 +163,11 @@ module.exports = function(app) {
 
     app.post('/api/shengpay_feedback', users.shengpayFeedback2);
 
+    app.get('/fail', function(req, res) {
+        process.nextTick(function() {
+            throw new Error('Kaboom!');
+        });
+    });
+
     admin.registerRoutes(app, passportConf);
 };
