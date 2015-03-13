@@ -779,7 +779,7 @@ module.exports.shengpayFeedback2 = function(req, res, next) {
             }
         ], function(err, result) {
             if (err) {
-                logger.error('shengpayFeedback error:' + err.toSource());
+                logger.error('shengpayFeedback error:' + err.toString());
             } else {
                 looger.info('shengpayFeedback result:'+result);
             }
