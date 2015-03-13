@@ -665,6 +665,128 @@ module.exports.thankYouForPay = function(req, res, next) {
     res.render('thank_you_for_pay');
 };
 
+module.exports.shengpayFeedback2 = function(req, res, next) {
+    logger.debug('shengpayFeedback');
+    logger.debug(req.body);
+    var result = req.body;
+    var apply_id = null;
+    if (result.TransStatus && result.TransStatus === '01') {
+        async.waterfall([
+            function(callback) {
+                Order.findById(result.OrderNo, function(err, order) {
+                    callback(err, order);
+                });
+            },
+            function(order, callback) {
+                if (!order) {
+                    callback('order not found');
+                    return;
+                }
+                if (order.status === 1) {
+                    callback('order already paied:' + order._id);
+                    return;
+                }
+                var pay_amount = Number(result.TransAmount);
+                if (pay_amount <= 0) {
+                    callback('pay_amount not valid:' + pay_amount);
+                    return;
+                }
+                if (order.amount !== pay_amount) {
+                    callback('pay_amount not match order\'s amount: ' + order.amount + ' vs ' + pay_amount);
+                    return;
+                }
+                order.status = 1;
+                order.payType = 1;
+                order.transID = result.TransNo;
+                order.save(function (err) {
+                    callback(err, order, pay_amount);
+                });
+            },
+            function(order, pay_amount, callback) {
+                logger.info("pay success for order:" + order._id + " by " + pay_amount);
+                User.findById(order.userID, function(err, user) {
+                    callback(err, user, order, pay_amount);
+                });
+            },
+            function(user, order, pay_amount, callback) {
+                if (!user) {
+                    callback('Can not find user:' + order.userID);
+                    return;
+                }
+                user.finance.balance += pay_amount;
+                user.save(function(err) {
+                    callback(err, user, order);
+                });
+            },
+            function(user, order, callback) {
+                logger.debug('shengpayFeedback success update user:' + user._id + ' and order:' + order._id);
+                if (apply_id) {
+                    logger.info('shengpayFeedback pay apply');
+                    callback(user, apply_id);
+                } else {
+                    callback(null, 'done');
+                }
+            },
+            function(user, apply_id, callback) {
+                Apply.findById(apply_id, function(err, apply) {
+                    callback(err, user, apply);
+                });
+            },
+            function(user, apply) {
+                if (!apply) {
+                    callback('Not found apply when pay apply:' + apply_id);
+                    return;
+                }
+                var serviceFee = apply.amount / 10000 * config.parameters.serviceCharge * apply.period;
+                var total = apply.deposit + serviceFee;
+                if (user.finance.balance < total) {
+                    callback('No enough balance to pay apply:' + apply.serialID);
+                    return;
+                }
+                apply.status = 4;
+                Homas.findOne({using:false}, function(err, homas) {
+                    callback(err, user, apply, homas, total);
+                });
+            },
+            function(user, apply, homas, total) {
+                if (!homas) {
+                    callback('failed to assign homas account to apply:' + apply.serialID);
+                    return;
+                }
+                homas.using = true;
+                homas.assignAt = Date.now();
+                homas.applyID = apply._id;
+                homas.save(function(err) {
+                    callback(err, user, apply, homas, total);
+                });
+            },
+            function(user, apply, homas, total) {
+                apply.status = 2;
+                apply.account = homas.account;
+                apply.password = homas.password;
+                var startDay = util.getStartDay();
+                apply.startTime = startDay.toDate();
+                apply.endTime = util.getEndDay(startDay, apply.period).toDate();
+                apply.save(function (err) {
+                    callback(err, user, total);
+                });
+            },
+            function(user, total) {
+                user.finance.balance -= total;
+                user.save(function (err) {
+                    callback(err, 'success pay apply');
+                });
+            }
+        ], function(err, result) {
+            if (err) {
+                logger.error('shengpayFeedback error:' + err.toString());
+            } else {
+                looger.info('shengpayFeedback result:'+result);
+            }
+        });
+    }
+}
+
 module.exports.shengpayFeedback = function(req, res, next) {
     logger.debug('shengpayFeedback');
     logger.debug(req.body);

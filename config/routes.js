@@ -161,7 +161,7 @@ module.exports = function(app) {
 
     app.post('/api/users/pay_success/:order_id', passportConf.isAuthenticated, users.paySuccess);
 
-    app.post('/api/shengpay_feedback', users.shengpayFeedback);
+    app.post('/api/shengpay_feedback', users.shengpayFeedback2);
 
     admin.registerRoutes(app, passportConf);
 };
