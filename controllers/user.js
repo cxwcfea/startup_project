@@ -705,10 +705,10 @@ module.exports.shengpayFeedback2 = function(req, res, next) {
             function(order, pay_amount, callback) {
                 logger.info("pay success for order:" + order._id + " by " + pay_amount);
                 User.findById(order.userID, function(err, user) {
-                    callback(err, user, order);
+                    callback(err, user, order, pay_amount);
                 });
             },
-            function(user, order, callback) {
+            function(user, order, pay_amount, callback) {
                 if (!user) {
                     callback('Can not find user:' + order.userID);
                     return;
