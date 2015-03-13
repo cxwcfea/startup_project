@@ -72,7 +72,7 @@ exports.confirmPayOrder = function(req, res, next) {
             next();
         }
         res.locals.order = order;
-        res.locals.balance = req.user.finance.balance;
+        res.locals.balance = req.user.finance.balance + order.amount;
         res.locals.shengOrderTime = moment().format("YYYYMMDDHHmmss");
         res.render('pay_confirm');
     })

@@ -6,7 +6,10 @@
     <li ng-repeat="obj in securityVM.securityObjects">
         <span class=\{{obj.class}}></span>
         <div class="">\{{obj.title}}</div>
-        <span class="am-text-success">\{{obj.status}}</span>
+        <span class="">\{{obj.status}}</span>
+        <!--
         <span class="am-btn am-btn-link" ng-if="obj.show"><a href="\{{obj.url}}">\{{obj.action}}</a></span>
+        -->
+        <a href="\{{obj.url}}"  ng-if="obj.show"><span class="am-text-primary">\{{obj.action}}</span></a>
     </li>
 </ul>

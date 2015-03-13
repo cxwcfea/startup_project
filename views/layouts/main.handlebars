@@ -33,8 +33,22 @@
                     <li {{#if main_menu}} class="am-active" {{/if}}><a href="/">首页</a></li>
                     <li {{#if apply_menu}} class="am-active" {{/if}}><a href="/apply">我要操盘</a></li>
 					<li><a href="/user">个人中心</a></li>
+                {{#unless user}}
+                    <li><a href="/login">登录</a></li>
+                    <li><a href="/signup">注册</a></li>
+                {{else}}
+                    <div class="am-topbar-right">
+                        <div class="am-dropdown" data-am-dropdown="{boundary: '.am-topbar'}">
+                            <button class="am-btn am-btn-default am-topbar-btn am-btn-sm am-dropdown-toggle" data-am-dropdown-toggle> {{#if user.profile.name}} {{user.profile.name}} {{else}} {{user.mobile}} {{/if}} <span class="am-icon-caret-down"></span></button>
+                            <ul class="am-dropdown-content">
+                                <li><a href="/logout">退出登录</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                {{/unless}}
 				</ul>
 
+                <!--
             {{#unless user}}
 				<div class="am-topbar-right login-elem">
 					<a href="/signup" class="am-btn am-btn-secondary am-topbar-btn am-btn-sm"><span class="am-icon-pencil"></span> 注册</a>
@@ -53,6 +67,7 @@
                     </div>
                 </div>
             {{/unless}}
+                        -->
 			</div>
 		</div>
 	</header>
@@ -70,10 +85,8 @@
 <![endif]-->
 
 <!--[if (gte IE 9)|!(IE)]><!-->
-<!--
-<script src="{{static '/vendor/bootstrap/dist/js/bootstrap.min.js'}}"></script>
--->
 <script src="{{static '/vendor/jquery/dist/jquery.min.js'}}"></script>
+    <script src="{{static '/vendor/bootstrap/dist/js/bootstrap.min.js'}}"></script>
 <script src="{{static '/vendor/amazeui/dist/js/amazeui.min.js'}}"></script>
 <script src="{{static '/vendor/moment/min/moment.min.js'}}"></script>
 <script src="{{static '/vendor/moment/min/locales.min.js'}}"></script>
@@ -82,7 +95,7 @@
 <script>window._aibeiCloseTxt='返回牛金网';</script>
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 <script src="{{static '/vendor/angular/angular.min.js'}}"></script>
-<script src="{{static '/js.min/niujinwang-home.min.0e411730.js'}}"></script>
+<script src="{{static '/js.min/niujinwang-home.min.bba65073.js'}}"></script>
 <!--<![endif]-->
 </body>
 </html>
