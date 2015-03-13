@@ -29,7 +29,7 @@
                     <div class="am-form-group">
                         <div class="am-u-sm-12 am-u-md-offset-2 am-u-md-8 am-u-end am-input-group am-input-group-primary">
                             <span class="am-input-group-label"><i class="am-icon-credit-card"></i></span>
-                            <input type="number" class="am-form-field" placeholder="输入你的银行卡号" ng-model="withdrawVM.card.cardID" required>
+                            <input type="number" class="am-form-field" placeholder="输入你的银行卡号" min="15" max="19" ng-model="withdrawVM.card.cardID" required>
                         </div>
                         <!--
                         <label for="card-number" class="am-u-sm-2 am-form-label">银行卡号</label>
@@ -42,7 +42,7 @@
                     <div class="am-form-group">
                         <div class="am-u-sm-12 am-u-md-offset-2 am-u-md-8 am-u-end am-input-group am-input-group-primary">
                             <span class="am-input-group-label"><i class="am-icon-user"></i></span>
-                            <input type="text" class="am-form-field" placeholder="开户人，此项必须为此账户真实姓名" ng-model="withdrawVM.card.userName" disabled>
+                            <input type="text" class="am-form-field" placeholder="提现需要先实名认证" ng-model="withdrawVM.card.userName" disabled>
                         </div>
                         <p class="am-form-help"> 账户拥有者必须为此实名认证姓名 </p>
                         <!--
@@ -112,16 +112,14 @@
         <div class="am-form-group" ng-hide="withdrawVM.user.finance.password">
             <div class="am-u-sm-8 am-u-sm-offset-4 am-u-md-10 am-u-md-offset-2">
                 <label class="am-form-label am-text-center">您还未设置提现密码</label>
-                <button class="am-btn am-btn-warning" ng-click="withdrawVM.setPassword()">
-                    设置提现密码
-                </button>
+                <a href="/user#/change_finance_pass">设置提现密码</a>
             </div>
         </div>
 
         <div class="am-form-group" ng-hide="withdrawVM.user.identity.id">
             <div class="am-u-sm-8 am-u-sm-offset-4 am-u-md-10 am-u-md-offset-2">
                 <label class="am-form-label am-text-center">您还未实名认证</label>
-                <a href="/user#/identity" class="am-btn am-btn-warning">去实名认证</a>
+                <a href="/user#/identity" class="">去实名认证</a>
             </div>
         </div>
 

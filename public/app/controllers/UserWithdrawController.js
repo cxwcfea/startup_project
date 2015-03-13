@@ -76,8 +76,4 @@ angular.module('myApp').controller('UserWithdrawController', ['gbIdentity', 'gbN
             }
         }
     };
-
-    vm.setPassword = function() {
-        $location.path('/change_finance_pass');
-    };
 }]);

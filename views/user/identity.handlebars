@@ -14,17 +14,8 @@
         </div>
 
         <div class="am-g am-margin-top">
-            <div class="am-u-sm-4 am-u-md-2 am-text-right">证件类型</div>
-            <div class="am-u-sm-8 am-u-md-4 am-u-end">
-                <select am-input-sm data-am-selected="{btnSize: 'sm'}">
-                    <option value="option1">身份证</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="am-g am-margin-top">
             <div class="am-u-sm-4 am-u-md-2 am-text-right">
-                证件号码
+                身份证号码
             </div>
             <div class="am-u-sm-8 am-u-md-4 am-u-end col-end">
                 <input type="text" class="am-input-sm" pattern="/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/" ng-model="identityVM.user.identity.id" required>
@@ -33,7 +24,7 @@
 
         <div class="am-g am-margin-top">
             <div class="am-u-sm-offset-4 am-u-md-offset-2 am-u-sm-8 am-u-md-4 am-u-end col-end">
-                <button type="submit" class="am-btn am-btn-primary" ng-click="identityVM.submitRequest()" ng-disabled="identityForm.$invalid">提交保存</button>
+                <button type="submit" class="am-btn am-btn-default" ng-click="identityVM.submitRequest()" ng-disabled="identityForm.$invalid">提交保存</button>
             </div>
         </div>
 
