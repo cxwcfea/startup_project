@@ -12,6 +12,9 @@ angular.module('adminApp').config(['$routeProvider', '$locationProvider', functi
         .when('/orders/:uid', { templateUrl: '/admin/order_list',
             controller: 'AdminOrderListCtrl as orderVM'
         })
+        .when('/one_day_expire_apply', { templateUrl: '/admin/apply_expire_in_one_day',
+            controller: 'AdminExpireApplyCtrl as expireApplyVM'
+        })
         .otherwise({
             redirectTo: '/users'
         });
