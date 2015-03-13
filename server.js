@@ -15,20 +15,29 @@ require('./config/routes')(app);
 
 // custom 404 page
 app.use(function(req, res){
-	res.type('text/plain');
 	res.status(404);
-	res.send('404 - Not Found');
+	res.render('page_not_found');
 });
 
 // custom 500 page
 app.use(function(err, req, res, next){
 	console.error(err.stack);
-	res.type('text/plain');
 	res.status(500);
-	res.send('500 - Server Error');
+	res.render('server_error');
 });
 
-app.listen(app.get('port'), function(){
-    logger.info('Express started on ' + app.get('port') + '; press Ctrl-C to terminate.');
-});
+function startServer() {
+    app.listen(app.get('port'), function(){
+        logger.info('Express started on ' + app.get('port') + '; press Ctrl-C to terminate.');
+    });
+}
+
+if(require.main === module){
+    // application run directly; start app server
+    startServer();
+} else {
+    // application imported as a module via "require": export function to create server
+    module.exports = startServer;
+}
+
 
