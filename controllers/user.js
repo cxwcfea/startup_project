@@ -699,10 +699,10 @@ module.exports.shengpayFeedback2 = function(req, res, next) {
                 order.payType = 1;
                 order.transID = result.TransNo;
                 order.save(function (err) {
-                    callback(err, order);
+                    callback(err, order, pay_amount);
                 });
             },
-            function(order, callback) {
+            function(order, pay_amount, callback) {
                 logger.info("pay success for order:" + order._id + " by " + pay_amount);
                 User.findById(order.userID, function(err, user) {
                     callback(err, user, order);
