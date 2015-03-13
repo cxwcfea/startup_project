@@ -19,6 +19,8 @@ module.exports = {
 
         app.get('/admin/api/user/:uid/orders', passportConf.requiresRole('admin'), this.fetchOrdersForUser);
 
+        app.get('/admin/api/');
+
         //app.post('/admin/api/user/:uid/orders/:id', passportConf.requiresRole('admin'), this.updateOrderForUser);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
