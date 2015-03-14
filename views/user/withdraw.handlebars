@@ -29,7 +29,7 @@
                     <div class="am-form-group">
                         <div class="am-u-sm-12 am-u-md-offset-2 am-u-md-8 am-u-end am-input-group am-input-group-primary">
                             <span class="am-input-group-label"><i class="am-icon-credit-card"></i></span>
-                            <input type="number" class="am-form-field" placeholder="输入你的银行卡号" min="15" max="19" ng-model="withdrawVM.card.cardID" required>
+                            <input type="text" class="am-form-field" placeholder="输入你的银行卡号" minlength="16" maxlength="19" ng-model="withdrawVM.card.cardID" required>
                         </div>
                         <!--
                         <label for="card-number" class="am-u-sm-2 am-form-label">银行卡号</label>
@@ -84,9 +84,9 @@
 
 <div class="am-margin am-cf">
 
-    <form class="am-form am-form-horizontal" name="withdrawForm">
+    <form class="am-form am-form-horizontal" name="withdrawForm" novalidate>
         <div class="am-form-group">
-            <label for="doc-ipt-3" class="am-u-sm-4 am-u-md-2 am-form-label">可提现金</label>
+            <label class="am-u-sm-4 am-u-md-2 am-form-label">可提现金</label>
             <div class="am-u-sm-8 am-u-md-10">
                 <label class="am-form-label">\{{withdrawVM.user.finance.balance.toFixed(2)}}</label> 元
             </div>
@@ -96,7 +96,7 @@
             <label for="withdraw-amount" class="am-u-sm-4 am-u-md-2 am-form-label">提现金额</label>
             <div class="am-u-sm-8 am-u-md-6 am-u-end">
                 <div class="am-input-group">
-                    <input type="number" id="withdraw-amount" placeholder="小于等于可提现金" min="1" ng-model="withdrawVM.amount" required>
+                    <input type="number" id="withdraw-amount" placeholder="小于等于可提现金" min="0.01" ng-model="withdrawVM.amount" required>
                     <span class="am-input-group-label">元</span>
                 </div>
             </div>

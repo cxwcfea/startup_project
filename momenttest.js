@@ -234,3 +234,6 @@ var otherDay = Date.parse('1981-08-04');
 
 var result = today < otherDay;
 console.log(result);
+
+var anum = '0003';
+console.log(Number(anum));

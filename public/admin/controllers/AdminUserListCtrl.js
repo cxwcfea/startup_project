@@ -93,9 +93,9 @@ angular.module('adminApp').controller('AdminUserListCtrl', ['$scope', '$http', '
                 } else {
                     user.finance.balance += result.balance;
                     user.$save(function(u) {
-                        gbNotifier.notify('成功更新');
+                        gbNotifier.notify('更新成功');
                     }, function(err) {
-                        gbNotifier.error('成功失败:' + err.toString());
+                        gbNotifier.error('更新失败:' + err.toString());
                     });
                 }
             } else {

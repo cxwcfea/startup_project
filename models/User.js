@@ -17,7 +17,8 @@ var userSchema = new mongoose.Schema({
         deposit: { type: Number, default: 0 },
         total_capital: { type: Number, default: 0 },
         available_capital: { type: Number, default: 0 },
-        market_value: { type: Number, default: 0 }
+        market_value: { type: Number, default: 0 },
+        freeze_capital: { type: Number, default: 0 }
 	},
 
     profile: {

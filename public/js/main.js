@@ -123,7 +123,7 @@ $(document).ready(function() {
     function placeOrder(uid, pay_amount, apply_id, shengpay) {
         var order = {
             userID: uid,
-            dealType: '充值',
+            dealType: 1,
             amount: pay_amount,
             description: '股票配资'
         };

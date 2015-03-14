@@ -113,6 +113,8 @@ module.exports = function(app) {
 
     app.get('/user/withdraw', passportConf.isAuthenticated, users.getWithdraw);
 
+    app.post('/user/withdraw', passportConf.isAuthenticated, users.postWithdraw);
+
     app.get('/user/verify_email', passportConf.isAuthenticated, users.getVerifyEmail);
 
     app.post('/user/verify_email', passportConf.isAuthenticated, users.postVerifyEmail);

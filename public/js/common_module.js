@@ -151,8 +151,21 @@
                 return '等待确认';
             }
         };
+    }).filter("displayOrderType", function() {
+        return function (input) {
+            switch (input) {
+                case 1:
+                    return '充值';
+                case 2:
+                    return '提现';
+                case 3:
+                    return '盈利提取';
+            }
+        };
     }).service("days", function () {
         this.startTime = getStartDay;
         this.endTime = getEndDay;
     });
+
+    angular.module('commonApp').constant('withdraw_sms_content', '您的提现申请已经处理，资金即将到账');
 }());

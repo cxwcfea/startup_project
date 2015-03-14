@@ -8,7 +8,7 @@ angular.module('myApp').controller('UserIdentityController', ['gbIdentity', '$ht
             .then(function(response) {
                 if (response.data.success) {
                     gbNotifier.notify('实名认证成功');
-                    $location.path('/user/security');
+                    $location.path('/security');
                 } else {
                     gbNotifier.error('实名认证失败');
                 }

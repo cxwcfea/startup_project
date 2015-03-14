@@ -12,7 +12,7 @@ module.exports = function (grunt) {
     grunt.initConfig({
         nodemon: {
             all: {
-                script: 'niujin_cluster.js',
+                script: 'server.js',
                 options: {
                     watchedExtensions: ['js']
                 }
