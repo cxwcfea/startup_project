@@ -22,6 +22,8 @@ module.exports = {
 
         app.get('/admin/api/applies/expire', passportConf.requiresRole('admin'), this.fetchNearExpireApplies);
 
+        app.post('/admin/api/users/:id', passportConf.requiresRole('admin'), this.updateUser);
+
         //app.post('/admin/api/user/:uid/orders/:id', passportConf.requiresRole('admin'), this.updateOrderForUser);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
@@ -113,5 +115,20 @@ module.exports = {
             }
             res.send(applies);
         });
+    },
+
+    updateUser: function(req, res) {
+        if (req.body._id) {
+            User.update({_id:req.body._id}, req.body, function(err, numberAffected, raw) {
+                if(err) {
+                    logger.warn('error when update user by admin:', err.toString());
+                    res.status(500);
+                    return res.send({reason:err.toString()});
+                }
+                res.send(req.body);
+            });
+        } else {
+            res.send({});
+        }
     }
 };

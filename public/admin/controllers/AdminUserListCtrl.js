@@ -76,6 +76,35 @@ angular.module('adminApp').controller('AdminUserListCtrl', ['$scope', '$http', '
             //console.log('Modal dismissed at: ' + new Date());
         });
     };
+
+    vm.updateBalance = function(user) {
+        var modalInstance = $modal.open({
+            templateUrl: 'userUpdateModal.html',
+            controller: 'UserUpdateModalCtrl',
+            //size: size,
+            resolve: {}
+        });
+
+        modalInstance.result.then(function (result) {
+            if (result && result.balance && angular.isNumber(result.balance)) {
+                var value = user.finance.balance + result.balance;
+                if (value < 0) {
+                    gbNotifier.error('无效的数据，重新输入！');
+                } else {
+                    user.finance.balance += result.balance;
+                    user.$save(function(u) {
+                        gbNotifier.notify('成功更新');
+                    }, function(err) {
+                        gbNotifier.error('成功失败:' + err.toString());
+                    });
+                }
+            } else {
+                gbNotifier.error('无效的数据，重新输入！');
+            }
+        }, function () {
+            //console.log('Modal dismissed at: ' + new Date());
+        });
+    };
 }]);
 
 angular.module('adminApp').controller('ModalInstanceCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
@@ -83,6 +112,16 @@ angular.module('adminApp').controller('ModalInstanceCtrl', ['$scope', '$modalIns
 
     $scope.ok = function () {
         $modalInstance.close($scope.sms_content);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+}]);
+
+angular.module('adminApp').controller('UserUpdateModalCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+    $scope.ok = function () {
+        $modalInstance.close($scope.user);
     };
 
     $scope.cancel = function () {
