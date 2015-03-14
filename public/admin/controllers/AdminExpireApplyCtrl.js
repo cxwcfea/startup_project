@@ -5,6 +5,8 @@ angular.module('adminApp').controller('AdminExpireApplyCtrl', ['$scope', '$http'
     var currentApplies;
     vm.itemsPerPage = 15;
 
+    initData();
+
     function pageReset() {
         vm.totalItems = currentApplies.length;
         vm.currentPage = 1;
@@ -12,7 +14,9 @@ angular.module('adminApp').controller('AdminExpireApplyCtrl', ['$scope', '$http'
     }
 
     function initData() {
+        console.log('initData');
         $http.get('/admin/api/applies/expire').success(function(data) {
+            console.log(data);
             apply_list = data;
             angular.forEach(apply_list, function(value, key) {
                 formatData(value);

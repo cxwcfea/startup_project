@@ -6,7 +6,7 @@
     <div class="am-u-sm-12 am-u-md-6">
         <div class="am-btn-toolbar">
             <div class="am-btn-group am-btn-group-xs">
-                <button ng-repeat="item in applyVM.queryItems" type="button" class="am-btn am-btn-default" ng-click="applyVM.queryItem(item)"> \{{item.name}}</button>
+                <button ng-repeat="item in expireApplyVM.queryItems" type="button" class="am-btn am-btn-default" ng-click="expireApplyVM.queryItem(item)"> \{{item.name}}</button>
             </div>
         </div>
     </div>
@@ -32,7 +32,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="apply in applyVM.showingItems">
+                <tr ng-repeat="apply in expireApplyVM.showingItems">
                     <td class="am-hide-sm-only">\{{apply.serialID}}</td>
                     <td class="am-text-right"><span class="am-icon-rmb"></span><strong>\{{apply.amount}}</strong></td>
                     <td class="am-text-right am-hide-sm-only"><span class="am-icon-rmb"></span><strong>\{{apply.deposit}}</strong></td>
@@ -41,7 +41,7 @@
                     <td>
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs">
-                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="applyVM.manageApply(apply)"><span class="am-icon-pencil-square-o"></span> 管理</button>
+                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="expireApplyVM.manageApply(apply)"><span class="am-icon-pencil-square-o"></span> 管理</button>
                                 <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-show="apply.status === 2"><span class="am-icon-shopping-cart"></span> 平仓</button>
                             </div>
                         </div>
@@ -50,9 +50,9 @@
                 </tbody>
             </table>
             <div class="am-cf">
-                共 \{{applyVM.totalItems}} 条记录
+                共 \{{expireApplyVM.totalItems}} 条记录
                 <div class="am-fr">
-                    <pagination previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="applyVM.itemsPerPage" total-items="applyVM.totalItems" ng-model="applyVM.currentPage" ng-change="applyVM.pageChanged()"></pagination>
+                    <pagination previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="expireApplyVM.itemsPerPage" total-items="expireApplyVM.totalItems" ng-model="expireApplyVM.currentPage" ng-change="expireApplyVM.pageChanged()"></pagination>
                 </div>
             </div>
             <hr />

@@ -3,6 +3,7 @@ var User = require('../models/User'),
     Order = require('../models/Order'),
     log4js = require('log4js'),
     logger = log4js.getLogger('admin'),
+    util = require('../lib/util'),
     sms = require('../lib/sms');
 
 module.exports = {
@@ -19,7 +20,7 @@ module.exports = {
 
         app.get('/admin/api/user/:uid/orders', passportConf.requiresRole('admin'), this.fetchOrdersForUser);
 
-        app.get('/admin/api/');
+        app.get('/admin/api/applies/expire', passportConf.requiresRole('admin'), this.fetchNearExpireApplies);
 
         //app.post('/admin/api/user/:uid/orders/:id', passportConf.requiresRole('admin'), this.updateOrderForUser);
 
@@ -100,4 +101,17 @@ module.exports = {
             res.send(order);
         });
     },
+
+    fetchNearExpireApplies: function(req, res) {
+        var startTime = util.getStartDay();
+        var endTime = util.getEndDay(startTime, 1);
+
+        Apply.find({ $and: [{ endTime: {$lt: endTime } }, {status: 2}] }, function(err, applies) {
+            if (err) {
+                logger.warn(err.toString());
+                return res.send({success:false, reason:err.toString()});
+            }
+            res.send(applies);
+        });
+    }
 };
