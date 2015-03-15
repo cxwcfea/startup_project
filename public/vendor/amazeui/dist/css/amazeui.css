@@ -2979,7 +2979,7 @@ fieldset[disabled] .am-checkbox-inline {
 .am-topbar {
   position: relative;
   min-height: 50px;
-  margin-top: 1.6rem;
+  margin-top: 20px;
   margin-bottom: 1.6rem;
   background: #f8f8f8;
   border-width: 0 0 1px;
