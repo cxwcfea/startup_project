@@ -2977,6 +2977,7 @@ fieldset[disabled] .am-checkbox-inline {
    Component: Topbar
  ============================================================================ */
 .am-topbar {
+  padding-top: 10px;
   position: relative;
   min-height: 50px;
   margin-top: 20px;
