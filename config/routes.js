@@ -131,6 +131,10 @@ module.exports = function(app) {
 
     app.post('/user/verify_finance_password', passportConf.isAuthenticated, users.verifyFinancePassword);
 
+    app.get('/user/apply_close', passportConf.isAuthenticated, applies.getCloseApply);
+
+    app.post('/user/apply_close/:serial_id', passportConf.isAuthenticated, applies.postCloseApply);
+
     app.post('/api/users/pay_by_balance', passportConf.isAuthenticated, users.payByBalance);
 
     app.get('/pay_confirm/:orderID', passportConf.isAuthenticated, orders.confirmPayOrder);

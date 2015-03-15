@@ -122,6 +122,20 @@
         return endDay;
     };
 
+    var tradeDaysFromEndDay = function(endDay, days) {
+        var dayOfYear = moment(endDay).dayOfYear();
+        var ret = 0;
+        --days;
+        while (days) {
+            if (holiday.indexOf(dayOfYear) === -1) {
+                --days;
+            }
+            --dayOfYear;
+            ++ret;
+        }
+        return ret;
+    };
+
     angular.module('commonApp', []);
 
     angular.module('commonApp').value('gbToastr', toastr);
@@ -160,11 +174,35 @@
                     return '提现';
                 case 3:
                     return '盈利提取';
+                case 4:
+                    return '股票盈利';
+                case 5:
+                    return '保证金返还';
+                default:
+                    return '充值';
+            }
+        };
+    }).filter("applyStatus", function() {
+        return function(input) {
+            switch (input) {
+                case 1:
+                    return "待支付";
+                case 2:
+                    return "操盘中";
+                case 3:
+                    return "已结算";
+                case 4:
+                    return "审核中";
+                case 5:
+                    return "结算中";
+                default:
+                    return "待支付";
             }
         };
     }).service("days", function () {
         this.startTime = getStartDay;
         this.endTime = getEndDay;
+        this.tradeDaysFromEndDay = tradeDaysFromEndDay;
     });
 
     angular.module('commonApp').constant('withdraw_sms_content', '您的提现申请已经处理，资金即将到账');

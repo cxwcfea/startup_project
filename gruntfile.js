@@ -22,7 +22,7 @@ module.exports = function (grunt) {
             all: {
                 files: {
                     'public/js.min/niujinwang.min.js': ['public/js/**/*.js', 'public/app/**/*.js', '!public/js/legacy/**/*.js', '!public/app/app.js'],
-                    'public/js.min/niujinwang-home.min.js': ['public/app/controllers/ApplyController.js', 'public/js/main.js'],
+                    'public/js.min/niujinwang-home.min.js': ['public/app/controllers/ApplyController.js', 'public/js/main.js', 'public/js/common_module.js'],
                     'public/js.min/niujinwang-angular.min.js': ['public/app/app.js']
                 }
             }

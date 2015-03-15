@@ -37,6 +37,18 @@ angular.module('adminApp').controller('AdminOrderListCtrl', ['$scope', '$locatio
             {
                 name: '提现',
                 value: 2
+            },
+            {
+                name: '盈利提取',
+                value: 3
+            },
+            {
+                name: '股票盈利',
+                value: 4
+            },
+            {
+                name: '保证金返还',
+                value: 5
             }
         ];
     }
@@ -49,13 +61,8 @@ angular.module('adminApp').controller('AdminOrderListCtrl', ['$scope', '$locatio
 
     vm.queryItem = function (item) {
         currentOrders = order_list.filter(function (elem) {
-            if (item.value === 1) {
-                return elem.dealType === 1;
-            }
-            if (item.value === 2) {
-                return elem.dealType === 2;
-            }
-            return true;
+            if (!item.value) return true;
+            return elem.dealType === item.value;
         });
         pageReset();
     };

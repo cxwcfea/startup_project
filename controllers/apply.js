@@ -90,6 +90,9 @@ exports.getApplyDetail = function (req, res, next) {
             next();
         }
         console.log(collection);
+        if (collection.status === 5) {
+            return res.redirect(302, '/user/apply_close');
+        }
         var serviceFee = collection.amount / 10000 * config.parameters.serviceCharge * collection.period;
         var warnValue = config.parameters.warnFactor * collection.amount;
         var sellValue = config.parameters.sellFactor * collection.amount;
@@ -117,5 +120,28 @@ exports.getApplyDetail = function (req, res, next) {
         };
 
         res.render('apply_detail');
+    });
+};
+
+exports.getCloseApply = function(req, res, next) {
+    /*
+    Apply.findOne({serialID:req.params.id}, function(err, apply) {
+        var today = moment();
+        res.locals.amount = apply.amount.toFixed(2);
+        res.locals.deposit = apply.deposit.toFixed(2);
+        res.locals.days = today.dayOfYear() - moment(apply.startTime).dayOfYear();
+        res.locals.endTime = moment(apply.endTime).format("YYYY-MM-DD HH:mm");
+        res.render('apply_close');
+    });
+    */
+    res.render('apply_close');
+};
+
+exports.postCloseApply = function(req, res) {
+    Apply.update({serialID:req.params.serial_id}, {status:5}, function (err, numberAffected, raw) {
+        if (err) {
+            return res.send({success:false, reason:err.toString()});
+        }
+        res.send({success:true});
     });
 };

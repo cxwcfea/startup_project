@@ -36,7 +36,7 @@
                     <td class="am-hide-sm-only">\{{apply.serialID}}</td>
                     <td class="am-text-right"><span class="am-icon-rmb"></span><strong>\{{apply.amount}}</strong></td>
                     <td class="am-text-right am-hide-sm-only"><span class="am-icon-rmb"></span><strong>\{{apply.deposit}}</strong></td>
-                    <td class="am-text-center">\{{apply.status_str}}</td>
+                    <td class="am-text-center">\{{apply.status | applyStatus}}</td>
                     <td class="am-text-center">\{{apply.start_date | displayDate}}<br>\{{apply.end_date | displayDate}}</td>
                     <td>
                         <div class="am-btn-toolbar">

@@ -60,14 +60,15 @@
         <div class="am-offcanvas-bar admin-offcanvas-bar">
             <ul class="am-list admin-sidebar-list">
                 <li><a href="/admin#/users"><span class="am-icon-users"></span> 用户列表</a></li>
-                <li><a href="/admin#/one_day_expire_apply"> 今天到期配资</a></li>
+                <li><a href="/admin#/one_day_expire_apply"><span class="am-icon-clock-o"></span> 两天内到期配资</a></li>
+                <li><a href="/admin#/closing_applies"><span class="am-icon-power-off"></span> 结算中的配资</a></li>
             </ul>
 
             <div class="am-panel am-panel-default admin-sidebar-panel">
                 <div class="am-panel-bd">
                     <p><span class="am-icon-bookmark"></span> 公告</p>
                     <p>感谢您使用牛金网!</p>
-                    <p>时光静好，与君语；细水流年，与君同。—— 牛金网</p>
+                    <p>开业大吉。—— 牛金网</p>
                 </div>
             </div>
 
@@ -115,5 +116,6 @@
 <script src="{{static '/admin/controllers/AdminApplyListCtrl.js'}}"></script>
 <script src="{{static '/admin/controllers/AdminOrderListCtrl.js'}}"></script>
 <script src="{{static '/admin/controllers/AdminExpireApplyCtrl.js'}}"></script>
+<script src="{{static '/admin/controllers/AdminClosingApplyCtrl.js'}}"></script>
 <!--<![endif]-->
 </body>

@@ -1,9 +1,10 @@
 'use strict';
-angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', '$location', '$routeParams', '$modal', 'adminApply', 'gbNotifier', 'days', function($scope, $http, $location, $routeParams, $modal, adminApply, gbNotifier, days) {
+angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', '$location', '$routeParams', '$modal', 'adminApply', 'gbNotifier', 'gbUser', 'days', function($scope, $http, $location, $routeParams, $modal, adminApply, gbNotifier, gbUser, days) {
     var vm = this;
     var apply_list = {};
     var currentApplies;
     vm.itemsPerPage = 15;
+    var currentUser = $scope.data.selectedUser;
 
     $scope.$on("$routeChangeSuccess", function () {
         if ($location.path().indexOf("/applies/") == 0) {
@@ -27,6 +28,12 @@ angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', 
             pageReset();
         });
 
+        if (!currentUser) {
+            gbUser.get({id:id}, function(user) {
+                currentUser = user;
+            });
+        }
+
         vm.queryItems = [
             {
                 name: '全部',
@@ -47,31 +54,18 @@ angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', 
             {
                 name: '审核中',
                 value: 4
+            },
+            {
+                name: '结算中',
+                value: 5
             }
         ];
-    };
+    }
 
     function formatData (item) {
         item.start_date = item.startTime ? item.startTime : days.startTime();
         item.end_date = item.endTime ? item.endTime : days.endTime(item.start_date, item.period);
-        switch (item.status) {
-            case 1:
-                item.status_str = "待支付";
-                break;
-            case 2:
-                item.status_str = "操盘中";
-                break;
-            case 3:
-                item.status_str = "已结算";
-                break;
-            case 4:
-                item.status_str = "审核中";
-                break;
-            case 5:
-                item.status_str = "失败";
-                break;
-        }
-    };
+    }
 
     vm.pageChanged = function() {
         var start = (vm.currentPage - 1) * vm.itemsPerPage;
@@ -91,7 +85,7 @@ angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', 
     };
 
     vm.manageApply = function(apply) {
-        if (apply.status === 4) {
+        if (apply.status === 4 || apply.status === 1) {
             vm.assignAccount(apply);
         } else if(apply.status === 2) {
             vm.sendSMS(apply);
@@ -106,16 +100,27 @@ angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', 
         });
 
         modalInstance.result.then(function (content) {
-            apply.account = content.account;
-            apply.password = content.password;
-            apply.status = 2;
-            apply.$save(function(data) {
-                formatData(apply);
-                gbNotifier.notify('更新成功!');
-            }, function(response) {
-                console.log(response);
-                gbNotifier.error('更新失败:');
-            });
+            console.log(content);
+            var data = {
+                apply: apply
+            };
+            if (content.account) {
+                data.homas = {
+                    account: content.account,
+                    password: content.password
+                }
+            }
+            $http.post('/admin/api/apply/assign_account', data)
+                .success(function(data, status, headers, config) {
+                    console.log(data);
+                    gbNotifier.notify('账户已分配');
+                    apply.status = data.apply.status;
+                    apply.account = data.apply.account;
+                    apply.pasword = data.apply.password;
+                }).
+                error(function(data, status, headers, config) {
+                    gbNotifier.error('分配失败:' + data.reason);
+                });
         }, function () {
         });
     };
@@ -132,13 +137,9 @@ angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', 
         });
 
         modalInstance.result.then(function (content) {
-            if (!$scope.data.selectedUser) {
-                gbNotifier.error('用户没找到，请返回用户列表重试');
-                return;
-            }
             vm.sms_content = content;
             var data = {
-                user_mobile: $scope.data.selectedUser.mobile,
+                user_mobile: currentUser.mobile,
                 sms_content: vm.sms_content
             };
             console.log(vm.sms_content);
@@ -153,21 +154,48 @@ angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', 
         }, function () {
         });
     };
+
+    vm.updateApply = function (apply) {
+        var modalInstance = $modal.open({
+            templateUrl: 'applyUpdateModal.html',
+            controller: 'UpdateApplyModalCtrl',
+            resolve: {
+                apply: function() {
+                    return apply;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (result) {
+            console.log(result);
+            if (result.dt) {
+                apply.endTime = result.dt;
+                var tradeDays = days.tradeDaysFromEndDay(apply.endTime, apply.period);
+                apply.endTime.setHours(14);
+                apply.endTime.setMinutes(54);
+                apply.endTime.setSeconds(59);
+                apply.startTime = moment(result.dt).subtract(tradeDays, 'days').startOf('day').toDate();
+            }
+            apply.status = Number(result.status);
+            apply.$save(function(a) {
+                gbNotifier.notify('更新成功');
+                formatData(a);
+            }, function(e) {
+                gbNotifier.error('更新失败');
+            });
+        }, function () {
+        });
+    }
 }]);
 
 angular.module('adminApp').controller('AccountModalCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-
     $scope.ok = function () {
-        if ($scope.homas_account && $scope.homas_password) {
-            var result = {
-                account: $scope.homas_account,
-                password: $scope.homas_password
-            };
+        var result = {
+            account: $scope.homas_account,
+            password: $scope.homas_password
+        };
 
-            $modalInstance.close(result);
-        } else {
-            alert('输入无效');
-        }
+        $modalInstance.close(result);
     };
 
     $scope.cancel = function () {
@@ -180,6 +208,50 @@ angular.module('adminApp').controller('SMSModalCtrl', ['$scope', '$modalInstance
 
     $scope.ok = function () {
         $modalInstance.close($scope.sms_content);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+}]);
+
+angular.module('adminApp').controller('UpdateApplyModalCtrl', ['$scope', '$modalInstance', 'apply', function ($scope, $modalInstance, apply) {
+    $scope.data = {};
+    $scope.data.status = apply.status;
+    /*
+    $scope.today = function() {
+        $scope.data.dt = apply.endTime ? apply.endTime : apply.end_date.toDate();
+    };
+    $scope.today();
+    */
+
+    $scope.clear = function () {
+        $scope.data.dt = null;
+    };
+
+    $scope.toggleMin = function() {
+        $scope.minDate = $scope.minDate ? null : new Date();
+    };
+    $scope.toggleMin();
+
+    // Disable weekend selection
+    $scope.disabled = function(date, mode) {
+        return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+    };
+
+    $scope.open = function($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+
+        $scope.opened = true;
+    };
+
+    $scope.dateOptions = {
+        startingDay: 1
+    };
+
+    $scope.ok = function () {
+        $modalInstance.close($scope.data);
     };
 
     $scope.cancel = function () {

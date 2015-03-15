@@ -14,9 +14,7 @@ angular.module('adminApp').controller('AdminExpireApplyCtrl', ['$scope', '$http'
     }
 
     function initData() {
-        console.log('initData');
         $http.get('/admin/api/applies/expire').success(function(data) {
-            console.log(data);
             apply_list = data;
             angular.forEach(apply_list, function(value, key) {
                 formatData(value);
@@ -24,52 +22,12 @@ angular.module('adminApp').controller('AdminExpireApplyCtrl', ['$scope', '$http'
             currentApplies = apply_list;
             pageReset();
         });
-
-        vm.queryItems = [
-            {
-                name: '全部',
-                value: 0
-            },
-            {
-                name: '待支付',
-                value: 1
-            },
-            {
-                name: '当前操盘',
-                value: 2
-            },
-            {
-                name: '已结算',
-                value: 3
-            },
-            {
-                name: '审核中',
-                value: 4
-            }
-        ];
-    };
+    }
 
     function formatData (item) {
         item.start_date = item.startTime ? item.startTime : days.startTime();
         item.end_date = item.endTime ? item.endTime : days.endTime(item.start_date, item.period);
-        switch (item.status) {
-            case 1:
-                item.status_str = "待支付";
-                break;
-            case 2:
-                item.status_str = "操盘中";
-                break;
-            case 3:
-                item.status_str = "已结算";
-                break;
-            case 4:
-                item.status_str = "审核中";
-                break;
-            case 5:
-                item.status_str = "失败";
-                break;
-        }
-    };
+    }
 
     vm.pageChanged = function() {
         var start = (vm.currentPage - 1) * vm.itemsPerPage;
@@ -78,14 +36,6 @@ angular.module('adminApp').controller('AdminExpireApplyCtrl', ['$scope', '$http'
             end = vm.totalItems;
         }
         vm.showingItems = currentApplies.slice(start, end);
-    };
-
-    vm.queryItem = function(item) {
-        currentApplies = apply_list.filter(function (elem) {
-            if (!item.value) return true;
-            return elem.status === item.value;
-        });
-        pageReset();
     };
 
     vm.manageApply = function(apply) {

@@ -41,31 +41,18 @@ angular.module('myApp').controller('UserApplyListController', ['gbIdentity', '$h
             {
                 name: '审核中',
                 value: 4
+            },
+            {
+                name: '结算中',
+                value: 5
             }
         ];
-    };
+    }
 
     function formatData (item) {
         item.start_date = item.startTime ? item.startTime : days.startTime();
         item.end_date = item.endTime ? item.endTime : days.endTime(item.start_date, item.period);
-        switch (item.status) {
-            case 1:
-                item.status_str = "待支付";
-                break;
-            case 2:
-                item.status_str = "操盘中";
-                break;
-            case 3:
-                item.status_str = "已结算";
-                break;
-            case 4:
-                item.status_str = "审核中";
-                break;
-            case 5:
-                item.status_str = "失败";
-                break;
-        }
-    };
+    }
 
     initData();
 
@@ -89,6 +76,8 @@ angular.module('myApp').controller('UserApplyListController', ['gbIdentity', '$h
     vm.manageApply = function(apply) {
         if (apply.status === 1) {
             $window.location.assign('/apply_confirm/' + apply.serialID);
+        } else if (apply.status === 3) {
+            gbNotifier.notify('该配资已经结算');
         } else {
             $window.location.assign('/apply_detail/' + apply.serialID);
         }

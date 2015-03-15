@@ -1,5 +1,5 @@
 <div class="am-cf am-padding">
-    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">以下配资申请将于两天内到期</strong></div>
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">结算中的配资记录</strong></div>
 </div>
 
 <div class="am-g">
@@ -25,7 +25,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="apply in expireApplyVM.showingItems | orderBy:'end_date'">
+                <tr ng-repeat="apply in closingApplyVM.showingItems">
                     <td class="am-hide-sm-only">\{{apply.serialID}}</td>
                     <td class="am-text-right"><span class="am-icon-rmb"></span><strong>\{{apply.amount}}</strong></td>
                     <td class="am-text-right am-hide-sm-only"><span class="am-icon-rmb"></span><strong>\{{apply.deposit}}</strong></td>
@@ -35,7 +35,7 @@
                     <td>
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs">
-                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="expireApplyVM.manageApply(apply)"><span class="am-icon-pencil-square-o"></span> 管理</button>
+                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="closingApplyVM.manageApply(apply)"><span class="am-icon-pencil-square-o"></span> 管理</button>
                             </div>
                         </div>
                     </td>
@@ -43,9 +43,9 @@
                 </tbody>
             </table>
             <div class="am-cf">
-                共 \{{expireApplyVM.totalItems}} 条记录
+                共 \{{closingApplyVM.totalItems}} 条记录
                 <div class="am-fr">
-                    <pagination previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="expireApplyVM.itemsPerPage" total-items="expireApplyVM.totalItems" ng-model="expireApplyVM.currentPage" ng-change="expireApplyVM.pageChanged()"></pagination>
+                    <pagination previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="closingApplyVM.itemsPerPage" total-items="closingApplyVM.totalItems" ng-model="closingApplyVM.currentPage" ng-change="closingApplyVM.pageChanged()"></pagination>
                 </div>
             </div>
             <hr />
@@ -53,6 +53,22 @@
     </div>
 </div>
 
+<script type="text/ng-template" id="applyClosingModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">配资结算</h3>
+    </div>
+    <div class="modal-body">
+        <div class="am-form-group">
+            <label for="sms-content">账户盈亏</label>
+            <input type="number" ng-model="data.profit">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">结算</button>
+        <button class="btn btn-warning" ng-click="cancel()">取消</button>
+    </div>
+</script>
+<!--
 <script type="text/ng-template" id="smsModal.html">
     <div class="modal-header">
         <h3 class="modal-title">发送短信</h3>
@@ -69,22 +85,36 @@
     </div>
 </script>
 
-<script type="text/ng-template" id="assignAccountModal.html">
+<script type="text/ng-template" id="applyUpdateModal.html">
     <div class="modal-header">
-        <h3 class="modal-title">分配实盘账户</h3>
+        <h3 class="modal-title">更新配资信息</h3>
     </div>
     <div class="modal-body">
-        <div class="am-form-group">
-            <label for="sms-content">实盘账户</label>
-            <input type="text" ng-model="homas_account">
-        </div>
-        <div class="am-form-group">
-            <label for="sms-content">实盘密码</label>
-            <input type="text" ng-model="homas_password">
+        <div class="row">
+            <div class="col-md-6">
+                <label>配资结束时间:</label>
+                <p class="input-group">
+                    <input type="text" class="form-control" datepicker-popup="yyyy/MM/dd" ng-model="data.dt" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+            </div>
+            <div class="am-form-group">
+                <label>配资状态:</label>
+                <select id="doc-select-1" ng-model="data.status">
+                    <option value="1">待支付</option>
+                    <option value="2">操盘中</option>
+                    <option value="3">已结算</option>
+                    <option value="4">审核中</option>
+                    <option value="5">结算中</option>
+                </select>
+            </div>
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()">分配</button>
+        <button class="btn btn-primary" ng-click="ok()">更新</button>
         <button class="btn btn-warning" ng-click="cancel()">取消</button>
     </div>
 </script>
+-->
