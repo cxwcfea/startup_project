@@ -18,6 +18,9 @@ angular.module('adminApp').config(['$routeProvider', '$locationProvider', functi
         .when('/closing_applies', { templateUrl: '/admin/closing_apply_list',
             controller: 'AdminClosingApplyCtrl as closingApplyVM'
         })
+        .when('/get_profit_orders', { templateUrl: '/admin/get_profit_order_list',
+            controller: 'AdminGetProfitOrderListCtrl as profitOrderListVM'
+        })
         .otherwise({
             redirectTo: '/users'
         });

@@ -13,6 +13,7 @@ var orderSchema = mongoose.Schema({
         cardID: Number,
         userName: String
     },
+    applySerialID: String,
     bankTransID: String, // only for dealType == 2
     payType: Number  // 0 means iapppay, 1 means shengpay, 2 means from apply, undefine means withdraw
 });

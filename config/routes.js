@@ -59,6 +59,10 @@ module.exports = function(app) {
         res.render('article/partners', {layout:'article_main'});
     });
 
+    app.get('/apply/get_profit/:serial_id', passportConf.isAuthenticated, applies.getProfit);
+
+    app.post('/apply/get_profit/:serial_id', passportConf.isAuthenticated, applies.postGetProfit);
+
     app.get('/thank_you_for_pay', users.thankYouForPay);
 
     app.post('/thank_you_for_pay', users.thankYouForPay);

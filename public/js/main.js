@@ -218,7 +218,6 @@ $(document).ready(function() {
 
     $('#close-apply').on('click', function(e) {
         e.preventDefault();
-        console.log('close apply');
         $('#close-apply-prompt').modal({
             relatedTarget: this,
             onConfirm: function(e) {
@@ -236,15 +235,31 @@ $(document).ready(function() {
                 console.log('cancel');
             }
         });
-        /*
-        var formData = $("form").serialize();
-        $.post("/api/users/pay_by_balance", formData, function (data) {
-            if (data.success) {
-                window.location.replace('/thank_you_for_pay');
-            } else {
-                window.location.replace('/failed_to_pay');
-            }
-        });
-        */
     });
+
+    $('#get-profit').on('click', function(e) {
+        e.preventDefault();
+        var apply_serial_id = $('#apply_serial_id')[0].value;
+        window.location.assign('/apply/get_profit/' + apply_serial_id);
+    });
+
+    var get_profit_form_options = {
+        onValid: function(validity) {
+            console.log('form trigger');
+        },
+        onInValid: function(validity) {
+            $('#get-profit-btn').popover({
+                content: '请输入有效的金额'
+            });
+        }
+    };
+
+    $('#get-profit-form').validator(get_profit_form_options);
+
+    /*
+    $('#get-profit-btn').on('click', function(e){
+        e.preventDefault();
+        console.log('click');
+    });
+    */
 });

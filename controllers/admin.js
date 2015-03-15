@@ -61,7 +61,7 @@ function updateApplyForUser(req, res, next) {
     }
 }
 
-function updateOrderForUser(req, res) {
+function updateOrder(req, res) {
     if (req.body._id) {
         Order.update({_id:req.body._id}, req.body, function(err, numberAffected, raw) {
             if(err) {
@@ -336,6 +336,28 @@ function closeApply(req, res) {
     });
 }
 
+function fetchGetProfitOrders(req, res) {
+    Order.find({$and: [{ dealType: 3 }, {status: 0}]}, function(err, orders) {
+        if (err) {
+            logger.warn(err.toString());
+            res.status(401);
+            return res.send({success:false, reason:err.toString()});
+        }
+        res.send(orders);
+    });
+}
+
+function getApply(req, res) {
+    Apply.findOne({serialID:req.params.serial_id}, function(err, apply) {
+        if (err) {
+            logger.warn(err.toString());
+            res.status(401);
+            return res.send({reason:err.toString()});
+        }
+        res.send(apply);
+    });
+}
+
 //var balance = apply.deposit + profit;
 module.exports = {
     registerRoutes: function(app, passportConf) {
@@ -351,7 +373,9 @@ module.exports = {
 
         app.get('/admin/api/user/:uid/orders', passportConf.requiresRole('admin'), fetchOrdersForUser);
 
-        app.post('/admin/api/user/:uid/orders/:id', passportConf.requiresRole('admin'), updateOrderForUser);
+        app.post('/admin/api/user/:uid/orders/:id', passportConf.requiresRole('admin'), updateOrder);
+
+        app.post('/admin/api/orders/:id', passportConf.requiresRole('admin'), updateOrder);
 
         app.get('/admin/api/applies/expire', passportConf.requiresRole('admin'), fetchNearExpireApplies);
 
@@ -364,6 +388,10 @@ module.exports = {
         app.post('/admin/api/apply/assign_account', passportConf.requiresRole('admin'), assignAccoutToApply);
 
         app.post('/admin/api/close_apply', passportConf.requiresRole('admin'), closeApply);
+
+        app.get('/admin/api/orders/get_profit', passportConf.requiresRole('admin'), fetchGetProfitOrders);
+
+        app.get('/admin/api/applies/:serial_id', passportConf.requiresRole('admin'), getApply);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
