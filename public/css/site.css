@@ -96,7 +96,8 @@ footer p {
 	margin: 0;
 	padding: 15px 0;
 	text-align: center;
-	background: #2d3e50;
+	border-top-color: #DDDDDD;
+	background: #f8f8f8;
 }
 
 .login-header {
