@@ -40,19 +40,3 @@ angular.module('myApp').config(['$routeProvider', '$locationProvider', function(
             redirectTo: '/index'
         });
 }]);
-
-/*
-angular.module('myApp').filter("displayDate", function () {
-    return function (input) {
-        return moment(input).format("YYYY-MM-DD HH:mm");
-    };
-}).filter("orderStatus", function() {
-    return function (input) {
-        if (input) {
-            return '交易成功';
-        } else {
-            return '等待确认';
-        }
-    };
-});
-*/

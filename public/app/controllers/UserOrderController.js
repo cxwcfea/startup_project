@@ -24,6 +24,18 @@ angular.module('myApp').controller('UserOrderController', ['$window', 'gbIdentit
             {
                 name: '提现',
                 value: 2
+            },
+            {
+                name: '盈利提取',
+                value: 3
+            },
+            {
+                name: '股票盈利',
+                value: 4
+            },
+            {
+                name: '保证金返还',
+                value: 5
             }
         ];
     }
@@ -36,13 +48,8 @@ angular.module('myApp').controller('UserOrderController', ['$window', 'gbIdentit
 
     vm.queryItem = function (item) {
         currentOrders = order_list.filter(function (elem) {
-            if (item.value === 1) {
-                return elem.dealType === '充值';
-            }
-            if (item.value === 2) {
-                return elem.dealType === '提现';
-            }
-            return true;
+            if (!item.value) return true;
+            return elem.dealType === item.value;
         });
         pageReset();
     };
@@ -57,7 +64,7 @@ angular.module('myApp').controller('UserOrderController', ['$window', 'gbIdentit
     };
 
     vm.manageOrder = function(order) {
-        if (!order.status && order.dealType === '充值') {
+        if (!order.status && order.dealType === 1) {
             $window.location.assign('/pay_confirm/' + order._id);
         }
     };

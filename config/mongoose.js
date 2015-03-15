@@ -43,8 +43,8 @@ function createDefaultUsers() {
 }
 
 function createOrderDefaultUsers(uID) {
-    Order.create({userID:uID, dealType:'充值', amount:1000, status:1, description: '网站充值'});
-    Order.create({userID:uID, dealType:'提现', amount:500, status:1, description: '提现'});
+    Order.create({userID:uID, dealType:1, amount:1000, status:1, description: '网站充值'});
+    Order.create({userID:uID, dealType:2, amount:500, status:1, description: '提现'});
 }
 
 var options = {

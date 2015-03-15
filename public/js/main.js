@@ -123,7 +123,7 @@ $(document).ready(function() {
     function placeOrder(uid, pay_amount, apply_id, shengpay) {
         var order = {
             userID: uid,
-            dealType: '充值',
+            dealType: 1,
             amount: pay_amount,
             description: '股票配资'
         };
@@ -204,7 +204,6 @@ $(document).ready(function() {
         }
     });
 
-
     $('#go-to-use-balance').on('click', function(e) {
         e.preventDefault();
         var formData = $("form").serialize();
@@ -215,5 +214,37 @@ $(document).ready(function() {
                 window.location.replace('/failed_to_pay');
             }
         });
+    });
+
+    $('#close-apply').on('click', function(e) {
+        e.preventDefault();
+        console.log('close apply');
+        $('#close-apply-prompt').modal({
+            relatedTarget: this,
+            onConfirm: function(e) {
+                var apply_serial_id = $('#apply_serial_id')[0].value;
+                $.post("/user/apply_close/"+apply_serial_id, {}, function (data) {
+                    console.log(data);
+                    if (data.success) {
+                        window.location.replace('/user/apply_close');
+                    } else {
+                        window.location.replace('/support_contact');
+                    }
+                });
+            },
+            onCancel: function(e) {
+                console.log('cancel');
+            }
+        });
+        /*
+        var formData = $("form").serialize();
+        $.post("/api/users/pay_by_balance", formData, function (data) {
+            if (data.success) {
+                window.location.replace('/thank_you_for_pay');
+            } else {
+                window.location.replace('/failed_to_pay');
+            }
+        });
+        */
     });
 });

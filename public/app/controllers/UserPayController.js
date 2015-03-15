@@ -11,7 +11,7 @@ angular.module('myApp').controller('UserPayController', ['gbIdentity', '$http', 
         }
         var order = {
             userID: vm.user._id,
-            dealType: '充值',
+            dealType: 1,
             amount: vm.payAmount,
             description: '网站充值'
         };

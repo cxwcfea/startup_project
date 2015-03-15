@@ -113,6 +113,8 @@ module.exports = function(app) {
 
     app.get('/user/withdraw', passportConf.isAuthenticated, users.getWithdraw);
 
+    app.post('/user/withdraw', passportConf.isAuthenticated, users.postWithdraw);
+
     app.get('/user/verify_email', passportConf.isAuthenticated, users.getVerifyEmail);
 
     app.post('/user/verify_email', passportConf.isAuthenticated, users.postVerifyEmail);
@@ -128,6 +130,10 @@ module.exports = function(app) {
     app.get('/user/apply_list', passportConf.isAuthenticated, users.getApplyList);
 
     app.post('/user/verify_finance_password', passportConf.isAuthenticated, users.verifyFinancePassword);
+
+    app.get('/user/apply_close', passportConf.isAuthenticated, applies.getCloseApply);
+
+    app.post('/user/apply_close/:serial_id', passportConf.isAuthenticated, applies.postCloseApply);
 
     app.post('/api/users/pay_by_balance', passportConf.isAuthenticated, users.payByBalance);
 

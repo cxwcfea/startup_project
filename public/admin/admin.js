@@ -15,6 +15,9 @@ angular.module('adminApp').config(['$routeProvider', '$locationProvider', functi
         .when('/one_day_expire_apply', { templateUrl: '/admin/apply_expire_in_one_day',
             controller: 'AdminExpireApplyCtrl as expireApplyVM'
         })
+        .when('/closing_applies', { templateUrl: '/admin/closing_apply_list',
+            controller: 'AdminClosingApplyCtrl as closingApplyVM'
+        })
         .otherwise({
             redirectTo: '/users'
         });

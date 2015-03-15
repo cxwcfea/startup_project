@@ -228,3 +228,12 @@ var endDay = getEndDay(startDay, 5);
 
 console.log(startDay.format("YYYYMMDDHHmmSSS"));
 console.log(endDay.format("YYYYMMDDHHmmSSS"));
+
+var today = Date.now();
+var otherDay = Date.parse('1981-08-04');
+
+var result = today < otherDay;
+console.log(result);
+
+var anum = '0003';
+console.log(Number(anum));

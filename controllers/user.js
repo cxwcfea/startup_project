@@ -193,6 +193,53 @@ module.exports.getWithdraw = function(req, res) {
     res.render('user/withdraw', {layout:null});
 };
 
+module.exports.postWithdraw = function(req, res) {
+    var data = req.body;
+    var amount = Number(data.order.amount);
+
+    async.waterfall([
+        function(callback) {
+            User.findById(req.user.id, function(err, user) {
+                if (!err && !user) {
+                    err = 'user not found';
+                }
+                callback(err, user);
+            });
+        },
+        function(user, callback) {
+            if (user.finance.balance < amount) {
+                callback('余额不足');
+            } else {
+                user.compareFinancePassword(data.password, function (err, isMatch) {
+                    if (!err && !isMatch) {
+                        err = '提现密码错误!'
+                    }
+                    callback(err, user);
+                });
+            }
+        },
+        function(user, callback) {
+            Order.create(data.order, function(err, order) {
+                callback(err, user);
+            });
+        },
+        function(user, callback) {
+            user.finance.balance -= amount;
+            user.finance.freeze_capital += amount;
+            user.save(function(err) {
+                callback(err, user);
+            });
+        }
+    ], function(err, result) {
+        if (err) {
+            res.status(401);
+            res.send({reason:err.toString()});
+        } else {
+            res.send({success:true});
+        }
+    });
+};
+
 module.exports.getResetPassword = function(req, res) {
     res.render('user/change_pass', {layout:null});
 };
@@ -209,6 +256,7 @@ module.exports.getUser = function(req, res, next) {
 };
 
 module.exports.updateUser = function(req, res, next) {
+    logger.debug('updateUser');
     var uid = req.params.id ? req.params.id : req.user.id;
     if (req.params.id && req.params.id !== req.user.id) {
         return res.send({success:false, reason:'无效的用户！'});

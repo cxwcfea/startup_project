@@ -39,6 +39,7 @@
                                 <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="userVM.open(user.mobile)"><span class="am-icon-envelope"></span> 发短信</button>
                                 <button class="am-btn am-btn-default am-btn-xs" ng-click="userVM.showApplies(user)"><span class="am-icon-bar-chart"></span> 配资</button>
                                 <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="userVM.showOrders(user)"><span class="am-icon-money"></span> 交易</button>
+                                <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="userVM.updateBalance(user)"><span class="am-icon-pencil"></span> 修改余额</button>
                             </div>
                         </div>
                     </td>
@@ -68,6 +69,22 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-click="ok()">发送</button>
+        <button class="btn btn-warning" ng-click="cancel()">取消</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="userUpdateModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">修改用户</h3>
+    </div>
+    <div class="modal-body">
+        <div class="am-form-group">
+            <label>增加或减少的余额</label>
+            <input type="number" ng-model="user.balance">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">确认修改</button>
         <button class="btn btn-warning" ng-click="cancel()">取消</button>
     </div>
 </script>
