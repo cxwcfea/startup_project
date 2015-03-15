@@ -363,14 +363,15 @@ a:active {
     -webkit-background-size: 125px 24px;
     background-size: 125px 24px;
 }
+.am-active {
 
+    border-bottom-color: #F9664B;
+}
 
 
 /*
 
-.am-active {
 
-}
 .admin-sidebar {
     width: 230px;
 }
