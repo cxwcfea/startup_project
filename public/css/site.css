@@ -36,6 +36,7 @@ footer p {
 }
 
 .detail {
+	padding-top: 4rem;
 	background: #fff;
 }
 
@@ -46,7 +47,7 @@ footer p {
 }
 
 .detail-h3 {
-	color: #1f8dd6;
+	color: #D83733;
 }
 
 .detail-p {
@@ -93,9 +94,9 @@ footer p {
 .footer {
 	color: #7f8c8d;
 	margin: 0;
-	padding: 15px 0;
 	text-align: center;
-	background: #2d3e50;
+	border-top-color: #DDDDDD;
+	background: #f8f8f8;
 }
 
 .login-header {
@@ -269,7 +270,7 @@ a:active {
 .money_showtab {
     border-radius: 5px;
     margin-top: 8px;
-    font-family: "Microsoft Yahei";
+    font-family: inherit;
     min-height: 10px;
     height: auto;
     display: table;
@@ -281,7 +282,7 @@ a:active {
 .mstit {
     font-weight: bold;
     font-size: 18px;
-    font-family: "Microsoft Yahei";
+    font-family: inherit;
     height: 40px;
     color: #666666;
 }
@@ -293,7 +294,7 @@ a:active {
 .apply .money_js {
     line-height: 200%;
     text-align: right;
-    font-family: "Microsoft Yahei";
+    font-family: inherit;
     color: #444;
     font-size: 16px;
     margin-top: 20px;
@@ -310,7 +311,7 @@ a:active {
 .apply .money_je {
     line-height: 200%;
     text-align: right;
-    font-family: "Microsoft Yahei";
+    font-family: inherit;
     color: #444;
     font-size: 20px;
     margin-top: 20px;
@@ -364,6 +365,13 @@ a:active {
 }
 
 /*
+
+.am-active {
+
+    border-bottom-color: #F9664B;
+}
+
+
 .admin-sidebar {
     width: 230px;
 }
