@@ -62,18 +62,6 @@ angular.module('adminApp').controller('AdminClosingApplyCtrl', ['$scope', '$http
                 error(function(data, status, headers, config) {
                     gbNotifier.error('结算失败:' + data.reason);
                 });
-            /*
-            apply.account = content.account;
-            apply.password = content.password;
-            apply.status = 2;
-            apply.$save(function(data) {
-                formatData(apply);
-                gbNotifier.notify('更新成功!');
-            }, function(response) {
-                console.log(response);
-                gbNotifier.error('更新失败:');
-            });
-            */
         }, function () {
         });
     };

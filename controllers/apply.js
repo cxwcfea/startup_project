@@ -1,7 +1,8 @@
 var Apply = require('../models/Apply'),
     Order = require('../models/Order'),
     moment = require('moment'),
-    config = require('../config/config'),
+    env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
+    config = require('../config/config')[env],
     log4js = require('log4js'),
     logger = log4js.getLogger('admin');
     util = require('../lib/util');
@@ -49,7 +50,7 @@ exports.confirmApply = function(req, res, next) {
         if (err) {
             next();
         }
-        var serviceFee = collection.amount / 10000 * config.parameters.serviceCharge * collection.period;
+        var serviceFee = collection.amount / 10000 * config.serviceCharge * collection.period;
         var total = collection.deposit + serviceFee;
         var shouldPay = total - req.user.finance.balance;
         res.locals.applySummary = {
@@ -60,7 +61,6 @@ exports.confirmApply = function(req, res, next) {
             balance: req.user.finance.balance.toFixed(2),
             shouldPay: shouldPay.toFixed(2),
             serialID: collection.serialID,
-            orderID: collection.orderID,
             applyID: collection._id
         };
         res.locals.shengOrderTime = moment().format("YYYYMMDDHHmmss");
@@ -71,8 +71,9 @@ exports.confirmApply = function(req, res, next) {
 
         if (collection.orderID) {
             Order.findById(collection.orderID, function(err, order) {
-                if (order && order.transID) {
-                    if (shouldPay === order.amount) {
+                if (order && shouldPay === order.amount) {
+                    res.locals.applySummary.orderID = order._id;
+                    if (order.transID) {
                         res.locals.applySummary.transID = order.transID;
                     }
                 }
@@ -93,9 +94,9 @@ exports.getApplyDetail = function (req, res, next) {
         if (collection.status === 5) {
             return res.redirect(302, '/user/apply_close');
         }
-        var serviceFee = collection.amount / 10000 * config.parameters.serviceCharge * collection.period;
-        var warnValue = config.parameters.warnFactor * collection.amount;
-        var sellValue = config.parameters.sellFactor * collection.amount;
+        var serviceFee = collection.amount / 10000 * config.serviceCharge * collection.period;
+        var warnValue = config.warnFactor * collection.amount;
+        var sellValue = config.sellFactor * collection.amount;
         var startTime, endTime;
         if (collection.startTime) {
             startTime = moment(collection.startTime);
@@ -143,5 +144,58 @@ exports.postCloseApply = function(req, res) {
             return res.send({success:false, reason:err.toString()});
         }
         res.send({success:true});
+    });
+};
+
+exports.getProfit = function(req, res, next) {
+    Apply.findOne({serialID:req.params.serial_id}, function(err, apply) {
+        if (err) {
+            next();
+        }
+        res.locals.apply = apply;
+        res.render('get_profit');
+    })
+};
+
+exports.postGetProfit = function(req, res, next) {
+    req.assert('profit_amount', '金额必须是正数').isInt();
+    req.assert('profit_amount', '金额不能为空').notEmpty();
+
+    var errors = req.validationErrors();
+    if (errors) {
+        req.flash('errors', errors);
+        return res.redirect('/apply/get_profit/' + serial_id);
+    }
+    var profit = req.body.profit_amount;
+    var serial_id = req.params.serial_id;
+    Apply.findOne({serialID:serial_id}, function(err, apply) {
+        if (err) {
+            logger.warn('error when get profit for apply:' + apply.serialID);
+            req.flash('errors', err);
+            return res.redirect('/apply/get_profit/' + serial_id);
+        }
+        if (!apply) {
+            logger.warn('failed to find apply for when get profit for apply:' + apply.serialID);
+            req.flash('errors', {msg:'没有找到配资记录'});
+            return res.redirect('/apply/get_profit/' + serial_id);
+        }
+        var orderData = {
+            userID: apply.userID,
+            dealType: 3,
+            amount: profit,
+            status: 0,
+            description: '配资盈利提取',
+            payType: 2,
+            applySerialID: apply.serialID
+        };
+        Order.create(orderData, function(err, order) {
+            if (err || !order) {
+                logger.warn('failed create order for when get profit for apply:' + apply.serialID);
+                req.flash('errors', {msg:'创建订单失败'});
+                return res.redirect('/apply/get_profit/' + serial_id);
+            }
+            req.flash('info', {msg:'申请提交成功，订单已创建，我们会尽快处理'});
+            res.redirect('/apply_detail/' + serial_id);
+        });
     });
 };

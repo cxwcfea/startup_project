@@ -2,6 +2,8 @@ var Order = require('../models/Order'),
     Apply = require('../models/Apply'),
     log4js = require('log4js'),
     moment = require('moment'),
+    env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
+    config = require('../config/config')[env],
     logger = log4js.getLogger('admin');
 
 exports.fetchOrdersForUser = function(req, res) {
@@ -34,19 +36,21 @@ exports.addOrderForUser = function(req, res) {
             res.status(500);
             return res.send({success:false, reason:err.toString()});
         }
-        if (req.query.aid) {
-            Apply.findOne({ serialID: req.query.aid }, function(err, apply) {
+        if (order.applySerialID) {
+            Apply.findOne({ serialID: order.applySerialID }, function(err, apply) {
                 if (err) {
                     logger.error("error when save orderId to apply: " + err.toString());
                 } else if (!apply) {
-                    logger.error("error when save orderId to apply: apply " + req.query.aid + " not found");
+                    logger.error("error when save orderId to apply: apply " + order.applySerialID + " not found");
                 } else {
-                    apply.orderID = order._id;
-                    apply.save(function(err) {
-                        if (err) {
-                            logger.error("error when save orderId to apply: " + err.toString());
-                        }
-                    });
+                    if (apply.status === 1) {
+                        apply.orderID = order._id;
+                        apply.save(function(err) {
+                            if (err) {
+                                logger.error("error when save orderId to apply: " + err.toString());
+                            }
+                        });
+                    }
                 }
             });
         }
@@ -74,6 +78,7 @@ exports.confirmPayOrder = function(req, res, next) {
         res.locals.order = order;
         res.locals.balance = (req.user.finance.balance + order.amount).toFixed(2);
         res.locals.shengOrderTime = moment().format("YYYYMMDDHHmmss");
+        res.locals.callback_domain = config.pay_callback_domain;
         res.render('pay_confirm');
     })
 };

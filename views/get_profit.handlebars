@@ -1,0 +1,40 @@
+<div class="admin-content">
+    <hr/>
+
+    <div class="am-g am-margin am-padding">
+        <div class="am-u-sm-12 am-u-md-8 am-u-md-offset-2">
+            <div class="am-panel am-panel-default">
+                <div class="am-panel-hd">盈利提取</div>
+                <div class="am-panel-bd">
+                    <form method="POST" class="am-form am-form-horizontal" id="get-profit-form" name="get-profit-form" novalidate>
+                        <div class="am-form-group">
+                            <label for="profit_amount" class="am-u-sm-4 am-u-md-2 am-form-label">要提取的金额</label>
+                            <div class="am-u-sm-8 am-u-md-6 am-u-end">
+                                <div class="am-input-group">
+                                    <input type="number" name="profit_amount" id="profit_amount" placeholder="金额数字" min="0.01" required>
+                                    <span class="am-input-group-label">元</span>
+                                </div>
+                                <p class="am-form-help"> 必须已卖出相应的股票盈利的 </p>
+                                <p class="am-form-help"> 提取的盈利将记入您在牛金网的余额 </p>
+                            </div>
+                        </div>
+
+                        <div class="am-form-group">
+                            <div class="am-u-sm-8 am-u-sm-offset-4 am-u-md-10 am-u-md-offset-2">
+                                <button id="get-profit-btn" class="am-btn am-btn-warning">
+                                    <i class="am-icon-shopping-cart"></i>
+                                    确定
+                                </button>
+                                <a href="/apply_detail/{{apply.serialID}}" class="am-btn am-btn-warning">
+                                    <i class="am-icon-sign-out"></i>
+                                    返回
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+</div>

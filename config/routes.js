@@ -59,6 +59,10 @@ module.exports = function(app) {
         res.render('article/partners', {layout:'article_main'});
     });
 
+    app.get('/apply/get_profit/:serial_id', passportConf.isAuthenticated, applies.getProfit);
+
+    app.post('/apply/get_profit/:serial_id', passportConf.isAuthenticated, applies.postGetProfit);
+
     app.get('/thank_you_for_pay', users.thankYouForPay);
 
     app.post('/thank_you_for_pay', users.thankYouForPay);
@@ -135,6 +139,8 @@ module.exports = function(app) {
 
     app.post('/user/apply_close/:serial_id', passportConf.isAuthenticated, applies.postCloseApply);
 
+    app.post('/user/iapp_pay', users.getIAppPayTransid);
+
     app.post('/api/users/pay_by_balance', passportConf.isAuthenticated, users.payByBalance);
 
     app.get('/pay_confirm/:orderID', passportConf.isAuthenticated, orders.confirmPayOrder);
@@ -161,9 +167,7 @@ module.exports = function(app) {
 
     app.get('/api/applies/:uid/apply', applies.getAppliesForUser);
 
-    app.post('/api/user_pay', users.getPayTransid);
-
-    app.post('/api/pay_feedback', users.payFeedback);
+    app.post('/api/iapp_feedback', users.iappPayFeedback);
 
     app.post('/api/users/pay_success/:order_id', passportConf.isAuthenticated, users.paySuccess);
 

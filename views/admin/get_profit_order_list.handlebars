@@ -1,0 +1,70 @@
+<div class="am-cf am-padding">
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">未完成的盈利提取订单</strong></div>
+</div>
+
+<div class="am-g">
+    <!--
+    <div class="am-u-sm-12 am-u-md-3">
+        <div class="am-input-group am-input-group-sm">
+            <input type="text" class="am-form-field">
+          <span class="am-input-group-btn">
+            <button class="am-btn am-btn-default" type="button">搜索</button>
+          </span>
+        </div>
+    </div>
+    -->
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12">
+        <form class="am-form">
+            <table class="am-table am-table-striped am-table-hover table-main">
+                <thead>
+                <tr>
+                    <th class="table-date">日期</th><th class="table-type">交易类型</th><th class="table-author">金额</th><th class="table-set">状态</th><th class="table-set">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="order in profitOrderListVM.showingItems">
+                    <td>\{{order.createdAt | displayDate}}</td>
+                    <td>\{{order.dealType | displayOrderType}}</td>
+                    <td>\{{order.amount}}</td>
+                    <td>\{{order.status | orderStatus}}</td>
+                    <td>
+                        <div class="am-btn-toolbar">
+                            <div class="am-btn-group am-btn-group-xs">
+                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-show="!order.status" ng-click="profitOrderListVM.handleOrder(order)"><span class="am-icon-pencil-square-o"></span> 管理</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="am-cf">
+                共 \{{profitOrderListVM.totalItems}} 条记录
+                <div class="am-fr">
+                    <pagination previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="profitOrderListVM.itemsPerPage" total-items="profitOrderListVM.totalItems" ng-model="profitOrderListVM.currentPage" ng-change="profitOrderListVM.pageChanged()"></pagination>
+                </div>
+            </div>
+            <hr />
+        </form>
+    </div>
+</div>
+
+<script type="text/ng-template" id="getProfitModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">盈利提取信息</h3>
+    </div>
+    <div class="modal-body">
+        <p>配资单号：\{{applySerialID}}</p>
+        <div class="am-form-group">
+            <label for="sms-content">短信内容</label>
+            <textarea class="" rows="4" id="sms-content" ng-model="data.sms_content"></textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">完成盈利提取</button>
+        <button class="btn btn-warning" ng-click="cancel()">取消</button>
+    </div>
+</script>

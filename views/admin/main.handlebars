@@ -61,7 +61,8 @@
             <ul class="am-list admin-sidebar-list">
                 <li><a href="/admin#/users"><span class="am-icon-users"></span> 用户列表</a></li>
                 <li><a href="/admin#/one_day_expire_apply"><span class="am-icon-clock-o"></span> 两天内到期配资</a></li>
-                <li><a href="/admin#/closing_applies"><span class="am-icon-power-off"></span> 结算中的配资</a></li>
+                <li><a href="/admin#/closing_applies"><span class="am-icon-shopping-cart"></span> 结算中的配资</a></li>
+                <li><a href="/admin#/get_profit_orders"><span class="am-icon-money"></span> 盈利提取的订单</a></li>
             </ul>
 
             <div class="am-panel am-panel-default admin-sidebar-panel">
@@ -101,6 +102,7 @@
 <script src="{{static '/vendor/amazeui/dist/js/amazeui.js'}}"></script>
 <script src="{{static '/vendor/moment/moment.js'}}"></script>
 <script src="{{static '/vendor/moment/locale/zh-cn.js'}}"></script>
+<script src="{{static '/vendor/lodash/lodash.min.js'}}"></script>
 <script src="{{static '/vendor/toastr/toastr.js'}}"></script>
 <script src="{{static '/vendor/angular/angular.js'}}"></script>
 <script src="{{static '/vendor/angular-route/angular-route.js'}}"></script>
@@ -117,5 +119,6 @@
 <script src="{{static '/admin/controllers/AdminOrderListCtrl.js'}}"></script>
 <script src="{{static '/admin/controllers/AdminExpireApplyCtrl.js'}}"></script>
 <script src="{{static '/admin/controllers/AdminClosingApplyCtrl.js'}}"></script>
+<script src="{{static '/admin/controllers/AdminGetProfitOrderListCtrl.js'}}"></script>
 <!--<![endif]-->
 </body>

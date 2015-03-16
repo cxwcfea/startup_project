@@ -31,12 +31,11 @@
                 <input type="hidden" name="OrderNo" id="OrderNo" value="{{order._id}}">
                 <input type="hidden" name="OrderAmount" id="OrderAmount" value="{{order.amount}}">
                 <input type="hidden" name="OrderTime" id="OrderTime" value="{{shengOrderTime}}">
-                <input type="hidden" name="PageUrl" id="PageUrl" value="http://test.niujinwang.com/thank_you_for_pay">
-                <input type="hidden" name="BackUrl" id="BackUrl" value="http://test.niujinwang.com/pay_confirm/{{order._id}}">
-                <input type="hidden" name="NotifyUrl" id="NotifyUrl" value="http://test.niujinwang.com/api/shengpay_feedback">
+                <input type="hidden" name="PageUrl" id="PageUrl" value="{{callback_domain}}/thank_you_for_pay">
+                <input type="hidden" name="BackUrl" id="BackUrl" value="{{callback_domain}}/pay_confirm/{{order._id}}">
+                <input type="hidden" name="NotifyUrl" id="NotifyUrl" value="{{callback_domain}}/api/shengpay_feedback">
                 <input type="hidden" name="ProductName" id="ProductName" value="股票配资">
                 <input type="hidden" name="BuyerIp" id="BuyerIp">
-                <input type="hidden" name="Ext1" id="Ext1" value="54ffbd47904b2e6328860edb">
                 <input type="hidden" name="SignType" id="SignType" value="MD5">
                 <input type="hidden" name="SignMsg" id="SignMsg">
             </form>
@@ -44,8 +43,8 @@
             <div class="am-g">
                 <div class="am-u-sm-6 pull-right">
                     <select id="pay-select" data-am-selected="{btnSize: 'sm'}">
-                        <option value="option1">5000元以上推荐使用此通道支付</option>
-                        <option value="option2">移动用户推荐使用此通道支付</option>
+                        <option value="option1">通道一:5000元以上使用</option>
+                        <option value="option2">通道二:移动用户使用</option>
                     </select>
                     <span class="am-form-caret"></span>
                     <button id="go-to-pay" type="submit" class="am-btn am-btn-warning"> 立即支付 </button>
