@@ -4,6 +4,7 @@
     angular.module('applyApp').controller('ApplyController', ['$http', '$location', '$window', 'days', function($http, $location, $window, days) {
         var vm = this;
 
+        vm.min_amount = 10;
         var warnFactor = 0.96;
         var sellFactor = 0.94;
         var depositFactor = 0.1;
@@ -12,7 +13,7 @@
 
         vm.agree = true;
         vm.showOtherAmount = false;
-        vm.otherAmount = 2000;
+        vm.otherAmount = vm.min_amount;
 
         vm.summary = {
             day: 5,
@@ -90,10 +91,10 @@
         }
 
         function tryOtherAmount() {
-            if (vm.otherAmount >= 2000) {
+            if (vm.otherAmount >= vm.min_amount) {
                 vm.summary.amount = Math.floor(vm.otherAmount);
             } else {
-                vm.summary.amount = vm.otherAmount = 2000;
+                vm.summary.amount = vm.otherAmount = vm.min_amount;
             }
             calculateSummery();
         }
