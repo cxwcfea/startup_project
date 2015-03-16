@@ -8,8 +8,8 @@ module.exports = {
         port: process.env.PORT || 3000,
         pay_callback_domain: 'http://test.niujinwang.com',
         serviceCharge: 19.9,
-        warnFactor: 0.94,
-        sellFactor: 0.96
+        warnFactor: 0.96,
+        sellFactor: 0.94
     },
     production: {
         rootPath: rootPath,
@@ -17,7 +17,7 @@ module.exports = {
         port: process.env.PORT || 80,
         pay_callback_domain: 'http://www.niujinwang.com',
         serviceCharge: 19.9,
-        warnFactor: 0.94,
-        sellFactor: 0.96
+        warnFactor: 0.96,
+        sellFactor: 0.94
     }
 };
