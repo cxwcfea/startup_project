@@ -60,7 +60,6 @@ exports.confirmApply = function(req, res, next) {
             balance: req.user.finance.balance.toFixed(2),
             shouldPay: shouldPay.toFixed(2),
             serialID: collection.serialID,
-            orderID: collection.orderID,
             applyID: collection._id
         };
         res.locals.shengOrderTime = moment().format("YYYYMMDDHHmmss");
@@ -71,8 +70,9 @@ exports.confirmApply = function(req, res, next) {
 
         if (collection.orderID) {
             Order.findById(collection.orderID, function(err, order) {
-                if (order && order.transID) {
-                    if (shouldPay === order.amount) {
+                if (order && shouldPay === order.amount) {
+                    res.locals.applySummary.orderID = order._id;
+                    if (order.transID) {
                         res.locals.applySummary.transID = order.transID;
                     }
                 }

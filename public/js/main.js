@@ -35,41 +35,13 @@ $(document).ready(function() {
     window.aibeiNotify = function(data) {
         console.log("RetCode=" + data.RetCode+":TransId=" + data.TransId + ":OrderStatus=" + data.OrderStatus);
         if (data.RetCode === 0) {
-            console.log('pay complete');
+            console.log('iapp pay complete');
             if (data.OrderStatus === 0) {
-                console.log('pay success');
-                var apply_id = $('#apply_id')[0] ? $('#apply_id')[0].value : null;
-                if (window.niujin_data && window.niujin_data.paying_order) {
-                    var order_id = window.niujin_data.paying_order.id;
-                    var pay_amount = window.niujin_data.paying_order.price;
-                    window.niujin_data.paying_order = null;
-                    $.post('/api/users/pay_success/' + order_id, {pay_amount:pay_amount}, function(data) {
-                        if (data.success) {
-                            if (apply_id) {
-                                $.post('/api/users/pay_by_balance', {pay_amount:pay_amount, apply_id:apply_id}, function(data) {
-                                    if (data.success) {
-                                        //window.location.replace('/thank_you_for_pay');
-                                        console.log('success to pay for apply')
-                                    } else {
-                                        console.log('failed to pay for apply')
-                                        //window.location.replace('/failed_to_pay');
-                                    }
-                                });
-                            } else {
-                                //window.location.replace('/thank_you_for_pay');
-                                console.log('pay success');
-                            }
-                        } else {
-                            console.log('failed to update user balance after pay success');
-                            //window.location.replace('/failed_to_pay');
-                        }
-                    });
-                }
+                console.log('iapp pay success');
             } else {
-                console.log('pay failed');
+                console.log('iapp pay failed');
             }
         }
-
     };
 
     function showPayWindow(trans_id) {
@@ -103,28 +75,27 @@ $(document).ready(function() {
             price: pay_amount
         };
 
-        window.niujin_data = {};
-        window.niujin_data.paying_order = data;
-
         if (trans_id) {
             showPayWindow(trans_id);
-            return;
+        } else {
+            $.post('/user/iapp_pay', data, function(data) {
+                if (data.success) {
+                    console.log(data.transid);
+                    showPayWindow(data.transid);
+                } else {
+                    console.log('error');
+                }
+            });
         }
-        $.post('/api/user_pay', data, function(data) {
-            if (data.success) {
-                console.log(data.transid);
-                showPayWindow(data.transid);
-            } else {
-                console.log('error');
-            }
-        });
     }
 
-    function placeOrder(uid, pay_amount, apply_id, shengpay) {
+    // pay_type 0 means iapppay, 1 means shengpay
+    function placeOrder(uid, pay_amount, apply_id, pay_type) {
         var order = {
             userID: uid,
             dealType: 1,
             amount: pay_amount,
+            applySerialID: apply_id,
             description: '股票配资'
         };
         $.ajax({
@@ -132,12 +103,11 @@ $(document).ready(function() {
             type : 'POST',
             dataType : 'json',
             data: order,
-            success : function(response) {
-                console.log(response._id);
-                if (shengpay) {
-                    payByShengpay(response._id);
+            success : function(order) {
+                if (pay_type === 1) {
+                    payByShengpay(order._id);
                 } else {
-                    getTransId(response._id, uid, pay_amount);
+                    getTransId(order._id, uid, pay_amount);
                 }
             },
             error : function(e) {
@@ -163,15 +133,13 @@ $(document).ready(function() {
         var NotifyUrl = $('#NotifyUrl')[0].value;
         var BuyerIp = returnCitySN["cip"];
         var ProductName = $('#ProductName')[0].value;
-        var Ext1 = $('#Ext1')[0].value;
         var SignType = $('#SignType')[0].value;
         var md5Key = 'shengfutongSHENGFUTONGtest';
 
         var sign_origin = Name+Version+Charset+MsgSender+OrderNo+OrderAmount+OrderTime+
-                PageUrl+BackUrl+NotifyUrl+ProductName+BuyerIp+Ext1+SignType+md5Key;
+                PageUrl+BackUrl+NotifyUrl+ProductName+BuyerIp+SignType+md5Key;
         var SignMsg = SparkMD5.hash(sign_origin);
         SignMsg = SignMsg.toUpperCase();
-        console.log(SignMsg);
 
         $('#BuyerIp')[0].value = BuyerIp;
         $('#SignMsg')[0].value = SignMsg;
@@ -192,7 +160,7 @@ $(document).ready(function() {
             if (order_id) {
                 payByShengpay();
             } else {
-                placeOrder(uid, pay_amount, apply_id, true);
+                placeOrder(uid, pay_amount, apply_id, 1);
             }
             return;
         }
@@ -200,7 +168,7 @@ $(document).ready(function() {
         if (order_id) {
             getTransId(order_id, uid, pay_amount);
         } else {
-            placeOrder(uid, pay_amount, apply_id);
+            placeOrder(uid, pay_amount, apply_id, 0);
         }
     });
 

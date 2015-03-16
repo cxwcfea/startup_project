@@ -12,7 +12,8 @@ var passport = require('passport'),
     log4js = require('log4js'),
     logger = log4js.getLogger('admin'),
     util = require('../lib/util'),
-    config = require('../config/config'),
+    env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
+    config = require('../config/config')[env],
     async = require('async');
 
 
@@ -368,7 +369,7 @@ module.exports.payByBalance = function(req, res, next) {
                 if (err) {
                     return res.send({success:false, reason:err.toString()});
                 }
-                var serviceFee = apply.amount / 10000 * config.parameters.serviceCharge * apply.period;
+                var serviceFee = apply.amount / 10000 * config.serviceCharge * apply.period;
                 var total = apply.deposit + serviceFee;
                 if (user.finance.balance < total) {
                     logger.warn('payByBalance error. no enough balance to pay apply:' + apply_id);
@@ -510,7 +511,7 @@ module.exports.verifyFinancePassword = function(req, res, next) {
     });
 };
 
-module.exports.getPayTransid = function(req, res) {
+module.exports.getIAppPayTransid = function(req, res) {
     console.log('getPayTransid');
     var orderID = req.body.id;
     var price = req.body.price;
@@ -522,7 +523,8 @@ module.exports.getPayTransid = function(req, res) {
         cporderid: orderID,
         price: Number(price),
         currency: 'RMB',
-        appuserid: uid
+        appuserid: uid,
+        notifyurl: config.pay_callback_domain + '/api/iapp_feedback'
     };
     /*
     needle.post('http://ipay.iapppay.com:9999/payapi/order', data, { multipart: true })
@@ -537,7 +539,6 @@ module.exports.getPayTransid = function(req, res) {
         });
      */
     var jsonData = JSON.stringify(data);
-    //console.log(jsonData);
     var client_private = '-----BEGIN RSA PRIVATE KEY-----\n'+
         'MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAOW3mZeDOg58WF61\n'+
         '8rD4RN8plLAOOgOH1QAAR3y+vVQCxZpVvjLPLDZP0EBdWfSlFpkLIBaVPBiNq6dx\n'+
@@ -594,62 +595,149 @@ module.exports.getPayTransid = function(req, res) {
     });
 };
 
-module.exports.payFeedback = function(req, res) {
+module.exports.iappPayFeedback = function(req, res) {
+    logger.debug('iappPayFeedback');
     logger.debug(req.body);
-    if (req.body.transdata) {
+    if (req.body.transdata && result.body.result === 0) {
         var result = JSON.parse(req.body.transdata);
         logger.debug(result);
-        Order.findById(result.cporderid, function(err, order) {
-            if (err) {
-                logger.error('error update user balance when payFeedback:' + err.toString());
-                return;
-            }
-            if (!order) {
-                logger.error('error update user balance when payFeedback:order not found');
-                return;
-            }
-            if (order.status === 1) {
-                logger.warn('payFeedback order already paied:' + order._id);
-                return;
-            }
-            var pay_amount = Number(result.money);
-            if (pay_amount <= 0) {
-                logger.error('error update user balance when payFeedback:pay_amount not valid:' + pay_amount);
-                return;
-            }
-            if (order.amount !== pay_amount) {
-                logger.error('error update user balance when payFeedback:pay_amount not match order\'s amount');
-                return;
-            }
-            order.status = 1;
-            order.payType = 0;
-            order.save(function (err) {
-                if (err) {
-                    logger.warn('error update order when payFeedback:' + err.toString());
-                }
-            });
-            logger.info("pay success for order:" + order._id + " by " + pay_amount);
-
-            User.findById(result.appuserid, function(err, user) {
-                if (err) {
-                    logger.error('error update user balance when payFeedback:' + err.toString());
+        async.waterfall([
+            function(callback) {
+                Order.findById(result.cporderid, function(err, order) {
+                    if (!err && !order) {
+                        err = 'order not found:' + result.OrderNo;
+                    }
+                    callback(err, order);
+                });
+            },
+            function(order, callback) {
+                if (order.status === 1) {
+                    callback('order already paid:' + order._id);
                     return;
                 }
-                if (!user) {
-                    logger.error('error update user balance when payFeedback can not find user:' + result.appuserid);
+                var pay_amount = Number(result.money);
+                if (pay_amount <= 0) {
+                    callback('pay_amount not valid:' + pay_amount);
                     return;
                 }
+                if (order.amount !== pay_amount) {
+                    callback('pay_amount not match order\'s amount: ' + order.amount + ' vs ' + pay_amount);
+                    return;
+                }
+                order.status = 1;
+                order.payType = 0;
+                order.save(function (err) {
+                    callback(err, order, pay_amount);
+                });
+            },
+            function(order, pay_amount, callback) {
+                logger.info("pay success for order:" + order._id + " by " + pay_amount);
+                User.findById(order.userID, function(err, user) {
+                    if (!err && !user) {
+                        err = 'can not find user:' + order.userID;
+                    }
+                    callback(err, user, order, pay_amount);
+                });
+            },
+            function(user, order, pay_amount, callback) {
                 user.finance.balance += pay_amount;
                 user.save(function(err) {
-                    if (err) {
-                        logger.error('error update user balance when payFeedback' + err.toString());
-                        return;
-                    }
-                    logger.debug('payFeedback success update user:' + user._id + ' and order:' + order._id);
+                    callback(err, user, order, pay_amount);
                 });
-            });
+            },
+            function(user, order, pay_amount, callback) {
+                logger.debug('iappPayFeedback success update user:' + user._id + ' and order:' + order._id);
+                if (order.applySerialID) {
+                    logger.info('iappPayFeedback pay apply');
+                    callback(null, true, user, order.applySerialID, pay_amount);
+                } else {
+                    callback(null, false, null, null, null);
+                }
+            },
+            function(working, user, apply_serial_id, pay_amount, callback) {
+                if (working) {
+                    Apply.findOne({serialID: apply_serial_id}, function(err, apply) {
+                        if (!err && !apply) {
+                            err = 'can not found apply when pay apply:' + apply_serial_id;
+                        }
+                        callback(err, true, user, apply, pay_amount);
+                    });
+                } else {
+                    callback(null, false, null, null, null);
+                }
+            },
+            function(working, user, apply, pay_amount, callback) {
+                if (working) {
+                    if (apply.status === 1) {
+                        var serviceFee = apply.amount / 10000 * config.serviceCharge * apply.period;
+                        var total = apply.deposit + serviceFee;
+                        if (user.finance.balance < total) {
+                            callback('no enough balance to pay apply:' + apply.serialID);
+                        } else {
+                            apply.status = 4;
+                            Homas.findOne({using:false}, function(err, homas) {
+                                if (!err && !homas) {
+                                    err = 'failed to assign homas account to apply:' + apply.serialID;
+                                }
+                                callback(err, true, user, apply, homas, total);
+                            });
+                        }
+                    } else if (apply.status === 2) { // in this case (apply in process, order pay for it), it means the order is for add deposit
+                        user.finance.balance -= pay_amount;
+                        user.save(function(err) {
+                            callback(err, false, null, null, null, null);
+                        });
+                    }
+                } else {
+                    callback(null, false, null, null, null, null);
+                }
+            },
+            function(working, user, apply, homas, total, callback) {
+                if (working) {
+                    homas.using = true;
+                    homas.assignAt = Date.now();
+                    homas.applySerialID = apply.serialID;
+                    homas.save(function(err) {
+                        callback(err, true, user, apply, homas, total);
+                    });
+                } else {
+                    callback(null, false, user, apply, homas, total);
+                }
+            },
+            function(working, user, apply, homas, total, callback) {
+                if (working) {
+                    apply.status = 2;
+                    apply.account = homas.account;
+                    apply.password = homas.password;
+                    var startDay = util.getStartDay();
+                    apply.startTime = startDay.toDate();
+                    apply.endTime = util.getEndDay(startDay, apply.period).toDate();
+                    apply.save(function (err) {
+                        callback(err, true, user, total);
+                    });
+                } else {
+                    callback(null, false, user, total);
+                }
+            },
+            function(working, user, total, callback) {
+                if (working) {
+                    user.finance.balance -= total;
+                    user.save(function (err) {
+                        callback(err, 'success pay apply');
+                    });
+                } else {
+                    callback(null, 'done');
+                }
+            }
+        ], function(err, result) {
+            if (err) {
+                logger.error('iappPayFeedback error:' + err.toString());
+            } else {
+                looger.info('iappPayFeedback result:' + result);
+            }
         });
     }
+    res.send('SUCCESS');
 };
 
 module.exports.paySuccess = function(req, res, next) {
@@ -714,24 +802,22 @@ module.exports.thankYouForPay = function(req, res, next) {
 };
 
 module.exports.shengpayFeedback2 = function(req, res, next) {
-    logger.debug('shengpayFeedback');
+    logger.debug('shengpayFeedback2');
     logger.debug(req.body);
     var result = req.body;
-    var apply_id = null;
     if (result.TransStatus && result.TransStatus === '01') {
         async.waterfall([
             function(callback) {
                 Order.findById(result.OrderNo, function(err, order) {
+                    if (!err && !order) {
+                        err = 'order not found:' + result.OrderNo;
+                    }
                     callback(err, order);
                 });
             },
             function(order, callback) {
-                if (!order) {
-                    callback('order not found');
-                    return;
-                }
                 if (order.status === 1) {
-                    callback('order already paied:' + order._id);
+                    callback('order already paid:' + order._id);
                     return;
                 }
                 var pay_amount = Number(result.TransAmount);
@@ -753,77 +839,101 @@ module.exports.shengpayFeedback2 = function(req, res, next) {
             function(order, pay_amount, callback) {
                 logger.info("pay success for order:" + order._id + " by " + pay_amount);
                 User.findById(order.userID, function(err, user) {
+                    if (!err && !user) {
+                        err = 'can not find user:' + order.userID;
+                    }
                     callback(err, user, order, pay_amount);
                 });
             },
             function(user, order, pay_amount, callback) {
-                if (!user) {
-                    callback('Can not find user:' + order.userID);
-                    return;
-                }
                 user.finance.balance += pay_amount;
                 user.save(function(err) {
-                    callback(err, user, order);
+                    callback(err, user, order, pay_amount);
                 });
             },
-            function(user, order, callback) {
+            function(user, order, pay_amount, callback) {
                 logger.debug('shengpayFeedback success update user:' + user._id + ' and order:' + order._id);
-                if (apply_id) {
+                if (order.applySerialID) {
                     logger.info('shengpayFeedback pay apply');
-                    callback(user, apply_id);
+                    callback(null, true, user, order.applySerialID, pay_amount);
+                } else {
+                    callback(null, false, null, null, null);
+                }
+            },
+            function(working, user, apply_serial_id, pay_amount, callback) {
+                if (working) {
+                    Apply.findOne({serialID: apply_serial_id}, function(err, apply) {
+                        if (!err && !apply) {
+                            err = 'can not found apply when pay apply:' + apply_serial_id;
+                        }
+                        callback(err, true, user, apply, pay_amount);
+                    });
+                } else {
+                    callback(null, false, null, null, null);
+                }
+            },
+            function(working, user, apply, pay_amount, callback) {
+                if (working) {
+                    if (apply.status === 1) {
+                        var serviceFee = apply.amount / 10000 * config.serviceCharge * apply.period;
+                        var total = apply.deposit + serviceFee;
+                        if (user.finance.balance < total) {
+                            callback('no enough balance to pay apply:' + apply.serialID);
+                        } else {
+                            apply.status = 4;
+                            Homas.findOne({using:false}, function(err, homas) {
+                                if (!err && !homas) {
+                                    err = 'failed to assign homas account to apply:' + apply.serialID;
+                                }
+                                callback(err, true, user, apply, homas, total);
+                            });
+                        }
+                    } else if (apply.status === 2) { // in this case (apply in process, order pay for it), it means the order is for add deposit
+                        user.finance.balance -= pay_amount;
+                        user.save(function(err) {
+                            callback(err, false, null, null, null, null);
+                        });
+                    }
+                } else {
+                    callback(null, false, null, null, null, null);
+                }
+            },
+            function(working, user, apply, homas, total, callback) {
+                if (working) {
+                    homas.using = true;
+                    homas.assignAt = Date.now();
+                    homas.applySerialID = apply.serialID;
+                    homas.save(function(err) {
+                        callback(err, true, user, apply, homas, total);
+                    });
+                } else {
+                    callback(null, false, user, apply, homas, total);
+                }
+            },
+            function(working, user, apply, homas, total, callback) {
+                if (working) {
+                    apply.status = 2;
+                    apply.account = homas.account;
+                    apply.password = homas.password;
+                    var startDay = util.getStartDay();
+                    apply.startTime = startDay.toDate();
+                    apply.endTime = util.getEndDay(startDay, apply.period).toDate();
+                    apply.save(function (err) {
+                        callback(err, true, user, total);
+                    });
+                } else {
+                    callback(null, false, user, total);
+                }
+            },
+            function(working, user, total, callback) {
+                if (working) {
+                    user.finance.balance -= total;
+                    user.save(function (err) {
+                        callback(err, 'success pay apply');
+                    });
                 } else {
                     callback(null, 'done');
                 }
-            },
-            function(user, apply_id, callback) {
-                Apply.findById(apply_id, function(err, apply) {
-                    callback(err, user, apply);
-                });
-            },
-            function(user, apply) {
-                if (!apply) {
-                    callback('Not found apply when pay apply:' + apply_id);
-                    return;
-                }
-                var serviceFee = apply.amount / 10000 * config.parameters.serviceCharge * apply.period;
-                var total = apply.deposit + serviceFee;
-                if (user.finance.balance < total) {
-                    callback('No enough balance to pay apply:' + apply.serialID);
-                    return;
-                }
-                apply.status = 4;
-                Homas.findOne({using:false}, function(err, homas) {
-                    callback(err, user, apply, homas, total);
-                });
-            },
-            function(user, apply, homas, total) {
-                if (!homas) {
-                    callback('failed to assign homas account to apply:' + apply.serialID);
-                    return;
-                }
-                homas.using = true;
-                homas.assignAt = Date.now();
-                homas.applyID = apply._id;
-                homas.save(function(err) {
-                    callback(err, user, apply, homas, total);
-                });
-            },
-            function(user, apply, homas, total) {
-                apply.status = 2;
-                apply.account = homas.account;
-                apply.password = homas.password;
-                var startDay = util.getStartDay();
-                apply.startTime = startDay.toDate();
-                apply.endTime = util.getEndDay(startDay, apply.period).toDate();
-                apply.save(function (err) {
-                    callback(err, user, total);
-                });
-            },
-            function(user, total) {
-                user.finance.balance -= total;
-                user.save(function (err) {
-                    callback(err, 'success pay apply');
-                });
             }
         ], function(err, result) {
             if (err) {
@@ -833,7 +943,8 @@ module.exports.shengpayFeedback2 = function(req, res, next) {
             }
         });
     }
-}
+    res.send('OK');
+};
 
 module.exports.shengpayFeedback = function(req, res, next) {
     logger.debug('shengpayFeedback');
@@ -914,7 +1025,7 @@ function payApply(user, apply_id) {
             logger.warn('payApply error. not found apply:' + apply_id + ' or ' + err.toString());
             return;
         }
-        var serviceFee = apply.amount / 10000 * config.parameters.serviceCharge * apply.period;
+        var serviceFee = apply.amount / 10000 * config.serviceCharge * apply.period;
         var total = apply.deposit + serviceFee;
         if (user.finance.balance < total) {
             logger.warn('payApply error. no enough balance to pay apply:' + apply_id);
