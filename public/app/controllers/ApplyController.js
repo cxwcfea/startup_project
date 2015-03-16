@@ -4,8 +4,8 @@
     angular.module('applyApp').controller('ApplyController', ['$http', '$location', '$window', 'days', function($http, $location, $window, days) {
         var vm = this;
 
-        var warnFactor = 0.93;
-        var sellFactor = 0.95;
+        var warnFactor = 0.96;
+        var sellFactor = 0.94;
         var depositFactor = 0.1;
         var serviceCharge = 19.8;
 
