@@ -70,7 +70,7 @@ angular.module('adminApp').controller('AdminExpireApplyCtrl', ['$scope', '$http'
     };
 
     vm.sendSMS = function(apply) {
-        gbUser.get({id:order.userID}, function(user) {
+        gbUser.get({id:apply.userID}, function(user) {
             currentUser = user;
         });
         var modalInstance = $modal.open({
