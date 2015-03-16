@@ -7,7 +7,7 @@
         var warnFactor = 0.94;
         var sellFactor = 0.96;
         var depositFactor = 0.1;
-        var serviceCharge = 19.8;
+        var serviceCharge = 19.9;
 
         vm.agree = true;
         vm.showOtherAmount = false;
