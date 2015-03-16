@@ -1,9 +1,10 @@
 'use strict';
-angular.module('adminApp').controller('AdminExpireApplyCtrl', ['$scope', '$http', '$location', '$modal', 'gbNotifier', 'days', function($scope, $http, $location, $modal, gbNotifier, days) {
+angular.module('adminApp').controller('AdminExpireApplyCtrl', ['$scope', '$http', '$location', '$modal', 'gbNotifier', 'days', 'gbUser', function($scope, $http, $location, $modal, gbNotifier, days, gbUser) {
     var vm = this;
     var apply_list = {};
     var currentApplies;
     vm.itemsPerPage = 15;
+    var currentUser = null;
 
     initData();
 
@@ -69,6 +70,9 @@ angular.module('adminApp').controller('AdminExpireApplyCtrl', ['$scope', '$http'
     };
 
     vm.sendSMS = function(apply) {
+        gbUser.get({id:order.userID}, function(user) {
+            currentUser = user;
+        });
         var modalInstance = $modal.open({
             templateUrl: 'smsModal.html',
             controller: 'SMSModalCtrl',
@@ -80,13 +84,13 @@ angular.module('adminApp').controller('AdminExpireApplyCtrl', ['$scope', '$http'
         });
 
         modalInstance.result.then(function (content) {
-            if (!$scope.data.selectedUser) {
-                gbNotifier.error('用户没找到，请返回用户列表重试');
+            if (!currentUser) {
+                gbNotifier.error('短信发送失败,请重试');
                 return;
             }
             vm.sms_content = content;
             var data = {
-                user_mobile: $scope.data.selectedUser.mobile,
+                user_mobile: currentUser.mobile,
                 sms_content: vm.sms_content
             };
             console.log(vm.sms_content);
