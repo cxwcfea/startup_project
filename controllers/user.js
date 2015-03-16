@@ -733,7 +733,7 @@ module.exports.iappPayFeedback = function(req, res) {
             if (err) {
                 logger.error('iappPayFeedback error:' + err.toString());
             } else {
-                looger.info('iappPayFeedback result:' + result);
+                logger.info('iappPayFeedback result:' + result);
             }
         });
     }
@@ -939,7 +939,7 @@ module.exports.shengpayFeedback2 = function(req, res, next) {
             if (err) {
                 logger.error('shengpayFeedback error:' + err.toString());
             } else {
-                looger.info('shengpayFeedback result:'+result);
+                logger.info('shengpayFeedback result:'+result);
             }
         });
     }
