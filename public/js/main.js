@@ -234,11 +234,4 @@ $(document).ready(function() {
         var apply_serial_id = $('#apply_serial_id')[0].value;
         window.location.assign('/apply/add_deposit/' + apply_serial_id);
     });
-
-    /*
-    $('#get-profit-btn').on('click', function(e){
-        e.preventDefault();
-        console.log('click');
-    });
-    */
 });

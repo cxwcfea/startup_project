@@ -21,6 +21,9 @@ angular.module('adminApp').config(['$routeProvider', '$locationProvider', functi
         .when('/get_profit_orders', { templateUrl: '/admin/get_profit_order_list',
             controller: 'AdminGetProfitOrderListCtrl as profitOrderListVM'
         })
+        .when('/add_deposit_orders', { templateUrl: '/admin/add_deposit_order_list',
+            controller: 'AdminAddDepositOrderListCtrl as addDepositOrderListVM'
+        })
         .otherwise({
             redirectTo: '/users'
         });

@@ -16,7 +16,7 @@ module.exports = {
         db: 'mongodb://cxwcfea:goldenbull@ds063240.mongolab.com:63240/goldenbull',
         port: process.env.PORT || 80,
         pay_callback_domain: 'http://www.niujinwang.com',
-        serviceCharge: 18.8,
+        serviceCharge: 19.8,
         warnFactor: 0.93,
         sellFactor: 0.95
     }
