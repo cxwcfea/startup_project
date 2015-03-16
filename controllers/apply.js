@@ -1,7 +1,8 @@
 var Apply = require('../models/Apply'),
     Order = require('../models/Order'),
     moment = require('moment'),
-    config = require('../config/config'),
+    env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
+    config = require('../config/config')[env],
     log4js = require('log4js'),
     logger = log4js.getLogger('admin');
     util = require('../lib/util');
@@ -49,7 +50,7 @@ exports.confirmApply = function(req, res, next) {
         if (err) {
             next();
         }
-        var serviceFee = collection.amount / 10000 * config.parameters.serviceCharge * collection.period;
+        var serviceFee = collection.amount / 10000 * config.serviceCharge * collection.period;
         var total = collection.deposit + serviceFee;
         var shouldPay = total - req.user.finance.balance;
         res.locals.applySummary = {
@@ -93,9 +94,9 @@ exports.getApplyDetail = function (req, res, next) {
         if (collection.status === 5) {
             return res.redirect(302, '/user/apply_close');
         }
-        var serviceFee = collection.amount / 10000 * config.parameters.serviceCharge * collection.period;
-        var warnValue = config.parameters.warnFactor * collection.amount;
-        var sellValue = config.parameters.sellFactor * collection.amount;
+        var serviceFee = collection.amount / 10000 * config.serviceCharge * collection.period;
+        var warnValue = config.warnFactor * collection.amount;
+        var sellValue = config.sellFactor * collection.amount;
         var startTime, endTime;
         if (collection.startTime) {
             startTime = moment(collection.startTime);
