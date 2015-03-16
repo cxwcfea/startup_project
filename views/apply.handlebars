@@ -10,7 +10,7 @@
                 <h3 class="am-panel-title">选择操盘资金</h3>
             </header>
             <div class="am-panel-bd apply">
-                <span>请选择申请资金:</span>
+                <span><strong>请选择申请资金:</strong></span>
                 <ul class="am-avg-sm-2 am-avg-md-4 am-margin am-padding am-text-center admin-content-list">
                     <li ng-repeat="item in vm.amountList">
                         <a href="javascript:;" ng-click="vm.selectAmount(item)" ng-class="{selected: item.select}"><span>\{{item.name}}</span>实盘资金</a>
@@ -40,12 +40,49 @@
                     </div>
                 </div>
 
+                <!--
                 <span>请选择使用天数:</span>
                 <ul class="am-avg-sm-2 am-avg-md-4 am-margin am-padding am-text-center admin-content-list day">
                     <li ng-repeat="day in vm.dayList">
                         <a href="javascript:;" id="2000" ng-click="vm.selectDay(day)" ng-class="{selected: day.select}"><span>\{{day.value}}/交易日</span></a>
                     </li>
                 </ul>
+                -->
+                <div class="am-form-group">
+                    <label for="doc-select-1">请选择使用天数:</label>
+                    <select id="doc-select-1" ng-model="vm.summary.day" ng-change="vm.selectDay()">
+                        <option value="2">2天</option>
+                        <option value="3">3天</option>
+                        <option value="4">4天</option>
+                        <option value="5">5天</option>
+                        <option value="6">6天</option>
+                        <option value="7">7天</option>
+                        <option value="8">8天</option>
+                        <option value="9">9天</option>
+                        <option value="10">10天</option>
+                        <option value="11">11天</option>
+                        <option value="12">12天</option>
+                        <option value="13">13天</option>
+                        <option value="14">14天</option>
+                        <option value="15">15天</option>
+                        <option value="16">16天</option>
+                        <option value="17">17天</option>
+                        <option value="18">18天</option>
+                        <option value="19">19天</option>
+                        <option value="20">20天</option>
+                        <option value="21">21天</option>
+                        <option value="22">22天</option>
+                        <option value="23">23天</option>
+                        <option value="24">24天</option>
+                        <option value="25">25天</option>
+                        <option value="26">26天</option>
+                        <option value="27">27天</option>
+                        <option value="28">28天</option>
+                        <option value="29">29天</option>
+                        <option value="30">30天</option>
+                    </select>
+                    <span class="am-form-caret"></span>
+                </div>
 
                 <div class="am-g">
                     <div class="money_showtab am-margin am-u-sm-11">

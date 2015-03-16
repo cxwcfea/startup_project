@@ -109,9 +109,9 @@
         };
 
         vm.selectDay = function(day) {
-            unselectDay();
-            day.select = true;
-            vm.summary.day = day.value;
+            //unselectDay();
+            //day.select = true;
+            //vm.summary.day = day.value;
             calculateSummery();
         };
 
