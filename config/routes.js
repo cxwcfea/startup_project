@@ -63,6 +63,10 @@ module.exports = function(app) {
 
     app.post('/apply/get_profit/:serial_id', passportConf.isAuthenticated, applies.postGetProfit);
 
+    app.get('/apply/add_deposit/:serial_id', passportConf.isAuthenticated, applies.getAddDeposit);
+
+    app.post('/apply/add_deposit/:serial_id', passportConf.isAuthenticated, applies.postAddDeposit);
+
     app.get('/thank_you_for_pay', users.thankYouForPay);
 
     app.post('/thank_you_for_pay', users.thankYouForPay);
@@ -169,9 +173,7 @@ module.exports = function(app) {
 
     app.post('/api/iapp_feedback', users.iappPayFeedback);
 
-    app.post('/api/users/pay_success/:order_id', passportConf.isAuthenticated, users.paySuccess);
-
-    app.post('/api/shengpay_feedback', users.shengpayFeedback2);
+    app.post('/api/shengpay_feedback', users.shengpayFeedback);
 
     admin.registerRoutes(app, passportConf);
 };
