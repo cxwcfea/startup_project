@@ -30,8 +30,8 @@
                     <td>\{{user.identity.id || 'N/A'}}</td>
                     <td>\{{user.profile.qq || 'N/A'}}</td>
                     <td>\{{user.profile.email || 'N/A'}}</td>
-                    <td>\{{user.finance.balance}}</td>
-                    <td>\{{user.finance.deposit}}</td>
+                    <td>\{{user.finance.balance.toFixed(2)}}</td>
+                    <td>\{{user.finance.deposit.toFixed(2)}}</td>
                     <td>\{{userVM.registerDate(user.registerAt)}}</td>
                     <td>
                         <div class="am-btn-toolbar">

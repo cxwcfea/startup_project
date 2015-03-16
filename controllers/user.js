@@ -379,6 +379,7 @@ module.exports.payByBalance = function(req, res, next) {
                                 return res.send({success:false, reason:err.toString()});
                             }
                             user.finance.balance -= pay_amount;
+                            user.finance.deposit += pay_amount;
                             user.save(function (err) {
                                 if (err) {
                                     res.status(500);
@@ -428,6 +429,8 @@ module.exports.payByBalance = function(req, res, next) {
                                             return res.send({success:false, reason:err.toString()});
                                         }
                                         user.finance.balance -= total;
+                                        user.finance.deposit += apply.deposit;
+                                        user.finance.total_capital += apply.amount;
                                         user.save(function (err) {
                                             if (err) {
                                                 res.status(500);
@@ -719,6 +722,7 @@ module.exports.iappPayFeedback = function(req, res) {
                             }
                         } else if (apply.status === 2) { // in this case (apply in process, order pay for it), it means the order is for add deposit
                             user.finance.balance -= pay_amount;
+                            user.finance.deposit += pay_amount;
                             user.save(function(err) {
                                 callback(err, false, null, null, null, null);
                             });
@@ -748,15 +752,17 @@ module.exports.iappPayFeedback = function(req, res) {
                         apply.startTime = startDay.toDate();
                         apply.endTime = util.getEndDay(startDay, apply.period).toDate();
                         apply.save(function (err) {
-                            callback(err, true, user, total);
+                            callback(err, true, user, total, apply);
                         });
                     } else {
-                        callback(null, false, user, total);
+                        callback(null, false, user, total, apply);
                     }
                 },
-                function(working, user, total, callback) {
+                function(working, user, total, apply, callback) {
                     if (working) {
                         user.finance.balance -= total;
+                        user.finance.deposit += apply.deposit;
+                        user.finance.total_capital += apply.amount;
                         user.save(function (err) {
                             callback(err, 'success pay apply');
                         });
@@ -879,6 +885,7 @@ module.exports.shengpayFeedback = function(req, res, next) {
                         }
                     } else if (apply.status === 2) { // in this case (apply in process, order pay for it), it means the order is for add deposit
                         user.finance.balance -= pay_amount;
+                        user.finance.deposit += pay_amount;
                         user.save(function(err) {
                             callback(err, false, null, null, null, null);
                         });
@@ -908,15 +915,17 @@ module.exports.shengpayFeedback = function(req, res, next) {
                     apply.startTime = startDay.toDate();
                     apply.endTime = util.getEndDay(startDay, apply.period).toDate();
                     apply.save(function (err) {
-                        callback(err, true, user, total);
+                        callback(err, true, user, total, apply);
                     });
                 } else {
-                    callback(null, false, user, total);
+                    callback(null, false, user, total, apply);
                 }
             },
-            function(working, user, total, callback) {
+            function(working, user, total, apply, callback) {
                 if (working) {
                     user.finance.balance -= total;
+                    user.finance.deposit += apply.deposit;
+                    user.finance.total_capital += apply.amount;
                     user.save(function (err) {
                         callback(err, 'success pay apply');
                     });

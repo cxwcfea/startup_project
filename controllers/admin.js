@@ -310,15 +310,17 @@ function closeApply(req, res) {
                     if (!user) {
                         logger.warn('failed update user when close apply:' + apply.serialID);
                     }
-                    callback(err, user, balance);
+                    callback(err, user, balance, apply);
                 });
             } else {
-                callback(null, null, balance);
+                callback(null, null, balance, apply);
             }
         },
-        function(user, balance, callback) {
+        function(user, balance, apply, callback) {
             if (user) {
                 user.finance.balance += balance;
+                user.finance.total_capital -= apply.amount;
+                user.finance.deposit -= apply.deposit;
                 user.save(function(err) {
                     callback(err);
                 });
