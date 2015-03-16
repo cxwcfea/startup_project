@@ -598,7 +598,7 @@ module.exports.getIAppPayTransid = function(req, res) {
 module.exports.iappPayFeedback = function(req, res) {
     logger.debug('iappPayFeedback');
     logger.debug(req.body);
-    if (req.body.transdata && result.body.result === 0) {
+    if (req.body.transdata && req.body.transdata.result === 0) {
         var result = JSON.parse(req.body.transdata);
         logger.debug(result);
         async.waterfall([
