@@ -159,10 +159,15 @@
         };
     }).filter("orderStatus", function() {
         return function (input) {
-            if (input) {
-                return '交易成功';
-            } else {
-                return '等待确认';
+            switch (input) {
+                case 0:
+                    return '等待确认';
+                case 1:
+                    return '交易成功';
+                case 2:
+                    return '未支付';
+                default:
+                    return '未支付';
             }
         };
     }).filter("displayOrderType", function() {
@@ -178,6 +183,8 @@
                     return '股票盈利';
                 case 5:
                     return '保证金返还';
+                case 6:
+                    return '追加配资保证金';
                 default:
                     return '充值';
             }

@@ -4,21 +4,23 @@
     angular.module('applyApp').controller('ApplyController', ['$http', '$location', '$window', 'days', function($http, $location, $window, days) {
         var vm = this;
 
-        var warnFactor = 0.93;
-        var sellFactor = 0.95;
+        vm.min_amount = 10;
+        var warnFactor = 0.96;
+        var sellFactor = 0.94;
         var depositFactor = 0.1;
-        var serviceCharge = 18.8;
+        var serviceCharge = 19.9;
+        var startTime = days.startTime();
 
         vm.agree = true;
         vm.showOtherAmount = false;
-        vm.otherAmount = 2000;
+        vm.otherAmount = vm.min_amount;
 
         vm.summary = {
             day: 5,
             amount: 50000
         };
+        vm.endTime = days.endTime(startTime, vm.summary.day);
 
-        vm.startTime = days.startTime();
 
         function calculateSummery() {
             vm.summary.warnValue = vm.summary.amount * warnFactor;
@@ -27,6 +29,7 @@
             var charge = vm.summary.amount / 10000 * serviceCharge * vm.summary.day;
             vm.summary.charge = charge;
             vm.summary.total = vm.summary.deposit + charge;
+            vm.endTime = days.endTime(startTime, vm.summary.day);
         }
 
         calculateSummery();
@@ -88,10 +91,10 @@
         }
 
         function tryOtherAmount() {
-            if (vm.otherAmount >= 2000) {
+            if (vm.otherAmount >= vm.min_amount) {
                 vm.summary.amount = Math.floor(vm.otherAmount);
             } else {
-                vm.summary.amount = vm.otherAmount = 2000;
+                vm.summary.amount = vm.otherAmount = vm.min_amount;
             }
             calculateSummery();
         }

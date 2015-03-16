@@ -49,6 +49,10 @@ angular.module('adminApp').controller('AdminOrderListCtrl', ['$scope', '$locatio
             {
                 name: '保证金返还',
                 value: 5
+            },
+            {
+                name: '追加配资保证金',
+                value: 6
             }
         ];
     }

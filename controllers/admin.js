@@ -7,6 +7,7 @@ var User = require('../models/User'),
     util = require('../lib/util'),
     async = require('async'),
     _ = require('lodash'),
+    moment = require('moment'),
     sms = require('../lib/sms');
 
 function main(req, res, next) {
@@ -358,7 +359,29 @@ function getApply(req, res) {
     });
 }
 
-//var balance = apply.deposit + profit;
+function fetchAddDepositOrders(req, res) {
+    var date = moment().startOf('day').toDate();
+    Order.find({$and: [{ dealType: 6 },  {createdAt: {$gte:date}}]}, function(err, orders) {
+        if (err) {
+            logger.warn(err.toString());
+            res.status(401);
+            return res.send({success:false, reason:err.toString()});
+        }
+        res.send(orders);
+    });
+}
+
+function fetchApply(req, res) {
+    console.log(req.body);
+    Apply.findOne({serialID:req.params.id}, function(err, apply) {
+        if (err) {
+            logger.debug('error when fetchApply:' + err.toString());
+            return res.send({});
+        }
+        res.send(apply);
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin'), main);
@@ -368,6 +391,8 @@ module.exports = {
         app.post('/admin/api/send_sms', passportConf.requiresRole('admin'), sendSMS);
 
         app.get('/admin/api/user/:uid/applies', passportConf.requiresRole('admin'), fetchAppliesForUser);
+
+        app.get('/admin/api/user/:uid/applies/:id', passportConf.requiresRole('admin'), fetchApply);
 
         app.post('/admin/api/user/:uid/applies/:id', passportConf.requiresRole('admin'), updateApplyForUser);
 
@@ -390,6 +415,8 @@ module.exports = {
         app.post('/admin/api/close_apply', passportConf.requiresRole('admin'), closeApply);
 
         app.get('/admin/api/orders/get_profit', passportConf.requiresRole('admin'), fetchGetProfitOrders);
+
+        app.get('/admin/api/orders/add_deposit', passportConf.requiresRole('admin'), fetchAddDepositOrders);
 
         app.get('/admin/api/applies/:serial_id', passportConf.requiresRole('admin'), getApply);
 

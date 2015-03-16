@@ -174,7 +174,7 @@ $(document).ready(function() {
 
     $('#go-to-use-balance').on('click', function(e) {
         e.preventDefault();
-        var formData = $("form").serialize();
+        var formData = $("#financingForm").serialize();
         $.post("/api/users/pay_by_balance", formData, function (data) {
             if (data.success) {
                 window.location.replace('/thank_you_for_pay');
@@ -211,7 +211,7 @@ $(document).ready(function() {
         window.location.assign('/apply/get_profit/' + apply_serial_id);
     });
 
-    var get_profit_form_options = {
+    var form_options = {
         onValid: function(validity) {
             console.log('form trigger');
         },
@@ -219,15 +219,19 @@ $(document).ready(function() {
             $('#get-profit-btn').popover({
                 content: '请输入有效的金额'
             });
+            $('#add-deposit-btn').popover({
+                content: '请输入有效的金额'
+            });
         }
     };
 
-    $('#get-profit-form').validator(get_profit_form_options);
+    $('#get-profit-form').validator(form_options);
 
-    /*
-    $('#get-profit-btn').on('click', function(e){
+    $('#add-deposit-form').validator(form_options);
+
+    $('#add-deposit').on('click', function(e) {
         e.preventDefault();
-        console.log('click');
+        var apply_serial_id = $('#apply_serial_id')[0].value;
+        window.location.assign('/apply/add_deposit/' + apply_serial_id);
     });
-    */
 });

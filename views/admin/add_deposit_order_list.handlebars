@@ -1,16 +1,8 @@
 <div class="am-cf am-padding">
-    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">交易记录</strong></div>
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">追加配资保证金的申请</strong></div>
 </div>
 
 <div class="am-g">
-    <div class="am-u-sm-12 am-u-md-6">
-        <div class="am-btn-toolbar">
-            <div class="am-btn-group am-btn-group-xs">
-                <button ng-repeat="item in ordersVM.queryItems" type="button" class="am-btn am-btn-default" ng-click="ordersVM.queryItem(item)"> \{{item.name}}</button>
-            </div>
-        </div>
-    </div>
-
     <!--
     <div class="am-u-sm-12 am-u-md-3">
         <div class="am-input-group am-input-group-sm">
@@ -33,7 +25,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="order in ordersVM.showingItems">
+                <tr ng-repeat="order in addDepositOrderListVM.showingItems">
                     <td>\{{order.createdAt | displayDate}}</td>
                     <td>\{{order.dealType | displayOrderType}}</td>
                     <td>\{{order.amount}}</td>
@@ -41,7 +33,7 @@
                     <td>
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs">
-                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-show="order.status !== 1 && order.dealType !== 6" ng-click="ordersVM.manageOrder(order)"><span class="am-icon-pencil-square-o"></span> 管理</button>
+                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="addDepositOrderListVM.handleOrder(order)"><span class="am-icon-pencil-square-o"></span> 管理</button>
                             </div>
                         </div>
                     </td>
@@ -50,12 +42,26 @@
             </table>
 
             <div class="am-cf">
-                共 \{{ordersVM.totalItems}} 条记录
+                共 \{{addDepositOrderListVM.totalItems}} 条记录
                 <div class="am-fr">
-                    <pagination previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="ordersVM.itemsPerPage" total-items="ordersVM.totalItems" ng-model="ordersVM.currentPage" ng-change="ordersVM.pageChanged()"></pagination>
+                    <pagination previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="addDepositOrderListVM.itemsPerPage" total-items="addDepositOrderListVM.totalItems" ng-model="addDepositOrderListVM.currentPage" ng-change="addDepositOrderListVM.pageChanged()"></pagination>
                 </div>
             </div>
             <hr />
         </form>
     </div>
 </div>
+
+<script type="text/ng-template" id="homasInfoModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">盈利提取信息</h3>
+    </div>
+    <div class="modal-body">
+        <p>配资单号：\{{applySerialID}}</p>
+        <p>Homas账号：\{{homasAccount}}</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">完成</button>
+        <button class="btn btn-warning" ng-click="cancel()">取消</button>
+    </div>
+</script>

@@ -36,6 +36,10 @@ angular.module('myApp').controller('UserOrderController', ['$window', 'gbIdentit
             {
                 name: '保证金返还',
                 value: 5
+            },
+            {
+                name: '追加配资保证金',
+                value: 6
             }
         ];
     }

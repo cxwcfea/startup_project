@@ -30,7 +30,7 @@
                                     <div class="am-form-group">
                                         <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">输入需要的金额：</label>
                                         <div class="am-u-sm-10 am-input-group">
-                                            <input type="number" placeholder="最少两千，最多三十万" class="am-form-field" min="2000" max="300000" step="1000" ng-model="vm.otherAmount" ng-blur="vm.finishOtherAmount()">
+                                            <input type="number" placeholder="最少两千，最多三十万" class="am-form-field" min="\{{vm.min_amount}}" max="300000" step="1000" ng-model="vm.otherAmount" ng-blur="vm.finishOtherAmount()">
                                             <span class="am-input-group-label">元</span>
                                         </div>
                                     </div>
@@ -58,14 +58,12 @@
                             </tr>
                             <tr>
                                 <td>使用天数：<span><span id="span_usetrem" class="am-text-danger am-text-xl">\{{vm.summary.day}}</span>天</span></td>
-                                <td class="msli">资金使用时间：<span>截至<span id="span_endtime" class="am-text-danger am-text-xl">\{{vm.startTime.format('YYYY-MM-DD')}}</span>下午\{{vm.startTime.format('HH:mm:ss')}}（可延期）</span></td>
+                                <td class="msli">资金使用时间：<span>截至<span id="span_endtime" class="am-text-danger am-text-xl">\{{vm.endTime.format('YYYY-MM-DD')}}</span>下午\{{vm.endTime.format('HH:mm:ss')}}（可延期）</span></td>
                             </tr>
-                            <!--
                             <tr>
                                 <td>警戒线<span id="tip" data-am-popover="{content: '当保证金为实盘资金的5%为警戒线', trigger: 'hover focus'}" class="am-icon-question-circle" style="cursor: pointer;"></span>：<span><span>￥<span id="span_warn" class="am-text-danger am-text-xl">\{{vm.summary.warnValue.toFixed(2)}}</span></span>元</span></td>
                                 <td>平仓线<span id="tip1" data-am-popover="{content: '当保证金为实盘资金的3%为平仓线', trigger: 'hover focus'}" class="am-icon-question-circle" style="cursor: pointer;"></span>：<span><span>￥<span id="span_sell" class="am-text-danger am-text-xl">\{{vm.summary.sellValue.toFixed(2)}}</span></span>元</span></td>
                             </tr>
-                            -->
                             </tbody>
                         </table>
                     </div>
