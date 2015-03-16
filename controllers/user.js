@@ -391,8 +391,8 @@ module.exports.payByBalance = function(req, res, next) {
                     });
                 } else if (apply.status === 1) {
                     var serviceFee = apply.amount / 10000 * config.serviceCharge * apply.period;
-                    var total = apply.deposit.toFixed(2) + serviceFee.toFixed(2);
-                    var user_balance = user.finance.balance.toFixed(2);
+                    var total = Number((apply.deposit + serviceFee).toFixed(2));
+                    var user_balance = Number(user.finance.balance.toFixed(2));
                     if (user_balance < total) {
                         logger.warn('payByBalance error. no enough balance to pay apply:' + apply_id);
                         return res.send({success:false, reason:'payApply error. no enough balance to pay apply:' + apply_id});
@@ -704,8 +704,8 @@ module.exports.iappPayFeedback = function(req, res) {
                     if (working) {
                         if (apply.status === 1) {
                             var serviceFee = apply.amount / 10000 * config.serviceCharge * apply.period;
-                            var total = apply.deposit.toFixed(2) + serviceFee.toFixed(2);
-                            var user_balance = user.finance.balance.toFixed(2);
+                            var total = Number((apply.deposit + serviceFee).toFixed(2));
+                            var user_balance = Number(user.finance.balance.toFixed(2));
                             if (user_balance < total) {
                                 callback('no enough balance to pay apply:' + apply.serialID);
                             } else {
@@ -864,8 +864,8 @@ module.exports.shengpayFeedback = function(req, res, next) {
                 if (working) {
                     if (apply.status === 1) {
                         var serviceFee = apply.amount / 10000 * config.serviceCharge * apply.period;
-                        var total = apply.deposit.toFixed(2) + serviceFee.toFixed(2);
-                        var user_balance = user.finance.balance.toFixed(2);
+                        var total = Number((apply.deposit + serviceFee).toFixed(2));
+                        var user_balance = Number(user.finance.balance.toFixed(2));
                         if (user_balance < total) {
                             callback('no enough balance to pay apply:' + apply.serialID);
                         } else {
