@@ -365,7 +365,38 @@ module.exports.payByBalance = function(req, res, next) {
                 if (err) {
                     return res.send({success:false, reason:err.toString()});
                 }
-                if (apply.status === 2) {
+                if (data.postpone_days) {
+                    apply.period += Number(data.postpone_days);
+                    apply.save(function(err) {
+                        if (err) {
+                            logger.warn('payByBalance failed when postpone days:' + err.toString());
+                            return res.send({success:false, reason:err.toString()});
+                        }
+                    });
+                    Order.findOne({_id:data.order_id}, function(err, order) {
+                        if (err) {
+                            logger.warn('payByBalance error. update order error:' + order._id);
+                            return res.send({success:false, reason:err.toString()});
+                        } else {
+                            user.finance.freeze_capital += order.amount;
+                            user.save(function (err) {
+                                if (err) {
+                                    res.status(401);
+                                    logger.warn('payByBalance failed:' + err.toString());
+                                    return res.send({success:false, reason:err.toString()});
+                                }
+                                order.save(function(err) {
+                                    if (err) {
+                                        res.status(401);
+                                        logger.warn('payByBalance failed:' + err.toString());
+                                        return res.send({success:false, reason:err.toString()});
+                                    }
+                                    res.send({success:true});
+                                });
+                            });
+                        }
+                    });
+                } else if (apply.status === 2) {
                     var pay_amount = Number(data.total_amount);
                     apply.deposit += pay_amount;
                     apply.save(function (err) {

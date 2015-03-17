@@ -67,6 +67,10 @@ module.exports = function(app) {
 
     app.post('/apply/add_deposit/:serial_id', passportConf.isAuthenticated, applies.postAddDeposit);
 
+    app.get('/apply/apply_postpone/:serial_id', passportConf.isAuthenticated, applies.getApplyPostpone);
+
+    app.post('/apply/apply_postpone/:serial_id', passportConf.isAuthenticated, applies.postApplyPostpone);
+
     app.get('/thank_you_for_pay', users.thankYouForPay);
 
     app.post('/thank_you_for_pay', users.thankYouForPay);

@@ -125,16 +125,6 @@ exports.getApplyDetail = function (req, res, next) {
 };
 
 exports.getCloseApply = function(req, res, next) {
-    /*
-    Apply.findOne({serialID:req.params.id}, function(err, apply) {
-        var today = moment();
-        res.locals.amount = apply.amount.toFixed(2);
-        res.locals.deposit = apply.deposit.toFixed(2);
-        res.locals.days = today.dayOfYear() - moment(apply.startTime).dayOfYear();
-        res.locals.endTime = moment(apply.endTime).format("YYYY-MM-DD HH:mm");
-        res.render('apply_close');
-    });
-    */
     res.render('apply_close');
 };
 
@@ -144,6 +134,86 @@ exports.postCloseApply = function(req, res) {
             return res.send({success:false, reason:err.toString()});
         }
         res.send({success:true});
+    });
+};
+
+exports.getApplyPostpone = function(req, res, next) {
+    Apply.findOne({serialID:req.params.serial_id}, function(err, apply) {
+        if (err) {
+            next();
+        }
+        res.locals.apply = apply;
+        res.render('apply_postpone');
+    });
+};
+
+exports.postApplyPostpone = function(req, res, next) {
+    req.assert('postpone_days', '日期不能为空').notEmpty();
+    req.assert('postpone_days', '日期必须为正数').isInt();
+
+    var serial_id = req.params.serial_id;
+    var errors = req.validationErrors();
+    if (errors) {
+        req.flash('errors', errors);
+        return res.redirect('/apply/apply_postpone/' + serial_id);
+    }
+    var add_days = Number(req.body.postpone_days);
+    Apply.findOne({serialID:serial_id}, function(err, apply) {
+        if (err) {
+            logger.warn('error when postpone for apply:' + apply.serialID);
+            req.flash('errors', err);
+            return res.redirect('/apply/apply_postpone/' + serial_id);
+        }
+        if (!apply) {
+            logger.warn('failed to find apply when postpone for apply:' + apply.serialID);
+            req.flash('errors', {msg:'没有找到配资记录'});
+            return res.redirect('/apply/apply_postpone/' + serial_id);
+        }
+        if (apply.status !== 2) {
+            req.flash('errors', {msg:'该配资不是操盘状态，操作无效'});
+            return res.redirect('/apply/apply_postpone/' + serial_id);
+        }
+        var serviceFee = util.getServiceFee(apply.amount, add_days);
+        var shouldPay = serviceFee - req.user.finance.balance;
+        var orderData = {
+            userID: apply.userID,
+            dealType: 7,
+            amount: serviceFee,
+            status: 2,
+            description: '配资延期',
+            applySerialID: apply.serialID
+        };
+        Order.create(orderData, function(err, order) {
+            if (err || !order) {
+                logger.warn('failed create order when postpone for apply:' + apply.serialID + ' err:' + err.toString());
+                req.flash('errors', {msg:'创建订单失败'});
+                return res.redirect('/apply/apply_postpone/' + serial_id);
+            }
+
+            res.locals.applySummary = {
+                amount: apply.amount.toFixed(2),
+                serviceFee: serviceFee.toFixed(2),
+                balance: req.user.finance.balance.toFixed(2),
+                shouldPay: shouldPay.toFixed(2),
+                serialID: apply.serialID,
+                period: apply.period,
+                addDays: add_days,
+                applyID: apply._id
+            };
+            res.locals.shengOrderTime = moment().format("YYYYMMDDHHmmss");
+
+            if (shouldPay <= 0) {
+                res.locals.applySummary.useBalance = true;
+            }
+
+            res.locals.applySummary.orderID = order._id;
+            if (order && shouldPay === order.amount) {
+                if (order.transID) {
+                    res.locals.applySummary.transID = order.transID;
+                }
+            }
+            res.render('apply_postpone_confirm');
+        });
     });
 };
 

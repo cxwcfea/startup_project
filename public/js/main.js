@@ -222,6 +222,9 @@ $(document).ready(function() {
             $('#add-deposit-btn').popover({
                 content: '请输入有效的金额'
             });
+            $('#apply-postpone-btn').popover({
+                content: '请输入有效的天数'
+            });
         }
     };
 
@@ -233,5 +236,11 @@ $(document).ready(function() {
         e.preventDefault();
         var apply_serial_id = $('#apply_serial_id')[0].value;
         window.location.assign('/apply/add_deposit/' + apply_serial_id);
+    });
+
+    $('#apply-postpone').on('click', function(e) {
+        e.preventDefault();
+        var apply_serial_id = $('#apply_serial_id')[0].value;
+        window.location.assign('/apply/apply_postpone/' + apply_serial_id);
     });
 });
