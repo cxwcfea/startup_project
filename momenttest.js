@@ -237,3 +237,8 @@ console.log(result);
 
 var anum = '0003';
 console.log(Number(anum));
+
+var intVal = 13439695920;
+var password = intVal.toString().substr(5);
+console.log(password);
+

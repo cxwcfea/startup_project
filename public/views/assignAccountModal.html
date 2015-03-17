@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <h3 class="modal-title">分配实盘账户</h3>
+</div>
+<div class="modal-body">
+    <div class="am-form-group">
+        <label>用户手机号:</label>
+        {{user.mobile}}
+    </div>
+    <div class="am-form-group">
+        <label>实盘账户</label>
+        <input type="text" ng-model="homs_account">
+    </div>
+    <div class="am-form-group">
+        <label>实盘密码</label>
+        <input type="text" ng-model="homs_password">
+    </div>
+    如不输入，则自动分配
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">分配</button>
+    <button class="btn btn-warning" ng-click="cancel()">取消</button>
+</div>

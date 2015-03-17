@@ -84,7 +84,7 @@ angular.module('adminApp').controller('AdminOrderListCtrl', ['$scope', '$locatio
     vm.handleOrder = function(order) {
         if (order.dealType === 2) {
             var modalInstance = $modal.open({
-                templateUrl: 'withdrawModal.html',
+                templateUrl: '/views/withdrawModal.html',
                 controller: 'WithdrawModalCtrl',
                 resolve: {
                     order: function () {

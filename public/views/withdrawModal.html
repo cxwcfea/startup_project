@@ -1,0 +1,20 @@
+<div class="modal-header">
+    <h3 class="modal-title">提现银行卡信息</h3>
+</div>
+<div class="modal-body">
+    <p>银行卡号：{{bankName}}</p>
+    <p>开户银行：{{cardID}}</p>
+    <p>用户姓名：{{userName}}</p>
+    <div class="am-form-group">
+        <label>银行单号:</label>
+        <input type="text" ng-model="data.bank_trans_id">
+    </div>
+    <div class="am-form-group">
+        <label for="sms-content">短信内容</label>
+        <textarea class="" rows="5" id="sms-content" ng-model="data.sms_content"></textarea>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">完成提现</button>
+    <button class="btn btn-warning" ng-click="cancel()">取消</button>
+</div>

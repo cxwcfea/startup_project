@@ -94,9 +94,13 @@ angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', 
 
     vm.assignAccount = function(apply) {
         var modalInstance = $modal.open({
-            templateUrl: 'assignAccountModal.html',
+            templateUrl: '/views/assignAccountModal.html',
             controller: 'AccountModalCtrl',
-            resolve: {}
+            resolve: {
+                user: function() {
+                    return currentUser;
+                }
+            }
         });
 
         modalInstance.result.then(function (content) {
@@ -188,11 +192,14 @@ angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', 
     }
 }]);
 
-angular.module('adminApp').controller('AccountModalCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+angular.module('adminApp').controller('AccountModalCtrl', ['$scope', '$modalInstance', 'user', function ($scope, $modalInstance, user) {
+    $scope.user = user;
+    $scope.homs_password = user.mobile.toString().substr(5);
+
     $scope.ok = function () {
         var result = {
-            account: $scope.homas_account,
-            password: $scope.homas_password
+            account: $scope.homs_account,
+            password: $scope.homs_password
         };
 
         $modalInstance.close(result);

@@ -358,6 +358,18 @@ function fetchGetProfitOrders(req, res) {
     });
 }
 
+function fetchWithdrawOrders(req, res) {
+    logger.debug('fetchWithdrawOrders');
+    Order.find({$and: [{ dealType: 2 }, { status: 2 }]}, function(err, orders) {
+        if (err) {
+            logger.warn(err.toString());
+            res.status(401);
+            return res.send({success:false, reason:err.toString()});
+        }
+        res.send(orders);
+    });
+}
+
 function getApply(req, res) {
     Apply.findOne({serialID:req.params.serial_id}, function(err, apply) {
         if (err) {
@@ -438,6 +450,8 @@ module.exports = {
         app.post('/admin/api/close_apply', passportConf.requiresRole('admin'), closeApply);
 
         app.get('/admin/api/orders/get_profit', passportConf.requiresRole('admin'), fetchGetProfitOrders);
+
+        app.get('/admin/api/orders/withdraw', passportConf.requiresRole('admin'), fetchWithdrawOrders);
 
         app.get('/admin/api/orders/add_deposit', passportConf.requiresRole('admin'), fetchAddDepositOrders);
 

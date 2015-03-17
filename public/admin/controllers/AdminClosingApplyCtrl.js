@@ -46,7 +46,7 @@ angular.module('adminApp').controller('AdminClosingApplyCtrl', ['$scope', '$http
         });
 
         modalInstance.result.then(function (result) {
-            if (!result.profit) {
+            if (result.profit === null || result.profit === undefined) {
                 gbNotifier.error('必须输入盈亏金额');
                 return;
             }

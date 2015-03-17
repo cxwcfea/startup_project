@@ -106,37 +106,3 @@ angular.module('adminApp').controller('AdminExpireApplyCtrl', ['$scope', '$http'
         });
     };
 }]);
-
-/*
-angular.module('adminApp').controller('AccountModalCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-
-    $scope.ok = function () {
-        if ($scope.homas_account && $scope.homas_password) {
-            var result = {
-                account: $scope.homas_account,
-                password: $scope.homas_password
-            };
-
-            $modalInstance.close(result);
-        } else {
-            alert('输入无效');
-        }
-    };
-
-    $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
-    };
-}]);
-
-angular.module('adminApp').controller('SMSModalCtrl', ['$scope', '$modalInstance', 'serialID', function ($scope, $modalInstance, serialID) {
-    $scope.sms_content = '您好,您在牛金网的一笔配资【单号:' + serialID + '】,保证金已不足，请补足到保证金的80%。';
-
-    $scope.ok = function () {
-        $modalInstance.close($scope.sms_content);
-    };
-
-    $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
-    };
-}]);
-    */
