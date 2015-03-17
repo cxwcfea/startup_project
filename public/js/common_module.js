@@ -213,5 +213,6 @@
     });
 
     angular.module('commonApp').constant('withdraw_sms_content', '您的提现申请已经处理，资金即将到账')
-        .constant('get_profit_sms_content', '您的盈利提取申请已经处理，资金已划入您在牛金网的余额');
+        .constant('get_profit_sms_content', '您的盈利提取申请已经处理，资金已划入您在牛金网的余额')
+        .constant('approve_apply_sms_content', '您的配资申请已经分配账户，现在就可以操盘啦');
 }());

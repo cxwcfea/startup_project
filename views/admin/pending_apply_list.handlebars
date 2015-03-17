@@ -1,0 +1,92 @@
+<div class="am-cf am-padding">
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">结算中的配资记录</strong></div>
+</div>
+
+<div class="am-g">
+    <!--
+    <div class="am-u-sm-12 am-u-md-3">
+        <div class="am-input-group am-input-group-sm">
+            <input type="text" class="am-form-field">
+            <span class="am-input-group-btn">
+                <button class="am-btn am-btn-default" type="button">搜索</button>
+            </span>
+        </div>
+    </div>
+    -->
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12">
+        <div class="am-scrollable-horizontal">
+            <table class="am-table am-table-striped am-table-hover table-main">
+                <thead>
+                <tr>
+                    <th class="table-id am-hide-sm-only">单号</th><th class="table-title am-text-right">操盘资金</th><th class="table-type am-text-right am-hide-sm-only">保证金</th><th class="table-author am-text-center">状态</th><th class="table-date am-text-center">实盘起止日期</th><th class="table-author">Homas</th><th class="table-set">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="apply in pendingApplyVM.showingItems">
+                    <td class="am-hide-sm-only">\{{apply.serialID}}</td>
+                    <td class="am-text-right"><span class="am-icon-rmb"></span><strong>\{{apply.amount}}</strong></td>
+                    <td class="am-text-right am-hide-sm-only"><span class="am-icon-rmb"></span><strong>\{{apply.deposit}}</strong></td>
+                    <td class="am-text-center">\{{apply.status | applyStatus}}</td>
+                    <td class="am-text-center">\{{apply.start_date | displayDate}}<br>\{{apply.end_date | displayDate}}</td>
+                    <td class="">\{{apply.account || '尚未分配' }}</td>
+                    <td>
+                        <div class="am-btn-toolbar">
+                            <div class="am-btn-group am-btn-group-xs">
+                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="pendingApplyVM.manageApply(apply)"><span class="am-icon-pencil-square-o"></span> 管理</button>
+                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="pendingApplyVM.sendSMS(apply)"><span class="am-icon-pencil-square-o"></span> 短信</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="am-cf">
+                共 \{{pendingApplyVM.totalItems}} 条记录
+                <div class="am-fr">
+                    <pagination previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="pendingApplyVM.itemsPerPage" total-items="pendingApplyVM.totalItems" ng-model="pendingApplyVM.currentPage" ng-change="pendingApplyVM.pageChanged()"></pagination>
+                </div>
+            </div>
+            <hr />
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="assignAccountModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">分配实盘账户</h3>
+    </div>
+    <div class="modal-body">
+        <div class="am-form-group">
+            <label for="sms-content">实盘账户</label>
+            <input type="text" ng-model="homas_account">
+        </div>
+        <div class="am-form-group">
+            <label for="sms-content">实盘密码</label>
+            <input type="text" ng-model="homas_password">
+        </div>
+        如不输入，则自动分配
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">分配</button>
+        <button class="btn btn-warning" ng-click="cancel()">取消</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="smsModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">发送短信</h3>
+    </div>
+    <div class="modal-body">
+        <div class="am-form-group">
+            <label for="sms-content">短信内容</label>
+            <textarea class="" rows="6" id="sms-content" ng-model="sms_content"></textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">发送</button>
+        <button class="btn btn-warning" ng-click="cancel()">取消</button>
+    </div>
+</script>

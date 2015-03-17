@@ -24,6 +24,9 @@ angular.module('adminApp').config(['$routeProvider', '$locationProvider', functi
         .when('/add_deposit_orders', { templateUrl: '/admin/add_deposit_order_list',
             controller: 'AdminAddDepositOrderListCtrl as addDepositOrderListVM'
         })
+        .when('/pending_applies', { templateUrl: '/admin/pending_apply_list',
+            controller: 'AdminPendingApplyCtrl as pendingApplyVM'
+        })
         .otherwise({
             redirectTo: '/users'
         });

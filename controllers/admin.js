@@ -392,6 +392,17 @@ function fetchApply(req, res) {
     });
 }
 
+function fetchPendingApplies(req, res) {
+    Apply.find({status: 4}, function(err, applies) {
+        if (err) {
+            logger.warn(err.toString());
+            res.status(401);
+            return res.send({success:false, reason:err.toString()});
+        }
+        res.send(applies);
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin'), main);
@@ -415,6 +426,8 @@ module.exports = {
         app.get('/admin/api/applies/expire', passportConf.requiresRole('admin'), fetchNearExpireApplies);
 
         app.get('/admin/api/applies/closing', passportConf.requiresRole('admin'), fetchClosingApplies);
+
+        app.get('/admin/api/applies/pending', passportConf.requiresRole('admin'), fetchPendingApplies);
 
         app.post('/admin/api/users/:id', passportConf.requiresRole('admin'), updateUser);
 
