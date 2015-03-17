@@ -321,6 +321,14 @@ function closeApply(req, res) {
                 user.finance.balance += balance;
                 user.finance.total_capital -= apply.amount;
                 user.finance.deposit -= apply.deposit;
+                var tradeDays = util.tradeDaysFromEndDay(apply.endTime, apply.period);
+                var totalServiceFee = util.getServiceFee(apply.amount, apply.period);
+                var actualServiceFee = util.getServiceFee(apply.amount, tradeDays);
+                var returnedServiceFee = totalServiceFee - actualServiceFee;
+                user.finance.freeze_capital -= actualServiceFee;
+                if (returnedServiceFee > 0) {
+                    user.finance.balance += returnedServiceFee;
+                }
                 user.save(function(err) {
                     callback(err);
                 });

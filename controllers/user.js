@@ -391,7 +391,7 @@ module.exports.payByBalance = function(req, res, next) {
                         });
                     });
                 } else if (apply.status === 1) {
-                    var serviceFee = apply.amount / 10000 * config.serviceCharge * apply.period;
+                    var serviceFee = util.getServiceFee(apply.amount, apply.period);
                     var total = Number((apply.deposit + serviceFee).toFixed(2));
                     var user_balance = Number(user.finance.balance.toFixed(2));
                     if (user_balance < total) {
@@ -412,6 +412,7 @@ module.exports.payByBalance = function(req, res, next) {
                                 user.finance.balance -= total;
                                 user.finance.deposit += apply.deposit;
                                 user.finance.total_capital += apply.amount;
+                                user.finance.freeze_capital += serviceFee;
                                 user.save(function (err) {
                                     if (err) {
                                         res.status(500);
@@ -685,7 +686,7 @@ module.exports.iappPayFeedback = function(req, res) {
                 function(working, user, apply, pay_amount, callback) {
                     if (working) {
                         if (apply.status === 1) {
-                            var serviceFee = apply.amount / 10000 * config.serviceCharge * apply.period;
+                            var serviceFee = util.getServiceFee(apply.amount, apply.period);
                             var total = Number((apply.deposit + serviceFee).toFixed(2));
                             var user_balance = Number(user.finance.balance.toFixed(2));
                             if (user_balance < total) {
@@ -693,25 +694,26 @@ module.exports.iappPayFeedback = function(req, res) {
                             } else {
                                 apply.status = 4;
                                 apply.save(function (err) {
-                                    callback(err, true, user, total, apply);
+                                    callback(err, true, user, total, apply, serviceFee);
                                 });
                             }
                         } else if (apply.status === 2) { // in this case (apply in process, order pay for it), it means the order is for add deposit
                             user.finance.balance -= pay_amount;
                             user.finance.deposit += pay_amount;
                             user.save(function(err) {
-                                callback(err, false, null, null, null);
+                                callback(err, false, null, null, null, null);
                             });
                         }
                     } else {
-                        callback(null, false, null, null, null);
+                        callback(null, false, null, null, null, null);
                     }
                 },
-                function(working, user, total, apply, callback) {
+                function(working, user, total, apply, serviceFee, callback) {
                     if (working) {
                         user.finance.balance -= total;
                         user.finance.deposit += apply.deposit;
                         user.finance.total_capital += apply.amount;
+                        user.finance.freeze_capital += serviceFee;
                         user.save(function (err) {
                             callback(err, 'success pay apply');
                         });
@@ -819,7 +821,7 @@ module.exports.shengpayFeedback = function(req, res, next) {
             function(working, user, apply, pay_amount, callback) {
                 if (working) {
                     if (apply.status === 1) {
-                        var serviceFee = apply.amount / 10000 * config.serviceCharge * apply.period;
+                        var serviceFee = util.getServiceFee(apply.amount, apply.period);
                         var total = Number((apply.deposit + serviceFee).toFixed(2));
                         var user_balance = Number(user.finance.balance.toFixed(2));
                         if (user_balance < total) {
@@ -827,25 +829,26 @@ module.exports.shengpayFeedback = function(req, res, next) {
                         } else {
                             apply.status = 4;
                             apply.save(function (err) {
-                                callback(err, true, user, total, apply);
+                                callback(err, true, user, total, apply, serviceFee);
                             });
                         }
                     } else if (apply.status === 2) { // in this case (apply in process, order pay for it), it means the order is for add deposit
                         user.finance.balance -= pay_amount;
                         user.finance.deposit += pay_amount;
                         user.save(function(err) {
-                            callback(err, false, null, null, null);
+                            callback(err, false, null, null, null, null);
                         });
                     }
                 } else {
-                    callback(null, false, null, null, null);
+                    callback(null, false, null, null, null, null);
                 }
             },
-            function(working, user, total, apply, callback) {
+            function(working, user, total, apply, serviceFee, callback) {
                 if (working) {
                     user.finance.balance -= total;
                     user.finance.deposit += apply.deposit;
                     user.finance.total_capital += apply.amount;
+                    user.finance.freeze_capital += serviceFee;
                     user.save(function (err) {
                         callback(err, 'success pay apply');
                     });
