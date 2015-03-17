@@ -211,15 +211,15 @@ function homasAssignAccount(req, res) {
             apply.startTime = startDay.toDate();
             apply.endTime = util.getEndDay(startDay, apply.period).toDate();
             apply.save(function (err) {
-                callback(err);
+                callback(err, apply);
             });
         }
-    ], function(err) {
+    ], function(err, apply) {
         if (err) {
             res.status(401);
             res.send({reason:err.toString()});
         } else {
-            res.send({success:true});
+            res.send({success:true, apply:apply});
         }
     });
 }
