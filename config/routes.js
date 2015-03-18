@@ -187,6 +187,12 @@ module.exports = function(app) {
 
     admin.registerRoutes(app, passportConf);
 
+    app.get('/new_index', function(req, res, next) {
+        res.render('home2', {
+            layout:'main2'
+        });
+    });
+
     app.get('/admin_test', passportConf.requiresRole('admin'), function(req, res, next) {
         res.render('admin_test');
     });

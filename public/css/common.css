@@ -1,0 +1,207 @@
+body,div,p,table,tr,th,td,form,fieldset,input,textarea,blockquote,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd{margin:0;padding:0}
+body{font-size:14px;line-height:normal;text-align:left;font-family:"微软雅黑","宋体","黑体",Arial;color:#4d4d4d}
+ul,ol,li{list-style:none;margin:0;padding:0; }
+table{border-collapse:collapse}
+h1,h2,h3,h4,h5,h6,em,b{font-size:100%;font-weight:normal;font-style:normal;}
+img{border:0;padding:0;margin:0;}
+input{vertical-align:middle}
+input,select{font-size:14px;font-family: "微软雅黑","宋体","黑体";color:#4d4d4d}
+.clear{clear:both;height:0;overflow:hidden;display:block}
+.clearfix:after{clear:both;height:0;overflow:hidden;display:block;visibility:hidden;content:"."}
+.clearfix{ overflow:hidden; zoom:1}
+.fl{float:left}
+.fr{float:right}
+.tc{text-align:center}
+.tl{text-align:left}
+.tr{text-align:right}
+.fb{font-weight:bold}
+.cl{clear:left}
+a{color:#4d4d4d; text-decoration:none}
+.pr{position:relative}
+.pa{position:absolute}
+.dis{display:block}
+.undis{display:none}
+.disline{display:inline}
+.unline{text-decoration:none}
+.unline a,a{text-decoration:none;color:#333}
+a:hover{text-decoration:underline}
+a,p,div,span,em{ 
+	-webkit-transition-duration:.15s; 
+	-moz-transition-duration:.15s; 
+	transition-duration:.15s; 
+	-webkit-transition-timing-function:ease-out; 
+	-moz-transition-timing-function:ease-out; 
+	transition-timing-function:ease-out; 
+}
+
+.wrapper{
+	width: 1000px;
+	margin: auto;
+}
+
+.marTop25{
+	margin-top: 25px;
+}
+
+
+
+
+
+.Top{
+	height: 40px;
+	line-height: 40px;
+	background: #f7f7f7;
+	font-size: 12px;
+	color: #999999;
+}
+.Top a{
+	color: #999999;
+}
+.color_c82217{
+	color: #c82217;
+}
+div.color_333333,a.color_333333,span.color_333333{
+	color: #333333;
+}
+.TopPhone{
+	font-style: italic;
+	font-size: 24px;
+}
+
+.header{
+	height: 110px;
+}
+.logo{
+	display: block;
+	float: left;
+	margin-top: 20px;
+}
+.logo img{
+	display: block;
+}
+
+.nav{
+	height: 35px;
+	line-height: 35px;
+	margin-top: 45px;
+}
+.nav li{
+	float: left;
+	font-size: 16px;
+	font-weight: bold;
+	padding: 0 20px;
+}
+.nav li a{
+	color: #c82217;
+}
+.nav li.select a{
+	border-bottom: 1px solid #c82217;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*底部footer*/
+.footer{
+	background: #f5f5f5;
+	height: 240px;
+}
+
+.footerList{
+	color: #333333;
+	width: 210px;
+}
+.footerList a{
+	color: #333333;
+}
+.footerList p{
+	height: 60px;
+	line-height: 60px;
+	font-weight: bold;
+}
+.footerList li{
+	height: 30px;
+	line-height: 30px;
+	font-size: 12px;
+}
+.footerList li span{
+	background: url(../images/img03.png) no-repeat -10px -100px ;
+	padding: 1px 10px;
+}
+.footerList li span.icon03{
+	background-position:  -64px -101px;
+	padding: 1px 10px;
+}
+.footerList li span.icon04{
+	background-position:  -37px -101px;
+	padding: 1px 10px;
+}
+
+.ewmBox{
+	margin-top: 15px;
+}
+.ewmBox p{
+	height: 30px;
+	line-height: 30px;
+}
+
+.ewmBox p span{
+	background: url(../images/img03.png) no-repeat -93px -100px ;
+	padding: 1px 10px;
+}
+
+.phoneBox{
+	padding-left: 35px;
+	position: relative;
+	width: 195px;
+	margin-top: 20px;
+}
+
+.phoneBox p.p01{
+	color: #e23024;
+	font-size: 14px;
+	font-weight: bold;
+	height: 30px;
+	line-height: 30px;
+}
+.phoneBox p.p02{
+	font-size: 23px;
+	font-style:  italic;
+	color: #e23024;
+	height: 50px;
+}
+.phoneBox p.p03{
+	line-height: 30px;
+}
+.phoneBox div.icon05{
+	position: absolute;
+	width: 32px;
+	height: 36px;
+	background: url(../images/img03.png) no-repeat  -10px -130px;
+	left: 5px;
+	top: 35px;
+}
+.phoneBox div.icon06{
+	position: absolute;
+	width: 32px;
+	height: 36px;
+	background: url(../images/img03.png) no-repeat  -51px -130px;
+	left: 0;
+	top: 93px;
+}
+
+.footerText{
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+}
+
+
