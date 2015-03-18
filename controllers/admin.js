@@ -8,6 +8,8 @@ var User = require('../models/User'),
     async = require('async'),
     _ = require('lodash'),
     moment = require('moment'),
+    env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
+    config = require('../config/config')[env],
     sms = require('../lib/sms');
 
 function main(req, res, next) {
@@ -443,6 +445,63 @@ function fetchPendingApplies(req, res) {
     });
 }
 
+function autoFetchPendingApplies(req, res) {
+    logger.debug('autoFetchPendingApplies operator:', req.user.mobile);
+    Apply.find({status: 4}, function(err, applies) {
+        if (err) {
+            logger.warn(err.toString());
+            res.status(401);
+            return res.send({"error_code":0, "error_msg":err.toString()});
+        }
+        var ret = applies.map(function(apply) {
+            return {
+                "apply_serialID":apply.serialID,
+                "mobile":apply.userMobile,
+                "deposit":apply.deposit,
+                "lever":9,
+                "amount":apply.amount-apply.deposit,
+                "margin_call":config.warnFactor * apply.amount,
+                "close":config.sellFactor * apply.amount
+            }
+        });
+        res.send(ret);
+    });
+}
+
+function autoApproveApply(req, res) {
+    logger.debug('autoApproveApply operator:', req.user.mobile);
+    var serialID = req.query.apply_serialID;
+    var account = req.query.account;
+    var password = req.query.password;
+
+    async.waterfall([
+        function (callback) {
+            Apply.findById(serialID, function(err, apply) {
+                callback(err, apply);
+            });
+        },
+        function (apply, callback) {
+            apply.status = 2;
+            apply.account = account;
+            apply.password = password;
+            var startDay = util.getStartDay();
+            apply.startTime = startDay.toDate();
+            apply.endTime = util.getEndDay(startDay, apply.period).toDate();
+            apply.save(function (err) {
+                callback(err, apply);
+            });
+        }
+    ], function(err, apply) {
+        if (err) {
+            logger.warn(err.toString());
+            res.status(401);
+            res.send({"error_code":0, "error_msg":err.toString()});
+        } else {
+            res.send({"error_code":0});
+        }
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin'), main);
@@ -484,6 +543,10 @@ module.exports = {
         app.get('/admin/api/orders/add_deposit', passportConf.requiresRole('admin'), fetchAddDepositOrders);
 
         app.get('/admin/api/applies/:serial_id', passportConf.requiresRole('admin'), getApply);
+
+        app.get('/api/auto_fetch_pending_apply', passportConf.requiresRole('admin'), autoFetchPendingApplies);
+
+        app.get('/api/auto_approve_apply', passportConf.requiresRole('admin'), autoApproveApply);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

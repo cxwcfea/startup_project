@@ -154,13 +154,14 @@ module.exports.postVerifyEmail = function(req, res, next) {
         function(token, user, done) {
             var transporter = nodemailer.createTransport({
                 host: "smtp.qq.com",
-                secureConnection: true,
                 port: 465,
+                secureConnection: true,
                 auth: {
                     user: "niu_jin_wang@qq.com",
                     pass: "so6UoWg6"
                 }
             });
+            console.log(user.profile.email);
             var mailOptions = {
                 to: user.profile.email,
                 from: 'support@niujin.com',
@@ -172,6 +173,7 @@ module.exports.postVerifyEmail = function(req, res, next) {
             };
             transporter.sendMail(mailOptions, function(err) {
                 req.flash('info', { msg: 'An e-mail has been sent to ' + user.profile.email + ' with further instructions.' });
+                console.log(err);
                 done(err, 'done');
                 transporter.close();
             });

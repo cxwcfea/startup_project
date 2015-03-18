@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 
 var applySchema = mongoose.Schema({
     userID: {type:String, required:'{PATH} is required!'},
+    userMobile: Number,
     serialID: {type:String, unique: true, required:'{PATH} is required!'},
     amount: {type:Number, required:'{PATH} is required!'},
     deposit: {type:Number, required:'{PATH} is required!'},

@@ -186,4 +186,8 @@ module.exports = function(app) {
     app.post('/api/shengpay_feedback', users.shengpayFeedback);
 
     admin.registerRoutes(app, passportConf);
+
+    app.get('/admin_test', passportConf.requiresRole('admin'), function(req, res, next) {
+        res.render('admin_test');
+    });
 };

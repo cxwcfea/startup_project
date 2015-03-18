@@ -1,0 +1,33 @@
+<div class="admin-content">
+    <hr/>
+
+    <script src="{{static '/vendor/jquery/dist/jquery.min.js'}}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#shengpay_test').on('click', function (e) {
+                console.log('shengpay');
+            });
+
+            $('#iapppay_test').on('click', function (e) {
+                console.log('iapppay');
+            });
+        });
+    </script>
+
+    <div class="am-g am-margin am-padding">
+        <div class="am-u-sm-12 am-u-md-8 am-u-md-offset-2">
+            <div class="am-panel am-panel-default">
+                <div class="am-panel-hd">测试专用</div>
+                <div class="am-panel-bd">
+                    <button id="shengpay_test" class="am-btn am-btn-warning">
+                        盛大
+                    </button>
+                    <button id="iapppay_test" class="am-btn am-btn-warning">
+                        爱贝
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+</div>
