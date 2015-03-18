@@ -146,6 +146,7 @@ module.exports.postVerifyEmail = function(req, res, next) {
         },
         function(token, done) {
             user.verifyEmailToken = token;
+            user.profile.email = req.body.email;
 
             user.save(function(err) {
                 done(err, token, user);
