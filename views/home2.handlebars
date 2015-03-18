@@ -1,9 +1,9 @@
 <div ng-app="mainApp">
     <div class="Banner" id="imgFocus">
         <ul class="ImgContent" id="ImgContent">
-            <li style="background-image: url(/images/banner.jpg);"></li>
-            <li style="background-image: url(/images/banner2.jpg);"></li>
-            <li style="background-image: url(/images/banner3.jpg);"></li>
+            <li style="background-image: url(images/banner.jpg);"></li>
+            <li style="background-image: url(images/banner2.jpg);"></li>
+            <li style="background-image: url(images/banner3.jpg);"></li>
         </ul>
         <div class="wrapper BannerNrBox">
             <ul class="ImgList" id="ImgList">
@@ -14,7 +14,7 @@
             <div class="BannerNr">
                 <p class="bannerText01">最高10倍配资额</p>
                 <p class="bannerText02">已有8017玩家参与<br />累计操盘金额9亿<br />已赚取 320万</p>
-                <a href="/free_apply" class="bannerBtn">马上领取实盘资金</a>
+                <a href="#" class="bannerBtn">马上领取实盘资金</a>
             </div>
         </div>
     </div>
@@ -75,92 +75,90 @@
             </div>
         </div>
 
-        <div>
-            <div class="fl moneyListBox">
-                <div class="conlumn2">选择资金</div>
-                <div class="moneyList" id="jq_moneyList">
-                    <ul>
-                        <li class="select">
-                            <p class="p01"><span>1万</span>元</p>
-                            <p>炒股资金</p>
-                        </li>
-                        <li>
-                            <p class="p01"><span>2万</span>元</p>
-                            <p>炒股资金</p>
-                        </li>
-                        <li>
-                            <p class="p01"><span>3万</span>元</p>
-                            <p>炒股资金</p>
-                        </li>
-                        <li>
-                            <p class="p01"><span>5万</span>元</p>
-                            <p>炒股资金</p>
-                        </li>
-                        <li>
-                            <p class="p01"><span>10万</span>元</p>
-                            <p>炒股资金</p>
-                        </li>
-                        <li>
-                            <p class="p01"><span>15万</span>元</p>
-                            <p>炒股资金</p>
-                        </li>
-                        <li>
-                            <p class="p01"><span>20万</span>元</p>
-                            <p>炒股资金</p>
-                        </li>
-                        <li>
-                            <p class="p01"><span>30万</span>元</p>
-                            <p>炒股资金</p>
-                        </li>
-                        <li id="jq_qtMoney">
-                            <p class="p02">其他金额</p>
-                            手动输入
-                        </li>
-                    </ul>
-                    <div class="qtmoneyBox undis" id="jq_qtmoneyBox">
-                        <p class="tc">请输入您的操盘金额</p>
-                        <div class="moneyInputBox">
-                            <input class="moneyinputText" type="text" name="" id="" value="" placeholder="申请资金必须在1万元至30万元之间" />
-                            <input type="button" name="" id="" value="确定" class="moneyBtn" />
-                        </div>
-                        <p class="tc"><a href="javascript:" id="return_moneyBox">返回</a></p>
+        <div class="fl moneyListBox">
+            <div class="conlumn2">选择资金</div>
+            <div class="moneyList" id="jq_moneyList">
+                <ul>
+                    <li class="select">
+                        <p class="p01"><span>1万</span>元</p>
+                        <p>炒股资金</p>
+                    </li>
+                    <li>
+                        <p class="p01"><span>2万</span>元</p>
+                        <p>炒股资金</p>
+                    </li>
+                    <li>
+                        <p class="p01"><span>3万</span>元</p>
+                        <p>炒股资金</p>
+                    </li>
+                    <li>
+                        <p class="p01"><span>5万</span>元</p>
+                        <p>炒股资金</p>
+                    </li>
+                    <li>
+                        <p class="p01"><span>10万</span>元</p>
+                        <p>炒股资金</p>
+                    </li>
+                    <li>
+                        <p class="p01"><span>15万</span>元</p>
+                        <p>炒股资金</p>
+                    </li>
+                    <li>
+                        <p class="p01"><span>20万</span>元</p>
+                        <p>炒股资金</p>
+                    </li>
+                    <li>
+                        <p class="p01"><span>30万</span>元</p>
+                        <p>炒股资金</p>
+                    </li>
+                    <li id="jq_qtMoney">
+                        <p class="p02">其他金额</p>
+                        手动输入
+                    </li>
+                </ul>
+                <div class="qtmoneyBox undis" id="jq_qtmoneyBox">
+                    <p class="tc">请输入您的操盘金额</p>
+                    <div class="moneyInputBox">
+                        <input class="moneyinputText" type="text" name="" id="" value="" placeholder="申请资金必须在1万元至30万元之间" />
+                        <input type="button" name="" id="" value="确定" class="moneyBtn" />
                     </div>
+                    <p class="tc"><a href="javascript:" id="return_moneyBox">返回</a></p>
                 </div>
             </div>
-            <div class="fl infoBox">
-                <div class="conlumn2">确认信息</div>
-                <p class="tr"><a href="#" class="color_c82217">今日限制买入股票</a></p>
-                <div class="infoTable">
-                    <table>
-                        <tr>
-                            <td class="infoTableTitle">操盘须知</td>
-                            <td class="infoTableNr infoText01">投资沪深A股，仓位不限制，盈利全归你</td>
-                        </tr>
-                        <tr>
-                            <td class="infoTableTitle">总操盘金额</td>
-                            <td class="infoTableNr"><span class="infoText02">10,000</span> 元</td>
-                        </tr>
-                        <tr>
-                            <td class="infoTableTitle">风险保证金</td>
-                            <td class="infoTableNr"><span class="infoText02">10,000</span> 元</td>
-                        </tr>
-                        <tr>
-                            <td class="infoTableTitle">亏损警戒线</td>
-                            <td class="infoTableNr"><span class="infoText02">9,600</span> 元</td>
-                        </tr>
-                        <tr>
-                            <td class="infoTableTitle">亏损平仓线</td>
-                            <td class="infoTableNr"><span class="infoText02">9,400</span> 元</td>
-                        </tr>
-                        <tr>
-                            <td class="infoTableTitle">账户管理费</td>
-                            <td class="infoTableNr"><span class="infoText03">19.9</span>元/每天  <span class="infoText04">（按天收取，周末节假日免费）</span></td>
-                        </tr>
-                    </table>
-                </div>
-                <p class="tr"><input type="checkbox" name="" id="" value="" />&nbsp;同意<a href="#" class="color_e23024">《牛金操盘协议》</a></p>
-                <input type="button" name="" id="" value="立即操盘" class="infoBtn" />
+        </div>
+        <div class="fl infoBox">
+            <div class="conlumn2">确认信息</div>
+            <p class="tr"><a href="#" class="color_c82217">今日限制买入股票</a></p>
+            <div class="infoTable">
+                <table>
+                    <tr>
+                        <td class="infoTableTitle">操盘须知</td>
+                        <td class="infoTableNr infoText01">投资沪深A股，仓位不限制，盈利全归你</td>
+                    </tr>
+                    <tr>
+                        <td class="infoTableTitle">总操盘金额</td>
+                        <td class="infoTableNr"><span class="infoText02">10,000</span> 元</td>
+                    </tr>
+                    <tr>
+                        <td class="infoTableTitle">风险保证金</td>
+                        <td class="infoTableNr"><span class="infoText02">10,000</span> 元</td>
+                    </tr>
+                    <tr>
+                        <td class="infoTableTitle">亏损警戒线</td>
+                        <td class="infoTableNr"><span class="infoText02">9,600</span> 元</td>
+                    </tr>
+                    <tr>
+                        <td class="infoTableTitle">亏损平仓线</td>
+                        <td class="infoTableNr"><span class="infoText02">9,400</span> 元</td>
+                    </tr>
+                    <tr>
+                        <td class="infoTableTitle">账户管理费</td>
+                        <td class="infoTableNr"><span class="infoText03">19.9</span>元/每天  <span class="infoText04">（按天收取，周末节假日免费）</span></td>
+                    </tr>
+                </table>
             </div>
+            <p class="tr"><input type="checkbox" name="" id="" value="" />&nbsp;同意牛<a href="#" class="color_e23024">《金操盘协议》</a></p>
+            <input type="button" name="" id="" value="立即操盘" class="infoBtn" />
         </div>
         <div class="clear"></div>
         <div class="Division"></div>

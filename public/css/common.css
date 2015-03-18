@@ -42,7 +42,9 @@ a,p,div,span,em{
 .marTop25{
 	margin-top: 25px;
 }
-
+.marRight10{
+	margin-right: 10px;
+}
 
 
 
@@ -70,6 +72,7 @@ div.color_333333,a.color_333333,span.color_333333{
 
 .header{
 	height: 110px;
+	background: #fff;
 }
 .logo{
 	display: block;
@@ -92,9 +95,10 @@ div.color_333333,a.color_333333,span.color_333333{
 	padding: 0 20px;
 }
 .nav li a{
-	color: #c82217;
+	
 }
 .nav li.select a{
+	color: #c82217;
 	border-bottom: 1px solid #c82217;
 }
 

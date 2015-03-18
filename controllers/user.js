@@ -152,7 +152,7 @@ module.exports.postVerifyEmail = function(req, res, next) {
             });
         },
         function(token, user, done) {
-            var transporter = nodemailer.createTransport({
+            var transporter = nodemailer.createTransport('SMTP', {
                 host: "smtp.qq.com",
                 port: 465,
                 secureConnection: true,
@@ -161,10 +161,9 @@ module.exports.postVerifyEmail = function(req, res, next) {
                     pass: "so6UoWg6"
                 }
             });
-            console.log(user.profile.email);
             var mailOptions = {
                 to: user.profile.email,
-                from: 'support@niujin.com',
+                from: 'niu_jin_wang@qq.com',
                 subject: '验证您在牛金网使用的邮箱',
                 text: 'You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n' +
                 'Please click on the following link, or paste this into your browser to complete the process:\n\n' +

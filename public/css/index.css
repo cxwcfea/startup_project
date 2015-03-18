@@ -178,7 +178,7 @@ a.bannerBtn:hover{
 
 .moneyListBox{
 	width: 500px;
-	
+	overflow: hidden;
 }
 
 
@@ -191,10 +191,10 @@ a.bannerBtn:hover{
 }
 
 .moneyList{
-	
+	margin-left: 10px;
 	border-right: 1px solid #dbdbdb;
 	position: relative;
-	width: 500px;
+	width: 489px;
 	height: 420px;
 }
 .moneyList li{
@@ -279,7 +279,8 @@ a.bannerBtn:hover{
 }
 
 .infoBox{
-	width: 499px;
+	width: 489px;
+	padding-right: 10px;
 }
 .infoBox a:hover{
 	text-decoration: underline;
@@ -319,7 +320,7 @@ a.bannerBtn:hover{
 	color: #fff;
 	border: none;
 	display: block;
-	margin: 50px auto 0 auto;
+	margin: 10px auto 0 auto;
 	border-radius: 5px;
 	font-size: 16px;
 	cursor: pointer;
