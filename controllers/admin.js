@@ -279,7 +279,9 @@ function closeApply(req, res) {
         },
         function(apply, callback) {
             var balance;
-            if (profit > 0) {
+            if (apply.isTrial) {
+                balance = 1;
+            } else if (profit > 0) {
                 balance = apply.deposit;
             } else {
                 balance = apply.deposit + profit;
@@ -305,6 +307,9 @@ function closeApply(req, res) {
         },
         function(apply, callback) {
             var balance = apply.deposit + profit;
+            if (apply.isTrial && balance < 1) {
+                balance = 1;
+            }
             if (balance > 0) {
                 User.findById(apply.userID, function(err, user) {
                     if (!user) {
@@ -321,15 +326,38 @@ function closeApply(req, res) {
                 user.finance.balance += balance;
                 user.finance.total_capital -= apply.amount;
                 user.finance.deposit -= apply.deposit;
-                var tradeDays = util.tradeDaysFromEndDay(apply.endTime, apply.period);
-                var totalServiceFee = util.getServiceFee(apply.amount, apply.period);
-                var actualServiceFee = util.getServiceFee(apply.amount, tradeDays);
-                var returnedServiceFee = totalServiceFee - actualServiceFee;
-                user.finance.freeze_capital -= actualServiceFee;
-                if (returnedServiceFee > 0) {
-                    user.finance.balance += returnedServiceFee;
+                if (!apply.isTrial) {
+                    var tradeDays = util.tradeDaysFromEndDay(apply.endTime, apply.period);
+                    var totalServiceFee = util.getServiceFee(apply.amount, apply.period);
+                    var actualServiceFee = util.getServiceFee(apply.amount, tradeDays);
+                    var returnedServiceFee = totalServiceFee - actualServiceFee;
+                    user.finance.freeze_capital -= actualServiceFee;
+                    if (returnedServiceFee > 0) {
+                        var orderData = {
+                            userID: apply.userID,
+                            dealType: 8,
+                            amount: returnedServiceFee,
+                            status: 1,
+                            description: '管理费返回',
+                            applySerialID: apply.serialID
+                        };
+                        user.finance.balance += returnedServiceFee;
+                    }
                 }
                 user.save(function(err) {
+                    callback(err, orderData);
+                });
+            } else {
+                callback(null, null);
+            }
+        },
+        function(orderData, callback) {
+            if (orderData) {
+                Order.create(orderData, function(err, order) {
+                    if (err || !order) {
+                        logger.warn('failed create service fee return order when close apply:' + orderData.applySerialID);
+                        err = 'failed create service fee return order when close apply:' + orderData.applySerialID;
+                    }
                     callback(err);
                 });
             } else {

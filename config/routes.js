@@ -75,6 +75,10 @@ module.exports = function(app) {
 
     app.post('/thank_you_for_pay', users.thankYouForPay);
 
+    app.get('/free_apply', function(req, res, next){
+        res.render('free_apply');
+    });
+
     app.get('/signup', function(req, res) {
         if (req.isAuthenticated()) {
             res.redirect('/');
@@ -94,6 +98,8 @@ module.exports = function(app) {
     app.get('/apply', applies.getApplyPage);
 
     app.post('/apply', applies.placeApply);
+
+    app.get('/free_apply_confirm', passportConf.isAuthenticated, applies.freeApply);
 
     app.get('/login', function (req, res) {
         if (req.isAuthenticated()) {

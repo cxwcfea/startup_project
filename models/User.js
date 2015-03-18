@@ -10,6 +10,7 @@ var userSchema = new mongoose.Schema({
 	level: { type: Number, default: 0 },
 	score: { type: Number, default: 0 },
     registerAt: {type:Date, default: Date.now()},
+    freeApply: String,  // apply serialID
 
 	finance: {
         password: String,

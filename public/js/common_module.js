@@ -185,6 +185,10 @@
                     return '保证金返还';
                 case 6:
                     return '追加配资保证金';
+                case 7:
+                    return '配资延期';
+                case 8:
+                    return '管理费返还';
                 default:
                     return '充值';
             }

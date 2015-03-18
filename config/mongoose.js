@@ -8,9 +8,11 @@ function createDefaultUsers() {
         if (collection.length === 0) {
             User.create({mobile: 13439695920, password: 'xxx', profile: {name:'cxwcfea'}, roles: ['admin']}, function (err, user) {
                 if (err) console.log('create & find user err:' + err);
+                /*
                 if (user) {
                     createOrderDefaultUsers(user._id);
                 }
+                */
             });
 
             User.create({mobile: 13121909306, password: 'xxxxxx', roles: ['admin']});

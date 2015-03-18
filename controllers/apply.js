@@ -1,5 +1,6 @@
 var Apply = require('../models/Apply'),
     Order = require('../models/Order'),
+    User = require('../models/User'),
     moment = require('moment'),
     env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
     config = require('../config/config')[env],
@@ -201,6 +202,7 @@ exports.postApplyPostpone = function(req, res, next) {
                 applyID: apply._id
             };
             res.locals.shengOrderTime = moment().format("YYYYMMDDHHmmss");
+            res.locals.callback_domain = config.pay_callback_domain;
 
             if (shouldPay <= 0) {
                 res.locals.applySummary.useBalance = true;
@@ -333,6 +335,7 @@ exports.postAddDeposit = function(req, res, next) {
                 applyID: apply._id
             };
             res.locals.shengOrderTime = moment().format("YYYYMMDDHHmmss");
+            res.locals.callback_domain = config.pay_callback_domain;
 
             if (shouldPay <= 0) {
                 res.locals.applySummary.useBalance = true;
@@ -347,4 +350,78 @@ exports.postAddDeposit = function(req, res, next) {
             res.render('apply_add_deposit_confirm');
         });
     });
+};
+
+exports.freeApply = function(req, res, next) {
+    if (!req.user.freeApply) {
+        var applyData = new Apply({
+            userID: req.user._id,
+            serialID: util.generateSerialID(),
+            amount: 2000,
+            deposit: 1,
+            isTrial: true,
+            period: 2
+        });
+
+        Apply.create(applyData, function(err, apply) {
+            if(err) next();
+
+            var orderData = {
+                userID: apply.userID,
+                dealType: 1,
+                amount: 1,
+                status: 2,
+                description: '免费配资体验',
+                applySerialID: apply.serialID
+            };
+            Order.create(orderData, function(err, order) {
+                if (err) next();
+                var shouldPay = 1 - req.user.finance.balance;
+                res.locals.shengOrderTime = moment().format("YYYYMMDDHHmmss");
+                res.locals.serialID = apply.serialID;
+
+                if (shouldPay <= 0) {
+                    res.locals.useBalance = true;
+                }
+
+                res.locals.callback_domain = config.pay_callback_domain;
+                res.locals.order = order;
+                User.update({_id:req.user._id}, {freeApply:apply.serialID}, function (err, numberAffected, raw) {
+                    if (err) next();
+                    apply.orderID = order._id;
+                    apply.save(function(err) {
+                        res.render('free_apply_confirm');
+                    });
+                });
+            });
+        });
+    } else {
+        Apply.findOne({serialID:req.user.freeApply}, function(err, apply) {
+            if (err) next();
+            if (apply.status != 1) {
+                logger.warn('user:' + req.user.mobile + ' already tried free apply, refuse it');
+                req.flash('errors', {msg:'对不起，您已经体验过了！'});
+                return res.redirect('/apply');
+            }
+            Order.findOne({_id:apply.orderID}, function(err, order) {
+                if (err) next();
+                var shouldPay = 1 - req.user.finance.balance;
+                res.locals.shengOrderTime = moment().format("YYYYMMDDHHmmss");
+                res.locals.serialID = apply.serialID;
+
+                if (shouldPay <= 0) {
+                    res.locals.useBalance = true;
+                }
+
+                res.locals.callback_domain = config.pay_callback_domain;
+                res.locals.order = order;
+                if (order && shouldPay === order.amount) {
+                    if (order.transID) {
+                        res.locals.transID = order.transID;
+                    }
+                }
+                res.render('free_apply_confirm');
+            });
+        });
+    }
 };
