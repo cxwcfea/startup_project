@@ -476,7 +476,7 @@ function autoApproveApply(req, res) {
 
     async.waterfall([
         function (callback) {
-            Apply.findById(serialID, function(err, apply) {
+            Apply.findOne({serialID:serialID}, function(err, apply) {
                 callback(err, apply);
             });
         },
