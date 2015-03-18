@@ -165,15 +165,16 @@ module.exports.postVerifyEmail = function(req, res, next) {
             var mailOptions = {
                 to: user.profile.email,
                 from: 'niu_jin_wang@qq.com',
-                subject: '验证您在牛金网使用的邮箱',
-                text: user.profile.mobile + '，您好 \n\n请点击下面链接，完成邮箱认证，提升您在658金融网账户的安全性。\n\n' +
-                '<a href="' + config.pay_callback_domain + '/user/verifyEmail/' + token + '"><\/a>\n\n' +
+                subject: '欢迎加入牛金网',
+                generateTextFromHTML: true,
+                text: user.mobile + '，您好 \n\n请点击下面链接，完成邮箱认证，提升您在658金融网账户的安全性。\n\n' +
+                config.pay_callback_domain + '/user/verifyEmail/' + token + '\n\n' +
                 '如果您不能点击上面链接，还可以将一下链接复制到浏览器地址栏中访问：\n\n' +
-                'http://' + config.pay_callback_domain + '/user/verifyEmail/' + token + '\n\n'
+                config.pay_callback_domain + '/user/verifyEmail/' + token + '\n\n'
             };
             transporter.sendMail(mailOptions, function(err) {
                 req.flash('info', { msg: 'An e-mail has been sent to ' + user.profile.email + ' with further instructions.' });
-                console.log(err);
+                logger.warn('error when send verify email: ' + err);
                 done(err, 'done');
                 transporter.close();
             });

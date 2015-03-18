@@ -8,9 +8,9 @@ angular.module('myApp').controller('UserEmailController', ['gbIdentity', '$http'
         $http.post('/user/verify_email', {email:vm.user.profile.email})
             .then(function(response) {
                 if (response.data.success) {
-                    gbNotifier.notify('email send success');
+                    gbNotifier.notify('验证邮件已成功发送');
                 } else {
-                    gbNotifier.error('email send fail ' + response.data.reason);
+                    gbNotifier.error('邮件发送失败,请稍后再试');
                 }
             });
     };
