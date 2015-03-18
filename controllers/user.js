@@ -165,10 +165,10 @@ module.exports.postVerifyEmail = function(req, res, next) {
                 to: user.profile.email,
                 from: 'niu_jin_wang@qq.com',
                 subject: '验证您在牛金网使用的邮箱',
-                text: 'You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n' +
-                'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-                'http://' + req.headers.host + '/reset/' + token + '\n\n' +
-                'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+                text: user.profile.mobile + '，您好 \n\n请点击下面链接，完成邮箱认证，提升您在658金融网账户的安全性。\n\n' +
+                'http://' + req.headers.host + '/user/verifyEmail/' + token + '\n\n' +
+                '如果您不能点击上面链接，还可以将一下链接复制到浏览器地址栏中访问：\n\n' +
+                'http://' + req.headers.host + '/user/verifyEmail/' + token + '\n\n'
             };
             transporter.sendMail(mailOptions, function(err) {
                 req.flash('info', { msg: 'An e-mail has been sent to ' + user.profile.email + ' with further instructions.' });
@@ -181,6 +181,20 @@ module.exports.postVerifyEmail = function(req, res, next) {
         if (err) return res.send({success:false, reason:err.toString()});
         res.send({success:true});
     });
+};
+
+exports.finishVerifyEmail = function(req, res) {
+    User.findOne({ verifyEmailToken: req.params.token })
+        .exec(function(err, user) {
+            if (!user || !user.profile.email) {
+                req.flash('errors', { msg: '邮件验证码失效或没有找到用户.' });
+                return res.redirect('/user#/security');
+            }
+            user.profile.email_verified = true;
+            user.save(function(err) {
+                res.redirect('/user#/security');
+            });
+        });
 };
 
 module.exports.getIdentity = function(req, res) {
