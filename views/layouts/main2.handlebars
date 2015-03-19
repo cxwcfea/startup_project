@@ -4,51 +4,16 @@
     <meta charset="utf-8" />
     <title>牛金网</title>
     <link rel="alternate icon" type="image/png" href="/images/favicon.ico">
+    <link rel="stylesheet" href="{{static '/vendor/amazeui/dist/css/amazeui.min.css'}}">
     <link rel="stylesheet" href="{{static '/css/common.css'}}">
     <link rel="stylesheet" href="{{static '/css/index.css'}}">
+    <link rel="stylesheet" href="{{static '/css/css.css'}}">
+    <link rel="stylesheet" href="{{static '/css/site2.css'}}">
     <script src="{{static '/vendor/jquery/dist/jquery.min.js'}}"></script>
     <script src="{{static '/vendor/jquery.Imgfocus.js'}}"></script>
-    <script type="text/javascript">
-        $(function () {
-            $("#imgFocus").Carousel({
-                ImgContentID: "ImgContent", //内容ID;
-                ImgListClass: "selectLi", //选中状态css;
-                events: "click", //事件，click为鼠标点击,hover为鼠标滑过;
-                AutoPlay: true, //自动播放 ，false为不播放;
-                speed: 5000, //播放速度;
-                Styles: "opa", //移动形式，default为无，Transverse为横向移动,Vertical为纵向,opa透明度渐隐
-                mobileSpeed: 500//移动速度;
-            });
-
-            $("#jq_moneyList li").click(function () {
-                $(this).addClass("select").siblings().removeClass("select");
-            })
-            $("#jq_qtMoney").click(function () {
-                $("#jq_qtmoneyBox").show();
-            })
-            $("#return_moneyBox").click(function () {
-                $("#jq_qtmoneyBox").hide();
-                $("#jq_moneyList li").eq(0).addClass("select").siblings().removeClass("select");
-            })
-
-            var speed=80; //数字越大速度越慢
-            var tab=document.getElementById("demo");
-            var tab1=document.getElementById("demo1");
-            var tab2=document.getElementById("demo2");
-            tab2.innerHTML=tab1.innerHTML; //克隆demo1为demo2
-            function Marquee(){
-                if(tab2.offsetTop-tab.scrollTop<=0){//当滚动至demo1与demo2交界时
-                    tab.scrollTop-=tab1.offsetHeight //demo跳到最顶端
-                }
-                else{
-                    tab.scrollTop++;
-                }
-            }
-            var MyMar=setInterval(Marquee,speed);
-            tab.onmouseover=function() {clearInterval(MyMar)};//鼠标移上时清除定时器达到滚动停止的目的
-            tab.onmouseout=function() {MyMar=setInterval(Marquee,speed)};//鼠标移开时重设定时器
-        });
-    </script>
+    {{#if main_menu}}
+    <script src="{{static '/js/index.js'}}"></script>
+    {{/if}}
 </head>
 <body>
 <div class="Top">
@@ -66,8 +31,9 @@
     <div class="header">
         <a href="#" class="logo"><img src="images/logo.png"/></a>
         <ul class="nav fr">
-            <li><a href="#">天天牛</a></li>
-            <li><a href="/free_apply">免费体验</a></li>
+            <li {{#if main_menu}} class="select" {{/if}}><a href="/new_index">首页</a></li>
+            <li {{#if apply_menu}} class="select" {{/if}}><a href="/new_apply">天天牛</a></li>
+            <li {{#if free_apply_menu}} class="select" {{/if}}><a href="/new_free_apply">免费体验</a></li>
             <li><a href="/user">我的账户</a></li>
         </ul>
     </div>
@@ -75,7 +41,12 @@
 
 {{{body}}}
 
-<div class="footer">
+{{#if main_menu}}
+    <div class="footer">
+{{/if}}
+{{#if apply_menu}}
+    <div class="footer marTop200">
+{{/if}}
     <div class="wrapper">
         <div class="footerList fl">
             <p>软件下载</p>
@@ -123,12 +94,13 @@
 <script src="{{static '/vendor/moment/min/moment.min.js'}}"></script>
 <script src="{{static '/vendor/moment/min/locales.min.js'}}"></script>
 <script src="{{static '/vendor/spark-md5.min.js'}}"></script>
+<script src="{{static '/vendor/angular/angular.min.js'}}"></script>
+<script src="{{static '/vendor/angular-bootstrap/ui-bootstrap-tpls.min.js'}}"></script>
+<script src="{{static '/js.min/niujinwang-home.min.495f7ec5.js'}}"></script>
+<script src="{{static '/app/controllers/MainApplyController.js'}}"></script>
 <script src="http://web.iapppay.com/h5/v1.0/js/aibei_v1.0.3.js"></script>
 <script>window._aibeiCloseTxt='返回牛金网';</script>
 <script src="http://pv.sohu.com/cityjson"></script>
-<script src="{{static '/vendor/angular/angular.min.js'}}"></script>
-<script src="{{static '/js.min/niujinwang-home.min.495f7ec5.js'}}"></script>
-<script src="{{static '/app/controllers/MainApplyController.js'}}"></script>
 
 </body>
 </html>
