@@ -52,7 +52,7 @@ angular.module('adminApp').controller('AdminUserListCtrl', ['$scope', '$http', '
     vm.open = function (mobile) {
 
         var modalInstance = $modal.open({
-            templateUrl: 'smsModal.html',
+            templateUrl: '/views/smsModal.html',
             controller: 'ModalInstanceCtrl',
             //size: size,
             resolve: {}
@@ -107,8 +107,32 @@ angular.module('adminApp').controller('AdminUserListCtrl', ['$scope', '$http', '
     };
 }]);
 
-angular.module('adminApp').controller('ModalInstanceCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+angular.module('adminApp').controller('ModalInstanceCtrl', ['$scope', '$modalInstance', 'withdraw_sms_content', 'approve_apply_sms_content', 'close_apply_sms_content', 'pay_success_sms_content', 'warn_sms_content', 'sell_sms_content', function ($scope, $modalInstance, withdraw_sms_content, approve_apply_sms_content, close_apply_sms_content, pay_success_sms_content, warn_sms_content, sell_sms_content) {
     $scope.sms_content = '您好，我是您在牛金网的专属客服XX。QQ:xxxxxx 微信:xxxxxx 如果您有任何问题都可以24小时随时咨询。牛金网感谢您对我们的支持，祝您股市大赚!';
+
+    $scope.macroChange = function() {
+        console.log($scope.content_macro);
+        switch ($scope.content_macro) {
+            case '1':
+                $scope.sms_content = withdraw_sms_content;
+                return;
+            case '2':
+                $scope.sms_content = approve_apply_sms_content;
+                return;
+            case '3':
+                $scope.sms_content = close_apply_sms_content;
+                return;
+            case '4':
+                $scope.sms_content = pay_success_sms_content;
+                return;
+            case '5':
+                $scope.sms_content = warn_sms_content;
+                return;
+            case '6':
+                $scope.sms_content = sell_sms_content;
+                return;
+        }
+    };
 
     $scope.ok = function () {
         $modalInstance.close($scope.sms_content);

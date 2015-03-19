@@ -52,6 +52,9 @@ module.exports = function(app, config) {
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(expressValidator());
     app.use(session({
+        cookie: {
+            maxAge: 2 * 60 * 1000
+        },
         store: sessionStore,
         secret: 'the secret key',
         resave: false,

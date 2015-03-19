@@ -25,6 +25,7 @@ a{color:#4d4d4d; text-decoration:none}
 .unline{text-decoration:none}
 .unline a,a{text-decoration:none;color:#333}
 a:hover{text-decoration:underline}
+html,body{height: 100%;}
 a,p,div,span,em{ 
 	-webkit-transition-duration:.15s; 
 	-moz-transition-duration:.15s; 
@@ -33,7 +34,15 @@ a,p,div,span,em{
 	-moz-transition-timing-function:ease-out; 
 	transition-timing-function:ease-out; 
 }
-
+.tmbg{
+	background: #000;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	left: 0;
+	top: 0;
+	opacity: 0.4;
+}
 .wrapper{
 	width: 1000px;
 	margin: auto;
@@ -45,9 +54,16 @@ a,p,div,span,em{
 .marRight10{
 	margin-right: 10px;
 }
+.marRight20{
+	margin-right: 20px;
+}
+.marTop200{
+	margin-top: 200px;
+}
 
-
-
+.marTop75{
+	margin-top: 75px;
+}
 
 .Top{
 	height: 40px;
@@ -64,6 +80,9 @@ a,p,div,span,em{
 }
 div.color_333333,a.color_333333,span.color_333333{
 	color: #333333;
+}
+.color_e23024{
+	color: #e23024;
 }
 .TopPhone{
 	font-style: italic;
@@ -105,8 +124,175 @@ div.color_333333,a.color_333333,span.color_333333{
 
 
 
+.moneyListBox{
+	width: 500px;
+	overflow: hidden;
+}
 
 
+.conlumn2{
+	color: #333333;
+	font-size: 24px;
+	height: 77px;
+	line-height: 77px;
+	padding-left: 10px;
+}
+.conlumn2 span{
+	display: block;
+	float: left;
+}
+.conlumn2 a{
+	display: block;
+	float: right;
+	font-size: 14px;
+}
+.moneyList{
+	margin-left: 10px;
+	border-right: 1px solid #dbdbdb;
+	position: relative;
+	width: 489px;
+	height: 420px;
+}
+.moneyList li{
+	float:left;
+	width: 138px;
+	height: 138px;
+	background: #f5f5f5 url(../images/img04.jpg) no-repeat bottom right;
+	margin: 0 2px 2px 0;
+	text-align: center;
+	color: #666666;
+	font-size: 18px;
+	cursor: pointer;
+}
+
+.moneyList li p.p01{
+	margin-top: 30px;
+	
+}
+.moneyList li p.p01 span{
+	font-size: 36px;
+}
+.moneyList li p.p02{
+	font-size: 24px;
+	color: #e23024;
+	margin-top: 45px;
+}
+
+.moneyList li:hover{
+	/*background: #eeeeee;*/
+	color: #e23024;
+}
+
+.moneyList li.select{
+	background:#e23024 url(../images/img05.jpg) no-repeat bottom right;;
+	color: #fff;
+}
+.qtmoneyBox{
+	background: #f5f5f3;
+	width: 420px;
+	height: 296px;
+	border: 1px solid #979797;
+	position: absolute;
+	left: 0;
+	top: 0;
+	padding-top: 120px; 
+}
+.moneyInputBox{
+	width: 350px;
+	height: 50px;
+	background: #e53e30;
+	border-radius: 3px;
+	margin: auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.moneyinputText{
+	width: 237px;
+	height: 44px;
+	display: block;
+	border: none;
+	float: left;
+	margin: 3px 0 0 3px;
+	text-indent: 5px;
+	line-height: 44px;
+	_border:0;
+	_display: inline;
+}
+
+.moneyBtn{
+	display: block;
+	border: none;
+	background: none;
+	width: 105px;
+	height: 44px;
+	color: #fff;
+	text-align: center;
+	line-height: 44px;
+	cursor: pointer;
+	font-size: 18px;
+	
+}
+
+.infoBox{
+	width: 489px;
+	padding-right: 10px;
+}
+.infoBox a:hover{
+	text-decoration: underline;
+}
+.infoTable{
+	padding-left: 10px;
+}
+.infoTable table{width: 100%;}
+.infoTable tr{
+	height: 50px;
+	line-height: 50px;
+}
+.infoTable table td.infoTableTitle{
+	width: 95px;
+	text-align: right;
+	border: 1px solid #e9e9e9;
+	padding-right: 10px;
+	background: #f3f3f3;
+}
+.infoTable td.infoTableNr{
+	padding-left: 15px;
+	font-size: 16px;
+	border: 1px solid #e9e9e9;
+	
+}
+
+.infoTable td.infoText01{
+	color: #e23024;
+}
+.infoTable td span.infoText02{
+	color: #e23024;
+	font-size: 24px;
+}
+.infoTable td span.infoText03{
+	color: #333333;
+	font-size: 20px;
+}
+.infoTable td span.infoText04{
+	color: #e18400;
+	font-size: 14px;
+}
+.infoBtn{
+	width: 455px;
+	height: 50px;
+	background: #e23024;
+	color: #fff;
+	border: none;
+	display: block;
+	margin: 10px 0 0 35px;
+	border-radius: 5px;
+	font-size: 16px;
+	cursor: pointer;
+}
+.infoBtn:hover{
+	text-decoration: underline;
+}
 
 
 

@@ -6,14 +6,18 @@
     <link rel="alternate icon" type="image/png" href="/images/favicon.ico">
     <link rel="stylesheet" href="{{static '/vendor/amazeui/dist/css/amazeui.min.css'}}">
     <link rel="stylesheet" href="{{static '/css/common.css'}}">
+{{#if main_menu}}
     <link rel="stylesheet" href="{{static '/css/index.css'}}">
+{{/if}}
+{{#unless main_menu}}
     <link rel="stylesheet" href="{{static '/css/css.css'}}">
+{{/unless}}
     <link rel="stylesheet" href="{{static '/css/site2.css'}}">
     <script src="{{static '/vendor/jquery/dist/jquery.min.js'}}"></script>
     <script src="{{static '/vendor/jquery.Imgfocus.js'}}"></script>
-    {{#if main_menu}}
+{{#if main_menu}}
     <script src="{{static '/js/index.js'}}"></script>
-    {{/if}}
+{{/if}}
 </head>
 <body>
 <div class="Top">
@@ -27,9 +31,9 @@
     </div>
     <div class="clear"></div>
 </div>
-<div class="wrapper">
-    <div class="header">
-        <a href="#" class="logo"><img src="images/logo.png"/></a>
+<div class="header">
+    <div class="wrapper">
+        <a href="#" class="logo"><img src="/images/logo.png"/></a>
         <ul class="nav fr">
             <li {{#if main_menu}} class="select" {{/if}}><a href="/new_index">首页</a></li>
             <li {{#if apply_menu}} class="select" {{/if}}><a href="/new_apply">天天牛</a></li>
@@ -42,11 +46,15 @@
 {{{body}}}
 
 {{#if main_menu}}
-    <div class="footer">
+<div class="footer">
 {{/if}}
 {{#if apply_menu}}
-    <div class="footer marTop200">
+<div class="footer marTop200">
 {{/if}}
+{{#if free_apply_menu}}
+<div class="footer marTop25">
+{{/if}}
+
     <div class="wrapper">
         <div class="footerList fl">
             <p>软件下载</p>
@@ -74,7 +82,7 @@
         </div>
         <div class="fr ewmBox">
             <p><span>&nbsp;</span>官方微信</p>
-            <img src="images/img15.jpg"/>
+            <img src="/images/img15.jpg"/>
         </div>
         <div class="fr phoneBox">
             <p class="p01">全国服务热线</p>
@@ -87,7 +95,6 @@
         <div class="footerText">©版权所有 北京小牛普惠科技有限公司 All Rights Reserved 2015 <a href="#"> 京ICP备14047091号-4</a></div>
     </div>
 </div>
-
 <script src="{{static '/vendor/bootstrap/dist/js/bootstrap.min.js'}}"></script>
 <script src="{{static '/vendor/amazeui/dist/js/amazeui.min.js'}}"></script>
 <script src="{{static '/vendor/toastr/toastr.min.js'}}"></script>
@@ -101,6 +108,5 @@
 <script src="http://web.iapppay.com/h5/v1.0/js/aibei_v1.0.3.js"></script>
 <script>window._aibeiCloseTxt='返回牛金网';</script>
 <script src="http://pv.sohu.com/cityjson"></script>
-
 </body>
 </html>

@@ -187,10 +187,38 @@ module.exports = function(app) {
 
     app.post('/api/shengpay_feedback', users.shengpayFeedback);
 
+    app.post('/api/add_forbidden_stock', function(req, res) {
+        var data = req.body;
+        data = JSON.parse(data.data);
+        util.addForbiddenStocks(data);
+        res.send('OK');
+    });
+
+    app.get('/api/fetch_forbidden_stocks', function(req, res) {
+        util.fetchForbiddenStocks(function(err, stocks) {
+            res.send(stocks);
+        });
+    });
+
     admin.registerRoutes(app, passportConf);
 
     app.get('/new_index', function(req, res, next) {
+        res.locals.main_menu = true;
         res.render('home2', {
+            layout:'main2'
+        });
+    });
+
+    app.get('/new_free_apply', function(req, res, next) {
+        res.locals.free_apply_menu = true;
+        res.render('apply/free_apply', {
+            layout:'main2'
+        });
+    });
+
+    app.get('/new_apply', function(req, res, next) {
+        res.locals.apply_menu = true;
+        res.render('apply/apply', {
             layout:'main2'
         });
     });

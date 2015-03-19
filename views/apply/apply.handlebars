@@ -1,0 +1,130 @@
+<div class="wrapper" ng-app="mainApp" ng-controller="MainApplyController as applyVM">
+    <div class="freeTitle">
+        <div class="fl"><span>天天牛</span> &nbsp;&nbsp;短线炒股、最高30万、利润放大10倍</div>
+        <a href="#">新手引导>></a>
+        <div class="clear"></div>
+    </div>
+    <div class="column">
+        <div class="fl num01">
+            <span class="numSpan">1</span>
+            选择炒股基金
+        </div>
+        <div class="fl num02">
+            <span class="numSpan2">2</span>
+            支付保证金
+        </div>
+        <div class="fl num02">
+            <span class="numSpan2">3</span>
+            完成申请
+        </div>
+    </div>
+
+    <div class="fl moneyListBox">
+        <div class="conlumn2">选择资金</div>
+        <div class="moneyList" id="jq_moneyList">
+            <ul>
+                <li ng-repeat="item in applyVM.amountList" ng-class="{select: item.select}" ng-click="applyVM.selectAmount(item)">
+                    <p class="p01"><span>\{{item.name}}</span></p>
+                    <p>炒股资金</p>
+                </li>
+                <!--
+                <li class="select">
+                    <p class="p01"><span>1万</span>元</p>
+                    <p>炒股资金</p>
+                </li>
+                <li>
+                    <p class="p01"><span>2万</span>元</p>
+                    <p>炒股资金</p>
+                </li>
+                <li>
+                    <p class="p01"><span>3万</span>元</p>
+                    <p>炒股资金</p>
+                </li>
+                <li>
+                    <p class="p01"><span>5万</span>元</p>
+                    <p>炒股资金</p>
+                </li>
+                <li>
+                    <p class="p01"><span>10万</span>元</p>
+                    <p>炒股资金</p>
+                </li>
+                <li>
+                    <p class="p01"><span>15万</span>元</p>
+                    <p>炒股资金</p>
+                </li>
+                <li>
+                    <p class="p01"><span>20万</span>元</p>
+                    <p>炒股资金</p>
+                </li>
+                <li>
+                    <p class="p01"><span>30万</span>元</p>
+                    <p>炒股资金</p>
+                </li>
+                -->
+                <li id="jq_qtMoney" ng-click="applyVM.toggleOtherAmount()">
+                    <p class="p02">其他金额</p>
+                    手动输入
+                </li>
+            </ul>
+            <div class="qtmoneyBox" id="jq_qtmoneyBox" ng-show="applyVM.showOtherAmount">
+                <p class="tc">请输入您的操盘金额</p>
+                <div class="moneyInputBox">
+                    <input class="moneyinputText" type="text" name="" id="" value="" placeholder="申请资金必须在2000元至30万元之间" min="\{{applyVM.min_amount}}" max="300000" step="1000" ng-model="applyVM.otherAmount" ng-change="applyVM.finishOtherAmount()"/>
+                    <input type="button" name="" id="" value="确定" class="moneyBtn" />
+                </div>
+                <p class="tc"><a href="javascript:" id="return_moneyBox" ng-click="applyVM.toggleOtherAmount()">返回</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="am-modal am-modal-no-btn" tabindex="-1" id="forbidden-stock-modal">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd"><h1>今日限制买入股票</h1>
+                <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+            </div>
+            <div class="am-modal-bd">
+                <div class="limitstock">
+                    <ul>
+                        <li ng-repeat="stock in applyVM.forbiddenStockList"><span>\{{stock.stockID}}</span>\{{stock.stockName}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fl infoBox">
+        <div class="conlumn2"><span>确认信息</span><a href="#" class="color_c82217" ng-click="applyVM.showForbiddenStocks()">今日限制买入股票</a></div>
+
+        <div class="infoTable">
+            <table>
+                <tr>
+                    <td class="infoTableTitle">操盘须知</td>
+                    <td class="infoTableNr infoText01">投资沪深A股，仓位不限制，盈利全归你</td>
+                </tr>
+                <tr>
+                    <td class="infoTableTitle">总操盘金额</td>
+                    <td class="infoTableNr"><span class="infoText02">\{{applyVM.summary.amount | currency:'':0}}</span> 元</td>
+                </tr>
+                <tr>
+                    <td class="infoTableTitle">风险保证金</td>
+                    <td class="infoTableNr"><span class="infoText02">\{{applyVM.summary.deposit | currency:'':0}}</span> 元</td>
+                </tr>
+                <tr>
+                    <td class="infoTableTitle">亏损警戒线</td>
+                    <td class="infoTableNr"><span class="infoText02">\{{applyVM.summary.warnValue | currency:'':0}}</span> 元</td>
+                </tr>
+                <tr>
+                    <td class="infoTableTitle">亏损平仓线</td>
+                    <td class="infoTableNr"><span class="infoText02">\{{applyVM.summary.sellValue | currency:'':0}}</span> 元</td>
+                </tr>
+                <tr>
+                    <td class="infoTableTitle">账户管理费</td>
+                    <td class="infoTableNr"><span class="infoText03">\{{applyVM.summary.charge | currency:'':2}}</span>元/每天  <span class="infoText04">（按天收取，周末节假日免费）</span></td>
+                </tr>
+            </table>
+        </div>
+        <p class="tr"><input type="checkbox" name="" id="" value="" ng-model="applyVM.agree"/>&nbsp;同意<a href="#" class="color_e23024">《牛金操盘协议》</a></p>
+        <input type="button" name="" id="" value="立即操盘" class="infoBtn" onclick="window.location.href='confirm.html'" />
+    </div>
+    <div class="clear"></div>
+</div>

@@ -1,10 +1,9 @@
 'use strict';
-angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', '$location', '$routeParams', '$modal', 'adminApply', 'gbNotifier', 'gbUser', 'days', function($scope, $http, $location, $routeParams, $modal, adminApply, gbNotifier, gbUser, days) {
+angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', '$location', '$routeParams', '$modal', 'adminApply', 'gbNotifier', 'days', function($scope, $http, $location, $routeParams, $modal, adminApply, gbNotifier, days) {
     var vm = this;
     var apply_list = {};
     var currentApplies;
     vm.itemsPerPage = 15;
-    var currentUser = $scope.data.selectedUser;
 
     $scope.$on("$routeChangeSuccess", function () {
         if ($location.path().indexOf("/applies/") == 0) {
@@ -27,12 +26,6 @@ angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', 
             currentApplies = apply_list;
             pageReset();
         });
-
-        if (!currentUser) {
-            gbUser.get({id:id}, function(user) {
-                currentUser = user;
-            });
-        }
 
         vm.queryItems = [
             {
@@ -97,14 +90,13 @@ angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', 
             templateUrl: '/views/assignAccountModal.html',
             controller: 'AccountModalCtrl',
             resolve: {
-                user: function() {
-                    return currentUser;
+                apply: function() {
+                    return apply;
                 }
             }
         });
 
         modalInstance.result.then(function (content) {
-            console.log(content);
             var data = {
                 apply: apply
             };
@@ -131,7 +123,7 @@ angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', 
 
     vm.sendSMS = function(apply) {
         var modalInstance = $modal.open({
-            templateUrl: 'smsModal.html',
+            templateUrl: '/views/smsModal.html',
             controller: 'SMSModalCtrl',
             resolve: {
                 serialID: function () {
@@ -143,7 +135,7 @@ angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', 
         modalInstance.result.then(function (content) {
             vm.sms_content = content;
             var data = {
-                user_mobile: currentUser.mobile,
+                user_mobile: apply.userMobile,
                 sms_content: vm.sms_content
             };
             console.log(vm.sms_content);
@@ -192,9 +184,9 @@ angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', 
     }
 }]);
 
-angular.module('adminApp').controller('AccountModalCtrl', ['$scope', '$modalInstance', 'user', function ($scope, $modalInstance, user) {
-    $scope.user = user;
-    $scope.homs_password = user.mobile.toString().substr(5);
+angular.module('adminApp').controller('AccountModalCtrl', ['$scope', '$modalInstance', 'apply', function ($scope, $modalInstance, apply) {
+    $scope.userMobile = apply.userMobile;
+    $scope.homs_password = apply.userMobile.toString().substr(5);
 
     $scope.ok = function () {
         var result = {

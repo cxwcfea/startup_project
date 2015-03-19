@@ -1,10 +1,10 @@
 (function () {
     'use strict';
-    angular.module('mainApp', ['commonApp']);
-    angular.module('mainApp').controller('MainApplyController', ['$http', '$location', '$window', 'days', function($http, $location, $window, days) {
+    angular.module('mainApp', ['ui.bootstrap', 'commonApp']);
+    angular.module('mainApp').controller('MainApplyController', ['$http', '$location', '$window', 'days', '$modal', function($http, $location, $window, days, $modal) {
         var vm = this;
 
-        vm.min_amount = 10;
+        vm.min_amount = 2000;
         var warnFactor = 0.96;
         var sellFactor = 0.94;
         var depositFactor = 0.1;
@@ -13,20 +13,21 @@
 
         vm.agree = true;
         vm.showOtherAmount = false;
-        vm.otherAmount = vm.min_amount;
+        vm.otherAmount;
 
         vm.summary = {
-            day: 5,
-            amount: 50000
+            day: 1,
+            amount: 2000
         };
         vm.endTime = days.endTime(startTime, vm.summary.day);
 
+        vm.forbiddenStockList;
 
         function calculateSummery() {
             vm.summary.warnValue = vm.summary.amount * warnFactor;
             vm.summary.sellValue = vm.summary.amount * sellFactor;
             vm.summary.deposit = vm.summary.amount * depositFactor;
-            var charge = vm.summary.amount / 10000 * serviceCharge * vm.summary.day;
+            var charge = vm.summary.amount / 10000 * serviceCharge; // * vm.summary.day;
             vm.summary.charge = charge;
             vm.summary.total = vm.summary.deposit + charge;
             vm.endTime = days.endTime(startTime, vm.summary.day);
@@ -70,30 +71,8 @@
             }
         ];
 
-        vm.dayList = [
-            {
-                value: '2'
-            },
-            {
-                value: '5',
-                select: true
-            },
-            {
-                value: '8'
-            },
-            {
-                value: '10'
-            }
-        ];
-
         function unselectAll() {
             angular.forEach(vm.amountList, function(value, key) {
-                value.select = false;
-            });
-        }
-
-        function unselectDay() {
-            angular.forEach(vm.dayList, function(value, key) {
                 value.select = false;
             });
         }
@@ -102,7 +81,7 @@
             if (vm.otherAmount >= vm.min_amount) {
                 vm.summary.amount = Math.floor(vm.otherAmount);
             } else {
-                vm.summary.amount = vm.otherAmount = vm.min_amount;
+                vm.summary.amount = 0;
             }
             calculateSummery();
         }
@@ -110,23 +89,19 @@
         vm.selectAmount = function(item) {
             unselectAll();
             vm.showOtherAmount = false;
-            vm.otherAmount = 0;
+            //vm.otherAmount = 0;
             item.select = true;
             vm.summary.amount = item.value;
             calculateSummery();
         };
 
-        vm.selectDay = function(day) {
-            //unselectDay();
-            //day.select = true;
-            //vm.summary.day = day.value;
-            calculateSummery();
-        };
-
         vm.toggleOtherAmount = function() {
-            unselectAll();
             vm.showOtherAmount = !vm.showOtherAmount;
-            tryOtherAmount();
+            if (!vm.showOtherAmount) {
+                vm.selectAmount(vm.amountList[0]);
+            } else {
+                tryOtherAmount();
+            }
         };
 
         vm.finishOtherAmount = function() {
@@ -144,6 +119,23 @@
                         }
                     }
                 });
+        };
+
+        vm.showForbiddenStocks = function() {
+            console.log('show stock');
+            if (!vm.forbiddenStockList) {
+                $http.get('/api/fetch_forbidden_stocks').
+                    success(function(data, status, headers, config) {
+                        vm.forbiddenStockList = data;
+                        var theModal = $('#forbidden-stock-modal');
+                        theModal.modal('open');
+                    }).
+                    error(function(data, status, headers, config) {
+                    });
+            } else {
+                var theModal = $('#forbidden-stock-modal');
+                theModal.modal('open');
+            }
         };
     }]);
 }());

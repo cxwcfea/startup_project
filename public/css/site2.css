@@ -1,0 +1,53 @@
+.infoBox a:hover{
+    color: #c82217;
+}
+
+.limitstock {
+    padding-top: 20px;
+    height: 240px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    font-weight: 800;
+}
+
+.limitstock li {
+    width: 130px;
+    float: left;
+    padding-bottom: 15px;
+    font-size: 14px;
+    border-bottom: 1px solid #E4E4E4;
+    margin-top: 10px;
+    margin-right: 30px;
+}
+
+.limitstock li span {
+    padding-right: 10px;
+}
+
+.freeBtn01:hover {
+    color: #fff;
+}
+
+.qtmoneyBox{
+    height: 418px;
+}
+
+body, input, textarea, select, button {
+    text-rendering: auto;
+    -webkit-font-smoothing: subpixel-antialiased;
+}
+
+
+/* override amazeui */
+a {
+    color: #333;
+}
+a:hover,
+a:focus {
+    color: #333;
+}
+
+*, :before, :after {
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+}

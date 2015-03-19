@@ -1,10 +1,9 @@
 'use strict';
-angular.module('adminApp').controller('AdminAddDepositOrderListCtrl', ['$scope', '$location', '$routeParams', '$modal', '$http', 'gbNotifier', 'gbUser', 'adminApply', function($scope, $location, $routeParams, $modal, $http, gbNotifier, gbUser, adminApply) {
+angular.module('adminApp').controller('AdminAddDepositOrderListCtrl', ['$scope', '$location', '$routeParams', '$modal', '$http', 'gbNotifier', 'adminApply', function($scope, $location, $routeParams, $modal, $http, gbNotifier, adminApply) {
     var vm = this;
     var order_list = {};
     var currentOrders;
     vm.itemsPerPage = 15;
-    var currentUser = null;
 
     initData();
 
@@ -32,10 +31,6 @@ angular.module('adminApp').controller('AdminAddDepositOrderListCtrl', ['$scope',
     };
 
     vm.handleOrder = function(order) {
-        gbUser.get({id:order.userID}, function(user) {
-            currentUser = user;
-        });
-
         adminApply.get({id:order.applySerialID, uid:order.userID}, function(apply) {
             var modalInstance = $modal.open({
                 templateUrl: 'homasInfoModal.html',

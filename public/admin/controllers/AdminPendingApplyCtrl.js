@@ -1,10 +1,9 @@
 'use strict';
-angular.module('adminApp').controller('AdminPendingApplyCtrl', ['$scope', '$http', '$location', '$modal', 'gbNotifier', 'days', 'gbCachedUsers', function($scope, $http, $location, $modal, gbNotifier, days, gbCachedUsers) {
+angular.module('adminApp').controller('AdminPendingApplyCtrl', ['$scope', '$http', '$location', '$modal', 'gbNotifier', 'days', function($scope, $http, $location, $modal, gbNotifier, days) {
     var vm = this;
     var apply_list = {};
     var currentApplies;
     vm.itemsPerPage = 15;
-    var currentUser = null;
 
     initData();
 
@@ -40,75 +39,68 @@ angular.module('adminApp').controller('AdminPendingApplyCtrl', ['$scope', '$http
     };
 
     vm.manageApply = function(apply) {
-        gbCachedUsers.getUser(apply.userID, function(u) {
-            currentUser = u;
-            var modalInstance = $modal.open({
-                templateUrl: '/views/assignAccountModal.html',
-                controller: 'AccountModalCtrl',
-                resolve: {
-                    user: function() {
-                        return currentUser;
-                    }
+        var modalInstance = $modal.open({
+            templateUrl: '/views/assignAccountModal.html',
+            controller: 'AccountModalCtrl',
+            resolve: {
+                apply: function() {
+                    return apply;
                 }
-            });
+            }
+        });
 
-            modalInstance.result.then(function (content) {
-                console.log(content);
-                var data = {
-                    apply: apply
-                };
-                if (content.account) {
-                    data.homas = {
-                        account: content.account,
-                        password: content.password
-                    }
+        modalInstance.result.then(function (content) {
+            var data = {
+                apply: apply
+            };
+            if (content.account) {
+                data.homas = {
+                    account: content.account,
+                    password: content.password
                 }
-                $http.post('/admin/api/apply/assign_account', data)
-                    .success(function(data, status, headers, config) {
-                        console.log(data);
-                        gbNotifier.notify('账户已分配');
-                        apply.status = data.apply.status;
-                        apply.account = data.apply.account;
-                        apply.pasword = data.apply.password;
-                    }).
-                    error(function(data, status, headers, config) {
-                        gbNotifier.error('分配失败:' + data.reason);
-                    });
-            }, function () {
-            });
+            }
+            $http.post('/admin/api/apply/assign_account', data)
+                .success(function(data, status, headers, config) {
+                    console.log(data);
+                    gbNotifier.notify('账户已分配');
+                    apply.status = data.apply.status;
+                    apply.account = data.apply.account;
+                    apply.pasword = data.apply.password;
+                }).
+                error(function(data, status, headers, config) {
+                    gbNotifier.error('分配失败:' + data.reason);
+                });
+        }, function () {
         });
     };
 
     vm.sendSMS = function(apply) {
-        gbCachedUsers.getUser(apply.userID, function(u) {
-            currentUser = u;
-            var modalInstance = $modal.open({
-                templateUrl: 'smsModal.html',
-                controller: 'SMSModalCtrl',
-                resolve: {
-                    serialID: function () {
-                        return apply.serialID;
-                    }
+        var modalInstance = $modal.open({
+            templateUrl: '/views/smsModal.html',
+            controller: 'SMSModalCtrl',
+            resolve: {
+                serialID: function () {
+                    return apply.serialID;
                 }
-            });
+            }
+        });
 
-            modalInstance.result.then(function (content) {
-                vm.sms_content = content;
-                var data = {
-                    user_mobile: currentUser.mobile,
-                    sms_content: vm.sms_content
-                };
-                console.log(vm.sms_content);
-                $http.post('/admin/api/send_sms', data)
-                    .then(function(response) {
-                        if (response.data.success) {
-                            gbNotifier.notify('短信已发送');
-                        } else {
-                            gbNotifier.error('短信发送失败:' + response.data.reason);
-                        }
-                    });
-            }, function () {
-            });
+        modalInstance.result.then(function (content) {
+            vm.sms_content = content;
+            var data = {
+                user_mobile: apply.userMobile,
+                sms_content: vm.sms_content
+            };
+            console.log(vm.sms_content);
+            $http.post('/admin/api/send_sms', data)
+                .then(function(response) {
+                    if (response.data.success) {
+                        gbNotifier.notify('短信已发送');
+                    } else {
+                        gbNotifier.error('短信发送失败:' + response.data.reason);
+                    }
+                });
+        }, function () {
         });
     };
 }]);

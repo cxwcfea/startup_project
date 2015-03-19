@@ -11,6 +11,25 @@
             $('#iapppay_test').on('click', function (e) {
                 console.log('iapppay');
             });
+
+            $('#stock_test').on('click', function(e) {
+                console.log('stock click');
+                var s1 = { 'id': '601600', 'name': '中国铝业' };
+                var s2 = { 'id': '002130', 'name': '沃尔核材' };
+                var stocks = [];
+                stocks.push(s1);
+                stocks.push(s2);
+                var test_str = JSON.stringify(stocks);
+                $.post("/api/add_forbidden_stock", {data:test_str}, function() {
+                    console.log("success");
+                }, 'json').done(function() {
+                    console.log("second success");
+                }).fail(function() {
+                    console.log("error");
+                }).always(function() {
+                    console.log("finished");
+                });
+            });
         });
     </script>
 
@@ -24,6 +43,9 @@
                     </button>
                     <button id="iapppay_test" class="am-btn am-btn-warning">
                         爱贝
+                    </button>
+                    <button id="stock_test" class="am-btn am-btn-warning">
+                        禁买股票
                     </button>
                 </div>
             </div>
