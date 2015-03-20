@@ -54,7 +54,7 @@
                     <td>\{{apply.deposit | currency:'':2}}元</td>
                     <td>\{{apply.end_date | displayDate}}</td>
                     <td ng-class="{color_c82217: apply.status === 2, color_f2991b: apply.status === 5}">\{{apply.status | applyStatus}}</td>
-                    <td><a href="#">详情</a>  <a href="#" >操盘账户</a></td>
+                    <td><a ng-click="homeVM.manageApply(apply)">详情</a>  <a href="#" >操盘账户</a></td>
                 </tr>
                 <!--
                 <tr>

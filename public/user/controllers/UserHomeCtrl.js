@@ -1,5 +1,5 @@
 'use strict';
-angular.module('userApp').controller('UserHomeCtrl', ['$scope', '$location', '$http', 'days', 'njApply', function($scope, $location, $http, days, njApply) {
+angular.module('userApp').controller('UserHomeCtrl', ['$scope', '$location', '$http', '$window', 'days', 'njApply', function($scope, $location, $http, $window, days, njApply) {
     var vm = this;
 
     vm.user = $scope.data.currentUser;
@@ -77,5 +77,13 @@ angular.module('userApp').controller('UserHomeCtrl', ['$scope', '$location', '$h
             return elem.status === item.value;
         });
         pageReset();
+    };
+
+    vm.manageApply = function(apply) {
+        if (apply.status === 1) {
+            $window.location.assign('/apply_confirm/' + apply.serialID);
+        } else {
+            $location.path('/apply_detail/' + apply.serialID);
+        }
     };
 }]);

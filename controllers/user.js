@@ -1347,6 +1347,8 @@ module.exports.payByBalance_auto_assign_homas = function(req, res, next) {
 };
 
 function homeIndex(req, res, next) {
+    var user = req.user;
+
     res.locals.user_menu = true;
     res.render('user/new_index', {
         layout:'main2',
@@ -1388,7 +1390,7 @@ module.exports.fetchUser = function(req, res) {
 module.exports.fetchAppliesForUser = function(req, res) {
     Apply.find({userID:req.params.uid}, function(err, applies) {
         if (err) {
-            logger.debug('error when fetchApply:' + err.toString());
+            logger.debug('error when fetchAppliesForUser:' + err.toString());
             res.status(503);
             return res.send({});
         }
@@ -1396,3 +1398,17 @@ module.exports.fetchAppliesForUser = function(req, res) {
     });
 };
 
+module.exports.fetchApplyForUser = function(req, res) {
+    if (req.user._id != req.params.uid) {
+        res.status(401);
+        return res.send({});
+    }
+    Apply.findOne({serialID:req.params.serial_id}, function(err, apply) {
+        if (err) {
+            logger.debug('error when fetchApplyForUser:' + err.toString());
+            res.status(503);
+            return res.send({});
+        }
+        res.send(apply);
+    });
+};

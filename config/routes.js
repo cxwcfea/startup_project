@@ -233,6 +233,8 @@ module.exports = function(app) {
 
     app.get('/api/user/:uid/applies', passportConf.isAuthenticated, users.fetchAppliesForUser);
 
+    app.get('/api/user/:uid/applies/:serial_id', passportConf.isAuthenticated, users.fetchApplyForUser);
+
     app.get('/admin_test', passportConf.requiresRole('admin'), function(req, res, next) {
         res.render('admin_test');
     });
