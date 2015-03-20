@@ -10,6 +10,9 @@ angular.module('userApp').controller('UserHomeCtrl', ['$scope', '$location', '$h
     var currentApplies;
     vm.itemsPerPage = 6;
     vm.selected = 0;
+    vm.tableCss = {
+        even:  'even'
+    };
 
     initData();
 

@@ -32,9 +32,12 @@
     height: 418px;
 }
 
-body, input, textarea, select, button {
-    text-rendering: auto;
-    -webkit-font-smoothing: subpixel-antialiased;
+tr.even {
+    background: #f5f5f5
+}
+
+a.apply-detail-link {
+    cursor: pointer;
 }
 
 /* override bootstrap */
@@ -60,4 +63,9 @@ a:focus {
 
 th {
     text-align: center;
+}
+
+body, input, textarea, select, button {
+    text-rendering: auto;
+    -webkit-font-smoothing: subpixel-antialiased;
 }

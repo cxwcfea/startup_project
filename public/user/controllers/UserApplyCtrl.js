@@ -1,5 +1,5 @@
 'use strict';
-angular.module('userApp').controller('UserApplyCtrl', ['$scope', '$window', '$location', '$routeParams', 'njApply', function($scope, $window, $location, $routeParams, njApply) {
+angular.module('userApp').controller('UserApplyCtrl', ['$scope', '$window', '$location', '$routeParams', 'njApply', 'warn_factor', 'sell_factor', function($scope, $window, $location, $routeParams, njApply, warn_factor, sell_factor) {
     var vm = this;
     $('.footer').addClass('marTop200');
 
@@ -11,6 +11,8 @@ angular.module('userApp').controller('UserApplyCtrl', ['$scope', '$window', '$lo
             njApply.get({uid:$scope.data.currentUser._id, serial_id:serial_id}, function(apply) {
                 vm.currentApply = apply;
                 formatApply(vm.currentApply);
+                vm.warn_amount = vm.currentApply.amount * warn_factor;
+                vm.sell_amount = vm.currentApply.amount * sell_factor;
             })
         }
     });

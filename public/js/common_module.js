@@ -223,7 +223,9 @@
         .constant('pay_success_sms_content', '您于TIME在牛金网充值AMOUNT元，资金已经到账，感谢您对牛金网的支持，祝您投资愉快。')
         .constant('warn_sms_content', '您有一笔金额为TOTAL_AMOUNT元的操盘业务已经亏损到达警戒线WARN_AMOUNT元，请尽快追加保证金以维持仓位，您可以登录牛金网进行操作，或者联系QQ客服400 692 1388或电话客服400 692 1388。感谢您对牛金网的支持，祝您投资愉快。')
         .constant('sell_sms_content', '您有一笔金额为TOTAL_AMOUNT元的操盘业务已经亏损到达平仓线SELL_AMOUNT元，系统已经将交易账户平仓，请登录牛金网查看相应信息，或者联系QQ客服400 692 1388或电话客服400 692 1388。感谢您对牛金网的支持，祝您投资愉快。')
-        .constant('service_charge', 19.9);
+        .constant('service_charge', 19.9)
+        .constant('warn_factor', 0.96)
+        .constant('sell_factor', 0.94);
 
     angular.module('commonApp').factory('njUser', ['$resource', function($resource) {
         var UserResource = $resource('/api/user/:id', {id: "@_id"});
