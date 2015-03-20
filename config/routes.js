@@ -223,6 +223,10 @@ module.exports = function(app) {
         });
     });
 
+    app.post('/new_apply', applies.NewplaceApply);
+
+    app.get('/new_apply_confirm/:serial_id', passportConf.isAuthenticated, applies.NewconfirmApply);
+
     app.get('/admin_test', passportConf.requiresRole('admin'), function(req, res, next) {
         res.render('admin_test');
     });

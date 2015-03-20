@@ -1,11 +1,11 @@
 body,div,p,table,tr,th,td,form,fieldset,input,textarea,blockquote,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd{margin:0;padding:0}
-body{font-size:14px;line-height:normal;text-align:left;font-family:"微软雅黑","宋体","黑体",Arial;color:#4d4d4d}
+body{font-size:14px;line-height:normal;text-align:left;font-family:"微软雅黑","宋体","黑体",Arial;color:#333333}
 ul,ol,li{list-style:none;margin:0;padding:0; }
 table{border-collapse:collapse}
 h1,h2,h3,h4,h5,h6,em,b{font-size:100%;font-weight:normal;font-style:normal;}
 img{border:0;padding:0;margin:0;}
 input{vertical-align:middle}
-input,select{font-size:14px;font-family: "微软雅黑","宋体","黑体";color:#4d4d4d}
+input,select{font-size:14px;font-family: "微软雅黑","宋体","黑体";color:#333333}
 .clear{clear:both;height:0;overflow:hidden;display:block}
 .clearfix:after{clear:both;height:0;overflow:hidden;display:block;visibility:hidden;content:"."}
 .clearfix{ overflow:hidden; zoom:1}
@@ -16,14 +16,14 @@ input,select{font-size:14px;font-family: "微软雅黑","宋体","黑体";color:
 .tr{text-align:right}
 .fb{font-weight:bold}
 .cl{clear:left}
-a{color:#4d4d4d; text-decoration:none}
+a{color:#333333; text-decoration:none}
 .pr{position:relative}
 .pa{position:absolute}
 .dis{display:block}
 .undis{display:none}
 .disline{display:inline}
 .unline{text-decoration:none}
-.unline a,a{text-decoration:none;color:#333}
+.unline a,a{text-decoration:none;}
 a:hover{text-decoration:underline}
 html,body{height: 100%;}
 a,p,div,span,em{ 
@@ -64,6 +64,9 @@ a,p,div,span,em{
 .marTop75{
 	margin-top: 75px;
 }
+.padLeft180{
+	padding-left: 180px;
+}
 
 .Top{
 	height: 40px;
@@ -83,6 +86,9 @@ div.color_333333,a.color_333333,span.color_333333{
 }
 .color_e23024{
 	color: #e23024;
+}
+.color_999999{
+	color: #999999;
 }
 .TopPhone{
 	font-style: italic;

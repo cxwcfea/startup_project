@@ -21,7 +21,6 @@ body{
 }
 
 .LeftMenu li{
-	height: 40px;
 	line-height: 40px;
 	text-indent: 50px;
 	
@@ -46,7 +45,7 @@ body{
 .LeftMenu li a{
 	display: block;
 	color: #666666;
-	background-image: url(/images/img16.png);
+	background-image: url(../images/img16.png);
 	background-repeat: no-repeat;
 }
 .LeftMenu li a.LiIcon01{
@@ -67,6 +66,7 @@ body{
 
 
 .moneyBox{
+	margin-top: 20px;
 	height: 200px;
 	border-bottom: 1px solid #e0e0e0;
 }
@@ -197,7 +197,7 @@ body{
 	float: right;
 	width: 21px;
 	height: 20px;
-	background: url(/images/img17.png) no-repeat;
+	background: url(../images/img17.png) no-repeat;
 	margin-top: 12px;
 }
 
@@ -350,13 +350,13 @@ body{
 }
 
 .numSpan{
-	background: url(/images/img03.png) no-repeat -47px 0 ;
+	background: url(../images/img03.png) no-repeat -47px 0 ;
 	padding: 3px 11px;
 	color: #fff;
 	font-size: 18px;
 }
 .numSpan2{
-	background: url(/images/img03.png) no-repeat -6px 0 ;
+	background: url(../images/img03.png) no-repeat -6px 0 ;
 	padding: 3px 11px;
 	color: #fff;
 	font-size: 18px;
@@ -365,7 +365,7 @@ body{
 
 .freeImg{
 	height: 280px;
-	background: url(/images/img18.png) no-repeat;
+	background: url(../images/img18.png) no-repeat;
 	margin-top: 40px;
 }
 
@@ -469,7 +469,7 @@ p.freeP01{
 }
 
 .icon01{
-	background: url(/images/img03.png) no-repeat -10px -217px;
+	background: url(../images/img03.png) no-repeat -10px -217px;
 	padding:1px 10px;
 }
 
@@ -512,7 +512,7 @@ p.freeP01{
 	display: block;
 	width: 30px;
 	height: 30px;
-	background: url(/images/img03.png) no-repeat ;
+	background: url(../images/img03.png) no-repeat ;
 }
 .icon02{
 	background-position: -10px -176px;
@@ -609,7 +609,7 @@ p.freeP01{
 }
 
 .icon07{
-	background: url(/images/img03.png) no-repeat -41px -217px;
+	background: url(../images/img03.png) no-repeat -41px -217px;
 	padding:1px 11px;
 }
 .PopupBox p.p01{
@@ -663,6 +663,271 @@ p.freeP01{
 	line-height: 30px;
 	margin-top: 10px;
 }
+
+
+/*右侧菜单*/
+.rightMenu{
+	height: 40px;
+	line-height: 40px;
+	border-bottom: 1px solid #e0e0e0;
+}
+.rightMenu li{
+	padding: 0 20px;
+	float: left;
+}
+.rightMenu li.select a{
+	color: #e23024;
+	font-weight: bold;
+}
+/*右侧菜单end*/
+
+
+/*操盘详情*/
+.detBox{
+	width: 250px;
+	line-height: 32px;
+	margin-top: 65px;
+}
+
+.detBox a{
+	display: block;
+}
+.detBox a.a01{
+	font-weight: bold;
+	color: #e23024;
+}
+
+.detBox a.btn04{
+	width: 150px;
+	height: 50px;
+	text-align: center;
+	line-height: 50px;
+	background: #e23024;
+	color: #fff;
+	border-radius: 5px;
+	margin: 10px 0;
+}
+.detBox a.btn05{
+	width: 148px;
+	height: 48px;
+	text-align: center;
+	line-height: 48px;
+	background: #fff;
+	color: #e23024;
+	border: 1px solid #e23024;
+	border-radius: 5px;
+	margin: 10px 0;
+}
+
+
+.detTextBox{
+	border-top: 1px solid #e0e0e0;
+	margin-top: 25px;
+	padding-top: 25px;
+	padding-left: 180px;
+	line-height: 32px;
+}
+
+.detTextBox a{
+	font-weight: bold;
+	color: #e23024;
+}
+
+
+
+
+
+/*充值*/
+.recTop{
+	height: 35px;
+	line-height: 35px;
+	text-align: right;
+}
+.recTop a{
+	color: #666666;
+}
+
+.recMenuBox{
+	height: 40px;
+	line-height: 40px;
+}
+.recMenuBox span{
+	display: block;
+	float: left;
+	text-align: center;
+	width: 88px;
+	height: 38px;
+	border: 1px solid #e0e0e0;
+	color: #666666;
+	margin-right: 10px;
+	cursor: pointer;
+}
+.recMenuBox span:hover{
+	border: 1px  solid #e23024;
+}
+.recMenuBox span.select{
+	border: 1px  solid #e23024;
+	color: #e23024;
+	font-weight: bold;
+}
+
+.recMoneyBox{
+	height: 130px;
+	background: #fff9f3;
+	border: 1px solid #ffdfb2;
+	margin-top: 40px;
+}
+.recMoneyLeft{
+	width: 550px;
+	height: 130px;
+	border-right: 1px solid #ffdfb2;
+}
+
+.recMoneyText{
+	height: 40px;
+	line-height: 40px;
+	margin-top: 25px;
+	padding-left: 30px;
+}
+.recMoneyText input{
+	height: 38px;
+	background: #fff;
+	border: 1px solid #999999;
+	width: 298px;
+	border-radius: 5px;
+}
+.recMoneyLeft p.p01{
+	color: #e23024;
+	font-size: 12px;
+	margin-top: 40px;
+}
+.recMoneyRight{
+	width: 215px;
+}
+
+.recMoneyRight p.p01{
+	margin-top: 10px;
+	line-height: 30px;
+	padding-left: 15px;
+}
+.recMoneyRight p.p02{
+	line-height: 30px;
+	padding-left: 15px;
+	color: #f2991b;
+	font-size: 18px;
+}
+.recMoneyRight p.p02 span{
+	font-size: 28px;
+}
+.recMoneyRight p.p03{
+	color: #999999;
+	margin-top: 30px;
+	padding-left: 5px;
+	font-size: 12px;
+}
+.recP02{
+	height: 50px;
+	line-height: 50px;
+	margin-top: 40px;
+	padding-left: 20px;
+	font-weight: bold;
+}
+
+.yhList{
+	padding-left: 35px;
+}
+.yhList li{
+	display: block;
+	float: left;
+	width: 208px;
+	height: 40px;
+	margin-bottom: 15px;
+}
+.yhList input{
+	display: block;
+	float: left;
+	margin: 13px 5px 0 0;
+	cursor: pointer;
+}
+.yhList li span{
+	display: block;
+	float: left;
+	border: 1px solid #d50202;
+	cursor: pointer;
+}
+.yhList li img{
+	display: block;
+}
+.recP03{
+	font-size: 12px;
+	margin-top: 15px;
+	padding-left: 50px;
+}
+
+.recBtn01{
+	width: 150px;
+	height: 50px;
+	font-weight: bold;
+	color: #fff;
+	text-align: center;
+	line-height: 50px;
+	border-radius: 5px;
+	display: block;
+	background: #e23024;
+	margin-left: 50px;
+	margin-top: 15px;
+}
+
+
+
+.recYhLeft{
+	width: 160px;
+	padding-left: 25px;
+}
+.recYhLeft p.p02{
+	line-height: 40px;
+	margin-top: 10px;
+	color: #e23024;
+}
+.recYhLeft img{
+	border: 1px solid #999999;
+	display: block;
+	width: 135px;
+}
+.recText{
+	width: 340px;
+	padding-top: 15px;
+}
+
+.recText p.p03{
+	height: 30px;
+	line-height:30px;
+	margin-bottom: 5px;
+}
+
+.recMoneyRight p.p04{
+	text-align: center;
+	color: #666666;
+	font-size: 12px;
+	text-align: center;
+	height: 50px;
+	line-height: 50px;
+	margin-top: 20px;
+}
+
+.recBtn02{
+	width: 100px;
+	height: 30px;
+	text-align: center;
+	line-height: 30px;
+	border: 1px solid #f2991b;
+	color: #f2991b;
+	display: block;
+	margin: auto;
+	border-radius: 5px;
+}
+
+
 
 
 

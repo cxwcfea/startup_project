@@ -5,7 +5,8 @@ var Apply = require('../models/Apply'),
     env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
     config = require('../config/config')[env],
     log4js = require('log4js'),
-    logger = log4js.getLogger('admin');
+    logger = log4js.getLogger('admin'),
+    _ = require('lodash'),
     util = require('../lib/util');
 
 exports.getApplyPage = function(req, res, next) {
@@ -427,3 +428,59 @@ exports.freeApply = function(req, res, next) {
         });
     }
 };
+
+exports.NewplaceApply = function(req, res, next) {
+    if (!req.isAuthenticated()) {
+        req.session.lastLocation = '/new_apply';
+        res.status(401);
+        return res.send({success:false, reason:'not authenticate'});
+    }
+
+    var applyData = new Apply({
+        userID: req.user._id,
+        userMobile: req.user.mobile,
+        serialID: util.generateSerialID(),
+        amount: req.body.amount,
+        deposit: req.body.deposit,
+        period: 2
+    });
+
+    Apply.create(applyData, function(err, apply) {
+        if(err) {
+            res.status(400);
+            logger.warn('error when placeNewApply:' + err.toString());
+            return res.send({success:false, reason:err.toString()});
+        }
+        res.send({apply_serial_id:apply.serialID});
+    });
+};
+
+exports.NewconfirmApply = function(req, res, next) {
+    res.locals.apply_menu = true;
+    Apply.findOne({serialID:req.params.serial_id}, function(err, apply) {
+        if (err || !apply) {
+            return next();
+        }
+        logger.error(req.user._id + ' ' + apply.userID);
+        if (req.user._id != apply.userID) {
+            res.status(406);
+            logger.warn('error when placeNewApply: not the same user who create the apply');
+            return next();
+        }
+        User.findById(apply.userID, function(err, user) {
+            if (err) {
+                logger.warn('error when placeNewApply:' + err.toString());
+                return next();
+            }
+            var applyData = apply._doc;
+            var applyVM = _.extend(applyData, {
+                userBalance: user.finance.balance
+            });
+            res.render('apply/apply_confirm', {
+                bootstrappedApply: JSON.stringify(applyVM),
+                layout: 'main2'
+            });
+        });
+    });
+};
+

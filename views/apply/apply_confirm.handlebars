@@ -1,0 +1,78 @@
+{{#if bootstrappedApply}}
+    <script> window.bootstrappedApplyObject = {{{bootstrappedApply}}} </script>
+{{/if}}
+<div class="wrapper" ng-app="mainApp" ng-controller="MainApplyConfirmController as vm" ng-cloak>
+    <div class="freeTitle">
+        <div class="fl"><span>天天牛</span> &nbsp;&nbsp;短线炒股、最高30万、利润放大10倍</div>
+        <a href="#">新手引导>></a>
+        <div class="clear"></div>
+    </div>
+    <div class="column">
+        <div class="fl num02">
+            <span class="numSpan2">1</span>
+            选择炒股基金
+        </div>
+        <div class="fl  num01">
+            <span class="numSpan">2</span>
+            支付保证金
+        </div>
+        <div class="fl num02">
+            <span class="numSpan2">3</span>
+            完成申请
+        </div>
+    </div>
+    <div class="applyContentBox marTop75">
+        <div class="applyTitle fl">
+            风险保证金
+        </div>
+        <div class="applyContent fl">
+            <span class="span01">\{{vm.apply.deposit | currency:'':2}}</span> 元
+        </div>
+    </div>
+    <div class="applyContentBox">
+        <div class="applyTitle fl">
+            预存账户管理费
+        </div>
+        <div class="applyContent fl">
+            <div class="fl">
+                <span class="span01">\{{vm.serviceFee | currency:'':2}}</span> 元&nbsp;&nbsp;&nbsp;&nbsp;
+                <select name="" ng-model="vm.day" ng-change="vm.selectDay()">
+                    <option ng-repeat="day in vm.validDays" value="\{{day}}">\{{day}}</option>
+                </select>
+                天&nbsp;&nbsp;
+            </div>
+            <div class="span03 fl">系统会冻结\{{vm.day}}天的管理费，您使用资金一天，扣取相应费用，若账户余额充足，默认每天自动延期。</div>
+        </div>
+    </div>
+    <div class="applyContentBox">
+        <div class="applyTitle fl">
+            合计需支付
+        </div>
+        <div class="applyContent fl">
+            <span class="span02">\{{vm.totalAmount | currency:'':2}}</span> 元
+        </div>
+    </div>
+    <div class="applyContentBox2">
+        <div class="fl">
+            <span class="icon01">&nbsp;</span>&nbsp;当前余额：\{{vm.apply.userBalance | currency:'':2}}元，还差<span class="color_c82217">\{{vm.shouldPay | currency:'':2}}</span>元
+        </div>
+        <a href="#" class="applyBtn01">充值</a>
+    </div>
+    <div class="applyBtnBox">
+        <a href="javascript:" class="freeBtn01" id="freeBtn01">立即支付</a>
+        <a href="/new_apply">返回修改</a>
+    </div>
+</div>
+<div class="undis" id="tckBox">
+    <div class="tmbg"></div>
+    <div class="PopupBox">
+        <p class="p01"><span class="icon07"></span>&nbsp;请在新打开的银行页面中完成网上付款</p>
+        <p class="p02">1、付款过程中请不要关闭这个窗口；</p>
+        <p class="p02">2、完成付款后请执行相应操作。</p>
+        <div class="applyBtnBox2">
+            <a href="success.html" class="applyBtn02 marRight20">已完成付款</a>
+            <a href="#" class="applyBtn03">修改付款方式</a>
+        </div>
+        <p class="p03"><a href="#" class="color_c82217">付款遇到问题？</a></p>
+    </div>
+</div>

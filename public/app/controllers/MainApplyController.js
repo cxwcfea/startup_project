@@ -109,20 +109,21 @@
         };
 
         vm.submitApply = function() {
-            $http.post('/apply', vm.summary)
-                .then(function(response) {
-                    if (response.data.success) {
-                        $window.location.href = '/apply_confirm/' + response.data.apply_id;
+            $http.post('/new_apply', vm.summary)
+                .success(function(data, status, headers, config) {
+                    $window.location.href = '/new_apply_confirm/' + data.apply_serial_id;
+                })
+                .error(function(data, status, headers, config) {
+                    console.log(status);
+                    if (status === 401) {
+                        $window.location.href = '/login';
                     } else {
-                        if (response.data.reason === 'not authenticate') {
-                            $window.location.href = '/login';
-                        }
+                        console.log('err');
                     }
                 });
         };
 
         vm.showForbiddenStocks = function() {
-            console.log('show stock');
             if (!vm.forbiddenStockList) {
                 $http.get('/api/fetch_forbidden_stocks').
                     success(function(data, status, headers, config) {
@@ -136,6 +137,32 @@
                 var theModal = $('#forbidden-stock-modal');
                 theModal.modal('open');
             }
+        };
+    }]);
+
+    angular.module('mainApp').controller('MainApplyConfirmController', ['$http', '$location', '$window', 'days', 'service_charge', function($http, $location, $window, days, service_charge) {
+        var vm = this;
+        vm.apply = {};
+        if (!!$window.bootstrappedApplyObject) {
+            angular.extend(vm.apply, $window.bootstrappedApplyObject);
+        }
+
+        vm.validDays = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+
+        vm.day = 2;
+        function calculateAmount() {
+            vm.serviceFee = service_charge * vm.day;
+            vm.totalAmount = vm.apply.deposit + vm.serviceFee;
+            vm.shouldPay = vm.totalAmount - vm.apply.userBalance;
+            if (vm.shouldPay < 0) {
+                vm.shouldPay = 0;
+            }
+        }
+
+        calculateAmount();
+
+        vm.selectDay = function() {
+            calculateAmount();
         };
     }]);
 }());
