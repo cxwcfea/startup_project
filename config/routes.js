@@ -227,6 +227,10 @@ module.exports = function(app) {
 
     app.get('/new_apply_confirm/:serial_id', passportConf.isAuthenticated, applies.NewconfirmApply);
 
+    users.registerRoutes(app, passportConf);
+
+    app.get('/api/user/:id', passportConf.isAuthenticated, users.fetchUser);
+
     app.get('/admin_test', passportConf.requiresRole('admin'), function(req, res, next) {
         res.render('admin_test');
     });

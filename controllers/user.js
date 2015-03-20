@@ -14,6 +14,7 @@ var passport = require('passport'),
     util = require('../lib/util'),
     env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
     config = require('../config/config')[env],
+    _ = require('lodash'),
     async = require('async');
 
 
@@ -266,9 +267,13 @@ module.exports.getApplyList = function(req, res) {
     res.render('user/apply_list', {layout:null});
 };
 
-module.exports.getUser = function(req, res, next) {
+module.exports.getUser = function(req, res) {
     User.findById(req.params.id, function(err, user) {
-        if (err) next(err);
+        if (err) {
+            logger.error('error when get user id:' + req.params.id);
+            res.status(503);
+            return res.send({});
+        }
         res.send(user);
     });
 };
@@ -1338,5 +1343,44 @@ module.exports.payByBalance_auto_assign_homas = function(req, res, next) {
             logger.warn('payByBalance failed apply serialID not found in request');
             res.send({success:false, reason:'payByBalance failed apply serialID not found in request'});
         }
+    });
+};
+
+function homeIndex(req, res, next) {
+    res.locals.user_menu = true;
+    res.render('user/new_index', {
+        layout:'main2',
+        bootstrappedNiujinUserID: JSON.stringify(req.user._id)
+    });
+}
+
+module.exports.registerRoutes = function(app, passportConf) {
+    app.get('/new_user', passportConf.isAuthenticated, homeIndex);
+
+    app.get('/new_user/*', passportConf.isAuthenticated, function(req, res, next) {
+        res.render('user/' + req.params[0], {layout:null});
+    });
+};
+
+var privateProperties = [
+    'password',
+    'resetPasswordToken',
+    'resetPasswordExpires'
+];
+
+function getUserViewModel(user){
+    var realUser = user._doc;
+    var vm = _.omit(realUser, privateProperties);
+    return _.extend(vm, {});
+}
+
+module.exports.fetchUser = function(req, res) {
+    User.findById(req.params.id, function(err, user) {
+        if (err) {
+            logger.error('error when get user id:' + req.params.id);
+            res.status(503);
+            return res.send({});
+        }
+        res.send(getUserViewModel(user));
     });
 };

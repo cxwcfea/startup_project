@@ -1,0 +1,241 @@
+<div class="fr RightMain">
+    <div class="rightMenu">
+        <ul>
+            <li class="select"><a href="#">操盘总览</a></li>
+        </ul>
+    </div>
+    <div class="moneyBox">
+        <div class="moneyBoxLeft fl">
+            <p class="p01">账户余额：</p>
+            <p class="p02 color_f2991b">￥<span>\{{homeVM.user_total_capital | currency:'':2}}</span></p>
+            <p class="p03">其中冻结\{{homeVM.user.finance.freeze_capital | currency:'':2}}元，可用\{{homeVM.user.finance.balance | currency:'':2}}元</p>
+            <p class="p04">
+                <a href="#" class="btn01 marRight10">充值</a>
+                <a href="#" class="btn02">提现</a>
+            </p>
+        </div>
+        <div class="moneyBoxRight fl">
+            <p class="p01">当前操盘总金额：</p>
+            <p class="p02 color_c82217">￥<span>\{{homeVM.user.finance.total_capital | currency:'':2}}</span></p>
+            <p class="p03">包含3笔操盘资金</p>
+            <p class="p04">
+                <a href="/new_apply" class="btn03 ">新增配资 </a>
+            </p>
+        </div>
+    </div>
+    <div class="tableMenu">
+        <ul id="tableMenu">
+            <li class="select">全部</li>
+            <li>当前操盘</li>
+            <li>已结算</li>
+        </ul>
+        <a href="#" class="a01"></a>
+        <div class="searchBox fr">
+            <input type="text" class="searchInputText" name="" id="" value="" placeholder="输入充值金额/业务单号搜索" />
+            <input type="button" name="" class="searchBtn" id="" value="搜索" />
+        </div>
+    </div>
+    <div class="tableMain" id="tableMain">
+        <div class="tableBox" id="jq_tableBox">
+            <table>
+                <tr>
+                    <th>业务单号</th>
+                    <th>操盘金额/保证金额</th>
+                    <th>操盘时长/申请时间</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                <tr>
+                    <td>00000001</td>
+                    <td>128万/5万</td>
+                    <td>1个月/2015.01.30</td>
+                    <td class="color_c82217">操盘中</td>
+                    <td><a href="#">管理</a>  <a href="#">操盘账户</a></td>
+                </tr>
+                <tr>
+                    <td>00000001</td>
+                    <td>28万/5万</td>
+                    <td>4个月/2015.01.30</td>
+                    <td class="color_f2991b">结算中</td>
+                    <td><a href="#">管理</a>  <a href="#">操盘账户</a></td>
+                </tr>
+                <tr>
+                    <td>00000001</td>
+                    <td>28万/5万</td>
+                    <td>4个月/2015.01.30</td>
+                    <td class="color_f2991b">结算中</td>
+                    <td><a href="#">管理</a>  <a href="#">操盘账户</a></td>
+                </tr>
+                <tr>
+                    <td>00000001</td>
+                    <td>28万/5万</td>
+                    <td>4个月/2015.01.30</td>
+                    <td>已结算</td>
+                    <td><a href="#">管理</a>  <a href="#">操盘账户</a></td>
+                </tr>
+                <tr>
+                    <td>00000001</td>
+                    <td>28万/5万</td>
+                    <td>4个月/2015.01.30</td>
+                    <td>已结算</td>
+                    <td><a href="#">管理</a>  <a href="#">操盘账户</a></td>
+                </tr>
+                <tr>
+                    <td>00000001</td>
+                    <td>28万/5万</td>
+                    <td>4个月/2015.01.30</td>
+                    <td>已结算</td>
+                    <td><a href="#">管理</a>  <a href="#">操盘账户</a></td>
+                </tr>
+            </table>
+            <div class="tablePageBox">
+                <input type="button" name="" id="" value="GO" class="pageBtn" />
+                <div class="fr">&nbsp;页&nbsp;</div>
+                <input type="text" name="" id="" value="1" class="pageInputText" />
+                <div class="fr">&nbsp;第&nbsp;</div>
+                <div class="fr tablePage">
+                    <a href="#">&lt;</a>
+                    <span>1</span>
+                    <a href="#">2</a>
+                    <a href="#">3</a>
+                    <a href="#">&gt;</a>
+                </div>
+
+            </div>
+        </div>
+        <div class="tableBox undis"  id="jq_tableBox2">
+            <table>
+                <tr>
+                    <th>业务单号</th>
+                    <th>操盘金额/保证金额</th>
+                    <th>操盘时长/申请时间</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                <tr>
+                    <td>000001</td>
+                    <td>38万/5万</td>
+                    <td>22个月/2015.01.30</td>
+                    <td class="color_c82217">操盘中</td>
+                    <td><a href="#">管理</a>  <a href="#">操盘账户</a></td>
+                </tr>
+                <tr>
+                    <td>00000001</td>
+                    <td>28万/5万</td>
+                    <td>4个月/2015.01.30</td>
+                    <td class="color_f2991b">结算中</td>
+                    <td><a href="#">管理</a>  <a href="#">操盘账户</a></td>
+                </tr>
+                <tr>
+                    <td>00000001</td>
+                    <td>28万/5万</td>
+                    <td>4个月/2015.01.30</td>
+                    <td class="color_f2991b">结算中</td>
+                    <td><a href="#">管理</a>  <a href="#">操盘账户</a></td>
+                </tr>
+                <tr>
+                    <td>00000001</td>
+                    <td>28万/5万</td>
+                    <td>4个月/2015.01.30</td>
+                    <td>已结算</td>
+                    <td><a href="#">管理</a>  <a href="#">操盘账户</a></td>
+                </tr>
+                <tr>
+                    <td>00000001</td>
+                    <td>28万/5万</td>
+                    <td>4个月/2015.01.30</td>
+                    <td>已结算</td>
+                    <td><a href="#">管理</a>  <a href="#">操盘账户</a></td>
+                </tr>
+                <tr>
+                    <td>00000001</td>
+                    <td>28万/5万</td>
+                    <td>4个月/2015.01.30</td>
+                    <td>已结算</td>
+                    <td><a href="#">管理</a>  <a href="#">操盘账户</a></td>
+                </tr>
+            </table>
+            <div class="tablePageBox">
+                <input type="button" name="" id="" value="GO" class="pageBtn" />
+                <div class="fr">&nbsp;页&nbsp;</div>
+                <input type="text" name="" id="" value="1" class="pageInputText" />
+                <div class="fr">&nbsp;第&nbsp;</div>
+                <div class="fr tablePage">
+                    <a href="#">&lt;</a>
+                    <span>1</span>
+                    <a href="#">2</a>
+                    <a href="#">3</a>
+                    <a href="#">&gt;</a>
+                </div>
+
+            </div>
+        </div>
+        <div class="tableBox undis" id="jq_tableBox3">
+            <table>
+                <tr>
+                    <th>业务单号</th>
+                    <th>操盘金额/保证金额</th>
+                    <th>操盘时长/申请时间</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                <tr>
+                    <td>5000001</td>
+                    <td>21万/5万</td>
+                    <td>11个月/2015.01.30</td>
+                    <td class="color_c82217">操盘中</td>
+                    <td><a href="#">管理</a>  <a href="#">操盘账户</a></td>
+                </tr>
+                <tr>
+                    <td>00000001</td>
+                    <td>28万/5万</td>
+                    <td>4个月/2015.01.30</td>
+                    <td class="color_f2991b">结算中</td>
+                    <td><a href="#">管理</a>  <a href="#">操盘账户</a></td>
+                </tr>
+                <tr>
+                    <td>00000001</td>
+                    <td>28万/5万</td>
+                    <td>4个月/2015.01.30</td>
+                    <td class="color_f2991b">结算中</td>
+                    <td><a href="#">管理</a>  <a href="#">操盘账户</a></td>
+                </tr>
+                <tr>
+                    <td>00000001</td>
+                    <td>28万/5万</td>
+                    <td>4个月/2015.01.30</td>
+                    <td>已结算</td>
+                    <td><a href="#">管理</a>  <a href="#">操盘账户</a></td>
+                </tr>
+                <tr>
+                    <td>00000001</td>
+                    <td>28万/5万</td>
+                    <td>4个月/2015.01.30</td>
+                    <td>已结算</td>
+                    <td><a href="#">管理</a>  <a href="#">操盘账户</a></td>
+                </tr>
+                <tr>
+                    <td>00000001</td>
+                    <td>28万/5万</td>
+                    <td>4个月/2015.01.30</td>
+                    <td>已结算</td>
+                    <td><a href="#">管理</a>  <a href="#">操盘账户</a></td>
+                </tr>
+            </table>
+            <div class="tablePageBox">
+                <input type="button" name="" id="" value="GO" class="pageBtn" />
+                <div class="fr">&nbsp;页&nbsp;</div>
+                <input type="text" name="" id="" value="1" class="pageInputText" />
+                <div class="fr">&nbsp;第&nbsp;</div>
+                <div class="fr tablePage">
+                    <a href="#">&lt;</a>
+                    <span>1</span>
+                    <a href="#">2</a>
+                    <a href="#">3</a>
+                    <a href="#">&gt;</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
