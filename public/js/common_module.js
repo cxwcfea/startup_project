@@ -230,4 +230,10 @@
 
         return UserResource;
     }]);
+
+    angular.module('commonApp').factory('njApply', ['$resource', function($resource) {
+        var ApplyResource = $resource('/api/user/:uid/applies/:serial_id', {uid: "@userID", serial_id: "@serialID"});
+
+        return ApplyResource;
+    }]);
 }());

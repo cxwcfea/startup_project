@@ -37,6 +37,12 @@ body, input, textarea, select, button {
     -webkit-font-smoothing: subpixel-antialiased;
 }
 
+/* override bootstrap */
+.nav>li>a {
+    position: static;
+    display: inline;
+    padding: 0px;
+}
 
 /* override amazeui */
 a {

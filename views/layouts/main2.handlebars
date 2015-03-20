@@ -4,6 +4,9 @@
     <meta charset="utf-8" />
     <title>牛金网</title>
     <link rel="alternate icon" type="image/png" href="/images/favicon.ico">
+{{#if user_menu}}
+    <link rel="stylesheet" href="{{static '/vendor/bootstrap/dist/css/bootstrap.min.css'}}">
+{{/if}}
     <link rel="stylesheet" href="{{static '/vendor/amazeui/dist/css/amazeui.min.css'}}">
     <link rel="stylesheet" href="{{static '/css/common.css'}}">
 {{#if main_menu}}

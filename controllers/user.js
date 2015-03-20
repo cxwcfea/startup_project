@@ -1384,3 +1384,15 @@ module.exports.fetchUser = function(req, res) {
         res.send(getUserViewModel(user));
     });
 };
+
+module.exports.fetchAppliesForUser = function(req, res) {
+    Apply.find({userID:req.params.uid}, function(err, applies) {
+        if (err) {
+            logger.debug('error when fetchApply:' + err.toString());
+            res.status(503);
+            return res.send({});
+        }
+        res.send(applies);
+    });
+};
+

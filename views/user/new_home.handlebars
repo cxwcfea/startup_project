@@ -25,31 +25,43 @@
     </div>
     <div class="tableMenu">
         <ul id="tableMenu">
+            <li ng-repeat="item in homeVM.queryItems" ng-click="homeVM.queryItem(item)" ng-class="{select: item.value === homeVM.selected}">\{{item.name}}</li>
+            <!--
             <li class="select">全部</li>
             <li>当前操盘</li>
             <li>已结算</li>
+            -->
         </ul>
-        <a href="#" class="a01"></a>
+        <!--
         <div class="searchBox fr">
             <input type="text" class="searchInputText" name="" id="" value="" placeholder="输入充值金额/业务单号搜索" />
             <input type="button" name="" class="searchBtn" id="" value="搜索" />
         </div>
+        -->
     </div>
     <div class="tableMain" id="tableMain">
         <div class="tableBox" id="jq_tableBox">
             <table>
                 <tr>
-                    <th>业务单号</th>
-                    <th>操盘金额/保证金额</th>
-                    <th>操盘时长/申请时间</th>
+                    <th>操盘金额</th>
+                    <th>保证金额</th>
+                    <th>操盘结束时间</th>
                     <th>状态</th>
                     <th>操作</th>
                 </tr>
+                <tr ng-repeat="apply in homeVM.showingItems | orderBy:'applyAt':true">
+                    <td>\{{apply.amount | currency:'':2}}元</td>
+                    <td>\{{apply.deposit | currency:'':2}}元</td>
+                    <td>\{{apply.end_date | displayDate}}</td>
+                    <td ng-class="{color_c82217: apply.status === 2, color_f2991b: apply.status === 5}">\{{apply.status | applyStatus}}</td>
+                    <td><a href="#">详情</a>  <a href="#" >操盘账户</a></td>
+                </tr>
+                <!--
                 <tr>
                     <td>00000001</td>
-                    <td>128万/5万</td>
-                    <td>1个月/2015.01.30</td>
-                    <td class="color_c82217">操盘中</td>
+                    <td>28万/5万</td>
+                    <td>4个月/2015.01.30</td>
+                    <td class="color_f2991b">结算中</td>
                     <td><a href="#">管理</a>  <a href="#">操盘账户</a></td>
                 </tr>
                 <tr>
@@ -63,13 +75,6 @@
                     <td>00000001</td>
                     <td>28万/5万</td>
                     <td>4个月/2015.01.30</td>
-                    <td class="color_f2991b">结算中</td>
-                    <td><a href="#">管理</a>  <a href="#">操盘账户</a></td>
-                </tr>
-                <tr>
-                    <td>00000001</td>
-                    <td>28万/5万</td>
-                    <td>4个月/2015.01.30</td>
                     <td>已结算</td>
                     <td><a href="#">管理</a>  <a href="#">操盘账户</a></td>
                 </tr>
@@ -87,7 +92,12 @@
                     <td>已结算</td>
                     <td><a href="#">管理</a>  <a href="#">操盘账户</a></td>
                 </tr>
+                -->
             </table>
+            <div class="am-fr">
+                <pagination class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="homeVM.itemsPerPage" total-items="homeVM.totalItems" ng-model="homeVM.currentPage" ng-change="homeVM.pageChanged()"></pagination>
+            </div>
+            <!--
             <div class="tablePageBox">
                 <input type="button" name="" id="" value="GO" class="pageBtn" />
                 <div class="fr">&nbsp;页&nbsp;</div>
@@ -100,9 +110,10 @@
                     <a href="#">3</a>
                     <a href="#">&gt;</a>
                 </div>
-
             </div>
+            -->
         </div>
+        <!--
         <div class="tableBox undis"  id="jq_tableBox2">
             <table>
                 <tr>
@@ -237,5 +248,6 @@
 
             </div>
         </div>
+        -->
     </div>
 </div>
