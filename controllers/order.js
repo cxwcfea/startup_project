@@ -7,11 +7,10 @@ var Order = require('../models/Order'),
     logger = log4js.getLogger('admin');
 
 exports.fetchOrdersForUser = function(req, res) {
-    logger.debug(req.params.uid);
     Order.find({userID:req.params.uid}, function(err, order) {
         if (err) {
             logger.error(err.toString());
-            res.status(500);
+            res.status(503);
             return res.send({success:false, reason:err.toString()});
         }
         res.send(order);

@@ -80,7 +80,6 @@ angular.module('adminApp').controller('AdminOrderListCtrl', ['$scope', '$locatio
         vm.showingItems = currentOrders.slice(start, end);
     };
 
-
     vm.handleOrder = function(order) {
         if (order.dealType === 2) {
             var modalInstance = $modal.open({

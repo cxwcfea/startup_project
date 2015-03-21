@@ -238,4 +238,10 @@
 
         return ApplyResource;
     }]);
+
+    angular.module('commonApp').factory('njOrder', ['$resource', function($resource) {
+        var OrderResource = $resource('/api/user/:uid/orders/:id', {uid: "@userID", id: "@_id"});
+
+        return OrderResource;
+    }]);
 }());

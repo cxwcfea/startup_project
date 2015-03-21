@@ -1,7 +1,7 @@
 <div class="fr RightMain">
     <div class="rightMenu">
         <ul>
-            <li ng-repeat="category in capitalVM.categories" ng-class="{select: capitalVM.currentCategory === category.value}"><a href="" ng-click="capitalVM.selectCategory(category)">\{{category.name}}</a></li>
+            <li ng-repeat="category in capitalVM.categories | filter:capitalVM.excludeAddCard" ng-class="{select: capitalVM.currentCategory.menu === $index}"><a href="" ng-click="capitalVM.selectCategory(category)">\{{category.name}}</a></li>
             <!--
             <li><a href="Recharge.html">充值</a></li>
             <li><a href="withdraw.html">提现</a></li>

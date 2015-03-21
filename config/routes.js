@@ -174,7 +174,7 @@ module.exports = function(app) {
 
     app.get('/api/orders/:id', orders.getOrderById);
 
-    app.get('/api/user/:uid/orders', orders.fetchOrdersForUser);
+    app.get('/api/user/:uid/orders', passportConf.isAuthenticated, orders.fetchOrdersForUser);
 
     app.post('/api/user/:uid/orders', orders.addOrderForUser);
 
