@@ -4,6 +4,7 @@ var users = require('../controllers/user'),
     applies = require('../controllers/apply'),
     sms = require('../lib/sms'),
     admin = require('../controllers/admin'),
+    util = require('../lib/util'),
     passportConf = require('./passport');
 
 module.exports = function(app) {

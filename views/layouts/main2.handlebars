@@ -6,8 +6,9 @@
     <link rel="alternate icon" type="image/png" href="/images/favicon.ico">
 {{#if user_menu}}
     <link rel="stylesheet" href="{{static '/vendor/bootstrap/dist/css/bootstrap.min.css'}}">
-{{/if}}
+{{else}}
     <link rel="stylesheet" href="{{static '/vendor/amazeui/dist/css/amazeui.min.css'}}">
+{{/if}}
     <link rel="stylesheet" href="{{static '/css/common.css'}}">
 {{#if main_menu}}
     <link rel="stylesheet" href="{{static '/css/index.css'}}">
@@ -123,6 +124,7 @@
         <script src="{{static '/user/controllers/UserIndexCtrl.js'}}"></script>
         <script src="{{static '/user/controllers/UserHomeCtrl.js'}}"></script>
         <script src="{{static '/user/controllers/UserApplyCtrl.js'}}"></script>
+        <script src="{{static '/user/controllers/UserCapitalCtrl.js'}}"></script>
 {{/if}}
 
 <!--

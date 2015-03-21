@@ -231,6 +231,7 @@ body{
 	color: #666666;
 	background: #e0e0e0;
 	display: block;
+	cursor: pointer;
 	float: left;
 }
 
@@ -742,8 +743,16 @@ p.freeP01{
 	height: 35px;
 	line-height: 35px;
 	text-align: right;
+	padding-left: 20px;
 }
 .recTop a{
+	display: block;
+	float: right;
+	color: #666666;
+}
+.recTop span{
+	display: block;
+	float: left;
 	color: #666666;
 }
 
@@ -790,6 +799,7 @@ p.freeP01{
 	padding-left: 30px;
 }
 .recMoneyText input{
+	text-indent: 5px;
 	height: 38px;
 	background: #fff;
 	border: 1px solid #999999;
@@ -926,6 +936,248 @@ p.freeP01{
 	margin: auto;
 	border-radius: 5px;
 }
+
+
+
+
+/*提现*/
+
+.witBox{
+	margin-top: 40px;
+}
+.witLeft{
+	width: 100px;
+	text-align: right;
+	line-height: 48px;
+}
+
+.witRight{
+	width: 640px;
+}
+.witContent{
+	height: 48px;
+	
+	line-height: 48px;
+	border: 1px solid #999999;
+	border-radius: 5px;
+	margin-bottom: 20px;
+}
+.witRight div.select{
+	height: 48px;
+	line-height: 48px;
+	background: #fff9f3;
+	border: 1px solid #ffdfb2;
+	border-radius: 5px;
+	margin-bottom: 20px;
+}
+.witContent input{
+	display: block;
+	float: left;
+	margin: 20px 0px 0 20px;
+	cursor: pointer;
+}
+.witContent span{
+	display: block;	
+	float: left;
+	width: 140px;
+	line-height: 48px;
+	overflow: hidden;
+	padding-top: 5px;
+	cursor: pointer;
+}
+.witContent img{
+}
+.witContent a{
+	display: block;
+	float: left;
+}
+.witText01{
+	cursor: pointer;
+	width: 250px;
+}
+.witText02{
+	cursor: pointer;
+	width: 140px;
+}
+
+.witContent2{
+	height: 48px;
+	line-height: 48px;
+	border: 1px solid #999999;
+	border-radius: 5px;
+	text-align: center;
+	display: block;
+}
+.witContent2:hover{
+	text-decoration: none;
+	background: #f1f1f1;
+}
+
+.witContent2 span.witIcon{
+	background: url(../images/img03.png) no-repeat -72px -217px;
+	padding:0px 8px
+}
+
+.witBoxw2{
+	height: 40px;
+	line-height: 40px;
+	margin-top: 40px;
+}
+.witLeft2{
+	color: #333333;
+	font-weight: bold;
+	text-align: right;
+	width: 100px;
+}
+.witContent3{}
+.witContent3 input{
+	width: 298px;
+	height: 38px;
+	text-indent: 5px;
+	border: 1px solid #999999;
+	border-radius: 5px;
+}
+
+
+.withBtn01{
+	margin: 30px 0 0 100px;
+}
+
+.column5{
+	height: 65px;
+	line-height: 65px;
+	text-align: right;
+	border-bottom: 1px solid #e0e0e0;
+}
+.witText03{
+	margin-top: 25px;
+	padding-left: 30px;
+}
+.witText03 p.p01{
+	height: 25px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #e23024;
+}
+.witText03 p.p02{
+	line-height: 22px;
+	margin-bottom: 10px;
+	font-size: 12px;
+}
+
+
+
+
+/*资金流水*/
+.ordhBox{
+	width: 170px;
+	height: 30px;
+	border: 1px solid #999999;
+	border-radius: 5px;
+	margin:5px 0 0 0;
+	background: #fff;
+}
+
+.ordInputText{
+	display: block;
+	float: left;
+	width: 120px;
+	height: 30px;
+	border: none;
+	background: none;
+	font-size: 12px;
+	text-indent: 5px;
+}
+
+
+/*我的银行卡*/
+
+.carBox{
+	width: auto;
+}
+
+.carText01{
+	cursor: pointer;
+	width: 295px;
+}
+
+.carText02{
+	cursor: pointer;
+	width: 215px;
+}
+
+.carFormBox{
+	height: 40px;
+	line-height: 40px;
+	margin-bottom: 20px;
+}
+
+.cartTitle{
+	width: 250px;
+	text-align: right;
+}
+
+.cartFomeContent{
+	
+}
+.inputText{
+	width: 298px;
+	height: 38px;
+	border:1px solid #999999;
+	border-radius: 5px;
+	text-indent: 5px;
+}
+
+.inputSelect{
+	width: 298px;
+	height: 38px;
+	line-height: 38px;
+	border:1px solid #999999;
+	border-radius: 5px;
+}
+
+.inputSelect2{
+	width: 138px;
+	height: 38px;
+	line-height: 38px;
+	border:1px solid #999999;
+	border-radius: 5px;
+}
+.cartFomeContent a.a01{
+	display: block;
+	float: left;
+	width: 98px;
+	height: 38px;
+	text-align: center;
+	line-height: 38px;
+	border: 1px solid #f2991b;
+	color: #f2991b;
+	font-weight: bold;
+	border-radius: 5px;
+}
+.inputYzm{
+	width: 198px;
+	border-radius: 0 5px 5px 0 ;
+	border-left: none;
+	display: block;
+	float: left;
+}
+
+.carBtn01{
+	margin: auto;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

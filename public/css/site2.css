@@ -47,6 +47,14 @@ a.apply-detail-link {
     padding: 0px;
 }
 
+.witContent label {
+    display: inline;
+}
+
+.witContent img {
+    vertical-align: baseline;
+}
+
 /* override amazeui */
 a {
     color: #333;

@@ -1,0 +1,14 @@
+<div class="fr RightMain">
+    <div class="rightMenu">
+        <ul>
+            <li ng-repeat="category in capitalVM.categories" ng-class="{select: capitalVM.currentCategory === category.value}"><a href="" ng-click="capitalVM.selectCategory(category)">\{{category.name}}</a></li>
+            <!--
+            <li><a href="Recharge.html">充值</a></li>
+            <li><a href="withdraw.html">提现</a></li>
+            <li class="select"><a href="orders.html">资金流水</a></li>
+            <li><a href="card.html">我的银行卡</a></li>
+            -->
+        </ul>
+    </div>
+    <ng-include src="capitalVM.selectedCategory()"></ng-include>
+</div>

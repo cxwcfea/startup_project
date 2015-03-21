@@ -1,7 +1,7 @@
 'use strict';
 angular.module('userApp').controller('UserHomeCtrl', ['$scope', '$location', '$http', '$window', 'days', 'njApply', function($scope, $location, $http, $window, days, njApply) {
     var vm = this;
-
+    $scope.data.menu = 1;
     vm.user = $scope.data.currentUser;
 
     vm.user_total_capital = vm.user.finance.balance + vm.user.finance.freeze_capital;
