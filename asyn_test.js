@@ -2,13 +2,13 @@ var async = require('async');
 
 async.waterfall([
 	function(callback) {
-		callback('err1');
-		return;
-		console.log('afer err1');
+		callback(null, 'err1', 'err2', 'err3');
 	}
-], function(err, result) {
+], function(err, result, result2, result3) {
 	if (err) {
 		console.log(err.toString());
 	}
 	console.log(result);
+	console.log(result2);
+	console.log(result3);
 });

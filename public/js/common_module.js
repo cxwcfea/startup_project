@@ -153,11 +153,33 @@
         }
     }]);
 
-    angular.module('commonApp').filter("displayDate", function () {
+    angular.module('commonApp').filter("numTrunc", function () {
+        return function (input) {
+            var ret = input;
+            if (angular.isNumber(ret)) {
+                ret = ret.toFixed(2);
+                ret = ret.substr(-3);
+            }
+            return ret;
+        };
+    }).filter("displayOrderAmount", function () {
+        return function (input, orderType) {
+            var ret = '';
+            if (orderType === 2) {
+                ret = '-';
+            }
+            return ret + input;
+        };
+    }).filter("displayDate", function () {
         return function (input) {
             return moment(input).format("YYYY-MM-DD HH:mm");
         };
-    }).filter("orderStatus", function() {
+    }).filter("displayCard", ['BankNameList', function (BankNameList) {
+        return function (input) {
+            var lastNumStr = input.cardID.toString().substr(12);
+            return BankNameList[input.bankID].name + ' **** **** **** ' + lastNumStr;
+        };
+    }]).filter("orderStatus", function() {
         return function (input) {
             switch (input) {
                 case 0:
@@ -230,79 +252,98 @@
     angular.module('commonApp').constant('BankNameList', [
         {
             name: '工商银行',
-            value: 1
+            img: '/images/yh/icbc.png',
+            value: 0
         },
         {
             name: '建设银行',
-            value: 2
+            img: '/images/yh/ccb.png',
+            value: 1
         },
         {
             name: '农业银行',
-            value: 3
+            img: '/images/yh/abc.png',
+            value: 2
         },
         {
             name: '中国银行',
-            value: 4
+            img: '/images/yh/boc.png',
+            value: 3
         },
         {
             name: '招商银行',
-            value: 5
+            img: '/images/yh/cmc.png',
+            value: 4
         },
         {
             name: '交通银行',
-            value: 6
+            img: '/images/yh/bcs.png',
+            value: 5
         },
         {
             name: '邮政储蓄银行',
-            value: 7
+            img: '/images/yh/psbc.png',
+            value: 6
         },
         {
             name: '广发银行',
+            img: '/images/yh/cgb.png',
+            value: 7
+        },
+        {
+            name: '光大银行',
+            img: '/images/yh/ceb.png',
             value: 8
         },
         {
-            name: '广大银行',
+            name: '兴业银行',
+            img: '/images/yh/cib.png',
             value: 9
         },
         {
-            name: '兴业银行',
+            name: '北京银行',
+            img: '/images/yh/bob.png',
             value: 10
         },
         {
-            name: '北京银行',
+            name: '浦发银行',
+            img: '/images/yh/spdb.png',
             value: 11
         },
         {
-            name: '浦发银行',
+            name: '民生银行',
+            img: '/images/yh/cmbc.png',
             value: 12
         },
         {
-            name: '民生银行',
+            name: '中信银行',
+            img: '/images/yh/ecitic.png',
             value: 13
         },
         {
-            name: '中信银行',
+            name: '华夏银行',
+            img: '/images/yh/hx-2.png',
             value: 14
         },
         {
-            name: '华夏银行',
+            name: '平安银行',
+            img: '/images/yh/pa.png',
             value: 15
         },
         {
-            name: '平安银行',
+            name: '杭州银行',
+            img: '/images/yh/hzyh.png',
             value: 16
         },
         {
-            name: '杭州银行',
+            name: '宁波银行',
+            img: '/images/yh/nbcb.png',
             value: 17
         },
         {
-            name: '宁波银行',
-            value: 18
-        },
-        {
             name: '上海银行',
-            value: 19
+            img: '/images/yh/bos.png',
+            value: 18
         }
     ]);
 
@@ -341,7 +382,7 @@
 
             query: function() {
                 if(!cardList) {
-                    cardList = gbCard.query({uid:uid});
+                    cardList = njCard.query({uid:uid});
                 }
                 return cardList;
             }

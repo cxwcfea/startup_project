@@ -6,15 +6,19 @@
     <div class="recMoneyLeft fl">
         <div class="recMoneyText">
             提现金额：
-            <input type="text" name="" id="" value="" placeholder="请输入提现金额" />
+            <input type="number" placeholder="请输入提现金额" ng-model="capitalVM.withdrawAmount" />
             元
         </div>
+        <!--
         <p class="p01">&nbsp;当前充值相关的业务单号：000000001，操盘12万元，至少还需要支付19452元（1万9千4百52元）！</p>
+        -->
     </div>
     <div class="fl recMoneyRight">
-        <p class="p01">当前可用余额为：</p>
-        <p class="p02">￥<span>89</span>.45</p>
+        <p class="p01">当前可提现余额为：</p>
+        <p class="p02">￥<span>{{capitalVM.user.finance.balance | currency:'':0}}</span>{{capitalVM.user.finance.balance | numTrunc}}</p>
+        <!--
         <p class="p03">其中冻结100,000元，可用32,789.45元</p>
+        -->
     </div>
 </div>
 
@@ -23,9 +27,25 @@
         选择银行卡：
     </div>
     <div class="witRight fl" id="selectList">
+        <div class="witContent" ng-repeat="card in capitalVM.cards" ng-click="capitalVM.selectCard(card)" ng-class="{select:capitalVM.selectedCard === card}">
+            <label>
+                <input ng-checked="capitalVM.selectedCard === card" type="radio" name="w" />
+                <span><img ng-src="{{capitalVM.BankNameList[card.bankID].img}}"/></span>
+                <div class="fl carText01">
+                    {{card | displayCard}}
+                </div>
+                <!--
+                <div class="fl witText02">
+                    限额49999元/天
+                </div>
+                -->
+            </label>
+            <a href="">管理</a>
+        </div>
+        <!--
         <div class="witContent select">
             <label>
-                <input checked="checked" type="radio" name="w" id="" value="" />
+                <input checked="checked" type="radio" name="w" />
                 <span><img src="../images/yh/icbc.png"/></span>
                 <div class="fl witText01">
                     工商银行  尾号：2506
@@ -38,7 +58,7 @@
         </div>
         <div class="witContent">
             <label>
-                <input type="radio" name="w" id="" value="" />
+                <input type="radio" name="w" />
                 <span><img src="../images/yh/icbc.png"/></span>
                 <div class="fl witText01">
                     工商银行  尾号：2506
@@ -49,7 +69,8 @@
             </label>
             <a href="#">管理</a>
         </div>
-        <a href="#" class="witContent2">
+        -->
+        <a href="" class="witContent2" ng-click="capitalVM.showAddCard()">
             <span class="witIcon">&nbsp;</span>添加一张银行卡
         </a>
     </div>
@@ -60,14 +81,14 @@
         提现密码：
     </div>
     <div class="witContent3 fl">
-        <input type="text" name="" value="" placeholder="请输入提现密码" />
+        <input type="password" ng-model="capitalVM.finance_password" placeholder="请输入提现密码" />
         您还未设置提现密码？
-        <a href="#" class="color_c82217">立即设置</a>
+        <a href="" class="color_c82217">立即设置</a>
     </div>
 </div>
-<a href="#" class="recBtn01 withBtn01">提现</a>
+<a href="" class="recBtn01 withBtn01" ng-click="capitalVM.withdraw()">提现</a>
 <div class="column5">
-    <a href="#">帮助中心></a>
+    <a href="">帮助中心></a>
 </div>
 <div class="witText03">
     <p class="p01">最快20分钟到账</p>

@@ -242,3 +242,25 @@ var intVal = 13439695920;
 var password = intVal.toString().substr(5);
 console.log(password);
 
+var cardID = 1234567887654321;
+var lastNum = cardID.toString().substr(12);
+console.log(lastNum);
+
+console.log(Math.floor(128.03));
+console.log(Math.floor(128.50));
+console.log(Math.floor(128.98));
+console.log(Math.floor(128));
+console.log(Math.floor(128.005));
+console.log(Math.floor(128.008));
+
+var numTrunc = function (input) {
+	var ret = input.toFixed(2);
+	ret = ret.substr(-3);
+	return ret; 
+};
+
+console.log(numTrunc(128.03));
+console.log(numTrunc(128.50));
+console.log(numTrunc(128.98));
+console.log(numTrunc(128));
+console.log(numTrunc(128.005));

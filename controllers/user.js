@@ -238,23 +238,24 @@ module.exports.postWithdraw = function(req, res) {
             }
         },
         function(user, callback) {
+            data.order.status = 0;
             Order.create(data.order, function(err, order) {
-                callback(err, user);
+                callback(err, user, order);
             });
         },
-        function(user, callback) {
+        function(user, order, callback) {
             user.finance.balance -= amount;
             user.finance.freeze_capital += amount;
             user.save(function(err) {
-                callback(err, user);
+                callback(err, user, order);
             });
         }
-    ], function(err, result) {
+    ], function(err, user, order) {
         if (err) {
             res.status(401);
             res.send({reason:err.toString()});
         } else {
-            res.send({success:true});
+            res.send({success:true, order:order});
         }
     });
 };

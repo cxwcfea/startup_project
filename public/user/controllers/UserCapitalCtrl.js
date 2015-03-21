@@ -1,10 +1,12 @@
 'use strict';
-angular.module('userApp').controller('UserCapitalCtrl', ['$scope', 'njOrder', 'njCard', 'BankNameList', 'gbNotifier', function($scope, njOrder, njCard, BankNameList, gbNotifier) {
+angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', 'njOrder', 'njCard', 'BankNameList', 'gbNotifier', 'njCachedCards', function($scope, $http, njOrder, njCard, BankNameList, gbNotifier, njCachedCards) {
     var vm = this;
     $('.footer').addClass('marTop200');
 
     $scope.data.menu = 2;
     vm.user = $scope.data.currentUser;
+    njCachedCards.setUID(vm.user._id);
+    vm.cards = njCachedCards.query();
 
     var order_list = {};
     var currentOrders;
@@ -21,7 +23,6 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', 'njOrder', 'n
     function initData() {
         order_list = njOrder.query({uid:vm.user._id}, function () {
             currentOrders = order_list;
-            console.log(currentOrders.length);
             pageReset();
         });
     }
@@ -118,6 +119,11 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', 'njOrder', 'n
 
     vm.selectCategory = function(c) {
         vm.currentCategory = c;
+        if (c.value === 3 || c.value === 1) {
+            if (vm.cards.length > 0) {
+                vm.selectedCard = vm.cards[0];
+            }
+        }
     };
 
     vm.selectedCategory = function() {
@@ -152,11 +158,61 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', 'njOrder', 'n
         var newCard = new njCard(cardObj);
         newCard.$save(function(c, responseHeaders) {
             gbNotifier.notify('银行卡添加成功!');
-            console.log(c);
-            //vm.cards.push(vm.card);
+            vm.cards.push(c);
         }, function(response) {
             gbNotifier.error('添加失败 ' + response.data.reason);
         });
+    };
+
+    vm.selectCard = function(card) {
+        vm.selectedCard = card;
+    };
+
+    vm.withdraw = function() {
+        if (!vm.withdrawAmount || vm.withdrawAmount < 0) {
+            gbNotifier.error('请输入有效的提现金额!');
+            return;
+        }
+        var withdrawAmount = Number(vm.withdrawAmount.toFixed(2));
+        var balance = Number(vm.user.finance.balance.toFixed(2));
+        if (withdrawAmount > balance) {
+            gbNotifier.error('余额不足!');
+            return;
+        }
+        if (!vm.finance_password) {
+            gbNotifier.error('请输入提现密码!');
+            return;
+        }
+        var order = {
+            userID: vm.user._id,
+            userMobile: vm.user.mobile,
+            dealType: 2,
+            amount: withdrawAmount,
+            description: '余额提现',
+            cardInfo: {
+                bank: BankNameList[vm.selectedCard.bankID].name,
+                bankName: vm.selectedCard.bankName,
+                cardID: vm.selectedCard.cardID,
+                userName: vm.selectedCard.userName
+            }
+        };
+        var data = {
+            order: order,
+            password: vm.finance_password
+        };
+
+        $http.post('/user/withdraw', data)
+            .success(function(data, status, headers, config) {
+                vm.user.finance.freeze_capital += order.amount;
+                vm.user.finance.balance -= order.amount;
+                order_list.unshift(data.order);
+                currentOrders = order_list;
+                pageReset();
+                gbNotifier.notify('您的提现申请已经提交,我们会尽快处理');
+            })
+            .error(function(data, status, headers, config) {
+                gbNotifier.error('提现申请提交失败 ' + data.reason);
+            });
     };
 
 }]);

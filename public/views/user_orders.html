@@ -32,7 +32,7 @@
             </tr>
             <tr ng-repeat="order in capitalVM.showingItems | orderBy:'createdAt':true" ng-class-even="capitalVM.tableCss.even">
                 <td>{{order.dealType | displayOrderType}}</td>
-                <td>{{order.amount | currency:'':2}}</td>
+                <td>{{order.amount | currency:'':2 | displayOrderAmount:order.dealType}}</td>
                 <td>{{order.createdAt | displayDate}}</td>
                 <td ng-class="{color_f2991b: order.status === 0, color_c82217: order.status === 2}">{{order.status | orderStatus}}</td>
             </tr>
