@@ -26,7 +26,7 @@ a{color:#333333; text-decoration:none}
 .unline a,a{text-decoration:none;}
 a:hover{text-decoration:underline}
 html,body{height: 100%;}
-a,p,div,span,em{ 
+a,div,span,em{ 
 	-webkit-transition-duration:.15s; 
 	-moz-transition-duration:.15s; 
 	transition-duration:.15s; 
@@ -74,10 +74,108 @@ a,p,div,span,em{
 	background: #f7f7f7;
 	font-size: 12px;
 	color: #999999;
+	position: relative;
 }
 .Top a{
 	color: #999999;
 }
+
+.TopLoginBox{
+	width: 60px;
+	background: #d31812;
+	cursor: pointer;
+	color: #fff;
+	height: 52px;
+	text-align: center;
+	/*border-bottom: 12px solid #d31812;*/
+	position: absolute;
+	right: 260px;
+	top: 0;
+}
+.topLoginContet{
+	left: 0;
+	top: 52px;
+	z-index: 999;
+}
+
+/*登陆框*/
+.loginBox{
+	position: absolute;
+	right: 0;
+	background: #fff;
+	width: 300px;
+	height: 205px;
+	top: 50px;
+	border-top: 5px solid #d31812;
+	text-align: center;
+	padding-top: 40px;
+}
+.loginText{
+	height: 36px;
+	margin: 0 20px;
+	line-height: 36px;
+	padding-left: 40px;
+	border-bottom: 1px solid #e76049;
+}
+.loginIncon01{
+	background: url(../images/img24.png) no-repeat 5px 6px;
+}
+.loginIncon02{
+	background: url(../images/img25.png) no-repeat 5px 6px;
+}
+.inputLoginText{
+	display: block;
+	border: none;
+	height: 34px;
+	line-height: 34px;
+}
+
+.loginText2{
+	height: 50px;
+	margin: 0 20px;
+	line-height: 50px;
+	font-size: 12px;
+	color: #666666;
+}
+.loginText2 a{
+	color: #666666;
+	display: block;
+	float: right;
+}
+
+a.LoginBtn01{
+	display: block;
+	float: left;
+	background: #f2991b;
+	width: 150px;
+	height: 50px;
+	color: #fff;
+	text-align: center;
+	line-height: 50px;
+	border-radius: 5px;
+	margin-left: 20px;
+	font-weight: bold;
+}
+a.LoginBtn02{
+	display: block;
+	float: left;
+	margin-left: 20px;
+	line-height: 50px;
+	color: #c82217;
+	font-weight: bold;
+}
+/*登陆框end*/
+
+
+.Division{
+	/* 分割线*/
+	background: #e0e0e0;
+	height: 1px;
+	font-size: 0;
+	line-height: 0;
+	margin: 50px 0;
+}
+
 .color_c82217{
 	color: #c82217;
 }
@@ -106,6 +204,7 @@ div.color_333333,a.color_333333,span.color_333333{
 }
 .logo img{
 	display: block;
+	width: 407px;
 }
 
 .nav{

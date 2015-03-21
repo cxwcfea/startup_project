@@ -6,9 +6,12 @@
     </div>
     <div class="moneyBox">
         <div class="moneyBoxLeft fl">
-            <p class="p01">账户余额：</p>
+            <p class="p01">
+                <span class="dis fl">账户余额：</span>
+                <span class="dis fr color_999999">(账户余额 = 可用余额 + 冻结资金)&nbsp;&nbsp;</span>
+            </p>
             <p class="p02 color_f2991b">￥<span>\{{homeVM.user_total_capital | currency:'':2}}</span></p>
-            <p class="p03">其中冻结\{{homeVM.user.finance.freeze_capital | currency:'':2}}元，可用\{{homeVM.user.finance.balance | currency:'':2}}元</p>
+            <p class="p03">可用余额￥<span class="fb">\{{homeVM.user.finance.balance | currency:'':2}}</span>&nbsp;&nbsp;冻结资金￥\{{homeVM.user.finance.freeze_capital | currency:'':2}}</p>
             <p class="p04">
                 <a href="#" class="btn01 marRight10">充值</a>
                 <a href="#" class="btn02">提现</a>
@@ -17,7 +20,7 @@
         <div class="moneyBoxRight fl">
             <p class="p01">当前操盘总金额：</p>
             <p class="p02 color_c82217">￥<span>\{{homeVM.user.finance.total_capital | currency:'':2}}</span></p>
-            <p class="p03">包含3笔操盘资金</p>
+            <p class="p03">共有3笔配资，总保证金￥<span>\{{homeVM.user.finance.deposit | currency:'':2}}</span></p>
             <p class="p04">
                 <a href="/new_apply" class="btn03 ">新增配资 </a>
             </p>

@@ -85,3 +85,12 @@ body, input, textarea, select, button {
     text-rendering: auto;
     -webkit-font-smoothing: subpixel-antialiased;
 }
+
+.fl label {
+    display: inline;
+    margin-bottom: 0px;
+}
+
+.fl input[type=checkbox] {
+    margin: 0;
+}

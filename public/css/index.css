@@ -73,6 +73,12 @@ a.bannerBtn{
 	border-radius: 3px;
 	margin-top: 10px;
 }
+
+
+
+
+
+
 a.bannerBtn:hover{
 	background: #d6891b;
 	text-decoration: underline;
@@ -186,13 +192,7 @@ a.bannerBtn:hover{
 }
 
 
-.Division{
-	background: #e0e0e0;
-	height: 1px;
-	font-size: 0;
-	line-height: 0;
-	margin: 50px 0;
-}
+
 
 .column3{
 	height: 45px;
