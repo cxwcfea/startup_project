@@ -227,6 +227,85 @@
         .constant('warn_factor', 0.96)
         .constant('sell_factor', 0.94);
 
+    angular.module('commonApp').constant('BankNameList', [
+        {
+            name: '工商银行',
+            value: 1
+        },
+        {
+            name: '建设银行',
+            value: 2
+        },
+        {
+            name: '农业银行',
+            value: 3
+        },
+        {
+            name: '中国银行',
+            value: 4
+        },
+        {
+            name: '招商银行',
+            value: 5
+        },
+        {
+            name: '交通银行',
+            value: 6
+        },
+        {
+            name: '邮政储蓄银行',
+            value: 7
+        },
+        {
+            name: '广发银行',
+            value: 8
+        },
+        {
+            name: '广大银行',
+            value: 9
+        },
+        {
+            name: '兴业银行',
+            value: 10
+        },
+        {
+            name: '北京银行',
+            value: 11
+        },
+        {
+            name: '浦发银行',
+            value: 12
+        },
+        {
+            name: '民生银行',
+            value: 13
+        },
+        {
+            name: '中信银行',
+            value: 14
+        },
+        {
+            name: '华夏银行',
+            value: 15
+        },
+        {
+            name: '平安银行',
+            value: 16
+        },
+        {
+            name: '杭州银行',
+            value: 17
+        },
+        {
+            name: '宁波银行',
+            value: 18
+        },
+        {
+            name: '上海银行',
+            value: 19
+        }
+    ]);
+
     angular.module('commonApp').factory('njUser', ['$resource', function($resource) {
         var UserResource = $resource('/api/user/:id', {id: "@_id"});
 
@@ -243,5 +322,29 @@
         var OrderResource = $resource('/api/user/:uid/orders/:id', {uid: "@userID", id: "@_id"});
 
         return OrderResource;
+    }]);
+
+    angular.module('commonApp').factory('njCard', ['$resource', function($resource) {
+        var CardResource = $resource('/api/cards/:uid', {userID: "@uid"});
+
+        return CardResource;
+    }]);
+
+    angular.module('commonApp').factory('njCachedCards', ['njCard', function(njCard) {
+        var cardList;
+        var uid;
+
+        return {
+            setUID: function(id) {
+                uid = id;
+            },
+
+            query: function() {
+                if(!cardList) {
+                    cardList = gbCard.query({uid:uid});
+                }
+                return cardList;
+            }
+        }
     }]);
 }());

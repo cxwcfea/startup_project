@@ -16,6 +16,6 @@ exports.addCard = function(req, res) {
             res.status(500);
             return res.send({success:false, reason:err.toString()});
         }
-        res.send({success:true});
+        res.send(card);
     });
 };

@@ -24,7 +24,7 @@
     padding-right: 10px;
 }
 
-.freeBtn01:hover {
+.freeBtn01:hover, a.carBtn01:hover {
     color: #fff;
 }
 
@@ -38,6 +38,14 @@ tr.even {
 
 a.apply-detail-link {
     cursor: pointer;
+}
+
+/* for toaster */
+.toast-top-right {
+    top: 70px;
+}
+.toast-success {
+    background-color: #13987e;
 }
 
 /* override bootstrap */

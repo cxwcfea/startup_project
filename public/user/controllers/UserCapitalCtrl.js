@@ -1,5 +1,5 @@
 'use strict';
-angular.module('userApp').controller('UserCapitalCtrl', ['$scope', 'njOrder', function($scope, njOrder) {
+angular.module('userApp').controller('UserCapitalCtrl', ['$scope', 'njOrder', 'njCard', 'BankNameList', 'gbNotifier', function($scope, njOrder, njCard, BankNameList, gbNotifier) {
     var vm = this;
     $('.footer').addClass('marTop200');
 
@@ -15,6 +15,8 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', 'njOrder', fu
     };
 
     initData();
+    vm.BankNameList = BankNameList;
+    vm.bankObj = vm.BankNameList[0];
 
     function initData() {
         order_list = njOrder.query({uid:vm.user._id}, function () {
@@ -128,6 +130,33 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', 'njOrder', fu
 
     vm.excludeAddCard = function (item) {
         return item.value != 4;
+    };
+
+    vm.addCard = function() {
+        if (!vm.bankName) {
+            gbNotifier.error('请输入支行名称!');
+            return;
+        }
+        var regex = /^(\d{16}|\d{19})$/;
+        if (!regex.test(vm.cardID)) {
+            gbNotifier.error('银行卡号格式不正确');
+            return;
+        }
+        var cardObj = {
+            userID: vm.user._id,
+            bankID: vm.bankObj.value,
+            bankName: vm.bankName,
+            cardID: vm.cardID,
+            userName: vm.user.identity.name
+        };
+        var newCard = new njCard(cardObj);
+        newCard.$save(function(c, responseHeaders) {
+            gbNotifier.notify('银行卡添加成功!');
+            console.log(c);
+            //vm.cards.push(vm.card);
+        }, function(response) {
+            gbNotifier.error('添加失败 ' + response.data.reason);
+        });
     };
 
 }]);
