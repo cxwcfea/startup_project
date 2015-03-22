@@ -5,7 +5,7 @@ table{border-collapse:collapse}
 h1,h2,h3,h4,h5,h6,em,b{font-size:100%;font-weight:normal;font-style:normal;}
 img{border:0;padding:0;margin:0;}
 input{vertical-align:middle}
-input,select{font-size:14px;font-family: "微软雅黑","宋体","黑体";color:#333333}
+input,select{font-size:14px;color:#333333}
 .clear{clear:both;height:0;overflow:hidden;display:block}
 .clearfix:after{clear:both;height:0;overflow:hidden;display:block;visibility:hidden;content:"."}
 .clearfix{ overflow:hidden; zoom:1}

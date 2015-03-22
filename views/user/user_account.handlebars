@@ -1,0 +1,8 @@
+<div class="fr RightMain">
+    <div class="rightMenu">
+        <ul>
+            <li ng-repeat="category in accountVM.categories | filter:accountVM.excludeCategory" ng-class="{select: accountVM.currentCategory.menu === $index}"><a href="javacript:" ng-click="accountVM.selectCategory(category)">\{{category.name}}</a></li>
+        </ul>
+    </div>
+    <ng-include src="accountVM.selectedCategory()"></ng-include>
+</div>

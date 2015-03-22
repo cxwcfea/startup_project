@@ -170,6 +170,20 @@
             }
             return ret + input;
         };
+    }).filter("displayMobile", function () {
+        return function (input) {
+            input = input.toString();
+            return input.substr(0, 3) + "****" + input.substr(-4);
+        };
+    }).filter("displayEmail", function () {
+        return function (input) {
+            var pos = input.search('@');
+            return input.substr(0, 2) + "***" + input.substr(pos);
+        };
+    }).filter("displayIdentityID", function () {
+        return function (input) {
+            return input.substr(0, 4) + "**********" + input.substr(-4);
+        };
     }).filter("displayDate", function () {
         return function (input) {
             return moment(input).format("YYYY-MM-DD HH:mm");

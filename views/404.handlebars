@@ -1,0 +1,19 @@
+<div class="wrapper ">
+    <div class="slsBox">
+        <p><span id="num">5</span>秒后 将自动 <a href="/">返回首页</a> </p>
+    </div>
+</div>
+<script>
+    window.onload=function () {
+        var num  =5;
+        var speed =setInterval(dsq,1000)
+        function dsq(){
+            num--;
+            document.getElementById("num").innerHTML=num;
+            if (num==0) {
+                clearInterval(speed);
+                window.location.href="/";
+            }
+        }
+    }
+</script>

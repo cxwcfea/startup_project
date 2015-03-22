@@ -76,14 +76,16 @@ module.exports = function(app) {
 
     app.post('/thank_you_for_pay', users.thankYouForPay);
 
-    app.get('/free_apply', function(req, res, next){
-        res.render('free_apply');
+    app.get('/free_apply', function(req, res, next) {
+        res.locals.free_apply_menu = true;
+        res.render('apply/free_apply');
     });
 
     app.get('/signup', function(req, res) {
         if (req.isAuthenticated()) {
             res.redirect('/');
         } else {
+            res.locals.other_menu = true;
             res.render('register/signup');
         }
     });
@@ -91,6 +93,7 @@ module.exports = function(app) {
     app.post('/signup', users.postSignup);
 
     app.get('/forgot', function(req, res) {
+        res.locals.other_menu = true;
         res.render('register/forgot');
     });
 
@@ -106,6 +109,9 @@ module.exports = function(app) {
         if (req.isAuthenticated()) {
             res.redirect('/');
         } else {
+            res.locals.main_menu = true;
+            res.locals.title = '登录';
+            res.locals.login_link = true;
             res.render('register/login');
         }
     });
@@ -116,7 +122,9 @@ module.exports = function(app) {
 
     app.post('/logout', users.postLogout);
 
+    /*
     app.get('/user', passportConf.isAuthenticated, users.getIndex);
+    */
 
     app.get('/user/home', passportConf.isAuthenticated, users.getHome);
 
@@ -203,30 +211,7 @@ module.exports = function(app) {
 
     admin.registerRoutes(app, passportConf);
 
-    app.get('/new_index', function(req, res, next) {
-        res.locals.main_menu = true;
-        res.render('home2', {
-            layout:'main2'
-        });
-    });
-
-    app.get('/new_free_apply', function(req, res, next) {
-        res.locals.free_apply_menu = true;
-        res.render('apply/free_apply', {
-            layout:'main2'
-        });
-    });
-
-    app.get('/new_apply', function(req, res, next) {
-        res.locals.apply_menu = true;
-        res.render('apply/apply', {
-            layout:'main2'
-        });
-    });
-
-    app.post('/new_apply', applies.NewplaceApply);
-
-    app.get('/new_apply_confirm/:serial_id', passportConf.isAuthenticated, applies.NewconfirmApply);
+    app.get('/apply_confirm/:serial_id', passportConf.isAuthenticated, applies.confirmApply);
 
     users.registerRoutes(app, passportConf);
 

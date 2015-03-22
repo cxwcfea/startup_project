@@ -1,170 +1,301 @@
-<!--
-<div calss="" >
-    <div>
-	<img src="images/logo+title.jpg">
-    </div>
-    <div>	
-         <ul class="am-nav am-nav-pills am-margin pull-right">
-             <li class="am-active"><a href="#">首页</a></li>
-             <li><a href="#">开始操盘</a></li>
-             <li><a href="#">按需定制</a></li>
-         </ul>
-    </div>
-</div>
--->
-
-<!--
-<div class="get">
-    <div class="am-g">
-        <div class="am-u-lg-12">
-            <h1 class="get-title">牛金网 - 最好用的股票配资网站</h1>
-
-            <p>
-            期待你的参与，共同打造一个财务自由的人生
-            </p>
-
-            <p>
-            <a href="/apply" class="am-btn am-btn-sm get-btn">我要操盘</a>
-            </p>
-        </div>
-    </div>
-</div>
--->
-
-
-<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
-        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-        <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-        <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-    </ol>
-
-    <div class="carousel-inner" role="listbox">
-        <div class="item active">
-            <img src="/images/banner1.jpg" alt="...">
-            <div class="carousel-caption">
-            </div>
-        </div>
-        <div class="item">
-            <img src="/images/banner2.jpg" alt="...">
-            <div class="carousel-caption">
-            </div>
-        </div>
-        <div class="item">
-            <img src="/images/banner1.jpg" alt="...">
-            <div class="carousel-caption">
+<div ng-app="mainApp">
+    <div class="Banner" id="imgFocus">
+        <ul class="ImgContent" id="ImgContent">
+            <li style="background-image: url(/images/banner.jpg);"></li>
+            <li style="background-image: url(/images/banner2.jpg);"></li>
+            <li style="background-image: url(/images/banner3.jpg);"></li>
+        </ul>
+        <div class="wrapper BannerNrBox">
+            <ul class="ImgList" id="ImgList">
+                <li class="selectLi"></li>
+                <li></li>
+                <li></li>
+            </ul>
+            <div class="BannerNr">
+                <p class="bannerText01">最高10倍配资额</p>
+                <p class="bannerText02">已有8017玩家参与<br />累计操盘金额9亿<br />已赚取 320万</p>
+                <a href="/free_apply" class="bannerBtn">马上领取实盘资金</a>
             </div>
         </div>
     </div>
-</div>
-
-<div class="detail">
-	<div class="am-g am-container">
-		<div class="am-u-lg-12">
-		<!--
-			<h2 class="detail-h2">
-                已有 <strong class="am-text-danger am-text-xxl">12345 </strong> 位操盘手，在牛金网操盘<strong class="am-text-danger am-text-xxl"> 88,888,888 </strong>元
-            </h2>
-	    -->
-
-			<div class="am-g">
-                <div class="am-u-lg-3 am-u-md-6 am-u-sm-12 detail-mb">
-                    <h3 class="detail-h3">
-                        <i class="am-icon-flash am-icon-lg"></i>
-                        盈利随时提取
-                    </h3>
-
-                    <p class="detail-p">
-                        一旦盈利，您可以随时将盈利提取出来；
-                    </p>
+    <div class="productBox">
+        <div class="wrapper">
+            <div class="product fl">
+                <div class="fl productIcon01"></div>
+                <div class="fl productText">
+                    <p class="p01">配资 是件轻松的事</p>
+                    <p class="p02">3步操作，3分钟配资，最高30万</p>
+                    <p class="p03"><a href="/free_apply">免费体验</a> ｜ <a href="/apply">立即配资</a></p>
                 </div>
-				<div class="am-u-lg-3 am-u-md-6 am-u-sm-12 detail-mb">
-					<h3 class="detail-h3">
-                        <i class="am-icon-clock-o am-icon-lg"></i>
-                        配资自动延期
-					</h3>
+            </div>
+            <div class="product fl productWidth2">
+                <div class="fl productIcon02"></div>
+                <div class="fl productText">
+                    <p class="p01">随时随地 随借随还</p>
+                    <p class="p02">PC移动微信，随时还款，超低费用</p>
+                    <p class="p03"><a href="#">查看费用</a></p>
+                </div>
+            </div>
+            <div class="product productWidth fl">
+                <div class="fl productIcon03"></div>
+                <div class="fl productText">
+                    <p class="p01">实盘交易 安心安全</p>
+                    <p class="p02">实盘交易保障</p>
+                    <p class="p03"><a href="/free_apply">免费体验</a> ｜ <a href="/apply">立即配资</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wrapper marTop25">
+        <div class="column">
+            <div class="fl num01">
+                <span class="numSpan">1</span>
+                选择炒股基金
+            </div>
+            <div class="fl num02">
+                <span class="numSpan2">2</span>
+                支付保证金
+            </div>
+            <div class="fl num02">
+                <span class="numSpan2">3</span>
+                领取账号开始赚钱
+            </div>
+            <div class="fr columnRight">
+                <div class="icon01 fl"></div>
+                <div class="columnRightText fl" id="demo">
+                    <div id="demo1">
+                        <div>139******08 刚刚申请了 <span class="color_c82217 fb">1,000,000 资金 </span></div>
+                        <div>139******08 刚刚申请了 <span class="color_c82217 fb">1,000,000 资金 </span></div>
+                        <div>139******08 刚刚申请了 <span class="color_c82217 fb">1,000,000 资金 </span></div>
+                        <div>139******08 刚刚申请了 <span class="color_c82217 fb">1,000,000 资金 </span></div>
+                        <div>139******08 刚刚申请了 <span class="color_c82217 fb">1,000,000 资金 </span></div>
+                    </div>
+                    <div id="demo2"></div>
+                </div>
+            </div>
+        </div>
 
-					<p class="detail-p">
-                        未到止损线，自动延期；
-                    </p>
-				</div>
-				<div class="am-u-lg-3 am-u-md-6 am-u-sm-12 detail-mb">
-					<h3 class="detail-h3">
-                        <i class="am-icon-bar-chart am-icon-lg"></i>
-                        操盘灵活多样
-                    </h3>
+        <div ng-controller="MainApplyController as applyVM">
+            <div class="fl moneyListBox">
+                <div class="conlumn2">选择资金</div>
+                <div class="moneyList" id="jq_moneyList">
+                    <ul>
+                        <li ng-repeat="item in applyVM.amountList" ng-class="{select: item.select}" ng-click="applyVM.selectAmount(item)">
+                            <p class="p01"><span>\{{item.name}}</span></p>
+                            <p>炒股资金</p>
+                        </li>
+                        <li id="jq_qtMoney" ng-click="applyVM.toggleOtherAmount()">
+                            <p class="p02">其他金额</p>
+                            手动输入
+                        </li>
+                    </ul>
+                    <div class="qtmoneyBox" id="jq_qtmoneyBox" ng-show="applyVM.showOtherAmount">
+                        <p class="tc">请输入您的操盘金额</p>
+                        <div class="moneyInputBox">
+                            <input class="moneyinputText" type="text" name="" id="" placeholder="申请资金必须在2000元至30万元之间" min="\{{applyVM.min_amount}}" max="300000" step="1000" ng-model="applyVM.otherAmount" ng-change="applyVM.finishOtherAmount()"/>
+                            <input type="button" name="" id="" value="确定" class="moneyBtn" />
+                        </div>
+                        <p class="tc"><a href="javascript:" id="return_moneyBox" ng-click="applyVM.toggleOtherAmount()">返回</a></p>
+                    </div>
+                </div>
+            </div>
 
-					<p class="detail-p">
-                        加减配资、申请延期，贴心配资服务；
-					</p>
-				</div>
-				<div class="am-u-lg-3 am-u-md-6 am-u-sm-12 detail-mb">
-					<h3 class="detail-h3">
-                        <i class="am-icon-money am-icon-lg"></i>
-                        充值便捷
-                    </h3>
+            <div class="am-modal am-modal-no-btn" tabindex="-1" id="forbidden-stock-modal">
+                <div class="am-modal-dialog">
+                    <div class="am-modal-hd"><h1>今日限制买入股票</h1>
+                        <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+                    </div>
+                    <div class="am-modal-bd">
+                        <div class="limitstock">
+                            <ul>
+                                <li ng-repeat="stock in applyVM.forbiddenStockList"><span>\{{stock.stockID}}</span>\{{stock.stockName}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-					<p class="detail-p">
-                        通过支付宝、银行卡、财付通等渠道支付，快捷省心；
-                    </p>
-				</div>
-			</div>
-		</div>
-	</div>
+            <div class="fl infoBox">
+                <div class="conlumn2"><span>确认信息</span><a href="#" class="color_c82217" ng-click="applyVM.showForbiddenStocks()">今日限制买入股票</a></div>
+                <div class="infoTable">
+                    <table>
+                        <tr>
+                            <td class="infoTableTitle">操盘须知</td>
+                            <td class="infoTableNr infoText01">投资沪深A股，仓位不限制，盈利全归你</td>
+                        </tr>
+                        <tr>
+                            <td class="infoTableTitle">总操盘金额</td>
+                            <td class="infoTableNr"><span class="infoText02">\{{applyVM.summary.amount | currency:'':0}}</span> 元</td>
+                        </tr>
+                        <tr>
+                            <td class="infoTableTitle">风险保证金</td>
+                            <td class="infoTableNr"><span class="infoText02">\{{applyVM.summary.deposit | currency:'':0}}</span> 元</td>
+                        </tr>
+                        <tr>
+                            <td class="infoTableTitle">亏损警戒线</td>
+                            <td class="infoTableNr"><span class="infoText02">\{{applyVM.summary.warnValue | currency:'':0}}</span> 元</td>
+                        </tr>
+                        <tr>
+                            <td class="infoTableTitle">亏损平仓线</td>
+                            <td class="infoTableNr"><span class="infoText02">\{{applyVM.summary.sellValue | currency:'':0}}</span> 元</td>
+                        </tr>
+                        <tr>
+                            <td class="infoTableTitle">账户管理费</td>
+                            <td class="infoTableNr"><span class="infoText03">\{{applyVM.summary.charge | currency:'':2}}</span>元/每天  <span class="infoText04">（按天收取，周末节假日免费）</span></td>
+                        </tr>
+                    </table>
+                </div>
+                <p class="tr"><input type="checkbox" name="" id="" value="" ng-model="applyVM.agree"/>&nbsp;同意<a href="#" class="color_e23024">《牛金操盘协议》</a></p>
+                <input type="button" name="" id="" value="立即操盘" class="infoBtn" ng-click="applyVM.submitApply()" />
+            </div>
+        </div>
+        <div class="clear"></div>
+        <!--
+        <div class="Division"></div>
+        <div class="column3">
+            <div class="fl">
+                <span class="color_e23024">实盘动态</span> 今天大家都买啥？
+            </div>
+            <div class="fr">
+                <a href="#" class="color_333333">查看更多>></a>
+            </div>
+        </div>
+        <div class="tableList">
+            <table>
+                <tr>
+                    <th>用户昵称</th>
+                    <th>最新买入</th>
+                    <th>股票名称</th>
+                    <th>成交价格</th>
+                    <th>成交数量</th>
+                    <th>成交市值</th>
+                    <th>成交时间</th>
+                </tr>
+                <tr>
+                    <td>积善成德</td>
+                    <td>002432</td>
+                    <td>九安医疗</td>
+                    <td>35.380</td>
+                    <td>8400</td>
+                    <td>297192.00</td>
+                    <td>2015/3/16 15”00“37</td>
+                </tr>
+                <tr>
+                    <td>积善成德</td>
+                    <td>002432</td>
+                    <td>九安医疗</td>
+                    <td>35.380</td>
+                    <td>8400</td>
+                    <td>297192.00</td>
+                    <td>2015/3/16 15”00“37</td>
+                </tr>
+                <tr>
+                    <td>积善成德</td>
+                    <td>002432</td>
+                    <td>九安医疗</td>
+                    <td>35.380</td>
+                    <td>8400</td>
+                    <td>297192.00</td>
+                    <td>2015/3/16 15”00“37</td>
+                </tr>
+                <tr>
+                    <td>积善成德</td>
+                    <td>002432</td>
+                    <td>九安医疗</td>
+                    <td>35.380</td>
+                    <td>8400</td>
+                    <td>297192.00</td>
+                    <td>2015/3/16 15”00“37</td>
+                </tr>
+                <tr>
+                    <td>积善成德</td>
+                    <td>002432</td>
+                    <td>九安医疗</td>
+                    <td>35.380</td>
+                    <td>8400</td>
+                    <td>297192.00</td>
+                    <td>2015/3/16 15”00“37</td>
+                </tr>
+                <tr>
+                    <td>积善成德</td>
+                    <td>002432</td>
+                    <td>九安医疗</td>
+                    <td>35.380</td>
+                    <td>8400</td>
+                    <td>297192.00</td>
+                    <td>2015/3/16 15”00“37</td>
+                </tr>
+                <tr>
+                    <td>积善成德</td>
+                    <td>002432</td>
+                    <td>九安医疗</td>
+                    <td>35.380</td>
+                    <td>8400</td>
+                    <td>297192.00</td>
+                    <td>2015/3/16 15”00“37</td>
+                </tr>
+                <tr>
+                    <td>积善成德</td>
+                    <td>002432</td>
+                    <td>九安医疗</td>
+                    <td>35.380</td>
+                    <td>8400</td>
+                    <td>297192.00</td>
+                    <td>2015/3/16 15”00“37</td>
+                </tr>
+                <tr>
+                    <td>积善成德</td>
+                    <td>002432</td>
+                    <td>九安医疗</td>
+                    <td>35.380</td>
+                    <td>8400</td>
+                    <td>297192.00</td>
+                    <td>2015/3/16 15”00“37</td>
+                </tr>
+                <tr>
+                    <td>积善成德</td>
+                    <td>002432</td>
+                    <td>九安医疗</td>
+                    <td>35.380</td>
+                    <td>8400</td>
+                    <td>297192.00</td>
+                    <td>2015/3/16 15”00“37</td>
+                </tr>
+            </table>
+        </div>
+        -->
+        <div class="Division"></div>
+        <div class="column4">
+            合作机构
+        </div>
+        <div class="PartnersList">
+            <!--
+            <div class="PartnersBox fl">
+                <a href="#"><img src="images/img06.jpg"/></a>
+            </div>
+            <div class="PartnersBox fl">
+                <a href="#"><img src="images/img07.jpg"/></a>
+            </div>
+            <div class="PartnersBox fl">
+                <a href="#"><img src="images/img08.jpg"/></a>
+            </div>
+            <div class="PartnersBox fl">
+                <a href="#"><img src="images/img09.jpg"/></a>
+            </div>
+            -->
+            <div class="PartnersBox fl">
+                <a href="#"><img src="images/img10.jpg"/></a>
+            </div>
+            <div class="PartnersBox fl">
+                <a href="#"><img src="images/img11.jpg"/></a>
+            </div>
+            <div class="PartnersBox fl">
+                <a href="#"><img src="images/img12.jpg"/></a>
+            </div>
+            <div class="PartnersBox PartnersBox2 fl">
+                <a href="#"><img src="images/img13.jpg"/></a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
 </div>
-
-<!--
-<div class="hope">
-	<div class="am-g am-container">
-		<div class="am-u-lg-4 am-u-md-6 am-u-sm-12 hope-img">
-			<img src="/images/landing.png" alt="" data-am-scrollspy="{animation:'slide-left', repeat: false}">
-			<hr class="am-article-divider am-show-sm-only hope-hr">
-		</div>
-		<div class="am-u-lg-8 am-u-md-6 am-u-sm-12">
-			<h2 class="hope-title">同我们一起打造你的财富人生</h2>
-
-			<p>
-            已有 <strong class="am-text-danger am-text-xxl">12345 </strong> 位操盘手，在牛金网操盘<strong class="am-text-danger am-text-xxl"> 88,888,888 </strong>元
-			</p>
-		</div>
-	</div>
-</div>
--->
-
-<!--
-<div class="about">
-	<div class="am-g am-container">
-		<div class="am-u-lg-12">
-			<h2 class="about-title about-color">一步急速操盘、尽在牛金网， 非常欢迎大家的参与</h2>
-
-			<div class="am-g">
-				<div class="am-u-lg-6 am-u-md-4 am-u-sm-12">
-					<form class="am-form">
-						<label for="name" class="about-color">你的姓名</label>
-						<input id="name" type="text">
-						<br/>
-						<label for="email" class="about-color">你的邮箱</label>
-						<input id="email" type="email">
-						<br/>
-						<label for="message" class="about-color">你的简历</label>
-						<textarea id="message"></textarea>
-						<br/>
-						<button type="submit" class="am-btn am-btn-primary am-btn-sm"><i class="am-icon-check"></i> 加入我们</button>
-					</form>
-					<hr class="am-article-divider am-show-sm-only">
-				</div>
-
-				<div class="am-u-lg-6 am-u-md-8 am-u-sm-12">
-					<h4 class="about-color">关于我们</h4>
-
-					<p>牛金网是行业新秀，将致力于中国互联网金融的发展，
-					专注于互联网金融产品的开发。在这样一个伟大的变革时代，证券及金融IT行业发展前景无限，牛金网将逐步扩大客户对象和业务范围，完善公司各项流程和提系建设，为公司未来的快速发展提供强有力的平台支撑。在未来牛金网将秉承“客户第一，市场导向”的理念，以“激情，信心，耐心，责任心”向着领先的互联网金融服务提供商的目标迈进。</p>
-					<h4 class="about-color">团队介绍</h4>
-
-					<p>牛金网 获得了XX创投孵化器的支持，其领先科技已得到全球多家企业及机构的认可与信赖，客户包括全球500强企业、美国政府、国内政府机关、国内外上市公司、以及互联网金融标准化组织。</p>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
--->

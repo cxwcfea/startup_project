@@ -11,31 +11,7 @@ var Apply = require('../models/Apply'),
 
 exports.getApplyPage = function(req, res, next) {
     res.locals.apply_menu = true;
-    res.render('apply');
-};
-
-exports.placeApply = function(req, res, next) {
-    if (!req.isAuthenticated()) {
-        req.session.lastLocation = '/apply';
-        return res.send({success:false, reason:'not authenticate'});
-    }
-
-    var applyData = new Apply({
-        userID: req.user._id,
-        userMobile: req.user.mobile,
-        serialID: util.generateSerialID(),
-        amount: req.body.amount,
-        deposit: req.body.deposit,
-        period: req.body.day
-    });
-
-    Apply.create(applyData, function(err, apply) {
-        if(err) {
-            return res.send({success:false, reason:err.toString()});
-        }
-        //req.session.applySummary = req.body;
-        res.send({success:true, apply_id:apply.serialID});
-    });
+    res.render('apply/apply');
 };
 
 exports.getAppliesForUser = function(req, res, next) {
@@ -47,6 +23,7 @@ exports.getAppliesForUser = function(req, res, next) {
     });
 };
 
+/*
 exports.confirmApply = function(req, res, next) {
     res.locals.apply_menu = true;
     Apply.findOne({serialID:req.params.id}, function(err, collection) {
@@ -87,6 +64,7 @@ exports.confirmApply = function(req, res, next) {
         }
     });
 };
+*/
 
 exports.getApplyDetail = function (req, res, next) {
     Apply.findOne({serialID:req.params.id}, function(err, collection) {
@@ -429,9 +407,9 @@ exports.freeApply = function(req, res, next) {
     }
 };
 
-exports.NewplaceApply = function(req, res, next) {
+exports.placeApply = function(req, res, next) {
     if (!req.isAuthenticated()) {
-        req.session.lastLocation = '/new_apply';
+        req.session.lastLocation = '/apply';
         res.status(401);
         return res.send({success:false, reason:'not authenticate'});
     }
@@ -448,14 +426,14 @@ exports.NewplaceApply = function(req, res, next) {
     Apply.create(applyData, function(err, apply) {
         if(err) {
             res.status(400);
-            logger.warn('error when placeNewApply:' + err.toString());
+            logger.warn('error when placeApply:' + err.toString());
             return res.send({success:false, reason:err.toString()});
         }
         res.send({apply_serial_id:apply.serialID});
     });
 };
 
-exports.NewconfirmApply = function(req, res, next) {
+exports.confirmApply = function(req, res, next) {
     res.locals.apply_menu = true;
     Apply.findOne({serialID:req.params.serial_id}, function(err, apply) {
         if (err || !apply) {

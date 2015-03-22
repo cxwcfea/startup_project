@@ -21,6 +21,7 @@ var passport = require('passport'),
 module.exports.postLogin = function(req, res, next) {
     req.assert('mobile', '无效的手机号码').len(11, 11).isInt();
     req.assert('password', '密码不能为空').notEmpty();
+    req.assert('password', '密码至少需要6位').len(6);
 
     var errors = req.validationErrors();
 
@@ -44,7 +45,7 @@ module.exports.postLogin = function(req, res, next) {
                 req.session.lastLocation = null;
                 res.redirect(location);
             } else {
-                res.redirect('/user');
+                res.redirect('/');
             }
         });
     });
@@ -52,6 +53,7 @@ module.exports.postLogin = function(req, res, next) {
 };
 
 module.exports.postSignup = function(req, res, next) {
+    req.assert('verify_code', '验证码错误').equals(req.session.sms_code);
     req.assert('mobile', '无效的手机号码').len(11, 11).isInt();
     req.assert('password', '密码不能为空').notEmpty();
     req.assert('password', '密码至少需要6位').len(6);
@@ -63,9 +65,16 @@ module.exports.postSignup = function(req, res, next) {
         return res.redirect('/signup');
     }
 
+    var user_name = '';
+    if (req.body.user_name) {
+        user_name = req.body.user_name;
+    }
     var user = new User({
         mobile: req.body.mobile,
-        password: req.body.password
+        password: req.body.password,
+        profile: {
+            name: user_name
+        }
     });
 
     User.findOne({ mobile: req.body.mobile }, function(err, existingUser) {
@@ -80,7 +89,7 @@ module.exports.postSignup = function(req, res, next) {
             if (err) return next(err);
             req.logIn(user, function(err) {
                 if (err) return next(err);
-                res.redirect('/user');
+                res.redirect('/');
             });
         });
     });
@@ -279,18 +288,20 @@ module.exports.getUser = function(req, res) {
     });
 };
 
-module.exports.updateUser = function(req, res, next) {
-    logger.debug('updateUser');
-    var uid = req.params.id ? req.params.id : req.user.id;
-    if (req.params.id && req.params.id !== req.user.id) {
-        return res.send({success:false, reason:'无效的用户！'});
+module.exports.updateUser = function(req, res) {
+    if (req.params.id !== req.user._id) {
+        logger.warn('updateUser invalid user');
+        res.status(401);
+        return res.send({reason:'无效的用户'});
     }
     var userData = req.body;
-    User.update({_id:uid}, userData, function (err, numberAffected, raw) {
+    User.update({_id:req.params.id}, userData, function (err, numberAffected, raw) {
         if (err) {
-            return res.send({success:false, reason:err.toString()});
+            logger.warn('updateUser db error:' + err.toString());
+            res.status(503);
+            return res.send({reason:err.toString()});
         }
-        res.send({success:true});
+        res.send(userData);
     });
 };
 
@@ -540,6 +551,7 @@ module.exports.getResetFinancePassword = function(req, res) {
 module.exports.postUpdateFinancePassword = function(req, res, next) {
     req.assert('new_password', '密码至少需要6位').len(6);
     req.assert('confirm_password', '两次密码不匹配').equals(req.body.new_password);
+    req.assert('verify_code', '验证码错误').equals(req.session.sms_code);
 
     var errors = req.validationErrors();
 
@@ -547,21 +559,23 @@ module.exports.postUpdateFinancePassword = function(req, res, next) {
         return res.send({success:false, reason:errors[0].msg});
     }
 
-    User.findById(req.user.id, function(err, user) {
-        if (err) return res.send({success: false, reason: err.toString()});
-        if (!user) return res.send({success: false, reason: '无效的用户！'});
-        user.comparePassword(req.body.password, function (err, isMatch) {
-            if (err) return res.send({success: false, reason: err.toString()});
-            if (!isMatch) {
-                return res.send({success: false, reason: '登录密码错误!'});
-            } else {
-                user.finance.password = req.body.new_password;
+    User.findById(req.user._id, function(err, user) {
+        if (err) {
+            res.status(503);
+            return res.send({success: false, reason: err.toString()});
+        }
+        if (!user) {
+            res.status(503);
+            return res.send({success: false, reason: '无效的用户！'});
+        }
+        user.finance.password = req.body.new_password;
 
-                user.save(function (err) {
-                    if (err) return res.send({success: false, reason: err.toString()});
-                    res.send({success: true});
-                });
+        user.save(function (err) {
+            if (err) {
+                res.status(503);
+                return res.send({success: false, reason: err.toString()});
             }
+            res.send({success: true});
         });
     });
 };
@@ -1351,16 +1365,15 @@ function homeIndex(req, res, next) {
     var user = req.user;
 
     res.locals.user_menu = true;
-    res.render('user/new_index', {
-        layout:'main2',
+    res.render('user/index', {
         bootstrappedNiujinUserID: JSON.stringify(req.user._id)
     });
 }
 
 module.exports.registerRoutes = function(app, passportConf) {
-    app.get('/new_user', passportConf.isAuthenticated, homeIndex);
+    app.get('/user', passportConf.isAuthenticated, homeIndex);
 
-    app.get('/new_user/*', passportConf.isAuthenticated, function(req, res, next) {
+    app.get('/user/*', passportConf.isAuthenticated, function(req, res, next) {
         res.render('user/' + req.params[0], {layout:null});
     });
 };

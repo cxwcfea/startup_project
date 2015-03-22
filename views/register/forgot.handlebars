@@ -1,64 +1,43 @@
-<div class="header login-header">
-    <div class="am-g">
-        <h1>互联网金融</h1>
-        <p>股票融资，交易管理，资金增值，理财产品，证券</p>
+<div class="wrapper reg">
+    <div class="freeTitle">
+        <div class="fl"><span>重置密码</span></div>
+        <div class="clear"></div>
     </div>
-    <hr />
+    <form method="POST" id="forgot-password-form" name="passForm">
+        <div class="carFormBox marTop25">
+            <div class="cartTitle fl">
+                手机号码：
+            </div>
+            <div class="cartFomeContent fl">
+                <input type="tel" class="inputText" name="mobile" id="mobile" pattern="1[3|5|7|8|][0-9]{9}" required autofocus placeholder="请输入常用的手机号">
+            </div>
+        </div>
+        <div class="carFormBox">
+            <div class="cartTitle fl">
+                验证码：
+            </div>
+            <div class="cartFomeContent fl">
+                <a href="javascript:" id="verify-code-btn" class="carbtn02">获取验证码</a>
+                <input type="number" class="inputText inputYzm" name="verify_code" placeholder="6位数字验证码" required>
+            </div>
+        </div>
+        <div class="carFormBox">
+            <div class="cartTitle fl">
+                新密码：
+            </div>
+            <div class="cartFomeContent fl">
+                <input type="password" placeholder="密码长度6-20位" maxlength="20" minlength="6" class="inputText" name="password" required>
+            </div>
+        </div>
+        <div class="carFormBox">
+            <div class="cartTitle fl">
+                确认密码：
+            </div>
+            <div class="cartFomeContent fl">
+                <input type="password" placeholder="保持密码一致" maxlength="20" minlength="6" class="inputText" name="confirm_password" required>
+            </div>
+        </div>
+        <input id="forgot-password-btn" type="submit" class="ideBtn01 RegBtn01" value="修改密码">
+    </form>
 </div>
-<div class="am-g">
-    <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
-        <h3>找回密码</h3>
-        <hr>
-
-        <form method="POST" class="am-form" name="passForm" data-am-validator>
-            <div class="am-g am-margin-top">
-                <div class="am-u-sm-4 am-u-md-2 am-text-right">
-                    手机号码
-                </div>
-                <div class="am-u-sm-8 am-u-md-6 am-u-end">
-                    <input id="mobile" name="mobile" type="tel" pattern="1[3|5|7|8|][0-9]{9}" class="am-input-sm" placeholder="请输入您的手机号码" required autofocus>
-                </div>
-            </div>
-
-            <div class="am-g am-margin-top">
-                <div class="am-u-sm-4 am-u-md-2 am-text-right">
-                    验证码
-                </div>
-                <div class="am-form-group am-u-sm-8 am-u-md-2 am-u-end">
-                    <input name="verify_code" type="number" class="am-input-sm" required>
-                </div>
-                <button id="forgot-verify-code-btn" type="submit" class="verify-code-btn am-btn am-btn-sm am-btn-success am-u-sm-offset-5 am-u-sm-6 am-u-md-offset-0 am-u-md-3 am-u-end" data-am-loading="{spinner: 'circle-o-notch', loadingText: '没收到?60秒后再试'}">获取验证码</button>
-            </div>
-
-            <div class="am-g am-margin-top">
-                <div class="am-u-sm-4 am-u-md-2 am-text-right">
-                    新密码
-                </div>
-                <div class="am-u-sm-8 am-u-md-6 am-u-end">
-                    <input name="password" type="password" class="am-input-sm" required>
-                </div>
-            </div>
-
-            <div class="am-g am-margin-top">
-                <div class="am-u-sm-4 am-u-md-2 am-text-right">
-                    重复密码
-                </div>
-                <div class="am-u-sm-8 am-u-md-6 am-u-end">
-                    <input name="confirm_password" type="password" class="am-input-sm" required>
-                </div>
-            </div>
-
-            <div class="am-g am-margin-top">
-                <div class="am-u-sm-offset-4 am-u-md-offset-2 am-u-sm-8 am-u-md-4 am-u-end col-end">
-                    <button type="submit" class="am-btn am-btn-primary">重置密码</button>
-                </div>
-            </div>
-
-        </form>
-    </div>
-    <hr>
-    <br>
-    <br>
-    <br>
-    {{> mobile_num_alert}}
-</div>
+{{> mobile_num_alert}}

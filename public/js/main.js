@@ -1,12 +1,11 @@
 $(document).ready(function() {
     moment.locale('zh-cn');
 
-    $('.verify-code-btn').click(function () {
+    $('#verify-code-btn').click(function () {
         var $btn = $(this);
 
         var mobile = $("#mobile")[0].value;
         if (!mobile || mobile.search(/1[3|5|7|8|][0-9]{9}$/) !== 0) {
-            //alert('请输入正确的手机号码');
             $('#correct-mobile-alert').modal({});
             return;
         }
@@ -27,9 +26,7 @@ $(document).ready(function() {
         var requestData = {
             mobile: mobile.trim()
         };
-        $.get("/api/send_sms_verify_code", requestData, function (data) {
-            console.log(data);
-        });
+        $.get("/api/send_sms_verify_code", requestData, function (data) {});
     });
 
     window.aibeiNotify = function(data) {
@@ -225,12 +222,27 @@ $(document).ready(function() {
             $('#apply-postpone-btn').popover({
                 content: '请输入有效的天数'
             });
+            $('#forgot-password-form').popover({
+                content: '请检查输入，确保手机号正确，且密码长度符合标准'
+            });
+            $('#signup-submit-btn').popover({
+                content: '请检查输入，确保手机号正确，且密码长度符合标准'
+            });
+            $('#login-btn').popover({
+                content: '请确保手机号正确，且密码长度符合标准'
+            });
         }
     };
 
     $('#get-profit-form').validator(form_options);
 
     $('#add-deposit-form').validator(form_options);
+
+    $('#forgot-password-form').validator(form_options);
+
+    $('#signup-form').validator(form_options);
+
+    $('#login-form').validator(form_options);
 
     $('#add-deposit').on('click', function(e) {
         e.preventDefault();

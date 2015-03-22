@@ -1,150 +1,63 @@
-<div class="am-cf am-padding">
-    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg"> 账户总览 </strong> </div>
-</div>
-
-<!--
-<div class="am-g">
-    <div class="am-u-md-6">
-        <div class="am-panel am-panel-default">
-            <div class="am-panel-bd">
-                <div class="am-g">
-                    <div class="am-u-md-4">
-                        用户：\{{homeVM.displayName()}}
-                        <img class="am-img-circle am-img-thumbnail" ng-src=\{{homeVM.user.profile.picture}} alt=""/>
-                    </div>
-                    <div class="am-u-md-8">
-                        <strong class="am-text-warning am-text">
-                            余额: \{{homeVM.user.finance.balance.toFixed(2)}}
-                        </strong>
-                        <br>
-                    </div>
-                    <div class="am-u-md-6">
-                        <strong class="am-text-primary am-text-lg">注册日期</strong><span id="my-regDate"> \{{homeVM.registerDate()}}</span>
-                        <br>
-                    </div>
-                    <div class="am-u-md-8">
-                        <strong class="am-text-primary am-text-lg">安全等级:</strong><span class="am-text-danger" id="my-secureLevel"> 中等</span>
-                        <br>
-                    </div>
-                    <div class="am-u-md-6">
-                        <a class="am-btn am-btn-lg am-btn-warning" href="/user#/mypay">
-                            <i class="am-icon-money"></i>
-                            充值
-                        </a>
-                        <a class="am-btn am-btn-lg am-btn-warning" href="/user#/withdraw">
-                            <i class="am-icon-shopping-cart"></i>
-                            提现
-                        </a>
-                    </div>
-                </div>
+<div class="fr RightMain">
+    <div class="rightMenu">
+        <ul>
+            <li class="select"><a href="#">操盘总览</a></li>
+        </ul>
+    </div>
+    <div class="moneyBox">
+        <div class="moneyBoxLeft fl">
+            <p class="p01">
+                <span class="dis fl">账户余额：</span>
+                <span class="dis fr color_999999">(账户余额 = 可用余额 + 冻结资金)&nbsp;&nbsp;</span>
+            </p>
+            <p class="p02 color_f2991b">￥<span>\{{homeVM.user_total_capital | currency:'':2}}</span></p>
+            <p class="p03">可用余额￥<span class="fb">\{{homeVM.user.finance.balance | currency:'':2}}</span>&nbsp;&nbsp;冻结资金￥\{{homeVM.user.finance.freeze_capital | currency:'':2}}</p>
+            <p class="p04">
+                <a href="#" class="btn01 marRight10">充值</a>
+                <a href="#" class="btn02">提现</a>
+            </p>
+        </div>
+        <div class="moneyBoxRight fl">
+            <p class="p01">当前操盘总金额：</p>
+            <p class="p02 color_c82217">￥<span>\{{homeVM.user.finance.total_capital | currency:'':2}}</span></p>
+            <p class="p03">共有3笔配资，总保证金￥<span>\{{homeVM.user.finance.deposit | currency:'':2}}</span></p>
+            <p class="p04">
+                <a href="/new_apply" class="btn03 ">新增配资 </a>
+            </p>
+        </div>
+    </div>
+    <div class="tableMenu">
+        <ul id="tableMenu">
+            <li ng-repeat="item in homeVM.queryItems" ng-click="homeVM.queryItem(item)" ng-class="{select: item.value === homeVM.selected}">\{{item.name}}</li>
+        </ul>
+        <!--
+        <div class="searchBox fr">
+            <input type="text" class="searchInputText" name="" id="" value="" placeholder="输入充值金额/业务单号搜索" />
+            <input type="button" name="" class="searchBtn" id="" value="搜索" />
+        </div>
+        -->
+    </div>
+    <div class="tableMain" id="tableMain">
+        <div class="tableBox" id="jq_tableBox">
+            <table>
+                <tr>
+                    <th>操盘金额</th>
+                    <th>保证金额</th>
+                    <th>操盘结束时间</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                <tr ng-repeat="apply in homeVM.showingItems | orderBy:'applyAt':true" ng-class-even="homeVM.tableCss.even">
+                    <td>\{{apply.amount | currency:'':2}}元</td>
+                    <td>\{{apply.deposit | currency:'':2}}元</td>
+                    <td>\{{apply.end_date | displayDate}}</td>
+                    <td ng-class="{color_c82217: apply.status === 2, color_f2991b: apply.status === 5}">\{{apply.status | applyStatus}}</td>
+                    <td><a class="apply-detail-link" ng-click="homeVM.manageApply(apply)">详情</a>  <a href="#" >操盘账户</a></td>
+                </tr>
+            </table>
+            <div class="fr">
+                <pagination class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="homeVM.itemsPerPage" total-items="homeVM.totalItems" ng-model="homeVM.currentPage" ng-change="homeVM.pageChanged()"></pagination>
             </div>
         </div>
     </div>
 </div>
--->
-
-<ul class="am-avg-sm-1 am-avg-md-3 am-margin am-padding am-text-center admin-content-list ">
-    <li>
-        <div>
-            <p>
-                用户：\{{homeVM.displayName()}}
-            </p>
-            <strong class="am-text-warning am-text">
-                余额: \{{homeVM.user.finance.balance.toFixed(2)}}
-            </strong>
-        </div>
-    </li>
-    <li>
-        <a class="am-btn am-btn-lg am-btn-warning" href="/user#/mypay">
-            <i class="am-icon-money"></i>
-            充值
-        </a>
-    </li>
-    <li>
-        <a class="am-btn am-btn-lg am-btn-warning" href="/user#/withdraw">
-            <i class="am-icon-shopping-cart"></i>
-            提现
-        </a>
-    </li>
-    <!--
-    <li><a href="" class="am-text-success"><span class="am-icon-rmb"></span><br/>可用资产<br/>\{{homeVM.user.finance.available_capital.toFixed(2)}}</a></li>
-    <li><a href="" class="am-text-danger"><span class="am-icon-money"></span><br/>冻结资金<br/>\{{homeVM.user.finance.deposit.toFixed(2)}}</a></li>
-    <li><a href="" class="am-text-warning"><span class="am-icon-shopping-cart"></span><br/>配资资产<br/>\{{homeVM.user.finance.total_capital.toFixed(2)}}</a></li>
-    <li><a href="" class="am-text-secondary"><span class="am-icon-line-chart"></span><br/>股票市值<br/>\{{homeVM.user.finance.market_value.toFixed(2)}}</a></li>
--->
-</ul>
-
-<ul class="am-avg-sm-1 am-avg-md-4 am-margin am-padding am-text-center admin-content-list ">
-    <li class="am-text-success"><span class="am-icon-rmb "></span><br/>总资产<br/>\{{homeVM.user_total_capital}}</li>
-    <li class="am-text-danger"><span class="am-icon-money"></span><br/>冻结资金<br/>\{{homeVM.user.finance.freeze_capital.toFixed(2)}}</li>
-    <li class="am-text-secondary"><span class="am-icon-shopping-cart"></span><br/>配资资产<br/>\{{homeVM.user.finance.total_capital.toFixed(2)}}</li>
-    <li class="am-text-warning"><span class="am-icon-line-chart"></span><br/>风险保证金<br/>\{{homeVM.user.finance.deposit.toFixed(2)}}</li>
-</ul>
-
-<!--
-<div class="am-g">
-    <div class="am-u-md-12 am-u-sm-12">
-        <div id="main-chart" style="height: 380px;"></div>
-    </div>
-    <script src="/vendor/echarts-all.js"></script>
-    <script>
-        var myChart = echarts.init(document.getElementById('main-chart'));
-        var option = {
-            title : {
-                text: '最近一周收益'
-            },
-            tooltip : {
-                trigger: 'axis'
-            },
-            legend: {
-                data:['收益率']
-            },
-            toolbox: {
-                show : false,
-                feature : {
-                    mark : {show: true},
-                    dataView : {show: true, readOnly: false},
-                    magicType : {show: true, type: ['line', 'bar']},
-                    restore : {show: true},
-                    saveAsImage : {show: true}
-                }
-            },
-            calculable : true,
-            xAxis : [
-                {
-                    type : 'category',
-                    boundaryGap : false,
-                    data : ['周一','周二','周三','周四','周五','周六','周日']
-                }
-            ],
-            yAxis : [
-                {
-                    type : 'value',
-                    axisLabel : {
-                        formatter: '{value} %'
-                    }
-                }
-            ],
-            series : [
-                {
-                    name:'收益率',
-                    type:'line',
-                    data:[11, 11, 15, 13, 12, 13, 10],
-                    markPoint : {
-                        data : [
-                            {type : 'max', name: '最大值'},
-                            {type : 'min', name: '最小值'}
-                        ]
-                    },
-                    markLine : {
-                        data : [
-                            {type : 'average', name: '平均值'}
-                        ]
-                    }
-                },
-            ]
-        };
-        myChart.setOption(option);
-    </script>
-</div>
--->
