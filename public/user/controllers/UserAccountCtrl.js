@@ -19,7 +19,7 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
         },
         {
             file: '/views/identity.html',
-            name: '身份认证',
+            name: '实名认证',
             menu: 1,
             value: 1
         },
@@ -121,6 +121,9 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
 
     vm.itemAction = function(item) {
         switch (item.value) {
+            case 1:
+                vm.currentCategory = vm.categories[1];
+                break;
             case 3:
                 vm.currentCategory = vm.categories[3];
                 break;

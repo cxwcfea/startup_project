@@ -1,5 +1,5 @@
 'use strict';
-angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', 'njOrder', 'njCard', 'BankNameList', 'gbNotifier', 'njCachedCards', function($scope, $http, njOrder, njCard, BankNameList, gbNotifier, njCachedCards) {
+angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$window', 'njOrder', 'njCard', 'BankNameList', 'gbNotifier', 'njCachedCards', function($scope, $http, $window, njOrder, njCard, BankNameList, gbNotifier, njCachedCards) {
     var vm = this;
     $('.footer').addClass('marTop200');
 
@@ -7,6 +7,8 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', 'njO
     vm.user = $scope.data.currentUser;
     njCachedCards.setUID(vm.user._id);
     vm.cards = njCachedCards.query();
+    vm.currentPayType = 0;
+    vm.useCredit = false;
 
     var order_list = {};
     var currentOrders;
@@ -19,6 +21,7 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', 'njO
     initData();
     vm.BankNameList = BankNameList;
     vm.bankObj = vm.BankNameList[0];
+    vm.payBank = 0;
 
     function initData() {
         order_list = njOrder.query({uid:vm.user._id}, function () {
@@ -84,7 +87,7 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', 'njO
 
     vm.categories = [
         {
-            file: '/views/recharge.html',
+            file: '/user/recharge',
             name: '充值',
             menu: 0,
             value: 0
@@ -115,6 +118,31 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', 'njO
         }
     ];
 
+    vm.payTypes = [
+        {
+            name: '网银充值',
+            value: 0
+        },
+        {
+            name: '支付宝转账',
+            value: 1
+        },
+        {
+            name: '银行汇款',
+            value: 2
+        }
+    ];
+
+    vm.alerts = [];
+
+    var addAlert = function(type, msg) {
+        vm.alerts.push({type:type, msg: msg});
+    };
+
+    vm.closeAlert = function(index) {
+        vm.alerts.splice(index, 1);
+    };
+
     vm.currentCategory = vm.categories[2];
 
     vm.selectCategory = function(c) {
@@ -123,6 +151,8 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', 'njO
             if (vm.cards.length > 0) {
                 vm.selectedCard = vm.cards[0];
             }
+        } else if (c.value === 2) {
+            pageReset();
         }
     };
 
@@ -215,4 +245,74 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', 'njO
             });
     };
 
+    vm.selectPayType = function (type) {
+        vm.currentPayType = type.value;
+    };
+
+    vm.selectPayBank = function (bank) {
+        vm.payBank = bank.value;
+        console.log('selectPayBank ' + vm.payBank);
+    };
+
+    vm.changeCardType = function(credit) {
+        vm.useCredit = credit;
+        if (vm.useCredit) {
+            vm.BankNameList = BankNameList.filter(function (element, index, array) {
+                return element.credit;
+            });
+        } else {
+            vm.BankNameList = BankNameList;
+        }
+    };
+
+    vm.onlinePay = function() {
+        if (!vm.pay_amount || vm.pay_amount < 0) {
+            addAlert('danger', '请输入有效的充值金额');
+            return;
+        }
+        vm.pay_amount = Number(vm.pay_amount.toFixed(2));
+        if (!vm.pay_amount) {
+            addAlert('danger', '最少充值1分钱');
+            return;
+        }
+
+        var newOrder = new njOrder({uid:vm.user._id});
+        newOrder.userID = vm.user._id;
+        newOrder.userMobile = vm.user.mobile;
+        newOrder.dealType = 1;
+        newOrder.amount = vm.pay_amount;
+        newOrder.description = '网站充值';
+        newOrder.payType = 1;
+        newOrder.$save(function(o, responseHeaders) {
+            order_list.unshift(o);
+            currentOrders = order_list;
+
+            var Name = $('#Name')[0].value;
+            var Version = $('#Version')[0].value;
+            var Charset = $('#Charset')[0].value;
+            var MsgSender = $('#MsgSender')[0].value;
+            var OrderNo = $('#OrderNo')[0].value = o._id;
+            var OrderAmount = $('#OrderAmount')[0].value = o.amount;
+            var OrderTime = $('#OrderTime')[0].value = moment().format("YYYYMMDDHHmmss");
+            var PayType = $('#PayType')[0].value;
+            var PayChannel = $('#PayChannel')[0].value = vm.useCredit ? 20 : 19;
+            var InstCode = $('#InstCode')[0].value = BankNameList[vm.payBank].instCode;
+            var PageUrl = $('#PageUrl')[0].value;
+            var BackUrl = $('#BackUrl')[0].value;
+            var NotifyUrl = $('#NotifyUrl')[0].value;
+            var ProductName = $('#ProductName')[0].value;
+            var BuyerIp = $('#BuyerIp')[0].value = $window.returnCitySN["cip"];
+            var SignType = $('#SignType')[0].value;
+            var md5Key = 'shengfutongSHENGFUTONGtest';
+
+            var sign_origin = Name+Version+Charset+MsgSender+OrderNo+OrderAmount+OrderTime+
+                PayType+PayChannel+InstCode+PageUrl+BackUrl+NotifyUrl+ProductName+BuyerIp+SignType+md5Key;
+            var SignMsg = SparkMD5.hash(sign_origin);
+            SignMsg = SignMsg.toUpperCase();
+            $('#SignMsg')[0].value = SignMsg;
+            $('#shengPayForm')[0].submit();
+        }, function(response) {
+            addAlert('danger', '服务暂时不可用，请稍后再试');
+        });
+    }
 }]);

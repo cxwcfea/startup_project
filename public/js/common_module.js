@@ -267,96 +267,134 @@
         {
             name: '工商银行',
             img: '/images/yh/icbc.png',
+            instCode: 'ICBC',
+            credit: true,
             value: 0
         },
         {
             name: '建设银行',
             img: '/images/yh/ccb.png',
+            instCode: 'CCB',
+            credit: true,
             value: 1
         },
         {
             name: '农业银行',
             img: '/images/yh/abc.png',
+            instCode: 'ABC',
+            credit: true,
             value: 2
         },
         {
             name: '中国银行',
             img: '/images/yh/boc.png',
+            instCode: 'BOC',
+            credit: true,
             value: 3
         },
         {
             name: '招商银行',
-            img: '/images/yh/cmc.png',
+            img: '/images/yh/cmb.png',
+            instCode: 'CMB',
+            credit: true,
             value: 4
         },
         {
             name: '交通银行',
             img: '/images/yh/bcs.png',
+            instCode: 'COMM',
+            credit: true,
             value: 5
         },
         {
             name: '邮政储蓄银行',
             img: '/images/yh/psbc.png',
+            instCode: 'PSBC',
+            credit: false,
             value: 6
         },
         {
             name: '广发银行',
             img: '/images/yh/cgb.png',
+            instCode: 'GDB',
+            credit: true,
             value: 7
         },
         {
             name: '光大银行',
             img: '/images/yh/ceb.png',
+            instCode: 'CEB',
+            credit: true,
             value: 8
         },
         {
             name: '兴业银行',
             img: '/images/yh/cib.png',
+            instCode: 'CIB',
+            credit: true,
             value: 9
         },
         {
             name: '北京银行',
             img: '/images/yh/bob.png',
+            instCode: 'BCCB',
+            credit: false,
             value: 10
         },
         {
             name: '浦发银行',
             img: '/images/yh/spdb.png',
+            instCode: 'SPDB',
+            credit: true,
             value: 11
         },
         {
             name: '民生银行',
             img: '/images/yh/cmbc.png',
+            instCode: 'CMBC',
+            credit: true,
             value: 12
         },
         {
             name: '中信银行',
             img: '/images/yh/ecitic.png',
+            instCode: 'CITIC',
+            credit: true,
             value: 13
         },
         {
             name: '华夏银行',
             img: '/images/yh/hx-2.png',
+            instCode: 'HXB',
+            credit: false,
             value: 14
         },
         {
             name: '平安银行',
             img: '/images/yh/pa.png',
+            instCode: 'SZPAB',
+            credit: true,
             value: 15
         },
+        /*
         {
             name: '杭州银行',
             img: '/images/yh/hzyh.png',
             value: 16
         },
+        */
         {
             name: '宁波银行',
             img: '/images/yh/nbcb.png',
+            instCode: 'NBCB',
+            credit: false,
             value: 17
         },
         {
             name: '上海银行',
             img: '/images/yh/bos.png',
+            instCode: 'BOS',
+            credit: true,
             value: 18
         }
     ]);

@@ -224,4 +224,18 @@ module.exports = function(app) {
     app.get('/admin_test', passportConf.requiresRole('admin'), function(req, res, next) {
         res.render('admin_test');
     });
+
+    function getClientIp(req) {
+        return req.headers['x-forwarded-for'] ||
+            req.connection.remoteAddress ||
+            req.socket.remoteAddress ||
+            req.connection.socket.remoteAddress;
+    }
+
+    app.post('/testpay', function(req, res, nest) {
+        console.log(req.body);
+        console.log('client ip:' + req.ip);
+        console.log(getClientIp(req));
+        res.send({});
+    });
 };
