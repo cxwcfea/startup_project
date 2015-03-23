@@ -23,8 +23,12 @@ angular.module('userApp').controller('UserHomeCtrl', ['$scope', '$location', '$h
     }
 
     function initData() {
+        vm.ongoing_apply_num = 0;
         apply_list = njApply.query({uid:vm.user._id}, function () {
             angular.forEach(apply_list, function(value, key) {
+                if (value.status != 1 && value.status != 3) {
+                    ++vm.ongoing_apply_num;
+                }
                 formatData(value);
             });
             apply_list = $filter('orderBy')(apply_list, 'applyAt', true);

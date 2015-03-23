@@ -20,7 +20,7 @@
         <div class="moneyBoxRight fl">
             <p class="p01">当前操盘总金额：</p>
             <p class="p02 color_c82217">￥<span>\{{homeVM.user.finance.total_capital | currency:'':2}}</span></p>
-            <p class="p03">共有3笔配资，总保证金￥<span>\{{homeVM.user.finance.deposit | currency:'':2}}</span></p>
+            <p class="p03">共有\{{homeVM.ongoing_apply_num}}笔配资，总保证金￥<span>\{{homeVM.user.finance.deposit | currency:'':2}}</span></p>
             <p class="p04">
                 <a href="/apply" class="btn03 ">新增配资 </a>
             </p>

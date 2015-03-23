@@ -112,7 +112,8 @@ exports.getCloseApply = function(req, res, next) {
 exports.postCloseApply = function(req, res) {
     Apply.update({serialID:req.params.serial_id}, {status:5}, function (err, numberAffected, raw) {
         if (err) {
-            return res.send({success:false, reason:err.toString()});
+            res.status(500);
+            return res.send({reason:err.toString()});
         }
         res.send({success:true});
     });
@@ -339,8 +340,8 @@ exports.freeApply2 = function(req, res, next) {
                 userID: req.user._id,
                 userMobile: req.user.mobile,
                 serialID: util.generateSerialID(),
-                amount: 2000,
-                deposit: 200,
+                amount: 2001,
+                deposit: 0,
                 isTrial: true,
                 status: 4,
                 period: 2

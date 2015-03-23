@@ -1,12 +1,12 @@
 'use strict';
-angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$window', '$http', '$interval', '$location', function($scope, $filter, $window, $http, $interval, $location) {
+angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$window', '$http', '$interval', '$location', '$timeout', function($scope, $filter, $window, $http, $interval, $location, $timeout) {
     var vm = this;
     $('.footer').addClass('marTop200');
 
     $scope.$on("$routeChangeSuccess", function () {
         if ($location.path().indexOf("/user_account") === 0) {
             var request_category = $location.search()['category'];
-            if (!request_category) {
+            if (!request_category || request_category > 3) {
                 request_category = 0;
             }
             vm.currentCategory = vm.categories[request_category];

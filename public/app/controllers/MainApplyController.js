@@ -158,8 +158,11 @@
             vm.serviceFee = service_charge * vm.apply.period;
             vm.totalAmount = vm.apply.deposit + vm.serviceFee;
             vm.shouldPay = vm.totalAmount - vm.apply.userBalance;
-            if (vm.shouldPay < 0) {
+            if (vm.shouldPay <= 0) {
                 vm.shouldPay = 0;
+                vm.balancePay = true;
+            } else {
+                vm.balancePay = false;
             }
         }
 

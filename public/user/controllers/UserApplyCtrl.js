@@ -1,5 +1,5 @@
 'use strict';
-angular.module('userApp').controller('UserApplyCtrl', ['$scope', '$window', '$location', '$routeParams', 'njApply', 'warn_factor', 'sell_factor', function($scope, $window, $location, $routeParams, njApply, warn_factor, sell_factor) {
+angular.module('userApp').controller('UserApplyCtrl', ['$scope', '$window', '$location', '$routeParams', '$modal', '$http', 'njApply', 'warn_factor', 'sell_factor', 'days', function($scope, $window, $location, $routeParams, $modal, $http, njApply, warn_factor, sell_factor, days) {
     var vm = this;
     $('.footer').addClass('marTop200');
 
@@ -12,7 +12,7 @@ angular.module('userApp').controller('UserApplyCtrl', ['$scope', '$window', '$lo
                 formatApply(vm.currentApply);
                 vm.warn_amount = vm.currentApply.amount * warn_factor;
                 vm.sell_amount = vm.currentApply.amount * sell_factor;
-            })
+            });
         }
     });
 
@@ -21,4 +21,45 @@ angular.module('userApp').controller('UserApplyCtrl', ['$scope', '$window', '$lo
         item.end_date = item.endTime ? item.endTime : days.endTime(item.start_date, item.period);
     }
 
+    vm.alerts = [];
+
+    var addAlert = function(type, msg) {
+        vm.alerts.push({type:type, msg: msg});
+    };
+
+    vm.closeAlert = function(index) {
+        vm.alerts.splice(index, 1);
+    };
+
+    vm.closeApply = function() {
+        var modalInstance = $modal.open({
+            templateUrl: '/views/closeApplyModal.html',
+            controller: 'CloseApplyModalCtrl',
+            //size: size,
+            resolve: {}
+        });
+
+        modalInstance.result.then(function (content) {
+            $http.post('/user/apply_close/' + vm.currentApply.serialID, {})
+                .success(function(data, status, headers, config) {
+                    vm.currentApply.status = 5;
+                    addAlert('success', '提现申请已经提交');
+                })
+                .error(function(data, status, headers, config) {
+                    addAlert('danger', '提现申请提交失败，请稍后重试');
+                });
+        }, function () {
+        });
+    };
+
+}]);
+
+angular.module('userApp').controller('CloseApplyModalCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+    $scope.ok = function () {
+        $modalInstance.close();
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
 }]);

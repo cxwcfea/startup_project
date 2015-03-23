@@ -11,7 +11,7 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
                 vm.pay_order_id = order_id;
             } else {
                 var request_category = $location.search()['category'];
-                if (!request_category) {
+                if (!request_category || request_category > 3) {
                     request_category = 2;
                 }
                 vm.currentCategory = vm.categories[request_category];
