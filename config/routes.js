@@ -222,6 +222,11 @@ module.exports = function(app) {
 
     app.get('/api/user/:uid/applies/:serial_id', passportConf.isAuthenticated, users.fetchApplyForUser);
 
+    app.get('/info/*', function(req, res) {
+        res.locals.other_menu = true;
+        res.render('info/' + req.params[0]);
+    });
+
     app.get('/admin_test', passportConf.requiresRole('admin'), function(req, res, next) {
         res.render('admin_test');
     });
