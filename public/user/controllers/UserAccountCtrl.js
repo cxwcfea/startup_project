@@ -227,6 +227,23 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
     };
 
     vm.setupEmail = function() {
-
+        if (!vm.user_email) {
+            addAlert('danger', '请输入有效的邮箱地址');
+            return;
+        }
+        vm.user.profile.email = vm.user_email;
+        vm.user.$save(function(u, putResponseHeaders) {
+            $http.post('/user/verify_email', {email:vm.user.profile.email})
+                .then(function(response) {
+                    if (response.data.success) {
+                        console.log('email send success');
+                    } else {
+                        console.log('email send faile');
+                    }
+                });
+            vm.currentCategory = vm.categories[4];
+        }, function(response) {
+            addAlert('danger', '设置邮箱时出错,请稍后再试');
+        });
     };
 }]);

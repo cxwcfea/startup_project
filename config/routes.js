@@ -28,10 +28,6 @@ module.exports = function(app) {
         res.render('failed_to_pay');
     });
 
-    app.get('/email_verify_result', function(req, res) {
-        res.locals.other_menu = true;
-        res.render('email_verify_result');
-    });
 
     app.get('/apply_detail/:id', passportConf.isAuthenticated, applies.getApplyDetail);
 
@@ -219,6 +215,8 @@ module.exports = function(app) {
     users.registerRoutes(app, passportConf);
 
     app.get('/api/user/:id', passportConf.isAuthenticated, users.fetchUser);
+
+    app.post('/api/user/:id', passportConf.isAuthenticated, users.updateUser);
 
     app.get('/api/user/:uid/applies', passportConf.isAuthenticated, users.fetchAppliesForUser);
 

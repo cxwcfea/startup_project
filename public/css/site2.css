@@ -46,6 +46,11 @@ input.ideBtn01 {
     -webkit-user-select: none;
 }
 
+input#btn.ideBtn01 {
+    width: 400px;
+    height: 50px;
+}
+
 input.LoginBtn01{
     display: block;
     float: left;

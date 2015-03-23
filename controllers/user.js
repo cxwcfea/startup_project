@@ -196,6 +196,7 @@ module.exports.postVerifyEmail = function(req, res, next) {
 };
 
 exports.finishVerifyEmail = function(req, res) {
+    res.locals.other_menu = true;
     User.findOne({ verifyEmailToken: req.params.token })
         .exec(function(err, user) {
             if (err || !user.profile.email) {
@@ -204,15 +205,16 @@ exports.finishVerifyEmail = function(req, res) {
                 else
                     logger.warn('finishVerifyEmail error:user email empty');
                 res.locals.msg = '邮件验证失败';
-                return res.redirect('/email_verify_result');
+                return res.render('email_verify_result');
             }
             user.profile.email_verified = true;
+            user.verifyEmailToken = null;
             user.save(function(err) {
                 if (err) {
                     logger.warn('finishVerifyEmail error:' + err.toString());
                 }
                 res.locals.msg = '邮件验证成功，您的邮箱已经成功绑定!';
-                res.redirect('/email_verify_result');
+                return res.render('email_verify_result');
             });
         });
 };
@@ -297,7 +299,7 @@ module.exports.getUser = function(req, res) {
 };
 
 module.exports.updateUser = function(req, res) {
-    if (req.params.id !== req.user._id) {
+    if (req.params.id != req.user._id) {
         logger.warn('updateUser invalid user');
         res.status(401);
         return res.send({reason:'无效的用户'});

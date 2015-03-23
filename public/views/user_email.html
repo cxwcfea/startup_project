@@ -1,6 +1,6 @@
-<alert ng-repeat="alert in accountVM.alerts" type="{{alert.type}}" close="accountVM.closeAlert($index)">{{alert.msg}}</alert>
 <div class="emBox">
     <p class="p01" ng-show="accountVM.user.profile.email_verified">您已绑定的邮箱：{{accountVM.user.profile.email}}</p>
+    <p class="p02">邮箱用于定期接受牛金网信息，请进行安全性验证</p>
     <div ng-hide="accountVM.user.profile.email_verified">
         <div ng-show="accountVM.user.profile.email">
             <p class="p01">您设置的邮箱：{{accountVM.user.profile.email}} 还未绑定</p>
@@ -16,8 +16,12 @@
         </div>
     </div>
 </div>
+<alert ng-repeat="alert in accountVM.alerts" type="{{alert.type}}" close="accountVM.closeAlert($index)">{{alert.msg}}</alert>
 <div class="ideBox " id="ideBox">
     <p class="p01">设置新邮箱地址</p>
-    <input type="text" class="inputText2" placeholder="请输入新邮箱地址" />
+    <input type="email" class="inputText2" ng-model="accountVM.user_email" placeholder="请输入新邮箱地址" required>
+    <!--
     <a href="javascript:" id="btn" class="ideBtn01" ng-click="accountVM.setupEmail()">设置邮箱</a>
+    -->
+    <input type="submit" id="btn" class="ideBtn01" ng-click="accountVM.setupEmail()" value="设置邮箱">
 </div>
