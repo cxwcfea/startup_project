@@ -13,6 +13,7 @@ angular.module('userApp').controller('UserHomeCtrl', ['$scope', '$location', '$h
     vm.tableCss = {
         even:  'even'
     };
+    vm.showApplyAccount = false;
 
     initData();
 
@@ -94,4 +95,12 @@ angular.module('userApp').controller('UserHomeCtrl', ['$scope', '$location', '$h
             $location.path('/apply_detail/' + apply.serialID);
         }
     };
+
+    vm.toggleDetail = function (e) {
+        if (e.type == 'mouseleave') {
+            vm.showApplyAccount = false;
+        } else {
+            vm.showApplyAccount = !vm.showApplyAccount;
+        }
+    }
 }]);
