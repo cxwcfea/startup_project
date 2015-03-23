@@ -1,6 +1,8 @@
 <div class="emBox">
-    <p class="p01" ng-show="accountVM.user.profile.email_verified">您已绑定的邮箱：{{accountVM.user.profile.email}}</p>
-    <p class="p02">邮箱用于定期接受牛金网信息，请进行安全性验证</p>
+    <div ng-show="accountVM.user.profile.email_verified">
+        <p class="p01">您已绑定的邮箱：{{accountVM.user.profile.email}}</p>
+        <p class="p02">邮箱用于定期接受牛金网信息，请进行安全性验证</p>
+    </div>
     <div ng-hide="accountVM.user.profile.email_verified">
         <div ng-show="accountVM.user.profile.email">
             <p class="p01">您设置的邮箱：{{accountVM.user.profile.email}} 还未绑定</p>

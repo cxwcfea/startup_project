@@ -171,8 +171,9 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
 
     vm.selectCategory = function(c) {
         vm.currentCategory = c;
-        $location.search('pay_order', null);
-        $location.search('category', c.value);
+        if ($location.search()["pay_order"]) {
+            $location.search('pay_order', null);
+        }
         if (c.value === 3 || c.value === 1) {
             if (vm.cards.length > 0) {
                 vm.selectedCard = vm.cards[0];

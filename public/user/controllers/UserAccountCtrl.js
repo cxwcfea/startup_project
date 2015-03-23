@@ -121,7 +121,6 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
             c = vm.categories[0];
         }
         vm.currentCategory = c;
-        $location.search('category', c.value);
     };
 
     vm.selectedCategory = function() {
