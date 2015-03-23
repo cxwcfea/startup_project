@@ -18,8 +18,6 @@ module.exports = function(app) {
         res.render('home');
     });
 
-    app.get('/apply_confirm/:id', passportConf.isAuthenticated, applies.confirmApply);
-
     app.get('/third_party_pay', function(req, res) {
         res.render('third_party_pay', {layout:null});
     });
@@ -212,6 +210,8 @@ module.exports = function(app) {
     admin.registerRoutes(app, passportConf);
 
     app.get('/apply_confirm/:serial_id', passportConf.isAuthenticated, applies.confirmApply);
+
+    app.post('/apply_confirm', passportConf.isAuthenticated, applies.postConfirmApply);
 
     users.registerRoutes(app, passportConf);
 

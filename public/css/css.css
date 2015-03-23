@@ -414,7 +414,6 @@ body{
 
 
 .freeBtn01{
-	
 	display: block;
 	margin: auto;
 	border-radius: 5px;
@@ -633,6 +632,9 @@ body{
 	margin: 0;
 	float: left;
 	margin-right: 20px;
+	width: 417px;
+	height: 50px;
+	line-height: 50px;
 }
 
 .PopupBox{

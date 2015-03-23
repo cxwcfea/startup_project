@@ -1374,6 +1374,7 @@ module.exports.registerRoutes = function(app, passportConf) {
     app.get('/user', passportConf.isAuthenticated, homeIndex);
 
     app.get('/user/*', passportConf.isAuthenticated, function(req, res, next) {
+        console.log('run here');
         res.locals.callback_domain = config.pay_callback_domain;
         res.render('user/' + req.params[0], {layout:null});
     });

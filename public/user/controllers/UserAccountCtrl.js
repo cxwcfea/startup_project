@@ -1,7 +1,17 @@
 'use strict';
-angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$window', '$http', '$interval', function($scope, $filter, $window, $http, $interval) {
+angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$window', '$http', '$interval', '$location', function($scope, $filter, $window, $http, $interval, $location) {
     var vm = this;
     $('.footer').addClass('marTop200');
+
+    $scope.$on("$routeChangeSuccess", function () {
+        if ($location.path().indexOf("/user_account") === 0) {
+            var request_category = $location.search()['category'];
+            if (!request_category) {
+                request_category = 0;
+            }
+            vm.currentCategory = vm.categories[request_category];
+        }
+    });
 
     var verifyCodeBtnText = "获取手机验证码";
     var verifyBtnDisabled = false;
@@ -106,13 +116,12 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
         vm.alerts.splice(index, 1);
     };
 
-    vm.currentCategory = vm.categories[0];
-
     vm.selectCategory = function(c) {
         if (!c) {
             c = vm.categories[0];
         }
         vm.currentCategory = c;
+        $location.search('category', c.value);
     };
 
     vm.selectedCategory = function() {

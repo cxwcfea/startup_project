@@ -13,8 +13,8 @@
             <p class="p02 color_f2991b">￥<span>\{{homeVM.user_total_capital | currency:'':2}}</span></p>
             <p class="p03">可用余额￥<span class="fb">\{{homeVM.user.finance.balance | currency:'':2}}</span>&nbsp;&nbsp;冻结资金￥\{{homeVM.user.finance.freeze_capital | currency:'':2}}</p>
             <p class="p04">
-                <a href="#" class="btn01 marRight10">充值</a>
-                <a href="#" class="btn02">提现</a>
+                <a href="/user#/user_capital?category=0" class="btn01 marRight10">充值</a>
+                <a href="/user#/user_capital?category=1" class="btn02">提现</a>
             </p>
         </div>
         <div class="moneyBoxRight fl">
@@ -22,7 +22,7 @@
             <p class="p02 color_c82217">￥<span>\{{homeVM.user.finance.total_capital | currency:'':2}}</span></p>
             <p class="p03">共有3笔配资，总保证金￥<span>\{{homeVM.user.finance.deposit | currency:'':2}}</span></p>
             <p class="p04">
-                <a href="/new_apply" class="btn03 ">新增配资 </a>
+                <a href="/apply" class="btn03 ">新增配资 </a>
             </p>
         </div>
     </div>
@@ -52,7 +52,7 @@
                     <td>\{{apply.deposit | currency:'':2}}元</td>
                     <td>\{{apply.end_date | displayDate}}</td>
                     <td ng-class="{color_c82217: apply.status === 2, color_f2991b: apply.status === 5}">\{{apply.status | applyStatus}}</td>
-                    <td><a class="apply-detail-link" ng-click="homeVM.manageApply(apply)">详情</a>  <a href="#" >操盘账户</a></td>
+                    <td><a class="apply-detail-link" ng-click="homeVM.manageApply(apply)">详情</a>  <a href="javascript:" >操盘账户</a></td>
                 </tr>
             </table>
             <div class="fr">

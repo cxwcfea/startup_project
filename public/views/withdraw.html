@@ -1,6 +1,6 @@
 <div class="recTop">
     <span>提取余额到银行卡</span>
-    <a href="#">查看提现记录></a>
+    <a href="javascript:" ng-click="capitalVM.showWithdrawDetail()">查看提现记录></a>
 </div>
 <div class="recMoneyBox">
     <div class="recMoneyLeft fl">
@@ -83,7 +83,7 @@
     <div class="witContent3 fl">
         <input type="password" ng-model="capitalVM.finance_password" placeholder="请输入提现密码" />
         您还未设置提现密码？
-        <a href="" class="color_c82217">立即设置</a>
+        <a href="/user#/user_account?category=2" class="color_c82217">立即设置</a>
     </div>
 </div>
 <a href="" class="recBtn01 withBtn01" ng-click="capitalVM.withdraw()">提现</a>

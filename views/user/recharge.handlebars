@@ -1,4 +1,4 @@
-<div class="recTop"><a href="#">查看充值记录></a></div>
+<div class="recTop"><a href="javascript:" ng-click="capitalVM.showRechargeDetail()">查看充值记录></a></div>
 <div class="recMenuBox">
     <div class="fl">
         选择充值方式：
@@ -17,9 +17,7 @@
                         <input type="number" ng-model="capitalVM.pay_amount" autofocus>
                         元
                     </div>
-                    <!--
-                    <p class="p01">&nbsp;当前充值相关的业务单号：000000001，操盘12万元，至少还需要支付19452元（1万9千4百52元）！</p>
-                    -->
+                    <p ng-show="capitalVM.pay_apply" class="p01">&nbsp;当前充值相关的配资单号：\{{capitalVM.pay_order.applySerialID}},需缴纳保证金\{{capitalVM.pay_order.amount | currency:'':2}},至少还需支付\{{capitalVM.pay_amount | currency:'':2}}</p>
                 </div>
                 <div class="fl recMoneyRight">
                     <p class="p01">当前可用余额为：</p>

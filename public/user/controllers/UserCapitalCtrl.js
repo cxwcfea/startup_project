@@ -1,7 +1,23 @@
 'use strict';
-angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$window', 'njOrder', 'njCard', 'BankNameList', 'gbNotifier', 'njCachedCards', function($scope, $http, $window, njOrder, njCard, BankNameList, gbNotifier, njCachedCards) {
+angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$window', '$location', '$routeParams', 'njOrder', 'njCard', 'BankNameList', 'gbNotifier', 'njCachedCards', function($scope, $http, $window, $location, $routeParams, njOrder, njCard, BankNameList, gbNotifier, njCachedCards) {
     var vm = this;
     $('.footer').addClass('marTop200');
+
+    $scope.$on("$routeChangeSuccess", function () {
+        if ($location.path().indexOf("/user_capital") === 0) {
+            var order_id = $location.search()["pay_order"];
+            if (order_id) {
+                vm.currentCategory = vm.categories[0];
+                vm.pay_order_id = order_id;
+            } else {
+                var request_category = $location.search()['category'];
+                if (!request_category) {
+                    request_category = 2;
+                }
+                vm.currentCategory = vm.categories[request_category];
+            }
+        }
+    });
 
     $scope.data.menu = 2;
     vm.user = $scope.data.currentUser;
@@ -27,6 +43,15 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
         order_list = njOrder.query({uid:vm.user._id}, function () {
             currentOrders = order_list;
             pageReset();
+            if (vm.pay_order_id) {
+                vm.pay_order = _.find(order_list, { '_id': vm.pay_order_id });
+                if (vm.pay_order) {
+                    vm.pay_amount = vm.pay_order.amount - vm.user.finance.balance;
+                    if (vm.pay_order.applySerialID) {
+                        vm.pay_apply = true;
+                    }
+                }
+            }
         });
     }
 
@@ -143,10 +168,10 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
         vm.alerts.splice(index, 1);
     };
 
-    vm.currentCategory = vm.categories[2];
-
     vm.selectCategory = function(c) {
         vm.currentCategory = c;
+        $location.search('pay_order', null);
+        $location.search('category', c.value);
         if (c.value === 3 || c.value === 1) {
             if (vm.cards.length > 0) {
                 vm.selectedCard = vm.cards[0];
@@ -314,5 +339,15 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
         }, function(response) {
             addAlert('danger', '服务暂时不可用，请稍后再试');
         });
-    }
+    };
+
+    vm.showRechargeDetail = function() {
+        vm.currentCategory = vm.categories[2];
+        vm.queryItem(vm.queryItems[1]);
+    };
+
+    vm.showWithdrawDetail = function() {
+        vm.currentCategory = vm.categories[2];
+        vm.queryItem(vm.queryItems[2]);
+    };
 }]);

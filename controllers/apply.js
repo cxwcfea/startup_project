@@ -455,8 +455,43 @@ exports.confirmApply = function(req, res, next) {
                 userBalance: user.finance.balance
             });
             res.render('apply/apply_confirm', {
-                bootstrappedApply: JSON.stringify(applyVM),
-                layout: 'main2'
+                bootstrappedApply: JSON.stringify(applyVM)
+            });
+        });
+    });
+};
+
+exports.postConfirmApply = function(req, res, next) {
+    var applyData = req.body;
+    if (req.user._id != applyData.userID) {
+        res.status(403);
+        logger.warn('postConfirmApply error:apply is belongs to the user');
+        return res.send({reason:'apply is belongs to the user'});
+    }
+    var orderData = {
+        userID: applyData.userID,
+        userMobile: applyData.userMobile,
+        dealType: 1,
+        amount: applyData.amount,
+        status: 2,
+        description: '股票配资',
+        applySerialID: applyData.serialID
+    };
+    Order.create(orderData, function(err, order) {
+        if (err) {
+            res.status(503);
+            logger.warn('postConfirmApply error:' + err.toString());
+            return res.send({reason:err.toString()});
+        }
+        Apply.findById(applyData._id, function(err, apply) {
+            if (err) {
+                res.status(503);
+                logger.warn('postConfirmApply error:' + err.toString());
+            }
+            apply.orderID = order._id;
+            apply.save(function(err) {
+                if (err) next();
+                res.send(order);
             });
         });
     });

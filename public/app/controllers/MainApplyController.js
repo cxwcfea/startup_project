@@ -109,9 +109,9 @@
         };
 
         vm.submitApply = function() {
-            $http.post('/new_apply', vm.summary)
+            $http.post('/apply', vm.summary)
                 .success(function(data, status, headers, config) {
-                    $window.location.href = '/new_apply_confirm/' + data.apply_serial_id;
+                    $window.location.href = '/apply_confirm/' + data.apply_serial_id;
                 })
                 .error(function(data, status, headers, config) {
                     console.log(status);
@@ -163,6 +163,16 @@
 
         vm.selectDay = function() {
             calculateAmount();
+        };
+
+        vm.payForApply = function() {
+            $http.post('/apply_confirm', vm.apply)
+                .success(function(data, status, headers, config) {
+                    $window.location.assign('/user#/user_capital?pay_order=' + data._id);
+                })
+                .error(function(data, status, headers, config) {
+                    console.log('error:' + data.reason);
+                });
         };
     }]);
 }());

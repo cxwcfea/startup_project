@@ -84,7 +84,7 @@ angular.module('userApp').controller('UserHomeCtrl', ['$scope', '$location', '$h
 
     vm.manageApply = function(apply) {
         if (apply.status === 1) {
-            $window.location.assign('/apply_confirm/' + apply.serialID);
+            $location.url('/user_capital?pay_order=' + apply.orderID);
         } else {
             $location.path('/apply_detail/' + apply.serialID);
         }
