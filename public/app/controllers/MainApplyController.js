@@ -5,6 +5,7 @@
         var vm = this;
 
         vm.min_amount = 2000;
+        vm.max_amount = 300000;
         var warnFactor = 0.96;
         var sellFactor = 0.94;
         var depositFactor = 0.1;
@@ -79,7 +80,11 @@
 
         function tryOtherAmount() {
             if (vm.otherAmount >= vm.min_amount) {
-                vm.summary.amount = Math.floor(vm.otherAmount);
+                if (vm.otherAmount <= vm.max_amount) {
+                    vm.summary.amount = Math.floor(vm.otherAmount);
+                } else {
+                    vm.otherAmount = vm.summary.amount = vm.max_amount;
+                }
             } else {
                 vm.summary.amount = 0;
             }

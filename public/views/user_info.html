@@ -4,7 +4,7 @@
             <div class="userHeadImg fl"></div>
             <div class="userNameBox fl">
                 <p class="p01">Hi, {{accountVM.user.profile.name || '牛金用户'}}</p>
-                <p class="p02">帐号名：{{accountVM.user.mobile}}</p>
+                <p class="p02">帐号名：您注册时的手机号({{accountVM.user.mobile | displayMobile}})</p>
             </div>
             <div class="clear"></div>
         </div>
@@ -13,7 +13,7 @@
     <div class="userRIght fl">
         <p class="p01">
             您的账户安全级别：
-            <span class="color_c82217 fb span01">5</span>&nbsp;
+            <span class="color_c82217 fb span01">3</span>&nbsp;
             <span class="span02 color_c82217">级</span>
         </p>
         <div class="userJDt">

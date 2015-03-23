@@ -1,5 +1,5 @@
 'use strict';
-angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$window', '$location', '$routeParams', 'njOrder', 'njCard', 'BankNameList', 'gbNotifier', 'njCachedCards', function($scope, $http, $window, $location, $routeParams, njOrder, njCard, BankNameList, gbNotifier, njCachedCards) {
+angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$window', '$location', '$routeParams', '$filter', 'njOrder', 'njCard', 'BankNameList', 'gbNotifier', 'njCachedCards', function($scope, $http, $window, $location, $routeParams, $filter, njOrder, njCard, BankNameList, gbNotifier, njCachedCards) {
     var vm = this;
     $('.footer').addClass('marTop200');
 
@@ -41,6 +41,7 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
 
     function initData() {
         order_list = njOrder.query({uid:vm.user._id}, function () {
+            order_list = $filter('orderBy')(order_list, 'createdAt', true);
             currentOrders = order_list;
             pageReset();
             if (vm.pay_order_id) {

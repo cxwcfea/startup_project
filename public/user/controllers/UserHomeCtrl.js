@@ -1,5 +1,5 @@
 'use strict';
-angular.module('userApp').controller('UserHomeCtrl', ['$scope', '$location', '$http', '$window', 'days', 'njApply', function($scope, $location, $http, $window, days, njApply) {
+angular.module('userApp').controller('UserHomeCtrl', ['$scope', '$location', '$http', '$window', '$filter', 'days', 'njApply', function($scope, $location, $http, $window, $filter, days, njApply) {
     var vm = this;
     $scope.data.menu = 1;
     vm.user = $scope.data.currentUser;
@@ -27,6 +27,7 @@ angular.module('userApp').controller('UserHomeCtrl', ['$scope', '$location', '$h
             angular.forEach(apply_list, function(value, key) {
                 formatData(value);
             });
+            apply_list = $filter('orderBy')(apply_list, 'applyAt', true);
             currentApplies = apply_list;
             pageReset();
         });
