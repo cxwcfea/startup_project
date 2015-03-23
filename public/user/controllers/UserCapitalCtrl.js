@@ -302,7 +302,7 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
         var Charset = $('#Charset')[0].value;
         var MsgSender = $('#MsgSender')[0].value;
         var OrderNo = $('#OrderNo')[0].value = order._id;
-        var OrderAmount = $('#OrderAmount')[0].value = order.amount;
+        var OrderAmount = $('#OrderAmount')[0].value = order.amount.toFixed(2);
         var OrderTime = $('#OrderTime')[0].value = moment().format("YYYYMMDDHHmmss");
         var PayType = $('#PayType')[0].value;
         var PayChannel = $('#PayChannel')[0].value = vm.useCredit ? 20 : 19;
