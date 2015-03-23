@@ -101,7 +101,7 @@ module.exports = function(app) {
 
     app.post('/apply', applies.placeApply);
 
-    app.get('/free_apply_confirm', passportConf.isAuthenticated, applies.freeApply);
+    app.get('/free_apply_confirm', passportConf.isAuthenticated, applies.freeApply2);
 
     app.get('/login', function (req, res) {
         if (req.isAuthenticated()) {
@@ -212,6 +212,8 @@ module.exports = function(app) {
     app.get('/apply_confirm/:serial_id', passportConf.isAuthenticated, applies.confirmApply);
 
     app.post('/apply_confirm', passportConf.isAuthenticated, applies.postConfirmApply);
+
+    app.get('/apply/pay_success', passportConf.isAuthenticated, applies.paySuccess);
 
     users.registerRoutes(app, passportConf);
 

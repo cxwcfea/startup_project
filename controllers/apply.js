@@ -332,6 +332,57 @@ exports.postAddDeposit = function(req, res, next) {
     });
 };
 
+exports.freeApply2 = function(req, res, next) {
+    if (!req.user.freeApply) {
+        if (req.user.finance.balance >= 1) {
+            var applyData = new Apply({
+                userID: req.user._id,
+                userMobile: req.user.mobile,
+                serialID: util.generateSerialID(),
+                amount: 2000,
+                deposit: 200,
+                isTrial: true,
+                status: 4,
+                period: 2
+            });
+            Apply.create(applyData, function(err, apply) {
+                if(err) next();
+                req.user.finance.balance -= 1;
+                req.user.freeApply = apply.serialID;
+                var userData = {
+                    freeApply: apply.serialID,
+                    finance: {
+                        balance: req.user.finance.balance
+                    }
+                };
+                User.update({_id:req.user._id}, userData, function (err, numberAffected, raw) {
+                    if (err) {
+                        logger.debug('freeApply2 error:' + err.toString());
+                        return next();
+                    }
+                    res.redirect('/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000);
+                });
+            });
+        } else {
+            var orderData = {
+                userID: req.user._id,
+                dealType: 1,
+                amount: 1,
+                status: 2,
+                description: '免费配资体验'
+            };
+            Order.create(orderData, function(err, order) {
+                if (err) next();
+                res.redirect('/user#/user_capital?pay_order=' + order._id);
+            });
+        }
+    } else {
+        logger.warn('user:' + req.user.mobile + ' already tried free apply, refuse it');
+        res.locals.serial_id = req.user.freeApply;
+        res.render('apply/free_apply_refuse');
+    }
+};
+
 exports.freeApply = function(req, res, next) {
     if (!req.user.freeApply) {
         var applyData = new Apply({
@@ -339,7 +390,7 @@ exports.freeApply = function(req, res, next) {
             userMobile: req.user.mobile,
             serialID: util.generateSerialID(),
             amount: 2000,
-            deposit: 1,
+            deposit: 200,
             isTrial: true,
             period: 2
         });
@@ -472,7 +523,7 @@ exports.postConfirmApply = function(req, res, next) {
         userID: applyData.userID,
         userMobile: applyData.userMobile,
         dealType: 1,
-        amount: applyData.amount,
+        amount: applyData.shouldPay,
         status: 2,
         description: '股票配资',
         applySerialID: applyData.serialID
@@ -489,11 +540,20 @@ exports.postConfirmApply = function(req, res, next) {
                 logger.warn('postConfirmApply error:' + err.toString());
             }
             apply.orderID = order._id;
+            apply.peroid = applyData.period;
             apply.save(function(err) {
                 if (err) next();
-                res.send(order);
+                res.send({order:order, apply:apply});
             });
         });
     });
+};
+
+exports.paySuccess = function(req, res, next) {
+    console.log('paySuccess');
+    res.locals.apply_menu = true;
+    res.locals.serial_id = req.query.serial_id;
+    res.locals.amount = req.query.amount;
+    res.render('apply/apply_pay_success');
 };
 

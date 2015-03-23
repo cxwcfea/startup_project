@@ -46,9 +46,9 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
             if (vm.pay_order_id) {
                 vm.pay_order = _.find(order_list, { '_id': vm.pay_order_id });
                 if (vm.pay_order) {
-                    vm.pay_amount = vm.pay_order.amount - vm.user.finance.balance;
+                    vm.pay_amount = Number(vm.pay_order.amount.toFixed(2));
                     if (vm.pay_order.applySerialID) {
-                        vm.pay_apply = true;
+                        vm.pay_for_apply = true;
                     }
                 }
             }
@@ -290,6 +290,33 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
         }
     };
 
+    function payThroughShengPay(order) {
+        var Name = $('#Name')[0].value;
+        var Version = $('#Version')[0].value;
+        var Charset = $('#Charset')[0].value;
+        var MsgSender = $('#MsgSender')[0].value;
+        var OrderNo = $('#OrderNo')[0].value = order._id;
+        var OrderAmount = $('#OrderAmount')[0].value = order.amount;
+        var OrderTime = $('#OrderTime')[0].value = moment().format("YYYYMMDDHHmmss");
+        var PayType = $('#PayType')[0].value;
+        var PayChannel = $('#PayChannel')[0].value = vm.useCredit ? 20 : 19;
+        var InstCode = $('#InstCode')[0].value = BankNameList[vm.payBank].instCode;
+        var PageUrl = $('#PageUrl')[0].value;
+        var BackUrl = $('#BackUrl')[0].value;
+        var NotifyUrl = $('#NotifyUrl')[0].value;
+        var ProductName = $('#ProductName')[0].value;
+        var BuyerIp = $('#BuyerIp')[0].value = $window.returnCitySN["cip"];
+        var SignType = $('#SignType')[0].value;
+        var md5Key = 'shengfutongSHENGFUTONGtest';
+
+        var sign_origin = Name+Version+Charset+MsgSender+OrderNo+OrderAmount+OrderTime+
+            PayType+PayChannel+InstCode+PageUrl+BackUrl+NotifyUrl+ProductName+BuyerIp+SignType+md5Key;
+        var SignMsg = SparkMD5.hash(sign_origin);
+        SignMsg = SignMsg.toUpperCase();
+        $('#SignMsg')[0].value = SignMsg;
+        $('#shengPayForm')[0].submit();
+    }
+
     vm.onlinePay = function() {
         if (!vm.pay_amount || vm.pay_amount < 0) {
             addAlert('danger', '请输入有效的充值金额');
@@ -301,44 +328,24 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
             return;
         }
 
-        var newOrder = new njOrder({uid:vm.user._id});
-        newOrder.userID = vm.user._id;
-        newOrder.userMobile = vm.user.mobile;
-        newOrder.dealType = 1;
-        newOrder.amount = vm.pay_amount;
-        newOrder.description = '网站充值';
-        newOrder.payType = 1;
-        newOrder.$save(function(o, responseHeaders) {
-            order_list.unshift(o);
-            currentOrders = order_list;
+        if (vm.pay_order) {
+            payThroughShengPay(vm.pay_order);
+        } else {
+            var newOrder = new njOrder({uid:vm.user._id});
+            newOrder.userID = vm.user._id;
+            newOrder.userMobile = vm.user.mobile;
+            newOrder.dealType = 1;
+            newOrder.amount = vm.pay_amount;
+            newOrder.description = '网站充值';
+            newOrder.$save(function(o, responseHeaders) {
+                order_list.unshift(o);
+                currentOrders = order_list;
 
-            var Name = $('#Name')[0].value;
-            var Version = $('#Version')[0].value;
-            var Charset = $('#Charset')[0].value;
-            var MsgSender = $('#MsgSender')[0].value;
-            var OrderNo = $('#OrderNo')[0].value = o._id;
-            var OrderAmount = $('#OrderAmount')[0].value = o.amount;
-            var OrderTime = $('#OrderTime')[0].value = moment().format("YYYYMMDDHHmmss");
-            var PayType = $('#PayType')[0].value;
-            var PayChannel = $('#PayChannel')[0].value = vm.useCredit ? 20 : 19;
-            var InstCode = $('#InstCode')[0].value = BankNameList[vm.payBank].instCode;
-            var PageUrl = $('#PageUrl')[0].value;
-            var BackUrl = $('#BackUrl')[0].value;
-            var NotifyUrl = $('#NotifyUrl')[0].value;
-            var ProductName = $('#ProductName')[0].value;
-            var BuyerIp = $('#BuyerIp')[0].value = $window.returnCitySN["cip"];
-            var SignType = $('#SignType')[0].value;
-            var md5Key = 'shengfutongSHENGFUTONGtest';
-
-            var sign_origin = Name+Version+Charset+MsgSender+OrderNo+OrderAmount+OrderTime+
-                PayType+PayChannel+InstCode+PageUrl+BackUrl+NotifyUrl+ProductName+BuyerIp+SignType+md5Key;
-            var SignMsg = SparkMD5.hash(sign_origin);
-            SignMsg = SignMsg.toUpperCase();
-            $('#SignMsg')[0].value = SignMsg;
-            $('#shengPayForm')[0].submit();
-        }, function(response) {
-            addAlert('danger', '服务暂时不可用，请稍后再试');
-        });
+                payThroughShengPay(o);
+            }, function(response) {
+                addAlert('danger', '服务暂时不可用，请稍后再试');
+            });
+        }
     };
 
     vm.showRechargeDetail = function() {

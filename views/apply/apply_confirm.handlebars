@@ -36,7 +36,7 @@
         <div class="applyContent fl">
             <div class="fl">
                 <span class="span01">\{{vm.serviceFee | currency:'':2}}</span> 元&nbsp;&nbsp;&nbsp;&nbsp;
-                <select name="" ng-model="vm.day" ng-change="vm.selectDay()">
+                <select name="" ng-model="vm.apply.period" ng-change="vm.selectDay()">
                     <option ng-repeat="day in vm.validDays" value="\{{day}}">\{{day}}</option>
                 </select>
                 天&nbsp;&nbsp;
@@ -56,7 +56,7 @@
         <div class="fl">
             <span class="icon01">&nbsp;</span>&nbsp;当前余额：\{{vm.apply.userBalance | currency:'':2}}元，还差<span class="color_c82217">\{{vm.shouldPay | currency:'':2}}</span>元
         </div>
-        <a href="#" class="applyBtn01">充值</a>
+        <a href="/user#/user_capital?category=0" class="applyBtn01">充值</a>
     </div>
     <div class="applyBtnBox">
         <a href="javascript:" class="freeBtn01" id="freeBtn01" ng-click="vm.payForApply()">立即支付</a>

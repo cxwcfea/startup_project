@@ -387,15 +387,15 @@ module.exports.payByBalance = function(req, res, next) {
     User.findById(req.user.id, function(err, user) {
         if (err) {
             res.status(500);
-            logger.warn('payByBalance error:' + apply_id);
+            logger.warn('payByBalance error:' + data.apply_serial_id);
             return res.send({success:false, reason:err.toString()});
         }
         if (!user) {
-            logger.warn('payByBalance error. no enough balance to pay apply:' + apply_id);
+            logger.warn('payByBalance error. no enough balance to pay apply:' + data.apply_serial_id);
             return res.send({success:false, reason:'无效的用户!'});
         }
-        if (data.apply_id) {
-            Apply.findOne({serialID:data.apply_id}, function(err, apply) {
+        if (data.apply_serial_id) {
+            Apply.findOne({serialID:data.apply_serial_id}, function(err, apply) {
                 if (err) {
                     return res.send({success:false, reason:err.toString()});
                 }
@@ -499,7 +499,8 @@ module.exports.payByBalance = function(req, res, next) {
             });
         } else {
             logger.warn('payByBalance failed apply serialID not found in request');
-            res.send({success:false, reason:'payByBalance failed apply serialID not found in request'});
+            res.status(400);
+            res.send({reason:'payByBalance failed apply serialID not found in request'});
         }
     });
 };

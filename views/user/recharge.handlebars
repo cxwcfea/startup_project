@@ -14,10 +14,10 @@
                 <div class="recMoneyLeft fl">
                     <div class="recMoneyText">
                         充值金额：
-                        <input type="number" ng-model="capitalVM.pay_amount" autofocus>
+                        <input type="number" ng-model="capitalVM.pay_amount" autofocus ng-disabled="capitalVM.pay_for_apply">
                         元
                     </div>
-                    <p ng-show="capitalVM.pay_apply" class="p01">&nbsp;当前充值相关的配资单号：\{{capitalVM.pay_order.applySerialID}},需缴纳保证金\{{capitalVM.pay_order.amount | currency:'':2}},至少还需支付\{{capitalVM.pay_amount | currency:'':2}}</p>
+                    <p ng-show="capitalVM.pay_for_apply" class="p01">&nbsp;当前充值相关的配资单号：\{{capitalVM.pay_order.applySerialID}},保证金和管理费至少还需支付\{{capitalVM.pay_amount | currency:'':2}}</p>
                 </div>
                 <div class="fl recMoneyRight">
                     <p class="p01">当前可用余额为：</p>
