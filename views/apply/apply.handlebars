@@ -7,7 +7,7 @@
     <div class="column">
         <div class="fl num01">
             <span class="numSpan">1</span>
-            选择炒股基金
+            选择炒股资金
         </div>
         <div class="fl num02">
             <span class="numSpan2">2</span>
@@ -27,52 +27,18 @@
                     <p class="p01"><span>\{{item.name}}</span></p>
                     <p>炒股资金</p>
                 </li>
-                <!--
-                <li class="select">
-                    <p class="p01"><span>1万</span>元</p>
-                    <p>炒股资金</p>
-                </li>
-                <li>
-                    <p class="p01"><span>2万</span>元</p>
-                    <p>炒股资金</p>
-                </li>
-                <li>
-                    <p class="p01"><span>3万</span>元</p>
-                    <p>炒股资金</p>
-                </li>
-                <li>
-                    <p class="p01"><span>5万</span>元</p>
-                    <p>炒股资金</p>
-                </li>
-                <li>
-                    <p class="p01"><span>10万</span>元</p>
-                    <p>炒股资金</p>
-                </li>
-                <li>
-                    <p class="p01"><span>15万</span>元</p>
-                    <p>炒股资金</p>
-                </li>
-                <li>
-                    <p class="p01"><span>20万</span>元</p>
-                    <p>炒股资金</p>
-                </li>
-                <li>
-                    <p class="p01"><span>30万</span>元</p>
-                    <p>炒股资金</p>
-                </li>
-                -->
                 <li id="jq_qtMoney" ng-click="applyVM.toggleOtherAmount()">
                     <p class="p02">其他金额</p>
                     手动输入
                 </li>
             </ul>
             <div class="qtmoneyBox" id="jq_qtmoneyBox" ng-show="applyVM.showOtherAmount">
-                <p class="tc">请输入您的操盘金额</p>
+                <p class="tc p01">请输入您的操盘金额</p>
                 <div class="moneyInputBox">
-                    <input class="moneyinputText" type="text" name="" id="" value="" placeholder="申请资金必须在2000元至30万元之间" min="\{{applyVM.min_amount}}" max="300000" step="1000" ng-model="applyVM.otherAmount" ng-change="applyVM.finishOtherAmount()"/>
+                    <input class="moneyinputText" type="text" name="" id="" value="" placeholder="申请资金须在2000元至30万元之间" min="\{{applyVM.min_amount}}" max="300000" step="1000" ng-model="applyVM.otherAmount" ng-change="applyVM.finishOtherAmount()"/>
                     <input type="button" name="" id="" value="确定" class="moneyBtn" />
                 </div>
-                <p class="tc"><a href="javascript:" id="return_moneyBox" ng-click="applyVM.toggleOtherAmount()">返回</a></p>
+                <p class="tc p02"><a href="javascript:" id="return_moneyBox" ng-click="applyVM.toggleOtherAmount()">返回</a></p>
             </div>
         </div>
     </div>
@@ -121,10 +87,14 @@
                     <td class="infoTableTitle">账户管理费</td>
                     <td class="infoTableNr"><span class="infoText03">\{{applyVM.summary.charge | currency:'':2}}</span>元/每天  <span class="infoText04">（按天收取，周末节假日免费）</span></td>
                 </tr>
+                <tr>
+                    <td colspan="2" class="infoTabletd">
+                        <p class="tr"><input type="checkbox" ng-model="applyVM.agree">&nbsp;同意<a href="#" class="color_e23024">《牛金操盘协议》</a></p>
+                        <input type="button" name="" id="" value="立即操盘" class="infoBtn" ng-click="applyVM.submitApply()">
+                    </td>
+                </tr>
             </table>
         </div>
-        <p class="tr"><input type="checkbox" name="" id="" value="" ng-model="applyVM.agree"/>&nbsp;同意<a href="#" class="color_e23024">《牛金操盘协议》</a></p>
-        <input type="button" name="" id="" value="立即操盘" class="infoBtn" ng-click="applyVM.submitApply()" />
     </div>
     <div class="clear"></div>
 </div>

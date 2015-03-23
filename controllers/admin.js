@@ -243,23 +243,6 @@ function closeApply(req, res) {
             });
         },
         function(apply, callback) {
-            Homas.findOne({account:apply.account}, function(err, homas) {
-                callback(err, apply, homas);
-            });
-        },
-        function(apply, homas, callback) {
-            if (!homas) {
-                logger.warn('can not find homas account when close apply:' + apply.serialID);
-                callback(null, apply);
-            } else {
-                homas.using = false;
-                homas.applyID = null;
-                homas.save(function(err) {
-                    callback(err, apply);
-                });
-            }
-        },
-        function(apply, callback) {
             if (profit > 0) {
                 var orderData = {
                     userID: apply.userID,
@@ -309,8 +292,10 @@ function closeApply(req, res) {
         },
         function(apply, callback) {
             var balance = apply.deposit + profit;
-            if (apply.isTrial && balance < 1) {
-                balance = 1;
+            if (apply.isTrial) {
+                balance += 1;
+                if (balance < 1)
+                    balance = 1;
             }
             if (balance > 0) {
                 User.findById(apply.userID, function(err, user) {
@@ -325,6 +310,7 @@ function closeApply(req, res) {
         },
         function(user, balance, apply, callback) {
             if (user) {
+                console.log(user);
                 user.finance.balance += balance;
                 user.finance.total_capital -= apply.amount;
                 user.finance.deposit -= apply.deposit;
@@ -347,6 +333,7 @@ function closeApply(req, res) {
                     }
                 }
                 user.save(function(err) {
+                    console.log(user);
                     callback(err, orderData);
                 });
             } else {

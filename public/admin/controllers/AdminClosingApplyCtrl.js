@@ -56,7 +56,6 @@ angular.module('adminApp').controller('AdminClosingApplyCtrl', ['$scope', '$http
             };
             $http.post('/admin/api/close_apply', data)
                 .success(function(data, status, headers, config) {
-                    console.log(data);
                     gbNotifier.notify('结算成功');
                 }).
                 error(function(data, status, headers, config) {

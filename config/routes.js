@@ -74,7 +74,7 @@ module.exports = function(app) {
 
     app.post('/apply', applies.placeApply);
 
-    app.get('/free_apply_confirm', passportConf.isAuthenticated, applies.freeApply2);
+    app.get('/free_apply_confirm', passportConf.isAuthenticated, applies.freeApply);
 
     app.get('/login', function (req, res) {
         if (req.isAuthenticated()) {

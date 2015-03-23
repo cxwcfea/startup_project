@@ -500,6 +500,7 @@ module.exports.payByBalance = function(req, res, next) {
                                         logger.warn('payByBalance failed:' + err.toString());
                                         return res.send({success:false, reason:err.toString()});
                                     }
+                                    console.log(user);
                                     res.send({success:true, data:user.finance.balance});
                                 });
                             });

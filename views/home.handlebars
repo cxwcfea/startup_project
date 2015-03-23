@@ -1,9 +1,9 @@
 <div ng-app="mainApp">
     <div class="Banner" id="imgFocus">
         <ul class="ImgContent" id="ImgContent">
-            <li style="background-image: url(/images/banner.jpg);"></li>
-            <li style="background-image: url(/images/banner2.jpg);"></li>
-            <li style="background-image: url(/images/banner3.jpg);"></li>
+            <li style="background-image: url(/images/banner.jpg);background-color: #e23024;"></li>
+            <li style="background-image: url(/images/banner2.jpg);background-color: #e12f23"></li>
+            <li style="background-image: url(/images/banner3.jpg);background-color: #fd1c48"></li>
         </ul>
         <div class="wrapper BannerNrBox">
             <ul class="ImgList" id="ImgList">
@@ -90,12 +90,12 @@
                         </li>
                     </ul>
                     <div class="qtmoneyBox" id="jq_qtmoneyBox" ng-show="applyVM.showOtherAmount">
-                        <p class="tc">请输入您的操盘金额</p>
+                        <p class="tc p01">请输入您的操盘金额</p>
                         <div class="moneyInputBox">
                             <input class="moneyinputText" type="text" name="" id="" placeholder="申请资金必须在2000元至30万元之间" min="\{{applyVM.min_amount}}" max="300000" step="1000" ng-model="applyVM.otherAmount" ng-change="applyVM.finishOtherAmount()"/>
                             <input type="button" name="" id="" value="确定" class="moneyBtn" />
                         </div>
-                        <p class="tc"><a href="javascript:" id="return_moneyBox" ng-click="applyVM.toggleOtherAmount()">返回</a></p>
+                        <p class="tc p02"><a href="javascript:" id="return_moneyBox" ng-click="applyVM.toggleOtherAmount()">返回</a></p>
                     </div>
                 </div>
             </div>
@@ -143,10 +143,14 @@
                             <td class="infoTableTitle">账户管理费</td>
                             <td class="infoTableNr"><span class="infoText03">\{{applyVM.summary.charge | currency:'':2}}</span>元/每天  <span class="infoText04">（按天收取，周末节假日免费）</span></td>
                         </tr>
+                        <tr>
+                            <td colspan="2" class="infoTabletd">
+                                <p class="tr"><input type="checkbox" ng-model="applyVM.agree">&nbsp;同意<a href="#" class="color_e23024">《牛金操盘协议》</a></p>
+                                <input type="button" name="" id="" value="立即操盘" class="infoBtn" ng-click="applyVM.submitApply()">
+                            </td>
+                        </tr>
                     </table>
                 </div>
-                <p class="tr"><input type="checkbox" name="" id="" value="" ng-model="applyVM.agree"/>&nbsp;同意<a href="#" class="color_e23024">《牛金操盘协议》</a></p>
-                <input type="button" name="" id="" value="立即操盘" class="infoBtn" ng-click="applyVM.submitApply()" />
             </div>
         </div>
         <div class="clear"></div>

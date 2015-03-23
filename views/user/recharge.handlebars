@@ -47,11 +47,11 @@
             </div>
             <p class="recP03">温馨提示：<br />如果没有适合您的网银，可以通过线下汇款支付</p>
             <alert ng-repeat="alert in capitalVM.alerts" type="\{{alert.type}}" close="capitalVM.closeAlert($index)">\{{alert.msg}}</alert>
-            <a href="javascript:" class="recBtn01" ng-click="capitalVM.onlinePay()">下一步</a>
+            <a href="javascript:" class="recBtn01 jq_recBtn02" ng-click="capitalVM.onlinePay()">下一步</a>
         </div>
         <div class="animate-switch" ng-switch-when="1">
             <div class="wyRec">
-                <div class="">
+                <div class="jq_zfb01">
                     <div class="recMoneyBox zfbMoneyBox">
                         <div class="recMoneyLeft zfbMoneyLeft fl">
                             <!--
@@ -77,9 +77,9 @@
                             -->
                         </div>
                     </div>
-                    <a href="#" class="recBtn01">下一步</a>
+                    <a href="#" class="recBtn01 jq_recBtn02">下一步</a>
                 </div>
-                <div class="zfbBox">
+                <div class="zfbBox jq_zfbBox">
                     <div class="zfbLeft fl">
                         <div class="zfbText">
                             <p>您的支付宝账户：<em class="fb">875969515@qq.com</em></p>
@@ -92,8 +92,10 @@
                         </div>
                     </div>
                     <div class="zfbRight fl">
-                        <div class="zfbText zfbText3">
-                            <p>收款人支付宝账户：<em class="em01">875969515@qq.com</em></p>
+                        <div class="zfbText zfbText3 pr">
+                            <p>收款人支付宝账户：<em class="em01" id="zfbZh">875969515@qq.com</em>
+                                <div class="zfbfzimg"></div>
+                            </p>
                             <p>收款人账户名称：<em class="fb color_c82217">北京小牛普惠科技有限公司</em></p>
                         </div>
                         <div class="zfbText2">

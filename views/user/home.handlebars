@@ -52,7 +52,16 @@
                     <td>\{{apply.deposit | currency:'':2}}元</td>
                     <td>\{{apply.end_date | displayDate}}</td>
                     <td ng-class="{color_c82217: apply.status === 2, color_f2991b: apply.status === 5}">\{{apply.status | applyStatus}}</td>
-                    <td><a class="apply-detail-link" ng-click="homeVM.manageApply(apply)">详情</a>  <a href="javascript:" >操盘账户</a></td>
+                    <td>
+                        <div class="pr glBox">
+                            <a href="javascript:" ng-click="homeVM.manageApply(apply)">详情</a> | <span class="tableSpan">操盘账户</span>
+                            <div class="tablenr jq_tablenr undis">
+                                <div class="tableNrImg"></div>
+                                <p><span class="tableSpan02">账户：<span id="code01" class="jq_span">12345678</span></span> <a href="javascript:">复制</a></p>
+                                <p><span class="tableSpan02">密码：<span id="code02" class="jq_span">123456</span></span> <a href="javascript:">复制</a></p>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
             </table>
             <div class="fr">
@@ -61,3 +70,20 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(function () {
+        //复制
+        $(".jq_tablenr a").click(function () {
+            copycode1($(this).parents("p").find("span.jq_span").attr("id"));
+        });
+        //表格下拉框显隐
+        $(".tableSpan").click(function () {
+            $(this).next("div.jq_tablenr").show();
+        });
+        $(".jq_tablenr").hover(function () {
+            $(this).show();
+        },function () {
+            $(this).hide();
+        });
+    })
+</script>

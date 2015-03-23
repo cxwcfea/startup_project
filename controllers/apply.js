@@ -333,7 +333,7 @@ exports.postAddDeposit = function(req, res, next) {
     });
 };
 
-exports.freeApply2 = function(req, res, next) {
+exports.freeApply = function(req, res, next) {
     if (!req.user.freeApply) {
         if (req.user.finance.balance >= 1) {
             var applyData = new Apply({
@@ -349,11 +349,13 @@ exports.freeApply2 = function(req, res, next) {
             Apply.create(applyData, function(err, apply) {
                 if(err) next();
                 req.user.finance.balance -= 1;
+                req.user.finance.total_capital += 2001;
                 req.user.freeApply = apply.serialID;
                 var userData = {
                     freeApply: apply.serialID,
                     finance: {
-                        balance: req.user.finance.balance
+                        balance: req.user.finance.balance,
+                        total_capital: req.user.finance.total_capital
                     }
                 };
                 User.update({_id:req.user._id}, userData, function (err, numberAffected, raw) {
@@ -381,81 +383,6 @@ exports.freeApply2 = function(req, res, next) {
         logger.warn('user:' + req.user.mobile + ' already tried free apply, refuse it');
         res.locals.serial_id = req.user.freeApply;
         res.render('apply/free_apply_refuse');
-    }
-};
-
-exports.freeApply = function(req, res, next) {
-    if (!req.user.freeApply) {
-        var applyData = new Apply({
-            userID: req.user._id,
-            userMobile: req.user.mobile,
-            serialID: util.generateSerialID(),
-            amount: 2000,
-            deposit: 200,
-            isTrial: true,
-            period: 2
-        });
-
-        Apply.create(applyData, function(err, apply) {
-            if(err) next();
-
-            var orderData = {
-                userID: apply.userID,
-                dealType: 1,
-                amount: 1,
-                status: 2,
-                description: '免费配资体验',
-                applySerialID: apply.serialID
-            };
-            Order.create(orderData, function(err, order) {
-                if (err) next();
-                var shouldPay = 1 - req.user.finance.balance;
-                res.locals.shengOrderTime = moment().format("YYYYMMDDHHmmss");
-                res.locals.serialID = apply.serialID;
-
-                if (shouldPay <= 0) {
-                    res.locals.useBalance = true;
-                }
-
-                res.locals.callback_domain = config.pay_callback_domain;
-                res.locals.order = order;
-                User.update({_id:req.user._id}, {freeApply:apply.serialID}, function (err, numberAffected, raw) {
-                    if (err) next();
-                    apply.orderID = order._id;
-                    apply.save(function(err) {
-                        res.render('free_apply_confirm');
-                    });
-                });
-            });
-        });
-    } else {
-        Apply.findOne({serialID:req.user.freeApply}, function(err, apply) {
-            if (err) next();
-            if (apply.status != 1) {
-                logger.warn('user:' + req.user.mobile + ' already tried free apply, refuse it');
-                req.flash('errors', {msg:'对不起，您已经体验过了！'});
-                return res.redirect('/apply');
-            }
-            Order.findOne({_id:apply.orderID}, function(err, order) {
-                if (err) next();
-                var shouldPay = 1 - req.user.finance.balance;
-                res.locals.shengOrderTime = moment().format("YYYYMMDDHHmmss");
-                res.locals.serialID = apply.serialID;
-
-                if (shouldPay <= 0) {
-                    res.locals.useBalance = true;
-                }
-
-                res.locals.callback_domain = config.pay_callback_domain;
-                res.locals.order = order;
-                if (order && shouldPay === order.amount) {
-                    if (order.transID) {
-                        res.locals.transID = order.transID;
-                    }
-                }
-                res.render('free_apply_confirm');
-            });
-        });
     }
 };
 
