@@ -28,8 +28,9 @@ module.exports = function(app) {
         res.render('failed_to_pay');
     });
 
-    app.get('/support_contact', function(req, res) {
-        res.render('support_contact');
+    app.get('/email_verify_result', function(req, res) {
+        res.locals.other_menu = true;
+        res.render('email_verify_result');
     });
 
     app.get('/apply_detail/:id', passportConf.isAuthenticated, applies.getApplyDetail);

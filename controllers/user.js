@@ -198,13 +198,21 @@ module.exports.postVerifyEmail = function(req, res, next) {
 exports.finishVerifyEmail = function(req, res) {
     User.findOne({ verifyEmailToken: req.params.token })
         .exec(function(err, user) {
-            if (!user || !user.profile.email) {
-                req.flash('errors', { msg: '邮件验证码失效或没有找到用户.' });
-                return res.redirect('/user#/security');
+            if (err || !user.profile.email) {
+                if (err)
+                    logger.warn('finishVerifyEmail error:' + err.toString());
+                else
+                    logger.warn('finishVerifyEmail error:user email empty');
+                res.locals.msg = '邮件验证失败';
+                return res.redirect('/email_verify_result');
             }
             user.profile.email_verified = true;
             user.save(function(err) {
-                res.redirect('/user#/security');
+                if (err) {
+                    logger.warn('finishVerifyEmail error:' + err.toString());
+                }
+                res.locals.msg = '邮件验证成功，您的邮箱已经成功绑定!';
+                res.redirect('/email_verify_result');
             });
         });
 };
@@ -1375,7 +1383,6 @@ module.exports.registerRoutes = function(app, passportConf) {
     app.get('/user', passportConf.isAuthenticated, homeIndex);
 
     app.get('/user/*', passportConf.isAuthenticated, function(req, res, next) {
-        console.log('run here');
         res.locals.callback_domain = config.pay_callback_domain;
         res.render('user/' + req.params[0], {layout:null});
     });

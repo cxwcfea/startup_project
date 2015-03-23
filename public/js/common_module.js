@@ -177,12 +177,20 @@
         };
     }).filter("displayEmail", function () {
         return function (input) {
-            var pos = input.search('@');
-            return input.substr(0, 2) + "***" + input.substr(pos);
+            if (input) {
+                var pos = input.search('@');
+                return input.substr(0, 2) + "***" + input.substr(pos);
+            } else {
+                return '';
+            }
         };
     }).filter("displayIdentityID", function () {
         return function (input) {
-            return input.substr(0, 4) + "**********" + input.substr(-4);
+            if (input) {
+                return input.substr(0, 4) + "**********" + input.substr(-4);
+            } else {
+                return '';
+            }
         };
     }).filter("displayDate", function () {
         return function (input) {

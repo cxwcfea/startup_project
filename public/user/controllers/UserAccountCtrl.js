@@ -225,4 +225,8 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
     vm.excludeCategory = function (item) {
         return item.value != 4;
     };
+
+    vm.setupEmail = function() {
+
+    };
 }]);
