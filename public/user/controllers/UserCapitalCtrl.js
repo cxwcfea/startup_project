@@ -225,18 +225,22 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
     };
 
     vm.withdraw = function() {
+        if (!vm.user.finance.password) {
+            addAlert('danger', '您还未设置提现密码，请先设置提现密码');
+            return;
+        }
         if (!vm.withdrawAmount || vm.withdrawAmount < 0) {
-            gbNotifier.error('请输入有效的提现金额!');
+            addAlert('danger', '请输入有效的提现金额!');
             return;
         }
         var withdrawAmount = Number(vm.withdrawAmount.toFixed(2));
         var balance = Number(vm.user.finance.balance.toFixed(2));
         if (withdrawAmount > balance) {
-            gbNotifier.error('余额不足!');
+            addAlert('danger', '余额不足!');
             return;
         }
         if (!vm.finance_password) {
-            gbNotifier.error('请输入提现密码!');
+            addAlert('danger', '请输入提现密码!');
             return;
         }
         var order = {
@@ -264,10 +268,10 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
                 order_list.unshift(data.order);
                 currentOrders = order_list;
                 pageReset();
-                gbNotifier.notify('您的提现申请已经提交,我们会尽快处理');
+                addAlert('success', '您的提现申请已经提交,我们会尽快处理!');
             })
             .error(function(data, status, headers, config) {
-                gbNotifier.error('提现申请提交失败 ' + data.reason);
+                addAlert('danger', '提现申请提交失败,请联系客服!');
             });
     };
 

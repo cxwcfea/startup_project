@@ -86,6 +86,7 @@
         <a href="/user#/user_account?category=2" class="color_c82217">立即设置</a>
     </div>
 </div>
+<alert ng-repeat="alert in capitalVM.alerts" type="{{alert.type}}" close="capitalVM.closeAlert($index)">{{alert.msg}}</alert>
 <a href="" class="recBtn01 withBtn01" ng-click="capitalVM.withdraw()">提现</a>
 <div class="column5">
     <a href="">帮助中心></a>

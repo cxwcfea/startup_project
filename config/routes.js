@@ -31,30 +31,6 @@ module.exports = function(app) {
 
     app.get('/apply_detail/:id', passportConf.isAuthenticated, applies.getApplyDetail);
 
-    app.get('/company_intro', function(req, res) {
-        res.render('article/company_intro', {layout:'article_main'});
-    });
-
-    app.get('/QandA', function(req, res) {
-        res.render('article/QandA', {layout:'article_main'});
-    });
-
-    app.get('/guidelines', function(req, res) {
-        res.render('article/guidelines', {layout:'article_main'});
-    });
-
-    app.get('/contact', function(req, res) {
-        res.render('article/contact', {layout:'article_main'});
-    });
-
-    app.get('/legal', function(req, res) {
-        res.render('article/legal', {layout:'article_main'});
-    });
-
-    app.get('/partners', function(req, res) {
-        res.render('article/partners', {layout:'article_main'});
-    });
-
     app.get('/apply/get_profit/:serial_id', passportConf.isAuthenticated, applies.getProfit);
 
     app.post('/apply/get_profit/:serial_id', passportConf.isAuthenticated, applies.postGetProfit);

@@ -1,4 +1,3 @@
-{{>flash}}
 <div class="Banner" id="imgFocus">
     <ul class="ImgContent" id="ImgContent">
         <li style="background-image: url(/images/banner.jpg);"></li>
@@ -12,6 +11,7 @@
             <li></li>
         </ul>
         <div class="loginBox">
+            {{err_msg}}
             <form method="POST" name="login-form">
                 <div class="loginText loginIncon01">
                     <input type="tel" class="inputLoginText" name="mobile" id="mobile" pattern="1[3|5|7|8|][0-9]{9}" autofocus placeholder="手机号" required>
@@ -28,7 +28,7 @@
                     </div>
                     <a href="/forgot">忘记密码？</a>
                 </div>
-                <input type="submit" id="login-btn" class="LoginBtn01" value="登陆">
+                <input type="submit" id="login-btn" class="LoginBtn01" value="登录">
             </form>
             <a href="/signup" class="LoginBtn02">免费注册</a>
         </div>
