@@ -357,7 +357,6 @@ body{
 	float: right;
 	text-align: center;
 	line-height: 28px;
-	border-radius: 5px;
 	border: 1px solid #e0e0e0;
 }
 
@@ -913,12 +912,10 @@ a.rightBtn{
 	background: #fff;
 	border: 1px solid #999999;
 	width: 298px;
-	border-radius: 5px;
 }
 .recMoneyText input.zfbMoneyInputText{
 	width: 219px;
 	border-right: 0;
-	border-radius: 5px  0 0 5px ;
 }
 .zfbImg{
 	width: 77px;
@@ -926,7 +923,6 @@ a.rightBtn{
 	background: url(../images/img26.jpg) no-repeat;
 	border: 1px solid #999999;
 	border-left: none;
-	border-radius:0 5px 5px 0 ;
 }
 .recMoneyLeft p.p01{
 	color: #e23024;
@@ -1335,7 +1331,6 @@ a.rightBtn{
 	width: 298px;
 	height: 38px;
 	border:1px solid #999999;
-	border-radius: 5px;
 	text-indent: 5px;
 }
 
@@ -1368,7 +1363,6 @@ a.rightBtn{
 }
 .inputYzm{
 	width: 198px;
-	border-radius: 0 5px 5px 0 ;
 	border-left: none;
 	display: block;
 	float: left;
@@ -1538,7 +1532,6 @@ p.userP01{
 	width: 398px;
 	height: 40px;
 	border: 1px solid #999999;
-	border-radius: 5px;
 	background: #fff;
 	text-indent: 5px;
 	line-height: 40px;
@@ -1722,10 +1715,243 @@ p.userP01{
 	margin: auto;
 	font-size: 16px;
 }
+dl.left {
+			    border-right: 1px solid #ccc;
+			    font-size: 14px;
+			    width: 779px;
+			}
+			
+.content .left dt {
+    border-bottom: 1px dotted #ccc;
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 30px;
+    margin-bottom: 30px;
+    margin-right: 50px;
+}
+
+.breadCrumb {
+    background-color: #eee;
+    border: 1px solid #d5d5d5;
+    display: inline-block;
+    height: 11px;
+    margin: 0 5px;
+    position: relative;
+    top: 1px;
+    width: 2px;
+}
+.content .left-v1 dd {
+    display: inline;
+    float: left;
+    margin: 12px 0 0 40px;
+    width: 95%;
+}
+.content .reg, .content .left-v1 dd {
+    overflow: visible;
+}
+.content .left dd {
+    line-height: 40px;
+    margin: 10px 0;
+}
+
+.content dl.left div.left {
+    text-align: right;
+    width: 130px;
+}
+
+.content .left, .content .right {
+    float: left;
+}
 
 
+.content dl.left-v1 .pr {
+    overflow: visible;
+    position: relative;
+}
+.content dl.left-v1 .right {
+    font-size: 14px;
+    padding-left: 20px;
+    width: auto;
+}
 
+dl.left-v1 input.left {
+    color: #4d4d4d;
+    font-family: "微软雅黑";
+    font-size: 14px;
+}
+dl.left input.left {
+    border: 1px solid #ddd;
+    height: 25px;
+    line-height: 25px;
+    outline: medium none;
+    padding: 7px 0 8px;
+    text-indent: 5px;
+    width: 250px;
+}
+.m-tip {
+    clear: both;
+    color: #999;
+    height: 32px;
+    line-height: 32px;
+    margin-bottom: 10px;
+    padding-left: 150px;
+}
 
+.content .left-v1 dd.passwd {
+    margin-top: 0;
+}
+.content .left-v1 dd {
+    display: inline;
+    float: left;
+    margin: 12px 0 0 40px;
+    width: 95%;
+}
+
+dl.left .submit {
+    background: #e0322d;
+    color: #fff;
+    display: inline-block;
+    height: 40px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    width: 156px;
+    cursor: pointer;
+}
+dl.left .submit:hover{
+	background: #d22c28;
+}
+.reg .hasAccount {
+    line-height: 20px;
+}
+.right {
+    padding: 0 20px;
+    width: 180px;
+}
+
+.hasAccount a {
+    color: #06c;
+    text-decoration: underline;
+}
+.center1000{
+	padding-top: 40px;
+}
+.get-num-box {
+    background:#fafa89;
+    bottom: 45px;
+    color: #000;
+    font-family: "微软雅黑";
+    font-size: 28px;
+    height: 43px;
+    left: 20px;
+    line-height: 43px;
+    overflow: hidden;
+    position: absolute;
+    text-indent: 14px;
+    width: 250px;
+    display: none;
+}
+.get-num-box  span{
+	vertical-align:baseline
+}
+.space {
+    padding-left: 0.5em;
+}
+
+.regTccBox{
+	width: 480px;
+	height: 230px;
+	background: #fff;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	margin:-115px 0 0 -240px ;
+}
+
+.regColumn{
+	height: 37px;
+	line-height: 37px;
+	background: #fafafa;
+	border-bottom: 1px solid #d9d9d9;
+	padding-left: 15px;
+	font-weight: bold;
+}
+
+.regTccBox p.p01{
+	text-align: center;
+	height: 70px;
+	line-height: 70px;
+}
+.regTccBox p.p01 span{
+	font-size: 18px;
+}
+.regTccBox p.p02{
+	padding-left: 180px;
+	color: #b20000;
+	font-size: 12px;
+	line-height: 30px;
+	height: 30px;
+}
+.regTccBox p.p02 span{
+	background: url(../images/img30.jpg) no-repeat left center;
+	padding-left: 20px;
+}
+.regInputBox{
+	height: 35px;
+	line-height: 35px;
+}
+.regInputLeft{
+	width: 160px;
+	text-align: right;
+	padding-right: 20px;
+}
+.regInputText{
+	width: 115px;
+	height: 29px;
+	line-height: 29px;
+	text-indent: 10px;
+}
+.regInputTextSelected{
+	border: 1px solid #2982f2;
+}
+.recBtn03{
+	width: 115px;
+	height: 31px;
+	display: inline-block;
+	background: #fcefe4;
+	border: 1px solid #e0322d;
+	cursor: pointer;
+	color: #e0322d;
+	font-weight: bold;
+	font-size: 12px;
+}
+.recBtn03_disabled{
+	width: 115px;
+	height: 31px;
+	display: inline-block;
+	background: #f2f2f2;
+	border: 1px solid #dddddd;
+	cursor: pointer;
+	font-size: 12px;
+	color: #c5c5c5;
+}
+.recBtn04{
+	width: 115px;
+	cursor: pointer;
+	height: 32px;
+	display: block;
+	margin: auto;
+	background: #e0322d;
+	border-radius: 5px;
+	font-size: 16px;
+	color: #fff;
+	text-align: center;
+	line-height: 32px;
+	border: none;
+	margin-top: 5px;
+}
 /*404*/
 
 .slsBox{

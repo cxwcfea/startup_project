@@ -34,6 +34,9 @@ html,body{height: 100%;}
 	-moz-transition-timing-function:ease-out; 
 	transition-timing-function:ease-out; 
 }*/
+.bg_fff{
+	background: #fff;
+}
 .tmbg{
 	background: #000;
 	width: 100%;
@@ -96,13 +99,7 @@ html,body{height: 100%;}
 	background: #d31812;
 	color: #fff;
 }
-.topLoginContet{
-	left: 0;
-	top: 52px;
-	z-index: 999;
-	border: 1px solid #e0e0e0;
-	box-shadow:3px 3px 6px 0 #a8a8a8;
-}
+
 .khdBox{
 	background: url(../images/img23.png) no-repeat 78px  center;
 	position: relative;
@@ -144,20 +141,43 @@ html,body{height: 100%;}
 }
 .hhdDown li span{
 	background: url(../images/img03.png) no-repeat -10px -100px ;
-	padding: 1px 10px;
+	padding: 2px 10px;
 }
 .hhdDown li span.icon03{
 	background-position:  -64px -101px;
-	padding: 1px 10px;
+	padding: 2px 10px;
 }
 .hhdDown li span.icon04{
 	background-position:  -37px -101px;
-	padding: 1px 10px;
+	padding: 2px 10px;
 }
 
-
+.headerText{
+	line-height: 110px;
+	color: #999999;
+	font-size: 12px;
+}
+.headerText a{
+	color: #999999;
+	text-decoration: underline;
+}
 
 /*登陆框*/
+.loginHeight{
+	height: 500px;
+	position: relative;
+}
+.loginBg{
+	opacity: 0.6;
+	background: url(../images/loginBg.jpg)  no-repeat;
+	height: 500px;
+	margin-top: 30px;
+	position: absolute;
+	left: 0;
+	width: 100%;
+	top: 0;
+}
+
 .loginBox{
 	position: absolute;
 	right: 0;
@@ -169,6 +189,18 @@ html,body{height: 100%;}
 	text-align: center;
 	padding-top: 10px;
 }
+
+.loginbox2{
+	border: 1px solid #e6e6e6 ;
+	top: 50px;
+	width: 354px;
+	background: #f7f7f7;
+	border-bottom: 2px solid #cdcdcd;
+	border-top: 5px solid #d31812;
+	height: 265px;
+	padding-top: 0;
+}
+
 .loginText{
 	height: 50px;
 	margin: 0 20px;
@@ -176,11 +208,23 @@ html,body{height: 100%;}
 	padding-left: 40px;
 	border-bottom: 1px solid #e76049;
 }
+.loginText3{
+	background-color: #fff;
+	border-color:#c0c0c0 #dadada #dadada;
+	border-right: 1px solid #dadada;
+	border-style:solid;
+	border-width:1px;
+	margin-top: 20px;
+}
 .loginIncon01{
-	background: url(../images/img24.png) no-repeat 5px 12px;
+	background-image: url(../images/img24.png)  ;
+	background-position: 5px 12px;
+	background-repeat: no-repeat;
 }
 .loginIncon02{
-	background: url(../images/img25.png) no-repeat 5px 12px;
+	background-image: url(../images/img25.png);
+	background-position: 5px 12px;
+	background-repeat: no-repeat;
 }
 .inputLoginText{
 	display: block;
@@ -188,6 +232,7 @@ html,body{height: 100%;}
 	height: 48px;
 	line-height: 48px;
 	width: 220px;
+	background: none;
 }
 
 .loginText2{
@@ -272,7 +317,26 @@ div.color_333333,a.color_333333,span.color_333333{
 	display: block;
 	width: 407px;
 }
-
+.logo2{
+	display: block;
+	float: left;
+	margin-top: 20px;
+	width: 200px;
+	overflow: hidden;
+}
+.logo2 img{
+	display: block;
+	width: 407px;
+}
+span.loginSpan{
+	display: block;
+	float: left;
+	font-size: 24px;
+	border-left: 1px solid #cecece;
+	padding-left: 20px;
+	margin-top: 40px;
+	margin-left: 10px;
+}
 .nav{
 	height: 35px;
 	line-height: 35px;
@@ -494,14 +558,15 @@ div.color_333333,a.color_333333,span.color_333333{
 	height: 240px;
 	padding-top: 20px;
 	border-top: 1px solid #e0e0e0;
+	color: #666666;
 }
 
 .footerList{
-	color: #333333;
+	color: #666666;
 	width: 210px;
 }
 .footerList a{
-	color: #333333;
+	color: #666666;
 }
 .footerList p{
 	height: 60px;
@@ -586,4 +651,212 @@ div.color_333333,a.color_333333,span.color_333333{
 	margin-top: 20px;
 }
 
+/*登录*/
+	.ui-logon {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: none repeat scroll 0 0 #f7f7f7;
+    border-color: #e6e6e6 #e6e6e6 #cdcdcd;
+    border-image: none;
+    border-radius: 2px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: -2px 0 0 #fff, 0 -2px 0 #fff, 0 1px 0 #e6e6e6, 2px 0 5px #fff;
+    float: right;
+    overflow: hidden;
+    width: 354px;
+    position: absolute;
+    top: 50px;
+    right: 0;
+}
 
+.logon-con {
+    float: left;
+    padding: 20px 37px 0;
+    width: 280px;
+}
+.logon-con .title {
+    margin-bottom: 5px;
+}
+.logon-con li {
+    display: inline;
+    float: left;
+    width: 278px;
+}
+
+.logon-con .title {
+    margin-bottom: 5px;
+}
+.logon-con li {
+    display: inline;
+    float: left;
+    width: 278px;
+}
+
+.logon-con li h2 {
+    color: #666;
+    float: left;
+    font-size: 16px;
+    font-weight: bold;
+    height: 32px;
+    line-height: 32px;
+}
+.err-tips {
+    padding-bottom: 10px;
+}
+
+.ui-err {
+    color: #b20000;
+    display: inline;
+    float: left;
+    font-size: 12px;
+    line-height: 18px;
+    overflow: hidden;
+    width: 120%;
+    word-break: break-all;
+}
+.logon-con .logon-ipt {
+    background: none repeat scroll 0 0 #fff;
+    border-color: #c0c0c0 #dadada #dadada;
+    border-right: 1px solid #dadada;
+    border-style: solid;
+    border-width: 1px;
+    font-family: Verdana,Tahoma,Arial;
+    height: 43px;
+    line-height: 43px;
+    position: relative;
+}
+.logon-con .logon-ipt em.user {
+    background-position: -2px -354px;
+    height: 19px;
+    width: 18px;
+}
+.logon-con .logon-ipt em {
+    background: url("../images/sprite_ico.png") no-repeat;
+    float: left;
+    margin: 12px 10px 0 13px;
+    overflow: hidden;
+}
+.logon-con .logon-ipt input {
+    border: 0 none;
+    float: left;
+    font-family: Verdana,Tahoma,Arial;
+    font-size: 16px;
+    height: 18px;
+    line-height: 18px;
+    margin-top: 1px;
+    padding: 12px 0 11px;
+    width: 235px;
+}
+.mgt20 {
+    margin-top: 20px !important;
+}
+
+.logon-con .logon-ipt em.key {
+    background-position: left -118px;
+    height: 22px;
+    margin-left: 16px;
+    margin-right: 14px;
+    width: 11px;
+}
+.logon-con .logon-ipt em {
+    background: url("../images/sprite_ico.png") no-repeat ;
+    float: left;
+    margin: 12px 10px 0 13px;
+    overflow: hidden;
+}
+
+.logon-con .ui-pwd {
+    height: 43px;
+    line-height: 43px;
+}
+
+.logon-con .ui-pwd a {
+    color: #06c;
+    float: right;
+    font-size: 12px;
+}
+
+
+.login-btn {
+    background: url("../images/button.png") no-repeat ;
+    border: 0 none;
+    color: #fff;
+    cursor: pointer;
+    float: left;
+    font-family: "微软雅黑";
+    font-size: 18px;
+    height: 40px;
+    line-height: 40px;
+    overflow: hidden;
+    text-align: center;
+    text-shadow: 1px 1px 0 #e77614;
+    width: 280px;
+}
+.login-btn {
+    background-position: left -351px;
+}
+.login-btn:hover {
+    background-position: left -391px;
+}
+li.li01{
+	text-align: right;line-height: 50px;
+	font-size: 12px;
+}
+li.li01 a{
+	
+	color: #06c;
+}
+
+
+
+
+
+
+
+
+
+/*登陆框弹出层*/
+
+.logintcc{
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	margin:-155px 0 0 -185px;
+	padding-top: 0;
+	box-shadow: none;
+	
+}
+.loginColumn{
+	height: 37px;
+	line-height: 37px;
+	text-align: left;
+	border-bottom: 1px solid #d9d9d9;
+	padding: 0 10px;
+	font-weight: bold;
+	font-size: 16px;
+}
+.loginClose{
+	position: absolute;
+	width: 17px;
+	height: 17px;
+	background: url(../images/close.png) no-repeat;
+	right:5px;
+	top: 5px;
+	cursor: pointer;
+	
+}
+.loginClose:hover{
+	background: url(../images/close2.png) no-repeat;
+}
+
+.topLoginContet{
+	left: 0;
+	top: 35px;
+	z-index: 999;
+	border: 1px solid #e0e0e0;
+	box-shadow:none;
+	border-top: 5px solid #d31812;
+}

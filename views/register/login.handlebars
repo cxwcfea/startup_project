@@ -1,64 +1,33 @@
-<div class="Banner" id="imgFocus">
-    <ul class="ImgContent" id="ImgContent">
-        <li style="background-image: url(/images/banner.jpg);"></li>
-        <li style="background-image: url(/images/banner2.jpg);"></li>
-        <li style="background-image: url(/images/banner3.jpg);"></li>
-    </ul>
-    <div class="wrapper BannerNrBox">
-        <ul class="ImgList" id="ImgList">
-            <li class="selectLi"></li>
-            <li></li>
-            <li></li>
-        </ul>
-        <div class="loginBox">
-            {{err_msg}}
-            <form method="POST" name="login-form">
-                <div class="loginText loginIncon01">
-                    <input type="tel" class="inputLoginText" name="mobile" id="mobile" pattern="1[3|5|7|8|][0-9]{9}" autofocus placeholder="手机号" required>
-                </div>
-                <div class="loginText loginIncon02">
-                    <input type="password" class="inputLoginText" name="password" id="password" placeholder="密码,长度6-20位" required>
-                </div>
-                <div class="loginText2">
-                    <div class="fl">
-                        <label>
-                            <input type="checkbox" name="remember-me" id="remember-me">
-                            保持登录状态
-                        </label>
+<div class="wrapper loginHeight">
+    <div class="loginBg"></div>
+    <form method="POST" name="login-form">
+        <div id="login" class="ui-logon clearfix">
+            <ul class="logon-con">
+                <li class="title">
+                    <h2>登录</h2>
+                </li>
+                <li class="err-tips">
+                    <div class="ui-err">
                     </div>
-                    <a href="/forgot">忘记密码？</a>
-                </div>
-                <input type="submit" id="login-btn" class="LoginBtn01" value="登录">
-            </form>
-            <a href="/signup" class="LoginBtn02">免费注册</a>
+                </li>
+
+                <li class="logon-ipt z-index10" id="username1">
+                    <em class="user"></em>
+                    <input type="tel" class="inputLoginText" name="mobile" id="mobile" accesskey="n" tabindex="1" class="holder" pattern="1[3|5|7|8|][0-9]{9}" autofocus placeholder="请输入注册手机号码" autocomplete="off" required>
+                </li>
+                <li class="logon-ipt mgt20" id="pwd">
+                    <em class="key"></em>
+                    <input type="password" tabindex="2" value="" placeholder="密码,长度6-20位" name="password" id="password" required>
+                </li>
+                <li class="ui-pwd">
+                    <a href="/forgot">忘记密码</a>
+                </li>
+
+                <li>
+                    <input type="submit" value="登录" accesskey="l" name="submit" tabindex="4" class="login-btn">
+                </li>
+                <li class="li01" style="">没有账号？ <a style="" href="/signup" class="register">免费注册</a></li>
+            </ul>
         </div>
-    </div>
-</div>
-<div class="productBox">
-    <div class="wrapper">
-        <div class="product fl">
-            <div class="fl productIcon01"></div>
-            <div class="fl productText">
-                <p class="p01">配资 是件轻松的事</p>
-                <p class="p02">3步操作，3分钟配资，最高30万</p>
-                <p class="p03"><a href="#">免费体验</a> ｜ <a href="#">立即配资</a></p>
-            </div>
-        </div>
-        <div class="product fl productWidth2">
-            <div class="fl productIcon02"></div>
-            <div class="fl productText">
-                <p class="p01">随时随地 随借随还</p>
-                <p class="p02">PC移动微信，随时还款，超低费用</p>
-                <p class="p03"><a href="#">查看费用</a></p>
-            </div>
-        </div>
-        <div class="product productWidth fl">
-            <div class="fl productIcon03"></div>
-            <div class="fl productText">
-                <p class="p01">实盘交易 安心安全</p>
-                <p class="p02">实盘交易保障</p>
-                <p class="p03"><a href="#">免费体验</a> ｜ <a href="#">立即配资</a></p>
-            </div>
-        </div>
-    </div>
+    </form>
 </div>

@@ -53,7 +53,8 @@ module.exports = function(app) {
         if (req.isAuthenticated()) {
             res.redirect('/');
         } else {
-            res.locals.other_menu = true;
+            res.locals.title = '注册';
+            res.locals.signup = true;
             res.render('register/signup', {
                 layout: 'no_header'
             });
@@ -63,6 +64,10 @@ module.exports = function(app) {
     app.post('/signup', users.postSignup);
 
     app.post('/signup_2', users.preSignup);
+
+    app.post('/pre_signup', users.apiSignup);
+
+    app.post('/post_signup', users.apiSignup2);
 
     app.get('/forgot', function(req, res) {
         res.locals.other_menu = true;
@@ -81,10 +86,11 @@ module.exports = function(app) {
         if (req.isAuthenticated()) {
             res.redirect('/');
         } else {
-            res.locals.main_menu = true;
             res.locals.title = '登录';
-            res.locals.login_link = true;
-            res.render('register/login');
+            res.locals.login = true;
+            res.render('register/login', {
+                layout: 'no_header'
+            });
         }
     });
 

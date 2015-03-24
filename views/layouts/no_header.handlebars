@@ -2,42 +2,66 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>牛金网 | 快速注册</title>
-    <link rel="alternate icon" type="image/png" href="/images/favicon.ico">
-    <link rel="stylesheet" href="{{static '/vendor/bootstrap/dist/css/bootstrap.min.css'}}">
-    <link rel="stylesheet" href="{{static '/vendor/amazeui/dist/css/amazeui.min.css'}}">
-    <link rel="stylesheet" href="{{static '/vendor/toastr/toastr.css'}}">
+    <title>{{title}}</title>
     <link rel="stylesheet" href="{{static '/css/common.css'}}">
-    {{#if main_menu}}
-        <link rel="stylesheet" href="{{static '/css/index.css'}}">
-    {{/if}}
-    {{#unless main_menu}}
-        <link rel="stylesheet" href="{{static '/css/css.css'}}">
-    {{/unless}}
-    <link rel="stylesheet" href="{{static '/css/site2.css'}}">
+    <link rel="stylesheet" href="{{static '/css/index.css'}}">
+    <link rel="stylesheet" href="{{static '/css/css.css'}}">
     <script src="{{static '/vendor/jquery/dist/jquery.min.js'}}"></script>
-    <script src="{{static '/vendor/jquery.Imgfocus.js'}}"></script>
+    <script src="{{static '/js/common.js'}}"></script>
+    <script src="{{static '/js/register.js'}}"></script>
+    <script>
+        $(function () {
+            $(".jq_regInputText").focus(function () {
+                $(this).addClass("regInputTextSelected")
+            }).blur(function () {
+                $(this).removeClass("regInputTextSelected")
+            });
+
+            //重发验证码按钮
+            $(".recBtn03").click(function () {
+                $(this).addClass("recBtn03_disabled")
+                $(this).val("(60)重发验证码")
+                $(".jq_p02").show();
+            });
+
+            /*
+            //弹出层关闭
+            $(".loginClose").click(function () {
+                $(".regTcc").hide();
+            });
+
+            //弹出层显示
+            $(".submit").click(function () {
+                $(".regTcc").show();
+            });
+            */
+        })
+    </script>
 </head>
-<body>
+<body class="bg_fff">
 
+<div class="header">
+    <div class="wrapper">
+        <a href="#" class="logo2"><img src="/images/logo.png"/></a>
+        <span class="loginSpan">用户{{title}}</span>
+    {{#if login}}
+        <div class="fr headerText">
+            还不是会员 ？ <a href="/signup">立即注册</a> | <a href="#">意见反馈</a>
+        </div>
+    {{/if}}
+    </div>
+</div>
+
+<div ng-app="registerApp">
 {{{body}}}
+</div>
 
-{{#if main_menu}}
-    <div class="footer">
+{{#if login}}
+<div class="footer">
 {{/if}}
-{{#if user_menu}}
-    <div class="footer">
+{{#if signup}}
+<div class="footer marTop200">
 {{/if}}
-{{#if apply_menu}}
-    <div class="footer marTop200">
-{{/if}}
-{{#if free_apply_menu}}
-    <div class="footer marTop200">
-{{/if}}
-{{#if other_menu}}
-    <div class="footer marTop200">
-{{/if}}
-
     <div class="wrapper">
         <div class="footerList fl">
             <p>软件下载</p>
@@ -78,22 +102,7 @@
         <div class="footerText">©版权所有 北京小牛普惠科技有限公司 All Rights Reserved 2015 <a href="javascript:"> 京ICP备14047091号-4</a></div>
     </div>
 </div>
-<script src="{{static '/vendor/bootstrap/dist/js/bootstrap.min.js'}}"></script>
-<script src="{{static '/vendor/amazeui/dist/js/amazeui.min.js'}}"></script>
-<script src="{{static '/vendor/toastr/toastr.min.js'}}"></script>
-<script src="{{static '/vendor/lodash/lodash.min.js'}}"></script>
-<script src="{{static '/vendor/moment/min/moment.min.js'}}"></script>
-<script src="{{static '/vendor/moment/min/locales.min.js'}}"></script>
-<script src="{{static '/vendor/spark-md5.min.js'}}"></script>
-<script src="{{static '/vendor/angular/angular.min.js'}}"></script>
-<script src="{{static '/vendor/angular-bootstrap/ui-bootstrap-tpls.min.js'}}"></script>
-<script src="{{static '/js/common.js'}}"></script>
-<script src="{{static '/js/common_module.js'}}"></script>
-<script src="{{static '/app/controllers/MainApplyController.js'}}"></script>
-<script src="{{static '/js/main.js'}}"></script>
-{{#if main_menu}}
-        <script src="{{static '/js/index.js'}}"></script>
-{{/if}}
-
+<script src="{{static '/vendor/angular/angular.js'}}"></script>
+<script src="{{static '/app/controllers/RegisterCtrl.js'}}"></script>
 </body>
 </html>

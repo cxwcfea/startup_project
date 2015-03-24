@@ -109,6 +109,61 @@ module.exports.postSignup = function(req, res, next) {
     });
 };
 
+module.exports.apiSignup2 = function(req, res) {
+    req.assert('verify_code', '验证码错误').equals(req.session.sms_code);
+
+    var errors = req.validationErrors();
+    if (errors) {
+        console.log(errors);
+        res.status(400);
+        return res.send({errorCode:1});
+    }
+    res.send({});
+};
+
+module.exports.apiSignup = function(req, res) {
+    req.assert('mobile', '无效的手机号码').len(11, 11).isInt();
+    req.assert('password', '密码不能为空').notEmpty();
+    req.assert('password', '密码至少需要6位').len(6);
+    req.assert('confirm_password', '两次密码不匹配').equals(req.body.password);
+
+    var errors = req.validationErrors();
+    if (errors) {
+        res.status(400);
+        return res.send({errorCode:1});
+    }
+
+    var user = new User({
+        mobile: req.body.mobile,
+        password: req.body.password
+    });
+
+    User.findOne({ mobile: req.body.mobile }, function(err, existingUser) {
+        if (err) {
+            logger.warn('apiSignup err:' + err.toString());
+            res.status(500);
+            return res.send({});
+        }
+        if (existingUser && existingUser.registered) {
+            logger.warn('apiSignup err:already registered');
+            res.status(400);
+            return res.send({errorCode:2});
+        }
+
+        if (existingUser) {
+            user = existingUser;
+        }
+        user.save(function(err) {
+            if (err) {
+                logger.warn('apiSignup err:' + err.toString());
+                res.status(500);
+                return res.send({errorCode:3});
+            }
+            res.send({});
+        });
+    });
+};
+
 module.exports.preSignup = function(req, res, next) {
     req.assert('mobile', '无效的手机号码').len(11, 11).isInt();
     req.assert('password', '密码不能为空').notEmpty();
