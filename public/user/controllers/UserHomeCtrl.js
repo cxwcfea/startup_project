@@ -13,7 +13,7 @@ angular.module('userApp').controller('UserHomeCtrl', ['$scope', '$location', '$h
     vm.tableCss = {
         even:  'even'
     };
-    vm.showApplyAccount = false;
+    vm.showApplyAccount = null;
 
     initData();
 
@@ -90,17 +90,18 @@ angular.module('userApp').controller('UserHomeCtrl', ['$scope', '$location', '$h
 
     vm.manageApply = function(apply) {
         if (apply.status === 1) {
-            $location.url('/user_capital?pay_order=' + apply.orderID);
+            //$location.url('/user_capital?pay_order=' + apply.orderID);
+            $window.location.assign('/apply_confirm/' + apply.serialID);
         } else {
             $location.path('/apply_detail/' + apply.serialID);
         }
     };
 
-    vm.toggleDetail = function (e) {
+    vm.toggleDetail = function (e, index) {
         if (e.type == 'mouseleave') {
-            vm.showApplyAccount = false;
+            vm.showApplyAccount = null;
         } else {
-            vm.showApplyAccount = !vm.showApplyAccount;
+            vm.showApplyAccount = index;
         }
     }
 }]);

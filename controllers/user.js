@@ -397,14 +397,14 @@ module.exports.payByBalance = function(req, res, next) {
     var data = req.body;
     console.log(req.body);
 
-    User.findById(req.user.id, function(err, user) {
+    User.findById(req.user._id, function(err, user) {
         if (err) {
             res.status(500);
             logger.warn('payByBalance error:' + data.apply_serial_id);
             return res.send({success:false, reason:err.toString()});
         }
         if (!user) {
-            logger.warn('payByBalance error. no enough balance to pay apply:' + data.apply_serial_id);
+            logger.warn('payByBalance error. user not found:' + data.apply_serial_id);
             return res.send({success:false, reason:'无效的用户!'});
         }
         if (data.apply_serial_id) {
@@ -470,14 +470,16 @@ module.exports.payByBalance = function(req, res, next) {
                     });
                 } else if (apply.status === 1) {
                     var serviceFee = util.getServiceFee(apply.amount, apply.period);
+                    logger.warn('fee:' + serviceFee + ' amount:' + apply.amount + ' period:' + apply.period);
                     if (apply.isTrial) {
                         serviceFee = 0;
                     }
                     var total = Number((apply.deposit + serviceFee).toFixed(2));
                     var user_balance = Number(user.finance.balance.toFixed(2));
                     if (user_balance < total) {
-                        logger.warn('payByBalance error. no enough balance to pay apply:' + apply_id);
-                        return res.send({success:false, reason:'payApply error. no enough balance to pay apply:' + apply_id});
+                        logger.warn('payByBalance error. no enough balance to pay apply:' + apply.serialID + ' total:' + total + ' user_balance:' + user_balance);
+                        res.status(400);
+                        return res.send({reason:'payApply error. no enough balance to pay apply:' + apply.serialID + ' total:' + total + ' user_balance:' + user_balance});
                     } else {
                         apply.status = 4;
                         apply.save(function (err) {

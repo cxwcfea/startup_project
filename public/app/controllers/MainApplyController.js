@@ -155,7 +155,7 @@
         vm.validDays = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 
         function calculateAmount() {
-            vm.serviceFee = service_charge * vm.apply.period;
+            vm.serviceFee = vm.apply.amount / 10000 * service_charge * vm.apply.period;
             vm.totalAmount = vm.apply.deposit + vm.serviceFee;
             vm.shouldPay = vm.totalAmount - vm.apply.userBalance;
             if (vm.shouldPay <= 0) {
