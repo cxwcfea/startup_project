@@ -1,10 +1,11 @@
 (function () {
     'use strict';
-    angular.module('registerApp', []);
+    angular.module('registerApp', ['ui.bootstrap', 'commonApp']);
     angular.module('registerApp').controller('RegisterCtrl', ['$http', '$location', '$window', '$interval', function($http, $location, $window, $interval) {
         var vm = this;
 
         vm.show_verify_window = false;
+        vm.verify_code_error = false;
 
         vm.register = function() {
             if (!vm.mobile) {
@@ -28,24 +29,23 @@
                 password: vm.password,
                 confirm_password: vm.confirm_password
             };
-            $http.post('/pre_signup', data)
+            $http.post('/api_signup', data)
                 .success(function(data, status, headers, config) {
                     vm.show_verify_window = true;
                     vm.getVerifyCode();
                 })
                 .error(function(data, status, headers, config) {
-                    // called asynchronously if an error occurs
-                    // or server returns response with an error status.
+                    addAlert('danger', data.error_msg);
                 });
         };
 
         vm.verifyCodeBtnText = '重发验证码';
-        var verifyBtnDisabled = false;
+        vm.verifyBtnDisabled = false;
         vm.getVerifyCode = function() {
-            if (verifyBtnDisabled) {
+            if (vm.verifyBtnDisabled) {
                 return;
             }
-            verifyBtnDisabled = true;
+            vm.verifyBtnDisabled = true;
             var count = 0;
             vm.verifyCodeBtnText = '60秒后重试';
             var timeId = $interval(function() {
@@ -54,13 +54,12 @@
                 if (count === 60) {
                     $interval.cancel(timeId);
                     vm.verifyCodeBtnText = '重发验证码';
-                    verifyBtnDisabled = false;
+                    vm.verifyBtnDisabled = false;
                 }
             }, 1000);
 
             $http.get('/api/send_sms_verify_code?mobile=' + vm.mobile)
                 .success(function(data, status, headers, config) {
-                    console.log('ok');
                     //addAlert('success', '验证码已发送');
                 })
                 .error(function(data, status, headers, config) {
@@ -73,17 +72,26 @@
                 alert('请输入验证码');
                 return;
             }
-            $http.post('/post_signup', {verify_code:vm.verify_code})
+            $http.post('/verify_mobile_code', {verify_code:vm.verify_code})
                 .success(function(data, status, headers, config) {
-                    console.log('ok');
                     $('#verify_code')[0].value = vm.verify_code;
                     $('#signup-form')[0].submit();
                 })
                 .error(function(data, status, headers, config) {
                     if (data.errorCode === 1) {
-                        console.log('验证码错误');
+                        vm.verify_code_error = true;
                     }
                 });
+        };
+
+        vm.alerts = [];
+
+        var addAlert = function(type, msg) {
+            vm.alerts.push({type:type, msg: msg});
+        };
+
+        vm.closeAlert = function(index) {
+            vm.alerts.splice(index, 1);
         };
     }]);
 }());

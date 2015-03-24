@@ -172,8 +172,11 @@
         };
     }).filter("displayMobile", function () {
         return function (input) {
-            input = input.toString();
-            return input.substr(0, 3) + "****" + input.substr(-4);
+            if (input) {
+                input = input.toString();
+                return input.substr(0, 3) + "****" + input.substr(-4);
+            }
+            return '';
         };
     }).filter("displayEmail", function () {
         return function (input) {

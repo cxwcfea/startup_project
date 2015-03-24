@@ -3,9 +3,12 @@
 <head>
     <meta charset="utf-8" />
     <title>{{title}}</title>
+    <link rel="stylesheet" href="{{static '/vendor/bootstrap/dist/css/bootstrap.min.css'}}">
+    <link rel="stylesheet" href="{{static '/vendor/amazeui/dist/css/amazeui.min.css'}}">
     <link rel="stylesheet" href="{{static '/css/common.css'}}">
     <link rel="stylesheet" href="{{static '/css/index.css'}}">
     <link rel="stylesheet" href="{{static '/css/css.css'}}">
+    <link rel="stylesheet" href="{{static '/css/site2.css'}}">
     <script src="{{static '/vendor/jquery/dist/jquery.min.js'}}"></script>
     <script src="{{static '/js/common.js'}}"></script>
     <script src="{{static '/js/register.js'}}"></script>
@@ -17,6 +20,7 @@
                 $(this).removeClass("regInputTextSelected")
             });
 
+            /*
             //重发验证码按钮
             $(".recBtn03").click(function () {
                 $(this).addClass("recBtn03_disabled")
@@ -24,7 +28,6 @@
                 $(".jq_p02").show();
             });
 
-            /*
             //弹出层关闭
             $(".loginClose").click(function () {
                 $(".regTcc").hide();
@@ -102,7 +105,12 @@
         <div class="footerText">©版权所有 北京小牛普惠科技有限公司 All Rights Reserved 2015 <a href="javascript:"> 京ICP备14047091号-4</a></div>
     </div>
 </div>
+<script src="{{static '/vendor/bootstrap/dist/js/bootstrap.min.js'}}"></script>
+<script src="{{static '/vendor/toastr/toastr.min.js'}}"></script>
+<script src="{{static '/vendor/moment/min/moment.min.js'}}"></script>
 <script src="{{static '/vendor/angular/angular.js'}}"></script>
+<script src="{{static '/vendor/angular-bootstrap/ui-bootstrap-tpls.min.js'}}"></script>
+<script src="{{static '/js/common_module.js'}}"></script>
 <script src="{{static '/app/controllers/RegisterCtrl.js'}}"></script>
 </body>
 </html>

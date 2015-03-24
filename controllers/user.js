@@ -109,7 +109,7 @@ module.exports.postSignup = function(req, res, next) {
     });
 };
 
-module.exports.apiSignup2 = function(req, res) {
+module.exports.verifyMobileCode = function(req, res) {
     req.assert('verify_code', '验证码错误').equals(req.session.sms_code);
 
     var errors = req.validationErrors();
@@ -130,7 +130,7 @@ module.exports.apiSignup = function(req, res) {
     var errors = req.validationErrors();
     if (errors) {
         res.status(400);
-        return res.send({errorCode:1});
+        return res.send({error_code:1, error_msg:errors[0].msg});
     }
 
     var user = new User({
@@ -142,12 +142,12 @@ module.exports.apiSignup = function(req, res) {
         if (err) {
             logger.warn('apiSignup err:' + err.toString());
             res.status(500);
-            return res.send({});
+            return res.send({error_code:3, error_msg:err.toString()});
         }
         if (existingUser && existingUser.registered) {
             logger.warn('apiSignup err:already registered');
             res.status(400);
-            return res.send({errorCode:2});
+            return res.send({error_code:2, error_msg:'该手机号已经注册'});
         }
 
         if (existingUser) {
@@ -157,7 +157,7 @@ module.exports.apiSignup = function(req, res) {
             if (err) {
                 logger.warn('apiSignup err:' + err.toString());
                 res.status(500);
-                return res.send({errorCode:3});
+                return res.send({error_code:3, error_msg:err.toString()});
             }
             res.send({});
         });

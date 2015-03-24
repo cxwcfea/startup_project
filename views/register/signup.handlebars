@@ -1,10 +1,11 @@
-<div ng-controller="RegisterCtrl as vm">
+<div ng-controller="RegisterCtrl as vm" ng-cloak>
     <div class="wrapper reg content">
         <div class="center1000 reg clearfix">
             <form method="POST" action="/signup" id="signup-form" name="signup-form">
                 <input type="hidden" name="verify_code" id="verify_code">
                 <dl class="left left-v1">
                     <dt><b class="breadCrumb"></b>10秒快速注册</dt>
+                    <alert ng-repeat="alert in vm.alerts" type="\{{alert.type}}" close="vm.closeAlert($index)">\{{alert.msg}}</alert>
                     <dd>
                         <div class="left"><label for="phone">手机号码</label></div>
                         <div class="right pr">
@@ -54,19 +55,19 @@
         <div class="regTccBox">
             <div class="regColumn">
                 注册验证
-                <div class="loginClose"></div>
+                <div class="loginClose" ng-click="vm.show_verify_window=false"></div>
             </div>
-            <p class="p01">已经向<span>\{{vm.mobile}}</span>发送短信，请再输入验证码完成注册</p>
+            <p class="p01">已经向<span>\{{vm.mobile | displayMobile}}</span>发送短信，请再输入验证码完成注册</p>
             <div class="regInputBox">
                 <div class="regInputLeft fl">
                     请输入短信验证码
                 </div>
                 <div class="regIputRight fl">
-                    <input type="text" ng-model="vm.verify_code" class="inputText regInputText jq_regInputText" required>
-                    <input  type="button" name="" id="verify-code-btn" value="\{{vm.verifyCodeBtnText}}" class="recBtn03" />
+                    <input type="text" ng-model="vm.verify_code" ng-focus="vm.verify_code_error = false" class="inputText regInputText jq_regInputText" required>
+                    <input  type="button" name="" id="verify-code-btn" value="\{{vm.verifyCodeBtnText}}" class="recBtn03" ng-class="{recBtn03_disabled:vm.verifyBtnDisabled}" ng-click="vm.getVerifyCode()">
                 </div>
             </div>
-            <p class="p02"><span class="undis jq_p02">验证码错误，请重新输入</span></p>
+            <p class="p02"><span class="jq_p02" ng-show="vm.verify_code_error">验证码错误，请重新输入</span></p>
             <input type="button" ng-click="vm.confirmVerifyCode()" value="确定" class="recBtn04">
         </div>
     </div>

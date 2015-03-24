@@ -65,9 +65,9 @@ module.exports = function(app) {
 
     app.post('/signup_2', users.preSignup);
 
-    app.post('/pre_signup', users.apiSignup);
+    app.post('/api_signup', users.apiSignup);
 
-    app.post('/post_signup', users.apiSignup2);
+    app.post('/verify_mobile_code', users.verifyMobileCode);
 
     app.get('/forgot', function(req, res) {
         res.locals.other_menu = true;

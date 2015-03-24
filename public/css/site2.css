@@ -122,3 +122,7 @@ body, input, textarea, select, button {
 .fl input[type=checkbox] {
     margin: 0;
 }
+
+img {
+    max-width: none;
+}
