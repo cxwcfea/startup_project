@@ -226,12 +226,10 @@ function homasAssignAccount(req, res) {
     });
 }
 
-function closeApply(req, res) {
-    console.log(req.body);
-    var profit = req.body.profit;
+function _closeApply(serialID, profit, res) {
     async.waterfall([
         function(callback) {
-            Apply.findById(req.body.apply_id, function(err, apply) {
+            Apply.findById(serialID, function(err, apply) {
                 callback(err, apply);
             });
         },
@@ -357,11 +355,17 @@ function closeApply(req, res) {
         if (err) {
             logger.error('error happen when close apply:' + req.body.apply_id + ' err:' + err.toString());
             res.status(401);
-            res.send({reason:err.toString()});
+            res.send({"error_code":1, "error_msg":err.toString()});
         } else {
-            res.send({success:true});
+            res.send({"error_code":0});
         }
     });
+}
+
+function closeApply(req, res) {
+    console.log(req.body);
+    var profit = req.body.profit;
+    _closeApply(req.body.apply_id, profit, res);
 }
 
 function fetchGetProfitOrders(req, res) {
@@ -482,11 +486,39 @@ function autoApproveApply(req, res) {
         if (err) {
             logger.warn(err.toString());
             res.status(401);
-            res.send({"error_code":0, "error_msg":err.toString()});
+            res.send({"error_code":1, "error_msg":err.toString()});
         } else {
             res.send({"error_code":0});
         }
     });
+}
+
+function autoFetchClosingSettlement(req, res) {
+    Apply.find({status: 5}, function(err, applies) {
+        if (err) {
+            logger.warn(err.toString());
+            res.status(401);
+            return res.send({success:false, reason:err.toString()});
+        }
+        var ret = applies.map(function(apply) {
+            return {
+                "settlement_serialID":apply.serialID,
+                "account":apply.account
+            }
+        });
+        res.send(ret);
+    });
+}
+
+function autoApproveClosingSettlement(req, res) {
+    var serialID = req.query.settlement_serialID;
+    var success = req.query.success;
+    var profit = req.query.profit;
+    if (success) {
+        _closeApply(serialID, profit, res);
+    } else {
+        res.send({"error_code":0});
+    }
 }
 
 module.exports = {
@@ -534,6 +566,10 @@ module.exports = {
         app.get('/api/auto_fetch_pending_apply', passportConf.requiresRole('admin'), autoFetchPendingApplies);
 
         app.get('/api/auto_approve_apply', passportConf.requiresRole('admin'), autoApproveApply);
+
+        app.get('/api/auto_fetch_closing_settlement', passportConf.requiresRole('admin'), autoFetchClosingSettlement);
+
+        app.get('/api/auto_approve_closing_settlement', passportConf.requiresRole('admin'), autoApproveClosingSettlement);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

@@ -59,7 +59,7 @@ angular.module('adminApp').controller('AdminClosingApplyCtrl', ['$scope', '$http
                     gbNotifier.notify('结算成功');
                 }).
                 error(function(data, status, headers, config) {
-                    gbNotifier.error('结算失败:' + data.reason);
+                    gbNotifier.error('结算失败:' + data.err_msg);
                 });
         }, function () {
         });
