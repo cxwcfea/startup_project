@@ -319,7 +319,7 @@ function closeApply(req, res) {
                     var totalServiceFee = util.getServiceFee(apply.amount, apply.period);
                     var actualServiceFee = util.getServiceFee(apply.amount, tradeDays);
                     var returnedServiceFee = totalServiceFee - actualServiceFee;
-                    user.finance.freeze_capital -= actualServiceFee;
+                    user.finance.freeze_capital -= totalServiceFee;
                     if (returnedServiceFee > 0) {
                         var orderData = {
                             userID: apply.userID,

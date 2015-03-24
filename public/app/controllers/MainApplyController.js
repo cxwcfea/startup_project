@@ -114,6 +114,10 @@
         };
 
         vm.submitApply = function() {
+            if (!vm.agree) {
+                alert('您必须同意《牛金操盘协议》');
+                return;
+            }
             $http.post('/apply', vm.summary)
                 .success(function(data, status, headers, config) {
                     $window.location.href = '/apply_confirm/' + data.apply_serial_id;
