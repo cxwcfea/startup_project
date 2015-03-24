@@ -18,16 +18,13 @@ module.exports = function(app) {
         res.render('home');
     });
 
-    app.get('/third_party_pay', function(req, res) {
-        res.render('third_party_pay', {layout:null});
-    });
-
     app.get('/failed_to_pay', function(req, res) {
         res.locals.pay_error = req.session.pay_error;
         req.session.pay_error = null;
         res.render('failed_to_pay');
     });
 
+    app.get('/recharge', passportConf.isAuthenticated, users.getRecharge);
 
     app.get('/apply_detail/:id', passportConf.isAuthenticated, applies.getApplyDetail);
 
@@ -57,11 +54,15 @@ module.exports = function(app) {
             res.redirect('/');
         } else {
             res.locals.other_menu = true;
-            res.render('register/signup');
+            res.render('register/signup', {
+                layout: 'no_header'
+            });
         }
     });
 
     app.post('/signup', users.postSignup);
+
+    app.post('/signup_2', users.preSignup);
 
     app.get('/forgot', function(req, res) {
         res.locals.other_menu = true;

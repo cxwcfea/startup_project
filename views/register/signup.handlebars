@@ -1,18 +1,20 @@
 <div class="wrapper reg">
     <div class="freeTitle">
-        <div class="fl"><span>免费注册</span> &nbsp;&nbsp;成为牛金用户</div>
+        <div class="fl"><span>10秒快速注册</span> &nbsp;&nbsp;成为牛金用户</div>
         <div class="clear"></div>
     </div>
-    <form method="POST" class="" name="signup-form">
+    {{>flash}}
+    <form method="POST" action="/signup_2" name="signup-form">
         <div class="carFormBox marTop25">
             <div class="cartTitle fl">
                 手机号码：
             </div>
             <div class="cartFomeContent fl">
-                <input type="tel" class="inputText" name="mobile" id="mobile" maxlength=11 pattern="1[3|5|7|8|][0-9]{9}" placeholder="请输入常用的手机号" autofocus required>
+                <input type="tel" class="inputText" name="mobile" id="mobile" maxlength=11 pattern="1[3|5|7|8|][0-9]{9}" placeholder="您输入的手机号码将作为账户名" autofocus required>
                 &nbsp;已有账号？  <a href="/login" class="color_c82217">立即登录</a>
             </div>
         </div>
+        <!--
         <div class="carFormBox">
             <div class="cartTitle fl">
                 验证码：
@@ -30,9 +32,10 @@
                 <input type="text" class="inputText" placeholder="请输入,可选" name="user_name" id="user_name">
             </div>
         </div>
+        -->
         <div class="carFormBox">
             <div class="cartTitle fl">
-                设置密码：
+                设置登录密码：
             </div>
             <div class="cartFomeContent fl">
                 <input type="password" placeholder="密码长度6-20位" class="inputText" name="password" id="password" required>
@@ -40,7 +43,7 @@
         </div>
         <div class="carFormBox">
             <div class="cartTitle fl">
-                确认密码：
+                再输入一次：
             </div>
             <div class="cartFomeContent fl">
                 <input type="password" placeholder="保持密码一致" class="inputText" name="confirm-password" id="confirm-password" required>
@@ -60,4 +63,3 @@
         </div>
     </form>
 </div>
-{{> mobile_num_alert}}

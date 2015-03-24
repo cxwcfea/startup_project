@@ -7,7 +7,7 @@ passport.use(new LocalStrategy({ usernameField: 'mobile' },
     function(mobile, password, done) {
         User.findOne({ mobile: mobile }, function(err, user) {
             if (err) { return done(err); }
-            if (!user) return done(null, false, { message: '手机号码 ' + mobile + ' 不存在'});
+            if (!user || !user.registered) return done(null, false, { message: '手机号码 ' + mobile + ' 还未注册'});
             user.comparePassword(password, function(err, isMatch) {
                 if (isMatch) {
                     return done(null, user);

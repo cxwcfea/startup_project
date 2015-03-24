@@ -755,6 +755,22 @@ body{
 	line-height: 40px;
 	border-bottom: 1px solid #e0e0e0;
 }
+a.rightBtn{
+	display: block;
+	float: right;
+	background: #C82217;
+	color: #fff;
+	border-radius: 5px;
+	width: 50px;
+	text-align: center;
+	height: 30px;
+	line-height: 30px;
+	margin-top: 5px;
+}
+.rightMenu ul{
+	display: block;
+	float: left;
+}
 .rightMenu li{
 	padding: 0 20px;
 	float: left;
@@ -870,7 +886,7 @@ body{
 	margin-top: 40px;
 }
 .recMoneyLeft{
-	width: 550px;
+	width: 770px;
 	height: 130px;
 	border-right: 1px solid #ffdfb2;
 }
@@ -885,6 +901,7 @@ body{
 	line-height: 40px;
 	margin-top: 25px;
 	padding-left: 30px;
+	text-align: center;
 }
 .zfbMoneyText{
 	/*margin-bottom: 20px;*/
@@ -915,6 +932,7 @@ body{
 	color: #e23024;
 	font-size: 12px;
 	margin-top: 40px;
+	text-align: center;
 }
 .zfbMoneyLeft p.p01{
 	margin-top: 10px;
@@ -936,13 +954,13 @@ body{
 }
 
 .zfbLeft{
-	width: 385px;
+	width: 500px;
 }
 .zfbText{
 	height: 92px;
 	border-right: 1px solid #ffdfb2;
 	margin-top: 30px;
-	padding-left: 35px;
+	padding-left: 145px;
 	line-height: 30px;
 	padding-top: 10px;
 }
@@ -965,10 +983,11 @@ body{
 
 
 .zfbRight{
-	width: 380px;
+	width: 498px;
 }
 .zfbText3{
 	border: none;
+	padding-left: 115px;
 }
 .zfbText3 em.em01{
 	background: #e23024;

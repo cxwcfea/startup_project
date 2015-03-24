@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>牛金网 | 快速注册</title>
+    <link rel="alternate icon" type="image/png" href="/images/favicon.ico">
+    <link rel="stylesheet" href="{{static '/vendor/bootstrap/dist/css/bootstrap.min.css'}}">
+    <link rel="stylesheet" href="{{static '/vendor/amazeui/dist/css/amazeui.min.css'}}">
+    <link rel="stylesheet" href="{{static '/vendor/toastr/toastr.css'}}">
+    <link rel="stylesheet" href="{{static '/css/common.css'}}">
+    {{#if main_menu}}
+        <link rel="stylesheet" href="{{static '/css/index.css'}}">
+    {{/if}}
+    {{#unless main_menu}}
+        <link rel="stylesheet" href="{{static '/css/css.css'}}">
+    {{/unless}}
+    <link rel="stylesheet" href="{{static '/css/site2.css'}}">
+    <script src="{{static '/vendor/jquery/dist/jquery.min.js'}}"></script>
+    <script src="{{static '/vendor/jquery.Imgfocus.js'}}"></script>
+</head>
+<body>
+
+{{{body}}}
+
+{{#if main_menu}}
+    <div class="footer">
+{{/if}}
+{{#if user_menu}}
+    <div class="footer">
+{{/if}}
+{{#if apply_menu}}
+    <div class="footer marTop200">
+{{/if}}
+{{#if free_apply_menu}}
+    <div class="footer marTop200">
+{{/if}}
+{{#if other_menu}}
+    <div class="footer marTop200">
+{{/if}}
+
+    <div class="wrapper">
+        <div class="footerList fl">
+            <p>软件下载</p>
+            <ul>
+                <li><span class="icon02">&nbsp;</span><a href="http://www.ihoms.com/file/xunlei/downloadxunlei/HOMS_YONGJINBAN_zhuanyeban.exe?fileCode=40&sourceType=4">Windows版</a></li>
+                <li><span class="icon03">&nbsp;</span><a href="http://www.ihoms.com/file/xunlei/downloadxunlei/HOMS_YONGJINBAN_iPhone.ipa?fileCode=57&sourceType=4">iOS版</a></li>
+                <li><span class="icon04">&nbsp;</span><a href="http://www.ihoms.com/file/xunlei/downloadxunlei/HOMS_YONGJINBAN_android.apk?fileCode=38&sourceType=4">Android版</a></li>
+            </ul>
+        </div>
+        <div class="footerList fl">
+            <p>操盘问题</p>
+            <ul>
+                <li><a href="/info/">操盘流程</a></li>
+                <li><a href="/info/legal">法律保障</a></li>
+                <li><a href="/info/help">常见问题</a></li>
+            </ul>
+        </div>
+        <div class="footerList fl">
+            <p>关于牛金网</p>
+            <ul>
+                <li><a href="/info/about">公司介绍</a></li>
+                <li><a href="/info/partners">合作伙伴</a></li>
+                <li><a href="/info/contact">联系方式</a></li>
+            </ul>
+        </div>
+        <div class="fr ewmBox">
+            <p><span>&nbsp;</span>官方微信</p>
+            <img src="/images/img15.jpg"/>
+        </div>
+        <div class="fr phoneBox">
+            <p class="p01">全国服务热线</p>
+            <p class="p02">400-692-1388</p>
+            <p class="p03">QQ群1:351531<br />QQ群2:131351</p>
+            <div class="icon05"></div>
+            <div class="icon06"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="footerText">©版权所有 北京小牛普惠科技有限公司 All Rights Reserved 2015 <a href="javascript:"> 京ICP备14047091号-4</a></div>
+    </div>
+</div>
+<script src="{{static '/vendor/bootstrap/dist/js/bootstrap.min.js'}}"></script>
+<script src="{{static '/vendor/amazeui/dist/js/amazeui.min.js'}}"></script>
+<script src="{{static '/vendor/toastr/toastr.min.js'}}"></script>
+<script src="{{static '/vendor/lodash/lodash.min.js'}}"></script>
+<script src="{{static '/vendor/moment/min/moment.min.js'}}"></script>
+<script src="{{static '/vendor/moment/min/locales.min.js'}}"></script>
+<script src="{{static '/vendor/spark-md5.min.js'}}"></script>
+<script src="{{static '/vendor/angular/angular.min.js'}}"></script>
+<script src="{{static '/vendor/angular-bootstrap/ui-bootstrap-tpls.min.js'}}"></script>
+<script src="{{static '/js/common.js'}}"></script>
+<script src="{{static '/js/common_module.js'}}"></script>
+<script src="{{static '/app/controllers/MainApplyController.js'}}"></script>
+<script src="{{static '/js/main.js'}}"></script>
+{{#if main_menu}}
+        <script src="{{static '/js/index.js'}}"></script>
+{{/if}}
+
+</body>
+</html>

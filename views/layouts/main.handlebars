@@ -7,7 +7,11 @@
 {{#if user_menu}}
     <link rel="stylesheet" href="{{static '/vendor/bootstrap/dist/css/bootstrap.min.css'}}">
 {{else}}
-    <link rel="stylesheet" href="{{static '/vendor/amazeui/dist/css/amazeui.min.css'}}">
+    {{#if recharge}}
+        <link rel="stylesheet" href="{{static '/vendor/bootstrap/dist/css/bootstrap.min.css'}}">
+    {{else}}
+        <link rel="stylesheet" href="{{static '/vendor/amazeui/dist/css/amazeui.min.css'}}">
+    {{/if}}
 {{/if}}
     <link rel="stylesheet" href="{{static '/vendor/toastr/toastr.css'}}">
     <link rel="stylesheet" href="{{static '/css/common.css'}}">
@@ -117,6 +121,9 @@
 {{#if other_menu}}
 <div class="footer marTop200">
 {{/if}}
+{{#if recharge}}
+<div class="footer marTop200">
+{{/if}}
 
     <div class="wrapper">
         <div class="footerList fl">
@@ -165,7 +172,7 @@
 <script src="{{static '/vendor/moment/min/moment.min.js'}}"></script>
 <script src="{{static '/vendor/moment/min/locales.min.js'}}"></script>
 <script src="{{static '/vendor/spark-md5.min.js'}}"></script>
-<script src="{{static '/vendor/angular/angular.min.js'}}"></script>
+<script src="{{static '/vendor/angular/angular.js'}}"></script>
 <script src="{{static '/vendor/angular-bootstrap/ui-bootstrap-tpls.min.js'}}"></script>
 <script src="{{static '/js/common.js'}}"></script>
 <script src="{{static '/js/common_module.js'}}"></script>
@@ -184,6 +191,12 @@
         <script src="{{static '/user/controllers/UserApplyCtrl.js'}}"></script>
         <script src="{{static '/user/controllers/UserCapitalCtrl.js'}}"></script>
         <script src="{{static '/user/controllers/UserAccountCtrl.js'}}"></script>
+{{/if}}
+{{#if recharge}}
+        <script src="{{static '/vendor/angular-route/angular-route.js'}}"></script>
+        <script src="{{static '/vendor/angular-resource/angular-resource.js'}}"></script>
+        <script src="{{static '/app/controllers/RechargeCtrl.js'}}"></script>
+        <script src="http://pv.sohu.com/cityjson"></script>
 {{/if}}
 
 </body>

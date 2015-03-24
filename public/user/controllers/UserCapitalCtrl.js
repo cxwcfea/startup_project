@@ -11,15 +11,15 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
                 vm.pay_order_id = order_id;
             } else {
                 var request_category = $location.search()['category'];
-                if (!request_category || request_category > 3) {
-                    request_category = 2;
+                if (!request_category || request_category > 2) {
+                    request_category = 1;
                 }
                 vm.currentCategory = vm.categories[request_category];
             }
         }
     });
 
-    $scope.data.menu = 2;
+    $scope.data.menu = 1;
     vm.user = $scope.data.currentUser;
     njCachedCards.setUID(vm.user._id);
     vm.cards = njCachedCards.query();
@@ -113,34 +113,28 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
 
     vm.categories = [
         {
-            file: '/user/recharge',
-            name: '充值',
+            file: '/views/withdraw.html',
+            name: '提现',
             menu: 0,
             value: 0
         },
         {
-            file: '/views/withdraw.html',
-            name: '提现',
+            file: '/views/user_orders.html',
+            name: '资金明细',
             menu: 1,
             value: 1
         },
         {
-            file: '/views/user_orders.html',
-            name: '资金明细',
+            file: '/views/my_cards.html',
+            name: '我的银行卡',
             menu: 2,
             value: 2
         },
         {
-            file: '/views/my_cards.html',
-            name: '我的银行卡',
-            menu: 3,
-            value: 3
-        },
-        {
             file: '/views/add_card.html',
             name: '我的银行卡',
-            menu: 3,
-            value: 4
+            menu: 2,
+            value: 3
         }
     ];
 
@@ -192,7 +186,7 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
     };
 
     vm.excludeAddCard = function (item) {
-        return item.value != 4;
+        return item.value != 3;
     };
 
     vm.addCard = function() {

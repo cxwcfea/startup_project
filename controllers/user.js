@@ -57,6 +57,59 @@ module.exports.postLogin = function(req, res, next) {
 
 module.exports.postSignup = function(req, res, next) {
     req.assert('verify_code', '验证码错误').equals(req.session.sms_code);
+
+    var errors = req.validationErrors();
+    if (errors) {
+        req.flash('errors', errors);
+        res.render('register/signup_2', {
+            user_mobile: req.body.mobile,
+            layout: 'no_header'
+        });
+        return;
+    }
+
+    /*
+    var user_name = '';
+    if (req.body.user_name) {
+        user_name = req.body.user_name;
+    }
+    */
+    /*
+    var user = new User({
+        mobile: req.body.mobile,
+        password: req.body.password,
+        profile: {
+            name: user_name
+        }
+    });
+    */
+
+    User.findOne({ mobile: req.body.mobile }, function(err, existingUser) {
+        if (err) {
+            return next(err);
+        }
+        if (existingUser && existingUser.registered) {
+            req.flash('errors', { msg: '该手机号已经注册了.' });
+            return res.redirect('/signup');
+        }
+        existingUser.registered = true;
+        existingUser.save(function(err) {
+            if (err) {
+                logger.warn('postSignup err:' + err.toString());
+                return next(err);
+            }
+            req.logIn(existingUser, function(err) {
+                if (err) {
+                    logger.warn('postSignup err:' + err.toString());
+                    return next(err);
+                }
+                res.redirect('/');
+            });
+        });
+    });
+};
+
+module.exports.preSignup = function(req, res, next) {
     req.assert('mobile', '无效的手机号码').len(11, 11).isInt();
     req.assert('password', '密码不能为空').notEmpty();
     req.assert('password', '密码至少需要6位').len(6);
@@ -68,31 +121,32 @@ module.exports.postSignup = function(req, res, next) {
         return res.redirect('/signup');
     }
 
-    var user_name = '';
-    if (req.body.user_name) {
-        user_name = req.body.user_name;
-    }
     var user = new User({
         mobile: req.body.mobile,
-        password: req.body.password,
-        profile: {
-            name: user_name
-        }
+        password: req.body.password
     });
 
     User.findOne({ mobile: req.body.mobile }, function(err, existingUser) {
         if (err) {
+            logger.warn('preSignup err:' + err.toString());
             return next(err);
         }
-        if (existingUser) {
+        if (existingUser && existingUser.registered) {
             req.flash('errors', { msg: '该手机号已经注册了.' });
             return res.redirect('/signup');
         }
+
+        if (existingUser) {
+            user = existingUser;
+        }
         user.save(function(err) {
-            if (err) return next(err);
-            req.logIn(user, function(err) {
-                if (err) return next(err);
-                res.redirect('/');
+            if (err) {
+                logger.warn('preSignup err:' + err.toString());
+                return next(err);
+            }
+            res.render('register/signup_2', {
+                user_mobile: user.mobile,
+                layout: 'no_header'
             });
         });
     });
@@ -1442,5 +1496,13 @@ module.exports.fetchApplyForUser = function(req, res) {
             return res.send({});
         }
         res.send(apply);
+    });
+};
+
+module.exports.getRecharge = function(req, res) {
+    res.locals.recharge = true;
+    res.locals.callback_domain = config.pay_callback_domain;
+    res.render('recharge', {
+        bootstrappedNiujinUserID: JSON.stringify(req.user._id)
     });
 };
