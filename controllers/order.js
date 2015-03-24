@@ -17,6 +17,21 @@ exports.fetchOrdersForUser = function(req, res) {
     });
 };
 
+exports.fetchOrderForUser = function(req, res) {
+    if (req.user._id != req.params.uid) {
+        res.status(401);
+        return res.send({});
+    }
+    Order.findById(req.params.id, function(err, order) {
+        if (err) {
+            logger.error('fetchOrderForUser err:' + err.toString());
+            res.status(503);
+            return res.send({reason:err.toString()});
+        }
+        res.send(order);
+    });
+};
+
 exports.getOrderById = function(req, res) {
     Order.findOne({_id:req.params.id}).exec(function(err, order) {
         if (err) {

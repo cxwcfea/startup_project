@@ -193,7 +193,7 @@
                                 console.log('error:' + res.reason);
                             });
                     } else {
-                        $window.location.assign('/user#/user_capital?pay_order=' + data.order._id);
+                        $window.location.assign('/recharge?pay_order=' + data.order._id);
                     }
                 })
                 .error(function(data, status, headers, config) {

@@ -6,6 +6,25 @@
 
         njUser.get({id: $window.bootstrappedNiujinUserID}, function (user) {
             vm.user = user;
+            var query = $window.location.search;
+            var pos1 = query.search('pay_order=');
+            var order_id = null;
+            if (pos1 > -1) {
+                order_id = query.substr(pos1 + 10);
+                var pos2 = order_id.search('&');
+                if (pos2 > -1) {
+                    order_id = order_id.substr(0, pos2);
+                }
+            }
+            if (order_id) {
+                vm.pay_order_id = order_id;
+                vm.pay_order = njOrder.get({uid:vm.user._id, id:order_id}, function() {
+                    vm.pay_amount = Number(vm.pay_order.amount.toFixed(2));
+                    if (vm.pay_order.applySerialID) {
+                        vm.pay_for_apply = true;
+                    }
+                });
+            }
         });
         vm.currentPayType = 0;
         vm.useCredit = false;
@@ -13,22 +32,6 @@
         vm.bankObj = vm.BankNameList[0];
         vm.payBank = 0;
         vm.alipayConfirm = false;
-
-        var order_id = $location.search()["pay_order"];
-        if (order_id) {
-            vm.pay_order_id = order_id;
-        }
-        /*
-        if (vm.pay_order_id) {
-            vm.pay_order = _.find(order_list, { '_id': vm.pay_order_id });
-            if (vm.pay_order) {
-                vm.pay_amount = Number(vm.pay_order.amount.toFixed(2));
-                if (vm.pay_order.applySerialID) {
-                    vm.pay_for_apply = true;
-                }
-            }
-        }
-        */
 
         vm.payTypes = [
             {
