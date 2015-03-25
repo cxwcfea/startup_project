@@ -1,11 +1,11 @@
 <div class="ideBox">
     <div ng-show="accountVM.user.identity.id">
-        <p class="p01">您已经实名认证</p>
+        <p class="p01">您已经完成认证</p>
         <a href="javascript:" class="recBtn01 emBtn01" ng-click="accountVM.selectCategory()">返回</a>
     </div>
     <div ng-hide="accountVM.user.identity.id">
         <alert ng-repeat="alert in accountVM.alerts" type="{{alert.type}}" close="accountVM.closeAlert($index)">{{alert.msg}}</alert>
-        <p class="p01">实名认证</p>
+        <p class="p01">身份认证</p>
         <form name="identityForm">
             <input type="text" ng-model="accountVM.identity_name" class="inputText2" placeholder="请输入身份证姓名" required autofocus>
             <input type="text" ng-model="accountVM.identity_id" class="inputText2" placeholder="请输入身份证号码" pattern="/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/" required>
