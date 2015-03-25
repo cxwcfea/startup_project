@@ -853,7 +853,11 @@ a.rightBtn{
 	float: left;
 	color: #666666;
 }
-
+.rectitle{
+	line-height: 30px;
+	height: 40px;
+	padding-left: 10px;
+}
 .recMenuBox{
 	height: 40px;
 	line-height: 40px;
@@ -862,12 +866,13 @@ a.rightBtn{
 	display: block;
 	float: left;
 	text-align: center;
-	width: 88px;
+	width: 100px;
 	height: 38px;
 	border: 1px solid #e0e0e0;
 	color: #666666;
 	margin-right: 10px;
 	cursor: pointer;
+	background: #fff;
 }
 .recMenuBox span:hover{
 	border: 1px  solid #e23024;
@@ -882,7 +887,7 @@ a.rightBtn{
 	height: 130px;
 	background: #fff9f3;
 	border: 1px solid #ffdfb2;
-	margin-top: 40px;
+	margin-top: 20px;
 }
 .recMoneyLeft{
 	width: 770px;
@@ -899,8 +904,10 @@ a.rightBtn{
 	height: 40px;
 	line-height: 40px;
 	margin-top: 25px;
-	padding-left: 30px;
-	text-align: center;
+}
+.recMoneyTextLeft{
+	width: 125px;
+	text-align: right;
 }
 .zfbMoneyText{
 	/*margin-bottom: 20px;*/
@@ -928,7 +935,7 @@ a.rightBtn{
 	color: #e23024;
 	font-size: 12px;
 	margin-top: 40px;
-	text-align: center;
+	padding-left: 50px;
 }
 .zfbMoneyLeft p.p01{
 	margin-top: 10px;
@@ -1053,14 +1060,14 @@ a.rightBtn{
 .yhList li{
 	display: block;
 	float: left;
-	width: 180px;
+	width: 193px;
 	height: 40px;
 	margin-bottom: 15px;
 }
 .yhList input{
 	display: block;
 	float: left;
-	margin: 13px 5px 0 0;
+	margin: 13px 10px 0 0;
 	cursor: pointer;
 }
 .yhList li span{
@@ -1957,17 +1964,28 @@ dl.left .submit:hover{
 .slsBox{
 	width: 331px;
 	height: 271px;
-	background: url(../images/404.png) no-repeat;
+	/*background: url(../images/404.png) no-repeat;*/
 	margin: auto;
 	text-align: center;
 	margin-top: 70px;
+	
 }
-
-.slsBox p{
-	padding-top: 200px;
-	color: #0091e4;
-
-}
+.slsBox p.p01{
+		font-size: 90px;
+		color: #da4839;
+		font-weight: bold;
+	}
+.slsBox span.span02{
+		background: #000000;
+		font-size: 18px;
+		color: #fff;
+		font-weight: bold;
+		padding: 5px 15px;
+		
+	}
+	.slsBox p.p02{
+			padding-top: 20px;		
+	}
 .slsBox a{color: #0091e4;}
 
 .am-text-danger{color: #dd514c;}

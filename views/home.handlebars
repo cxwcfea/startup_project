@@ -327,11 +327,7 @@
                     <li class="title">
                         <h2>登录</h2>
                     </li>
-                    <li class="err-tips">
-                        <div class="ui-err">
-                        </div>
-                    </li>
-
+                    <li><alert ng-repeat="alert in applyVM.alerts" type="\{{alert.type}}" close="applyVM.closeAlert($index)">\{{alert.msg}}</alert></li>
                     <li class="logon-ipt z-index10" id="username1">
                         <em class="user"></em>
                         <input placeholder="请输入注册手机号码" type="tel" autocomplete="off" accesskey="n" tabindex="1" class="holder" name="mobile" id="name" pattern="1[3|5|7|8|][0-9]{9}" required autofocus ng-model="applyVM.mobile">
@@ -343,7 +339,6 @@
                     <li class="ui-pwd">
                         <a href="/forgot">忘记密码</a>
                     </li>
-                    <li><alert ng-repeat="alert in applyVM.alerts" type="\{{alert.type}}" close="applyVM.closeAlert($index)">\{{alert.msg}}</alert></li>
                     <li>
                         <input type="submit" value="登录" accesskey="l" name="submit" tabindex="4" class="login-btn">
                     </li>

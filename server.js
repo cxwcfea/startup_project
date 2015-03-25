@@ -63,6 +63,7 @@ require('./config/routes')(app);
 // custom 404 page
 app.use(function(req, res){
     res.locals.other_menu = true;
+    res.locals.not_found = true;
 	res.status(404);
 	res.render('404');
 });

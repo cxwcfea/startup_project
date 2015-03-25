@@ -1,14 +1,11 @@
 {{#if bootstrappedNiujinUserID}}
     <script> window.bootstrappedNiujinUserID = {{{bootstrappedNiujinUserID}}} </script>
 {{/if}}
-<div class="wrapper" ng-app="rechargeApp" ng-controller="RechargeCtrl as vm" ng-cloak>
-    <div class="freeTitle">
-        <div class="fl"><span>充值中心</span> </div>
-        <div class="clear"></div>
-    </div>
+<div class="wrapper paddTop30" ng-app="rechargeApp" ng-controller="RechargeCtrl as vm" ng-cloak>
+    <div class="rectitle">选择充值方式：</div>
     <div class="recMenuBox" id="">
         <div class="fl">
-            选择充值方式：
+            &nbsp;
         </div>
         <div class="fl" id="menu">
             <span ng-repeat="type in vm.payTypes" ng-class="{select: vm.currentPayType === type.value}" ng-click="vm.selectPayType(type)">\{{type.name}}</span>
@@ -21,9 +18,13 @@
                     <div class="recMoneyBox">
                         <div class="recMoneyLeft fl">
                             <div class="recMoneyText">
-                                充值金额：
-                                <input type="number" ng-model="vm.pay_amount" autofocus ng-disabled="vm.pay_for_apply">
+                                <div class="recMoneyTextLeft fl">
+                                    充值金额：
+                                </div>
+                                <div class="fl">
+                                    <input type="number" ng-model="vm.pay_amount" autofocus ng-disabled="vm.pay_for_apply">
                                 元
+                                </div>
                             </div>
                             <p ng-show="vm.pay_for_apply" class="p01">&nbsp;当前充值相关的配资单号：\{{vm.pay_order.applySerialID}},保证金和管理费至少还需支付\{{vm.pay_amount | currency:'':2}}</p>
                         </div>
@@ -39,8 +40,7 @@
                         <span ng-class="{select: !vm.useCredit}" ng-click="vm.changeCardType(false)">储蓄卡支付</span>
                         <span ng-class="{select: vm.useCredit}" ng-click="vm.changeCardType(true)">信用卡支付</span>
                     </div>
-                    <p class="recP02">请选择在线支付的银行卡</p>
-                    <div class="" id="yhkList">
+                    <div class="paddTop30" id="yhkList">
                         <div class="yhList">
                             <ul>
                                 <li ng-repeat="bank in vm.BankNameList">
@@ -65,12 +65,12 @@
                         <div class="recMoneyLeft zfbMoneyLeft fl">
                             <p ng-show="vm.pay_for_apply" class="p01">&nbsp;当前充值相关的配资单号：\{{vm.pay_order.applySerialID}},保证金和管理费至少还需支付\{{vm.pay_amount | currency:'':2}}</p>
                             <div class="recMoneyText zfbMoneyText">
-                                <div class="fl">&nbsp;&nbsp;&nbsp;充值金额：</div>
+                                <div class="recMoneyTextLeft fl">&nbsp;&nbsp;&nbsp;充值金额：</div>
                                 <input type="number" placeholder="请输入充值金额" ng-model="vm.pay_amount" autofocus ng-disabled="vm.pay_for_apply" class="dis fl">
                                 <div class="fl">&nbsp;元</div>
                             </div>
                             <div class="recMoneyText zfbMoneyText ">
-                                <div class="fl">支付宝账户：</div>
+                                <div class="recMoneyTextLeft fl">支付宝账户：</div>
                                 <input type="text" placeholder="请输入支付宝账户" class="dis fl zfbMoneyInputText" ng-model="vm.alipay_account">
                                 <div class="zfbImg fl"></div>
                             </div>

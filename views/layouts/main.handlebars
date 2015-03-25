@@ -23,7 +23,11 @@
     <script src="{{static '/vendor/jquery.Imgfocus.js'}}"></script>
     <script src="{{static '/vendor/angular/angular.js'}}"></script>
 </head>
+{{#if not_found}}
+<body class="bg_fff">
+{{else}}
 <body>
+{{/if}}
 <div class="Top">
     <div class="wrapper pr">
         <div class="fl color_c82217">客服热线：</div>
@@ -55,20 +59,11 @@
             <a href="/signup" class="color_333333">免费注册</a>&nbsp;&nbsp;
             <a href="/user#/user_capital?category=0">充值中心</a>&nbsp;&nbsp;&nbsp;
         </div>
-    {{#unless login_link}}
         <div class="TopLoginBox fr jq_topLogin">
             请登录
             <div id="login" class="ui-logon clearfix  topLoginContet jq_LoginBox undis">
                 <form method="POST" action="/login" name="login-form">
                     <ul class="logon-con">
-                        <li class="title">
-                            <h2>登录</h2>
-                        </li>
-                        <li class="err-tips">
-                            <div class="ui-err">
-                            </div>
-                        </li>
-
                         <li class="logon-ipt z-index10" id="username1">
                             <em class="user"></em>
                             <input placeholder="请输入注册手机号码" type="text" autocomplete="off" accesskey="n" tabindex="1" class="holder" name="mobile" id="mobile">
@@ -84,12 +79,10 @@
                         <li>
                             <input type="submit" value="登录" accesskey="l" name="submit" tabindex="4" class="login-btn">
                         </li>
-                        <li class="li01" style="">没有账号？ <a style="" href="/signup" class="register">免费注册</a></li>
                     </ul>
                 </form>
             </div>
         </div>
-    {{/unless}}
     {{/unless}}
         <div class="clear"></div>
     </div>
@@ -97,16 +90,17 @@
 </div>
 <div class="header">
     <div class="wrapper">
+{{#if recharge}}
+        <a href="/" class="logo2"><img src="/images/logo.png"/></a>
+        <span class="loginSpan">充值中心</span>
+{{else}}
         <a href="/" class="logo"><img src="/images/logo.png"/></a>
+{{/if}}
         <ul class="nav fr">
             <li {{#if main_menu}} class="select" {{/if}}><a href="/">首页</a></li>
-{{#if login_link}}
-            <li class="select"><a href="/login">登录</a></li>
-{{else}}
             <li {{#if apply_menu}} class="select" {{/if}}><a href="/apply">天天牛</a></li>
             <li {{#if free_apply_menu}} class="select" {{/if}}><a href="/free_apply">免费体验</a></li>
             <li {{#if user_menu}} class="select" {{/if}}><a href="/user">我的账户</a></li>
-{{/if}}
         </ul>
     </div>
 </div>
