@@ -9,7 +9,8 @@ module.exports = {
         pay_callback_domain: 'http://test.niujinwang.com',
         serviceCharge: 19.9,
         warnFactor: 0.96,
-        sellFactor: 0.94
+        sellFactor: 0.94,
+        depositFactor: 0.1
     },
     production: {
         rootPath: rootPath,
@@ -18,6 +19,7 @@ module.exports = {
         pay_callback_domain: 'http://www.niujinwang.com',
         serviceCharge: 19.9,
         warnFactor: 0.96,
-        sellFactor: 0.94
+        sellFactor: 0.94,
+        depositFactor: 0.1
     }
 };

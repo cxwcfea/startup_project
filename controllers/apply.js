@@ -393,6 +393,18 @@ exports.placeApply = function(req, res, next) {
         return res.send({success:false, reason:'not authenticate'});
     }
 
+    if (!req.body.amount || !req.body.deposit) {
+        logger.debug('placeApply error: invalid data');
+        res.status(400);
+        return res.send({error_msg:'invalid data'});
+    }
+
+    if (req.body.amount < 2000 || req.body.amount > 300000 || req.body.deposit < req.body.amount * config.depositFactor - 0.01) {
+        logger.debug('placeApply error: invalid data amount:' + req.body.amount + ' deposit:' + req.body.deposit);
+        res.status(400);
+        return res.send({error_msg:'invalid data'});
+    }
+
     var applyData = new Apply({
         userID: req.user._id,
         userMobile: req.user.mobile,

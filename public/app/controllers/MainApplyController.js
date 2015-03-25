@@ -123,7 +123,7 @@
                     if (status === 401) {
                         vm.showLoginWindow = true;
                     } else {
-                        console.log('err');
+                        console.log(data.error_msg);
                     }
                 });
         }
