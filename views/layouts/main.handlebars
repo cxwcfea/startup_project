@@ -184,6 +184,9 @@
 <script src="{{static '/js/common_module.js'}}"></script>
 <script src="{{static '/app/controllers/MainApplyController.js'}}"></script>
 <script src="{{static '/js/main.js'}}"></script>
+{{#if other_menu}}
+<script src="{{static '/app/controllers/RegisterCtrl.js'}}"></script>
+{{/if}}
 {{#if main_menu}}
         <script src="{{static '/js/index.js'}}"></script>
 {{/if}}

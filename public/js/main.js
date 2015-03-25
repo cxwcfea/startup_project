@@ -210,7 +210,6 @@ $(document).ready(function() {
 
     var form_options = {
         onValid: function(validity) {
-            console.log('form trigger');
         },
         onInValid: function(validity) {
             $('#get-profit-btn').popover({
@@ -221,9 +220,6 @@ $(document).ready(function() {
             });
             $('#apply-postpone-btn').popover({
                 content: '请输入有效的天数'
-            });
-            $('#forgot-password-form').popover({
-                content: '请检查输入，确保手机号正确，且密码长度符合标准'
             });
             $('#signup-submit-btn').popover({
                 content: '请检查输入，确保手机号正确，且密码长度符合标准'
@@ -237,8 +233,6 @@ $(document).ready(function() {
     $('#get-profit-form').validator(form_options);
 
     $('#add-deposit-form').validator(form_options);
-
-    $('#forgot-password-form').validator(form_options);
 
     $('#signup-form').validator(form_options);
 

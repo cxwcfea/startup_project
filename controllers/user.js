@@ -497,6 +497,7 @@ module.exports.postUpdatePassword = function(req, res, next) {
 };
 
 module.exports.resetPassword = function(req, res, next) {
+    logger.warn(req.body);
     req.assert('verify_code', '验证码错误').equals(req.session.sms_code);
     req.assert('password', '密码至少需要6位').len(6);
     req.assert('confirm_password', '两次密码不匹配').equals(req.body.password);
@@ -519,6 +520,7 @@ module.exports.resetPassword = function(req, res, next) {
         user.password = req.body.password;
         user.save(function (err) {
             if (err) {
+                logger.warn('resetPassword err:' + err.toString());
                 req.flash('errors', { msg: err.toString() });
                 return res.redirect('/forgot');
             }
@@ -530,8 +532,10 @@ module.exports.resetPassword = function(req, res, next) {
 
 module.exports.sendVerifyCode = function(req, res, next) {
     if (!req.query.mobile) {
+        res.status(400);
         return res.send({success:false, reason:'no mobile specified'});
     }
+    console.log('send verify code');
     var code = sms.generateVerifyCode();
     sms.sendSMS(req.query.mobile, code);
     req.session.sms_code = code;

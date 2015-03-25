@@ -6,6 +6,7 @@
 
         vm.show_verify_window = false;
         vm.verify_code_error = false;
+        vm.show_forgot_step_2 = false;
 
         vm.register = function() {
             if (!vm.mobile) {
@@ -39,7 +40,7 @@
                 });
         };
 
-        vm.verifyCodeBtnText = '重发验证码';
+        vm.verifyCodeBtnText = '获取验证码';
         vm.verifyBtnDisabled = false;
         vm.getVerifyCode = function() {
             if (vm.verifyBtnDisabled) {
@@ -53,7 +54,7 @@
                 vm.verifyCodeBtnText = 60-count + '秒后重试';
                 if (count === 60) {
                     $interval.cancel(timeId);
-                    vm.verifyCodeBtnText = '重发验证码';
+                    vm.verifyCodeBtnText = '获取验证码';
                     vm.verifyBtnDisabled = false;
                 }
             }, 1000);
@@ -82,6 +83,49 @@
                         vm.verify_code_error = true;
                     }
                 });
+        };
+
+        vm.requestVerifyCode = function() {
+            if (!vm.mobile) {
+                addAlert('danger', '请输入正确的手机号');
+                return;
+            }
+            vm.getVerifyCode();
+        };
+
+        vm.requestChangePassNext = function() {
+            if (!vm.mobile) {
+                addAlert('danger', '请输入正确的手机号');
+                return;
+            }
+            if (!vm.verify_code) {
+                addAlert('danger', '请输入验证码');
+                return;
+            }
+            $http.post('/verify_mobile_code', {verify_code:vm.verify_code})
+                .success(function(data, status, headers, config) {
+                    vm.show_forgot_step_2  = true;
+                })
+                .error(function(data, status, headers, config) {
+                    if (data.errorCode === 1) {
+                        vm.verify_code_error = true;
+                        addAlert('danger', '验证码错误');
+                    }
+                });
+        };
+
+        vm.requestChangePass = function() {
+            if (!vm.password) {
+                addAlert('danger', '请输入密码，长度6到20位');
+                return;
+            }
+            if (!vm.confirm_password) {
+                addAlert('danger', '请再输一遍密码，长度6到20位');
+                return;
+            }
+            $('#verify_code')[0].value = vm.verify_code;
+            $('#forgot-mobile')[0].value = vm.mobile;
+            $('#forgot-password-form')[0].submit();
         };
 
         vm.login = function() {
