@@ -83,6 +83,7 @@ module.exports = function(app) {
     app.get('/free_apply_confirm', passportConf.isAuthenticated, applies.freeApply);
 
     app.get('/login', function (req, res) {
+        console.log('get login');
         if (req.isAuthenticated()) {
             res.redirect('/');
         } else {

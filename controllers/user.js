@@ -27,10 +27,11 @@ module.exports.postLogin = function(req, res, next) {
 
     if (errors) {
         console.log(errors);
-        req.flash('errors', errors);
+        //req.flash('errors', errors);
         res.locals.err_msg = errors[0].msg;
         return res.redirect('/login');
     }
+    console.log('after redirect');
 
     var auth = passport.authenticate('local', function(err, user, info) {
         if (err) {
