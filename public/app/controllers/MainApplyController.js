@@ -15,6 +15,7 @@
         vm.agree = true;
         vm.showOtherAmount = false;
         vm.otherAmount;
+        vm.showLoginWindow = false;
 
         vm.summary = {
             day: 1,
@@ -125,7 +126,7 @@
                 .error(function(data, status, headers, config) {
                     console.log(status);
                     if (status === 401) {
-                        $window.location.href = '/login';
+                        vm.showLoginWindow = true;
                     } else {
                         console.log('err');
                     }

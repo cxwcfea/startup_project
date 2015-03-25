@@ -1,4 +1,4 @@
-<div ng-app="mainApp">
+<div ng-app="mainApp" ng-controller="MainApplyController as applyVM">
     <div class="Banner" id="imgFocus">
         <ul class="ImgContent" id="ImgContent">
             <li style="background-image: url(/images/banner.jpg);background-color: #e23024;"></li>
@@ -75,7 +75,7 @@
             </div>
         </div>
 
-        <div ng-controller="MainApplyController as applyVM">
+        <div>
             <div class="fl moneyListBox">
                 <div class="conlumn2">选择资金</div>
                 <div class="moneyList" id="jq_moneyList">
@@ -300,6 +300,40 @@
                 <a href="#"><img src="images/img13.jpg"/></a>
             </div>
             <div class="clear"></div>
+        </div>
+    </div>
+    <div class="loginTcc" ng-show="applyVM.showLoginWindow" ng-cloak>
+        <div class="tmbg"></div>
+        <div id="login" class="ui-logon clearfix logintcc">
+            <div class="loginClose jq_loginClose"></div>
+            <form method="POST" action="/login" name="login-form">
+                <ul class="logon-con">
+                    <li class="title">
+                        <h2>登录</h2>
+                    </li>
+                    <li class="err-tips">
+                        <div class="ui-err">
+                        </div>
+                    </li>
+
+                    <li class="logon-ipt z-index10" id="username1">
+                        <em class="user"></em>
+                        <input placeholder="请输入注册手机号码" type="text" autocomplete="off" accesskey="n" tabindex="1" class="holder" name="mobile" id="name">
+                    </li>
+                    <li class="logon-ipt mgt20" id="pwd">
+                        <em class="key"></em>
+                        <input type="password" tabindex="2" placeholder="密码" name="password">
+                    </li>
+                    <li class="ui-pwd">
+                        <a href="/forgot">忘记密码</a>
+                    </li>
+
+                    <li>
+                        <input type="submit" value="登录" accesskey="l" name="submit" tabindex="4" class="login-btn">
+                    </li>
+                    <li class="li01" style="">没有账号？ <a style="" href="/signup" class="register">免费注册</a></li>
+                </ul>
+            </form>
         </div>
     </div>
 </div>

@@ -1,6 +1,6 @@
-<div class="wrapper loginHeight">
+<div class="wrapper loginHeight" ng-controller="RegisterCtrl as vm" ng-cloak>
     <div class="loginBg"></div>
-    <form method="POST" action="/login" name="login-form">
+    <form method="POST" action="/login" name="login-form" id="login-form" novalidate>
         <div id="login" class="ui-logon clearfix">
             <ul class="logon-con">
                 <li class="title">
@@ -13,16 +13,16 @@
 
                 <li class="logon-ipt z-index10" id="username1">
                     <em class="user"></em>
-                    <input type="tel" class="inputLoginText" name="mobile" id="mobile" accesskey="n" tabindex="1" class="holder" pattern="1[3|5|7|8|][0-9]{9}" autofocus placeholder="请输入注册手机号码" autocomplete="off" required>
+                    <input type="tel" class="inputLoginText" ng-model="vm.mobile" name="mobile" id="mobile" accesskey="n" tabindex="1" class="holder" pattern="1[3|5|7|8|][0-9]{9}" autofocus placeholder="请输入注册手机号码" autocomplete="off" required>
                 </li>
                 <li class="logon-ipt mgt20" id="pwd">
                     <em class="key"></em>
-                    <input type="password" tabindex="2" value="" placeholder="密码,长度6-20位" name="password" id="password" required>
+                    <input type="password" tabindex="2" ng-model="vm.password" placeholder="密码,长度6-20位" maxlength="20" minlength="6" name="password" id="password" required>
                 </li>
                 <li class="ui-pwd">
                     <a href="/forgot">忘记密码</a>
                 </li>
-
+                <li><alert ng-repeat="alert in vm.alerts" type="\{{alert.type}}" close="vm.closeAlert($index)">\{{alert.msg}}</alert></li>
                 <li>
                     <input type="submit" value="登录" accesskey="l" name="submit" tabindex="4" class="login-btn">
                 </li>
@@ -31,3 +31,4 @@
         </div>
     </form>
 </div>
+{{> flash}}

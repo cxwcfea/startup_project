@@ -26,11 +26,10 @@ module.exports.postLogin = function(req, res, next) {
     var errors = req.validationErrors();
 
     if (errors) {
+        console.log(errors);
         req.flash('errors', errors);
         res.locals.err_msg = errors[0].msg;
-        res.locals.title = '登录';
-        res.locals.login_link = true;
-        return res.render('register/login');
+        return res.redirect('/login');
     }
 
     var auth = passport.authenticate('local', function(err, user, info) {

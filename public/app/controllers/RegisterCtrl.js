@@ -9,19 +9,19 @@
 
         vm.register = function() {
             if (!vm.mobile) {
-                alert('请输入正确的手机号');
+                addAlert('danger', '请输入正确的手机号');
                 return;
             }
             if (!vm.password) {
-                alert('请输入密码，长度6到20位');
+                addAlert('danger', '请输入密码，长度6到20位');
                 return;
             }
             if (!vm.confirm_password) {
-                alert('请再输一遍密码，长度6到20位');
+                addAlert('danger', '请再输一遍密码，长度6到20位');
                 return;
             }
             if (vm.password != vm.confirm_password) {
-                alert('两次密码应该保持一致');
+                addAlert('danger', '两次密码应该保持一致');
                 return;
             }
             var data = {
@@ -69,7 +69,7 @@
 
         vm.confirmVerifyCode = function() {
             if (!vm.verify_code) {
-                alert('请输入验证码');
+                addAlert('danger', '请输入验证码');
                 return;
             }
             $http.post('/verify_mobile_code', {verify_code:vm.verify_code})
@@ -82,6 +82,30 @@
                         vm.verify_code_error = true;
                     }
                 });
+        };
+
+        vm.login = function() {
+            if (!vm.mobile) {
+                addAlert('danger', '请输入正确的手机号');
+                return;
+            }
+            if (!vm.password) {
+                addAlert('danger', '请输入密码，长度6到20位');
+                return;
+            }
+            $('login-form')[0].submit();
+            /*
+            console.log('submit');
+            $http.post('/login', {mobile:vm.mobile, password:vm.password})
+                .success(function(data, status, headers, config) {
+                    console.log(status);
+                    console.log(data);
+                })
+                .error(function(data, status, headers, config) {
+                    console.log(status);
+                    console.log(data);
+                });
+                */
         };
 
         vm.alerts = [];
