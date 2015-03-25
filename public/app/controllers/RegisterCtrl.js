@@ -161,5 +161,16 @@
         vm.closeAlert = function(index) {
             vm.alerts.splice(index, 1);
         };
+
+        if ($('#server_error_msg_login')[0]) {
+            var error_code = $('#server_error_msg_login')[0].value;
+            if (error_code == 1) {
+                addAlert('danger', '手机号码错误');
+            } else if (error_code == 2) {
+                addAlert('danger', '请输入密码，长度6到20位');
+            } else if (error_code == 3) {
+                addAlert('danger', '该手机号码还未注册');
+            }
+        }
     }]);
 }());

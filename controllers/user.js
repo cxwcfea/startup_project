@@ -27,19 +27,31 @@ module.exports.postLogin = function(req, res, next) {
 
     if (errors) {
         console.log(errors);
-        //req.flash('errors', errors);
-        res.locals.err_msg = errors[0].msg;
-        return res.redirect('/login');
+        if (errors[0].param == 'mobile') {
+            res.locals.error_feedback = 1;
+        } else {
+            res.locals.error_feedback = 2;
+        }
+        res.locals.title = '登录';
+        res.locals.login = true;
+        res.render('register/login', {
+            layout: 'no_header'
+        });
+        return;
     }
-    console.log('after redirect');
 
     var auth = passport.authenticate('local', function(err, user, info) {
         if (err) {
             return next(err);
         }
         if (!user) {
-            req.flash('errors', { msg: info.message });
-            return res.redirect('/login');
+            res.locals.error_feedback = info.error_code;
+            res.locals.title = '登录';
+            res.locals.login = true;
+            res.render('register/login', {
+                layout: 'no_header'
+            });
+            return;
         }
         req.login(user, function(err) {
             if (err) {return next(err);}

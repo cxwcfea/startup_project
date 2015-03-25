@@ -728,6 +728,22 @@ span.loginSpan{
     line-height: 43px;
     position: relative;
 }
+.logon-con .logon-ipt span.errorText{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 238px;
+	height: 43px;
+	background: url(../images/img30.png) no-repeat 10px center #fffd3c; 
+	border: 1px solid #f50606;
+	padding-left: 40px;
+	font-size: 16px;
+	color: #f50606;
+	text-align: left;
+	display: none;
+	
+}
 .logon-con .logon-ipt em.user {
     background-position: -2px -354px;
     height: 19px;
