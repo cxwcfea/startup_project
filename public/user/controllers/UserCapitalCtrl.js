@@ -19,7 +19,7 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
         }
     });
 
-    $scope.data.menu = 1;
+    $scope.data.menu = 2;
     vm.user = $scope.data.currentUser;
     njCachedCards.setUID(vm.user._id);
     vm.cards = njCachedCards.query();
