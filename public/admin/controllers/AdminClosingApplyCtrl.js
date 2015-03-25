@@ -51,7 +51,7 @@ angular.module('adminApp').controller('AdminClosingApplyCtrl', ['$scope', '$http
                 return;
             }
             var data = {
-                apply_id: apply._id,
+                apply_serial_id: apply.serialID,
                 profit: result.profit
             };
             $http.post('/admin/api/close_apply', data)

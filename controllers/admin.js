@@ -229,7 +229,7 @@ function homasAssignAccount(req, res) {
 function _closeApply(serialID, profit, res) {
     async.waterfall([
         function(callback) {
-            Apply.findById(serialID, function(err, apply) {
+            Apply.findOne({serialID:serialID}, function(err, apply) {
                 callback(err, apply);
             });
         },
@@ -353,7 +353,7 @@ function _closeApply(serialID, profit, res) {
         }
     ], function(err) {
         if (err) {
-            logger.error('error happen when close apply:' + req.body.apply_id + ' err:' + err.toString());
+            logger.error('error happen when close apply:' + serialID + ' err:' + err.toString());
             res.status(401);
             res.send({"error_code":1, "error_msg":err.toString()});
         } else {
@@ -365,7 +365,7 @@ function _closeApply(serialID, profit, res) {
 function closeApply(req, res) {
     console.log(req.body);
     var profit = req.body.profit;
-    _closeApply(req.body.apply_id, profit, res);
+    _closeApply(req.body.apply_serial_id, profit, res);
 }
 
 function fetchGetProfitOrders(req, res) {
