@@ -119,6 +119,11 @@
                 alert('您必须同意《牛金操盘协议》');
                 return;
             }
+            if (vm.summary.amount <= 0 || vm.summary.amount > 300000) {
+                var theModal = $('#invalid-value-modal');
+                theModal.modal('open');
+                return;
+            }
             $http.post('/apply', vm.summary)
                 .success(function(data, status, headers, config) {
                     $window.location.href = '/apply_confirm/' + data.apply_serial_id;
