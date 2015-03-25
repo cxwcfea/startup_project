@@ -29,7 +29,7 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
         },
         {
             file: '/views/identity.html',
-            name: '实名认证',
+            name: '提现人姓名',
             menu: 1,
             value: 1
         },
@@ -56,12 +56,12 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
     vm.userInfoItem = [
         {
             value: 1,
-            title: "实名认证",
-            status: vm.user.identity.id ? "已认证" : "未认证",
+            title: "提现人姓名",
+            status: vm.user.identity.id ? "已设置" : "未设置",
             icon: 'spanIcon01',
             info: vm.user.identity.id ? vm.user.identity.name + '(' + $filter('displayIdentityID')(vm.user.identity.id) + ')' : '',
-            description: '提现必须实名认证',
-            action: "立即认证",
+            description: '提现必须先设置提现人姓名',
+            action: "立即设置",
             show_action: vm.user.identity.id ? false : true
         },
         {

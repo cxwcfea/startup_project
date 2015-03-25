@@ -87,9 +87,9 @@ module.exports.ajaxLogin = function(req, res) {
             return res.send({error_code:2, error_msg:err.toString()});
         }
         if (!user) {
-            logger.error('ajaxLogin error:user not exist');
+            logger.error('ajaxLogin error:' + info.message);
             res.status(400);
-            return res.send({error_code:3, error_msg:'用户不存在'});
+            return res.send({error_code:3, error_msg:info.message});
         }
         req.login(user, function(err) {
             if (err) {

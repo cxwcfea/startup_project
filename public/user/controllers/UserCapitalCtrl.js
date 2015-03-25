@@ -5,17 +5,11 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
 
     $scope.$on("$routeChangeSuccess", function () {
         if ($location.path().indexOf("/user_capital") === 0) {
-            var order_id = $location.search()["pay_order"];
-            if (order_id) {
-                vm.currentCategory = vm.categories[0];
-                vm.pay_order_id = order_id;
-            } else {
-                var request_category = $location.search()['category'];
-                if (!request_category || request_category > 2) {
-                    request_category = 1;
-                }
-                vm.currentCategory = vm.categories[request_category];
+            var request_category = $location.search()['category'];
+            if (!request_category || request_category > 2) {
+                request_category = 1;
             }
+            vm.currentCategory = vm.categories[request_category];
         }
     });
 
@@ -23,8 +17,6 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
     vm.user = $scope.data.currentUser;
     njCachedCards.setUID(vm.user._id);
     vm.cards = njCachedCards.query();
-    vm.currentPayType = 0;
-    vm.useCredit = false;
 
     var order_list = {};
     var currentOrders;
@@ -37,7 +29,6 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
     initData();
     vm.BankNameList = BankNameList;
     vm.bankObj = vm.BankNameList[0];
-    vm.payBank = 0;
 
     function initData() {
         order_list = njOrder.query({uid:vm.user._id}, function () {
@@ -182,7 +173,7 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
     };
 
     vm.showAddCard = function() {
-        vm.currentCategory = vm.categories[4];
+        vm.currentCategory = vm.categories[3];
     };
 
     vm.excludeAddCard = function (item) {
@@ -268,84 +259,6 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
             .error(function(data, status, headers, config) {
                 addAlert('danger', '提现申请提交失败,请联系客服!');
             });
-    };
-
-    vm.selectPayType = function (type) {
-        vm.currentPayType = type.value;
-    };
-
-    vm.selectPayBank = function (bank) {
-        vm.payBank = bank.value;
-        console.log('selectPayBank ' + vm.payBank);
-    };
-
-    vm.changeCardType = function(credit) {
-        vm.useCredit = credit;
-        if (vm.useCredit) {
-            vm.BankNameList = BankNameList.filter(function (element, index, array) {
-                return element.credit;
-            });
-        } else {
-            vm.BankNameList = BankNameList;
-        }
-    };
-
-    function payThroughShengPay(order) {
-        var Name = $('#Name')[0].value;
-        var Version = $('#Version')[0].value;
-        var Charset = $('#Charset')[0].value;
-        var MsgSender = $('#MsgSender')[0].value;
-        var OrderNo = $('#OrderNo')[0].value = order._id;
-        var OrderAmount = $('#OrderAmount')[0].value = order.amount.toFixed(2);
-        var OrderTime = $('#OrderTime')[0].value = moment().format("YYYYMMDDHHmmss");
-        var PayType = $('#PayType')[0].value;
-        var PayChannel = $('#PayChannel')[0].value = vm.useCredit ? 20 : 19;
-        var InstCode = $('#InstCode')[0].value = BankNameList[vm.payBank].instCode;
-        var PageUrl = $('#PageUrl')[0].value;
-        var BackUrl = $('#BackUrl')[0].value;
-        var NotifyUrl = $('#NotifyUrl')[0].value;
-        var ProductName = $('#ProductName')[0].value;
-        var BuyerIp = $('#BuyerIp')[0].value = $window.returnCitySN["cip"];
-        var SignType = $('#SignType')[0].value;
-        var md5Key = 'shengfutongSHENGFUTONGtest';
-
-        var sign_origin = Name+Version+Charset+MsgSender+OrderNo+OrderAmount+OrderTime+
-            PayType+PayChannel+InstCode+PageUrl+BackUrl+NotifyUrl+ProductName+BuyerIp+SignType+md5Key;
-        var SignMsg = SparkMD5.hash(sign_origin);
-        SignMsg = SignMsg.toUpperCase();
-        $('#SignMsg')[0].value = SignMsg;
-        $('#shengPayForm')[0].submit();
-    }
-
-    vm.onlinePay = function() {
-        if (!vm.pay_amount || vm.pay_amount < 0) {
-            addAlert('danger', '请输入有效的充值金额');
-            return;
-        }
-        vm.pay_amount = Number(vm.pay_amount.toFixed(2));
-        if (!vm.pay_amount) {
-            addAlert('danger', '最少充值1分钱');
-            return;
-        }
-
-        if (vm.pay_order) {
-            payThroughShengPay(vm.pay_order);
-        } else {
-            var newOrder = new njOrder({uid:vm.user._id});
-            newOrder.userID = vm.user._id;
-            newOrder.userMobile = vm.user.mobile;
-            newOrder.dealType = 1;
-            newOrder.amount = vm.pay_amount;
-            newOrder.description = '网站充值';
-            newOrder.$save(function(o, responseHeaders) {
-                order_list.unshift(o);
-                currentOrders = order_list;
-
-                payThroughShengPay(o);
-            }, function(response) {
-                addAlert('danger', '服务暂时不可用，请稍后再试');
-            });
-        }
     };
 
     vm.showRechargeDetail = function() {

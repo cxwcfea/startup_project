@@ -35,7 +35,7 @@
         <div class="fr">
             &nbsp;&nbsp;&nbsp;<a href="/info/help">帮助中心</a>&nbsp;&nbsp;&nbsp;
         </div>
-        <div class="fr">
+        <div class="fr jq_khdBox">
             <a href="http://www.ihoms.com/www/download/download.do?modelName=2">客户端下载</a>
             <!--
             <div class="hhdDown undis">
@@ -61,25 +61,25 @@
             <a href="/signup" class="color_333333">免费注册</a>&nbsp;&nbsp;
             <a href="/user#/user_capital?category=0">充值中心</a>&nbsp;&nbsp;&nbsp;
         </div>
-        <div class="TopLoginBox fr jq_topLogin">
+        <div class="TopLoginBox fr jq_topLogin" ng-app="registerApp" ng-controller="RegisterCtrl as vm">
             请登录
-            <div id="login" class="ui-logon clearfix  topLoginContet jq_LoginBox undis">
-                <form method="POST" action="/login" name="login-form">
+            <div id="login" class="ui-logon clearfix topLoginContet jq_LoginBox undis">
+                <form method="POST" name="login-form" novalidate>
                     <ul class="logon-con">
                         <li class="logon-ipt z-index10" id="username1">
                             <em class="user"></em>
-                            <input placeholder="请输入注册手机号码" type="text" autocomplete="off" accesskey="n" tabindex="1" class="holder" name="mobile" id="mobile">
+                            <input placeholder="请输入注册手机号码" type="tel" autocomplete="off" accesskey="n" tabindex="1" class="holder" name="mobile" id="mobile" ng-model="vm.mobile" required autofocus>
                         </li>
                         <li class="logon-ipt mgt20" id="pwd">
                             <em class="key"></em>
-                            <input type="password" tabindex="2" placeholder="密码" name="password">
+                            <input type="password" tabindex="2" placeholder="密码" name="password" required minlength="6" maxlength="20" ng-model="vm.password">
                         </li>
                         <li class="ui-pwd">
                             <a href="/forgot">忘记密码</a>
                         </li>
-
+                        <li><alert ng-repeat="alert in vm.alerts" type="\{{alert.type}}" close="vm.closeAlert($index)">\{{alert.msg}}</alert></li>
                         <li>
-                            <input type="submit" value="登录" accesskey="l" name="submit" tabindex="4" class="login-btn">
+                            <input type="submit" value="登录" accesskey="l" name="submit" tabindex="4" class="login-btn" ng-click="vm.login()">
                         </li>
                     </ul>
                 </form>
@@ -180,9 +180,7 @@
 <script src="{{static '/js/common_module.js'}}"></script>
 <script src="{{static '/app/controllers/MainApplyController.js'}}"></script>
 <script src="{{static '/js/main.js'}}"></script>
-{{#if other_menu}}
 <script src="{{static '/app/controllers/RegisterCtrl.js'}}"></script>
-{{/if}}
 {{#if main_menu}}
         <script src="{{static '/js/index.js'}}"></script>
 {{/if}}

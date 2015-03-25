@@ -137,19 +137,13 @@
                 addAlert('danger', '请输入密码，长度6到20位');
                 return;
             }
-            $('login-form')[0].submit();
-            /*
-            console.log('submit');
-            $http.post('/login', {mobile:vm.mobile, password:vm.password})
+            $http.post('/api/login', {mobile:vm.mobile, password:vm.password})
                 .success(function(data, status, headers, config) {
-                    console.log(status);
-                    console.log(data);
+                    $window.location.replace('/');
                 })
                 .error(function(data, status, headers, config) {
-                    console.log(status);
-                    console.log(data);
+                    addAlert('danger', data.error_msg);
                 });
-                */
         };
 
         vm.alerts = [];
