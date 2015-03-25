@@ -96,6 +96,8 @@ module.exports = function(app) {
 
     app.post('/login', users.postLogin);
 
+    app.post('/api/login', users.ajaxLogin);
+
     app.get('/logout', users.logout);
 
     app.post('/logout', users.postLogout);

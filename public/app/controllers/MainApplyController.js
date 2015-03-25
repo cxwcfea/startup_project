@@ -114,6 +114,20 @@
             tryOtherAmount();
         };
 
+        function _submitApply() {
+            $http.post('/apply', vm.summary)
+                .success(function(data, status, headers, config) {
+                    $window.location.href = '/apply_confirm/' + data.apply_serial_id;
+                })
+                .error(function(data, status, headers, config) {
+                    if (status === 401) {
+                        vm.showLoginWindow = true;
+                    } else {
+                        console.log('err');
+                    }
+                });
+        }
+
         vm.submitApply = function() {
             if (!vm.agree) {
                 alert('您必须同意《牛金操盘协议》');
@@ -124,18 +138,7 @@
                 theModal.modal('open');
                 return;
             }
-            $http.post('/apply', vm.summary)
-                .success(function(data, status, headers, config) {
-                    $window.location.href = '/apply_confirm/' + data.apply_serial_id;
-                })
-                .error(function(data, status, headers, config) {
-                    console.log(status);
-                    if (status === 401) {
-                        vm.showLoginWindow = true;
-                    } else {
-                        console.log('err');
-                    }
-                });
+            _submitApply();
         };
 
         vm.showForbiddenStocks = function() {
@@ -152,6 +155,34 @@
                 var theModal = $('#forbidden-stock-modal');
                 theModal.modal('open');
             }
+        };
+
+        vm.login = function() {
+            if (!vm.mobile) {
+                addAlert('danger', '请输入有效的手机号');
+                return;
+            }
+            if (!vm.password) {
+                addAlert('danger', '请输入密码，6到20位');
+                return;
+            }
+            $http.post('/api/login', {mobile:vm.mobile, password:vm.password})
+                .success(function(data, status, headers, config) {
+                    _submitApply();
+                })
+                .error(function(data, status, headers, config) {
+                    addAlert('danger', data.error_msg);
+                });
+        };
+
+        vm.alerts = [];
+
+        var addAlert = function(type, msg) {
+            vm.alerts.push({type:type, msg: msg});
+        };
+
+        vm.closeAlert = function(index) {
+            vm.alerts.splice(index, 1);
         };
     }]);
 

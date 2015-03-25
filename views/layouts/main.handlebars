@@ -4,14 +4,11 @@
     <meta charset="utf-8" />
     <title>牛金网</title>
     <link rel="alternate icon" type="image/png" href="/images/favicon.ico">
-{{#if user_menu}}
+    <link rel="stylesheet" href="{{static '/vendor/bootstrap/dist/css/bootstrap.min.css'}}">
+{{#if recharge}}
     <link rel="stylesheet" href="{{static '/vendor/bootstrap/dist/css/bootstrap.min.css'}}">
 {{else}}
-    {{#if recharge}}
-        <link rel="stylesheet" href="{{static '/vendor/bootstrap/dist/css/bootstrap.min.css'}}">
-    {{else}}
-        <link rel="stylesheet" href="{{static '/vendor/amazeui/dist/css/amazeui.min.css'}}">
-    {{/if}}
+    <link rel="stylesheet" href="{{static '/vendor/amazeui/dist/css/amazeui.min.css'}}">
 {{/if}}
     <link rel="stylesheet" href="{{static '/vendor/toastr/toastr.css'}}">
     <link rel="stylesheet" href="{{static '/css/common.css'}}">
@@ -24,6 +21,7 @@
     <link rel="stylesheet" href="{{static '/css/site2.css'}}">
     <script src="{{static '/vendor/jquery/dist/jquery.min.js'}}"></script>
     <script src="{{static '/vendor/jquery.Imgfocus.js'}}"></script>
+    <script src="{{static '/vendor/angular/angular.js'}}"></script>
 </head>
 <body>
 <div class="Top">
@@ -48,7 +46,7 @@
             <span class="am-text-danger">您好,{{#if user.profile.name}} {{user.profile.name}} {{else}} {{user.mobile}} {{/if}}</span>
             &nbsp;&nbsp;|&nbsp;&nbsp;
             <a href="/logout" class="color_333333">退出登录</a>&nbsp;&nbsp;
-            <a href="/user#/user_capital?category=0">充值中心</a>&nbsp;&nbsp;&nbsp;
+            <a href="/recharge">充值中心</a>&nbsp;&nbsp;&nbsp;
         </div>
     {{/if}}
     {{#unless user}}
@@ -181,7 +179,6 @@
 <script src="{{static '/vendor/moment/min/moment.min.js'}}"></script>
 <script src="{{static '/vendor/moment/min/locales.min.js'}}"></script>
 <script src="{{static '/vendor/spark-md5.min.js'}}"></script>
-<script src="{{static '/vendor/angular/angular.js'}}"></script>
 <script src="{{static '/vendor/angular-bootstrap/ui-bootstrap-tpls.min.js'}}"></script>
 <script src="{{static '/js/common.js'}}"></script>
 <script src="{{static '/js/common_module.js'}}"></script>

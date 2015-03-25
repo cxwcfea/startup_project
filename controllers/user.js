@@ -54,6 +54,47 @@ module.exports.postLogin = function(req, res, next) {
     auth(req, res, next);
 };
 
+module.exports.ajaxLogin = function(req, res) {
+    req.assert('mobile', '无效的手机号码').len(11, 11).isInt();
+    req.assert('password', '密码不能为空').notEmpty();
+    req.assert('password', '密码至少需要6位').len(6);
+
+    var errors = req.validationErrors();
+
+    if (errors) {
+        logger.info('ajaxLogin error:' + errors);
+        res.status(400);
+        return res.send({error_code:1, error_msg:errors[0].msg});
+    }
+
+    var auth = passport.authenticate('local', function(err, user, info) {
+        if (err) {
+            logger.error('ajaxLogin error:' + err.toString());
+            res.status(500);
+            return res.send({error_code:2, error_msg:err.toString()});
+        }
+        if (!user) {
+            logger.error('ajaxLogin error:user not exist');
+            res.status(400);
+            return res.send({error_code:3, error_msg:'用户不存在'});
+        }
+        req.login(user, function(err) {
+            if (err) {
+                logger.error('ajaxLogin error:' + err.toString());
+                res.status(500);
+                return res.send({error_code:2, error_msg:err.toString()});
+            }
+            if (req.session.lastLocation) {
+                res.send({location:req.session.lastLocation});
+                req.session.lastLocation = null;
+            } else {
+                res.send({location:'/'});
+            }
+        });
+    });
+    auth(req, res);
+};
+
 module.exports.postSignup = function(req, res, next) {
     req.assert('verify_code', '验证码错误').equals(req.session.sms_code);
 

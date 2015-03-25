@@ -444,8 +444,8 @@ exports.postConfirmApply = function(req, res, next) {
     var applyData = req.body;
     if (req.user._id != applyData.userID) {
         res.status(403);
-        logger.warn('postConfirmApply error:apply is belongs to the user');
-        return res.send({reason:'apply is belongs to the user'});
+        logger.warn('postConfirmApply error:apply is not belongs to the user');
+        return res.send({reason:'apply is not belongs to the user'});
     }
     var orderData = {
         userID: applyData.userID,

@@ -320,7 +320,7 @@
         <div class="tmbg"></div>
         <div id="login" class="ui-logon clearfix logintcc">
             <div class="loginClose jq_loginClose"></div>
-            <form method="POST" action="/login" name="login-form">
+            <form method="POST" ng-submit="applyVM.login()" name="login-form" novalidate>
                 <ul class="logon-con">
                     <li class="title">
                         <h2>登录</h2>
@@ -332,16 +332,16 @@
 
                     <li class="logon-ipt z-index10" id="username1">
                         <em class="user"></em>
-                        <input placeholder="请输入注册手机号码" type="text" autocomplete="off" accesskey="n" tabindex="1" class="holder" name="mobile" id="name">
+                        <input placeholder="请输入注册手机号码" type="tel" autocomplete="off" accesskey="n" tabindex="1" class="holder" name="mobile" id="name" pattern="1[3|5|7|8|][0-9]{9}" required autofocus ng-model="applyVM.mobile">
                     </li>
                     <li class="logon-ipt mgt20" id="pwd">
                         <em class="key"></em>
-                        <input type="password" tabindex="2" placeholder="密码" name="password">
+                        <input type="password" tabindex="2" placeholder="密码" name="password" minlength="6" maxlength="12" ng-model="applyVM.password" required>
                     </li>
                     <li class="ui-pwd">
                         <a href="/forgot">忘记密码</a>
                     </li>
-
+                    <li><alert ng-repeat="alert in applyVM.alerts" type="\{{alert.type}}" close="applyVM.closeAlert($index)">\{{alert.msg}}</alert></li>
                     <li>
                         <input type="submit" value="登录" accesskey="l" name="submit" tabindex="4" class="login-btn">
                     </li>
