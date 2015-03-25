@@ -230,6 +230,9 @@ function _closeApply(serialID, profit, res) {
     async.waterfall([
         function(callback) {
             Apply.findOne({serialID:serialID}, function(err, apply) {
+                if (!apply) {
+                    err = '_closeApply error:apply:' + serialID + ' not found';
+                }
                 callback(err, apply);
             });
         },
@@ -365,7 +368,7 @@ function _closeApply(serialID, profit, res) {
 function closeApply(req, res) {
     console.log(req.body);
     var profit = req.body.profit;
-    _closeApply(req.body.apply_serial_id, profit, res);
+    _closeApply(req.body.apply_serial_id, Number(profit), res);
 }
 
 function fetchGetProfitOrders(req, res) {
@@ -494,6 +497,7 @@ function autoApproveApply(req, res) {
 }
 
 function autoFetchClosingSettlement(req, res) {
+    logger.debug('autoFetchClosingSettlement operator:', req.user.mobile);
     Apply.find({status: 5}, function(err, applies) {
         if (err) {
             logger.warn(err.toString());
@@ -511,11 +515,12 @@ function autoFetchClosingSettlement(req, res) {
 }
 
 function autoApproveClosingSettlement(req, res) {
+    logger.debug('autoApproveClosingSettlement operator:', req.user.mobile);
     var serialID = req.query.settlement_serialID;
     var success = req.query.success;
     var profit = req.query.profit;
     if (success) {
-        _closeApply(serialID, profit, res);
+        _closeApply(serialID, Number(profit), res);
     } else {
         res.send({"error_code":0});
     }
