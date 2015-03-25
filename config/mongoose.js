@@ -15,9 +15,9 @@ function createDefaultUsers() {
                 */
             });
 
+            User.create({mobile: 13810655219, password: 'xxxxxx', roles: ['admin']});
             /*
             User.create({mobile: 13121909306, password: 'xxxxxx', roles: ['admin']});
-            User.create({mobile: 13810655219, password: 'xxxxxx', roles: ['admin']});
             User.create({mobile: 18911535534, password: 'xxxxxx', roles: ['admin']});
             User.create({mobile: 18612921262, password: 'xxxxxx', roles: ['admin']});
             */
