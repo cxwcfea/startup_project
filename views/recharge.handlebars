@@ -128,9 +128,10 @@
                         </div>
                         <div class="fl recMoneyRight">
                             <p class="p04">将转账相关信息发送到我的手机</p>
-                            <a href="javascript:" class="recBtn02">发送到手机</a>
+                            <a href="javascript:" class="recBtn02" ng-click="vm.sendSMSBandInfo()">发送到手机</a>
                         </div>
                     </div>
+                    <alert ng-repeat="alert in vm.alerts" type="\{{alert.type}}" close="vm.closeAlert($index)">\{{alert.msg}}</alert>
                 </div>
             </div>
         </div>

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
     angular.module('rechargeApp', ['ngResource', 'ngRoute', 'ui.bootstrap', 'commonApp']);
-    angular.module('rechargeApp').controller('RechargeCtrl', ['$scope', '$window', '$location', 'njUser', 'njOrder', 'BankNameList', function ($scope, $window, $location, njUser, njOrder, BankNameList) {
+    angular.module('rechargeApp').controller('RechargeCtrl', ['$scope', '$window', '$location', '$http', 'njUser', 'njOrder', 'BankNameList', function ($scope, $window, $location, $http, njUser, njOrder, BankNameList) {
         var vm = this;
 
         njUser.get({id: $window.bootstrappedNiujinUserID}, function (user) {
@@ -131,6 +131,17 @@
                 console.log('order create failed');
                 addAlert('danger', '服务暂时不可用，请稍后再试');
             });
+        };
+
+        vm.sendSMSBandInfo = function() {
+            var info = '对公账号:110912609510501,开户行:招商银行股份有限公司北京清华园支行,户名:北京小牛普惠科技有限公司';
+            $http.post('/api/send_sms', {sms_content:info})
+                .success(function(data, status, headers, config) {
+                    addAlert('success', '短信发送成功');
+                })
+                .error(function(data, status, headers, config) {
+                    addAlert('danger', '短信发送失败，请稍后重试');
+                });
         };
 
         function payThroughShengPay(order) {

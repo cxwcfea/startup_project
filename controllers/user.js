@@ -1577,8 +1577,26 @@ function homeIndex(req, res, next) {
     });
 }
 
+function sendSMS(req, res, next) {
+    var data = req.body;
+    if (data.sms_content.length > 500) {
+        res.status(400);
+        return res.send({error_msg:'content too long'});
+    }
+    sms.sendSMS(req.user.mobile, '', data.sms_content, function (result) {
+        if (result.error) {
+            res.status(500);
+            return res.send({error_msg:result.msg});
+        } else {
+            res.send({});
+        }
+    });
+}
+
 module.exports.registerRoutes = function(app, passportConf) {
     app.get('/user', passportConf.isAuthenticated, homeIndex);
+
+    app.post('/api/send_sms', passportConf.isAuthenticated, sendSMS);
 
     app.get('/user/*', passportConf.isAuthenticated, function(req, res, next) {
         res.locals.callback_domain = config.pay_callback_domain;
