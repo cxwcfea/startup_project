@@ -469,20 +469,20 @@ module.exports.updateUser = function(req, res) {
         res.status(401);
         return res.send({reason:'无效的用户'});
     }
-    /*
     var protectedProperties = [
+        'mobile',
         'password',
+        'roles',
+        'registerAt',
+        'freeApply',
+        'finance',
+        'verifyEmailToken',
         'resetPasswordToken',
         'resetPasswordExpires'
     ];
 
-    function getUserViewModel(user){
-        var realUser = user._doc;
-        var vm = _.omit(realUser, privateProperties);
-        return _.extend(vm, {});
-    }
-    */
-    var userData = req.body;
+    var userData = _.omit(req.body, protectedProperties);
+
     User.update({_id:req.params.id}, userData, function (err, numberAffected, raw) {
         if (err) {
             logger.warn('updateUser db error:' + err.toString());

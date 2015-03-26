@@ -264,3 +264,64 @@ console.log(numTrunc(128.50));
 console.log(numTrunc(128.98));
 console.log(numTrunc(128));
 console.log(numTrunc(128.005));
+
+var userSchema = {
+    mobile: '13439695920',
+    password: '122323',
+    roles: ['admin'],
+	level: 0,
+	score: 20,
+    registerAt: Date.now(),
+    freeApply: 'abcedfefs',
+    registered: false,
+
+	finance: {
+        password: 'abcdeg',
+        balance: 290,
+        deposit: 980,
+        total_capital: 1000,
+        available_capital: 2000,
+        market_value: 3000,
+        freeze_capital: 4000
+	},
+
+    profile: {
+        email_verified: false,
+        email: 'cxwcfea@163.com',
+        name: 'nihao',
+        gender: 'M',
+        location: 'there',
+        qq: 2392039,
+        weibo: 'asfaf',
+        picture: ''
+    },
+
+    identity: {
+        id: 'asfa',
+        name: 'sdf',
+        idType: 1
+    },
+
+    verifyEmailToken: 'adf',
+    resetPasswordToken: 'sd',
+    resetPasswordExpires: Date.now()
+};
+
+userSchema = null;
+
+var protectedProperties = [
+	'mobile',
+	'password',
+	'roles',
+	'registerAt',
+	'freeApply',
+	'finance',
+	'verifyEmailToken',
+	'resetPasswordToken',
+	'resetPasswordExpires'
+];
+
+var userData = _.omit(userSchema, protectedProperties);
+
+console.log(userData);
+
