@@ -1,6 +1,6 @@
 <div class="wrapper reg" ng-app="registerApp" ng-controller="RegisterCtrl as vm">
     <div class="freeTitle">
-        <div class="fl"><span>设置密码</span></div>
+        <div class="fl"><span>重置密码</span></div>
         <div class="clear"></div>
     </div>
     {{> flash}}
@@ -22,8 +22,25 @@
                 <input type="text" class="inputText inputYzm" ng-model="vm.verify_code" required>
             </div>
         </div>
-        <a href="javascript:" class="ideBtn01 RegBtn01" ng-click="vm.requestChangePassNext()">下一步</a>
+        <div class="carFormBox">
+            <div class="cartTitle fl">
+                新密码：
+            </div>
+            <div class="cartFomeContent fl">
+                <input type="password" name="password" placeholder="密码长度6-20位" class="inputText" minlength="6" maxlength="20" ng-model="vm.password" required>
+            </div>
+        </div>
+        <div class="carFormBox">
+            <div class="cartTitle fl">
+                确认密码：
+            </div>
+            <div class="cartFomeContent fl">
+                <input type="password" name="confirm_password" placeholder="保持密码一致" class="inputText" minlength="6" maxlength="20" ng-model="vm.confirm_password" required>
+            </div>
+        </div>
+        <a href="javascript:" class="ideBtn01 RegBtn01" ng-click="vm.requestChangePass()">下一步</a>
     </div>
+    <!--
     <div id="box2" ng-show="vm.show_forgot_step_2">
         <form method="POST" action="/forgot" id="forgot-password-form" name="passForm">
             <input type="hidden" name="mobile" id="forgot-mobile">
@@ -47,6 +64,7 @@
         </form>
         <a href="javascript:" class="ideBtn01 RegBtn01" ng-click="vm.requestChangePass()">修改密码</a>
     </div>
+    -->
     <br>
     <alert ng-repeat="alert in vm.alerts" type="\{{alert.type}}" close="vm.closeAlert($index)">\{{alert.msg}}</alert>
 </div>

@@ -6,7 +6,8 @@
 
         vm.show_verify_window = false;
         vm.verify_code_error = false;
-        vm.show_forgot_step_2 = false;
+        //vm.show_forgot_step_2 = false;
+        vm.agree = true;
 
         vm.register = function() {
             if (!vm.mobile) {
@@ -23,6 +24,10 @@
             }
             if (vm.password != vm.confirm_password) {
                 addAlert('danger', '两次密码应该保持一致');
+                return;
+            }
+            if (!vm.agree) {
+                addAlert('danger', '您必须同意牛金网用户协议');
                 return;
             }
             var data = {
@@ -73,15 +78,12 @@
                 addAlert('danger', '请输入验证码');
                 return;
             }
-            $http.post('/verify_mobile_code', {verify_code:vm.verify_code})
+            $http.post('/finish_signup', {mobile:vm.mobile, verify_code:vm.verify_code})
                 .success(function(data, status, headers, config) {
-                    $('#verify_code')[0].value = vm.verify_code;
-                    $('#signup-form')[0].submit();
+                    $window.location.replace('/');
                 })
                 .error(function(data, status, headers, config) {
-                    if (data.errorCode === 1) {
-                        vm.verify_code_error = true;
-                    }
+                    addAlert('danger', data.error_msg);
                 });
         };
 
@@ -94,6 +96,9 @@
         };
 
         vm.requestChangePassNext = function() {
+        };
+
+        vm.requestChangePass = function() {
             if (!vm.mobile) {
                 addAlert('danger', '请输入正确的手机号');
                 return;
@@ -102,19 +107,6 @@
                 addAlert('danger', '请输入验证码');
                 return;
             }
-            $http.post('/verify_mobile_code', {verify_code:vm.verify_code})
-                .success(function(data, status, headers, config) {
-                    vm.show_forgot_step_2  = true;
-                })
-                .error(function(data, status, headers, config) {
-                    if (data.errorCode === 1) {
-                        vm.verify_code_error = true;
-                        addAlert('danger', '验证码错误');
-                    }
-                });
-        };
-
-        vm.requestChangePass = function() {
             if (!vm.password) {
                 addAlert('danger', '请输入密码，长度6到20位');
                 return;
@@ -123,9 +115,21 @@
                 addAlert('danger', '请再输一遍密码，长度6到20位');
                 return;
             }
-            $('#verify_code')[0].value = vm.verify_code;
-            $('#forgot-mobile')[0].value = vm.mobile;
-            $('#forgot-password-form')[0].submit();
+            if (vm.password !== vm.confirm_password) {
+                addAlert('danger', '两次密码输入不一致');
+                return;
+            }
+            $http.post('/forgot', {mobile:vm.mobile, verify_code:vm.verify_code, password:vm.password, confirm_password:vm.confirm_password})
+                .success(function(data, status, headers, config) {
+                    addAlert('success', '您的密码已经修改成功');
+                    vm.mobile = '';
+                    vm.verify_code = '';
+                    vm.password = '';
+                    vm.confirm_password = '';
+                })
+                .error(function(data, status, headers, config) {
+                    addAlert('danger', data.error_msg);
+                });
         };
 
         vm.login = function() {

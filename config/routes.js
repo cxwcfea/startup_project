@@ -61,9 +61,7 @@ module.exports = function(app) {
         }
     });
 
-    app.post('/signup', users.postSignup);
-
-    app.post('/signup_2', users.preSignup);
+    app.post('/finish_signup', users.finishSignup);
 
     app.post('/api_signup', users.apiSignup);
 

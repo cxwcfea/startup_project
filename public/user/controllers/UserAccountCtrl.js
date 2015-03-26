@@ -209,15 +209,13 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
         }
         $http.post('/user/change_finance_pass', {new_password:vm.finance_pass, confirm_password:vm.confirm_finance_pass, verify_code:vm.verify_code})
             .success(function(data, status, headers, config) {
-                if (data.success) {
-                    addAlert('success', '提现密码设置成功');
-                    vm.user.finance.password = vm.finance_pass;
-                } else {
-                    addAlert('danger', data.reaseon);
-                }
+                addAlert('success', '提现密码设置成功');
+                vm.user.finance.password = vm.finance_pass;
+                vm.confirm_finance_pass = '';
+                vm.verify_code = '';
             })
             .error(function(data, status, headers, config) {
-                addAlert('danger', '提现密码设置失败，请稍后重试');
+                addAlert('danger', data.error_msg);
             });
     };
 

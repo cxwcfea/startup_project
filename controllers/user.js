@@ -108,69 +108,29 @@ module.exports.ajaxLogin = function(req, res) {
     auth(req, res);
 };
 
-module.exports.postSignup = function(req, res, next) {
-    req.assert('verify_code', '验证码错误').equals(req.session.sms_code);
-
-    var errors = req.validationErrors();
-    if (errors) {
-        req.flash('errors', errors);
-        res.render('register/signup_2', {
-            user_mobile: req.body.mobile,
-            layout: 'no_header'
-        });
-        return;
-    }
-
-    /*
-    var user_name = '';
-    if (req.body.user_name) {
-        user_name = req.body.user_name;
-    }
-    */
-    /*
-    var user = new User({
-        mobile: req.body.mobile,
-        password: req.body.password,
-        profile: {
-            name: user_name
-        }
-    });
-    */
-
-    User.findOne({ mobile: req.body.mobile }, function(err, existingUser) {
-        if (err) {
-            return next(err);
-        }
-        if (existingUser && existingUser.registered) {
-            req.flash('errors', { msg: '该手机号已经注册了.' });
-            return res.redirect('/signup');
-        }
-        existingUser.registered = true;
-        existingUser.save(function(err) {
-            if (err) {
-                logger.warn('postSignup err:' + err.toString());
-                return next(err);
-            }
-            req.logIn(existingUser, function(err) {
-                if (err) {
-                    logger.warn('postSignup err:' + err.toString());
-                    return next(err);
-                }
-                res.redirect('/');
-            });
-        });
-    });
-};
-
 module.exports.verifyMobileCode = function(req, res) {
-    req.assert('verify_code', '验证码错误').equals(req.session.sms_code);
-
-    var errors = req.validationErrors();
-    if (errors) {
-        console.log(errors);
+    if (!req.session.sms_code) {
         res.status(400);
-        return res.send({errorCode:1});
+        return res.send({ error_msg: '请重新获取验证码' });
     }
+
+    if (req.body.verify_code != req.session.sms_code.code) {
+        res.status(400);
+        return res.send({ error_msg: '验证码错误' });
+    }
+
+    if (req.session.sms_code.expires < Date.now()) {
+        res.status(400);
+        return res.send({error_msg:'验证码已失效'})
+    }
+
+    if (req.body.mobile != req.session.sms_code.mobile) {
+        res.status(400);
+        return res.send({ error_msg: '手机号不匹配' })
+    }
+
+    req.session.sms_code = undefined;
+
     res.send({});
 };
 
@@ -217,44 +177,51 @@ module.exports.apiSignup = function(req, res) {
     });
 };
 
-module.exports.preSignup = function(req, res, next) {
-    req.assert('mobile', '无效的手机号码').len(11, 11).isInt();
-    req.assert('password', '密码不能为空').notEmpty();
-    req.assert('password', '密码至少需要6位').len(6);
-    req.assert('confirm-password', '两次密码不匹配').equals(req.body.password);
-
-    var errors = req.validationErrors();
-    if (errors) {
-        req.flash('errors', errors);
-        return res.redirect('/signup');
+module.exports.finishSignup = function(req, res, next) {
+    if (!req.session.sms_code) {
+        res.status(400);
+        return res.send({ error_msg: '请重新获取验证码' });
     }
 
-    var user = new User({
-        mobile: req.body.mobile,
-        password: req.body.password
-    });
+    if (req.body.verify_code != req.session.sms_code.code) {
+        res.status(400);
+        return res.send({ error_msg: '验证码错误' });
+    }
+
+    if (req.session.sms_code.expires < Date.now()) {
+        res.status(400);
+        return res.send({error_msg:'验证码已失效'})
+    }
+
+    if (req.body.mobile != req.session.sms_code.mobile) {
+        res.status(400);
+        return res.send({ error_msg: '手机号不匹配' })
+    }
+
+    req.session.sms_code = undefined;
 
     User.findOne({ mobile: req.body.mobile }, function(err, existingUser) {
         if (err) {
-            logger.warn('preSignup err:' + err.toString());
             return next(err);
         }
         if (existingUser && existingUser.registered) {
-            req.flash('errors', { msg: '该手机号已经注册了.' });
-            return res.redirect('/signup');
+            res.status(400);
+            return res.send({ error_msg: '该手机号已经注册了' })
         }
-
-        if (existingUser) {
-            user = existingUser;
-        }
-        user.save(function(err) {
+        existingUser.registered = true;
+        existingUser.save(function(err) {
             if (err) {
-                logger.warn('preSignup err:' + err.toString());
-                return next(err);
+                logger.warn('finishSignup err:' + err.toString());
+                res.status(500);
+                return res.send({ error_msg: err.toString() });
             }
-            res.render('register/signup_2', {
-                user_mobile: user.mobile,
-                layout: 'no_header'
+            req.logIn(existingUser, function(err) {
+                if (err) {
+                    logger.warn('finishSignup err:' + err.toString());
+                    res.status(500);
+                    return res.send({ error_msg: err.toString() });
+                }
+                res.send({});
             });
         });
     });
@@ -485,6 +452,7 @@ module.exports.updateUser = function(req, res) {
         'registerAt',
         'freeApply',
         'finance',
+        'smsVerifyCode',
         'verifyEmailToken',
         'resetPasswordToken',
         'resetPasswordExpires'
@@ -532,35 +500,44 @@ module.exports.postUpdatePassword = function(req, res, next) {
 };
 
 module.exports.resetPassword = function(req, res, next) {
-    logger.warn(req.body);
-    req.assert('verify_code', '验证码错误').equals(req.session.sms_code);
-    req.assert('password', '密码至少需要6位').len(6);
-    req.assert('confirm_password', '两次密码不匹配').equals(req.body.password);
-
-    var errors = req.validationErrors();
-
-    if (errors) {
-        req.flash('errors', errors);
-        return res.redirect('/forgot');
+    if (!req.session.sms_code) {
+        res.status(400);
+        return res.send({ error_msg: '请重新获取验证码' });
     }
+
+    if (req.body.verify_code != req.session.sms_code.code) {
+        res.status(400);
+        return res.send({ error_msg: '验证码错误' });
+    }
+
+    if (req.session.sms_code.expires < Date.now()) {
+        res.status(400);
+        return res.send({error_msg:'验证码已失效'})
+    }
+
+    if (req.body.mobile != req.session.sms_code.mobile) {
+        res.status(400);
+        return res.send({ error_msg: '手机号不匹配' })
+    }
+
+    req.session.sms_code = undefined;
 
     User.findOne({ mobile: req.body.mobile }, function(err, user) {
         if (err) {
-            return next(err);
+            res.status(500);
+            return res.send({error_msg:err.toString()});
         }
         if (!user) {
-            req.flash('errors', { msg: '该手机号还未注册.' });
-            return res.redirect('/forgot');
+            res.status(400);
+            return res.send({error_msg:'该手机号还未注册.'});
         }
         user.password = req.body.password;
         user.save(function (err) {
             if (err) {
                 logger.warn('resetPassword err:' + err.toString());
-                req.flash('errors', { msg: err.toString() });
                 return res.redirect('/forgot');
             }
-            req.flash('info', { msg: '您的密码已经修改成功!' });
-            res.redirect('/login');
+            res.send({});
         });
     });
 };
@@ -573,9 +550,12 @@ module.exports.sendVerifyCode = function(req, res, next) {
     console.log('send verify code');
     var code = sms.generateVerifyCode();
     sms.sendSMS(req.query.mobile, code);
-    req.session.sms_code = code;
+    req.session.sms_code = {
+        mobile: req.query.mobile,
+        code: code,
+        expires: Date.now() + 3600000 // 1 hour
+    };
     res.send({success:true});
-    //res.send({success:true, verifyCode:code});
 };
 
 module.exports.payByBalance = function(req, res, next) {
@@ -756,31 +736,53 @@ module.exports.getResetFinancePassword = function(req, res) {
 module.exports.postUpdateFinancePassword = function(req, res, next) {
     req.assert('new_password', '密码至少需要6位').len(6);
     req.assert('confirm_password', '两次密码不匹配').equals(req.body.new_password);
-    req.assert('verify_code', '验证码错误').equals(req.session.sms_code);
 
     var errors = req.validationErrors();
 
     if (errors) {
-        return res.send({success:false, reason:errors[0].msg});
+        res.status(400);
+        return res.send({error_msg:errors[0].msg});
     }
+
+    if (!req.session.sms_code) {
+        res.status(400);
+        return res.send({ error_msg: '请重新获取验证码' });
+    }
+
+    if (req.body.verify_code != req.session.sms_code.code) {
+        res.status(400);
+        return res.send({ error_msg: '验证码错误' });
+    }
+
+    if (req.session.sms_code.expires < Date.now()) {
+        res.status(400);
+        return res.send({error_msg:'验证码已失效'})
+    }
+
+    if (req.user.mobile != req.session.sms_code.mobile) {
+        res.status(400);
+        return res.send({ error_msg: '手机号不匹配' })
+    }
+
+    req.session.sms_code = undefined;
 
     User.findById(req.user._id, function(err, user) {
         if (err) {
             res.status(503);
-            return res.send({success: false, reason: err.toString()});
+            return res.send({error_msg: err.toString()});
         }
         if (!user) {
             res.status(503);
-            return res.send({success: false, reason: '无效的用户！'});
+            return res.send({error_msg: '无效的用户！'});
         }
         user.finance.password = req.body.new_password;
 
         user.save(function (err) {
             if (err) {
                 res.status(503);
-                return res.send({success: false, reason: err.toString()});
+                return res.send({error_msg: err.toString()});
             }
-            res.send({success: true});
+            res.send({});
         });
     });
 };
