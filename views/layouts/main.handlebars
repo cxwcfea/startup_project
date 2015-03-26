@@ -57,12 +57,14 @@
     {{/if}}
     {{#unless user}}
         <div class="fr">
+            <a href="/login" class="color_333333">立即登录</a>&nbsp;&nbsp;
             &nbsp;&nbsp;|&nbsp;&nbsp;
             <a href="/signup" class="color_333333">免费注册</a>&nbsp;&nbsp;
             <a href="/user#/user_capital?category=0">充值中心</a>&nbsp;&nbsp;&nbsp;
         </div>
+    <!--
         <div class="TopLoginBox fr jq_topLogin" ng-app="registerApp" ng-controller="RegisterCtrl as vm">
-            请登录
+            立即登录
             <div id="login" class="ui-logon clearfix topLoginContet jq_LoginBox undis">
                 <form method="POST" name="login-form" novalidate>
                     <ul class="logon-con">
@@ -85,6 +87,7 @@
                 </form>
             </div>
         </div>
+        -->
     {{/unless}}
         <div class="clear"></div>
     </div>
