@@ -303,6 +303,14 @@ module.exports.getVerifyEmail = function(req, res) {
 };
 
 module.exports.postVerifyEmail = function(req, res, next) {
+    if (!req.body) {
+        res.status(400);
+        return res.send({reason:'empty request'});
+    }
+    if (req.body.toString().length > 150) {
+        res.status(400);
+        return res.send({reason:'email too long'});
+    }
     req.assert('email', '无效的邮件地址.').isEmail();
 
     var errors = req.validationErrors();
@@ -342,14 +350,15 @@ module.exports.postVerifyEmail = function(req, res, next) {
                 from: 'niu_jin_wang@qq.com',
                 subject: '欢迎加入牛金网',
                 generateTextFromHTML: true,
-                text: user.mobile + '，您好 \n\n请点击下面链接，完成邮箱认证，提升您在658金融网账户的安全性。\n\n' +
+                text: user.mobile + '，您好 \n\n请点击下面链接，完成邮箱认证，提升您在牛金网账户的安全性。\n\n' +
                 config.pay_callback_domain + '/user/verifyEmail/' + token + '\n\n' +
                 '如果您不能点击上面链接，还可以将一下链接复制到浏览器地址栏中访问：\n\n' +
                 config.pay_callback_domain + '/user/verifyEmail/' + token + '\n\n'
             };
             transporter.sendMail(mailOptions, function(err) {
-                req.flash('info', { msg: 'An e-mail has been sent to ' + user.profile.email + ' with further instructions.' });
-                logger.warn('error when send verify email: ' + err);
+                if (err) {
+                    logger.warn('error when send verify email: ' + err);
+                }
                 done(err, 'done');
                 transporter.close();
             });

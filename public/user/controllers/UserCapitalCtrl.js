@@ -166,6 +166,7 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
         } else if (c.value === 2) {
             pageReset();
         }
+        vm.alerts = [];
     };
 
     vm.selectedCategory = function() {
@@ -173,6 +174,7 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
     };
 
     vm.showAddCard = function() {
+        vm.alerts = [];
         vm.currentCategory = vm.categories[3];
     };
 
@@ -182,12 +184,13 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
 
     vm.addCard = function() {
         if (!vm.bankName) {
-            gbNotifier.error('请输入支行名称!');
+            addAlert('danger', '请输入支行名称');
+            console.log(vm.alerts);
             return;
         }
         var regex = /^(\d{16}|\d{19})$/;
         if (!regex.test(vm.cardID)) {
-            gbNotifier.error('银行卡号格式不正确');
+            addAlert('danger', '银行卡号格式不正确');
             return;
         }
         var cardObj = {
@@ -199,10 +202,13 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
         };
         var newCard = new njCard(cardObj);
         newCard.$save(function(c, responseHeaders) {
-            gbNotifier.notify('银行卡添加成功!');
+            addAlert('success', '银行卡添加成功!');
             vm.cards.push(c);
+            vm.cardID = '';
+            vm.bankName = '';
+            vm.currentCategory = vm.categories[2];
         }, function(response) {
-            gbNotifier.error('添加失败 ' + response.data.reason);
+            addAlert('success', '添加失败 ' + response.data.error_msg);
         });
     };
 

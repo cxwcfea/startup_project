@@ -5,6 +5,7 @@
     -->
 </div>
 
+<alert ng-repeat="alert in capitalVM.alerts" type="{{alert.type}}" close="capitalVM.closeAlert($index)">{{alert.msg}}</alert>
 <div class="witRight carBox marTop25" id="selectList">
     <div class="witContent" ng-repeat="card in capitalVM.cards" ng-click="capitalVM.selectCard(card)" ng-class="{select:capitalVM.selectedCard === card}">
         <span><img ng-src="{{capitalVM.BankNameList[card.bankID].img}}"/></span>

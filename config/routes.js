@@ -156,9 +156,9 @@ module.exports = function(app) {
 
     app.post('/api/users/:id', passportConf.isAuthenticated, users.updateUser);
 
-    app.get('/api/cards/:uid', cards.getCardsForUser);
+    app.get('/api/cards/:uid', passportConf.isAuthenticated, cards.getCardsForUser);
 
-    app.post('/api/cards', cards.addCard);
+    app.post('/api/cards', passportConf.isAuthenticated, cards.addCard);
 
     app.get('/api/orders/:id', orders.getOrderById);
 
