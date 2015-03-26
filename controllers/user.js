@@ -622,6 +622,7 @@ module.exports.payByBalance = function(req, res, next) {
                                     logger.warn('payByBalance failed:' + err.toString());
                                     return res.send({success:false, reason:err.toString()});
                                 }
+                                order.status = 1;
                                 order.save(function(err) {
                                     if (err) {
                                         res.status(401);
@@ -677,23 +678,62 @@ module.exports.payByBalance = function(req, res, next) {
                                 logger.warn('payByBalance failed:' + err.toString());
                                 return res.send({success:false, reason:err.toString()});
                             }
-                            Order.update({_id:data.order_id}, {status:1}, function(err, numberAffected, raw) {
-                                if (err) {
-                                    logger.warn('payByBalance error.update order error:' + data.order_id);
+                            Order.findById(data.order_id, function(err, order) {
+                                if (err || !order) {
+                                    logger.warn('payByBalance error. update order error:' + data.order_id);
+                                    res.status(500);
                                     return res.send({success:false, reason:err.toString()});
                                 }
-                                user.finance.balance -= total;
-                                user.finance.deposit += apply.deposit;
-                                user.finance.total_capital += apply.amount;
-                                user.finance.freeze_capital += serviceFee;
-                                user.save(function (err) {
+                                order.status = 1;
+                                order.save(function(err) {
                                     if (err) {
                                         res.status(500);
                                         logger.warn('payByBalance failed:' + err.toString());
-                                        return res.send({success:false, reason:err.toString()});
+                                        return res.send({success:false, reaseon:err.toString()});
                                     }
-                                    console.log(user);
-                                    res.send({success:true, data:user.finance.balance});
+                                    if (order.dealType === 1) {
+                                        var orderData = {
+                                            userID: user._id,
+                                            userMobile: user.mobile,
+                                            dealType: 9,
+                                            amount: apply.deposit,
+                                            status: 1,
+                                            description: '缴纳配资保证金',
+                                            applySerialID: apply.serialID
+                                        };
+                                        Order.create(orderData, function(err, payOrder) {
+                                            if (err) {
+                                                res.status(500);
+                                                logger.warn('payByBalance failed:' + err.toString());
+                                                return res.send({success:false, reaseon:err.toString()});
+                                            }
+                                            user.finance.balance -= total;
+                                            user.finance.deposit += apply.deposit;
+                                            user.finance.total_capital += apply.amount;
+                                            user.finance.freeze_capital += serviceFee;
+                                            user.save(function (err) {
+                                                if (err) {
+                                                    res.status(500);
+                                                    logger.warn('payByBalance failed:' + err.toString());
+                                                    return res.send({success:false, reason:err.toString()});
+                                                }
+                                                res.send({success:true, data:user.finance.balance});
+                                            });
+                                        });
+                                    } else {
+                                        user.finance.balance -= total;
+                                        user.finance.deposit += apply.deposit;
+                                        user.finance.total_capital += apply.amount;
+                                        user.finance.freeze_capital += serviceFee;
+                                        user.save(function (err) {
+                                            if (err) {
+                                                res.status(500);
+                                                logger.warn('payByBalance failed:' + err.toString());
+                                                return res.send({success:false, reason:err.toString()});
+                                            }
+                                            res.send({success:true, data:user.finance.balance});
+                                        });
+                                    }
                                 });
                             });
                         });
@@ -1004,16 +1044,37 @@ module.exports.iappPayFeedback = function(req, res) {
                             } else {
                                 apply.status = 4;
                                 apply.save(function (err) {
-                                    callback(err, true, user, total, apply, serviceFee);
+                                    callback(err, true, user, total, apply, serviceFee, true);
                                 });
                             }
                         } else if (apply.status === 2) { // in this case (apply in process, order pay for it), it means the order is for add deposit
                             user.finance.balance -= pay_amount;
                             user.finance.deposit += pay_amount;
                             user.save(function(err) {
-                                callback(err, false, null, null, null, null);
+                                callback(err, false, null, null, null, null, null);
                             });
                         }
+                    } else {
+                        callback(null, false, null, null, null, null, null);
+                    }
+                },
+                function(working, user, total, apply, serviceFee, createOrder, callback) {
+                    if (createOrder) {
+                        var orderData = {
+                            userID: user._id,
+                            userMobile: user.mobile,
+                            dealType: 9,
+                            amount: apply.deposit,
+                            status: 1,
+                            description: '缴纳配资保证金',
+                            applySerialID: apply.serialID
+                        };
+                        Order.create(orderData, function(err, payOrder) {
+                            if (!err && !payOrder) {
+                                err = 'can not create pay order when pay apply:' + apply.serialID;
+                            }
+                            callback(err, true, user, total, apply, serviceFee);
+                        });
                     } else {
                         callback(null, false, null, null, null, null);
                     }
@@ -1142,16 +1203,37 @@ module.exports.shengpayFeedback = function(req, res, next) {
                         } else {
                             apply.status = 4;
                             apply.save(function (err) {
-                                callback(err, true, user, total, apply, serviceFee);
+                                callback(err, true, user, total, apply, serviceFee, true);
                             });
                         }
                     } else if (apply.status === 2) { // in this case (apply in process, order pay for it), it means the order is for add deposit
                         user.finance.balance -= pay_amount;
                         user.finance.deposit += pay_amount;
                         user.save(function(err) {
-                            callback(err, false, null, null, null, null);
+                            callback(err, false, null, null, null, null, null);
                         });
                     }
+                } else {
+                    callback(null, false, null, null, null, null, null);
+                }
+            },
+            function(working, user, total, apply, serviceFee, createOrder, callback) {
+                if (createOrder) {
+                    var orderData = {
+                        userID: user._id,
+                        userMobile: user.mobile,
+                        dealType: 9,
+                        amount: apply.deposit,
+                        status: 1,
+                        description: '缴纳配资保证金',
+                        applySerialID: apply.serialID
+                    };
+                    Order.create(orderData, function(err, payOrder) {
+                        if (!err && !payOrder) {
+                            err = 'can not create pay order when pay apply:' + apply.serialID;
+                        }
+                        callback(err, true, user, total, apply, serviceFee);
+                    });
                 } else {
                     callback(null, false, null, null, null, null);
                 }

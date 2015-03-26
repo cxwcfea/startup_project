@@ -410,7 +410,7 @@ exports.placeApply = function(req, res, next) {
         userMobile: req.user.mobile,
         serialID: util.generateSerialID(),
         amount: Number(req.body.amount.toFixed(2)),
-        deposit: req.body.deposit,
+        deposit: Number(req.body.deposit.toFixed(2)),
         period: 2
     });
 
@@ -462,8 +462,8 @@ exports.postConfirmApply = function(req, res, next) {
     var orderData = {
         userID: applyData.userID,
         userMobile: applyData.userMobile,
-        dealType: 1,
-        amount: Number(applyData.shouldPay.toFixed(2)),
+        dealType: applyData.shouldPay ? 1 : 9,
+        amount: applyData.shouldPay ? Number(applyData.shouldPay.toFixed(2)) : Number(applyData.deposit.toFixed(2)),
         status: 2,
         description: '股票配资',
         applySerialID: applyData.serialID
@@ -493,7 +493,7 @@ exports.paySuccess = function(req, res, next) {
     console.log('paySuccess');
     res.locals.apply_menu = true;
     res.locals.serial_id = req.query.serial_id;
-    res.locals.amount = req.query.amount.toFixed(2);
+    res.locals.amount = req.query.amount;
     res.render('apply/apply_pay_success');
 };
 

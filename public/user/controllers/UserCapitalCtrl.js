@@ -57,7 +57,11 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
         vm.selected = item.value;
         currentOrders = order_list.filter(function (elem) {
             if (!item.value) return true;
-            return elem.dealType === item.value;
+            if (item.value === 2) {
+                return elem.dealType === 2 || elem.dealType === 9;
+            } else {
+                return elem.dealType !== 2 && elem.dealType !== 9;
+            }
         });
         pageReset();
     };
@@ -77,28 +81,12 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
             value: 0
         },
         {
-            name: '充值',
+            name: '资金流入',
             value: 1
         },
         {
-            name: '提现',
+            name: '资金流出',
             value: 2
-        },
-        {
-            name: '盈利提取',
-            value: 3
-        },
-        {
-            name: '股票盈利',
-            value: 4
-        },
-        {
-            name: '保证金返还',
-            value: 5
-        },
-        {
-            name: '追加配资保证金',
-            value: 6
         }
     ];
 

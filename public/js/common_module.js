@@ -165,7 +165,7 @@
     }).filter("displayOrderAmount", function () {
         return function (input, orderType) {
             var ret = '';
-            if (orderType === 2) {
+            if (orderType === 2 || orderType === 9) {
                 ret = '-';
             }
             return ret + input;
@@ -236,6 +236,8 @@
                     return '配资延期';
                 case 8:
                     return '管理费返还';
+                case 9:
+                    return '配资保证金';
                 default:
                     return '充值';
             }
