@@ -303,16 +303,14 @@ module.exports.getVerifyEmail = function(req, res) {
 };
 
 module.exports.postVerifyEmail = function(req, res, next) {
-    console.log('first line postVerifyEmail');
     if (!req.body) {
         res.status(400);
         return res.send({reason:'empty request'});
     }
-    if (req.body.toString().length > 150) {
+    if (req.body.email.length > 150) {
         res.status(400);
         return res.send({reason:'email too long'});
     }
-    console.log('before assert');
     req.assert('email', '无效的邮件地址.').isEmail();
 
     var errors = req.validationErrors();
