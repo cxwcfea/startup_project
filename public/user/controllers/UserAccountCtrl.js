@@ -213,7 +213,7 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
             addAlert('danger', '两次密码输入不一致');
             return;
         }
-        $http.post('/user/change_finance_pass', {new_password:vm.finance_pass, confirm_password:vm.confirm_finance_pass, verify_code:vm.verify_code})
+        $http.post('/user/change_finance_pass', {mobile:vm.user.mobile, new_password:vm.finance_pass, confirm_password:vm.confirm_finance_pass, verify_code:vm.verify_code})
             .success(function(data, status, headers, config) {
                 addAlert('success', '提现密码设置成功');
                 vm.user.finance.password = vm.finance_pass;

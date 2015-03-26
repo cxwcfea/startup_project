@@ -263,26 +263,6 @@ module.exports.getIndex = function(req, res, next) {
     });
 };
 
-module.exports.getHome = function(req, res) {
-    res.render('user/home', {layout:null});
-};
-
-module.exports.getProfile = function(req, res) {
-    res.render('user/profile', {layout:null});
-};
-
-module.exports.getOrders = function(req, res) {
-    res.render('user/orders', {layout:null});
-};
-
-module.exports.getSecurity = function(req, res) {
-    res.render('user/security', {layout:null});
-};
-
-module.exports.getVerifyEmail = function(req, res) {
-    res.render('user/verify_email', {layout:null});
-};
-
 module.exports.postVerifyEmail = function(req, res, next) {
     if (!req.body) {
         res.status(400);
@@ -374,18 +354,6 @@ exports.finishVerifyEmail = function(req, res) {
         });
 };
 
-module.exports.getIdentity = function(req, res) {
-    res.render('user/identity', {layout:null});
-};
-
-module.exports.getUserPay = function(req, res) {
-    res.render('user/mypay', {layout:null});
-};
-
-module.exports.getWithdraw = function(req, res) {
-    res.render('user/withdraw', {layout:null});
-};
-
 module.exports.postWithdraw = function(req, res) {
     var data = req.body;
     var amount = Number(data.order.amount);
@@ -434,23 +402,8 @@ module.exports.postWithdraw = function(req, res) {
     });
 };
 
-module.exports.getResetPassword = function(req, res) {
-    res.render('user/change_pass', {layout:null});
-};
-
 module.exports.getApplyList = function(req, res) {
     res.render('user/apply_list', {layout:null});
-};
-
-module.exports.getUser = function(req, res) {
-    User.findById(req.params.id, function(err, user) {
-        if (err) {
-            logger.error('error when get user id:' + req.params.id);
-            res.status(503);
-            return res.send({});
-        }
-        res.send(user);
-    });
 };
 
 module.exports.updateUser = function(req, res) {
@@ -481,35 +434,6 @@ module.exports.updateUser = function(req, res) {
             return res.send({reason:err.toString()});
         }
         res.send(backupData);
-    });
-};
-
-module.exports.postUpdatePassword = function(req, res, next) {
-    req.assert('password', '密码至少需要6位').len(6);
-    req.assert('confirm_password', '两次密码不匹配').equals(req.body.password);
-
-    var errors = req.validationErrors();
-
-    if (errors) {
-        return res.send({success:false, reason:errors[0].msg});
-    }
-
-    User.findById(req.user.id, function(err, user) {
-        if (err) return res.send({success: false, reason: err.toString()});
-        if (!user) return res.send({success: false, reason: '无效的用户！'});
-        user.comparePassword(req.body.old_password, function (err, isMatch) {
-            if (err) return res.send({success: false, reason: err.toString()});
-            if (!isMatch) {
-                return res.send({success: false, reason: '旧密码错误'});
-            } else {
-                user.password = req.body.password;
-
-                user.save(function (err) {
-                    if (err) return res.send({success: false, reason: err.toString()});
-                    res.send({success: true});
-                });
-            }
-        });
     });
 };
 
@@ -789,10 +713,6 @@ module.exports.updateBalance = function (req, res, next) {
             return res.send({success:true});
         });
     });
-};
-
-module.exports.getResetFinancePassword = function(req, res) {
-    res.render('user/change_finance_pass', {layout:null});
 };
 
 module.exports.postUpdateFinancePassword = function(req, res, next) {
@@ -1116,7 +1036,6 @@ module.exports.thankYouForPay = function(req, res, next) {
     }
     res.render('thank_you_for_pay');
 };
-
 
 module.exports.shengpayFeedback = function(req, res, next) {
     logger.debug('shengpayFeedback');
@@ -1716,6 +1635,9 @@ module.exports.registerRoutes = function(app, passportConf) {
 };
 
 var privateProperties = [
+    'verifyEmailToken',
+    'registered',
+    'roles',
     'password',
     'resetPasswordToken',
     'resetPasswordExpires'

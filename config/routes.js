@@ -100,37 +100,11 @@ module.exports = function(app) {
 
     app.post('/logout', users.postLogout);
 
-    /*
-    app.get('/user', passportConf.isAuthenticated, users.getIndex);
-    */
-
-    app.get('/user/home', passportConf.isAuthenticated, users.getHome);
-
-    app.get('/user/profile', passportConf.isAuthenticated, users.getProfile);
-
-    app.get('/user/orders', passportConf.isAuthenticated, users.getOrders);
-
-    app.get('/user/security', passportConf.isAuthenticated, users.getSecurity);
-
-    app.get('/user/identity', passportConf.isAuthenticated, users.getIdentity);
-
-    app.get('/user/mypay', passportConf.isAuthenticated, users.getUserPay);
-
-    app.get('/user/withdraw', passportConf.isAuthenticated, users.getWithdraw);
-
     app.post('/user/withdraw', passportConf.isAuthenticated, users.postWithdraw);
-
-    app.get('/user/verify_email', passportConf.isAuthenticated, users.getVerifyEmail);
 
     app.post('/user/verify_email', passportConf.isAuthenticated, users.postVerifyEmail);
 
     app.get('/user/verifyEmail/:token', passportConf.isAuthenticated, users.finishVerifyEmail);
-
-    app.get('/user/change_pass', passportConf.isAuthenticated, users.getResetPassword);
-
-    app.post('/user/change_pass', passportConf.isAuthenticated, users.postUpdatePassword);
-
-    app.get('/user/change_finance_pass', passportConf.isAuthenticated, users.getResetFinancePassword);
 
     app.post('/user/change_finance_pass', passportConf.isAuthenticated, users.postUpdateFinancePassword);
 
@@ -147,12 +121,6 @@ module.exports = function(app) {
     app.post('/api/users/pay_by_balance', passportConf.isAuthenticated, users.payByBalance);
 
     app.get('/pay_confirm/:orderID', passportConf.isAuthenticated, orders.confirmPayOrder);
-
-    app.get('/api/users/:id', users.getUser);
-
-    app.post('/api/users/update_balance', passportConf.isAuthenticated, users.updateBalance);
-
-    app.post('/api/users/:id', passportConf.isAuthenticated, users.updateUser);
 
     app.get('/api/cards/:uid', passportConf.isAuthenticated, cards.getCardsForUser);
 
@@ -202,6 +170,8 @@ module.exports = function(app) {
     users.registerRoutes(app, passportConf);
 
     app.get('/api/user/:id', passportConf.isAuthenticated, users.fetchUser);
+
+    app.post('/api/users/:id', passportConf.isAuthenticated, users.updateUser);
 
     app.post('/api/user/:id', passportConf.isAuthenticated, users.updateUser);
 

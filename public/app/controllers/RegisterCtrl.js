@@ -143,7 +143,11 @@
             }
             $http.post('/api/login', {mobile:vm.mobile, password:vm.password})
                 .success(function(data, status, headers, config) {
-                    $window.location.replace('/');
+                    if (data.location) {
+                        $window.location.replace(data.location);
+                    } else {
+                        $window.location.replace('/');
+                    }
                 })
                 .error(function(data, status, headers, config) {
                     addAlert('danger', data.error_msg);

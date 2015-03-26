@@ -40,6 +40,7 @@ passport.deserializeUser(function(id, done) {
  */
 module.exports.isAuthenticated = function(req, res, next) {
     if (req.isAuthenticated()) return next();
+    req.session.lastLocation = req.url;
     res.redirect('/login');
 };
 
