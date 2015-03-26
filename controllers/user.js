@@ -119,7 +119,7 @@ module.exports.verifyMobileCode = function(req, res) {
         res.status(403);
         return res.send({error_msg: '重试次数过多，请重新获取验证码'});
     }
-    res.session.sms_code.count++;
+    req.session.sms_code.count++;
 
     if (req.body.verify_code != req.session.sms_code.code) {
         res.status(400);
@@ -195,7 +195,7 @@ module.exports.finishSignup = function(req, res, next) {
         res.status(403);
         return res.send({error_msg: '重试次数过多，请重新获取验证码'});
     }
-    res.session.sms_code.count++;
+    req.session.sms_code.count++;
 
     if (req.body.verify_code != req.session.sms_code.code) {
         res.status(400);
@@ -524,7 +524,7 @@ module.exports.resetPassword = function(req, res, next) {
         res.status(403);
         return res.send({error_msg: '重试次数过多，请重新获取验证码'});
     }
-    res.session.sms_code.count++;
+    req.session.sms_code.count++;
 
     if (req.body.verify_code != req.session.sms_code.code) {
         res.status(400);
@@ -776,7 +776,7 @@ module.exports.postUpdateFinancePassword = function(req, res, next) {
         res.status(403);
         return res.send({error_msg: '重试次数过多，请重新获取验证码'});
     }
-    res.session.sms_code.count++;
+    req.session.sms_code.count++;
 
     if (req.body.verify_code != req.session.sms_code.code) {
         res.status(400);
