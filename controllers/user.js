@@ -452,12 +452,12 @@ module.exports.updateUser = function(req, res) {
         'registerAt',
         'freeApply',
         'finance',
-        'smsVerifyCode',
         'verifyEmailToken',
         'resetPasswordToken',
         'resetPasswordExpires'
     ];
 
+    var backupData = _.assign({}, req.body);
     var userData = _.omit(req.body, protectedProperties);
 
     User.update({_id:req.params.id}, userData, function (err, numberAffected, raw) {
@@ -466,7 +466,7 @@ module.exports.updateUser = function(req, res) {
             res.status(503);
             return res.send({reason:err.toString()});
         }
-        res.send(userData);
+        res.send(backupData);
     });
 };
 

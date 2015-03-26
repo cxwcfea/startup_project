@@ -53,58 +53,62 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
         }
     ];
 
-    vm.userInfoItem = [
-        {
-            value: 1,
-            title: "身份认证",
-            status: vm.user.identity.id ? "已认证" : "未认证",
-            icon: 'spanIcon01',
-            info: vm.user.identity.id ? vm.user.identity.name + '(' + $filter('displayIdentityID')(vm.user.identity.id) + ')' : '',
-            description: '提现必须先进行身份认证',
-            action: "立即认证",
-            show_action: vm.user.identity.id ? false : true
-        },
-        {
-            value: 2,
-            title: "手机",
-            status: "已绑定",
-            icon: 'spanIcon02',
-            info: $filter('displayMobile')(vm.user.mobile),
-            description: '手机用于接收牛金网的通知信息',
-            action: "修改",
-            show_action: false
-        },
-        {
-            value: 3,
-            title: "邮箱",
-            status: vm.user.profile.email_verified ? "已绑定" : "未绑定",
-            icon: 'spanIcon03',
-            info: $filter('displayEmail')(vm.user.profile.email) || '',
-            description: '邮箱用于接受账户的各种信息',
-            action: "邮箱设置",
-            show_action: true
-        },
-        {
-            value: 4,
-            title: "登录密码",
-            status: "",
-            icon: 'spanIcon04',
-            info: '',
-            description: '登录密码用于牛金账户的登录',
-            action: "修改",
-            show_action: true
-        },
-        {
-            value: 5,
-            title: "提现密码",
-            status: vm.user.finance.password ? "已设置" : "未设置",
-            icon: 'spanIcon05',
-            info: '',
-            description: '提现密码用于确认提现',
-            action: vm.user.finance.password ? "修改" : "设置",
-            show_action: true
-        }
-    ];
+    function resetUserInfoItem() {
+        vm.userInfoItem = [
+            {
+                value: 1,
+                title: "身份认证",
+                status: vm.user.identity.id ? "已认证" : "未认证",
+                icon: 'spanIcon01',
+                info: vm.user.identity.id ? vm.user.identity.name + '(' + $filter('displayIdentityID')(vm.user.identity.id) + ')' : '',
+                description: '提现必须先进行身份认证',
+                action: "立即认证",
+                show_action: vm.user.identity.id ? false : true
+            },
+            {
+                value: 2,
+                title: "手机",
+                status: "已绑定",
+                icon: 'spanIcon02',
+                info: $filter('displayMobile')(vm.user.mobile),
+                description: '手机用于接收牛金网的通知信息',
+                action: "修改",
+                show_action: false
+            },
+            {
+                value: 3,
+                title: "邮箱",
+                status: vm.user.profile.email_verified ? "已绑定" : "未绑定",
+                icon: 'spanIcon03',
+                info: $filter('displayEmail')(vm.user.profile.email) || '',
+                description: '邮箱用于接受账户的各种信息',
+                action: "邮箱设置",
+                show_action: true
+            },
+            {
+                value: 4,
+                title: "登录密码",
+                status: "",
+                icon: 'spanIcon04',
+                info: '',
+                description: '登录密码用于牛金账户的登录',
+                action: "修改",
+                show_action: true
+            },
+            {
+                value: 5,
+                title: "提现密码",
+                status: vm.user.finance.password ? "已设置" : "未设置",
+                icon: 'spanIcon05',
+                info: '',
+                description: '提现密码用于确认提现',
+                action: vm.user.finance.password ? "修改" : "设置",
+                show_action: true
+            }
+        ];
+    }
+
+    resetUserInfoItem();
 
     vm.alerts = [];
 
@@ -152,6 +156,7 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
                 vm.sendingEmail = false;
                 if (response.data.success) {
                     vm.currentCategory = vm.categories[4];
+                    resetUserInfoItem();
                 } else {
                     addAlert('danger', '邮件发送失败,请稍后再试');
                 }
@@ -167,6 +172,7 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
         vm.user.identity.id = vm.identity_id;
         vm.user.$save(function(u, putResponseHeaders) {
             addAlert('success', '实名认证成功');
+            resetUserInfoItem();
         }, function(response) {
             addAlert('danger', '实名认证出错,请稍后再试');
         });
@@ -213,6 +219,7 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
                 vm.user.finance.password = vm.finance_pass;
                 vm.confirm_finance_pass = '';
                 vm.verify_code = '';
+                resetUserInfoItem();
             })
             .error(function(data, status, headers, config) {
                 addAlert('danger', data.error_msg);

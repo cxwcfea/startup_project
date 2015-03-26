@@ -31,3 +31,21 @@ exports.addCard = function(req, res) {
         res.send(card);
     });
 };
+
+exports.deleteCard = function(req, res) {
+    if (!req.body) {
+        res.status(400);
+        return res.send({error_msg:'empty request'});
+    }
+    if (req.body.card.userID != req.user._id) {
+        res.status(400);
+        return res.send({error_msg:'not the same user'});
+    }
+    Card.findByIdAndRemove(req.body.card._id, function(err) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send({});
+    });
+};

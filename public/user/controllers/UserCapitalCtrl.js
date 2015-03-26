@@ -202,6 +202,7 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
         };
         var newCard = new njCard(cardObj);
         newCard.$save(function(c, responseHeaders) {
+            vm.alerts = [];
             addAlert('success', '银行卡添加成功!');
             vm.cards.push(c);
             vm.cardID = '';
@@ -210,6 +211,18 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
         }, function(response) {
             addAlert('success', '添加失败 ' + response.data.error_msg);
         });
+    };
+
+    vm.deleteCard = function(card) {
+        $http.post('/api/delete/card/' + card._id, {card: card})
+            .success(function(data, status) {
+                _.remove(vm.cards, function(c) {
+                    return c._id === card._id;
+                });
+            })
+            .error(function(data, status) {
+                addAlert('danger', '删除失败，请稍后再试');
+            });
     };
 
     vm.selectCard = function(card) {

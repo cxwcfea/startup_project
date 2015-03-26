@@ -158,6 +158,8 @@ module.exports = function(app) {
 
     app.post('/api/cards', passportConf.isAuthenticated, cards.addCard);
 
+    app.post('/api/delete/card/:id', passportConf.isAuthenticated, cards.deleteCard);
+
     app.get('/api/orders/:id', orders.getOrderById);
 
     app.get('/api/user/:uid/orders', passportConf.isAuthenticated, orders.fetchOrdersForUser);
