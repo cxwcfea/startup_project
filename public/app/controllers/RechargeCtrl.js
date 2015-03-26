@@ -121,9 +121,10 @@
             newOrder.userID = vm.user._id;
             newOrder.userMobile = vm.user.mobile;
             newOrder.dealType = 1;
-            newOrder.amount = vm.pay_amount;
+            newOrder.amount = Number(vm.pay_amount.toFixed(2));
             newOrder.description = '支付宝转账';
             newOrder.payType = 3;
+            newOrder.status = 0;
             newOrder.otherInfo = vm.alipay_account;
             newOrder.$save(function(o, responseHeaders) {
                 console.log('order create success');

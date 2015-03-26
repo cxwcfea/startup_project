@@ -417,6 +417,55 @@ function fetchAddDepositOrders(req, res) {
     });
 }
 
+function getAlipayOrders(req, res) {
+    Order.find({$and: [{payType: 3},  {status: 0}]}, function(err, orders) {
+        if (err) {
+            logger.warn('getAlipayOrders error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send(orders);
+    });
+}
+
+function confirmAlipayOrder(req, res) {
+    Order.findById(req.params.id, function(err, order) {
+        if (err) {
+            logger.warn('confirmAlipayOrder error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        if (order) {
+            order.status = 1;
+            order.save(function(err) {
+                if (err) {
+                    logger.warn('confirmAlipayOrder error:' + err.toString());
+                    res.status(500);
+                    return res.send({error_msg:err.toString()});
+                }
+                User.findById(order.userID, function(err, user) {
+                    if (err) {
+                        logger.warn('confirmAlipayOrder error:' + err.toString());
+                        res.status(500);
+                        return res.send({error_msg:err.toString()});
+                    }
+                    if (user) {
+                        user.finance.balance += order.amount;
+                        user.save(function(err) {
+                            if (err) {
+                                logger.warn('confirmAlipayOrder error:' + err.toString());
+                                res.status(500);
+                                return res.send({error_msg:err.toString()});
+                            }
+                            res.send({});
+                        });
+                    }
+                });
+            })
+        }
+    });
+}
+
 function fetchApply(req, res) {
     console.log(req.body);
     Apply.findOne({serialID:req.params.id}, function(err, apply) {
@@ -567,6 +616,10 @@ module.exports = {
         app.get('/admin/api/orders/add_deposit', passportConf.requiresRole('admin'), fetchAddDepositOrders);
 
         app.get('/admin/api/applies/:serial_id', passportConf.requiresRole('admin'), getApply);
+
+        app.get('/admin/api/orders/alipay', passportConf.requiresRole('admin'), getAlipayOrders);
+
+        app.post('/admin/api/confirm_alipay_order/:id', passportConf.requiresRole('admin'), confirmAlipayOrder);
 
         app.get('/api/auto_fetch_pending_apply', passportConf.requiresRole('admin'), autoFetchPendingApplies);
 
