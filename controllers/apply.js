@@ -160,7 +160,7 @@ exports.postApplyPostpone = function(req, res, next) {
         var orderData = {
             userID: apply.userID,
             dealType: 7,
-            amount: serviceFee,
+            amount: Number(serviceFee.toFixed(2)),
             status: 2,
             description: '配资延期',
             applySerialID: apply.serialID
@@ -235,7 +235,7 @@ exports.postGetProfit = function(req, res, next) {
         var orderData = {
             userID: apply.userID,
             dealType: 3,
-            amount: profit,
+            amount: Number(profit.toFixed(2)),
             status: 0,
             description: '配资盈利提取',
             payType: 2,
@@ -293,7 +293,7 @@ exports.postAddDeposit = function(req, res, next) {
         var orderData = {
             userID: apply.userID,
             dealType: 6,
-            amount: deposit,
+            amount: Number(deposit.toFixed(2)),
             status: 2,
             description: '追加配资保证金',
             applySerialID: apply.serialID
@@ -409,7 +409,7 @@ exports.placeApply = function(req, res, next) {
         userID: req.user._id,
         userMobile: req.user.mobile,
         serialID: util.generateSerialID(),
-        amount: req.body.amount,
+        amount: Number(req.body.amount.toFixed(2)),
         deposit: req.body.deposit,
         period: 2
     });
@@ -463,7 +463,7 @@ exports.postConfirmApply = function(req, res, next) {
         userID: applyData.userID,
         userMobile: applyData.userMobile,
         dealType: 1,
-        amount: applyData.shouldPay,
+        amount: Number(applyData.shouldPay.toFixed(2)),
         status: 2,
         description: '股票配资',
         applySerialID: applyData.serialID
@@ -493,7 +493,7 @@ exports.paySuccess = function(req, res, next) {
     console.log('paySuccess');
     res.locals.apply_menu = true;
     res.locals.serial_id = req.query.serial_id;
-    res.locals.amount = req.query.amount;
+    res.locals.amount = req.query.amount.toFixed(2);
     res.render('apply/apply_pay_success');
 };
 
