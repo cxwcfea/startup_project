@@ -307,7 +307,7 @@ module.exports.postVerifyEmail = function(req, res, next) {
         res.status(400);
         return res.send({reason:'empty request'});
     }
-    if (req.body.email.length > 150) {
+    if (req.body.email.length > 120) {
         res.status(400);
         return res.send({reason:'email too long'});
     }
