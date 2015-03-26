@@ -497,12 +497,13 @@ function autoFetchPendingApplies(req, res) {
             return res.send({"error_code":0, "error_msg":err.toString()});
         }
         var ret = applies.map(function(apply) {
+            var deposit = apply.isTrial ? 200 : apply.deposit;
             return {
                 "apply_serialID":apply.serialID,
                 "mobile":apply.userMobile,
-                "deposit":apply.deposit,
+                "deposit": deposit,
                 "lever":9,
-                "amount":apply.amount-apply.deposit,
+                "amount":apply.amount-deposit,
                 "margin_call":config.warnFactor * apply.amount,
                 "close":config.sellFactor * apply.amount
             }
