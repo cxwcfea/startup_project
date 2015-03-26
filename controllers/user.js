@@ -114,6 +114,13 @@ module.exports.verifyMobileCode = function(req, res) {
         return res.send({ error_msg: '请重新获取验证码' });
     }
 
+    if (req.session.sms_code.count > 6) {
+        req.session.sms_code = undefined;
+        res.status(403);
+        return res.send({error_msg: '重试次数过多，请重新获取验证码'});
+    }
+    res.session.sms_code.count++;
+
     if (req.body.verify_code != req.session.sms_code.code) {
         res.status(400);
         return res.send({ error_msg: '验证码错误' });
@@ -182,6 +189,13 @@ module.exports.finishSignup = function(req, res, next) {
         res.status(400);
         return res.send({ error_msg: '请重新获取验证码' });
     }
+
+    if (req.session.sms_code.count > 6) {
+        req.session.sms_code = undefined;
+        res.status(403);
+        return res.send({error_msg: '重试次数过多，请重新获取验证码'});
+    }
+    res.session.sms_code.count++;
 
     if (req.body.verify_code != req.session.sms_code.code) {
         res.status(400);
@@ -505,6 +519,13 @@ module.exports.resetPassword = function(req, res, next) {
         return res.send({ error_msg: '请重新获取验证码' });
     }
 
+    if (req.session.sms_code.count > 6) {
+        req.session.sms_code = undefined;
+        res.status(403);
+        return res.send({error_msg: '重试次数过多，请重新获取验证码'});
+    }
+    res.session.sms_code.count++;
+
     if (req.body.verify_code != req.session.sms_code.code) {
         res.status(400);
         return res.send({ error_msg: '验证码错误' });
@@ -553,6 +574,7 @@ module.exports.sendVerifyCode = function(req, res, next) {
     req.session.sms_code = {
         mobile: req.query.mobile,
         code: code,
+        count: 0,
         expires: Date.now() + 3600000 // 1 hour
     };
     res.send({success:true});
@@ -748,6 +770,13 @@ module.exports.postUpdateFinancePassword = function(req, res, next) {
         res.status(400);
         return res.send({ error_msg: '请重新获取验证码' });
     }
+
+    if (req.session.sms_code.count > 6) {
+        req.session.sms_code = undefined;
+        res.status(403);
+        return res.send({error_msg: '重试次数过多，请重新获取验证码'});
+    }
+    res.session.sms_code.count++;
 
     if (req.body.verify_code != req.session.sms_code.code) {
         res.status(400);
