@@ -77,6 +77,7 @@ angular.module('adminApp').controller('AdminUserListCtrl', ['$scope', '$http', '
         });
     };
 
+    /*
     vm.updateBalance = function(user) {
         var modalInstance = $modal.open({
             templateUrl: 'userUpdateModal.html',
@@ -102,9 +103,9 @@ angular.module('adminApp').controller('AdminUserListCtrl', ['$scope', '$http', '
                 gbNotifier.error('无效的数据，重新输入！');
             }
         }, function () {
-            //console.log('Modal dismissed at: ' + new Date());
         });
     };
+    */
 }]);
 
 angular.module('adminApp').controller('ModalInstanceCtrl', ['$scope', '$modalInstance', 'withdraw_sms_content', 'approve_apply_sms_content', 'close_apply_sms_content', 'pay_success_sms_content', 'warn_sms_content', 'sell_sms_content', function ($scope, $modalInstance, withdraw_sms_content, approve_apply_sms_content, close_apply_sms_content, pay_success_sms_content, warn_sms_content, sell_sms_content) {
