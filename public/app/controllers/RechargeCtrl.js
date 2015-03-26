@@ -108,7 +108,6 @@
         };
 
         vm.aliPay = function() {
-            console.log(vm.pay_amount);
             if (!vm.pay_amount || vm.pay_amount < 0) {
                 addAlert('danger', '请输入有效的充值金额');
                 return;
@@ -118,6 +117,20 @@
                 return;
             }
             vm.alipayConfirm = true;
+            var newOrder = new njOrder({uid:vm.user._id});
+            newOrder.userID = vm.user._id;
+            newOrder.userMobile = vm.user.mobile;
+            newOrder.dealType = 1;
+            newOrder.amount = vm.pay_amount;
+            newOrder.description = '支付宝转账';
+            newOrder.payType = 3;
+            newOrder.otherInfo = vm.alipay_account;
+            newOrder.$save(function(o, responseHeaders) {
+                console.log('order create success');
+            }, function(response) {
+                console.log('order create failed');
+                addAlert('danger', '服务暂时不可用，请稍后再试');
+            });
         };
 
         function payThroughShengPay(order) {

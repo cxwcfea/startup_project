@@ -43,10 +43,10 @@ angular.module('userApp').controller('UserApplyCtrl', ['$scope', '$window', '$lo
             $http.post('/user/apply_close/' + vm.currentApply.serialID, {})
                 .success(function(data, status, headers, config) {
                     vm.currentApply.status = 5;
-                    addAlert('success', '提现申请已经提交');
+                    addAlert('success', '结算申请已经提交');
                 })
                 .error(function(data, status, headers, config) {
-                    addAlert('danger', '提现申请提交失败，请稍后重试');
+                    addAlert('danger', '结算申请提交失败，请稍后重试');
                 });
         }, function () {
         });
