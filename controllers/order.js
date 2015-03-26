@@ -7,7 +7,7 @@ var Order = require('../models/Order'),
     logger = log4js.getLogger('admin');
 
 exports.fetchOrdersForUser = function(req, res) {
-    Order.find({userID:req.params.uid}, function(err, order) {
+    Order.find({ $and: [{userID:req.params.uid}, {status: {$ne: 2}}] }, function(err, order) {
         if (err) {
             logger.error(err.toString());
             res.status(503);
