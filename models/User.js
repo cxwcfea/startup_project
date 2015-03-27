@@ -9,7 +9,7 @@ var userSchema = new mongoose.Schema({
     roles: [String],
 	level: { type: Number, default: 0 },
 	score: { type: Number, default: 0 },
-    registerAt: {type:Date, default: Date.now()},
+    registerAt: {type:Date, default: Date.now},
     freeApply: String,  // apply serialID
     registered: {type:Boolean, default: false},
 
