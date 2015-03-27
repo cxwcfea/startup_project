@@ -2,6 +2,7 @@ var users = require('../controllers/user'),
     cards = require('../controllers/card'),
     orders = require('../controllers/order'),
     applies = require('../controllers/apply'),
+    home = require('../controllers/home'),
     sms = require('../lib/sms'),
     admin = require('../controllers/admin'),
     util = require('../lib/util'),
@@ -13,10 +14,7 @@ module.exports = function(app) {
         next();
     });
 
-    app.get('/', function(req, res) {
-        res.locals.main_menu = true;
-        res.render('home');
-    });
+    home.registerRoutes(app, passportConf);
 
     app.get('/failed_to_pay', function(req, res) {
         res.locals.pay_error = req.session.pay_error;

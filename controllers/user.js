@@ -3,7 +3,6 @@ var passport = require('passport'),
     Order = require('../models/Order'),
     Apply = require('../models/Apply'),
     Homas = require('../models/Homas'),
-    userViewModel = require('../viewModels/user'),
     nodemailer = require('nodemailer'),
     crypto = require('crypto'),
     sms = require('../lib/sms'),
@@ -249,18 +248,6 @@ module.exports.logout = function(req, res) {
 module.exports.postLogout = function(req, res) {
     req.logout();
     res.send();
-};
-
-module.exports.getIndex = function(req, res, next) {
-    var user = req.user;
-
-    user.getOrders(function(err, orders) {
-        if(err) return next(err);
-        res.render('user/index', {
-            bootstrappedUser: JSON.stringify(userViewModel(user, orders)),
-            layout: null
-        });
-    });
 };
 
 module.exports.postVerifyEmail = function(req, res, next) {
