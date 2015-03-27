@@ -502,7 +502,7 @@ function autoFetchPendingApplies(req, res) {
                 "mobile":apply.userMobile,
                 "deposit": apply.isTrial ? 1 : apply.deposit,
                 "lever":apply.isTrial ? 2000 : 9,
-                "amount":apply.isTrial ? 2000 : apply.amount-deposit,
+                "amount":apply.isTrial ? 2000 : apply.amount-apply.deposit,
                 "margin_call":apply.isTrial ? 0 : config.warnFactor * apply.amount,
                 "close":apply.isTrial ? 0 : config.sellFactor * apply.amount
             }
