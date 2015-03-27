@@ -346,7 +346,6 @@ exports.freeApply = function(req, res, next) {
                 status: 4,
                 period: 2
             });
-            console.log(req.user);
             Apply.create(applyData, function(err, apply) {
                 if(err) next();
                 User.findById(req.user._id, function(err, user) {
@@ -368,7 +367,6 @@ exports.freeApply = function(req, res, next) {
                             logger.debug('freeApply error:' + err.toString());
                             return next();
                         }
-                        console.log(req.user);
                         res.redirect('/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000);
                     });
                 });

@@ -570,9 +570,9 @@ function autoFetchClosingSettlement(req, res) {
 function autoApproveClosingSettlement(req, res) {
     logger.debug('autoApproveClosingSettlement operator:', req.user.mobile);
     var serialID = req.query.settlement_serialID;
-    var success = req.query.success;
+    var success = req.query.success.toLowerCase();
     var profit = req.query.profit;
-    if (success) {
+    if (success === 'true') {
         _closeApply(serialID, Number(profit), res);
     } else {
         res.send({"error_code":0});

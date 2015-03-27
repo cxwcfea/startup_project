@@ -21,7 +21,6 @@ function home(req, res, next) {
             };
         });
     }
-    console.log('cxwcfea');
     res.locals.main_menu = true;
     res.render('home', {
         user_count: req.session.statistic.user_count,
