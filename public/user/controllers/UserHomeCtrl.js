@@ -12,6 +12,7 @@ angular.module('userApp').controller('UserHomeCtrl', ['$scope', '$location', '$h
         even:  'even'
     };
     vm.showApplyAccount = null;
+    vm.user_total_capital = vm.user.finance.balance + vm.user.finance.freeze_capital;
 
     initData();
 
@@ -33,7 +34,6 @@ angular.module('userApp').controller('UserHomeCtrl', ['$scope', '$location', '$h
             apply_list = $filter('orderBy')(apply_list, 'applyAt', true);
             currentApplies = apply_list;
             pageReset();
-            vm.user_total_capital = vm.user.finance.balance + vm.user.finance.freeze_capital;
         });
 
         vm.queryItems = [
@@ -89,7 +89,6 @@ angular.module('userApp').controller('UserHomeCtrl', ['$scope', '$location', '$h
 
     vm.manageApply = function(apply) {
         if (apply.status === 1) {
-            //$location.url('/user_capital?pay_order=' + apply.orderID);
             $window.location.assign('/apply_confirm/' + apply.serialID);
         } else {
             $location.path('/apply_detail/' + apply.serialID);

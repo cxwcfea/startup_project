@@ -1,5 +1,5 @@
 'use strict';
-angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$window', '$http', '$interval', '$location', '$timeout', function($scope, $filter, $window, $http, $interval, $location, $timeout) {
+angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$window', '$http', '$interval', '$location', function($scope, $filter, $window, $http, $interval, $location) {
     var vm = this;
     $('.footer').addClass('marTop200');
 
@@ -113,6 +113,7 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
     vm.alerts = [];
 
     var addAlert = function(type, msg) {
+        vm.alerts = [];
         vm.alerts.push({type:type, msg: msg});
     };
 
@@ -125,6 +126,7 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
             c = vm.categories[0];
         }
         vm.currentCategory = c;
+        vm.alerts = [];
     };
 
     vm.selectedCategory = function() {
@@ -170,12 +172,15 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
         }
         vm.user.identity.name = vm.identity_name;
         vm.user.identity.id = vm.identity_id;
-        vm.user.$save(function(u, putResponseHeaders) {
-            addAlert('success', '实名认证成功');
-            resetUserInfoItem();
-        }, function(response) {
-            addAlert('danger', '实名认证出错,请稍后再试');
-        });
+        $http.post('/api/user/' + vm.user._id, vm.user)
+            .success(function(data, status) {
+                vm.user = data;
+                addAlert('success', '实名认证成功');
+                resetUserInfoItem();
+            })
+            .error(function(data, status) {
+                addAlert('danger', '实名认证出错,请稍后再试');
+            });
     };
 
     vm.getVerifyCode = function() {
@@ -236,18 +241,19 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
             return;
         }
         vm.user.profile.email = vm.user_email;
-        vm.user.$save(function(u, putResponseHeaders) {
-            $http.post('/user/verify_email', {email:vm.user.profile.email})
-                .then(function(response) {
-                    if (response.data.success) {
+        $http.post('/api/user/' + vm.user._id, vm.user)
+            .success(function(data, status) {
+                $http.post('/user/verify_email', {email:vm.user.profile.email})
+                    .success(function(data, status) {
                         console.log('email send success');
-                    } else {
+                    })
+                    .error(function(data, status) {
                         console.log('email send faile');
-                    }
-                });
-            vm.currentCategory = vm.categories[4];
-        }, function(response) {
-            addAlert('danger', '设置邮箱时出错,请稍后再试');
-        });
+                    });
+                vm.currentCategory = vm.categories[4];
+            })
+            .error(function(data, status) {
+                addAlert('danger', '设置邮箱时出错,请稍后再试');
+            });
     };
 }]);

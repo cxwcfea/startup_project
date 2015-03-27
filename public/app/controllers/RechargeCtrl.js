@@ -51,6 +51,7 @@
         vm.alerts = [];
 
         var addAlert = function(type, msg) {
+            vm.alerts = [];
             vm.alerts.push({type:type, msg: msg});
         };
 

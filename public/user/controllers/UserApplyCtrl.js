@@ -24,6 +24,7 @@ angular.module('userApp').controller('UserApplyCtrl', ['$scope', '$window', '$lo
     vm.alerts = [];
 
     var addAlert = function(type, msg) {
+        vm.alerts = [];
         vm.alerts.push({type:type, msg: msg});
     };
 

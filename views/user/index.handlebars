@@ -1,6 +1,9 @@
 {{#if bootstrappedNiujinUserID}}
     <script> window.bootstrappedNiujinUserID = {{{bootstrappedNiujinUserID}}} </script>
 {{/if}}
+{{#if bootstrappedUserObject}}
+    <script> window.bootstrappedUserObject = {{{bootstrappedUserObject}}} </script>
+{{/if}}
 <div class="wrapper paddTop30" ng-app="userApp" ng-controller="UserIndexCtrl as userVM" ng-cloak>
     <div class="LeftMenu fl">
         <ul>

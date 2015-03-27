@@ -1590,7 +1590,7 @@ function homeIndex(req, res, next) {
 
     res.locals.user_menu = true;
     res.render('user/index', {
-        bootstrappedNiujinUserID: JSON.stringify(req.user._id)
+        bootstrappedUserObject: JSON.stringify(getUserViewModel(req.user))
     });
 }
 
@@ -1622,6 +1622,7 @@ module.exports.registerRoutes = function(app, passportConf) {
 };
 
 var privateProperties = [
+    '__v',
     'verifyEmailToken',
     'registered',
     'roles',
