@@ -1650,6 +1650,11 @@ function getUserViewModel(user){
 }
 
 module.exports.fetchUser = function(req, res) {
+    if (req.params.id != req.user._id) {
+        logger.info('fetchUser invalid user');
+        res.status(401);
+        return res.send({error_msg:'invalid user'});
+    }
     User.findById(req.params.id, function(err, user) {
         if (err) {
             logger.error('fetchUser error:' + err.toString());
