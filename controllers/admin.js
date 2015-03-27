@@ -237,11 +237,15 @@ function _closeApply(serialID, profit, res) {
             });
         },
         function(apply, callback) {
-            apply.status = 3;
-            apply.profit = profit;
-            apply.save(function (err) {
-                callback(err, apply);
-            });
+            if (apply.status === 3) {
+                callback('the apply already closed', null);
+            } else {
+                apply.status = 3;
+                apply.profit = profit;
+                apply.save(function (err) {
+                    callback(err, apply);
+                });
+            }
         },
         function(apply, callback) {
             if (profit > 0) {
@@ -503,8 +507,8 @@ function autoFetchPendingApplies(req, res) {
                 "deposit": apply.isTrial ? 1 : apply.deposit,
                 "lever":apply.isTrial ? 2000 : 9,
                 "amount":apply.isTrial ? 2000 : apply.amount-apply.deposit,
-                "margin_call":apply.isTrial ? 1800 : config.warnFactor * apply.amount,
-                "close":apply.isTrial ? 1600 : config.sellFactor * apply.amount
+                "margin_call":apply.isTrial ?  : config.warnFactor * apply.amount,
+                "close":apply.isTrial ? 0 : config.sellFactor * apply.amount
             }
         });
         res.send(ret);
