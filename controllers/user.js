@@ -1652,8 +1652,13 @@ function getUserViewModel(user){
 module.exports.fetchUser = function(req, res) {
     User.findById(req.params.id, function(err, user) {
         if (err) {
-            logger.error('error when get user id:' + req.params.id);
+            logger.error('fetchUser error:' + err.toString());
             res.status(503);
+            return res.send({});
+        }
+        if (!user) {
+            logger.error('fetchUser error user not found:' + req.params.id);
+            res.status(400);
             return res.send({});
         }
         res.send(getUserViewModel(user));
