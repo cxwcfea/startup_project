@@ -54,7 +54,10 @@ body{
 	color: #fff;
 	background-position: 15px -193px;
 }
-
+.aboutLeft li.select a.LiIcon04{
+	color: #fff;
+	background-position: 15px -275px;
+}
 .LeftMenu li a{
 	display: block;
 	color: #666666;
@@ -74,7 +77,12 @@ body{
 	background-position: 15px -70px;
 }
 
-
+.LeftMenu li a.LiIcon04{
+	background-position: 15px -234px;
+}
+.LeftMenu li a:hover{
+	text-decoration: none;
+}
 /*右侧*/
 .RightMain{
 	width: 770px;
@@ -689,6 +697,7 @@ body{
 	left: 50%;
 	top: 50%;
 	margin: -140px 0 0 -250px;
+	z-index: 11;
 }
 
 .icon07{
@@ -1697,8 +1706,8 @@ p.userP01{
 	height: 32px;
 }
 .helTextBox p.p02{
-	line-height: 20px;
-	height: 20px;
+	line-height: 32px;
+	height: 32px;
 	color: #e23024;
 	margin-bottom: 10px;
 }
@@ -1706,9 +1715,18 @@ p.userP01{
 	display: none;
 }
 
-
-
-
+.par_Box{
+	
+}
+.par_Box div.PartnersBox{
+	width: 360px;
+	height: 160px;
+}
+.par_Box div.PartnersBox img{
+	width: 230px;
+	display: block;
+	margin: auto;
+}
 /*注册*/
 .reg div.cartTitle{
 	width: 400px;
@@ -1875,6 +1893,7 @@ dl.left .submit:hover{
 	left: 50%;
 	top: 50%;
 	margin:-115px 0 0 -240px ;
+	z-index: 11;
 }
 
 .regColumn{
@@ -2079,6 +2098,81 @@ dl.left .submit:hover{
 .rec2_yhkBox img{
 	vertical-align:middle;
 }
+.rec2_zfbBox{
+	
+}
+.rec2_zfbBox img{
+	vertical-align: middle;
+}
+.rec2_zfbBoxText{
+	font-size: 12px;
+	color: #F50606;
+}
+
+
+.rec2_FormBox{
+	height: 40px;
+	line-height: 40px;
+	margin-bottom: 20px;
+}
+
+.rec2_Title{
+	width: 140px;
+	text-align: right;
+}
+
+.rec2_FomeContent{
+	
+}
+.rec2_zfbText{
+	padding-left: 140px;
+	margin-bottom: 30px;
+}
+.rec2_zfbText p.p01{
+	height: 40px;
+	line-height: 40px;
+	color: #F50606;
+	font-size: 12px;
+}
+.rec2_zfbText p.p01 span{
+	font-size: 16px;
+	color: #333333;
+}
+.rec2_hkTable{
+	width: 500px;
+	margin: 20px 0 0 0;
+}
+.rec2_hkTable table{
+	width: 100%;
+}
+.rec2_hkTable td{
+	border: 1px solid #d4d4d4;
+	padding: 4px 10px;
+	line-height: 25px;
+}
+
+
+.rec2_hkTable td img{
+	vertical-align: middle;
+}
+p.rec2_hkP01{
+	color: #F50606;
+	line-height: 60px;
+	padding-left: 160px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 .rec2_yhkBtn{
 	width: 100px;
 	height: 45px;
@@ -2130,7 +2224,7 @@ dl.left .submit:hover{
 	margin: 37px 33px 0 33px;
 }
 
-.rec2_zfBox div{
+.rec2_zfBox div.rec2_zfBoxName{
 	width: 130px;
 	text-align: right;
 	padding-right: 34px;
