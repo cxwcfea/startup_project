@@ -182,6 +182,12 @@ module.exports = function(app) {
         res.render('info/' + req.params[0]);
     });
 
+    app.get('/recharge2', passportConf.isAuthenticated, function(req, res, next) {
+        res.render('recharge2', {
+            layout: null
+        });
+    });
+
     app.get('/admin_test', passportConf.requiresRole('admin'), function(req, res, next) {
         res.render('admin_test');
     });

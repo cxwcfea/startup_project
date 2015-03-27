@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>充值</title>
+    <link rel="stylesheet" type="text/css" href="/css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/css.css"/>
+    <script src="{{static '/vendor/jquery/dist/jquery.min.js'}}"></script>
+    <script src="/js/common.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(".rec2_yhkBtn").click(function () {
+                $(".jq_rec2_yhBox").toggleClass("rec2_yhBoxSelected")
+                $(".jq_rec2_yhkList").slideToggle(200);
+            });
+
+            $(".jq_rec2_yhkTable td").click(function () {
+                $(".jq_rec2_yhkBox").html("<img src='"+$(this).find("img").attr("src")+"'/>")
+                $(".jq_rec2_yhkTable td span").removeClass("selected");
+                $(this).find("span").addClass("selected");
+            });
+
+            $("#yhkList a").click(function () {
+                $(this).hide().siblings().show();
+                var index=  $(this).index();
+                $(".jq_rec2_zflist>div").eq(index).show().siblings().hide();
+            })
+        })
+    </script>
+</head>
+<body>
+<div class="header">
+    <div class="wrapper">
+        <a href="#" class="logo2"><img src="/images/logo.png"/></a>
+        <span class="loginSpan">充值中心</span>
+        <div class="fr headerText">
+            您好 , <a href="#" class="a01">138****8888</a>  <a href="#" class="a02">[退出] </a>
+
+        </div>
+    </div>
+</div>
+<div class="wrapper paddTop30">
+    <div class="rec2_center">
+        <div class="rec2_top">
+            <div class="fl rec2_topText">
+                股票配资
+                <a href="#">订单详情</a>
+            </div>
+            <div class="fr rec2_topText2">
+                <span>1000.00</span>&nbsp;元
+            </div>
+        </div>
+        <div class="rec2_textBox">
+            <input type="checkbox" name="" id="" value="" />
+            &nbsp;<span class="span02">可用余额</span><span class="span01">0.00</span>&nbsp;&nbsp;元
+        </div>
+        <div class="rec2_zflist jq_rec2_zflist">
+            <div class="rec2_yhBox jq_rec2_yhBox ">
+                <div class="rec2_yhkText">
+                    <div class="rec2_img fl"></div>
+                    <div class="fl">网上银行</div>
+                    <div class="fl rec2_yhkBox jq_rec2_yhkBox">
+                        <!--<img src="../images/yh/icbc.png" />-->
+                        &nbsp;&nbsp;请选择银行卡
+                    </div>
+                    <div class="rec2_yhkBtn fl">
+                        <span>更换银行</span>
+                    </div>
+                    <div class="fr rec2_textA">
+                        <a href="#" class="">限额表</a>
+                    </div>
+                </div>
+                <div class="rec2_yhkList undis jq_rec2_yhkList">
+                    <div class="rec2_column">
+                        <span>网银支付</span> 需要开通网上银行
+                    </div>
+                    <div class="rec2_yhkTable jq_rec2_yhkTable">
+                        <table>
+                            <tr>
+                                <td>
+                                    <span><img src="/images/yh/bos.png"/></span>
+                                </td>
+                                <td>
+                                    <span><img src="/images/yh/nbcb.png"/></span>
+                                </td>
+                                <td>
+                                    <span><img src="/images/yh/hzyh.png"/></span>
+                                </td>
+                                <td>
+                                    <span><img src="/images/yh/pa.png"/></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span><img src="/images/yh/hx-2.png"/></span>
+                                </td>
+                                <td>
+                                    <span><img src="/images/yh/ecitic.png"/></span>
+                                </td>
+                                <td>
+                                    <span><img src="/images/yh/cmbc.png"/></span>
+                                </td>
+                                <td>
+                                    <span><img src="/images/yh/spdb.png"/></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span><img src="/images/yh/bob.png"/></span>
+                                </td>
+                                <td>
+                                    <span><img src="/images/yh/cib.png"/></span>
+                                </td>
+                                <td>
+                                    <span><img src="/images/yh/ceb.png"/></span>
+                                </td>
+                                <td>
+                                    <span><img src="/images/yh/cgb.png"/></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span><img src="/images/yh/cmb.png"/></span>
+                                </td>
+                                <td>
+                                    <span><img src="/images/yh/bcs.png"/></span>
+                                </td>
+                                <td>
+                                    <span><img src="/images/yh/boc.png"/></span>
+                                </td>
+                                <td>
+                                    <span><img src="/images/yh/psbc.png"/></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span><img src="/images/yh/ccb.png"/></span>
+                                </td>
+                                <td>
+                                    <span><img src="/images/yh/abc.png"/></span>
+                                </td>
+                                <td>
+                                    <span><img src="/images/yh/icbc.png"/></span>
+                                </td>
+                                <td>
+                                    <span><img src="/images/yh/bcs.png"/></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="rec2_yhBox undis ">
+                <div class="rec2_yhkText ">
+                    <div class="rec2_img fl"></div>
+                    <div class="fl">支付宝</div>
+                    <div class="fl rec2_zfbBox">
+                        <img src="/images/yh/alipay.jpg"/>
+                    </div>
+                    <div class="fl rec2_zfbBoxText">支付宝转账（手机转账0手续费）</div>
+                </div>
+                <div class="rec2_FormBox ">
+                    <div class="rec2_Title fl">
+                        支付宝账号：
+                    </div>
+                    <div class="rec2_FomeContent fl">
+                        <input type="text" class="inputText" name="" id="" value="" />
+                    </div>
+                </div>
+                <div class="rec2_FormBox ">
+                    <div class="rec2_Title fl">
+                        支付宝账号：
+                    </div>
+                    <div class="rec2_FomeContent fl">
+                        <input type="text" class="inputText" name="" id="" value="" />
+                    </div>
+                </div>
+                <div class="rec2_FormBox ">
+                    <div class="rec2_Title fl">
+                        充值金额：
+                    </div>
+                    <div class="rec2_FomeContent fl">
+                        <input type="text" class="inputText" name="" id="" value="" />
+                    </div>
+                </div>
+                <div class="rec2_zfbText">
+                    <p class="p01"><span>到账时间</span>&nbsp;如需马上到账或长时间未到账，可拨打客服电话：400-8888-566</p>
+                    <p class="p02"> ·  08:30 - 20:30 （30分钟内到账）</p>
+                    <p class="p02">·  20:30 以后     （次日09:00前到账）</p>
+                </div>
+            </div>
+            <div class="rec2_yhBox  undis">
+                <div class="rec2_yhkText fl">
+                    <div class="rec2_img fl"></div>
+                    <div class="fl">转账汇款</div>
+                </div>
+                <div class="rec2_hkTable fl">
+                    <table border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td width="180"><img src="../images/yh/cbc.jpg"/></td>
+                            <td>
+                                帐号：3100 1579 5110 5002 5912<br />
+                                户名：臣乾金融信息服务（上海）有限公司<br />
+                                开户行：建设银行上海外高桥保税区支行
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img src="../images/yh/icbc.jpg"/></td>
+                            <td>
+                                帐号：3100 1579 5110 5002 5912<br />
+                                户名：臣乾金融信息服务（上海）有限公司<br />
+                                开户行：建设银行上海外高桥保税区支行
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img src="../images/yh/abc.jpg"/></td>
+                            <td>
+                                帐号：3100 1579 5110 5002 5912<br />
+                                户名：臣乾金融信息服务（上海）有限公司<br />
+                                开户行：建设银行上海外高桥保税区支行
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img src="../images/yh/cmb.jpg"/></td>
+                            <td>
+                                帐号：3100 1579 5110 5002 5912<br />
+                                户名：臣乾金融信息服务（上海）有限公司<br />
+                                开户行：建设银行上海外高桥保税区支行
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="clear"></div>
+                <p class="rec2_hkP01">转账成功后，请电话告知我们客服 400-8888-566，以便尽快到账！ </p>
+            </div>
+        </div>
+        <a href="#" class="rec2_btn">下一步</a>
+        <div class="rec2_zfBox">
+            <div class="fl rec2_zfBoxName">其他支付</div>
+            <div class="fl" id="yhkList">
+                <a href="javascript:" style="display: none;">网银支付</a>
+                <a href="javascript:">支付宝</a>
+                <a href="javascript:">转账汇款</a>
+            </div>
+        </div>
+    </div>
+    <div class="column6">
+        <span></span>常见问题
+    </div>
+    <div class="rec2_text">
+        <p class="p01">1.支付风险保证金遇到问题？</p>
+        <p class="p02">答：您可以联系您的专属理财顾问（还没有专属顾问？立即选择），拨打客服电话0571-86551789</p>
+        <p class="p01">2.账户中有余额，但为什么不可用使用呢？</p>
+        <p class="p02">答：账户余额包括可用余额、被冻结资金，被冻结的资金暂不可用。而可用余额是指账户中可自由使用的金额，可以被支付、提现。</p>
+        <a href="#">更多帮助</a>
+    </div>
+
+</div>
+<div class="footer marTop200">
+    <div class="wrapper">
+        <div class="footerList fl">
+            <p>软件下载</p>
+            <ul>
+                <li><span class="icon02">&nbsp;</span><a href="javascript:">Windows版</a></li>
+                <li><span class="icon03">&nbsp;</span><a href="javascript:">iOS版</a></li>
+                <li><span class="icon04">&nbsp;</span><a href="javascript:">Android版</a></li>
+            </ul>
+        </div>
+        <div class="footerList fl">
+            <p>操盘问题</p>
+            <ul>
+                <li><a href="javascript:">操盘流程</a></li>
+                <li><a href="javascript:">法律保障</a></li>
+                <li><a href="javascript:">常见问题</a></li>
+            </ul>
+        </div>
+        <div class="footerList fl">
+            <p>关于牛金网</p>
+            <ul>
+                <li><a href="javascript:">公司介绍</a></li>
+                <li><a href="javascript:">合作伙伴</a></li>
+                <li><a href="javascript:">联系方式</a></li>
+            </ul>
+        </div>
+        <div class="fr ewmBox">
+            <p><span>&nbsp;</span>官方微信</p>
+            <img src="/images/img15.jpg"/>
+        </div>
+        <div class="fr phoneBox">
+            <p class="p01">全国服务热线</p>
+            <p class="p02">400-692-1388</p>
+            <p class="p03">QQ群1:351531<br />QQ群2:131351</p>
+            <div class="icon05"></div>
+            <div class="icon06"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="footerText">©版权所有 北京小牛普惠科技有限公司 All Rights Reserved 2015 <a href="javascript:"> 京ICP备14047091号-4</a></div>
+    </div>
+</div>
+
+</body>
+</html>
