@@ -110,12 +110,27 @@ exports.getCloseApply = function(req, res, next) {
 };
 
 exports.postCloseApply = function(req, res) {
-    Apply.update({serialID:req.params.serial_id}, {status:5}, function (err, numberAffected, raw) {
+    Apply.findOne({serialID:req.params.serial_id}, function(err, apply) {
         if (err) {
             res.status(500);
             return res.send({reason:err.toString()});
         }
-        res.send({success:true});
+        if (!apply) {
+            res.status(400);
+            return res.send({reason:'apply not found'});
+        }
+        if (apply.status != 2) {
+            res.status(400);
+            return res.send({reason:'apply not in correct status'});
+        }
+        apply.status = 5;
+        apply.save(function(err) {
+            if (err) {
+                res.status(500);
+                return res.send({reason:err.toString()});
+            }
+            res.send({success:true});
+        });
     });
 };
 

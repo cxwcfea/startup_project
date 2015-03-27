@@ -471,7 +471,7 @@ function confirmAlipayOrder(req, res) {
 }
 
 function fetchApply(req, res) {
-    console.log(req.body);
+    //console.log(req.body);
     Apply.findOne({serialID:req.params.id}, function(err, apply) {
         if (err) {
             logger.debug('error when fetchApply:' + err.toString());
@@ -493,7 +493,7 @@ function fetchPendingApplies(req, res) {
 }
 
 function autoFetchPendingApplies(req, res) {
-    logger.debug('autoFetchPendingApplies operator:', req.user.mobile);
+    //logger.debug('autoFetchPendingApplies operator:', req.user.mobile);
     Apply.find({status: 4}, function(err, applies) {
         if (err) {
             logger.warn(err.toString());
@@ -516,7 +516,7 @@ function autoFetchPendingApplies(req, res) {
 }
 
 function autoApproveApply(req, res) {
-    logger.debug('autoApproveApply operator:', req.user.mobile);
+    //logger.debug('autoApproveApply operator:', req.user.mobile);
     var serialID = req.query.apply_serialID;
     var account = req.query.account;
     var password = req.query.password;
@@ -550,7 +550,7 @@ function autoApproveApply(req, res) {
 }
 
 function autoFetchClosingSettlement(req, res) {
-    logger.debug('autoFetchClosingSettlement operator:', req.user.mobile);
+    //logger.debug('autoFetchClosingSettlement operator:', req.user.mobile);
     Apply.find({status: 5}, function(err, applies) {
         if (err) {
             logger.warn(err.toString());
@@ -568,7 +568,7 @@ function autoFetchClosingSettlement(req, res) {
 }
 
 function autoApproveClosingSettlement(req, res) {
-    logger.debug('autoApproveClosingSettlement operator:', req.user.mobile);
+    //logger.debug('autoApproveClosingSettlement operator:', req.user.mobile);
     var serialID = req.query.settlement_serialID;
     var success = req.query.success.toLowerCase();
     var profit = req.query.profit;
