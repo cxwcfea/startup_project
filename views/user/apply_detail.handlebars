@@ -11,8 +11,10 @@
         <p ng-show="applyVM.currentApply.status === 2" class="p01">开始时间：\{{applyVM.currentApply.start_date | displayDate}}</p>
         <div ng-show="applyVM.currentApply.status === 2">
             <p>账户：\{{applyVM.currentApply.account}}，密码：\{{applyVM.currentApply.password}}</p>
+            <!--
             <a href="javascript:" class="btn04">增加保证金</a>
             <a href="javascript:" class="btn05">盈利提取</a>
+            -->
         </div>
     </div>
     <div class="detBox fl">
@@ -21,7 +23,9 @@
         <p ng-show="applyVM.currentApply.status === 2" class="p01">到期时间：\{{applyVM.currentApply.end_date | displayDate}}</p>
         <div ng-show="applyVM.currentApply.status === 2">
             <p>&nbsp;</p>
+            <!--
             <a href="javascript:" class="btn04">盈利加配</a>
+            -->
             <a href="javascript:" class="btn05" ng-click="applyVM.closeApply()">结算</a>
         </div>
     </div>
@@ -29,12 +33,12 @@
     <div class="detTextBox">
         <p>亏损警戒线：\{{applyVM.warn_amount | currency:'':2}}元</p>
         <p>亏损平仓线：\{{applyVM.sell_amount | currency:'':2}}元</p>
-        <p><a href="#">查看操盘限制</a></p>
+        <p><a href="/info/help">查看操盘限制</a></p>
         <p>&nbsp;</p>
         <p>服务费：每一万元19.90元/天</p>
         <!--
         <p class="color_999999">服务费已经预付100元（10天），已经扣取40元（4天），剩余60元（6天）</p>
         -->
-        <p><a href="#">查看计费规则</a></p>
+        <p><a href="/info/help">查看计费规则</a></p>
     </div>
 </div>
