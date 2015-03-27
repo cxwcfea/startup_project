@@ -346,24 +346,31 @@ exports.freeApply = function(req, res, next) {
                 status: 4,
                 period: 2
             });
+            console.log(req.user);
             Apply.create(applyData, function(err, apply) {
                 if(err) next();
-                req.user.finance.balance -= 1;
-                req.user.finance.total_capital += 2001;
-                req.user.freeApply = apply.serialID;
-                var userData = {
-                    freeApply: apply.serialID,
-                    finance: {
-                        balance: req.user.finance.balance,
-                        total_capital: req.user.finance.total_capital
-                    }
-                };
-                User.update({_id:req.user._id}, userData, function (err, numberAffected, raw) {
+                User.findById(req.user._id, function(err, user) {
                     if (err) {
-                        logger.debug('freeApply2 error:' + err.toString());
+                        if (err) {
+                            logger.debug('freeApply error:' + err.toString());
+                            return next();
+                        }
+                    }
+                    if (!user) {
+                        logger.debug('freeApply error: user not found');
                         return next();
                     }
-                    res.redirect('/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000);
+                    user.finance.balance -= 1;
+                    user.finance.total_capital += 2001;
+                    user.freeApply = apply.serialID;
+                    user.save(function (err, user) {
+                        if (err) {
+                            logger.debug('freeApply error:' + err.toString());
+                            return next();
+                        }
+                        console.log(req.user);
+                        res.redirect('/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000);
+                    });
                 });
             });
         } else {

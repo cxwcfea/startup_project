@@ -147,7 +147,7 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
         if ($location.search()["pay_order"]) {
             $location.search('pay_order', null);
         }
-        if (c.value === 3 || c.value === 1) {
+        if (c.value === 2 || c.value === 0) {
             if (vm.cards.length > 0) {
                 vm.selectedCard = vm.cards[0];
             }
@@ -234,6 +234,10 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
         }
         if (!vm.finance_password) {
             addAlert('danger', '请输入提现密码!');
+            return;
+        }
+        if (!vm.selectedCard) {
+            addAlert('danger', '请选择提现的银行卡!');
             return;
         }
         var order = {
