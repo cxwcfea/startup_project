@@ -4,8 +4,6 @@ angular.module('userApp').controller('UserHomeCtrl', ['$scope', '$location', '$h
     $scope.data.menu = 1;
     vm.user = $scope.data.currentUser;
 
-    vm.user_total_capital = vm.user.finance.balance + vm.user.finance.freeze_capital;
-
     var apply_list = {};
     var currentApplies;
     vm.itemsPerPage = 6;
@@ -35,6 +33,7 @@ angular.module('userApp').controller('UserHomeCtrl', ['$scope', '$location', '$h
             apply_list = $filter('orderBy')(apply_list, 'applyAt', true);
             currentApplies = apply_list;
             pageReset();
+            vm.user_total_capital = vm.user.finance.balance + vm.user.finance.freeze_capital;
         });
 
         vm.queryItems = [
