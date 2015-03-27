@@ -232,7 +232,10 @@ a.bannerBtn:hover{
 }
 .PartnersBox{
 	width: 250px;
-	height: 90px;
+	height: 140px;
+}
+.PartnersBox img{
+	width: 210px;
 }
 .PartnersBox2{
 	width: 125px;

@@ -1715,9 +1715,18 @@ p.userP01{
 	display: none;
 }
 
-
-
-
+.par_Box{
+	
+}
+.par_Box div.PartnersBox{
+	width: 360px;
+	height: 160px;
+}
+.par_Box div.PartnersBox img{
+	width: 230px;
+	display: block;
+	margin: auto;
+}
 /*注册*/
 .reg div.cartTitle{
 	width: 400px;

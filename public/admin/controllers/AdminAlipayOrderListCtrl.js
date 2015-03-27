@@ -57,6 +57,7 @@ angular.module('adminApp').controller('AdminAlipayOrderListCtrl', ['$scope', '$l
 angular.module('adminApp').controller('alipayOrderModalCtrl', ['$scope', '$modalInstance', 'order', function ($scope, $modalInstance, order) {
     $scope.amount = order.amount;
     $scope.account = order.otherInfo;
+    $scope.name = order.transID;
 
     $scope.ok = function () {
         $modalInstance.close();

@@ -116,6 +116,10 @@
                 addAlert('danger', '请输入支付宝账户');
                 return;
             }
+            if (!vm.alipay_name) {
+                addAlert('danger', '请输入支付宝实名认证姓名');
+                return;
+            }
             vm.alipayConfirm = true;
             var newOrder = new njOrder({uid:vm.user._id});
             newOrder.userID = vm.user._id;
@@ -126,6 +130,7 @@
             newOrder.payType = 3;
             newOrder.status = 0;
             newOrder.otherInfo = vm.alipay_account;
+            newOrder.transID = vm.alipay_name;
             newOrder.$save(function(o, responseHeaders) {
                 console.log('order create success');
             }, function(response) {
