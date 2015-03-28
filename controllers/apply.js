@@ -119,6 +119,11 @@ exports.postCloseApply = function(req, res) {
             res.status(400);
             return res.send({reason:'apply not found'});
         }
+        if (req.user._id != apply.userID) {
+            res.status(400);
+            logger.warn('postCloseApply error:not the same user');
+            return res.send({reason:'not the same user'});
+        }
         if (apply.status != 2) {
             res.status(400);
             return res.send({reason:'apply not in correct status'});
