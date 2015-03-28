@@ -129,7 +129,7 @@
             newOrder.amount = Number(vm.pay_amount.toFixed(2));
             newOrder.description = '支付宝转账';
             newOrder.payType = 3;
-            newOrder.status = 0;
+            newOrder.status = 2;
             newOrder.otherInfo = vm.alipay_account;
             newOrder.transID = vm.alipay_name;
             newOrder.$save(function(o, responseHeaders) {

@@ -422,7 +422,7 @@ function fetchAddDepositOrders(req, res) {
 }
 
 function getAlipayOrders(req, res) {
-    Order.find({$and: [{payType: 3},  {status: 0}]}, function(err, orders) {
+    Order.find({$and: [{payType: 3},  {status: 2}]}, function(err, orders) {
         if (err) {
             logger.warn('getAlipayOrders error:' + err.toString());
             res.status(500);
@@ -440,7 +440,13 @@ function confirmAlipayOrder(req, res) {
             return res.send({error_msg:err.toString()});
         }
         if (order) {
+            if (order.status != 2) {
+                logger.warn('confirmAlipayOrder error: only order in not pay status can be approved');
+                res.status(400);
+                return res.send({error_msg:'only order in not pay status can be approved'});
+            }
             order.status = 1;
+            order.bankTransID = req.body.trans_id;
             order.save(function(err) {
                 if (err) {
                     logger.warn('confirmAlipayOrder error:' + err.toString());
@@ -466,7 +472,25 @@ function confirmAlipayOrder(req, res) {
                     }
                 });
             })
+        } else {
+            logger.warn('confirmAlipayOrder error:order not found');
+            res.status(400);
+            return res.send({error_msg:'order not found'});
         }
+    });
+}
+
+function deleteAlipayOrder(req, res) {
+    if (!req.body) {
+        res.status(400);
+        return res.send({error_msg:'empty request'});
+    }
+    Order.find({ $and: [{_id: req.params.id }, {status: 2}] }).remove(function(err, order) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send({});
     });
 }
 
@@ -624,6 +648,8 @@ module.exports = {
         app.get('/admin/api/orders/alipay', passportConf.requiresRole('admin'), getAlipayOrders);
 
         app.post('/admin/api/confirm_alipay_order/:id', passportConf.requiresRole('admin'), confirmAlipayOrder);
+
+        app.post('/admin/api/delete_alipay_order/:id', passportConf.requiresRole('admin'), deleteAlipayOrder);
 
         app.get('/api/auto_fetch_pending_apply', passportConf.requiresRole('admin'), autoFetchPendingApplies);
 

@@ -22,7 +22,7 @@
                                     充值金额：
                                 </div>
                                 <div class="fl">
-                                    <input type="number" ng-model="vm.pay_amount" autofocus ng-disabled="vm.pay_for_apply">
+                                    <input type="number" ng-model="vm.pay_amount" min="0" step="100" autofocus ng-disabled="vm.pay_for_apply">
                                 元
                                 </div>
                             </div>

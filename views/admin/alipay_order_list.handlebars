@@ -24,6 +24,7 @@
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs">
                                 <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="alipayOrderListVM.handleOrder(order)"><span class="am-icon-pencil-square-o"></span> 管理</button>
+                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="alipayOrderListVM.deleteOrder(order)"><span class="am-icon-pencil-square-o"></span> 删除</button>
                             </div>
                         </div>
                     </td>
@@ -49,10 +50,27 @@
     <div class="modal-body">
         <p>支付宝实名：\{{name}}</p>
         <p>支付宝账号：\{{account}}</p>
+        <p>转账单号:<input type="text" ng-model="trans_id" required></p>
         <p>金额：\{{amount | currency:'':2}}</p>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-click="ok()">完成</button>
+        <button class="btn btn-warning" ng-click="cancel()">取消</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="alipayOrderDeleteModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">删除支付宝订单</h3>
+    </div>
+    <div class="modal-body">
+        <p>支付宝实名：\{{name}}</p>
+        <p>支付宝账号：\{{account}}</p>
+        <p>金额：\{{amount | currency:'':2}}</p>
+        <p>删除后不能恢复，确认吗？</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">确认</button>
         <button class="btn btn-warning" ng-click="cancel()">取消</button>
     </div>
 </script>
