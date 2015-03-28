@@ -221,6 +221,7 @@ function homasAssignAccount(req, res) {
             res.status(401);
             res.send({reason:err.toString()});
         } else {
+            util.sendSMS_2(apply.amount.toFixed(2), apply.account, apply.password);
             res.send({success:true, apply:apply});
         }
     });
@@ -232,6 +233,9 @@ function _closeApply(serialID, profit, res) {
             Apply.findOne({serialID:serialID}, function(err, apply) {
                 if (!apply) {
                     err = '_closeApply error:apply:' + serialID + ' not found';
+                }
+                if (apply.deposit < 0 || apply.amount < 0) {
+                    err = '_closeApply error:apply data not correct';
                 }
                 callback(err, apply);
             });
@@ -302,68 +306,67 @@ function _closeApply(serialID, profit, res) {
                 if (balance < 1)
                     balance = 1;
             }
-            if (balance > 0) {
-                User.findById(apply.userID, function(err, user) {
-                    if (!user) {
-                        logger.warn('failed update user when close apply:' + apply.serialID);
-                    }
-                    callback(err, user, balance, apply);
-                });
-            } else {
-                callback(null, null, balance, apply);
-            }
+            User.findById(apply.userID, function(err, user) {
+                if (!user) {
+                    logger.warn('_closeApply error user not found:' + apply.userID);
+                    err = '_closeApply error user not found:' + apply.userID;
+                }
+                callback(err, user, balance, apply);
+            });
         },
         function(user, balance, apply, callback) {
-            if (user) {
-                console.log(user);
+            console.log(user);
+            if (balance > 0) {
                 user.finance.balance += balance;
-                user.finance.total_capital -= apply.amount;
-                user.finance.deposit -= apply.deposit;
-                if (!apply.isTrial) {
-                    var tradeDays = util.tradeDaysFromEndDay(apply.endTime, apply.period);
-                    var totalServiceFee = util.getServiceFee(apply.amount, apply.period);
-                    var actualServiceFee = util.getServiceFee(apply.amount, tradeDays);
-                    var returnedServiceFee = totalServiceFee - actualServiceFee;
-                    user.finance.freeze_capital -= totalServiceFee;
-                    if (returnedServiceFee > 0) {
-                        var orderData = {
-                            userID: apply.userID,
-                            dealType: 8,
-                            amount: returnedServiceFee,
-                            status: 1,
-                            description: '管理费返回',
-                            applySerialID: apply.serialID
-                        };
-                        user.finance.balance += returnedServiceFee;
-                    }
-                }
-                user.save(function(err) {
-                    console.log(user);
-                    callback(err, orderData);
-                });
-            } else {
-                callback(null, null);
             }
+            user.finance.total_capital -= apply.amount;
+            user.finance.deposit -= apply.deposit;
+            if (!apply.isTrial) {
+                var tradeDays = util.tradeDaysFromEndDay(apply.endTime, apply.period);
+                var totalServiceFee = util.getServiceFee(apply.amount, apply.period);
+                var actualServiceFee = util.getServiceFee(apply.amount, tradeDays);
+                var returnedServiceFee = totalServiceFee - actualServiceFee;
+                if (totalServiceFee > 0) {
+                    user.finance.freeze_capital -= totalServiceFee;
+                }
+                if (returnedServiceFee > 0) {
+                    var orderData = {
+                        userID: apply.userID,
+                        dealType: 8,
+                        amount: returnedServiceFee,
+                        status: 1,
+                        description: '管理费返还',
+                        applySerialID: apply.serialID
+                    };
+                    user.finance.balance += returnedServiceFee;
+                }
+            }
+            user.save(function(err) {
+                console.log(user);
+                callback(err, orderData, apply, balance);
+            });
         },
-        function(orderData, callback) {
+        function(orderData, apply, balance, callback) {
             if (orderData) {
                 Order.create(orderData, function(err, order) {
                     if (err || !order) {
                         logger.warn('failed create service fee return order when close apply:' + orderData.applySerialID);
                         err = 'failed create service fee return order when close apply:' + orderData.applySerialID;
                     }
-                    callback(err);
+                    callback(err, apply, balance);
                 });
             } else {
-                callback(null);
+                callback(null, apply, balance);
             }
         }
-    ], function(err) {
+    ], function(err, apply, balance) {
         if (err) {
             logger.error('error happen when close apply:' + serialID + ' err:' + err.toString());
             res.status(401);
             res.send({"error_code":1, "error_msg":err.toString()});
         } else {
+            var amount = balance > 0 ? balance : 0;
+            util.sendSMS_3(amount, apply.deposit, profit);
             res.send({"error_code":0});
         }
     });
@@ -568,6 +571,7 @@ function autoApproveApply(req, res) {
             res.status(401);
             res.send({"error_code":1, "error_msg":err.toString()});
         } else {
+            util.sendSMS_2(apply.amount.toFixed(2), apply.account, apply.password);
             res.send({"error_code":0});
         }
     });
