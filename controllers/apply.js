@@ -240,7 +240,7 @@ exports.postGetProfit = function(req, res, next) {
         req.flash('errors', errors);
         return res.redirect('/apply/get_profit/' + serial_id);
     }
-    var profit = req.body.profit_amount;
+    var profit = Number(req.body.profit_amount);
     Apply.findOne({serialID:serial_id}, function(err, apply) {
         if (err) {
             logger.warn('error when get profit for apply:' + apply.serialID);
@@ -435,8 +435,8 @@ exports.placeApply = function(req, res, next) {
         userID: req.user._id,
         userMobile: req.user.mobile,
         serialID: util.generateSerialID(),
-        amount: Number(req.body.amount.toFixed(2)),
-        deposit: Number(req.body.deposit.toFixed(2)),
+        amount: Number(Number(req.body.amount).toFixed(2)),
+        deposit: Number(Number(req.body.deposit).toFixed(2)),
         period: 2
     });
 

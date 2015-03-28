@@ -17,16 +17,24 @@ function home(req, res, next) {
                 user_count: statistic[0].count,
                 total_capital: statistic[0].capital,
                 total_profit: statistic[0].profit,
-                expires: Date.now() + 3600000 * 12
+                expires: Date.now() + 3600000 * 6
             };
+
+            res.locals.main_menu = true;
+            res.render('home', {
+                user_count: req.session.statistic.user_count,
+                total_capital: req.session.statistic.total_capital,
+                total_profit: req.session.statistic.total_profit
+            });
+        });
+    } else {
+        res.locals.main_menu = true;
+        res.render('home', {
+            user_count: req.session.statistic.user_count,
+            total_capital: req.session.statistic.total_capital,
+            total_profit: req.session.statistic.total_profit
         });
     }
-    res.locals.main_menu = true;
-    res.render('home', {
-        user_count: req.session.statistic.user_count,
-        total_capital: req.session.statistic.total_capital,
-        total_profit: req.session.statistic.total_profit
-    });
 }
 
 module.exports = {
