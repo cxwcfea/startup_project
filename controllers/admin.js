@@ -321,6 +321,9 @@ function _closeApply(serialID, profit, res) {
             }
             user.finance.total_capital -= apply.amount;
             user.finance.deposit -= apply.deposit;
+            if (profit > 0) {
+                user.finance.profit += profit;
+            }
             if (!apply.isTrial) {
                 var tradeDays = util.tradeDaysFromEndDay(apply.endTime, apply.period);
                 var totalServiceFee = util.getServiceFee(apply.amount, apply.period);

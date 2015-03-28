@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var orderSchema = mongoose.Schema({
     userID: {type:String, required:'{PATH} is required!'},
     userMobile: Number,
+    userBalance: Number,
     createdAt: {type:Date, default: Date.now},
     dealType: {type:Number, required:'{PATH} is required!'}, // 1 充值， 2 提现， 3 盈提, 4 股票盈利, 5 保证金返还, 6 追加配资保证金, 7 配资延期, 8 管理费返还, 9 配资保证金
     amount: {type:Number, required:'{PATH} is required!'},
