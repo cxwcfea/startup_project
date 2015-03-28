@@ -98,7 +98,7 @@
                         <p class="tc p01">请输入您的操盘金额</p>
                         <div class="moneyInputBox">
                             <input class="moneyinputText" type="text" name="" id="" placeholder="申请资金必须在2000元至30万元之间" min="\{{applyVM.min_amount}}" max="300000" step="1000" ng-model="applyVM.otherAmount" ng-change="applyVM.finishOtherAmount()"/>
-                            <input type="button" name="" id="" value="确定" class="moneyBtn" />
+                            <input type="button" ng-click="applyVM.submitApply()" value="确定" class="moneyBtn" />
                         </div>
                         <p class="tc p02"><a href="javascript:" id="return_moneyBox" ng-click="applyVM.toggleOtherAmount()">返回</a></p>
                     </div>
