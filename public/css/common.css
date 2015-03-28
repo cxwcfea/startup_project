@@ -46,6 +46,7 @@ html,body{height: 100%;}
 	top: 0;
 	opacity: 0.4;
 	z-index: 10;
+	filter:alpha(opacity=40);
 }
 .wrapper{
 	width: 1000px;
@@ -622,8 +623,9 @@ span.loginSpan{
 	color: #e23024;
 	font-size: 14px;
 	font-weight: bold;
-	height: 30px;
-	line-height: 30px;
+	height: 25px;
+	line-height: 25px;
+	margin-top: 5px;
 }
 .phoneBox p.p02{
 	font-size: 23px;
@@ -639,16 +641,16 @@ span.loginSpan{
 	width: 32px;
 	height: 36px;
 	background: url(../images/img03.png) no-repeat  -10px -130px;
-	left: 5px;
-	top: 35px;
+	left: -5px;
+	top: 16px;
 }
 .phoneBox div.icon06{
 	position: absolute;
 	width: 32px;
 	height: 36px;
 	background: url(../images/img03.png) no-repeat  -51px -130px;
-	left: 0;
-	top: 93px;
+	left: -5px;
+	top: 85px;
 }
 
 .footerText{
@@ -825,11 +827,11 @@ span.loginSpan{
 .login-btn:hover {
     background-position: left -391px;
 }
-li.li01{
+.logon-con li.li01{
 	text-align: right;line-height: 50px;
 	font-size: 12px;
 }
-li.li01 a{
+.logon-con li.li01 a{
 	
 	color: #06c;
 }

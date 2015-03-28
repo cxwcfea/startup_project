@@ -893,21 +893,25 @@ a.rightBtn{
 }
 
 .recMoneyBox{
-	height: 130px;
+	/*height: 130px;*/
 	background: #fff9f3;
 	border: 1px solid #ffdfb2;
 	margin-top: 20px;
+	overflow: hidden;
 }
 .recMoneyLeft{
 	width: 770px;
-	height: 130px;
+	min-height: 130px;
 	border-right: 1px solid #ffdfb2;
 }
+.wit_left{
+	width: 549px;
+}
 .zfbMoneyLeft{
-	height: 205px;
+	/*min-height: 205px;*/
 }
 .zfbMoneyBox{
-	height: 205px;
+	/*height: 205px;*/
 }
 .recMoneyText{
 	height: 40px;
@@ -945,6 +949,9 @@ a.rightBtn{
 	font-size: 12px;
 	margin-top: 40px;
 	padding-left: 50px;
+}
+.wit_left p.p01{
+	padding-left: 0;
 }
 .zfbMoneyLeft p.p01{
 	margin-top: 10px;
@@ -1887,7 +1894,8 @@ dl.left .submit:hover{
 
 .regTccBox{
 	width: 480px;
-	height: 230px;
+	/*height: 230px;*/
+	padding-bottom: 20px;
 	background: #fff;
 	position: fixed;
 	left: 50%;
@@ -2322,6 +2330,369 @@ p.rec2_hkP01{
 .rec2_yhkTable td span.selected{
 	border: 1px solid #F50606;
 }
+
+
+
+/*我的操盘*/
+
+.tar_center{
+	background: #eeeeee;
+	margin-top: 25px;
+	margin-bottom: 30px;
+}
+.tra_left{
+	width: 160px;
+}
+.tra_left li{
+	height: 40px;
+	line-height: 40px;
+	text-indent: 40px;
+	background: url(../images/img35.png) no-repeat 130px 17px ;
+	border-left: 3px solid #eeeeee;
+}
+.tra_left li a{
+	display: block;
+	height: 40px;
+}
+.tra_left li.li01{
+	background: none;
+}
+
+
+.tra_left li.selected{
+	background: #fff;
+	border-left: 3px solid #a40000;
+}
+.tra_left li.selected a{
+	color: #b0202d;
+}
+
+
+
+.tra_right{
+	background: #fff;
+	width: 785px;
+	padding-left: 30px;
+	padding-right: 25px;
+	min-height: 600px;
+}
+.tra_column{
+	height: 42px;
+	line-height: 42px;
+	border-bottom: 1px solid #e6e6e6;
+	margin-top: 18px;
+	padding-left: 8px;
+}
+.tra_column span{
+	font-size: 18px;
+}
+.tra_column span.span01{
+	font-size: 12px;
+	color: #999999;
+}
+
+.tra_tableBox{
+	padding-left: 15px;
+	margin-top: 40px;
+}
+.tra_tableBox table{
+	width: 100%;
+}
+.tra_tableBox td{
+	height: 100px;
+	/*border: 1px solid #000;*/
+}
+
+.tra_tableBox td p.p01{
+	color: #999999;
+}
+
+.tra_tableBox td p.p02{
+	font-size: 20px;
+	height: 80px;
+	line-height: 66px;
+	font-weight: bold;
+}
+.tra_tableBox td p.p02 span{
+	font-size: 30px;
+	
+}
+.color_e0322d{
+	color: #e0322d;
+}
+.tra_tableBox td p.p03{
+	font-size: 16px;
+	height: 40px;
+	line-height: 40px;
+}
+.tra_tableBox td a.a01{
+	width: 70px;
+	height: 30px;
+	color: #e0322d;
+	border: 1px solid #e0322d;
+	display: block;
+	text-align: center;
+	line-height: 28px;
+	border-radius: 2px;
+}
+
+.tra_tableBox02{
+	border-top: 1px solid #e6e6e6;
+	text-align: center;
+}
+.tra_tableBox02 table{
+	width: 100%;
+}
+.tra_tableBox02 th{
+	height: 47px;
+	line-height: 47px;
+	color: #999999;
+	font-weight: normal;
+	font-size: 12px;
+	
+}
+.tra_tableBox02 td{
+	border-top: 1px dashed #c9c9c9;
+	height: 155px;
+}
+.tra_tableBox02 td p.p01{
+	color: #666666;
+	font-weight: bold;
+}
+.tra_tableBox02 td div.tra_jdt{
+	width: 84px;
+	height: 12px;
+	border: 1px solid #e0322d;
+	line-height: 0;
+	font-size: 0;
+	margin: auto;
+}
+.tra_tableBox02 td div.tra_jdt2{
+	width: 30px;
+	height: 8px;
+	background: #e0322d;
+	border: 2px solid #fff;
+	line-height: 0;
+	font-size: 0;
+	float: right;
+}
+.tra_tableBox02 td p.p02{
+	height: 24px;
+	line-height: 24px;
+	color: #999999;
+}
+
+.tra_tableBox02 td p.p02 span{
+	color: #b0202d;
+}
+
+.tra_tableBox02 td p.p03{
+	color: #666666;
+}
+
+.tra_tableBox02 td p.p04{
+	font-size: 12px;
+	color: #999999;
+}
+.tra_tableBox02 td p.p05{
+	font-size: 12px;
+	color: #990000;
+}
+
+
+.color_37c80b{
+	color: #37c80b;
+}
+
+.tra_BtnBox a{
+	font-size: 12px;
+	color: #2489f0;
+}
+.tra_BtnBox a.tra_tableBoxBtn{
+	display: block;
+	width: 94px;
+	height: 30px;
+	text-align: center;
+	line-height: 30px;
+	color: #fff;
+	background: #e0322d;
+	font-size: 12px;
+	margin: 0 auto 5px auto;
+}
+
+.color_a40000{
+	color: #a40000;
+}
+.tar_TccBox{
+	width: 480px;
+	/*height: 230px;*/
+	padding-bottom: 20px;
+	background: #fff;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	margin:-115px 0 0 -240px ;
+	z-index: 11;
+}
+.tra_close{
+	top: 10px;
+	right: 20px;
+}
+
+.tra_text{
+	padding:15px 50px 0 50px;
+}
+.tra_text p.p01{
+	height: 45px;
+	line-height: 45px;
+	color: #a40000;
+	font-size: 16px;
+	font-style: italic;
+	text-align: left;
+	border-bottom: 1px dashed #c9c9c9;
+	margin-bottom: 5px;
+}
+
+.tra_text p.p02{
+	height: 35px;
+	line-height: 35px;
+	color: #999999;
+	font-size: 12px;
+}
+.tra_text p.p02 span{
+	color: #333333;
+	font-size: 14px;
+	font-weight: bold;
+}
+.tra_text p.p02 a.a01{
+	color: #a40000;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.tra_text p.p02 a.a02{
+	color: #2489f0;
+}
+.tra_text p.p03{
+	color: #999999;
+	font-size: 12px;
+	margin-top: 20px;
+}
+
+
+.tra_Text2{
+	color: #666666;
+}
+
+.tra_Text2 p.p01{
+	padding-left: 125px;
+	height: 75px;
+	line-height: 75px;
+}
+
+.tra_InputBox{
+	height: 35px;
+	line-height: 35px;
+}
+.tra_InputBoxLeft{
+	text-align: right;
+	width: 105px;
+	padding-right: 20px;
+}
+.tra_InputBoxRight{
+	
+}
+.tra_InputBoxRight input.inputText{
+	width: 228px;
+	height: 29px;
+}
+
+
+.tra_inputBtnBox{
+	padding-left: 125px;
+	margin-top: 20px;
+}
+.tra_inputBtnBox a.a01{
+	width: 100px;
+	height: 35px;
+	background: #e0322d;
+	text-align: center;
+	line-height: 35px;
+	color: #fff;
+	display: block;
+	float: left;
+	border-radius: 2px;
+	margin-right: 10px;
+}
+.tra_inputBtnBox a.a02{
+	width: 98px;
+	height: 33px;
+	border: 1px solid #d2d2d2;
+	text-align: center;
+	line-height: 33px;
+	color: #999999;
+	display: block;
+	float: left;
+	border-radius: 2px;
+}
+
+
+
+
+/*账户总览*/
+.acc_Box{
+	height: 143px;
+	border-bottom: 1px solid #e6e6e6;
+}
+
+.acc_img{
+	width: 84px;
+	height: 84px;
+	background: url(../images/img36.jpg) no-repeat;
+	overflow: hidden;
+	margin: 32px 16px 0 24px;
+}
+.acc_img img{
+	width: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
