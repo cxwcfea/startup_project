@@ -42,6 +42,29 @@ angular.module('adminApp').controller('AdminExpireApplyCtrl', ['$scope', '$http'
         vm.sendSMS(apply);
     };
 
+    vm.forceCloseApply = function(apply) {
+        var modalInstance = $modal.open({
+            templateUrl: 'forceCloseModal.html',
+            controller: 'forceCloseModalCtrl',
+            resolve: {
+                apply: function () {
+                    return apply;
+                }
+            }
+        });
+        modalInstance.result.then(function (trans_id) {
+            $http.post('/user/apply_close/' + apply.serialID, {})
+                .success(function(data, status, headers, config) {
+                    apply.status = 5;
+                    gbNotifier.notify('已提交结算');
+                })
+                .error(function(data, status, headers, config) {
+                    gbNotifier.error('结算申请提交失败，请稍后重试');
+                });
+        }, function () {
+        });
+    };
+
     vm.sendSMS = function(apply) {
         var modalInstance = $modal.open({
             templateUrl: '/views/smsModal.html',
@@ -70,5 +93,17 @@ angular.module('adminApp').controller('AdminExpireApplyCtrl', ['$scope', '$http'
                 });
         }, function () {
         });
+    };
+}]);
+
+angular.module('adminApp').controller('forceCloseModalCtrl', ['$scope', '$modalInstance', 'apply', function ($scope, $modalInstance, apply) {
+    $scope.serial_id = apply.serialID;
+
+    $scope.ok = function () {
+        $modalInstance.close();
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
     };
 }]);

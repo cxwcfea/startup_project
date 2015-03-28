@@ -41,6 +41,7 @@ var userSchema = new mongoose.Schema({
         idType: {type: Number, default: 1}
     },
 
+    manager: String,
     verifyEmailToken: String,
     resetPasswordToken: String,
     resetPasswordExpires: Date
