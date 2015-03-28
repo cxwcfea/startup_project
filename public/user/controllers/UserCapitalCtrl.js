@@ -279,7 +279,7 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
     };
 
     vm.showWithdrawDetail = function() {
-        vm.currentCategory = vm.categories[2];
+        vm.currentCategory = vm.categories[1];
         vm.queryItem(vm.queryItems[2]);
     };
 }]);

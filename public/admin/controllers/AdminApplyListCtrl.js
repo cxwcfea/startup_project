@@ -166,7 +166,7 @@ angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', 
             console.log(result);
             if (result.dt) {
                 apply.endTime = result.dt;
-                var tradeDays = days.tradeDaysFromEndDay(apply.endTime, apply.period);
+                var tradeDays = days.tradeDaysTillNow(apply.startTime, apply.period);
                 apply.endTime.setHours(14);
                 apply.endTime.setMinutes(54);
                 apply.endTime.setSeconds(59);

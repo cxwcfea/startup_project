@@ -117,21 +117,20 @@
             --days;
         }
         endDay.hour(14);
-        endDay.minute(54);
-        endDay.second(59);
+        endDay.minute(50);
+        endDay.second(00);
         return endDay;
     };
 
-    var tradeDaysFromEndDay = function(endDay, days) {
-        var dayOfYear = moment(endDay).dayOfYear();
+    var tradeDaysTillNow  = function(startDay, days) {
+        var startDayOfYear = moment(startDay).dayOfYear();
+        var currentDayOfYear = moment().dayOfYear();
         var ret = 0;
-        --days;
-        while (days) {
-            if (holiday.indexOf(dayOfYear) === -1) {
-                --days;
+        while (currentDayOfYear >= startDayOfYear) {
+            if (holiday.indexOf(currentDayOfYear) === -1) {
+                ++ret;
             }
-            --dayOfYear;
-            ++ret;
+            --currentDayOfYear;
         }
         return ret;
     };
@@ -262,7 +261,7 @@
     }).service("days", function () {
         this.startTime = getStartDay;
         this.endTime = getEndDay;
-        this.tradeDaysFromEndDay = tradeDaysFromEndDay;
+        this.tradeDaysTillNow = tradeDaysTillNow;
     });
 
     angular.module('commonApp').constant('withdraw_sms_content', '您于TIME在牛金网提现AMOUNT元，提现已完成，请注意查收，')

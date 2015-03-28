@@ -325,7 +325,7 @@ function _closeApply(serialID, profit, res) {
                 user.finance.profit += profit;
             }
             if (!apply.isTrial) {
-                var tradeDays = util.tradeDaysFromEndDay(apply.endTime, apply.period);
+                var tradeDays = util.tradeDaysTillNow(apply.startTime, apply.period);
                 var totalServiceFee = util.getServiceFee(apply.amount, apply.period);
                 var actualServiceFee = util.getServiceFee(apply.amount, tradeDays);
                 var returnedServiceFee = totalServiceFee - actualServiceFee;
