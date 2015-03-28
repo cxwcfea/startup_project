@@ -240,7 +240,12 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
             addAlert('danger', '请输入有效的邮箱地址');
             return;
         }
+        if (vm.user.profile.email && vm.user.profile.email_verified && vm.user.profile.email == vm.user_email) {
+            addAlert('danger', '该邮箱已经绑定');
+            return;
+        }
         vm.user.profile.email = vm.user_email;
+        vm.user.profile.email_verified = false;
         $http.post('/api/user/' + vm.user._id, vm.user)
             .success(function(data, status) {
                 $http.post('/user/verify_email', {email:vm.user.profile.email})
