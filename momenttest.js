@@ -325,3 +325,4 @@ var userData = _.omit(userSchema, protectedProperties);
 
 console.log(userData);
 
+console.log('你'.length);

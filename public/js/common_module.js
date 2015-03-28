@@ -264,6 +264,49 @@
         this.tradeDaysTillNow = tradeDaysTillNow;
     });
 
+    var sms_macro = [
+        {
+            name: 'register_content',
+            value: 0,
+            content: '验证码：CODE，用于注册，欢迎来到牛金网，为您提供专业贴心的配资服务。'
+        },
+        {
+            name: 'reset_pass_content',
+            value: 1,
+            content: '验证码：CODE，用于密码重置，请勿泄露给他人！'
+        },
+        {
+            name: 'approve_apply_sms_content',
+            value: 2,
+            content: 'AMOUNT元资金已到账，股票账号ACCOUNT，登录密码PASSWORD，请勿向任何人泄露！'
+        },
+        {
+            name: 'close_apply_sms_content',
+            value: 3,
+            content: '业务结算AMOUNT元（保证金DEPOSIT元，收益PROFIT元）已完成，祝您投资愉快。'
+        },
+        {
+            name: 'pay_success_sms_content',
+            value: 4,
+            content: '充值AMOUNT元已经到账，祝您投资愉快。'
+        },
+        {
+            name: 'warn_sms_content',
+            value: 5,
+            content: '金额为AMOUNT元的操盘业务已经亏损到达警戒线WARN_AMOUNT元，请尽快追加保证金以维持仓位。'
+        },
+        {
+            name: 'sell_sms_content',
+            value: 6,
+            content: '金额为AMOUNT元的操盘业务已经亏损到达平仓线SELL_AMOUNT元，系统已经将交易账户平仓，请登录牛金网查看相应信息。'
+        },
+        {
+            name: 'withdraw_content',
+            value: 7,
+            content: 'AMOUNT元资金提现已完成，请注意查收，当前牛金可用余额为BALANCE元。'
+        }
+    ];
+
     angular.module('commonApp').constant('withdraw_sms_content', '您于TIME在牛金网提现AMOUNT元，提现已完成，请注意查收，')
         .constant('get_profit_sms_content', '您的盈利提取申请已经处理，资金已划入您在牛金网的余额')
         .constant('approve_apply_sms_content', '您有一笔金额为AMOUNT元配资资金已到账，交易账号ACCOUNT，登录密码PASSWORD，您可以通过手机或电脑进行操盘，可以登录牛金网，在我的账户中查看相应账户信息，操盘账户是您操盘的唯一依据，请不要向任何人泄露！')
@@ -271,6 +314,7 @@
         .constant('pay_success_sms_content', '您于TIME在牛金网充值AMOUNT元，资金已经到账，感谢您对牛金网的支持，祝您投资愉快。')
         .constant('warn_sms_content', '您有一笔金额为TOTAL_AMOUNT元的操盘业务已经亏损到达警戒线WARN_AMOUNT元，请尽快追加保证金以维持仓位，您可以登录牛金网进行操作，或者联系QQ客服400 692 1388或电话客服400 692 1388。感谢您对牛金网的支持，祝您投资愉快。')
         .constant('sell_sms_content', '您有一笔金额为TOTAL_AMOUNT元的操盘业务已经亏损到达平仓线SELL_AMOUNT元，系统已经将交易账户平仓，请登录牛金网查看相应信息，或者联系QQ客服400 692 1388或电话客服400 692 1388。感谢您对牛金网的支持，祝您投资愉快。')
+        .constant('sms_macro', sms_macro)
         .constant('service_charge', 19.9)
         .constant('warn_factor', 0.96)
         .constant('sell_factor', 0.94);

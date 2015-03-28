@@ -127,12 +127,12 @@ angular.module('adminApp').controller('AdminOrderListCtrl', ['$scope', '$locatio
     };
 }]);
 
-angular.module('adminApp').controller('WithdrawModalCtrl', ['$scope', '$modalInstance', 'order', 'withdraw_sms_content', function ($scope, $modalInstance, order, withdraw_sms_content) {
+angular.module('adminApp').controller('WithdrawModalCtrl', ['$scope', '$modalInstance', 'order', 'sms_macro', function ($scope, $modalInstance, order, sms_macro) {
     $scope.data = {};
     $scope.bankName = order.cardInfo.bankName;
     $scope.cardID = order.cardInfo.cardID;
     $scope.userName = order.cardInfo.userName;
-    $scope.data.sms_content = withdraw_sms_content;
+    $scope.data.sms_content = sms_macro[7].content.replace('AMOUNT', order.amount);
 
     $scope.ok = function () {
         $modalInstance.close($scope.data);

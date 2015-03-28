@@ -77,10 +77,10 @@ angular.module('adminApp').controller('AdminPendingApplyCtrl', ['$scope', '$http
     vm.sendSMS = function(apply) {
         var modalInstance = $modal.open({
             templateUrl: '/views/smsModal.html',
-            controller: 'SMSModalCtrl',
+            controller: 'SMSModalCtrl2',
             resolve: {
-                serialID: function () {
-                    return apply.serialID;
+                apply: function () {
+                    return apply;
                 }
             }
         });
@@ -102,5 +102,18 @@ angular.module('adminApp').controller('AdminPendingApplyCtrl', ['$scope', '$http
                 });
         }, function () {
         });
+    };
+}]);
+
+angular.module('adminApp').controller('SMSModalCtrl2', ['$scope', '$modalInstance', 'apply', 'sms_macro', function ($scope, $modalInstance, apply, sms_macro) {
+    $scope.show_template = false;
+    $scope.sms_content = sms_macro[2].content.replace('AMOUNT', apply.amount).replace('ACCOUNT', apply.account).replace('PASSWORD', apply.password);
+
+    $scope.ok = function () {
+        $modalInstance.close($scope.sms_content);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
     };
 }]);

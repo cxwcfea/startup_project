@@ -3,15 +3,17 @@
 </div>
 <div class="modal-body">
     <div class="am-form-group">
-        <label for="doc-select-1">模板</label>
-        <select id="doc-select-1" ng-model="content_macro" ng-change="macroChange()">
-            <option value="1">提现结果</option>
-            <option value="2">配资完成</option>
-            <option value="3">结算结果</option>
-            <option value="4">充值提示</option>
-            <option value="5">到达警戒线</option>
-            <option value="6">到达平仓线</option>
-        </select>
+        <div ng-show="show_template">
+            <label for="doc-select-1">模板</label>
+            <select id="doc-select-1" ng-model="content_macro" ng-change="macroChange()">
+                <option value="2">配资完成</option>
+                <option value="3">结算结果</option>
+                <option value="4">充值提示</option>
+                <option value="5">到达警戒线</option>
+                <option value="6">到达平仓线</option>
+                <option value="7">提现结果</option>
+            </select>
+        </div>
         <span class="am-form-caret"></span>
         <label for="sms-content">短信内容</label>
         <textarea class="" rows="6" id="sms-content" ng-model="sms_content"></textarea>

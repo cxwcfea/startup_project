@@ -108,29 +108,36 @@ angular.module('adminApp').controller('AdminUserListCtrl', ['$scope', '$http', '
     */
 }]);
 
-angular.module('adminApp').controller('ModalInstanceCtrl', ['$scope', '$modalInstance', 'withdraw_sms_content', 'approve_apply_sms_content', 'close_apply_sms_content', 'pay_success_sms_content', 'warn_sms_content', 'sell_sms_content', function ($scope, $modalInstance, withdraw_sms_content, approve_apply_sms_content, close_apply_sms_content, pay_success_sms_content, warn_sms_content, sell_sms_content) {
+angular.module('adminApp').controller('ModalInstanceCtrl', ['$scope', '$modalInstance', 'sms_macro', function ($scope, $modalInstance, sms_macro) {
     $scope.sms_content = '您好，我是您在牛金网的专属客服XX。QQ:xxxxxx 微信:xxxxxx 如果您有任何问题都可以24小时随时咨询。牛金网感谢您对我们的支持，祝您股市大赚!';
+    $scope.show_template = true;
 
     $scope.macroChange = function() {
         console.log($scope.content_macro);
         switch ($scope.content_macro) {
+            case '0':
+                $scope.sms_content = sms_macro[0].content;
+                return;
             case '1':
-                $scope.sms_content = withdraw_sms_content;
+                $scope.sms_content = sms_macro[1].content;
                 return;
             case '2':
-                $scope.sms_content = approve_apply_sms_content;
+                $scope.sms_content = sms_macro[2].content;
                 return;
             case '3':
-                $scope.sms_content = close_apply_sms_content;
+                $scope.sms_content = sms_macro[3].content;
                 return;
             case '4':
-                $scope.sms_content = pay_success_sms_content;
+                $scope.sms_content = sms_macro[4].content;
                 return;
             case '5':
-                $scope.sms_content = warn_sms_content;
+                $scope.sms_content = sms_macro[5].content;
                 return;
             case '6':
-                $scope.sms_content = sell_sms_content;
+                $scope.sms_content = sms_macro[6].content;
+                return;
+            case '7':
+                $scope.sms_content = sms_macro[7].content;
                 return;
         }
     };

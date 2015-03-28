@@ -480,9 +480,15 @@ module.exports.sendVerifyCode = function(req, res, next) {
         res.status(400);
         return res.send({success:false, reason:'no mobile specified'});
     }
-    console.log('send verify code');
+    console.log('send verify code ' + req.query.type);
     var code = sms.generateVerifyCode();
-    sms.sendSMS(req.query.mobile, code);
+    if (!req.query.type) {
+        sms.sendSMS(req.query.mobile, code);
+    } else if (req.query.type == 1) {
+        util.sendSMS_0(req.query.mobile, code);
+    } else {
+        util.sendSMS_1(req.query.mobile, code);
+    }
     req.session.sms_code = {
         mobile: req.query.mobile,
         code: code,

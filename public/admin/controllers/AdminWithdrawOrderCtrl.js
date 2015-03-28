@@ -32,9 +32,11 @@ angular.module('adminApp').controller('AdminWithdrawOrderCtrl', ['$scope', '$loc
     };
 
     vm.handleOrder = function(order) {
-        gbUser.get({id:order.userID}, function(user) {
-            currentUser = user;
-        });
+        if (!currentUser) {
+            gbUser.get({id:order.userID}, function(user) {
+                currentUser = user;
+            });
+        }
         var modalInstance = $modal.open({
             templateUrl: '/views/withdrawModal.html',
             controller: 'WithdrawModalCtrl',
@@ -64,7 +66,7 @@ angular.module('adminApp').controller('AdminWithdrawOrderCtrl', ['$scope', '$loc
 
             var data = {
                 user_mobile: currentUser.mobile,
-                sms_content: result.sms_content
+                sms_content: result.sms_content.replace('BALANCE', currentUser.finance.balance)
             };
             $http.post('/admin/api/send_sms', data)
                 .then(function(response) {

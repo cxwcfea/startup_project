@@ -47,7 +47,7 @@
 
         vm.verifyCodeBtnText = '获取验证码';
         vm.verifyBtnDisabled = false;
-        vm.getVerifyCode = function() {
+        vm.getVerifyCode = function(reset) {
             if (vm.verifyBtnDisabled) {
                 return;
             }
@@ -64,7 +64,8 @@
                 }
             }, 1000);
 
-            $http.get('/api/send_sms_verify_code?mobile=' + vm.mobile)
+            var type = reset ? 2 : 1;
+            $http.get('/api/send_sms_verify_code?mobile=' + vm.mobile + '&type=' + type)
                 .success(function(data, status, headers, config) {
                     //addAlert('success', '验证码已发送');
                 })
@@ -92,7 +93,7 @@
                 addAlert('danger', '请输入正确的手机号');
                 return;
             }
-            vm.getVerifyCode();
+            vm.getVerifyCode(true);
         };
 
         vm.requestChangePassNext = function() {

@@ -170,6 +170,10 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
             addAlert('danger', '请输入有效的姓名及身份证号');
             return;
         }
+        if (vm.identity_name.length > 8) {
+            addAlert('danger', '您输入的姓名太长，请重新输入');
+            return;
+        }
         vm.user.identity.name = vm.identity_name;
         vm.user.identity.id = vm.identity_id;
         $http.post('/api/user/' + vm.user._id, vm.user)

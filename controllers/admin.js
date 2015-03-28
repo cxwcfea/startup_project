@@ -394,7 +394,7 @@ function fetchGetProfitOrders(req, res) {
 
 function fetchWithdrawOrders(req, res) {
     logger.debug('fetchWithdrawOrders');
-    Order.find({$and: [{ dealType: 2 }, { status: 2 }]}, function(err, orders) {
+    Order.find({$and: [{ dealType: 2 }, { status: 0 }]}, function(err, orders) {
         if (err) {
             logger.warn(err.toString());
             res.status(401);
