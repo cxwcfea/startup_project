@@ -1,6 +1,9 @@
 var User = require('../models/User'),
+    Apply = require('../models/Apply'),
+    util = require('../lib/util'),
     log4js = require('log4js'),
     logger = log4js.getLogger('admin');
+
 
 function home(req, res, next) {
     if (!req.session.statistic || req.session.statistic.expires < Date.now()) {
@@ -13,26 +16,69 @@ function home(req, res, next) {
                     profit: 10000
                 }];
             }
-            req.session.statistic = {
-                user_count: statistic[0].count,
-                total_capital: statistic[0].capital,
-                total_profit: statistic[0].profit,
-                expires: Date.now() + 3600000 * 6
-            };
+            Apply
+                .find({})
+                .sort({ _id: -1 })
+                .limit(5)
+                .exec(function(err, applies) {
+                    var theApplies;
+                    if (!applies) {
+                        theApplies = [
+                            {
+                                userMobile: '134******20',
+                                amount: 50000
+                            },
+                            {
+                                userMobile: '131******06',
+                                amount: 100000
+                            },
+                            {
+                                userMobile: '138******19',
+                                amount: 200000
+                            },
+                            {
+                                userMobile: '159******65',
+                                amount: 2000
+                            },
+                            {
+                                userMobile: '135******14',
+                                amount: 250000
+                            }
+                        ];
+                    } else {
+                        theApplies = applies.map(function(a) {
+                            return {
+                                userMobile: util.mobileDisplay(a.userMobile),
+                                amount: a.amount
+                            }
+                        });
+                    }
+                    console.log(applies);
+                    req.session.statistic = {
+                        user_count: statistic[0].count,
+                        total_capital: statistic[0].capital,
+                        total_profit: statistic[0].profit,
+                        show_applies: theApplies,
+                        expires: Date.now() + 3600000 * 1
+                    };
 
-            res.locals.main_menu = true;
-            res.render('home', {
-                user_count: req.session.statistic.user_count,
-                total_capital: req.session.statistic.total_capital,
-                total_profit: req.session.statistic.total_profit
-            });
+                    console.log(req.session.statistic);
+                    res.locals.main_menu = true;
+                    res.render('home', {
+                        user_count: req.session.statistic.user_count,
+                        total_capital: req.session.statistic.total_capital,
+                        total_profit: req.session.statistic.total_profit,
+                        apply_infos: req.session.statistic.show_applies
+                    });
+                });
         });
     } else {
         res.locals.main_menu = true;
         res.render('home', {
             user_count: req.session.statistic.user_count,
             total_capital: req.session.statistic.total_capital,
-            total_profit: req.session.statistic.total_profit
+            total_profit: req.session.statistic.total_profit,
+            apply_infos: req.session.statistic.show_applies
         });
     }
 }
