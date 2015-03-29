@@ -47,9 +47,8 @@ function fetchAppliesForUser(req, res, next) {
 }
 
 function updateApplyForUser(req, res, next) {
-    console.log(req.body);
+    logger.info('updateApplyForUser operator:' + req.user.mobile);
     var data = _.omit(req.body, ['start_date', 'end_date']);
-    console.log(data);
     if (req.body._id) {
         Apply.update({_id:req.body._id}, req.body, function(err, numberAffected, raw) {
             if(err) {
@@ -66,6 +65,7 @@ function updateApplyForUser(req, res, next) {
 
 function updateOrder(req, res) {
     if (req.body._id) {
+        logger.info('updateOrder operator:' + req.user.mobile);
         Order.update({_id:req.body._id}, req.body, function(err, numberAffected, raw) {
             if(err) {
                 logger.warn('error when update order by admin:', err.toString());
@@ -88,6 +88,7 @@ function createOrder(req, res) {
         res.status(400);
         return res.send({});
     }
+    logger.info('createOrder operator:' + req.user.mobile);
     var orderData = {
         userID: req.body.userID,
         userMobile: req.body.userMobile,
@@ -136,6 +137,7 @@ function fetchNearExpireApplies(req, res) {
 
 function updateUser(req, res) {
     if (req.body._id) {
+        logger.info('updateUser operator:' + req.user.mobile);
         User.update({_id:req.body._id}, req.body, function(err, numberAffected, raw) {
             if(err) {
                 logger.warn('error when update user by admin:', err.toString());
@@ -172,6 +174,7 @@ function fetchClosingApplies(req, res) {
 }
 
 function assignAccoutToApply(req, res) {
+    logger.info('assignAccountToApply operator:' + req.user.mobile);
     if (req.body.homas) {
         homasAssignAccount(req, res);
     } else {
@@ -404,7 +407,7 @@ function _closeApply(serialID, profit, res) {
 }
 
 function closeApply(req, res) {
-    console.log(req.body);
+    logger.info('closeApply operator:' + req.user.mobile);
     var profit = req.body.profit;
     _closeApply(req.body.apply_serial_id, Number(profit), res);
 }
@@ -434,6 +437,7 @@ function fetchWithdrawOrders(req, res) {
 
 function handleWithdrawOrder(req, res) {
     if (req.params.order_id && req.body && req.body.uid && req.body.bank_trans_id) {
+        logger.info('handleWithdrawOrder operator:' + req.user.mobile);
         async.waterfall([
             function(callback) {
                 Order.update({_id:req.params.order_id}, {status: 1, bankTransID:req.body.bank_trans_id}, function(err, numberAffected, raw) {
@@ -506,6 +510,7 @@ function confirmAlipayOrder(req, res) {
             res.status(500);
             return res.send({error_msg:err.toString()});
         }
+        logger.info('confirmAlipayOrder operator:' + req.user.mobile);
         if (order) {
             if (order.status != 2) {
                 logger.warn('confirmAlipayOrder error: only order in not pay status can be approved');
@@ -553,6 +558,7 @@ function deleteAlipayOrder(req, res) {
         res.status(400);
         return res.send({error_msg:'empty request'});
     }
+    logger.info('deleteAlipayOrder operator:' + req.user.mobile);
     Order.find({ $and: [{_id: req.params.id }, {status: 2}] }).remove(function(err, order) {
         if (err) {
             res.status(500);

@@ -42,7 +42,8 @@ module.exports = function(app, config) {
             break;
         case 'production':
             // module 'express-logger' supports daily log rotation
-            app.use(require('express-logger')({ path: config.rootPath + '/log/requests.log'}));
+            app.use(logger('tiny'));
+            //app.use(require('express-logger')({ path: config.rootPath + '/log/requests.log'}));
             log4js.configure({
                 appenders: [
                     { type: 'console' },
