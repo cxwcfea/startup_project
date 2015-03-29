@@ -432,6 +432,39 @@ function fetchWithdrawOrders(req, res) {
     });
 }
 
+function handleWithdrawOrder(req, res) {
+    if (req.params.order_id && req.body && req.body.uid && req.body.bank_trans_id) {
+        async.waterfall([
+            function(callback) {
+                Order.update({_id:req.params.order_id}, {status: 1, bankTransID:req.body.bank_trans_id}, function(err, numberAffected, raw) {
+                    callback(err);
+                });
+            },
+            function(callback) {
+                Order.findById(req.params.order_id, function(err, order) {
+                    callback(err, order);
+                });
+            },
+            function(order, callback) {
+                User.update({_id:req.body.uid}, {$inc: {'finance.freeze_capital':-order.amount}}, function(err, numberAffected, raw) {
+                    callback(err, order);
+                });
+            }
+        ], function(err, order) {
+            if (err) {
+                logger.warn('handleWithdrawOrder fail:', err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            } else {
+                res.send(order);
+            }
+        });
+    } else {
+        res.status(400);
+        res.send({});
+    }
+}
+
 function getApply(req, res) {
     Apply.findOne({serialID:req.params.serial_id}, function(err, apply) {
         if (err) {
@@ -675,6 +708,8 @@ module.exports = {
         app.get('/admin/api/orders/get_profit', passportConf.requiresRole('admin'), fetchGetProfitOrders);
 
         app.get('/admin/api/orders/withdraw', passportConf.requiresRole('admin'), fetchWithdrawOrders);
+
+        app.post('/admin/api/user/withdraw/:order_id', passportConf.requiresRole('admin'), handleWithdrawOrder);
 
         app.get('/admin/api/orders/add_deposit', passportConf.requiresRole('admin'), fetchAddDepositOrders);
 

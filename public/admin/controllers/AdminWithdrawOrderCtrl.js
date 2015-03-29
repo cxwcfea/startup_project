@@ -51,22 +51,25 @@ angular.module('adminApp').controller('AdminWithdrawOrderCtrl', ['$scope', '$loc
                 gbNotifier.error('必须输入银行单号！');
                 return;
             }
-            order.bankTransID = result.bank_trans_id;
-            order.status = 1;
 
-            $http.post('/admin/api/orders/:id', order)
+            var data = {
+                uid: order.userID,
+                bank_trans_id: result.bank_trans_id
+            };
+
+            $http.post('/admin/api/user/withdraw/' + order._id, data)
                 .success(function(data, status, headers, config) {
                     order = data;
                     gbNotifier.notify('更新成功');
                 }).
                 error(function(data, status, headers, config) {
-                    gbNotifier.error('结算失败:' + data.reason);
-                    gbNotifier.error('更新失败:' + data.reason);
+                    gbNotifier.error('更新失败:' + data.error_msg);
                 });
 
+            currentUser.finance.freeze_capital -= order.amount;
             var data = {
                 user_mobile: currentUser.mobile,
-                sms_content: result.sms_content.replace('BALANCE', currentUser.finance.balance)
+                sms_content: result.sms_content.replace('BALANCE', currentUser.finance.balance.toFixed(2))
             };
             $http.post('/admin/api/send_sms', data)
                 .then(function(response) {

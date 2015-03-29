@@ -1,5 +1,6 @@
 var moment = require('moment');
 var _ = require('lodash');
+var User = require('./models/User');
 
     var vm = {user:'cxwcfea', amount:20, profile: {email:'cxwcfea@163.com', name:'cxwcfea'}};
 	var orders = [
@@ -326,3 +327,4 @@ var userData = _.omit(userSchema, protectedProperties);
 console.log(userData);
 
 console.log('你'.length);
+

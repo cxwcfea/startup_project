@@ -369,6 +369,7 @@ module.exports.postWithdraw = function(req, res) {
         },
         function(user, callback) {
             data.order.status = 0;
+            data.order.userBalance = user.finance.balance - amount;
             Order.create(data.order, function(err, order) {
                 callback(err, user, order);
             });

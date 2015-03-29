@@ -35,6 +35,9 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
             order_list = $filter('orderBy')(order_list, 'createdAt', true);
             currentOrders = order_list;
             pageReset();
+            if (vm.cards.length > 0) {
+                vm.selectedCard = vm.cards[0];
+            }
             if (vm.pay_order_id) {
                 vm.pay_order = _.find(order_list, { '_id': vm.pay_order_id });
                 if (vm.pay_order) {
