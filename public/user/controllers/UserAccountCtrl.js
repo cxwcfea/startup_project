@@ -1,5 +1,5 @@
 'use strict';
-angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$window', '$http', '$interval', '$location', function($scope, $filter, $window, $http, $interval, $location) {
+angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$window', '$http', '$interval', '$location', '$timeout', function($scope, $filter, $window, $http, $interval, $location, $timeout) {
     var vm = this;
     $('.footer').addClass('marTop200');
 
@@ -229,6 +229,9 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
                 vm.confirm_finance_pass = '';
                 vm.verify_code = '';
                 resetUserInfoItem();
+                $timeout(function() {
+                    vm.currentCategory = vm.categories[0];
+                }, 2000);
             })
             .error(function(data, status, headers, config) {
                 addAlert('danger', data.error_msg);
