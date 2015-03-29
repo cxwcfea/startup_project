@@ -53,7 +53,6 @@ function home(req, res, next) {
                             }
                         });
                     }
-                    console.log(applies);
                     req.session.statistic = {
                         user_count: statistic[0].count,
                         total_capital: statistic[0].capital,
@@ -62,7 +61,6 @@ function home(req, res, next) {
                         expires: Date.now() + 3600000 * 1
                     };
 
-                    console.log(req.session.statistic);
                     res.locals.main_menu = true;
                     res.render('home', {
                         user_count: req.session.statistic.user_count,

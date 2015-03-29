@@ -67,7 +67,7 @@
                     <input  type="button" name="" id="verify-code-btn" value="\{{vm.verifyCodeBtnText}}" class="recBtn03" ng-class="{recBtn03_disabled:vm.verifyBtnDisabled}" ng-click="vm.getVerifyCode()">
                 </div>
             </div>
-            <p class="p02"><span class="jq_p02" ng-show="vm.verify_code_error">验证码错误，请重新输入</span></p>
+            <p class="p02"><span class="jq_p02" ng-show="vm.verify_code_error">\{{vm.signup_error_msg}}</span></p>
             <input type="button" ng-click="vm.confirmVerifyCode()" value="确定" class="recBtn04">
         </div>
     </div>

@@ -11,7 +11,8 @@ var express = require('express'),
     flash = require('express-flash'),
     credentials = require('../credentials.js'),
     mongoSessionStore = require('session-mongoose')(require('connect')),
-    exphbs = require('express-handlebars');
+    exphbs = require('express-handlebars'),
+    log4js = require('log4js');
 
 module.exports = function(app, config) {
 	app.set('port', config.port);
@@ -42,6 +43,12 @@ module.exports = function(app, config) {
         case 'production':
             // module 'express-logger' supports daily log rotation
             app.use(require('express-logger')({ path: config.rootPath + '/log/requests.log'}));
+            log4js.configure({
+                appenders: [
+                    { type: 'console' },
+                    { type: 'file', filename: 'log/server.log' }
+                ]
+            });
             break;
     }
 

@@ -76,7 +76,14 @@
 
         vm.confirmVerifyCode = function() {
             if (!vm.verify_code) {
-                addAlert('danger', '请输入验证码');
+                //addAlert('danger', '请输入验证码');
+                vm.signup_error_msg = '请输入验证码';
+                vm.verify_code_error = true;
+                return;
+            }
+            if (vm.verify_code.length != 4) {
+                vm.signup_error_msg = '验证码错误，请重新输入';
+                vm.verify_code_error = true;
                 return;
             }
             $http.post('/finish_signup', {mobile:vm.mobile, verify_code:vm.verify_code})
@@ -84,7 +91,9 @@
                     $window.location.replace('/');
                 })
                 .error(function(data, status, headers, config) {
-                    addAlert('danger', data.error_msg);
+                    //addAlert('danger', data.error_msg);
+                    vm.signup_error_msg = data.error_msg;
+                    vm.verify_code_error = true;
                 });
         };
 
