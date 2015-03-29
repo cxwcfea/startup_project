@@ -26,7 +26,7 @@
                 });
             }
         });
-        vm.currentPayType = 0;
+        vm.currentPayType = 1;
         vm.useCredit = false;
         vm.BankNameList = BankNameList;
         vm.bankObj = vm.BankNameList[0];
@@ -62,6 +62,10 @@
         vm.selectPayType = function (type) {
             vm.alerts = [];
             vm.alipayConfirm = false;
+            if (type.value == 0) {
+                addAlert('danger', '抱歉，网银充值暂不可用');
+                type = vm.payType[1];
+            }
             vm.currentPayType = type.value;
         };
 
