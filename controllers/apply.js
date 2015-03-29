@@ -360,8 +360,8 @@ exports.freeApply = function(req, res, next) {
                 userID: req.user._id,
                 userMobile: req.user.mobile,
                 serialID: util.generateSerialID(),
-                amount: 2001,
-                deposit: 0,
+                amount: 2000,
+                deposit: 1,
                 isTrial: true,
                 status: 4,
                 period: 2
@@ -380,7 +380,8 @@ exports.freeApply = function(req, res, next) {
                         return next();
                     }
                     user.finance.balance -= 1;
-                    user.finance.total_capital += 2001;
+                    user.finance.total_capital += 2000;
+                    user.finance.deposit += 1;
                     user.freeApply = apply.serialID;
                     user.save(function (err, user) {
                         if (err) {

@@ -541,14 +541,49 @@ function confirmAlipayOrder(req, res) {
                             }
                             util.sendSMS_8(user.mobile, order.amount.toFixed(2));
                             if (order.applySerialID) {
-                                Apply.update({serialID:order.applySerialID}, {status:4}, function(err, numberAffected, raw) {
+                                Apply.findOne({serialID:order.applySerialID}, function(err, apply) {
                                     if (err) {
                                         logger.warn('confirmAlipayOrder error when update apply:' + err.toString());
+                                        res.status(500);
+                                        return res.send({error_msg:'confirmAlipayOrder error when update apply:' + err.toString()});
                                     }
-                                    user.update({$inc: {'finance.freeze_capital':apply.deposit}}, {$inc: {'finance.total_capital':apply.amount}}, {$inc: {'finance.balance':-apply.deposit}}, function(err, numberAffected, raw) {
-                                        callback(err, order);
+                                    apply.status = 4;
+                                    apply.save(function(err) {
+                                        if (err) {
+                                            logger.warn('confirmAlipayOrder error when update apply:' + err.toString());
+                                            res.status(500);
+                                            return res.send({error_msg:'confirmAlipayOrder error when update apply:' + err.toString()});
+                                        }
+                                        var serviceFee = util.getServiceFee(apply.amount, apply.period);
+                                        if (apply.isTrial) {
+                                            serviceFee = 0;
+                                        }
+                                        var total = serviceFee + apply.deposit;
+                                        var orderData = {
+                                            userID: user._id,
+                                            userMobile: user.mobile,
+                                            userBalance: user.finance.balance - apply.deposit,
+                                            dealType: 9,
+                                            amount: apply.deposit,
+                                            status: 1,
+                                            description: '支付配资保证金'
+                                        };
+                                        Order.create(orderData, function(err, order) {
+                                            if (err) {
+                                                logger.error('confirmAlipayOrder error when create order:' + err.toString());
+                                                res.status(500);
+                                                return res.send({error_msg:'confirmAlipayOrder error when create order:' + err.toString()});
+                                            }
+                                            user.update({$inc: {'finance.freeze_capital':serviceFee, 'finance.total_capital':apply.amount, 'finance.balance':-total, 'finance.deposit':apply.deposit}}, function(err, numberAffected, raw) {
+                                                if (err) {
+                                                    logger.error('confirmAlipayOrder error when update user:' + err.toString());
+                                                    res.status(500);
+                                                    return res.send({error_msg:'confirmAlipayOrder error:' + err.toString()});
+                                                }
+                                                res.send({});
+                                            });
+                                        });
                                     });
-                                    res.send({});
                                 });
                             } else {
                                 res.send({});
@@ -557,7 +592,7 @@ function confirmAlipayOrder(req, res) {
                     } else {
                         logger.warn('confirmAlipayOrder error:user not found');
                         res.status(400);
-                        res.send({});
+                        res.send({error_msg:'confirmAlipayOrder error:user not found'});
                     }
                 });
             })
