@@ -79,6 +79,34 @@ function updateOrder(req, res) {
     }
 }
 
+function createOrder(req, res) {
+    if (!req.body || !req.body.userID || !req.body.userMobile || !req.body.order_type || !req.body.order_amount) {
+        res.status(400);
+        return res.send({});
+    }
+    if (req.body.order_type < 1 || req.body.order_amount < 0) {
+        res.status(400);
+        return res.send({});
+    }
+    var orderData = {
+        userID: req.body.userID,
+        userMobile: req.body.userMobile,
+        dealType: req.body.order_type,
+        amount: req.body.order_amount,
+        status: 0,
+        description: req.body.order_description ? req.body.order_description : '',
+        bankTransID: req.body.order_bank_trans_id ? req.body.order_bank_trans_id : ''
+    };
+    Order.create(orderData, function(err, order) {
+        if (err) {
+            logger.debug('createOrder error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send({});
+    });
+}
+
 function fetchOrdersForUser(req, res) {
     logger.debug(req.params.uid);
     Order.find({userID:req.params.uid}, function(err, order) {
@@ -665,6 +693,8 @@ module.exports = {
         app.get('/api/auto_fetch_closing_settlement', passportConf.requiresRole('admin'), autoFetchClosingSettlement);
 
         app.get('/api/auto_approve_closing_settlement', passportConf.requiresRole('admin'), autoApproveClosingSettlement);
+
+        app.post('/admin/api/create/order', passportConf.requiresRole('admin'), createOrder);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

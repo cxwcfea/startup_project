@@ -106,6 +106,36 @@ angular.module('adminApp').controller('AdminUserListCtrl', ['$scope', '$http', '
         });
     };
     */
+
+    vm.createOrder = function(user) {
+        var modalInstance = $modal.open({
+            templateUrl: 'views/createOrderModel.html',
+            controller: 'CreateOrderModalCtrl',
+            //size: size,
+            resolve: {
+                user: function () {
+                    return user;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (result) {
+            if (!result.order_amount || result.order_amount < 0) {
+                gbNotifier.error('请输入有效的订单金额！');
+            } else {
+                result.userMobile = user.mobile;
+                result.userID = user._id;
+                $http.post('/admin/api/create/order', result)
+                    .success(function(data, status) {
+                        gbNotifier.notify('订单创建成功！');
+                    })
+                    .error(function(data, status) {
+                        gbNotifier.notify('订单创建失败:' + data.error_msg);
+                    });
+            }
+        }, function () {
+        });
+    };
 }]);
 
 angular.module('adminApp').controller('ModalInstanceCtrl', ['$scope', '$modalInstance', 'sms_macro', function ($scope, $modalInstance, sms_macro) {
@@ -154,6 +184,20 @@ angular.module('adminApp').controller('ModalInstanceCtrl', ['$scope', '$modalIns
 angular.module('adminApp').controller('UserUpdateModalCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
     $scope.ok = function () {
         $modalInstance.close($scope.user);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+}]);
+
+angular.module('adminApp').controller('CreateOrderModalCtrl', ['$scope', '$modalInstance', 'user', function ($scope, $modalInstance, user) {
+    $scope.userMobile = user.mobile;
+    $scope.data = {};
+    $scope.data.order_type = 1;
+
+    $scope.ok = function () {
+        $modalInstance.close($scope.data);
     };
 
     $scope.cancel = function () {
