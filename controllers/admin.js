@@ -545,6 +545,9 @@ function confirmAlipayOrder(req, res) {
                                     if (err) {
                                         logger.warn('confirmAlipayOrder error when update apply:' + err.toString());
                                     }
+                                    user.update({$inc: {'finance.freeze_capital':apply.deposit}}, {$inc: {'finance.total_capital':apply.amount}}, {$inc: {'finance.balance':-apply.deposit}}, function(err, numberAffected, raw) {
+                                        callback(err, order);
+                                    });
                                     res.send({});
                                 });
                             } else {
