@@ -534,6 +534,7 @@ function confirmAlipayOrder(req, res) {
                                 res.status(500);
                                 return res.send({error_msg:err.toString()});
                             }
+                            util.sendSMS_8(user.mobile, order.amount.toFixed(2));
                             res.send({});
                         });
                     }
