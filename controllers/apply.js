@@ -457,7 +457,6 @@ exports.confirmApply = function(req, res, next) {
         if (err || !apply) {
             return next();
         }
-        logger.error(req.user._id + ' ' + apply.userID);
         if (req.user._id != apply.userID) {
             res.status(406);
             logger.warn('error when placeNewApply: not the same user who create the apply');
@@ -505,11 +504,18 @@ exports.postConfirmApply = function(req, res, next) {
             if (err) {
                 res.status(503);
                 logger.warn('postConfirmApply error:' + err.toString());
+                return res.send({error_msg:'postConfirmApply error:' + err.toString()});
             }
             apply.orderID = order._id;
-            apply.peroid = applyData.period;
+            apply.period = Number(applyData.period);
+            var startDay = util.getStartDay();
+            apply.startTime = startDay.toDate();
+            apply.endTime = util.getEndDay(startDay, apply.period).toDate();
             apply.save(function(err) {
-                if (err) next();
+                if (err) {
+                    res.status(500);
+                    return res.send({error_msg:err.toString()});
+                }
                 res.send({order:order, apply:apply});
             });
         });
