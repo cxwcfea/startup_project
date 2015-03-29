@@ -55,7 +55,7 @@ function home(req, res, next) {
                     }
                     req.session.statistic = {
                         user_count: statistic[0].count,
-                        total_capital: statistic[0].capital,
+                        total_capital: statistic[0].capital + statistic[0].profit,
                         total_profit: statistic[0].profit,
                         show_applies: theApplies,
                         expires: Date.now() + 3600000 * 1
