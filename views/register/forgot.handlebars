@@ -4,7 +4,7 @@
         <div class="clear"></div>
     </div>
     {{> flash}}
-    <div id="box1" ng-hide="vm.show_forgot_step_2">
+    <div id="box1">
         <div class="carFormBox marTop25">
             <div class="cartTitle fl">
                 手机号码：
@@ -18,7 +18,7 @@
                 验证码：
             </div>
             <div class="cartFomeContent fl">
-                <a href="javascript:" class="carbtn02" ng-click="vm.requestVerifyCode()">\{{vm.verifyCodeBtnText}}</a>
+                <a href="" class="carbtn02" ng-click="vm.requestVerifyCode()">\{{vm.verifyCodeBtnText}}</a>
                 <input type="text" class="inputText inputYzm" ng-model="vm.verify_code" required>
             </div>
         </div>
@@ -38,7 +38,7 @@
                 <input type="password" name="confirm_password" placeholder="保持密码一致" class="inputText" minlength="6" maxlength="20" ng-model="vm.confirm_password" required>
             </div>
         </div>
-        <a href="javascript:" class="ideBtn01 RegBtn01" ng-click="vm.requestChangePass()">重置密码</a>
+        <a href="" class="ideBtn01 RegBtn01" ng-click="vm.requestChangePass()">重置密码</a>
     </div>
     <!--
     <div id="box2" ng-show="vm.show_forgot_step_2">

@@ -132,6 +132,8 @@ module.exports = function(app) {
 
     app.post('/api/user/:uid/orders', orders.addOrderForUser);
 
+    app.post('/api/user/:uid/orders/:id', orders.updateOrder);
+
     app.get('/api/user/:uid/orders/:id', passportConf.isAuthenticated, orders.fetchOrderForUser);
 
     app.post('/api/orders/:id', orders.updateOrder);

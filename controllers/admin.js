@@ -540,8 +540,21 @@ function confirmAlipayOrder(req, res) {
                                 return res.send({error_msg:err.toString()});
                             }
                             util.sendSMS_8(user.mobile, order.amount.toFixed(2));
-                            res.send({});
+                            if (order.applySerialID) {
+                                Apply.update({serialID:order.applySerialID}, {status:4}, function(err, numberAffected, raw) {
+                                    if (err) {
+                                        logger.warn('confirmAlipayOrder error when update apply:' + err.toString());
+                                    }
+                                    res.send({});
+                                });
+                            } else {
+                                res.send({});
+                            }
                         });
+                    } else {
+                        logger.warn('confirmAlipayOrder error:user not found');
+                        res.status(400);
+                        res.send({});
                     }
                 });
             })

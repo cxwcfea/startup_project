@@ -54,7 +54,7 @@
                     <td ng-class="{color_c82217: apply.status === 2, color_f2991b: apply.status === 5}">\{{apply.status | applyStatus}}</td>
                     <td>
                         <div class="pr glBox">
-                            <a href="javascript:" ng-click="homeVM.manageApply(apply)">详情</a> | <span class="tableSpan" ng-mousedown="homeVM.toggleDetail($event, $index)">操盘账户</span>
+                            <a href="" ng-click="homeVM.manageApply(apply)">详情</a> | <span class="tableSpan" ng-mousedown="homeVM.toggleDetail($event, $index)">操盘账户</span>
                             <div class="tablenr jq_tablenr" ng-show="homeVM.showApplyAccount === $index" ng-mouseleave="homeVM.toggleDetail($event)">
                                 <div class="tableNrImg"></div>
                                 <p><span class="tableSpan02">账户：<span id="code01" class="jq_span">\{{apply.account}}</span></span> <!--<a href="javascript:">复制</a>--></p>

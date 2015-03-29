@@ -41,4 +41,5 @@
             <pagination class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="capitalVM.itemsPerPage" total-items="capitalVM.totalItems" ng-model="capitalVM.currentPage" ng-change="capitalVM.pageChanged()"></pagination>
         </div>
     </div>
+    <alert ng-repeat="alert in capitalVM.alerts" type="{{alert.type}}" close="capitalVM.closeAlert($index)">{{alert.msg}}</alert>
 </div>

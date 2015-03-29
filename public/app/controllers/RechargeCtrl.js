@@ -64,7 +64,7 @@
             vm.alipayConfirm = false;
             if (type.value == 0) {
                 addAlert('danger', '抱歉，网银充值暂不可用');
-                type = vm.payType[1];
+                type = vm.payTypes[1];
             }
             vm.currentPayType = type.value;
         };
@@ -126,22 +126,34 @@
                 return;
             }
             vm.alipayConfirm = true;
-            var newOrder = new njOrder({uid:vm.user._id});
-            newOrder.userID = vm.user._id;
-            newOrder.userMobile = vm.user.mobile;
-            newOrder.dealType = 1;
-            newOrder.amount = Number(vm.pay_amount.toFixed(2));
-            newOrder.description = '支付宝转账';
-            newOrder.payType = 3;
-            newOrder.status = 2;
-            newOrder.otherInfo = vm.alipay_account;
-            newOrder.transID = vm.alipay_name;
-            newOrder.$save(function(o, responseHeaders) {
-                console.log('order create success');
-            }, function(response) {
-                console.log('order create failed');
-                addAlert('danger', '服务暂时不可用，请稍后再试');
-            });
+            if (vm.pay_order) {
+                vm.pay_order.payType = 3;
+                vm.pay_order.otherInfo = vm.alipay_account;
+                vm.pay_order.transID = vm.alipay_name;
+                vm.pay_order.$save(function(o, responseHeaders) {
+                    console.log('order update success');
+                }, function(response) {
+                    console.log('order update failed');
+                    addAlert('danger', '服务暂时不可用，请稍后再试');
+                });
+            } else {
+                var newOrder = new njOrder({uid:vm.user._id});
+                newOrder.userID = vm.user._id;
+                newOrder.userMobile = vm.user.mobile;
+                newOrder.dealType = 1;
+                newOrder.amount = Number(vm.pay_amount.toFixed(2));
+                newOrder.description = '支付宝转账';
+                newOrder.payType = 3;
+                newOrder.status = 2;
+                newOrder.otherInfo = vm.alipay_account;
+                newOrder.transID = vm.alipay_name;
+                newOrder.$save(function(o, responseHeaders) {
+                    console.log('order create success');
+                }, function(response) {
+                    console.log('order create failed');
+                    addAlert('danger', '服务暂时不可用，请稍后再试');
+                });
+            }
         };
 
         vm.sendSMSBandInfo = function() {

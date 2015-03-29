@@ -158,6 +158,8 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
         } else if (c.value === 2) {
             pageReset();
         }
+        vm.finance_password = null;
+        vm.withdrawAmount = null;
         vm.alerts = [];
     };
 
@@ -269,6 +271,7 @@ angular.module('userApp').controller('UserCapitalCtrl', ['$scope', '$http', '$wi
                 order_list.unshift(data.order);
                 currentOrders = order_list;
                 pageReset();
+                vm.currentCategory = vm.categories[1];
                 addAlert('success', '您的提现申请已经提交,我们会尽快处理!');
             })
             .error(function(data, status, headers, config) {
