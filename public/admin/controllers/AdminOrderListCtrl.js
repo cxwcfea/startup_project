@@ -129,6 +129,7 @@ angular.module('adminApp').controller('AdminOrderListCtrl', ['$scope', '$locatio
 
 angular.module('adminApp').controller('WithdrawModalCtrl', ['$scope', '$modalInstance', 'order', 'sms_macro', function ($scope, $modalInstance, order, sms_macro) {
     $scope.data = {};
+    $scope.bank = order.cardInfo.bank;
     $scope.bankName = order.cardInfo.bankName;
     $scope.cardID = order.cardInfo.cardID;
     $scope.userName = order.cardInfo.userName;

@@ -333,7 +333,6 @@ function _closeApply(serialID, profit, res) {
         function(apply, callback) {
             var balance = apply.deposit + profit;
             if (apply.isTrial) {
-                balance += 1;
                 if (balance < 1)
                     balance = 1;
             }
