@@ -299,9 +299,7 @@ module.exports.postVerifyEmail = function(req, res, next) {
                 from: 'niu_jin_wang@qq.com',
                 subject: '欢迎加入牛金网',
                 generateTextFromHTML: true,
-                text: user.mobile + '，您好 \n\n请点击下面链接，完成邮箱认证，提升您在牛金网账户的安全性。\n\n' +
-                config.pay_callback_domain + '/user/verifyEmail/' + token + '\n\n' +
-                '如果您不能点击上面链接，还可以将一下链接复制到浏览器地址栏中访问：\n\n' +
+                text: util.mobileDisplay(user.mobile) + '，您好 \n\n欢迎使用牛金网，为提升您账单信息安全性，请复制以下链接在浏览器地址栏中打开，以完成邮箱绑定。\n\n' +
                 config.pay_callback_domain + '/user/verifyEmail/' + token + '\n\n'
             };
             transporter.sendMail(mailOptions, function(err) {
