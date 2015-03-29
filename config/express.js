@@ -53,7 +53,7 @@ module.exports = function(app, config) {
     app.use(expressValidator());
     app.use(session({
         cookie: {
-            maxAge: 24 * 60 * 60 * 1000
+            maxAge: 2 * 60 * 60 * 1000
         },
         store: sessionStore,
         secret: 'the secret key',
