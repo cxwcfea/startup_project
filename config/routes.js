@@ -183,28 +183,4 @@ module.exports = function(app) {
         res.locals.other_menu = true;
         res.render('info/' + req.params[0]);
     });
-
-    app.get('/recharge2', passportConf.isAuthenticated, function(req, res, next) {
-        res.render('recharge2', {
-            layout: null
-        });
-    });
-
-    app.get('/admin_test', passportConf.requiresRole('admin'), function(req, res, next) {
-        res.render('admin_test');
-    });
-
-    function getClientIp(req) {
-        return req.headers['x-forwarded-for'] ||
-            req.connection.remoteAddress ||
-            req.socket.remoteAddress ||
-            req.connection.socket.remoteAddress;
-    }
-
-    app.post('/testpay', function(req, res, nest) {
-        console.log(req.body);
-        console.log('client ip:' + req.ip);
-        console.log(getClientIp(req));
-        res.send({});
-    });
 };
