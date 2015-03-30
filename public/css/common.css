@@ -870,8 +870,8 @@ span.loginSpan{
 	width: 17px;
 	height: 17px;
 	background: url(../images/close.png) no-repeat;
-	right:5px;
-	top: 5px;
+	right:20px;
+	top: 10px;
 	cursor: pointer;
 	
 }

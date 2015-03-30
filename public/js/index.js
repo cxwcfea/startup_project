@@ -26,9 +26,11 @@ $(function () {
      });
      */
 
+    /*
     $(".jq_loginClose").click(function () {
         $(".loginTcc").hide();
     });
+    */
 
     var speed=80; //数字越大速度越慢
     var tab=document.getElementById("demo");

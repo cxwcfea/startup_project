@@ -68,6 +68,56 @@ input.LoginBtn01{
     -webkit-user-select: none;
 }
 
+.rec2_yhBox .zfbLeft {
+    width: 400px;
+}
+
+.rec2_yhBox .zfbBox {
+    margin-top: 0px;
+}
+
+#payConfirm {
+    border: none;
+    height: 220px;
+}
+
+.payConfirmLeft {
+    width: 180px;
+}
+
+.payConfirmRight {
+    width: 600px;
+}
+
+.payConfirmRight img {
+    border: 1px solid #e6e6e6;
+}
+
+.payConfirmRight .firstLine {
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.payConfirmLeft .span02 {
+    margin-left: 20px;
+}
+
+.payConfirmRight .span02 {
+    margin-left: 50px;
+}
+
+#balanceTitle {
+    margin-left: 20px;
+    margin-right: 82px;
+}
+
+.payConfirmRight .rec2_btn {
+    margin: 20px 0 0 0;
+}
+
+.serviceBox{
+    right: 30px;
+}
+
 /* for toaster */
 .toast-top-right {
     top: 70px;

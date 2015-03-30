@@ -1,7 +1,10 @@
 {{#if bootstrappedUserObject}}
     <script> window.bootstrappedUserObject = {{{bootstrappedUserObject}}} </script>
 {{/if}}
-<div class="wrapper paddTop30" ng-controller="RechargeCtrl2 as vm">
+{{#if bootstrappedOrderObject}}
+    <script> window.bootstrappedOrderObject = {{{bootstrappedOrderObject}}} </script>
+{{/if}}
+<div class="wrapper paddTop30" ng-controller="RechargeCtrl2 as vm" ng-cloak>
     <div class="rec2_center">
         <div class="rec2_top">
             <div class="fl rec2_topText">
@@ -9,209 +12,187 @@
                 <a href="">订单详情</a>
             </div>
             <div class="fr rec2_topText2">
-                <span>1000.00</span>&nbsp;元
+                <span>\{{vm.pay_order.amount | currency:'':2}}</span>&nbsp;元
             </div>
         </div>
-        <div class="rec2_textBox">
-            <input type="checkbox" name="" id="" value="" />
-            &nbsp;<span class="span02">可用余额</span><span class="span01">\{{vm.user.finance.balance}}</span>&nbsp;&nbsp;元
-        </div>
-        <div class="rec2_zflist jq_rec2_zflist">
-            <div class="rec2_yhBox jq_rec2_yhBox ">
-                <div class="rec2_yhkText">
-                    <div class="rec2_img fl"></div>
-                    <div class="fl">网上银行</div>
-                    <div class="fl rec2_yhkBox jq_rec2_yhkBox">
-                        <span><img ng-src="\{{vm.BankNameList[vm.payBank].img}}"></span>
-                        <span ng-show="vm.payBank === -1">&nbsp;&nbsp;请选择银行卡</span>
+        <div ng-hide="vm.showPayConfirm">
+            <div class="rec2_textBox">
+                <input type="checkbox" ng-disabled="!vm.user.finance.balance" ng-model="vm.useBalance" ng-change="vm.balanceChecked()">
+                &nbsp;<span class="span02">可用余额</span><span class="span01">\{{vm.user.finance.balance | currency:'':2}}</span>&nbsp;&nbsp;元
+            </div>
+            <div class="rec2_zflist jq_rec2_zflist">
+                <div class="rec2_yhBox jq_rec2_yhBox ">
+                    <div class="rec2_yhkText">
+                        <div class="rec2_img fl"></div>
+                        <div class="fl">网上银行</div>
+                        <div class="fl rec2_yhkBox jq_rec2_yhkBox">
+                            <span><img ng-src="\{{vm.BankNameList[vm.payBank].img}}"></span>
+                            <span ng-show="vm.payBank === -1">&nbsp;&nbsp;请选择银行卡</span>
+                        </div>
+                        <div class="rec2_yhkBtn fl">
+                            <span>更换银行</span>
+                        </div>
+                        <!--
+                        <div class="fr rec2_textA">
+                            <a href="#" class="">限额表</a>
+                        </div>
+                        -->
                     </div>
-                    <div class="rec2_yhkBtn fl">
-                        <span>更换银行</span>
+                    <div class="rec2_yhkList undis jq_rec2_yhkList">
+                        <div class="rec2_column">
+                            <span>网银支付</span> 需要开通网上银行
+                        </div>
+                        <div class="rec2_yhkTable jq_rec2_yhkTable">
+                            <table>
+                                <tr ng-repeat="bankNameList in vm.BankNameLists">
+                                    <td ng-repeat="bank in bankNameList" ng-click="vm.selectPayBank(bank)">
+                                        <span ng-class="{selected:vm.payBank === bank.value}"><img ng-src="\{{bank.img}}"></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
-                    <!--
-                    <div class="fr rec2_textA">
-                        <a href="#" class="">限额表</a>
-                    </div>
-                    -->
                 </div>
-                <div class="rec2_yhkList undis jq_rec2_yhkList">
-                    <div class="rec2_column">
-                        <span>网银支付</span> 需要开通网上银行
+                <div class="rec2_yhBox undis ">
+                    <div ng-hide="vm.alipayConfirm">
+                        <div class="rec2_yhkText ">
+                            <div class="rec2_img fl"></div>
+                            <div class="fl">支付宝</div>
+                            <div class="fl rec2_zfbBox">
+                                <img src="/images/yh/alipay.jpg"/>
+                            </div>
+                            <div class="fl rec2_zfbBoxText">支付宝转账（手机转账0手续费）</div>
+                        </div>
+                        <div class="rec2_FormBox ">
+                            <div class="rec2_Title fl">
+                                支付宝账号：
+                            </div>
+                            <div class="rec2_FomeContent fl">
+                                <input type="text" class="inputText" ng-model="vm.alipay_account" placeholder="请输入支付宝账户" required autofocus>
+                            </div>
+                        </div>
+                        <div class="rec2_FormBox ">
+                            <div class="rec2_Title fl">
+                                支付宝姓名：
+                            </div>
+                            <div class="rec2_FomeContent fl">
+                                <input type="text" class="inputText" ng-model="vm.alipay_name" placeholder="支付宝实名认证姓名" required>
+                            </div>
+                        </div>
+                        <div class="rec2_FormBox ">
+                            <div class="rec2_Title fl">
+                                充值金额：
+                            </div>
+                            <div class="rec2_FomeContent fl">
+                                <input type="text" class="inputText" value="\{{vm.pay_amount | currency:'':2}}" disabled>
+                            </div>
+                        </div>
+                        <div class="rec2_zfbText">
+                            <p class="p01"><span>到账时间</span>&nbsp;如需马上到账或长时间未到账，可拨打客服电话：400-692-1388</p>
+                            <p class="p02"> ·  08:30 - 20:30 （30分钟内到账）</p>
+                            <p class="p02">·  20:30 以后     （次日09:00前到账）</p>
+                        </div>
                     </div>
-                    <div class="rec2_yhkTable jq_rec2_yhkTable">
-                        <table>
-                            <tr ng-repeat="bankNameList in vm.BankNameLists">
-                                <td ng-repeat="bank in bankNameList" ng-click="vm.selectPayBank(bank)">
-                                    <span ng-class="{selected:vm.payBank === bank.value}"><img ng-src="\{{bank.img}}"></span>
-                                </td>
-                            </tr>
+                    <div ng-show="vm.alipayConfirm">
+                        <div class="zfbBox jq_zfbBox" >
+                            <div class="zfbLeft fl">
+                                <div class="zfbText">
+                                    <p>您的支付宝账户：<em class="fb">\{{vm.alipay_account}}</em></p>
+                                    <p>您本次转账金额：<span class="color_f2991b">￥<span>\{{vm.pay_amount | currency:'':2}}</span></span></p>
+                                </div>
+                                <div class="zfbText2">
+                                    <p class="color_c82217">用手机支付宝扫一扫</p>
+                                    <p>快速转账，免手续费</p>
+                                    <img src="/images/zfb_pay.jpg"/>
+                                </div>
+                            </div>
+                            <div class="zfbRight fl">
+                                <div class="zfbText zfbText3 pr">
+                                    <p>收款人支付宝账户：<em class="em01" id="zfbZh">chongzhi@niujinwang.com</em></p>
+                                    <p>收款人账户名称：<em class="fb color_c82217">北京小牛普惠科技有限公司</em></p>
+                                </div>
+                                <div class="zfbText2">
+                                    <p class="color_c82217">您还可以</p>
+                                    <p>登录支付宝网站付款</p>
+                                    <a href="https://shenghuo.alipay.com/send/payment/fill.htm" target="_blank"><img class="img01" src="/images/zfb2.jpg"/></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rec2_yhBox  undis">
+                    <div class="rec2_yhkText fl">
+                        <div class="rec2_img fl"></div>
+                        <div class="fl">转账汇款</div>
+                    </div>
+                    <div class="rec2_hkTable fl">
+                        <table border="0" cellspacing="0" cellpadding="0">
                             <!--
                             <tr>
+                                <td width="180"><img src="../images/yh/cbc.jpg"/></td>
                                 <td>
-                                    <span><img src="/images/yh/bos.png"/></span>
-                                </td>
-                                <td>
-                                    <span><img src="/images/yh/nbcb.png"/></span>
-                                </td>
-                                <td>
-                                    <span><img src="/images/yh/hzyh.png"/></span>
-                                </td>
-                                <td>
-                                    <span><img src="/images/yh/pa.png"/></span>
+                                    帐号：1109 1260 9510 501<br />
+                                    户名：臣乾金融信息服务（上海）有限公司<br />
+                                    开户行：建设银行上海外高桥保税区支行
                                 </td>
                             </tr>
                             <tr>
+                                <td><img src="../images/yh/icbc.jpg"/></td>
                                 <td>
-                                    <span><img src="/images/yh/hx-2.png"/></span>
-                                </td>
-                                <td>
-                                    <span><img src="/images/yh/ecitic.png"/></span>
-                                </td>
-                                <td>
-                                    <span><img src="/images/yh/cmbc.png"/></span>
-                                </td>
-                                <td>
-                                    <span><img src="/images/yh/spdb.png"/></span>
+                                    帐号：3100 1579 5110 5002 5912<br />
+                                    户名：臣乾金融信息服务（上海）有限公司<br />
+                                    开户行：建设银行上海外高桥保税区支行
                                 </td>
                             </tr>
                             <tr>
+                                <td><img src="../images/yh/abc.jpg"/></td>
                                 <td>
-                                    <span><img src="/images/yh/bob.png"/></span>
-                                </td>
-                                <td>
-                                    <span><img src="/images/yh/cib.png"/></span>
-                                </td>
-                                <td>
-                                    <span><img src="/images/yh/ceb.png"/></span>
-                                </td>
-                                <td>
-                                    <span><img src="/images/yh/cgb.png"/></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span><img src="/images/yh/cmb.png"/></span>
-                                </td>
-                                <td>
-                                    <span><img src="/images/yh/bcs.png"/></span>
-                                </td>
-                                <td>
-                                    <span><img src="/images/yh/boc.png"/></span>
-                                </td>
-                                <td>
-                                    <span><img src="/images/yh/psbc.png"/></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span><img src="/images/yh/ccb.png"/></span>
-                                </td>
-                                <td>
-                                    <span><img src="/images/yh/abc.png"/></span>
-                                </td>
-                                <td>
-                                    <span><img src="/images/yh/icbc.png"/></span>
-                                </td>
-                                <td>
-                                    <span><img src="/images/yh/bcs.png"/></span>
+                                    帐号：3100 1579 5110 5002 5912<br />
+                                    户名：臣乾金融信息服务（上海）有限公司<br />
+                                    开户行：建设银行上海外高桥保税区支行
                                 </td>
                             </tr>
                             -->
+                            <tr>
+                                <td><img src="../images/yh/cmb.jpg"/></td>
+                                <td>
+                                    帐号：1109 1260 9510 501<br />
+                                    户名：北京小牛普惠科技有限公司<br />
+                                    开户行：招商银行股份有限公司北京清华园支行
+                                </td>
+                            </tr>
                         </table>
                     </div>
+                    <div class="clear"></div>
+                    <p class="rec2_hkP01">转账成功后，请电话告知我们客服 400-692-1388，以便尽快到账！ </p>
                 </div>
             </div>
-            <div class="rec2_yhBox undis ">
-                <div class="rec2_yhkText ">
-                    <div class="rec2_img fl"></div>
-                    <div class="fl">支付宝</div>
-                    <div class="fl rec2_zfbBox">
-                        <img src="/images/yh/alipay.jpg"/>
-                    </div>
-                    <div class="fl rec2_zfbBoxText">支付宝转账（手机转账0手续费）</div>
+
+            <alert ng-repeat="alert in vm.alerts" type="\{{alert.type}}" close="vm.closeAlert($index)">\{{alert.msg}}</alert>
+            <a href="" class="rec2_btn" ng-click="vm.gotoPay()" ng-show="vm.showNextBtn">下一步</a>
+            <div class="rec2_zfBox">
+                <div class="fl rec2_zfBoxName">其他支付</div>
+                <div class="fl" id="yhkList">
+                    <a href=""  ng-click="vm.selectPayType(0)" style="display: none;">网银支付</a>
+                    <a href="" ng-click="vm.selectPayType(1)">支付宝</a>
+                    <a href="" ng-click="vm.selectPayType(2)">转账汇款</a>
                 </div>
-                <div class="rec2_FormBox ">
-                    <div class="rec2_Title fl">
-                        支付宝账号：
-                    </div>
-                    <div class="rec2_FomeContent fl">
-                        <input type="text" class="inputText" name="" id="" value="" />
-                    </div>
-                </div>
-                <div class="rec2_FormBox ">
-                    <div class="rec2_Title fl">
-                        支付宝账号：
-                    </div>
-                    <div class="rec2_FomeContent fl">
-                        <input type="text" class="inputText" name="" id="" value="" />
-                    </div>
-                </div>
-                <div class="rec2_FormBox ">
-                    <div class="rec2_Title fl">
-                        充值金额：
-                    </div>
-                    <div class="rec2_FomeContent fl">
-                        <input type="text" class="inputText" name="" id="" value="" />
-                    </div>
-                </div>
-                <div class="rec2_zfbText">
-                    <p class="p01"><span>到账时间</span>&nbsp;如需马上到账或长时间未到账，可拨打客服电话：400-8888-566</p>
-                    <p class="p02"> ·  08:30 - 20:30 （30分钟内到账）</p>
-                    <p class="p02">·  20:30 以后     （次日09:00前到账）</p>
-                </div>
-            </div>
-            <div class="rec2_yhBox  undis">
-                <div class="rec2_yhkText fl">
-                    <div class="rec2_img fl"></div>
-                    <div class="fl">转账汇款</div>
-                </div>
-                <div class="rec2_hkTable fl">
-                    <table border="0" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <td width="180"><img src="../images/yh/cbc.jpg"/></td>
-                            <td>
-                                帐号：3100 1579 5110 5002 5912<br />
-                                户名：臣乾金融信息服务（上海）有限公司<br />
-                                开户行：建设银行上海外高桥保税区支行
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><img src="../images/yh/icbc.jpg"/></td>
-                            <td>
-                                帐号：3100 1579 5110 5002 5912<br />
-                                户名：臣乾金融信息服务（上海）有限公司<br />
-                                开户行：建设银行上海外高桥保税区支行
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><img src="../images/yh/abc.jpg"/></td>
-                            <td>
-                                帐号：3100 1579 5110 5002 5912<br />
-                                户名：臣乾金融信息服务（上海）有限公司<br />
-                                开户行：建设银行上海外高桥保税区支行
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><img src="../images/yh/cmb.jpg"/></td>
-                            <td>
-                                帐号：3100 1579 5110 5002 5912<br />
-                                户名：臣乾金融信息服务（上海）有限公司<br />
-                                开户行：建设银行上海外高桥保税区支行
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="clear"></div>
-                <p class="rec2_hkP01">转账成功后，请电话告知我们客服 400-8888-566，以便尽快到账！ </p>
             </div>
         </div>
-        <a href="#" class="rec2_btn">下一步</a>
-        <div class="rec2_zfBox">
-            <div class="fl rec2_zfBoxName">其他支付</div>
-            <div class="fl" id="yhkList">
-                <a href=""  ng-click="vm.selectPayType(0)" style="display: none;">网银支付</a>
-                <a href="" ng-click="vm.selectPayType(1)">支付宝</a>
-                <a href="" ng-click="vm.selectPayType(2)">转账汇款</a>
+
+        <div class="rec2_textBox" id="payConfirm" ng-show="vm.showPayConfirm">
+            <div class="payConfirmLeft fl">
+                <span class="span02">付款方式</span>
+            </div>
+            <div class="payConfirmRight fl">
+                <div class="firstLine" ng-show="vm.useBalance">
+                    <span class="span02" id="balanceTitle">账户余额</span><span class="span02">支付 <span style="color: #c82217;">\{{vm.user.finance.balance | currency:'':2}}</span> 元</span>
+                </div>
+                <div class="firstLine">
+                    <img ng-src="\{{vm.BankNameList[vm.payBank].img}}"><span class="span02">支付 <span style="color: #c82217;">\{{vm.pay_amount | currency:'':2}}</span> 元</span>
+                </div>
+                <a href="" class="rec2_btn" ng-click="vm.onlinePay()">确认付款</a>
+                <a href="" style="color: #000088" ng-click="vm.showPayConfirm = false">选择其他付款方式</a>
             </div>
         </div>
     </div>
@@ -219,11 +200,45 @@
         <span></span>常见问题
     </div>
     <div class="rec2_text">
-        <p class="p01">1.支付风险保证金遇到问题？</p>
-        <p class="p02">答：您可以联系您的专属理财顾问（还没有专属顾问？立即选择），拨打客服电话0571-86551789</p>
+        <p class="p01">1.支付保证金遇到问题？</p>
+        <p class="p02">答：您可以联系您的专属理财顾问（还没有专属顾问？立即选择），拨打客服电话4006921388</p>
         <p class="p01">2.账户中有余额，但为什么不可用使用呢？</p>
         <p class="p02">答：账户余额包括可用余额、被冻结资金，被冻结的资金暂不可用。而可用余额是指账户中可自由使用的金额，可以被支付、提现。</p>
-        <a href="#">更多帮助</a>
+        <a href="/info/help">更多帮助</a>
     </div>
 
+    <form action="https://mas.sdo.com/web-acquire-channel/cashier.htm" method="POST" id="shengPayForm" name="shengPayForm" target="_blank">
+        <input type="hidden" name="Name" id="Name" value="B2CPayment">
+        <input type="hidden" name="Version" id="Version" value="V4.1.1.1.1">
+        <input type="hidden" name="Charset" id="Charset" value="UTF-8">
+        <input type="hidden" name="MsgSender" id="MsgSender" value="443818">
+        <input type="hidden" name="OrderNo" id="OrderNo" >
+        <input type="hidden" name="OrderAmount" id="OrderAmount" >
+        <input type="hidden" name="OrderTime" id="OrderTime" >
+        <input type="hidden" name="PayType" id="PayType" value="PT001">
+        <input type="hidden" name="PayChannel" id="PayChannel">
+        <input type="hidden" name="InstCode" id="InstCode">
+        <input type="hidden" name="PageUrl" id="PageUrl" value="{{callback_domain}}/thank_you_for_pay">
+        <input type="hidden" name="BackUrl" id="BackUrl" value="{{callback_domain}}/recharge2?order_id=\{{vm.pay_order._id}}">
+        <input type="hidden" name="NotifyUrl" id="NotifyUrl" value="{{callback_domain}}/api/shengpay_feedback">
+        <input type="hidden" name="ProductName" id="ProductName" value="股票配资">
+        <input type="hidden" name="BuyerIp" id="BuyerIp">
+        <input type="hidden" name="SignType" id="SignType" value="MD5">
+        <input type="hidden" name="SignMsg" id="SignMsg">
+    </form>
+
+    <div ng-class="{undis:!vm.paying}" id="tckBox">
+        <div class="tmbg"></div>
+        <div class="PopupBox">
+            <p class="p01"><span class="icon07"></span>&nbsp;请在新打开的银行页面中完成网上付款</p>
+            <p class="p02">1、付款过程中请不要关闭这个窗口；</p>
+            <p class="p02">2、完成付款后请执行相应操作。</p>
+            <div class="applyBtnBox2">
+                <a href="/user" class="applyBtn02 marRight20">已完成付款</a>
+                <a href="" class="applyBtn03" ng-click="vm.paying = false">修改付款方式</a>
+            </div>
+            <p class="p03"><a target="_blank" href="http://wpa.b.qq.com/cgi/wpa.php?ln=1&key=XzkzODA3MjI1OV8yNTEwNzVfNDAwNjkyMTM4OF8yXw" class="color_c82217">付款遇到问题？</a></p>
+        </div>
+    </div>
 </div>
+

@@ -1709,16 +1709,24 @@ module.exports.getRecharge = function(req, res) {
     });
 };
 
-module.exports.getRecharge2 = function(req, res) {
-    var apply_serial_id = req.query.apply_serial_id;
-    //console.log(apply_serial_id);
-    res.locals.title = '充值中心';
-    res.locals.recharge = true;
-    res.locals.user_mobile = util.mobileDisplay(req.user.mobile);
-    res.locals.callback_domain = config.pay_callback_domain;
-    res.locals.apply_serial_id = apply_serial_id;
-    res.render('recharge2', {
-        layout: 'no_header',
-        bootstrappedUserObject: JSON.stringify(getUserViewModel(req.user))
+module.exports.getRecharge2 = function(req, res, next) {
+    var order_id = req.query.order_id;
+    if (!order_id) {
+        return next();
+    }
+    Order.findById(order_id, function(err, order) {
+        if (err || !order) {
+            logger.warn('getRecharge2 err:' + err.toString());
+            return next();
+        }
+        res.locals.title = '充值中心';
+        res.locals.recharge = true;
+        res.locals.user_mobile = util.mobileDisplay(req.user.mobile);
+        res.locals.callback_domain = config.pay_callback_domain;
+        res.render('recharge2', {
+            layout: 'no_header',
+            bootstrappedUserObject: JSON.stringify(getUserViewModel(req.user)),
+            bootstrappedOrderObject: JSON.stringify(order)
+        });
     });
 };

@@ -489,7 +489,7 @@ exports.postConfirmApply = function(req, res, next) {
         userID: applyData.userID,
         userMobile: applyData.userMobile,
         dealType: applyData.shouldPay ? 1 : 9,
-        amount: applyData.shouldPay ? Number(applyData.shouldPay.toFixed(2)) : Number(applyData.deposit.toFixed(2)),
+        amount: applyData.shouldPay ? Number(applyData.totalAmount.toFixed(2)) : Number(applyData.deposit.toFixed(2)),
         status: 2,
         description: '股票配资',
         applySerialID: applyData.serialID
