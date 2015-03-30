@@ -230,7 +230,7 @@
                                 console.log('error:' + res.reason);
                             });
                     } else {
-                        $window.location.assign('/recharge?pay_order=' + data.order._id);
+                        $window.location.assign('/recharge2?apply_serial_id=' + data.apply.serialID);
                     }
                 })
                 .error(function(data, status, headers, config) {

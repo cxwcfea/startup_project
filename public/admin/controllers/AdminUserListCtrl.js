@@ -136,6 +136,17 @@ angular.module('adminApp').controller('AdminUserListCtrl', ['$scope', '$http', '
         }, function () {
         });
     };
+
+    vm.takeCustomer = function(user) {
+        $http.post('/admin/api/take_customer', {userMobile:user.mobile})
+            .success(function(data, status) {
+                user.manager = data.manager;
+                gbNotifier.notify('更新成功!');
+            })
+            .error(function(data, status) {
+                gbNotifier.error('更新失败!');
+            });
+    };
 }]);
 
 angular.module('adminApp').controller('ModalInstanceCtrl', ['$scope', '$modalInstance', 'sms_macro', function ($scope, $modalInstance, sms_macro) {

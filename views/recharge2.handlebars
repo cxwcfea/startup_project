@@ -1,50 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>充值</title>
-    <link rel="stylesheet" type="text/css" href="/css/common.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/css.css"/>
-    <script src="{{static '/vendor/jquery/dist/jquery.min.js'}}"></script>
-    <script src="/js/common.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            $(".rec2_yhkBtn").click(function () {
-                $(".jq_rec2_yhBox").toggleClass("rec2_yhBoxSelected")
-                $(".jq_rec2_yhkList").slideToggle(200);
-            });
-
-            $(".jq_rec2_yhkTable td").click(function () {
-                $(".jq_rec2_yhkBox").html("<img src='"+$(this).find("img").attr("src")+"'/>")
-                $(".jq_rec2_yhkTable td span").removeClass("selected");
-                $(this).find("span").addClass("selected");
-            });
-
-            $("#yhkList a").click(function () {
-                $(this).hide().siblings().show();
-                var index=  $(this).index();
-                $(".jq_rec2_zflist>div").eq(index).show().siblings().hide();
-            })
-        })
-    </script>
-</head>
-<body>
-<div class="header">
-    <div class="wrapper">
-        <a href="#" class="logo2"><img src="/images/logo.png"/></a>
-        <span class="loginSpan">充值中心</span>
-        <div class="fr headerText">
-            您好 , <a href="#" class="a01">138****8888</a>  <a href="#" class="a02">[退出] </a>
-
-        </div>
-    </div>
-</div>
-<div class="wrapper paddTop30">
+{{#if bootstrappedUserObject}}
+    <script> window.bootstrappedUserObject = {{{bootstrappedUserObject}}} </script>
+{{/if}}
+<div class="wrapper paddTop30" ng-controller="RechargeCtrl2 as vm">
     <div class="rec2_center">
         <div class="rec2_top">
             <div class="fl rec2_topText">
                 股票配资
-                <a href="#">订单详情</a>
+                <a href="">订单详情</a>
             </div>
             <div class="fr rec2_topText2">
                 <span>1000.00</span>&nbsp;元
@@ -52,7 +14,7 @@
         </div>
         <div class="rec2_textBox">
             <input type="checkbox" name="" id="" value="" />
-            &nbsp;<span class="span02">可用余额</span><span class="span01">0.00</span>&nbsp;&nbsp;元
+            &nbsp;<span class="span02">可用余额</span><span class="span01">\{{vm.user.finance.balance}}</span>&nbsp;&nbsp;元
         </div>
         <div class="rec2_zflist jq_rec2_zflist">
             <div class="rec2_yhBox jq_rec2_yhBox ">
@@ -60,15 +22,17 @@
                     <div class="rec2_img fl"></div>
                     <div class="fl">网上银行</div>
                     <div class="fl rec2_yhkBox jq_rec2_yhkBox">
-                        <!--<img src="../images/yh/icbc.png" />-->
-                        &nbsp;&nbsp;请选择银行卡
+                        <span><img ng-src="\{{vm.BankNameList[vm.payBank].img}}"></span>
+                        <span ng-show="vm.payBank === -1">&nbsp;&nbsp;请选择银行卡</span>
                     </div>
                     <div class="rec2_yhkBtn fl">
                         <span>更换银行</span>
                     </div>
+                    <!--
                     <div class="fr rec2_textA">
                         <a href="#" class="">限额表</a>
                     </div>
+                    -->
                 </div>
                 <div class="rec2_yhkList undis jq_rec2_yhkList">
                     <div class="rec2_column">
@@ -76,6 +40,12 @@
                     </div>
                     <div class="rec2_yhkTable jq_rec2_yhkTable">
                         <table>
+                            <tr ng-repeat="bankNameList in vm.BankNameLists">
+                                <td ng-repeat="bank in bankNameList" ng-click="vm.selectPayBank(bank)">
+                                    <span ng-class="{selected:vm.payBank === bank.value}"><img ng-src="\{{bank.img}}"></span>
+                                </td>
+                            </tr>
+                            <!--
                             <tr>
                                 <td>
                                     <span><img src="/images/yh/bos.png"/></span>
@@ -146,6 +116,7 @@
                                     <span><img src="/images/yh/bcs.png"/></span>
                                 </td>
                             </tr>
+                            -->
                         </table>
                     </div>
                 </div>
@@ -238,9 +209,9 @@
         <div class="rec2_zfBox">
             <div class="fl rec2_zfBoxName">其他支付</div>
             <div class="fl" id="yhkList">
-                <a href="javascript:" style="display: none;">网银支付</a>
-                <a href="javascript:">支付宝</a>
-                <a href="javascript:">转账汇款</a>
+                <a href=""  ng-click="vm.selectPayType(0)" style="display: none;">网银支付</a>
+                <a href="" ng-click="vm.selectPayType(1)">支付宝</a>
+                <a href="" ng-click="vm.selectPayType(2)">转账汇款</a>
             </div>
         </div>
     </div>
@@ -256,47 +227,3 @@
     </div>
 
 </div>
-<div class="footer marTop200">
-    <div class="wrapper">
-        <div class="footerList fl">
-            <p>软件下载</p>
-            <ul>
-                <li><span class="icon02">&nbsp;</span><a href="javascript:">Windows版</a></li>
-                <li><span class="icon03">&nbsp;</span><a href="javascript:">iOS版</a></li>
-                <li><span class="icon04">&nbsp;</span><a href="javascript:">Android版</a></li>
-            </ul>
-        </div>
-        <div class="footerList fl">
-            <p>操盘问题</p>
-            <ul>
-                <li><a href="javascript:">操盘流程</a></li>
-                <li><a href="javascript:">法律保障</a></li>
-                <li><a href="javascript:">常见问题</a></li>
-            </ul>
-        </div>
-        <div class="footerList fl">
-            <p>关于牛金网</p>
-            <ul>
-                <li><a href="javascript:">公司介绍</a></li>
-                <li><a href="javascript:">合作伙伴</a></li>
-                <li><a href="javascript:">联系方式</a></li>
-            </ul>
-        </div>
-        <div class="fr ewmBox">
-            <p><span>&nbsp;</span>官方微信</p>
-            <img src="/images/img15.jpg"/>
-        </div>
-        <div class="fr phoneBox">
-            <p class="p01">全国服务热线</p>
-            <p class="p02">400-692-1388</p>
-            <p class="p03">QQ群1:351531<br />QQ群2:131351</p>
-            <div class="icon05"></div>
-            <div class="icon06"></div>
-        </div>
-        <div class="clear"></div>
-        <div class="footerText">©版权所有 北京小牛普惠科技有限公司 All Rights Reserved 2015 <a href="javascript:"> 京ICP备14047091号-4</a></div>
-    </div>
-</div>
-
-</body>
-</html>

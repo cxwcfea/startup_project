@@ -22,6 +22,25 @@
                 $(this).removeClass("regInputTextSelected")
             });
 
+            $(".rec2_yhkBtn").click(function () {
+                $(".jq_rec2_yhBox").toggleClass("rec2_yhBoxSelected")
+                $(".jq_rec2_yhkList").slideToggle(200);
+            });
+
+            /*
+            $(".jq_rec2_yhkTable td").click(function () {
+                $(".jq_rec2_yhkBox").html("<img src='"+$(this).find("img").attr("src")+"'/>")
+                $(".jq_rec2_yhkTable td span").removeClass("selected");
+                $(this).find("span").addClass("selected");
+            });
+            */
+
+            $("#yhkList a").click(function () {
+                $(this).hide().siblings().show();
+                var index=  $(this).index();
+                $(".jq_rec2_zflist>div").eq(index).show().siblings().hide();
+            })
+
             /*
             //重发验证码按钮
             $(".recBtn03").click(function () {
@@ -43,21 +62,34 @@
         })
     </script>
 </head>
+{{#if recharge}}
+<body>
+{{else}}
 <body class="bg_fff">
+{{/if}}
 
 <div class="header">
     <div class="wrapper">
         <a href="/" class="logo2"><img src="/images/logo.png"/></a>
-        <span class="loginSpan">用户{{title}}</span>
+        <span class="loginSpan">{{title}}</span>
     {{#if login}}
         <div class="fr headerText">
             还不是会员 ？ <a href="/signup">立即注册</a> <!--| <a href="#">意见反馈</a>-->
         </div>
     {{/if}}
+    {{#if recharge}}
+        <div class="fr headerText">
+            您好 , <a href="/user" class="a01">{{user_mobile}}</a>  <a href="/logout" class="a02">[退出] </a>
+        </div>
+    {{/if}}
     </div>
 </div>
 
+{{#if recharge}}
+<div ng-app="rechargeApp">
+{{else}}
 <div ng-app="registerApp">
+{{/if}}
 {{{body}}}
 </div>
 
@@ -65,6 +97,9 @@
 <div class="footer">
 {{/if}}
 {{#if signup}}
+<div class="footer marTop200">
+{{/if}}
+{{#if recharge}}
 <div class="footer marTop200">
 {{/if}}
     <div class="wrapper">
@@ -114,5 +149,8 @@
 <script src="{{static '/vendor/angular-bootstrap/ui-bootstrap-tpls.min.js'}}"></script>
 <script src="{{static '/js/common_module.js'}}"></script>
 <script src="{{static '/app/controllers/RegisterCtrl.js'}}"></script>
+<script src="{{static '/vendor/angular-route/angular-route.js'}}"></script>
+<script src="{{static '/vendor/angular-resource/angular-resource.js'}}"></script>
+<script src="{{static '/app/controllers/RechargeCtrl2.js'}}"></script>
 </body>
 </html>

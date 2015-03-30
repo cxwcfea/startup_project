@@ -1592,8 +1592,6 @@ module.exports.payByBalance_auto_assign_homas = function(req, res, next) {
 };
 
 function homeIndex(req, res, next) {
-    var user = req.user;
-
     res.locals.user_menu = true;
     res.render('user/index', {
         bootstrappedUserObject: JSON.stringify(getUserViewModel(req.user))
@@ -1616,8 +1614,20 @@ function sendSMS(req, res, next) {
     });
 }
 
+function getRecharge(req, res, next) {
+    res.locals.title = '充值中心';
+    res.locals.recharge = true;
+    res.locals.user_mobile = util.mobileDisplay(req.user.mobile);
+    res.render('recharge2', {
+        layout: 'no_header',
+        bootstrappedUserObject: JSON.stringify(getUserViewModel(req.user))
+    });
+}
+
 module.exports.registerRoutes = function(app, passportConf) {
     app.get('/user', passportConf.isAuthenticated, homeIndex);
+
+    app.get('/recharge2', passportConf.isAuthenticated, getRecharge);
 
     app.post('/api/send_sms', passportConf.isAuthenticated, sendSMS);
 
@@ -1633,6 +1643,7 @@ var privateProperties = [
     'registered',
     'roles',
     'password',
+    'manager',
     'resetPasswordToken',
     'resetPasswordExpires'
 ];
@@ -1695,5 +1706,19 @@ module.exports.getRecharge = function(req, res) {
     res.locals.callback_domain = config.pay_callback_domain;
     res.render('recharge', {
         bootstrappedNiujinUserID: JSON.stringify(req.user._id)
+    });
+};
+
+module.exports.getRecharge2 = function(req, res) {
+    var apply_serial_id = req.query.apply_serial_id;
+    //console.log(apply_serial_id);
+    res.locals.title = '充值中心';
+    res.locals.recharge = true;
+    res.locals.user_mobile = util.mobileDisplay(req.user.mobile);
+    res.locals.callback_domain = config.pay_callback_domain;
+    res.locals.apply_serial_id = apply_serial_id;
+    res.render('recharge2', {
+        layout: 'no_header',
+        bootstrappedUserObject: JSON.stringify(getUserViewModel(req.user))
     });
 };

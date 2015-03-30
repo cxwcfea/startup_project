@@ -24,6 +24,8 @@ module.exports = function(app) {
 
     app.get('/recharge', passportConf.isAuthenticated, users.getRecharge);
 
+    app.get('/recharge2', passportConf.isAuthenticated, users.getRecharge2);
+
     app.get('/apply_detail/:id', passportConf.isAuthenticated, applies.getApplyDetail);
 
     app.get('/apply/get_profit/:serial_id', passportConf.isAuthenticated, applies.getProfit);
@@ -51,7 +53,7 @@ module.exports = function(app) {
         if (req.isAuthenticated()) {
             res.redirect('/');
         } else {
-            res.locals.title = '注册';
+            res.locals.title = '用户注册';
             res.locals.signup = true;
             res.render('register/signup', {
                 layout: 'no_header'
@@ -82,7 +84,7 @@ module.exports = function(app) {
         if (req.isAuthenticated()) {
             res.redirect('/');
         } else {
-            res.locals.title = '登录';
+            res.locals.title = '用户登录';
             res.locals.login = true;
             res.render('register/login', {
                 layout: 'no_header'
@@ -184,13 +186,6 @@ module.exports = function(app) {
         res.render('info/' + req.params[0]);
     });
 
-    /*
-    app.get('/recharge2', passportConf.isAuthenticated, function(req, res, next) {
-        res.render('recharge2', {
-            layout: null
-        });
-    });
-
     app.get('/admin_test', passportConf.requiresRole('admin'), function(req, res, next) {
         res.render('admin_test');
     });
@@ -208,5 +203,4 @@ module.exports = function(app) {
         console.log(getClientIp(req));
         res.send({});
     });
-    */
 };

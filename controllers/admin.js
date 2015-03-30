@@ -640,6 +640,21 @@ function fetchPendingApplies(req, res) {
     });
 }
 
+function takeCustomer(req, res) {
+    User.update({mobile:req.body.userMobile}, {$set: {'manager':req.user.mobile}}, function(err, numberAffected, raw) {
+        if (err) {
+            logger.debug('takeCustomer error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        if (numberAffected == 0) {
+            res.status(400);
+            return res.send({error_msg:'user not found'});
+        }
+        res.send({manager:req.user.mobile});
+    });
+}
+
 function autoFetchPendingApplies(req, res) {
     //logger.debug('autoFetchPendingApplies operator:', req.user.mobile);
     Apply.find({status: 4}, function(err, applies) {
@@ -787,6 +802,8 @@ module.exports = {
         app.get('/api/auto_approve_closing_settlement', passportConf.requiresRole('admin'), autoApproveClosingSettlement);
 
         app.post('/admin/api/create/order', passportConf.requiresRole('admin'), createOrder);
+
+        app.post('/admin/api/take_customer', passportConf.requiresRole('admin'), takeCustomer);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

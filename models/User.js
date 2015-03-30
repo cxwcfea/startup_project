@@ -21,7 +21,8 @@ var userSchema = new mongoose.Schema({
         available_capital: { type: Number, default: 0 },
         market_value: { type: Number, default: 0 },
         freeze_capital: { type: Number, default: 0 },
-        profit: { type:Number, default: 0 }
+        profit: { type:Number, default: 0 },
+        history_capital: { type: Number, default: 0 }
 	},
 
     profile: {

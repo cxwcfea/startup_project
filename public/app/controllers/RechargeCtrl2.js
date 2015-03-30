@@ -1,36 +1,52 @@
 (function () {
     'use strict';
     angular.module('rechargeApp', ['ngResource', 'ngRoute', 'ui.bootstrap', 'commonApp']);
-    angular.module('rechargeApp').controller('RechargeCtrl', ['$scope', '$window', '$location', '$http', 'njUser', 'njOrder', 'BankNameList', function ($scope, $window, $location, $http, njUser, njOrder, BankNameList) {
+    angular.module('rechargeApp').controller('RechargeCtrl2', ['$scope', '$window', '$location', '$http', 'njUser', 'njOrder', 'BankNameList', function ($scope, $window, $location, $http, njUser, njOrder, BankNameList) {
         var vm = this;
 
-        njUser.get({id: $window.bootstrappedNiujinUserID}, function (user) {
-            vm.user = user;
-            var query = $window.location.search;
-            var pos1 = query.search('pay_order=');
-            var order_id = null;
-            if (pos1 > -1) {
-                order_id = query.substr(pos1 + 10);
-                var pos2 = order_id.search('&');
-                if (pos2 > -1) {
-                    order_id = order_id.substr(0, pos2);
+        vm.user = $window.bootstrappedUserObject;
+
+        var query = $window.location.search;
+        var pos1 = query.search('pay_order=');
+        var order_id = null;
+        if (pos1 > -1) {
+            order_id = query.substr(pos1 + 10);
+            var pos2 = order_id.search('&');
+            if (pos2 > -1) {
+                order_id = order_id.substr(0, pos2);
+            }
+        }
+        if (order_id) {
+            vm.pay_order_id = order_id;
+            vm.pay_order = njOrder.get({uid:vm.user._id, id:order_id}, function() {
+                vm.pay_amount = Number(vm.pay_order.amount.toFixed(2));
+                if (vm.pay_order.applySerialID) {
+                    vm.pay_for_apply = true;
                 }
-            }
-            if (order_id) {
-                vm.pay_order_id = order_id;
-                vm.pay_order = njOrder.get({uid:vm.user._id, id:order_id}, function() {
-                    vm.pay_amount = Number(vm.pay_order.amount.toFixed(2));
-                    if (vm.pay_order.applySerialID) {
-                        vm.pay_for_apply = true;
-                    }
-                });
-            }
-        });
+            });
+        }
+
         vm.currentPayType = 0;
         vm.useCredit = false;
         vm.BankNameList = BankNameList;
+
+        vm.BankNameLists = [];
+        var tempList = [];
+        for (var i = 0; i < BankNameList.length; ++i) {
+            if (tempList.length === 4) {
+                vm.BankNameLists.push(tempList);
+                tempList = [];
+            }
+            tempList.push(BankNameList[i]);
+        }
+        if (tempList.length > 0) {
+            vm.BankNameLists.push(tempList);
+        }
+        console.log(vm.BankNameLists);
+
+
         vm.bankObj = vm.BankNameList[0];
-        vm.payBank = 0;
+        vm.payBank = -1;
         vm.alipayConfirm = false;
 
         vm.payTypes = [
@@ -62,7 +78,7 @@
         vm.selectPayType = function (type) {
             vm.alerts = [];
             vm.alipayConfirm = false;
-            vm.currentPayType = type.value;
+            vm.currentPayType = type;
         };
 
         vm.selectPayBank = function (bank) {
