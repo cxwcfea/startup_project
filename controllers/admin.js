@@ -13,7 +13,7 @@ var User = require('../models/User'),
     sms = require('../lib/sms');
 
 function main(req, res, next) {
-    res.render('admin/main', {layout:null});
+    res.render('admin/main', {layout:null, bootstrappedUser: JSON.stringify(req.user)});
 }
 
 function fetchUserList(req, res, next) {

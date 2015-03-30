@@ -33,6 +33,9 @@ angular.module('adminApp').config(['$routeProvider', '$locationProvider', functi
         .when('/alipay_orders', { templateUrl: '/admin/alipay_order_list',
             controller: 'AdminAlipayOrderListCtrl as alipayOrderListVM'
         })
+        .when('/my_users', { templateUrl: '/admin/my_user_list',
+            controller: 'AdminMyUserListCtrl as myUserVM'
+        })
         .otherwise({
             redirectTo: '/users'
         });
