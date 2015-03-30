@@ -180,7 +180,7 @@
             var ProductName = $('#ProductName')[0].value;
             var BuyerIp = $('#BuyerIp')[0].value = $window.returnCitySN["cip"];
             var SignType = $('#SignType')[0].value;
-            var md5Key = 'shengfutongSHENGFUTONGtest';
+            var md5Key = 'JDJhJDA1JHpMRVc3UkJLR202R2hhNHZzZllMYi5';
 
             var sign_origin = Name+Version+Charset+MsgSender+OrderNo+OrderAmount+OrderTime+
                 PayType+PayChannel+InstCode+PageUrl+BackUrl+NotifyUrl+ProductName+BuyerIp+SignType+md5Key;

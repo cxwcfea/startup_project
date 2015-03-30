@@ -324,7 +324,7 @@
     <div class="loginTcc" ng-show="applyVM.showLoginWindow" ng-cloak>
         <div class="tmbg"></div>
         <div id="login" class="ui-logon clearfix logintcc">
-            <div class="loginClose jq_loginClose"></div>
+            <div class="loginClose jq_loginClose" ng-click="applyVM.showLoginWindow = false"></div>
             <form method="POST" ng-submit="applyVM.login()" name="login-form" novalidate>
                 <ul class="logon-con">
                     <li class="title">

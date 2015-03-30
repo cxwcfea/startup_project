@@ -149,8 +149,12 @@
 <script src="{{static '/vendor/angular-bootstrap/ui-bootstrap-tpls.min.js'}}"></script>
 <script src="{{static '/js/common_module.js'}}"></script>
 <script src="{{static '/app/controllers/RegisterCtrl.js'}}"></script>
+{{#if recharge}}
 <script src="{{static '/vendor/angular-route/angular-route.js'}}"></script>
 <script src="{{static '/vendor/angular-resource/angular-resource.js'}}"></script>
 <script src="{{static '/app/controllers/RechargeCtrl2.js'}}"></script>
+<script src="{{static '/vendor/spark-md5.min.js'}}"></script>
+<script src="http://pv.sohu.com/cityjson"></script>
+{{/if}}
 </body>
 </html>

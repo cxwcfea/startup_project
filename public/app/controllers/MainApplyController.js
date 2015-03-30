@@ -178,6 +178,7 @@
         vm.alerts = [];
 
         var addAlert = function(type, msg) {
+            vm.alerts = [];
             vm.alerts.push({type:type, msg: msg});
         };
 
@@ -215,6 +216,7 @@
 
         vm.payForApply = function() {
             vm.apply.shouldPay = vm.shouldPay;
+            vm.apply.totalAmount = vm.totalAmount;
             $http.post('/apply_confirm', vm.apply)
                 .success(function(data, status, headers, config) {
                     if (vm.shouldPay === 0) {
@@ -230,7 +232,7 @@
                                 console.log('error:' + res.reason);
                             });
                     } else {
-                        $window.location.assign('/recharge2?apply_serial_id=' + data.apply.serialID);
+                        $window.location.assign('/recharge2?order_id=' + data.order._id);
                     }
                 })
                 .error(function(data, status, headers, config) {
