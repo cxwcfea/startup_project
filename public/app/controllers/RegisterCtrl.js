@@ -88,7 +88,7 @@
             }
             $http.post('/finish_signup', {mobile:vm.mobile, verify_code:vm.verify_code})
                 .success(function(data, status, headers, config) {
-                    $window.location.replace('/');
+                    $window.location.replace('/welcome');
                 })
                 .error(function(data, status, headers, config) {
                     //addAlert('danger', data.error_msg);

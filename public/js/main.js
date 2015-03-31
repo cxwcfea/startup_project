@@ -230,6 +230,7 @@ $(document).ready(function() {
         }
     };
 
+    /*
     $('#get-profit-form').validator(form_options);
 
     $('#add-deposit-form').validator(form_options);
@@ -237,6 +238,7 @@ $(document).ready(function() {
     $('#signup-form').validator(form_options);
 
     $('#login-form').validator(form_options);
+    */
 
     $('#add-deposit').on('click', function(e) {
         e.preventDefault();

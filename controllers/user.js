@@ -14,6 +14,7 @@ var passport = require('passport'),
     env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
     config = require('../config/config')[env],
     _ = require('lodash'),
+    sparkMD5 = require('spark-md5'),
     async = require('async');
 
 
@@ -1034,6 +1035,19 @@ module.exports.shengpayFeedback = function(req, res, next) {
     logger.debug('shengpayFeedback');
     logger.debug(req.body);
     var result = req.body;
+    if (!result) {
+        res.status(400);
+        return res.send({error_msg:'empty response'});
+    }
+
+    var origin = result.Name+result.Version+result.Charset+result.TraceNo+result.MsgSender+result.SendTime+
+            result.InstCode+result.OrderNo+result.OrderAmount+result.TransNo+result.TransAmount+
+            result.TransStatus+result.TransType+result.TransTime+result.MerchantNo+result.ErrorCode+
+            result.ErrorMsg+result.Ext1+result.SignType+'JDJhJDA1JHpMRVc3UkJLR202R2hhNHZzZllMYi5';
+    var sig = sparkMD5.hash(origin);
+    sig = sig.toUpperCase();
+    logger.debug('shengpayFeedback their sign:' + result.SignMsg + ' our sign:' + sig);
+
     if (result.TransStatus && result.TransStatus === '01') {
         async.waterfall([
             function(callback) {
