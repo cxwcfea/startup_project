@@ -9,7 +9,6 @@ angular.module('adminApp').controller('AdminMyUserListCtrl', ['$scope', '$http',
               new_users.push(vm.users[key]);
             }
         }
-        new_users.sort(function(a, b){return a.registerAt < b.registerAt});
         vm.users = new_users;
         vm.showAllUsers();
     });
