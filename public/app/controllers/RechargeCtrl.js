@@ -215,6 +215,8 @@
             vm.BankNameLists.push(tempList);
         }
 
+        vm.btnName = '更换银行';
+        vm.showAlipayWindow = false;
         vm.showPayConfirm = false;
         vm.showNextBtn = true;
         vm.paying = false;
@@ -224,6 +226,7 @@
         if (vm.user.lastPayBank >= 0) {
             vm.payBank = vm.user.lastPayBank;
         } else {
+            vm.btnName = '收起';
             $(".jq_rec2_yhBox").toggleClass("rec2_yhBoxSelected");
             $(".jq_rec2_yhkList").slideToggle(200);
         }
@@ -265,12 +268,24 @@
             } else {
                 vm.showNextBtn = true;
             }
+            if (vm.currentPayType === 1) {
+                vm.showAlipayWindow = true;
+            }
         };
 
         vm.selectPayBank = function (bank) {
             vm.payBank = bank.value;
             $(".jq_rec2_yhBox").toggleClass("rec2_yhBoxSelected");
             $(".jq_rec2_yhkList").slideToggle(200);
+            vm.btnName = '更换银行';
+        };
+
+        vm.changeBtnName = function() {
+            if (vm.btnName === '更换银行') {
+                vm.btnName = '收起';
+            } else {
+                vm.btnName = '更换银行';
+            }
         };
 
         vm.changeCardType = function(credit) {
@@ -365,7 +380,7 @@
             $('#shengPayForm')[0].submit();
         }
 
-        function aliPay() {
+        vm.aliPay = function() {
             if (!vm.alipay_account) {
                 addAlert('danger', '请输入支付宝账户');
                 return;
@@ -375,7 +390,6 @@
                 return;
             }
             vm.alipayConfirm = true;
-            vm.showNextBtn = false;
 
             vm.pay_amount = Number(vm.pay_amount.toFixed(2));
             vm.pay_order.amount = vm.pay_amount;
