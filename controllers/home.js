@@ -64,8 +64,8 @@ function home(req, res, next) {
                     res.locals.main_menu = true;
                     res.render('home', {
                         user_count: req.session.statistic.user_count,
-                        total_capital: req.session.statistic.total_capital,
-                        total_profit: req.session.statistic.total_profit,
+                        total_capital: req.session.statistic.total_capital.toFixed(2),
+                        total_profit: req.session.statistic.total_profit.toFixed(2),
                         apply_infos: req.session.statistic.show_applies
                     });
                 });
@@ -74,8 +74,8 @@ function home(req, res, next) {
         res.locals.main_menu = true;
         res.render('home', {
             user_count: req.session.statistic.user_count,
-            total_capital: req.session.statistic.total_capital,
-            total_profit: req.session.statistic.total_profit,
+            total_capital: req.session.statistic.total_capital.toFixed(2),
+            total_profit: req.session.statistic.total_profit.toFixed(2),
             apply_infos: req.session.statistic.show_applies
         });
     }

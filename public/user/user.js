@@ -26,10 +26,10 @@ angular.module('userApp2').config(['$routeProvider', function($routeProvider) {
         .when('/home', { templateUrl: '/user/account_summary',
             controller: 'UserHomeCtrl2 as homeVM'
         })
-        /*
-        .when('/apply_detail/:serial_id', { templateUrl: '/user/apply_detail',
-            controller: 'UserApplyCtrl as applyVM'
+        .when('/recharge', { templateUrl: '/user/recharge',
+            controller: 'UserRechargeCtrl as rechargeVM'
         })
+        /*
         .when('/user_capital', { templateUrl: '/user/user_capital',
             controller: 'UserCapitalCtrl as capitalVM'
         })

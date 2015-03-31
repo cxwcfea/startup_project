@@ -24,7 +24,7 @@
             <tr>
                 <td valign="top" width="270">
                     <p class="p01">账户总资产</p>
-                    <p class="p02"><span>0</span>.00</p>
+                    <p class="p02"><span>\{{homeVM.user.finance.balance + homeVM.user.finance.freeze_capital + homeVM.user.finance.deposit | currency:'':2 | integerNum}}</span>\{{homeVM.user.finance.balance + homeVM.user.finance.freeze_capital + homeVM.user.finance.deposit | currency:'':2 | numTrunc}}</p>
                     <a href="#" class="a01">查看》</a>
                 </td>
                 <td valign="top" width="255">
@@ -40,19 +40,126 @@
             </tr>
         </table>
     </div>
-    <p class="acc_p01">
-        配资买股流程
-    </p>
-    <div class="acc_text2">
-        <span class="span01">1.申请实盘资金</span>
-        <span class="span02">2.领取交易账户</span>
-        <span class="span03">3.下载客户端，开始赚钱！</span>
-        <a href="#" class="acc_btn03">立即配资</a>
+
+    <div ng-hide="homeVM.newUser">
+        <div class="acc_Box2">
+            <table>
+                <tr>
+                    <td width="220">
+                        <div class="canvasBox">
+                            <canvas id="canvas" width="146" height="146">
+                                <!--此处显示不支持canvas的浏览器内容-->
+                                <div class="acc_Box2Num">80%</div>
+                            </canvas>
+                            <p class="tc">投资收益率</p>
+                        </div>
+                    </td>
+                    <td width="124">
+                        <p class="p01 color_999999">累计保证金</p>
+                        <p class="fb">\{{homeVM.user.finance.history_deposit | currency:'':2}}</p>
+                    </td>
+                    <td>
+                        <p class="p01 color_999999">累计收益</p>
+                        <p class="fb color_e0322d">\{{homeVM.user.finance.profit | currency:'':2}}</p>
+                    </td>
+                    <td width="205">
+                        <a href="/apply" class="acc_btn03">立即配资</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="acc_tableBox2">
+            <table>
+                <tr>
+                    <th>
+                        配资时间
+                    </th>
+                    <th>
+                        订单号
+                    </th>
+                    <th>
+                        保证金
+                    </th>
+                    <th>
+                        配资金额
+                    </th>
+                    <th>
+                        期限
+                    </th>
+                    <th>
+                        状态
+                    </th>
+                    <th>
+                        &nbsp;
+                    </th>
+                </tr>
+                <tr ng-repeat="apply in homeVM.currentApplies | orderBy:'applyAt':true | limitTo:2">
+                    <td>\{{apply.startDate | displayDate}}</td>
+                    <td>\{{apply.serialID}}</td>
+                    <td>\{{apply.deposit | currency:'':2}}</td>
+                    <td>\{{apply.amount | currency:'':2}}</td>
+                    <td>\{{apply.period}}天</td>
+                    <td><p ng-class="{color_37c80b: apply.status === 2, color_c82217: apply.status === 1, color_f2991b: apply.status === 5}" class="">\{{apply.status | applyStatus}}</p></td>
+                    <td><a href="" class="acc_btn04">查看</a></td>
+                </tr>
+            </table>
+        </div>
     </div>
-    <div class="newslist">
-        <ul>
-            <li><a href="#"><span class="span01">138****8888</span> 申请了 <span class="span02">300,000</span>元 实盘资金</a></li>
-            <li><a href="#"><span class="span01">只看盘面</span> 实盘资金2,000 收益<span class="span02">44.88</span> 收益率44.00%</a></li>
-        </ul>
+
+    <div ng-show="homeVM.newUser">
+        <p class="acc_p01">
+            配资买股流程
+        </p>
+        <div class="acc_text2">
+            <span class="span01">1.申请实盘资金</span>
+            <span class="span02">2.领取交易账户</span>
+            <span class="span03">3.下载客户端，开始赚钱！</span>
+            <a href="/apply" class="acc_btn03">立即配资</a>
+        </div>
+        <div class="newslist">
+            <ul>
+                <li><a href=""><span class="span01">138****8888</span> 申请了 <span class="span02">300,000</span>元 实盘资金</a></li>
+                <li><a href=""><span class="span01">只看盘面</span> 实盘资金2,000 收益<span class="span02">44.88</span> 收益率44.00%</a></li>
+            </ul>
+        </div>
     </div>
 </div>
+<script>
+    var nj_canvas = document.getElementById("canvas");
+    if (nj_canvas.getContext){
+        var ctx = nj_canvas.getContext("2d");
+        var W = nj_canvas.width;
+        var H = nj_canvas.height;
+        var new_deg=0,dif=0;
+        var loop,re_loop;
+        var text,text_w;
+    }
+    function init(num){
+        var num01 = 100/num;
+        var num02 = 360/num01;
+        var deg =num02;
+        ctx.clearRect(0,0,W,H);
+        ctx.beginPath();
+        ctx.strokeStyle="#c3c3c3";
+        ctx.lineWidth=2;
+        ctx.arc(W/2,H/2,72,0,Math.PI*2,false);
+        ctx.stroke();
+
+        var r = deg*Math.PI/180;
+        ctx.beginPath();
+        ctx.strokeStyle = "#e0322d";
+        ctx.lineWidth=2;
+        ctx.arc(W/2,H/2,72,0-90*Math.PI/180,r-90*Math.PI/180,false);
+        ctx.stroke();
+
+        ctx.fillStyle="#f00";
+        ctx.font="50px '微软雅黑'";
+        text = Math.floor(deg/360*100)+"%";
+        text_w = ctx.measureText(text).width;
+        ctx.fillText(text,W/2 - text_w/2,H/2+23);
+    }
+    if (nj_canvas.getContext){
+        init(80);//数值参数
+    }
+</script>

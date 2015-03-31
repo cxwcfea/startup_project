@@ -4,14 +4,14 @@
 
 .limitstock {
     padding-top: 20px;
-    height: 240px;
+    height: 350px;
     overflow-x: hidden;
     overflow-y: auto;
     font-weight: 800;
 }
 
 .limitstock li {
-    width: 130px;
+    width: 140px;
     float: left;
     padding-bottom: 15px;
     font-size: 14px;
@@ -116,6 +116,10 @@ input.LoginBtn01{
 
 .serviceBox{
     right: 30px;
+}
+
+.acc_tableBox2 th {
+    text-align: inherit;
 }
 
 /* for toaster */
