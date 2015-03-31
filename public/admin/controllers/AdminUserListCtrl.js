@@ -2,7 +2,6 @@
 angular.module('adminApp').controller('AdminUserListCtrl', ['$scope', '$http', '$modal', '$location', 'gbUser', 'gbNotifier', function($scope, $http, $modal, $location, gbUser, gbNotifier) {
     var vm = this;
     vm.users = gbUser.query(function() {
-        vm.users.sort(function(a, b){return a.registerAt < b.registerAt});
         vm.showAllUsers();
     });
 
