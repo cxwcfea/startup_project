@@ -269,6 +269,8 @@
 
         vm.selectPayBank = function (bank) {
             vm.payBank = bank.value;
+            $(".jq_rec2_yhBox").toggleClass("rec2_yhBoxSelected");
+            $(".jq_rec2_yhkList").slideToggle(200);
         };
 
         vm.changeCardType = function(credit) {
@@ -294,7 +296,6 @@
         };
 
         vm.balanceChecked = function() {
-            console.log(vm.useBalance);
             calculatePayAmount();
         };
 

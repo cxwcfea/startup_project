@@ -14,15 +14,17 @@
     <script src="{{static '/js/common.js'}}"></script>
     <script src="{{static '/js/register.js'}}"></script>
     <script src="{{static '/vendor/angular/angular.js'}}"></script>
+{{#if production}}
     <script>
-      var _hmt = _hmt || [];
-      (function() {
-        var hm = document.createElement("script");
-        hm.src = "//hm.baidu.com/hm.js?0f1e3c8e66c63704a066d89a633200e3";
-        var s = document.getElementsByTagName("script")[0]; 
-        s.parentNode.insertBefore(hm, s);
-      })();
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?0f1e3c8e66c63704a066d89a633200e3";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
     </script>
+{{/if}}
     <script>
         $(function () {
             $(".jq_regInputText").focus(function () {
@@ -164,7 +166,7 @@
 {{#if recharge}}
 <script src="{{static '/vendor/angular-route/angular-route.js'}}"></script>
 <script src="{{static '/vendor/angular-resource/angular-resource.js'}}"></script>
-<script src="{{static '/app/controllers/RechargeCtrl2.js'}}"></script>
+<script src="{{static '/app/controllers/RechargeCtrl.js'}}"></script>
 <!--
 <script src="{{static '/js.min/niujinwang-recharge.min.a6010f88.js'}}"></script>
 -->
