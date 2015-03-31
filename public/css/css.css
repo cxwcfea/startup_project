@@ -2079,12 +2079,26 @@ dl.left .submit:hover{
 	font-size: 16px;
 	color: #333333;
 }
-
+.rec2_textBox span.span03{
+	color: #000;
+	font-weight: bold;
+	padding-left: 36px;
+}
+.checkBox{
+	width: 18px;
+	height: 18px;
+	background: url(../images/img43.png) no-repeat;
+	margin: 30px 16px 0 0;
+	cursor: pointer;
+}
+.checkBoxSelected{
+	background-position: 0 -18px;
+}
 .rec2_yhBox{
 	/*height: 80px;*/
 	margin: 10px 33px 0 33px;
-	border: 3px solid #aed1f6;
-	/*border: 3px solid #fff;*/
+	/*border: 3px solid #aed1f6;*/
+	border: 3px solid #fff;
 }
 .rec2_yhBoxSelected{
 	border: 3px solid #fff;
@@ -2859,7 +2873,7 @@ p.rec2_hkP01{
 	font-size: 55px;
 	color: #e0322d;
 	text-align: center;
-	line-height: 146px;啊
+	line-height: 146px;
 	border: 1px solid #FF0000;
 }
 .acc_Box2 table{
@@ -3235,6 +3249,231 @@ p.newrec_P02 a:hover{
 .newRec_Text p.p03 a{
 	color: #2489f0;
 }
+
+
+/*支付中心*/
+
+.pay_Box{
+	margin-top: 27px;
+}
+.pay_LeftText{
+	width: 225px;
+	text-indent: 100px;
+	height: 92px;
+	line-height: 92px;
+}
+.pay_RightBox{
+	width: 650px;
+}
+.pay_text{
+	border-bottom: 1px dashed #c9c9c9;
+	height: 92px;
+	line-height: 92px;
+}
+.pay_textBox{
+	width: 270px;
+	font-weight: bold;
+}
+.pay_textBox span{
+	padding-left: 15px;
+}
+.pay_textBox img{
+	vertical-align: middle;
+	border: 1px solid #eeeeee;
+}
+.pay_textBox2{}
+.pay_textBox2 span{
+	font-weight: bold;
+	color: #b0202d;
+}
+
+.pay_btn{
+	margin-left: 225px;
+	margin-top: 40px;
+}
+.pay_btn02{
+	margin-left: 235px;
+	display: block;
+	margin-top: 25px;
+	color: #2489f0;
+}
+
+.paysu_box{
+	height: 460px;
+	background: #fff;
+	margin-top: 30px;
+}
+
+.paysu_box2{
+	width: 630px;
+	margin: auto;
+	
+}
+
+.paysu_Img{
+	width: 64px;
+	height: 64px;
+	background: url(../images/img44.png)  no-repeat;
+	margin: 50px 20px 0 77px;
+}
+.paysu_Text{
+	margin-top: 50px;
+}
+.paysu_Text p.p01{
+	font-size: 20px;
+	font-weight: bold;
+	height: 40px;
+	line-height: 40px;
+}
+.paysu_Text p.p02{
+	font-size: 12px;
+	color: #999999;
+}
+
+
+.paysu_bg{
+	height: 230px;
+	background: url(../images/img45.jpg) no-repeat;
+	margin-top: 30px;
+	padding: 0 60px;
+}
+.paysu_bg p.p01{
+	font-size: 16px;
+	color: #a40000;
+	font-style: italic;
+	border-bottom: 1px dashed #c9c9c9;
+	text-align: center;
+	height: 40px;
+	line-height: 40px;
+	padding-top: 20px;
+}
+.paysu_bg p.p01 span{
+	padding-right: 20px;
+	padding-left: 10px;
+}
+.paysu_bg p.p01 span.span01{
+	background: url(../images/img45.png) no-repeat right center;
+}
+
+.paysu_text2{
+	width: 300px;
+	padding-left: 40px;
+	margin-top: 12px;
+	font-size: 12px;
+}
+
+.paysu_text2 p.p02{
+	color: #999999;
+	height: 50px;
+	line-height: 50px;
+}
+.paysu_text2 p.p03{
+	line-height: 30px;
+	height: 30px;
+	color: #666666;
+}
+.paysu_text2 p.p03 span{
+	font-size: 14px;
+	color: #333333;
+	font-weight: bold;
+}
+
+.paysu_text2 p.p03 a{
+	color: #999999;
+}
+
+.paysu_text3{
+	margin-top: 12px;
+	width: 170px;
+	text-align: center;
+	font-size: 12px;
+}
+.paysu_text3 a{
+	color: #2489f0;
+}
+
+.paysu_text3 p{
+	color: #999999;
+	height: 50px;
+	line-height: 50px;
+}
+.paysu_text3 a.abtn{
+	display: block;
+	width: 170px;
+	height: 35px;
+	line-height: 35px;
+	text-align: center;
+	background: #e0322d;
+	border-radius: 5px;
+	color: #fff;
+}
+.paysu_text3 a.abtn span{
+	font-size: 14px;
+}
+
+.paysu_text3 a.abtn:hover{
+	text-decoration: none;
+	background: #c92a26;
+}
+
+.pay_btnBox{
+	margin-left: 10px;
+	margin-top: 10px;
+	position: relative;
+}
+.pay_btnBoxSelected{
+	background: #fff;
+}
+.pay_ewmBox{
+	position: absolute;
+	left: 0;
+	bottom: 15px;
+	display: none;
+}
+.pay_ewmBoxIOS{
+	left: -20px;
+}
+
+.paysu_p01{
+	height: 55px;
+	line-height: 55px;
+	color: #999999;
+	font-size: 12px;
+	text-align: center;
+}
+
+/*注册成功*/
+.regBox{
+	border: 2px solid #e5e5e5;
+	margin-top: 50px;
+}
+.reg_img{
+	width: 64px;
+	height: 64px;
+	background: url(../images/img44.png);
+	margin: 40px 20px 0 150px;
+}
+.reg_text{
+	margin-top: 40px;
+}
+.reg_text p.p01{
+	font-weight: bold;
+	font-size: 20px;
+}
+.reg_text p.p03{
+	height: 75px;
+	padding-top: 17px;
+}
+.reg_text p.p03 a.newrec_btn02{
+	color: #fff;
+}
+
+
+
+
+
+
+
 
 
 

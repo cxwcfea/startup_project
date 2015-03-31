@@ -22,6 +22,14 @@ module.exports = function(app) {
         res.render('failed_to_pay');
     });
 
+    app.get('/welcome', passportConf.isAuthenticated, function(req, res, next) {
+        res.locals.title = '用户注册';
+        res.locals.signup = true;
+        res.render('register/success', {
+            layout: 'no_header'
+        });
+    });
+
     app.get('/recharge', passportConf.isAuthenticated, users.getRecharge);
 
     app.get('/recharge2', passportConf.isAuthenticated, users.getRecharge2);
