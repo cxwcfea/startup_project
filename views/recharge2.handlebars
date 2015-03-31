@@ -53,30 +53,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="rec2_yhBox  undis">
-                    <div class="rec2_yhkText fl">
-                        <div class="rec2_img fl"></div>
-                        <div class="fl">转账汇款</div>
-                    </div>
-                    <div class="rec2_hkTable fl">
-                        <table border="0" cellspacing="0" cellpadding="0">
-                            <tr>
-                                <td><img src="../images/yh/cmb.jpg"/></td>
-                                <td>
-                                    帐号：1109 1260 9510 501<br />
-                                    户名：北京小牛普惠科技有限公司<br />
-                                    开户行：招商银行股份有限公司北京清华园支行
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="clear"></div>
-                    <p class="rec2_hkP01">转账成功后，请电话告知我们客服 400-692-1388，以便尽快到账！ </p>
-                </div>
             </div>
 
-            <alert ng-repeat="alert in vm.alerts" type="\{{alert.type}}" close="vm.closeAlert($index)">\{{alert.msg}}</alert>
-            <a href="" class="rec2_btn" ng-click="vm.gotoPay()" ng-show="vm.showNextBtn">下一步</a>
+            <alert ng-show="!vm.showAlipayWindow && !vm.showBankTransWindow" ng-repeat="alert in vm.alerts" type="\{{alert.type}}" close="vm.closeAlert($index)">\{{alert.msg}}</alert>
+            <a href="" class="rec2_btn" ng-click="vm.gotoPay()">下一步</a>
             <div class="rec2_zfBox">
                 <div class="fl rec2_zfBoxName">其他支付</div>
                 <div class="fl" id="yhkList">
@@ -153,7 +133,7 @@
         <div class="tar_TccBox newReczfb_TccBox">
             <div class="regColumn">
                 支付宝转账
-                <div class="loginClose jq_loginClose" ng-click="vm.showAlipayWindow = false; vm.alipayConfirm = false"></div>
+                <div class="loginClose jq_loginClose" ng-click="vm.closeOtherWindow()"></div>
             </div>
             <div class="newRec_zfbBox jq_zfb01" ng-class="{undis:vm.alipayConfirm}">
                 <div class="newRec_zfbForm">
@@ -182,6 +162,7 @@
                     </div>
                 </div>
                 <p class="newrec_P01">请确认该账户与实际转账支付宝账户一致</p>
+                <alert ng-show="vm.showAlipayWindow" ng-repeat="alert in vm.alerts" type="\{{alert.type}}" close="vm.closeAlert($index)">\{{alert.msg}}</alert>
                 <a href="" class="newrec_btn02 newrec_zfbbtn01 jq_Btn01" ng-click="vm.aliPay()">下一步</a>
             </div>
             <div class="newRec_zfbBox jq_zfb02" ng-class="{undis:!vm.alipayConfirm}">
@@ -230,12 +211,12 @@
         </div>
     </div>
 
-    <div class="regTcc jq_recTcc newRec_zzhkTcc undis">
+    <div class="regTcc jq_recTcc newRec_zzhkTcc" ng-show="vm.showBankTransWindow">
         <div class="tmbg"></div>
         <div class="tar_TccBox newReczfb_TccBox">
             <div class="regColumn">
                 转账汇款
-                <div class="loginClose jq_loginClose"></div>
+                <div class="loginClose jq_loginClose" ng-click="vm.closeOtherWindow()"></div>
             </div>
             <div class="newRec_zzhkBox">
                 <p class="newrec_P03">您可以通过银行柜台向牛金转账</p>
@@ -258,7 +239,8 @@
                         </tr>
                     </table>
                 </div>
-                <p class="newrec_P04">将转账相关信息 <a href="#">发送到手机</a></p>
+                <p class="newrec_P04">将转账相关信息 <a href="" ng-click="vm.sendSMSBankInfo()">发送到手机</a></p>
+                <p class="newrec_P04">转账成功后，请电话告知我们客服 400-692-1388，以便尽快到账！ </p>
             </div>
         </div>
     </div>

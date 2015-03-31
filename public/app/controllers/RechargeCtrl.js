@@ -218,7 +218,7 @@
         vm.btnName = '更换银行';
         vm.showAlipayWindow = false;
         vm.showPayConfirm = false;
-        vm.showNextBtn = true;
+        vm.showBankTransWindow = false;
         vm.paying = false;
         vm.bankObj = vm.BankNameList[0];
         vm.payBank = -1;
@@ -264,9 +264,7 @@
             vm.alipayConfirm = false;
             vm.currentPayType = type;
             if (vm.currentPayType === 2) {
-                vm.showNextBtn = false;
-            } else {
-                vm.showNextBtn = true;
+                vm.showBankTransWindow = true;
             }
             if (vm.currentPayType === 1) {
                 vm.showAlipayWindow = true;
@@ -315,15 +313,11 @@
         };
 
         vm.gotoPay = function() {
-            if (vm.currentPayType === 0) {
-                if (vm.payBank === -1) {
-                    addAlert('danger', '请先选择付款银行');
-                    return;
-                }
-                vm.showPayConfirm = true;
-            } else if (vm.currentPayType === 1) {
-                aliPay();
+            if (vm.payBank === -1) {
+                addAlert('danger', '请先选择付款银行');
+                return;
             }
+            vm.showPayConfirm = true;
         };
 
         vm.onlinePay = function() {
@@ -340,6 +334,13 @@
                     console.log('order update failed');
                     addAlert('danger', '服务暂时不可用，请稍后再试');
                 });
+        };
+
+        vm.closeOtherWindow = function () {
+            vm.showAlipayWindow = false;
+            vm.showBankTransWindow = false;
+            vm.alipayConfirm = false;
+            vm.alerts = [];
         };
 
         function payThroughShengPay(order) {
@@ -404,7 +405,7 @@
                     console.log('order update failed');
                     addAlert('danger', '服务暂时不可用，请稍后再试');
                 });
-        }
+        };
 
         function calculatePayAmount() {
             vm.pay_amount = vm.pay_order.amount;
