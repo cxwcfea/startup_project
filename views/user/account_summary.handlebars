@@ -1,0 +1,58 @@
+<div class="fl tra_right">
+    <div class="tra_column">
+        <span class="dis fl">账户总览</span>
+    </div>
+    <div class="acc_Box">
+        <div class="acc_img fl"></div>
+        <div class="acc_text fl">
+            <p class="p01"><span class="fb">\{{homeVM.user.mobile | displayMobile}}</span> 您好！</p>
+            <p class="p02">
+                <span class="span01">身份认证  </span>
+                <a href="#">填写</a>
+                <span class="span02">银行卡  </span>
+                <a href="#">填写</a>
+            </p>
+        </div>
+        <div class="acc_BtnBox fr">
+            <p class="p01">上次登录时间：2015.03.24 17:43:56</p>
+            <a href="#" class="acc_btn01">充&nbsp;值</a>
+            <a href="#" class="acc_btn02">提&nbsp;现</a>
+        </div>
+    </div>
+    <div class="acc_tableBox">
+        <table>
+            <tr>
+                <td valign="top" width="270">
+                    <p class="p01">账户总资产</p>
+                    <p class="p02"><span>0</span>.00</p>
+                    <a href="#" class="a01">查看》</a>
+                </td>
+                <td valign="top" width="255">
+                    <p class="p01">证券账户市值</p>
+                    <p class="p02"><span>0</span>.00</p>
+                    <a href="#" class="a01">查看》</a>
+                </td>
+                <td valign="top">
+                    <p class="p01">可用余额</p>
+                    <p class="p02"><span>\{{homeVM.user.finance.balance | currency:'':2 | integerNum}}</span>\{{homeVM.user.finance.balance | currency:'':2 | numTrunc}}</p>
+                    <a href="#" class="a01">查看》</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <p class="acc_p01">
+        配资买股流程
+    </p>
+    <div class="acc_text2">
+        <span class="span01">1.申请实盘资金</span>
+        <span class="span02">2.领取交易账户</span>
+        <span class="span03">3.下载客户端，开始赚钱！</span>
+        <a href="#" class="acc_btn03">立即配资</a>
+    </div>
+    <div class="newslist">
+        <ul>
+            <li><a href="#"><span class="span01">138****8888</span> 申请了 <span class="span02">300,000</span>元 实盘资金</a></li>
+            <li><a href="#"><span class="span01">只看盘面</span> 实盘资金2,000 收益<span class="span02">44.88</span> 收益率44.00%</a></li>
+        </ul>
+    </div>
+</div>

@@ -155,9 +155,16 @@
     angular.module('commonApp').filter("numTrunc", function () {
         return function (input) {
             var ret = input;
-            if (angular.isNumber(ret)) {
-                ret = ret.toFixed(2);
-                ret = ret.substr(-3);
+            var pos = ret.search('\\.');
+            ret = ret.substr(pos);
+            return ret;
+        };
+    }).filter("integerNum", function () {
+        return function (input) {
+            var ret = input;
+            var pos = ret.search('\\.');
+            if (pos > -1) {
+                ret = ret.substr(0, pos);
             }
             return ret;
         };

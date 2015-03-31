@@ -1638,7 +1638,16 @@ function getRecharge(req, res, next) {
     });
 }
 
+function getUserHome(req, res, next) {
+    res.locals.user_menu = true;
+    res.render('user/home2', {
+        bootstrappedUserObject: JSON.stringify(getUserViewModel(req.user))
+    });
+}
+
 module.exports.registerRoutes = function(app, passportConf) {
+    app.get('/user2', passportConf.isAuthenticated, getUserHome);
+
     app.get('/user', passportConf.isAuthenticated, homeIndex);
 
     app.get('/recharge2', passportConf.isAuthenticated, getRecharge);
