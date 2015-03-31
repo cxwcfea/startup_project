@@ -37,6 +37,7 @@
     "passport": "^0.2.1",
     "passport-local": "^1.0.0",
     "session-mongoose": "^0.5.2",
+    "spark-md5": "0.0.5",
     "underscore": "^1.7.0",
     "ursa": "^0.8.3"
   },
