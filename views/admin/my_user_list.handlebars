@@ -1,0 +1,81 @@
+<div class="am-cf am-padding">
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">我的用户列表</strong> / <small>My Users</small></div>
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12 am-u-md-3">
+        <div class="am-input-group am-input-group-sm">
+            <input type="text" class="am-form-field" placeholder="输入用户手机号" ng-model="myUserVM.searchKey">
+            <span class="am-input-group-btn">
+                <button class="am-btn am-btn-default" type="button" ng-click="myUserVM.searchUser()">搜索</button>
+                <button class="am-btn am-btn-default" type="button" ng-click="myUserVM.showAllUsers()">全部</button>
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12">
+        <form class="am-form">
+            <div class="am-scrollable-horizontal">
+            <table class="am-table am-table-striped am-table-hover table-main">
+                <thead>
+                <tr>
+                    <th class="table-id">手机号</th><th class="table-title">姓名</th><th class="table-id">QQ号</th><th class="table-author">邮件</th><th class="table-id">余额</th><th>客服人员</th><th class="table-date">注册日期</th><th class="table-set">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="user in myUserVM.currentUsers">
+                    <td>\{{user.mobile}}</td>
+                    <td>\{{user.identity.name || 'N/A'}}</td>
+                    <td>\{{user.profile.qq || 'N/A'}}</td>
+                    <td>\{{user.profile.email || 'N/A'}}</td>
+                    <td>\{{user.finance.balance.toFixed(2)}}</td>
+                    <td>\{{user.manager || '还未分配'}}</td>
+                    <td>\{{myUserVM.registerDate(user.registerAt)}}</td>
+                    <td>
+                        <div class="am-btn-toolbar">
+                            <div class="am-btn-group am-btn-group-xs">
+                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="myUserVM.open(user.mobile)"><span class="am-icon-envelope"></span> 发短信</button>
+                                <button class="am-btn am-btn-default am-btn-xs" ng-click="myUserVM.showApplies(user)"><span class="am-icon-bar-chart"></span> 配资</button>
+                                <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="myUserVM.showOrders(user)"><span class="am-icon-money"></span> 交易</button>
+                                <!--
+                                <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="myUserVM.updateBalance(user)"><span class="am-icon-pencil"></span> 修改余额</button>
+                                -->
+                                <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="myUserVM.createOrder(user)"><span class="am-icon-pencil"></span> 创建订单</button>
+                                <!--
+                                <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-click="myUserVM.takeCustomer(user)"><span class="am-icon-user"></span> 接手客服</button>
+                                -->
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+            <div class="am-cf">
+                共 \{{myUserVM.currentUsers.length}} 条记录
+                <div class="am-fr">
+                    <pagination previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="myUserVM.itemsPerPage" total-items="myUserVM.totalItems" ng-model="myUserVM.currentPage" ng-change="myUserVM.pageChanged()"></pagination>
+                </div>
+            </div>
+            <hr />
+        </form>
+    </div>
+</div>
+
+<script type="text/ng-template" id="userUpdateModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">修改用户</h3>
+    </div>
+    <div class="modal-body">
+        <div class="am-form-group">
+            <label>增加或减少的余额</label>
+            <input type="number" ng-model="user.balance">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">确认修改</button>
+        <button class="btn btn-warning" ng-click="cancel()">取消</button>
+    </div>
+</script>
