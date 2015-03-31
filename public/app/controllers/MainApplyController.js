@@ -147,7 +147,10 @@
                     success(function(data, status, headers, config) {
                         vm.forbiddenStockList = data;
                         var theModal = $('#forbidden-stock-modal');
-                        theModal.modal('open');
+                        theModal.modal({
+                            width: 750,
+                            height: 450
+                        });
                     }).
                     error(function(data, status, headers, config) {
                     });
