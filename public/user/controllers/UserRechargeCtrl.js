@@ -123,19 +123,34 @@ angular.module('userApp2').controller('UserRechargeCtrl', ['$scope', '$window', 
     };
 
     vm.onlinePay = function() {
+        if (vm.payBank === -1) {
+            addAlert('danger', '请先选择付款银行');
+            return;
+        }
+        if (!vm.pay_amount || vm.pay_amount < 0) {
+            addAlert('danger', '请输入有效的充值金额');
+            return;
+        }
         vm.pay_amount = Number(vm.pay_amount.toFixed(2));
-        vm.pay_order.amount = vm.pay_amount;
+        if (!vm.pay_amount) {
+            addAlert('danger', '最少充值1分钱');
+            return;
+        }
 
-        vm.paying = true;
-        $http.post('/api/user/' + vm.user._id + '/orders/' + vm.pay_order._id, vm.pay_order)
-            .success(function(data, status) {
-                console.log('order update success');
-                payThroughShengPay(vm.pay_order);
-            })
-            .error(function(data, status) {
-                console.log('order update failed');
-                addAlert('danger', '服务暂时不可用，请稍后再试');
-            });
+        vm.pay_amount = Number(vm.pay_amount.toFixed(2));
+
+        var newOrder = new njOrder({uid:vm.user._id});
+        newOrder.userID = vm.user._id;
+        newOrder.userMobile = vm.user.mobile;
+        newOrder.dealType = 1;
+        newOrder.amount = vm.pay_amount;
+        newOrder.description = '网站充值';
+        newOrder.$save(function(o, responseHeaders) {
+            vm.paying = true;
+            payThroughShengPay(o);
+        }, function(response) {
+            addAlert('danger', '服务暂时不可用，请稍后再试');
+        });
     };
 
     vm.closeOtherWindow = function () {
@@ -184,6 +199,10 @@ angular.module('userApp2').controller('UserRechargeCtrl', ['$scope', '$window', 
     }
 
     vm.aliPay = function() {
+        if (!vm.pay_amount || vm.pay_amount < 0) {
+            addAlert('danger', '请输入有效的充值金额');
+            return;
+        }
         if (!vm.alipay_account) {
             addAlert('danger', '请输入支付宝账户');
             return;
@@ -194,26 +213,22 @@ angular.module('userApp2').controller('UserRechargeCtrl', ['$scope', '$window', 
         }
         vm.alipayConfirm = true;
 
-        vm.pay_amount = Number(vm.pay_amount.toFixed(2));
-        vm.pay_order.amount = vm.pay_amount;
-        vm.pay_order.payType = 3;
-        vm.pay_order.otherInfo = vm.alipay_account;
-        vm.pay_order.transID = vm.alipay_name;
-        $http.post('/api/user/' + vm.user._id + '/orders/' + vm.pay_order._id, vm.pay_order)
-            .success(function(data, status) {
-                console.log('order update success');
-            })
-            .error(function(data, status) {
-                console.log('order update failed');
-                addAlert('danger', '服务暂时不可用，请稍后再试');
-            });
+        var newOrder = new njOrder({uid:vm.user._id});
+        newOrder.userID = vm.user._id;
+        newOrder.userMobile = vm.user.mobile;
+        newOrder.dealType = 1;
+        newOrder.amount = Number(vm.pay_amount.toFixed(2));
+        newOrder.description = '支付宝转账';
+        newOrder.payType = 3;
+        newOrder.status = 2;
+        newOrder.otherInfo = vm.alipay_account;
+        newOrder.transID = vm.alipay_name;
+        newOrder.$save(function(o, responseHeaders) {
+            console.log('order create success');
+        }, function(response) {
+            console.log('order create failed');
+            addAlert('danger', '服务暂时不可用，请稍后再试');
+        });
     };
-
-    function calculatePayAmount() {
-        vm.pay_amount = vm.pay_order.amount;
-        if (vm.useBalance) {
-            vm.pay_amount -= vm.user.finance.balance;
-        }
-    }
 
 }]);

@@ -8,7 +8,7 @@
         <p class="p01">身份认证</p>
         <form name="identityForm">
             <input type="text" ng-model="accountVM.identity_name" class="inputText2" placeholder="请输入身份证姓名" required autofocus>
-            <input type="text" ng-model="accountVM.identity_id" class="inputText2" placeholder="请输入身份证号码" pattern="/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/" required>
+            <input type="text" ng-model="accountVM.identity_id" class="inputText2" placeholder="请输入身份证号码" pattern="^\d{15}$|^\d{18}$|^\d{17}(\d|X|x)$" required>
             <p class="p02">一旦确认，不能修改，请务必确认使用的信息真实有效，否则将会影响到您的提现</p>
             <a href="javascript:" class="ideBtn01" ng-click="accountVM.verifyUserIdentity()">立即认证</a>
         </form>

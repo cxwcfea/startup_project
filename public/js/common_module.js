@@ -94,7 +94,7 @@
 
     var getStartDay = function() {
         var startDay = moment().startOf('day');
-        if (moment().hour() > 14 || (moment().hour() == 14 && moment().minute() >= 30)) {
+        if (moment().hour() > 14) {
             startDay = moment().endOf('day').add(1, 'ms');
         }
 
