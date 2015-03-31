@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>牛金网</title>
+    <link rel="alternate icon" type="image/png" href="/images/favicon.ico">
+    <link rel="stylesheet" href="{{static '/vendor/bootstrap/dist/css/bootstrap.min.css'}}">
+{{#if recharge}}
+    <link rel="stylesheet" href="{{static '/vendor/bootstrap/dist/css/bootstrap.min.css'}}">
+{{else}}
+    <link rel="stylesheet" href="{{static '/vendor/amazeui/dist/css/amazeui.min.css'}}">
+{{/if}}
+    <link rel="stylesheet" href="{{static '/vendor/toastr/toastr.css'}}">
+    <link rel="stylesheet" href="{{static '/css/common.css'}}">
+{{#if main_menu}}
+    <link rel="stylesheet" href="{{static '/css/index.css'}}">
+{{/if}}
+{{#unless main_menu}}
+    <link rel="stylesheet" href="{{static '/css/css.css'}}">
+{{/unless}}
+    <link rel="stylesheet" href="{{static '/css/site2.css'}}">
+    <script src="{{static '/vendor/jquery/dist/jquery.min.js'}}"></script>
+    <script src="{{static '/vendor/jquery.Imgfocus.js'}}"></script>
+    <script src="{{static '/vendor/angular/angular.js'}}"></script>
+{{#if production}}
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?0f1e3c8e66c63704a066d89a633200e3";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+{{/if}}
+</head>
+{{#if not_found}}
+<body class="bg_fff">
+{{else}}
+<body>
+{{/if}}
+<div class="Top">
+    <div class="wrapper pr">
+        <div class="fl color_c82217">客服热线：</div>
+        <div class="fl color_c82217 TopPhone">400-692-1388</div>
+        <div class="fr">
+            &nbsp;&nbsp;&nbsp;<a href="/info/help">帮助中心</a>&nbsp;&nbsp;&nbsp;
+        </div>
+        <div class="fr jq_khdBox">
+            <a href="/info/download">软件下载</a>
+            <!--
+            <div class="hhdDown undis">
+                <ul>
+                    <li><span class="icon02">&nbsp;</span><a href="http://www.ihoms.com/file/xunlei/downloadxunlei/HOMS_YONGJINBAN_zhuanyeban.exe?fileCode=40&sourceType=4">Windows版</a></li>
+                    <li><span class="icon03">&nbsp;</span><a href="http://www.ihoms.com/file/xunlei/downloadxunlei/HOMS_YONGJINBAN_iPhone.ipa?fileCode=57&sourceType=4">iOS版</a></li>
+                    <li><span class="icon04">&nbsp;</span><a href="http://www.ihoms.com/file/xunlei/downloadxunlei/HOMS_YONGJINBAN_android.apk?fileCode=38&sourceType=4">Android版</a></li>
+                </ul>
+            </div>
+            -->
+        </div>
+        {{#if user}}
+        <div class="fr">
+            <span class="am-text-danger">您好,{{#if user.profile.name}} {{user.profile.name}} {{else}} {{user.mobile}} {{/if}}</span>
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            <a href="/logout" class="color_333333">退出登录</a>&nbsp;&nbsp;
+            <a href="/recharge">充值中心</a>&nbsp;&nbsp;&nbsp;
+        </div>
+    {{/if}}
+    {{#unless user}}
+        <div class="fr">
+            <a href="/login" class="color_333333">立即登录</a>&nbsp;&nbsp;
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            <a href="/signup" class="color_333333">免费注册</a>&nbsp;&nbsp;
+            <a href="/user#/user_capital?category=0">充值中心</a>&nbsp;&nbsp;&nbsp;
+        </div>
+    <!--
+        <div class="TopLoginBox fr jq_topLogin" ng-app="registerApp" ng-controller="RegisterCtrl as vm">
+            立即登录
+            <div id="login" class="ui-logon clearfix topLoginContet jq_LoginBox undis">
+                <form method="POST" name="login-form" novalidate>
+                    <ul class="logon-con">
+                        <li class="logon-ipt z-index10" id="username1">
+                            <em class="user"></em>
+                            <input placeholder="请输入注册手机号码" type="tel" autocomplete="off" accesskey="n" tabindex="1" class="holder" name="mobile" id="mobile" ng-model="vm.mobile" required autofocus>
+                        </li>
+                        <li class="logon-ipt mgt20" id="pwd">
+                            <em class="key"></em>
+                            <input type="password" tabindex="2" placeholder="密码" name="password" required minlength="6" maxlength="20" ng-model="vm.password">
+                        </li>
+                        <li class="ui-pwd">
+                            <a href="/forgot">忘记密码</a>
+                        </li>
+                        <li><alert ng-repeat="alert in vm.alerts" type="\{{alert.type}}" close="vm.closeAlert($index)">\{{alert.msg}}</alert></li>
+                        <li>
+                            <input type="submit" value="登录" accesskey="l" name="submit" tabindex="4" class="login-btn" ng-click="vm.login()">
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+        -->
+    {{/unless}}
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="header">
+    <div class="wrapper">
+{{#if recharge}}
+        <a href="/" class="logo2"><img src="/images/logo.png"/></a>
+        <span class="loginSpan">充值中心</span>
+{{else}}
+        <a href="/" class="logo"><img src="/images/logo.png"/></a>
+{{/if}}
+        <ul class="nav fr">
+            <li {{#if main_menu}} class="select" {{/if}}><a href="/">首页</a></li>
+            <li {{#if apply_menu}} class="select" {{/if}}><a href="/apply">天天牛</a></li>
+            <li {{#if free_apply_menu}} class="select" {{/if}}><a href="/free_apply">免费体验</a></li>
+            <li {{#if user_menu}} class="select" {{/if}}><a href="/user">我的账户</a></li>
+        </ul>
+    </div>
+</div>
+
+{{{body}}}
+
+
+<div class="serviceBox">
+    <a target="_blank" href="http://wpa.b.qq.com/cgi/wpa.php?ln=1&key=XzkzODA3MjI1OV8yNTEwNzVfNDAwNjkyMTM4OF8yXw">客服QQ</a>
+</div>
+<!--
+<div class="serviceBox">
+    <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=4006921388&site=qq&menu=yes">客服QQ</a>
+</div>
+-->
+{{#if main_menu}}
+<div class="footer">
+{{/if}}
+{{#if user_menu}}
+<div class="footer">
+{{/if}}
+{{#if apply_menu}}
+<div class="footer marTop200">
+{{/if}}
+{{#if free_apply_menu}}
+<div class="footer marTop200">
+{{/if}}
+{{#if other_menu}}
+<div class="footer marTop200">
+{{/if}}
+{{#if recharge}}
+<div class="footer marTop200">
+{{/if}}
+
+    <div class="wrapper">
+        <div class="footerList fl">
+            <p>软件下载</p>
+            <ul>
+                <li><span class="icon02">&nbsp;</span><a href="http://www.ihoms.com/file/xunlei/downloadxunlei/HOMS_YONGJINBAN_zhuanyeban.exe?fileCode=40&sourceType=4">Windows版</a></li>
+                <li><span class="icon03">&nbsp;</span><a href="http://www.ihoms.com/file/xunlei/downloadxunlei/HOMS_YONGJINBAN_iPhone.ipa?fileCode=57&sourceType=4">iOS版</a></li>
+                <li><span class="icon04">&nbsp;</span><a href="http://www.ihoms.com/file/xunlei/downloadxunlei/HOMS_YONGJINBAN_android.apk?fileCode=38&sourceType=4">Android版</a></li>
+            </ul>
+        </div>
+        <div class="footerList fl">
+            <p>操盘问题</p>
+            <ul>
+                <li><a href="/info/guide">新手引导</a></li>
+                <li><a href="/info/legal">法律保障</a></li>
+                <li><a href="/info/help">常见问题</a></li>
+            </ul>
+        </div>
+        <div class="footerList fl">
+            <p>关于牛金网</p>
+            <ul>
+                <li><a href="/info/about">公司介绍</a></li>
+                <li><a href="/info/partners">合作伙伴</a></li>
+                <li><a href="/info/contact">联系方式</a></li>
+            </ul>
+        </div>
+        <div class="fr ewmBox">
+            <p><span>&nbsp;</span>牛金网服务号</p>
+            <img src="/images/weixin_code.jpg"/>
+        </div>
+        <div class="fr phoneBox">
+            <p class="p01">全国服务热线</p>
+            <p class="p02">400-692-1388</p>
+            <p class="p01">客服QQ</p>
+            <p class="p02">4006921388</p>
+            <div class="icon05"></div>
+            <div class="icon06"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="footerText">©版权所有 北京小牛普惠科技有限公司 All Rights Reserved 2015 <a href="javascript:"> 京ICP备14047091号-4</a></div>
+    </div>
+</div>
+<script src="{{static '/vendor/bootstrap/dist/js/bootstrap.min.js'}}"></script>
+<script src="{{static '/vendor/amazeui/dist/js/amazeui.min.js'}}"></script>
+<script src="{{static '/vendor/toastr/toastr.min.js'}}"></script>
+<script src="{{static '/vendor/lodash/lodash.min.js'}}"></script>
+<script src="{{static '/vendor/moment/min/moment.min.js'}}"></script>
+<script src="{{static '/vendor/moment/min/locales.min.js'}}"></script>
+<script src="{{static '/vendor/spark-md5.min.js'}}"></script>
+<script src="{{static '/vendor/angular-bootstrap/ui-bootstrap-tpls.min.js'}}"></script>
+<!--
+<script src="{{static '/js/common.js'}}"></script>
+<script src="{{static '/js/common_module.js'}}"></script>
+<script src="{{static '/app/controllers/MainApplyController.js'}}"></script>
+<script src="{{static '/js/main.js'}}"></script>
+<script src="{{static '/app/controllers/RegisterCtrl.js'}}"></script>
+-->
+<script src="{{static '/js.min/niujinwang-main.min.e4583472.js'}}"></script>
+{{#if main_menu}}
+        <script src="{{static '/js/index.js'}}"></script>
+{{/if}}
+{{#if user_menu}}
+        <script src="{{static '/vendor/angular-route/angular-route.js'}}"></script>
+        <script src="{{static '/vendor/angular-resource/angular-resource.js'}}"></script>
+        <!--
+        <script src="{{static '/js/user.js'}}"></script>
+        <script src="{{static '/user/user.js'}}"></script>
+        <script src="{{static '/user/controllers/UserIndexCtrl.js'}}"></script>
+        <script src="{{static '/user/controllers/UserHomeCtrl.js'}}"></script>
+        <script src="{{static '/user/controllers/UserApplyCtrl.js'}}"></script>
+        <script src="{{static '/user/controllers/UserCapitalCtrl.js'}}"></script>
+        <script src="{{static '/user/controllers/UserAccountCtrl.js'}}"></script>
+        -->
+        <script src="{{static '/js.min/niujinwang-user.min.595d48ae.js'}}"></script>
+
+        <script src="{{static '/user/controllers/UserIndexCtrl2.js'}}"></script>
+        <script src="{{static '/user/controllers/UserHomeCtrl2.js'}}"></script>
+{{/if}}
+{{#if recharge}}
+        <script src="{{static '/vendor/angular-route/angular-route.js'}}"></script>
+        <script src="{{static '/vendor/angular-resource/angular-resource.js'}}"></script>
+        <!--
+        <script src="{{static '/app/controllers/RechargeCtrl.js'}}"></script>
+        -->
+        <script src="{{static '/js.min/niujinwang-recharge.min.0819f252.js'}}"></script>
+        <script src="http://pv.sohu.com/cityjson"></script>
+{{/if}}
+
+</body>
+</html>
