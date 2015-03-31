@@ -25,7 +25,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="user in myUserVM.currentUsers | orderBy:'registerAt':true">
+                <tr ng-repeat="user in myUserVM.currentUsers">
                     <td>\{{user.mobile}}</td>
                     <td>\{{user.identity.name || 'N/A'}}</td>
                     <td>\{{user.profile.qq || 'N/A'}}</td>

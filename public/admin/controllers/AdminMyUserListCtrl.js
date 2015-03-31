@@ -1,5 +1,5 @@
 'use strict';
-angular.module('adminApp').controller('AdminMyUserListCtrl', ['$scope', '$http', '$modal', '$location', 'gbUser', 'gbNotifier', '$window', function($scope, $http, $modal, $location, gbUser, gbNotifier, $window) {
+angular.module('adminApp').controller('AdminMyUserListCtrl', ['$scope', '$http', '$modal', '$location', 'gbUser', 'gbNotifier', '$window', '$filter', function($scope, $http, $modal, $location, gbUser, gbNotifier, $window, $filter) {
     var vm = this;
     vm.users = gbUser.query(function() {
         vm.user = $window.bootstrappedUserObject;
@@ -9,6 +9,7 @@ angular.module('adminApp').controller('AdminMyUserListCtrl', ['$scope', '$http',
               new_users.push(vm.users[key]);
             }
         }
+        new_users = $filter('orderBy')(new_users, 'registerAt', true);
         vm.users = new_users;
         vm.showAllUsers();
     });
