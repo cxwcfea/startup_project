@@ -29,14 +29,12 @@ angular.module('userApp2').config(['$routeProvider', function($routeProvider) {
         .when('/recharge', { templateUrl: '/user/recharge',
             controller: 'UserRechargeCtrl as rechargeVM'
         })
-        /*
-        .when('/user_capital', { templateUrl: '/user/user_capital',
-            controller: 'UserCapitalCtrl as capitalVM'
+        .when('/applies', { templateUrl: '/user/apply_list',
+            controller: 'UserApplyListCtrl as applyVM'
         })
-        .when('/user_account', { templateUrl: '/user/user_account',
-            controller: 'UserAccountCtrl as accountVM'
+        .when('/settings', { templateUrl: '/user/account_setting',
+            controller: 'UserAccountCtrl2 as accountVM'
         })
-        */
         .otherwise({
             redirectTo: '/home'
         });

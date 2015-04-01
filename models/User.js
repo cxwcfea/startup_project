@@ -16,15 +16,15 @@ var userSchema = new mongoose.Schema({
 
 	finance: {
         password: String,
-        balance: { type: Number, default: 0 },
-        deposit: { type: Number, default: 0 },
-        total_capital: { type: Number, default: 0 }, //配资资产
+        balance: { type: Number, default: 0 },       //余额
+        deposit: { type: Number, default: 0 },       //当前支付的保证金
+        total_capital: { type: Number, default: 0 }, //当前总配资资产
         available_capital: { type: Number, default: 0 },
         market_value: { type: Number, default: 0 },
-        freeze_capital: { type: Number, default: 0 },
-        profit: { type:Number, default: 0 },
-        history_capital: { type: Number, default: 0 },
-        history_deposit: { type: Number, default: 0 }
+        freeze_capital: { type: Number, default: 0 },  //当前冻结资金
+        profit: { type:Number, default: 0 },           //总收益
+        history_capital: { type: Number, default: 0 },  // 累计配资资产
+        history_deposit: { type: Number, default: 0 }   // 累计支付保证金
 	},
 
     profile: {

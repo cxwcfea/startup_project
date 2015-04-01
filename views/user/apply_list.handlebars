@@ -1,0 +1,211 @@
+<div class="fl tra_right">
+    <div class="tra_column">
+        <span class="dis fl">我的操盘</span>
+        <span class="dis fr span01">更新时间：昨日沪深股市收盘</span>
+    </div>
+    <div class="tra_tableBox">
+        <table>
+            <tr>
+                <td width="245" valign="top">
+                    <p class="p01">配资总额</p>
+                    <p class="p02"><span>\{{applyVM.user.finance.total_capital | currency:'':2 | integerNum}}</span>\{{applyVM.user.finance.total_capital | currency:'':2 | numTrunc}}</p>
+                </td>
+                <td width="205" valign="top">
+                    <p class="p01">配资总额</p>
+                    <p class="p02"><span>\{{applyVM.user.finance.total_capital | currency:'':2 | integerNum}}</span>\{{applyVM.user.finance.total_capital | currency:'':2 | numTrunc}}</p>
+                </td>
+                <td width="145" valign="top">
+                    <p class="p01">盈亏</p>
+                    <p class="p02 color_e0322d"><span>+188</span>.00</p>
+                </td>
+                <td rowspan="2" valign="top">
+                    <p class="p01">可用余额</p>
+                    <p class="p02"><span>\{{applyVM.user.finance.balance | currency:'':2 | integerNum}}</span>\{{applyVM.user.finance.balance | currency:'':2 | numTrunc}}</p>
+                    <a href="/user2/#/recharge" class="a01">充值</a>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p class="p01">累计配资总额</p>
+                    <p class="p03">\{{applyVM.user.finance.history_capital | currency:'':2}}</p>
+                </td>
+                <td valign="top">
+                    <p class="p01">累计配资笔数</p>
+                    <p class="p03">\{{applyVM.ongoing_apply_num}}</p>
+                </td>
+                <td valign="top">
+                    <p class="p01">累计收益率</p>
+                    <p class="p03">28%</p>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="tra_tableBox02">
+        <table>
+            <tr>
+                <th>配资金额(元)</th>
+                <th>保证金(元)</th>
+                <th>配资时间</th>
+                <th>操盘到期日</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            <tr ng-repeat="item in applyVM.showingItems">
+                <td><p class="p01">\{{item.amount | currency:'':2}}</p></td>
+                <td>
+                    <div class="tra_jdt">
+                        <div class="tra_jdt2"></div>
+                    </div>
+                    <p class="p02">剩余<span>1209.00</span></p>
+                </td>
+                <td>
+                    <p class="p03">\{{item.start_date | displayShortDate}}</p>
+                    <p class="p04">累计\{{item.days_till_now}}天</p>
+                </td>
+                <td>
+                    <p class="p03">\{{item.end_date | displayShortDate}}</p>
+                    <p class="p05">剩余\{{item.left_days}}天</p>
+                </td>
+                <td>
+                    <p ng-class="{color_37c80b:item.status === 2, color_a40000:item.status === 4}">\{{item.status | applyStatus}}</p>
+                </td>
+                <td>
+                    <div class="tra_BtnBox">
+                        <a ng-hide="item.status === 1 || item.status === 4" href="" class="tra_tableBoxBtn jq_Btn" ng-click="applyVM.showAccountInfo(item)">交易账号</a>
+                        <div ng-show="item.status === 2">
+                            <a href="" class="jq_Btn2">补充保证金</a><br />
+                            <a href="">延期设置</a><br />
+                            <a href="">终止操盘</a><br />
+                        </div>
+                        <a href="">查看详情</a>
+                    </div>
+                </td>
+            </tr>
+            <!--
+            <tr>
+                <td><p class="p01">150000.00</p></td>
+                <td>
+                    <div class="tra_jdt">
+                        <div class="tra_jdt2"></div>
+                    </div>
+                    <p class="p02">剩余<span>1209.00</span></p>
+                </td>
+                <td>
+                    <p class="p03">2015.03.26</p>
+                    <p class="p04">累计10天</p>
+                </td>
+                <td>
+                    <p class="p03">2015.04.05</p>
+                    <p class="p05">剩余1天</p>
+                </td>
+                <td>
+                    <p class="color_37c80b">操盘中</p>
+                </td>
+                <td>
+                    <div class="tra_BtnBox">
+                        <a href="javascript:" class="tra_tableBoxBtn jq_Btn">交易账号</a>
+                        <a href="javascript:" class="jq_Btn2">补充保证金</a><br />
+                        <a href="javascript:">延期设置</a><br />
+                        <a href="javascript:">终止操盘</a><br />
+                        <a href="javascript:">查看详情</a>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td><p class="p01">150000.00</p></td>
+                <td>
+                    <div class="tra_jdt">
+                        <div class="tra_jdt2"></div>
+                    </div>
+                    <p class="p02">剩余<span>1209.00</span></p>
+                </td>
+                <td>
+                    <p class="p03">2015.03.26</p>
+                    <p class="p04">累计10天</p>
+                </td>
+                <td>
+                    <p class="p03">2015.04.05</p>
+                    <p class="p05">剩余1天</p>
+                </td>
+                <td>
+                    <p class="color_a40000">开户中</p>
+                </td>
+                <td>
+                    <div class="tra_BtnBox">
+                        <a href="javascript:">查看详情</a>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td><p class="p01">150000.00</p></td>
+                <td>
+                    <div class="tra_jdt">
+                        <div class="tra_jdt2"></div>
+                    </div>
+                    <p class="p02">剩余<span>1209.00</span></p>
+                </td>
+                <td>
+                    <p class="p03">2015.03.26</p>
+                    <p class="p04">累计10天</p>
+                </td>
+                <td>
+                    <p class="p03">2015.04.05</p>
+                    <p class="p05">剩余1天</p>
+                </td>
+                <td>
+                    <p class="">已结束</p>
+                </td>
+                <td>
+                    <div class="tra_BtnBox">
+                        <a href="javascript:" class="tra_tableBoxBtn jq_Btn">交易账号</a>
+                        <a href="javascript:">查看详情</a>
+                    </div>
+                </td>
+            </tr>
+            -->
+        </table>
+    </div>
+    <pagination class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="applyVM.itemsPerPage" total-items="applyVM.totalItems" ng-model="applyVM.currentPage" ng-change="applyVM.pageChanged()"></pagination>
+</div>
+<!--交易账号密码弹出层-->
+<div class="traTcc jq_tcc01" ng-show="applyVM.showAccountWindow">
+    <div class="tmbg"></div>
+    <div class="tar_TccBox">
+        <div class="regColumn">
+            领取账号密码
+            <div class="loginClose tra_close jq_tar_close01" ng-click="applyVM.showAccountWindow = false"></div>
+        </div>
+        <div class="tra_text">
+            <p class="p01">1.下载操盘软件&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.领号登陆&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.买股赚钱咯！</p>
+            <p class="p02">交易软件&nbsp;&nbsp;<span>HOMS涌金版</span>&nbsp;&nbsp;<a target="_blank" href="/info/download" class="a01">立即下载>></a> </p>
+            <p class="p02">交易账户&nbsp;&nbsp;<span id="fz1">\{{applyVM.showingApply.account}}</span>&nbsp;&nbsp;<a href="" class="a02 jq_fz1" ng-click="applyVM.copyCode()">［复制］</a></p>
+            <p class="p02">交易密码&nbsp;&nbsp;<span id="fz2">\{{applyVM.showingApply.password}}</span>&nbsp;&nbsp;<a href="" class="a02 jq_fz2" ng-click="applyVM.copyCode()">［复制］</a>（为了资金安全，请保管好密码） </p>
+            <p class="p03">重点提醒交易前请先阅读《天天牛规则说明》 《今日限制股》 </p>
+        </div>
+    </div>
+</div>
+<!--补充保证金弹出层-->
+<div class="traTcc jq_tcc02 undis">
+    <div class="tmbg"></div>
+    <div class="tar_TccBox">
+        <div class="regColumn">
+            补充保证金
+            <div class="loginClose tra_close jq_tar_close02"></div>
+        </div>
+        <div class="tra_Text2">
+            <p class="p01">补充<span class="fb">7653.00</span>元可配金额为<span class="fb">100000.00</span>元</p>
+            <div class="tra_InputBox">
+                <div class="tra_InputBoxLeft fl">
+                    补充金额
+                </div>
+                <div class="tra_InputBoxRight fl">
+                    <input type="text" class="inputText" placeholder="最小金额100元" name="" id="" value="" />
+                </div>
+            </div>
+            <div class="tra_inputBtnBox">
+                <a href="#" class="a01">确认支付</a>
+                <a href="#" class="a02">取 消</a>
+            </div>
+        </div>
+    </div>
+</div>

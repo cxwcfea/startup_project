@@ -209,6 +209,10 @@
         return function (input) {
             return moment(input).format("YYYY-MM-DD HH:mm");
         };
+    }).filter("displayShortDate", function () {
+        return function (input) {
+            return moment(input).format("YYYY-MM-DD");
+        };
     }).filter("displayCard", ['BankNameList', function (BankNameList) {
         return function (input) {
             var lastNumStr = input.cardID.toString().substr(12);
