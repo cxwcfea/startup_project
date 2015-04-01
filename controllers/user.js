@@ -628,6 +628,8 @@ module.exports.payByBalance = function(req, res, next) {
                                             user.finance.balance -= total;
                                             user.finance.deposit += apply.deposit;
                                             user.finance.total_capital += apply.amount;
+                                            user.finance.history_capital += apply.amount;
+                                            user.finance.history_deposit += apply.deposit;
                                             user.finance.freeze_capital += serviceFee;
                                             user.save(function (err) {
                                                 if (err) {
@@ -999,6 +1001,8 @@ module.exports.iappPayFeedback = function(req, res) {
                         user.finance.deposit += apply.deposit;
                         user.finance.total_capital += apply.amount;
                         user.finance.freeze_capital += serviceFee;
+                        user.finance.history_capital += apply.amount;
+                        user.finance.history_deposit += apply.deposit;
                         user.save(function (err) {
                             callback(err, 'success pay apply');
                         });
@@ -1170,6 +1174,8 @@ module.exports.shengpayFeedback = function(req, res, next) {
                     user.finance.deposit += apply.deposit;
                     user.finance.total_capital += apply.amount;
                     user.finance.freeze_capital += serviceFee;
+                    user.finance.history_capital += apply.amount;
+                    user.finance.history_deposit += apply.deposit;
                     user.save(function (err) {
                         callback(err, 'success pay apply');
                     });

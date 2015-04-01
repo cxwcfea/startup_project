@@ -21,19 +21,20 @@
             <table class="am-table am-table-striped am-table-hover table-main">
                 <thead>
                 <tr>
-                    <th class="table-date">日期</th><th class="table-type">交易类型</th><th class="table-author">金额</th><th class="table-set">状态</th><th class="table-set">操作</th>
+                    <th class="table-date">日期</th><th class="table-type">客户手机号</th><th class="table-author">金额</th><th class="table-set">状态</th><th class="table-set">操作</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="order in withdrawOrderVM.showingItems">
                     <td>\{{order.createdAt | displayDate}}</td>
-                    <td>\{{order.dealType | displayOrderType}}</td>
+                    <td>\{{order.userMobile}}</td>
                     <td>\{{order.amount}}</td>
                     <td>\{{order.status | orderStatus}}</td>
                     <td>
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs">
                                 <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="withdrawOrderVM.handleOrder(order)"><span class="am-icon-pencil-square-o"></span> 管理</button>
+                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="withdrawOrderVM.removeOrder(order)"><span class="am-icon-remove"></span> 删除</button>
                             </div>
                         </div>
                     </td>
@@ -51,3 +52,20 @@
         </form>
     </div>
 </div>
+
+<script type="text/ng-template" id="withdrawOrderDeleteModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">删除提现订单</h3>
+    </div>
+    <div class="modal-body">
+        <p>删除该提现订单，客户冻结的资金将会返回可用余额，确认吗？</p>
+        <p>金额：\{{amount | currency:'':2}}</p>
+        <p>银行：\{{bank}}</p>
+        <p>支行：\{{bankName}}</p>
+        <p>卡号：\{{cardID}}</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">确认</button>
+        <button class="btn btn-warning" ng-click="cancel()">取消</button>
+    </div>
+</script>
