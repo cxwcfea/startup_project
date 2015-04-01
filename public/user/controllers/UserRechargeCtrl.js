@@ -2,7 +2,7 @@
 angular.module('userApp2').controller('UserRechargeCtrl', ['$scope', '$window', '$location', '$http', 'njUser', 'njOrder', 'BankNameList', function ($scope, $window, $location, $http, njUser, njOrder, BankNameList) {
     var vm = this;
 
-    $scope.data.menu = 2;
+    $scope.data.menu = 3;
 
     vm.user = $window.bootstrappedUserObject;
 

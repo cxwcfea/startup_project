@@ -1,0 +1,63 @@
+<div class="fl tra_right">
+    <div class="tra_column">
+        <span class="dis fl">账号设置</span>
+    </div>
+    <div class="set_Top">
+        账号 <span class="span01">\{{accountVM.user.mobile | displayMobile}}</span> <a href="#" class="color_2489f0">修改密码</a>
+        <span class="span02">上次登录时间：2015-03-30 23:19:09</span>
+    </div>
+    <div class="set_img2 fl"></div>
+    <div class="set_text2 fl">
+        <a href="#" class="set_btn01">绑定银行卡</a>
+        <p class="p01">
+            绑定银行卡后才能提现
+        </p>
+    </div>
+    <div class="clear"></div>
+    <div class="set_list">
+        <div class="fl set_lstLeft">
+            <span class="span01">邮箱\{{accountVM.user.profile.email | displayMobile}}</span>
+            <a href="" class="color_2489f0" ng-click="accountVM.showVerifyEmailWindow = true">\{{accountVM.user.profile.email_verified ? '修改' : '绑定'}}</a>
+        </div>
+        <!--
+        <div class="fl set_lstLeft set_lstRight">
+            <span class="span01">微信（138****8888)</span>
+            <span class="color_999999 fontSize12">已绑定</span>
+        </div>
+        -->
+    </div>
+</div>
+
+<div class="traTcc jq_tcc02" ng-show="accountVM.showVerifyEmailWindow === true">
+    <div class="tmbg"></div>
+    <div class="tar_TccBox_email">
+        <div class="regColumn">
+            绑定邮箱
+            <div class="loginClose tra_close jq_tar_close02" ng-click="accountVM.showVerifyEmailWindow = false"></div>
+        </div>
+        <br/>
+        <div class="tra_Text2">
+            <div class="tra_InputBox_email">
+                <div class="tra_InputBoxLeft fl">
+                    电子邮箱
+                </div>
+                <div class="tra_InputBoxRight_email fl">
+                    <input type="text" class="inputText" ng-model="accountVM.user_email" required>
+                </div>
+            </div>
+            <div class="tra_InputBox_email">
+                <div class="tra_InputBoxLeft fl">
+                    邮箱验证码
+                </div>
+                <div class="tra_InputBoxRight_email fl">
+                    <input type="text" class="inputText" ng-model="accountVM.verify_code" required>
+                    <input type="button" id="verify-code-btn" value="\{{accountVM.verifyCodeBtnText}}" class="recBtn03" ng-class="{recBtn03_disabled:accountVM.verifyBtnDisabled}" ng-click="accountVM.getVerifyCode()">
+                </div>
+            </div>
+            <alert ng-repeat="alert in accountVM.alerts" type="\{{alert.type}}" close="accountVM.closeAlert($index)">\{{alert.msg}}</alert>
+            <div class="tra_inputBtnBox tra_inputBtnBox_email">
+                <a href="" class="a01" ng-click="accountVM.verifyEmailBySMSCode()">提&nbsp;交</a>
+            </div>
+        </div>
+    </div>
+</div>

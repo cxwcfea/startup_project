@@ -1651,12 +1651,74 @@ function getUserHome(req, res, next) {
     });
 }
 
+function verifyEmailBySMS(req, res) {
+    req.assert('email', '无效的邮件地址.').isEmail();
+
+    var errors = req.validationErrors();
+
+    if (errors) {
+        res.status(400);
+        return res.send({error_msg:errors[0].msg});
+    }
+
+    if (!req.session.sms_code) {
+        res.status(400);
+        return res.send({ error_msg: '请重新获取验证码' });
+    }
+
+    if (req.session.sms_code.count > 6) {
+        req.session.sms_code = undefined;
+        res.status(403);
+        return res.send({error_msg: '重试次数过多，请重新获取验证码'});
+    }
+    req.session.sms_code.count++;
+
+    if (req.body.verify_code != req.session.sms_code.code) {
+        res.status(400);
+        return res.send({ error_msg: '验证码错误' });
+    }
+
+    if (req.session.sms_code.expires < Date.now()) {
+        res.status(400);
+        return res.send({error_msg:'验证码已失效'})
+    }
+
+    if (req.user.mobile != req.session.sms_code.mobile) {
+        res.status(400);
+        return res.send({ error_msg: '手机号不匹配' })
+    }
+
+    req.session.sms_code = undefined;
+
+    User.findById(req.user._id, function(err, user) {
+        if (err) {
+            res.status(503);
+            return res.send({error_msg: err.toString()});
+        }
+        if (!user) {
+            res.status(503);
+            return res.send({error_msg: '无效的用户！'});
+        }
+        user.profile.email = req.body.email;
+
+        user.save(function (err) {
+            if (err) {
+                res.status(503);
+                return res.send({error_msg: err.toString()});
+            }
+            res.send({});
+        });
+    });
+}
+
 module.exports.registerRoutes = function(app, passportConf) {
     app.get('/user2', passportConf.isAuthenticated, getUserHome);
 
     app.get('/user', passportConf.isAuthenticated, homeIndex);
 
     app.get('/recharge2', passportConf.isAuthenticated, getRecharge);
+
+    app.post('/user/verify_email_by_sms', passportConf.isAuthenticated, verifyEmailBySMS);
 
     app.post('/api/send_sms', passportConf.isAuthenticated, sendSMS);
 

@@ -3471,6 +3471,280 @@ p.newrec_P02 a:hover{
 
 
 
+/*新账号设置*/
+
+.set_Top{
+	height: 43px;
+	line-height: 43px;
+	border-bottom: 1px solid #e4e4e4;
+	margin-top: 40px;
+	padding-left: 35px;
+}
+
+.set_Top span.span01{
+	font-size: 20px;
+	font-weight: bold;
+}
+.set_Top span.span02{
+	font-size: 12px;
+	display: block;
+	float: right;
+	color: #cccccc;
+}
+
+.set_img{
+	width: 122px;
+	height: 122px;
+	background: url(../images/img47.jpg) no-repeat;
+	margin: 70px 20px 0 185px;
+}
+.set_img2{
+	width: 122px;
+	height: 122px;
+	background: url(../images/img50.jpg) no-repeat;
+	margin: 70px 15px 0 220px;
+}
+
+.set_text{
+	margin-top: 112px;
+}
+.set_text p.p01{
+	height: 40px;
+	line-height: 40px;
+	overflow: hidden;
+	display: block;
+	margin-bottom: 5px;
+}
+.set_text p.p01 span{
+	display: block;
+	float: left;
+}
+.set_text p.p01 span.span01{
+	display: block;
+	float: left;
+	border: 1px solid #dcdcdc;
+	border-radius: 2px;
+	margin: 0 15px;
+	width: 147px;
+	height: 38px;
+}
+.set_text p.p01 img{
+	width: 115px;
+	padding-left: 5px;
+	vertical-align: middle;
+}
+.set_text a.a01{
+	margin-left: 60px;
+	
+}
+
+.set_list{
+	height: 150px;
+	border-top: 1px dashed #e4e4e4;
+	margin-top: 80px;
+}
+.set_lstLeft{
+	height: 93px;
+	border-right: 1px solid #eeeeee;
+	margin-top: 27px;
+	text-align: center;
+	width: 370px;
+	line-height: 93px;
+}
+.set_lstLeft span.span01{
+	background: url(../images/img48.jpg) left center no-repeat;
+	padding: 10px 0 10px 55px;
+}
+
+.set_lstRight{
+	width: 390px;
+	border: none;
+}
+.set_lstRight span.span01{
+	background-image: url(../images/img49.jpg);
+}
+
+
+.set_text2{
+	margin-top: 112px;
+}
+.set_btn01{
+	width: 130px;
+	border: 1px solid #e0322d;
+	height: 40px;
+	text-align: center;
+	line-height: 40px;
+	display: block;
+	color: #e0322d;
+	border-radius: 3px;
+}
+.set_text2 p.p01{
+	color: #bbbbbb;
+	font-size: 12px;
+	margin-top: 5px;
+}
+
+/*新添加银行卡*/
+
+.newcar_formBox{
+	height: 35px;
+	line-height: 35px;
+	margin-bottom: 30px;
+}
+.newCar_left{
+	width: 140px;
+	text-align: right;
+}
+.newcar_right{
+	padding-left: 45px;
+}
+.select01{
+	color: #999999;
+	width: 160px;
+	height: 33px;
+	border: 1px solid #c0c0c0;
+}
+.select02{
+	width: 100px;
+}
+.select03{
+	width: 220px;
+}
+.marTop65{
+	margin-top: 65px;
+}
+.newcar_inputText{
+	height: 29px;
+	line-height: 29px;
+	border: 1px solid #c0c0c0;
+	width: 210px;
+	text-indent: 10px;
+}
+.newcar_inputText2{
+	width: 160px;
+}
+
+.newcar_btn{
+	width: 180px;
+	height: 48px;
+	line-height: 43px;
+	font-size: 18px;
+	margin-left: 185px;
+	font-weight: normal;
+}
+.marTop40{
+	margin-top: 40px;
+}
+
+
+
+.newwit_formBox{
+	height: 35px;
+	line-height: 35px;
+	margin-bottom: 30px;
+}
+.newwit_formBox2{
+	height: 45px;
+	line-height: 45px;
+}
+.newwit_Title{
+	width: 140px;
+	text-align: right;
+}
+
+.newwit_FomeContent{
+	padding-left: 45px;
+}
+.newwit_inputText{
+	width: 150px;
+	height: 33px;
+	background: #fff;
+	border: 1px solid #e1e1e1;
+	text-indent: 10px;
+	border-right: none;
+	display: block;
+}
+.newwit_formText{
+	width: 25px;
+	height: 33px;
+	border: 1px solid #e1e1e1;
+	border-left: none;
+	color: #999999;
+}
+.newwit_box{
+	width: 280px;
+	height: 45px;
+	border: 1px solid #e1e1e1;
+	margin-left: 45px;
+	font-size: 12px;
+}
+
+.newwit_box img{
+	width: 120px;
+	margin: 0 15px;
+	vertical-align: middle;
+	
+}
+
+
+
+
+.newwit_top{
+	height: 35px;
+	line-height: 35px;
+	padding-top: 7px;
+}
+	
+.newwit_top span{
+	font-size: 14px;	
+	padding: 0 10px;
+	display: block;
+	float: left;
+	height: 34px;
+	line-height: 34px;
+}
+.newwit_top span.selected{
+	border-bottom: 2px solid #a40000;
+	color: #a40000;
+	font-weight: bold;
+}
+
+.newwit_img{
+	width: 64px;
+	height: 64px;
+	background: url(../images/img44.png) no-repeat;
+	margin: 35px 20px 0 80px;
+}
+
+
+.newwit_text{
+	margin-top: 45px;
+	width: 560px;
+}
+.newwit_text p.p01{
+	font-weight: bold;
+	height: 30px;
+	line-height: 30px;
+}
+
+.newwit_text p.p02{
+	font-size: 12px;
+	height: 30px;
+	line-height: 20px;
+	border-bottom: 1px dashed #c9c9c9;
+	margin-bottom: 5px;
+}
+.newwit_text p.p03{
+	line-height: 30px;	
+}
+
+.newwit_text2{
+	border-top: 1px dashed #c9c9c9;
+	line-height: 25px;
+	margin: 50px 60px 0 60px;
+	padding: 20px 0 0 30px;
+}
+
 
 
 

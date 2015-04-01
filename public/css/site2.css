@@ -122,6 +122,33 @@ input.LoginBtn01{
     text-align: inherit;
 }
 
+.tar_TccBox_email {
+    width: 480px;
+    height: 280px;
+    padding-bottom: 20px;
+    background: #fff;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    margin:-115px 0 0 -240px ;
+    z-index: 11;
+}
+
+.tra_InputBox_email {
+    height: 35px;
+    line-height: 35px;
+    padding: 10px;
+}
+
+.tra_inputBtnBox_email {
+    padding-left: 135px;
+}
+
+.tra_InputBoxRight_email input.inputText {
+    width: 200px;
+    height: 29px;
+}
+
 /* for toaster */
 .toast-top-right {
     top: 70px;
