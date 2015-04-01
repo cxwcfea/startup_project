@@ -14,10 +14,14 @@ var User = require('../models/User'),
 
 function main(req, res, next) {
     if (req.user && req.user.roles) {
-      if (req.user.roles.indexOf('admin') !== -1) {
-        res.render('admin/main', {layout:null, bootstrappedUser: JSON.stringify(req.user)});
-      } else if (req.user.roles.indexOf('support') !== -1) {
-        res.render('support/main', {layout:null, bootstrappedUser: JSON.stringify(req.user)});
+      if (req.url.indexOf('/admin') == 0) {
+        if (req.user.roles.indexOf('admin') !== -1) {
+          res.render('admin/main', {layout:null, bootstrappedUser: JSON.stringify(req.user)});
+        } else if (req.user.roles.indexOf('support') !== -1) {
+          res.render('support/main', {layout:null, bootstrappedUser: JSON.stringify(req.user)});
+        }
+      } else if (req.url.indexOf('/support') == 0) {
+          res.render('support/main', {layout:null, bootstrappedUser: JSON.stringify(req.user)});
       }
     }
 }
