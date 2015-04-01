@@ -3,16 +3,15 @@
 </div>
 
 <div class="am-g">
-    <!--
     <div class="am-u-sm-12 am-u-md-3">
         <div class="am-input-group am-input-group-sm">
-            <input type="text" class="am-form-field">
+            <input type="text" class="am-form-field" placeholder="输入订单号" ng-model="applyVM.searchKey">
             <span class="am-input-group-btn">
-                <button class="am-btn am-btn-default" type="button">搜索</button>
+                <button class="am-btn am-btn-default" type="button" ng-click="applyVM.searchApply()">搜索</button>
+                <button class="am-btn am-btn-default" type="button" ng-click="applyVM.showAllApplies()">全部</button>
             </span>
         </div>
     </div>
-    -->
 </div>
 
 <div class="am-g">

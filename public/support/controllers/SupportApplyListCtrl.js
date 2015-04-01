@@ -60,6 +60,20 @@ angular.module('supportApp').controller('SupportApplyListCtrl', ['$scope', '$htt
         item.end_date = item.endTime ? item.endTime : days.endTime(item.start_date, item.period);
     }
 
+    vm.searchApply = function() {
+        if (!vm.searchKey) {
+            return;
+        }
+        vm.currentApplies = [];
+        for (var key in vm.apply_list) {
+            if (vm.apply_list[key].serialID == vm.searchKey) {
+                vm.currentApplies.push(vm.apply_list[key]);
+                break;
+            }
+        }
+        vm.totalItems = vm.apply_list.length;
+    };
+
     vm.pageChanged = function() {
         var start = (vm.currentPage - 1) * vm.itemsPerPage;
         var end = start + vm.itemsPerPage;

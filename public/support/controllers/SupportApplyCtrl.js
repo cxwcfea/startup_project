@@ -12,14 +12,21 @@ angular.module('supportApp').controller('SupportApplyCtrl', ['$scope', '$http', 
         vm.currentPage = 1;
         vm.pageChanged();
     }
+    
+    vm.showAllApplies = function() {
+        vm.totalItems = apply_list.length;
+        currentApplies = apply_list;
+        vm.currentPage = 1;
+        vm.pageChanged();
+    };
 
     function initData() {
         $http.get('/admin/api/applies/all').success(function(data) {
-            apply_list = data;
+            apply_list = $filter('orderBy')(data, 'createdAt', true);
             angular.forEach(apply_list, function(value, key) {
                 formatData(value);
             });
-            currentApplies = $filter('orderBy')(apply_list, 'createdAt', true);
+            currentApplies = apply_list;
             pageReset();
         });
     }
@@ -29,6 +36,21 @@ angular.module('supportApp').controller('SupportApplyCtrl', ['$scope', '$http', 
         item.end_date = item.endTime ? item.endTime : days.endTime(item.start_date, item.period);
         item.fee = util.getServiceFee(item.amount, item.period);
     }
+
+    vm.searchApply = function() {
+        if (!vm.searchKey) {
+            return;
+        }
+        currentApplies = [];
+        for (var key in apply_list) {
+            if (apply_list[key].serialID == vm.searchKey) {
+                currentApplies.push(apply_list[key]);
+                break;
+            }
+        }
+        vm.totalItems = currentApplies.length;
+        pageReset();
+    };
 
     vm.pageChanged = function() {
         var start = (vm.currentPage - 1) * vm.itemsPerPage;

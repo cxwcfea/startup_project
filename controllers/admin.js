@@ -847,7 +847,7 @@ module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
 
-        app.get('/support', passportConf.requiresRole('support'), main);
+        app.get('/support', passportConf.requiresRole('admin|support'), main);
 
         app.get('/admin/api/users', passportConf.requiresRole('admin|support'), fetchUserList);
 
@@ -924,7 +924,7 @@ module.exports = {
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
         });
-        app.get('/support/*', passportConf.requiresRole('support'), function(req, res, next) {
+        app.get('/support/*', passportConf.requiresRole('admin|support'), function(req, res, next) {
             res.render('support/' + req.params[0], {layout:null});
         });
     }
