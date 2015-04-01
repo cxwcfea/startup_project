@@ -273,6 +273,11 @@
         this.startTime = getStartDay;
         this.endTime = getEndDay;
         this.tradeDaysTillNow = tradeDaysTillNow;
+    }).service("util", function () {
+        this.serviceCharge = 19.9;
+        this.getServiceFee = function(amount, period) {
+              return Number((amount / 10000 * this.serviceCharge * period).toFixed(2));
+        };
     });
 
     var sms_macro = [

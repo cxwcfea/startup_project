@@ -48,10 +48,12 @@ module.exports.requiresRole = function(role) {
     return function (req, res, next) {
         var role_arr = role.split('|');
         var match = false;
-        for (r in role_arr) {
-          if (req.user.roles.indexOf(role_arr[r]) !== -1) {
-            match = true;
-            break;
+        if (req.user && req.user.roles) {
+          for (r in role_arr) {
+            if (req.user.roles.indexOf(role_arr[r]) !== -1) {
+              match = true;
+              break;
+            }
           }
         }
         if (!req.isAuthenticated() || !match) {
