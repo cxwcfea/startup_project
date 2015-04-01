@@ -13,7 +13,17 @@ var User = require('../models/User'),
     sms = require('../lib/sms');
 
 function main(req, res, next) {
-    res.render('admin/main', {layout:null, bootstrappedUser: JSON.stringify(req.user)});
+    if (req.user && req.user.roles) {
+      if (req.url.indexOf('/admin') == 0) {
+        if (req.user.roles.indexOf('admin') !== -1) {
+          res.render('admin/main', {layout:null, bootstrappedUser: JSON.stringify(req.user)});
+        } else if (req.user.roles.indexOf('support') !== -1) {
+          res.render('support/main', {layout:null, bootstrappedUser: JSON.stringify(req.user)});
+        }
+      } else if (req.url.indexOf('/support') == 0) {
+          res.render('support/main', {layout:null, bootstrappedUser: JSON.stringify(req.user)});
+      }
+    }
 }
 
 function fetchUserList(req, res, next) {
@@ -39,6 +49,24 @@ function sendSMS(req, res, next) {
 function fetchAppliesForUser(req, res, next) {
     logger.debug(req.params.uid);
     Apply.find({userID:req.params.uid}, function(err, collection) {
+        if (err) {
+            logger.error(err.toString());
+        }
+        res.send(collection);
+    });
+}
+
+function fetchAllApplies(req, res, next) {
+    Apply.find({}, function(err, collection) {
+        if (err) {
+            logger.error(err.toString());
+        }
+        res.send(collection);
+    });
+}
+
+function fetchAllOrders(req, res, next) {
+    Order.find({}, function(err, collection) {
         if (err) {
             logger.error(err.toString());
         }
@@ -701,6 +729,36 @@ function takeCustomer(req, res) {
     });
 }
 
+function takeOrder(req, res) {
+    Order.update({_id:req.body.id}, {$set: {'manager':req.user.mobile}}, function(err, numberAffected, raw) {
+        if (err) {
+            logger.debug('takeOrder error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        if (numberAffected == 0) {
+            res.status(400);
+            return res.send({error_msg:'order not found'});
+        }
+        res.send({manager:req.user.mobile});
+    });
+}
+
+function takeApply(req, res) {
+    Apply.update({serialID:req.body.id}, {$set: {'manager':req.user.mobile}}, function(err, numberAffected, raw) {
+        if (err) {
+            logger.debug('takeApply error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        if (numberAffected == 0) {
+            res.status(400);
+            return res.send({error_msg:'apply not found'});
+        }
+        res.send({manager:req.user.mobile});
+    });
+}
+
 function autoFetchPendingApplies(req, res) {
     //logger.debug('autoFetchPendingApplies operator:', req.user.mobile);
     Apply.find({status: 4}, function(err, applies) {
@@ -791,13 +849,21 @@ function autoApproveClosingSettlement(req, res) {
 
 module.exports = {
     registerRoutes: function(app, passportConf) {
-        app.get('/admin', passportConf.requiresRole('admin'), main);
+        app.get('/admin', passportConf.requiresRole('admin|support'), main);
 
-        app.get('/admin/api/users', passportConf.requiresRole('admin'), fetchUserList);
+        app.get('/support', passportConf.requiresRole('admin|support'), main);
 
-        app.post('/admin/api/send_sms', passportConf.requiresRole('admin'), sendSMS);
+        app.get('/admin/api/users', passportConf.requiresRole('admin|support'), fetchUserList);
+
+        app.get('/admin/api/applies/all', passportConf.requiresRole('admin|support'), fetchAllApplies);
+
+        app.get('/admin/api/orders/all', passportConf.requiresRole('admin|support'), fetchAllOrders);
+
+        app.post('/admin/api/send_sms', passportConf.requiresRole('admin|support'), sendSMS);
 
         app.get('/admin/api/user/:uid/applies', passportConf.requiresRole('admin'), fetchAppliesForUser);
+
+        app.get('/support/api/user/:uid/applies', passportConf.requiresRole('admin|support'), fetchAppliesForUser);
 
         app.get('/admin/api/user/:uid/applies/:id', passportConf.requiresRole('admin'), fetchApply);
 
@@ -805,35 +871,37 @@ module.exports = {
 
         app.get('/admin/api/user/:uid/orders', passportConf.requiresRole('admin'), fetchOrdersForUser);
 
+        app.get('/support/api/user/:uid/orders', passportConf.requiresRole('admin|support'), fetchOrdersForUser);
+
         app.post('/admin/api/user/:uid/orders/:id', passportConf.requiresRole('admin'), updateOrder);
 
-        app.post('/admin/api/orders/:id', passportConf.requiresRole('admin'), updateOrder);
+        app.post('/admin/api/orders/:id', passportConf.requiresRole('admin|support'), updateOrder);
 
-        app.get('/admin/api/applies/expire', passportConf.requiresRole('admin'), fetchNearExpireApplies);
+        app.get('/admin/api/applies/expire', passportConf.requiresRole('admin|support'), fetchNearExpireApplies);
 
-        app.get('/admin/api/applies/closing', passportConf.requiresRole('admin'), fetchClosingApplies);
+        app.get('/admin/api/applies/closing', passportConf.requiresRole('admin|support'), fetchClosingApplies);
 
-        app.get('/admin/api/applies/pending', passportConf.requiresRole('admin'), fetchPendingApplies);
+        app.get('/admin/api/applies/pending', passportConf.requiresRole('admin|support'), fetchPendingApplies);
 
-        app.post('/admin/api/users/:id', passportConf.requiresRole('admin'), updateUser);
+        app.post('/admin/api/users/:id', passportConf.requiresRole('admin|support'), updateUser);
 
-        app.get('/admin/api/users/:id', passportConf.requiresRole('admin'), getUser);
+        app.get('/admin/api/users/:id', passportConf.requiresRole('admin|support'), getUser);
 
         app.post('/admin/api/apply/assign_account', passportConf.requiresRole('admin'), assignAccoutToApply);
 
-        app.post('/admin/api/close_apply', passportConf.requiresRole('admin'), closeApply);
+        app.post('/admin/api/close_apply', passportConf.requiresRole('admin|support'), closeApply);
 
-        app.get('/admin/api/orders/get_profit', passportConf.requiresRole('admin'), fetchGetProfitOrders);
+        app.get('/admin/api/orders/get_profit', passportConf.requiresRole('admin|support'), fetchGetProfitOrders);
 
         app.get('/admin/api/orders/withdraw', passportConf.requiresRole('admin'), fetchWithdrawOrders);
 
         app.post('/admin/api/user/withdraw/:order_id', passportConf.requiresRole('admin'), handleWithdrawOrder);
 
-        app.get('/admin/api/orders/add_deposit', passportConf.requiresRole('admin'), fetchAddDepositOrders);
+        app.get('/admin/api/orders/add_deposit', passportConf.requiresRole('admin|support'), fetchAddDepositOrders);
 
         app.get('/admin/api/applies/:serial_id', passportConf.requiresRole('admin'), getApply);
 
-        app.get('/admin/api/orders/alipay', passportConf.requiresRole('admin'), getAlipayOrders);
+        app.get('/admin/api/orders/alipay', passportConf.requiresRole('admin|support'), getAlipayOrders);
 
         app.post('/admin/api/confirm_alipay_order/:id', passportConf.requiresRole('admin'), confirmAlipayOrder);
 
@@ -849,12 +917,19 @@ module.exports = {
 
         app.get('/api/auto_approve_closing_settlement', passportConf.requiresRole('admin'), autoApproveClosingSettlement);
 
-        app.post('/admin/api/create/order', passportConf.requiresRole('admin'), createOrder);
+        app.post('/admin/api/create/order', passportConf.requiresRole('admin|support'), createOrder);
 
-        app.post('/admin/api/take_customer', passportConf.requiresRole('admin'), takeCustomer);
+        app.post('/admin/api/take_customer', passportConf.requiresRole('admin|support'), takeCustomer);
+
+        app.post('/admin/api/take_order', passportConf.requiresRole('admin|support'), takeOrder);
+
+        app.post('/admin/api/take_apply', passportConf.requiresRole('admin|support'), takeApply);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
+        });
+        app.get('/support/*', passportConf.requiresRole('admin|support'), function(req, res, next) {
+            res.render('support/' + req.params[0], {layout:null});
         });
     }
 };

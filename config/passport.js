@@ -46,7 +46,17 @@ module.exports.isAuthenticated = function(req, res, next) {
 
 module.exports.requiresRole = function(role) {
     return function (req, res, next) {
-        if (!req.isAuthenticated() || req.user.roles.indexOf(role) === -1) {
+        var role_arr = role.split('|');
+        var match = false;
+        if (req.user && req.user.roles) {
+          for (r in role_arr) {
+            if (req.user.roles.indexOf(role_arr[r]) !== -1) {
+              match = true;
+              break;
+            }
+          }
+        }
+        if (!req.isAuthenticated() || !match) {
             res.status(403);
             res.end('需要管理员权限');
         } else {

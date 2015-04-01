@@ -15,7 +15,8 @@ var applySchema = mongoose.Schema({
     account: String,
     password: String,
     profit: Number,
-    orderID: String
+    orderID: String,
+    manager: String
 });
 
 var Apply = mongoose.model('Apply', applySchema);

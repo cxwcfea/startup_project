@@ -1,0 +1,123 @@
+<div class="am-cf am-padding">
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">我接手的配资</strong></div>
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12 am-u-md-3">
+        <div class="am-input-group am-input-group-sm">
+            <input type="text" class="am-form-field" placeholder="输入订单号" ng-model="myApplyVM.searchKey">
+            <span class="am-input-group-btn">
+                <button class="am-btn am-btn-default" type="button" ng-click="myApplyVM.searchApply()">搜索</button>
+                <button class="am-btn am-btn-default" type="button" ng-click="myApplyVM.showAllApplies()">全部</button>
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12">
+        <div class="am-scrollable-horizontal">
+            <table class="am-table am-table-striped am-table-hover table-main">
+                <thead>
+                <tr>
+                    <th class="table-id am-hide-sm-only">单号</th><th class="table-title am-text-right">用户名</th><th class="table-date am-text-center">起止日期</th><th class="table-title am-text-right">金额</th><th class="table-title am-text-right">天数</th><th class="table-title am-text-right">服务费</th><th class="table-type am-text-right am-hide-sm-only">保证金</th><th class="table-author am-text-center">状态</th><th class="table-author">HOMS</th><th class="table-set">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="apply in myApplyVM.showingItems">
+                    <td class="am-hide-sm-only">\{{apply.serialID}}</td>
+                    <td class="am-text-right">\{{apply.userMobile}}</td>
+                    <td class="am-text-center">\{{apply.start_date | displayDate}}<br>\{{apply.end_date | displayDate}}</td>
+                    <td class="am-text-right"><span class="am-icon-rmb"></span><strong>\{{apply.amount}}</strong></td>
+                    <td class="am-text-right"><strong>\{{apply.period}}</strong></td>
+                    <td class="am-text-right"><span class="am-icon-rmb"></span><strong>\{{apply.fee}}</strong></td>
+
+                    <td class="am-text-right am-hide-sm-only"><span class="am-icon-rmb"></span><strong>\{{apply.deposit}}</strong></td>
+                    <td class="am-text-center">\{{apply.status | applyStatus}}</td>
+                    <td class="">\{{apply.account || '尚未分配' }}</td>
+                    <td>
+                        <div class="am-btn-toolbar">
+                            <div class="am-btn-group am-btn-group-xs">
+                                <!-- <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="myApplyVM.manageApply(apply)"><span class="am-icon-pencil-square-o"></span> 管理</button> -->
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="am-cf">
+                共 \{{myApplyVM.totalItems}} 条记录
+                <div class="am-fr">
+                    <pagination previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="myApplyVM.itemsPerPage" total-items="myApplyVM.totalItems" ng-model="myApplyVM.currentPage" ng-change="myApplyVM.pageChanged()"></pagination>
+                </div>
+            </div>
+            <hr />
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="applyClosingModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">配资结算</h3>
+    </div>
+    <div class="modal-body">
+        <div class="am-form-group">
+            <label for="sms-content">账户盈亏</label>
+            <input type="number" ng-model="data.profit">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">结算</button>
+        <button class="btn btn-warning" ng-click="cancel()">取消</button>
+    </div>
+</script>
+<!--
+<script type="text/ng-template" id="smsModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">发送短信</h3>
+    </div>
+    <div class="modal-body">
+        <div class="am-form-group">
+            <label for="sms-content">短信内容</label>
+            <textarea class="" rows="6" id="sms-content" ng-model="sms_content"></textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">发送</button>
+        <button class="btn btn-warning" ng-click="cancel()">取消</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="applyUpdateModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">更新配资信息</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6">
+                <label>配资结束时间:</label>
+                <p class="input-group">
+                    <input type="text" class="form-control" datepicker-popup="yyyy/MM/dd" ng-model="data.dt" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+            </div>
+            <div class="am-form-group">
+                <label>配资状态:</label>
+                <select id="doc-select-1" ng-model="data.status">
+                    <option value="1">待支付</option>
+                    <option value="2">操盘中</option>
+                    <option value="3">已结算</option>
+                    <option value="4">审核中</option>
+                    <option value="5">结算中</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">更新</button>
+        <button class="btn btn-warning" ng-click="cancel()">取消</button>
+    </div>
+</script>
+-->

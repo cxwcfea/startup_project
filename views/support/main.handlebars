@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <base href="/">
+    <meta charset="UTF-8">
+    <title>牛金网 | 客服中心</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <!-- favicon
+    <link rel="alternate icon" type="image/png" href="assets/i/favicon.png">
+    -->
+    <link rel="stylesheet" href="{{static '/vendor/bootstrap/dist/css/bootstrap.min.css'}}">
+    <link rel="stylesheet" href="{{static '/vendor/amazeui/dist/css/amazeui.min.css'}}">
+    <link rel="stylesheet" href="{{static '/css/admin.css'}}">
+    <link rel="stylesheet" href="{{static '/css/niujinwang.min.d3b0a566.css'}}">
+    {{#if bootstrappedUser}}
+        <script> window.bootstrappedUserObject = {{{bootstrappedUser}}} </script>
+    {{/if}}
+</head>
+<body ng-app="supportApp" ng-controller="SupportMainCtrl as mainVM">
+<!--[if lte IE 9]>
+<p class="browsehappy">你正在使用<strong>过时</strong>的浏览器，牛金网 暂不支持。 请 <a href="http://browsehappy.com/" target="_blank">升级浏览器</a>
+    以获得更好的体验！</p>
+<![endif]-->
+
+<header class="am-topbar admin-header">
+    <div class="am-topbar-brand">
+        <strong><a href="/" ng-click="mainVM.gotoRoot()">牛金网</a></strong>
+    </div>
+
+    <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
+
+    <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
+
+        <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
+            <li><a href="#" ng-click="mainVM.signout()"> 安全退出 </a></li>
+            <!--
+            <li><a href="javascript:;"><span class="am-icon-envelope-o"></span> 收件箱 <span class="am-badge am-badge-warning">5</span></a></li>
+            <li class="am-dropdown" data-am-dropdown>
+                <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
+                    <span class="am-icon-users"></span> 管理员 <span class="am-icon-caret-down"></span>
+                </a>
+                <ul class="am-dropdown-content">
+                    <li><a href="#"><span class="am-icon-user"></span> 资料</a></li>
+                    <li><a href="#"><span class="am-icon-cog"></span> 设置</a></li>
+                    <li><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
+                </ul>
+            </li>
+            -->
+        </ul>
+    </div>
+</header>
+
+<div class="am-cf admin-main">
+    <!-- sidebar start -->
+    <div class="admin-sidebar am-offcanvas" id="admin-offcanvas">
+        <div class="am-offcanvas-bar admin-offcanvas-bar">
+            <ul class="am-list admin-sidebar-list">
+                <li><a href="/support#/users"><span class="am-icon-users"></span> 用户管理</a></li>
+                <li><a href="/support#/applies"><span class="am-icon-clock-o"></span> 配资管理</a></li>
+                <!--<li><a href="/support#/orders"><span class="am-icon-money"></span> 订单管理</a></li>-->
+                <li><a href="/support#/my_users"><span class="am-icon-users"></span> 我接手的客户</a></li>
+                <li><a href="/support#/my_applies"><span class="am-icon-clock-o"></span> 我接手的配资</a></li>
+                <!--<li><a href="/support#/my_orders"><span class="am-icon-money"></span> 我接手的订单</a></li>-->
+            </ul>
+
+            <div class="am-panel am-panel-default admin-sidebar-panel">
+                <div class="am-panel-bd">
+                    <p><span class="am-icon-bookmark"></span> 公告</p>
+                    <p>感谢您使用牛金网!</p>
+                    <p>已上线。—— 牛金网</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- sidebar end -->
+
+    <!-- content start -->
+    <div ng-view class="admin-content">
+    </div>
+    <!-- content end -->
+
+</div>
+
+<a class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu" data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
+
+
+<!--[if lt IE 9]>
+<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="{{static '/js/legacy/rem.min.js'}}"></script>
+<script src="{{static '/js/legacy/respond.min.js'}}"></script>
+<script src="{{static '/js/legacy/amazeui.legacy.js'}}"></script>
+<![endif]-->
+
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script src="{{static '/vendor/jquery/dist/jquery.js'}}"></script>
+<script src="{{static '/vendor/bootstrap/dist/js/bootstrap.js'}}"></script>
+<script src="{{static '/vendor/amazeui/dist/js/amazeui.js'}}"></script>
+<script src="{{static '/vendor/moment/moment.js'}}"></script>
+<script src="{{static '/vendor/moment/locale/zh-cn.js'}}"></script>
+<script src="{{static '/vendor/lodash/lodash.min.js'}}"></script>
+<script src="{{static '/vendor/toastr/toastr.js'}}"></script>
+<script src="{{static '/vendor/angular/angular.js'}}"></script>
+<script src="{{static '/vendor/angular-route/angular-route.js'}}"></script>
+<script src="{{static '/vendor/angular-resource/angular-resource.js'}}"></script>
+<script src="{{static '/vendor/angular-bootstrap/ui-bootstrap-tpls.js'}}"></script>
+<script src="{{static '/js/common_module.js'}}"></script>
+<script src="{{static '/support/support.js'}}"></script>
+<script src="{{static '/support/resources/gbUsers.js'}}"></script>
+<script src="{{static '/support/resources/supportApply.js'}}"></script>
+<script src="{{static '/support/resources/supportOrder.js'}}"></script>
+<script src="{{static '/support/services/gbCachedUsers.js'}}"></script>
+<script src="{{static '/support/controllers/SupportMainCtrl.js'}}"></script>
+<script src="{{static '/support/controllers/SupportUserListCtrl.js'}}"></script>
+<script src="{{static '/support/controllers/SupportApplyListCtrl.js'}}"></script>
+<script src="{{static '/support/controllers/SupportOrderListCtrl.js'}}"></script>
+<script src="{{static '/support/controllers/SupportApplyCtrl.js'}}"></script>
+<script src="{{static '/support/controllers/SupportOrderCtrl.js'}}"></script>
+<script src="{{static '/support/controllers/SupportAddDepositOrderListCtrl.js'}}"></script>
+<script src="{{static '/support/controllers/SupportMyUserListCtrl.js'}}"></script>
+<script src="{{static '/support/controllers/SupportMyApplyListCtrl.js'}}"></script>
+<script src="{{static '/support/controllers/SupportMyOrderListCtrl.js'}}"></script>
+<!--<![endif]-->
+</body>

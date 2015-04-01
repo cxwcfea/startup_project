@@ -1,0 +1,96 @@
+<div class="am-cf am-padding">
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">配资记录</strong></div>
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12 am-u-md-6">
+        <div class="am-btn-toolbar">
+            <div class="am-btn-group am-btn-group-xs">
+                <button ng-repeat="item in applyVM.queryItems" type="button" class="am-btn am-btn-default" ng-click="applyVM.queryItem(item)"> \{{item.name}}</button>
+            </div>
+        </div>
+    </div>
+    <!--
+    <div class="am-u-sm-12 am-u-md-3">
+        <div class="am-input-group am-input-group-sm">
+            <input type="text" class="am-form-field">
+            <span class="am-input-group-btn">
+                <button class="am-btn am-btn-default" type="button">搜索</button>
+            </span>
+        </div>
+    </div>
+    -->
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12">
+        <div class="am-scrollable-horizontal">
+            <table class="am-table am-table-striped am-table-hover table-main">
+                <thead>
+                <tr>
+                    <th class="table-id am-hide-sm-only">单号</th><th class="table-title am-text-right">操盘资金</th><th class="table-type am-text-right am-hide-sm-only">保证金</th><th class="table-author am-text-center">状态</th><th class="table-date am-text-center">实盘起止日期</th><th class="table-author">Homas</th><th class="table-set">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="apply in applyVM.showingItems">
+                    <td class="am-hide-sm-only">\{{apply.serialID}}</td>
+                    <td class="am-text-right"><span class="am-icon-rmb"></span><strong>\{{apply.amount.toFixed(2)}}</strong></td>
+                    <td class="am-text-right am-hide-sm-only"><span class="am-icon-rmb"></span><strong>\{{apply.deposit.toFixed(2)}}</strong></td>
+                    <td class="am-text-center">\{{apply.status | applyStatus}}</td>
+                    <td class="am-text-center">\{{apply.start_date | displayDate}}<br>\{{apply.end_date | displayDate}}</td>
+                    <td class="">\{{apply.account || '尚未分配' }}</td>
+                    <td>
+                        <div class="am-btn-toolbar">
+                            <div class="am-btn-group am-btn-group-xs">
+                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="applyVM.manageApply(apply)"><span class="am-icon-pencil-square-o"></span> 管理</button>
+                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-show="apply.status === 2"><span class="am-icon-shopping-cart"></span> 平仓</button>
+                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="applyVM.updateApply(apply)"><span class="am-icon-pencil"></span> 修改</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="am-cf">
+                共 \{{applyVM.totalItems}} 条记录
+                <div class="am-fr">
+                    <pagination previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="applyVM.itemsPerPage" total-items="applyVM.totalItems" ng-model="applyVM.currentPage" ng-change="applyVM.pageChanged()"></pagination>
+                </div>
+            </div>
+            <hr />
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="applyUpdateModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">更新配资信息</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6">
+                <label>配资结束时间:</label>
+                <p class="input-group">
+                    <input type="text" class="form-control" datepicker-popup="yyyy/MM/dd" ng-model="data.dt" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+            </div>
+            <div class="am-form-group">
+                <label>配资状态:</label>
+                <select id="doc-select-1" ng-model="data.status">
+                    <option value="1">待支付</option>
+                    <option value="2">操盘中</option>
+                    <option value="3">已结算</option>
+                    <option value="4">审核中</option>
+                    <option value="5">结算中</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">更新</button>
+        <button class="btn btn-warning" ng-click="cancel()">取消</button>
+    </div>
+</script>
