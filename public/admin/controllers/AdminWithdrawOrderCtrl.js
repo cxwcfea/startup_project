@@ -31,6 +31,34 @@ angular.module('adminApp').controller('AdminWithdrawOrderCtrl', ['$scope', '$loc
         vm.showingItems = currentOrders.slice(start, end);
     };
 
+    vm.removeOrder = function(order) {
+        var modalInstance = $modal.open({
+            templateUrl: 'withdrawOrderDeleteModal.html',
+            controller: 'withdrawOrderDeleteModalCtrl',
+            resolve: {
+                order: function () {
+                    return order;
+                }
+            }
+        });
+        modalInstance.result.then(function (trans_id) {
+            $http.post('/admin/api/delete_withdraw_order/' + order._id, {})
+                .success(function(data, status) {
+                    gbNotifier.notify('删除成功');
+                    _.remove(order_list, function(o) {
+                        return o._id === order._id;
+                    });
+                    currentOrders = order_list;
+                    pageReset();
+                })
+                .error(function(data, status) {
+                    console.log(data.error_msg);
+                    gbNotifier.error('发生错误');
+                });
+        }, function () {
+        });
+    };
+
     vm.handleOrder = function(order) {
         if (!currentUser) {
             gbUser.get({id:order.userID}, function(user) {
@@ -81,5 +109,20 @@ angular.module('adminApp').controller('AdminWithdrawOrderCtrl', ['$scope', '$loc
                 });
         }, function () {
         });
+    };
+}]);
+
+angular.module('adminApp').controller('withdrawOrderDeleteModalCtrl', ['$scope', '$modalInstance', 'order', function ($scope, $modalInstance, order) {
+    $scope.amount = order.amount;
+    $scope.bank = order.cardInfo.bank;
+    $scope.bankName = order.cardInfo.bankName;
+    $scope.cardID = order.cardInfo.cardID;
+
+    $scope.ok = function () {
+        $modalInstance.close();
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
     };
 }]);

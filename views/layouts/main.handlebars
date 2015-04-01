@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="{{static '/css/site2.css'}}">
     <script src="{{static '/vendor/jquery/dist/jquery.min.js'}}"></script>
     <script src="{{static '/vendor/jquery.Imgfocus.js'}}"></script>
-    <script src="{{static '/vendor/angular/angular.js'}}"></script>
+    <script src="{{static '/vendor/angular/angular.min.js'}}"></script>
 {{#if production}}
     <script>
         var _hmt = _hmt || [];
@@ -58,7 +58,7 @@
             </div>
             -->
         </div>
-        {{#if user}}
+    {{#if user}}
         <div class="fr">
             <span class="am-text-danger">您好,{{#if user.profile.name}} {{user.profile.name}} {{else}} {{user.mobile}} {{/if}}</span>
             &nbsp;&nbsp;|&nbsp;&nbsp;
@@ -207,13 +207,13 @@
 <script src="{{static '/js/main.js'}}"></script>
 <script src="{{static '/app/controllers/RegisterCtrl.js'}}"></script>
 -->
-<script src="{{static '/js.min/niujinwang-main.min.c6c98ec7.js'}}"></script>
+<script src="{{static '/js.min/niujinwang-main.min.8987aea2.js'}}"></script>
 {{#if main_menu}}
         <script src="{{static '/js/index.js'}}"></script>
 {{/if}}
 {{#if user_menu}}
-        <script src="{{static '/vendor/angular-route/angular-route.js'}}"></script>
-        <script src="{{static '/vendor/angular-resource/angular-resource.js'}}"></script>
+        <script src="{{static '/vendor/angular-route/angular-route.min.js'}}"></script>
+        <script src="{{static '/vendor/angular-resource/angular-resource.min.js'}}"></script>
         <!--
         <script src="{{static '/js/user.js'}}"></script>
         <script src="{{static '/user/user.js'}}"></script>
@@ -223,14 +223,15 @@
         <script src="{{static '/user/controllers/UserCapitalCtrl.js'}}"></script>
         <script src="{{static '/user/controllers/UserAccountCtrl.js'}}"></script>
         -->
-        <script src="{{static '/js.min/niujinwang-user.min.2056de41.js'}}"></script>
+        <script src="{{static '/js.min/niujinwang-user.min.a0f479cf.js'}}"></script>
 
         <script src="{{static '/user/controllers/UserIndexCtrl2.js'}}"></script>
         <script src="{{static '/user/controllers/UserHomeCtrl2.js'}}"></script>
+        <script src="{{static '/user/controllers/UserRechargeCtrl.js'}}"></script>
 {{/if}}
 {{#if recharge}}
-        <script src="{{static '/vendor/angular-route/angular-route.js'}}"></script>
-        <script src="{{static '/vendor/angular-resource/angular-resource.js'}}"></script>
+        <script src="{{static '/vendor/angular-route/angular-route.min.js'}}"></script>
+        <script src="{{static '/vendor/angular-resource/angular-resource.min.js'}}"></script>
         <!--
         <script src="{{static '/app/controllers/RechargeCtrl.js'}}"></script>
         -->

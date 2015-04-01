@@ -395,6 +395,7 @@ exports.freeApply = function(req, res, next) {
         } else {
             var orderData = {
                 userID: req.user._id,
+                userMobile: req.user.mobile,
                 dealType: 1,
                 amount: 1,
                 status: 2,

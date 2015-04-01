@@ -19,7 +19,8 @@ var orderSchema = mongoose.Schema({
     applySerialID: String,
     bankTransID: String, // only for dealType == 2,
     otherInfo: String,
-    payType: Number  // 0 means iapppay, 1 means shengpay, 2 means from apply, 3 means alipay transfer, undefine means withdraw
+    payType: Number,  // 0 means iapppay, 1 means shengpay, 2 means from apply, 3 means alipay transfer, undefine means withdraw
+    approvedBy: String
 });
 
 var Order = mongoose.model('Order', orderSchema);

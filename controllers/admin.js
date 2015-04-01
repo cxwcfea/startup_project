@@ -454,12 +454,19 @@ function handleWithdrawOrder(req, res) {
         logger.info('handleWithdrawOrder operator:' + req.user.mobile);
         async.waterfall([
             function(callback) {
-                Order.update({_id:req.params.order_id}, {status: 1, bankTransID:req.body.bank_trans_id}, function(err, numberAffected, raw) {
-                    callback(err);
+                Order.findById(req.params.order_id, function(err, order) {
+                    if (!order) {
+                        err = 'order not found';
+                    } else {
+                        if (order.status === 1) {
+                            err = 'order already approved';
+                        }
+                    }
+                    callback(err, order);
                 });
             },
-            function(callback) {
-                Order.findById(req.params.order_id, function(err, order) {
+            function(order, callback) {
+                Order.update({_id:req.params.order_id}, {status: 1, bankTransID:req.body.bank_trans_id, approvedBy:req.user.mobile}, function(err, numberAffected, raw) {
                     callback(err, order);
                 });
             },
@@ -533,6 +540,7 @@ function confirmAlipayOrder(req, res) {
             }
             order.status = 1;
             order.bankTransID = req.body.trans_id;
+            order.approvedBy = req.user.mobile;
             order.save(function(err) {
                 if (err) {
                     logger.warn('confirmAlipayOrder error:' + err.toString());
@@ -630,6 +638,44 @@ function deleteAlipayOrder(req, res) {
             return res.send({error_msg:err.toString()});
         }
         res.send({});
+    });
+}
+
+function deleteWithdrawOrder(req, res) {
+    if (!req.body) {
+        res.status(400);
+        return res.send({error_msg:'empty request'});
+    }
+    logger.info('deleteWithdrawOrder operator:' + req.user.mobile);
+    Order.findOne({ $and: [{_id: req.params.id }, {dealType: 2}] }, function(err, order) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        if (!order || order.status === 1) {
+            res.status(400);
+            logger.debug('deleteWithdrawOrder error:order not found or already handled');
+            return res.send({error_msg:'deleteWithdrawOrder error:order not found or already handled'});
+        }
+        User.update({mobile:order.userMobile}, {$inc: {'finance.balance':order.amount, 'finance.freeze_capital':-order.amount}}, function(err, numberAffected, raw) {
+            if (err) {
+                logger.debug('deleteWithdrawOrder error:' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+            if (numberAffected == 0) {
+                res.status(400);
+                return res.send({error_msg:'user not found'});
+            }
+            order.remove(function(err) {
+                if (err) {
+                    logger.debug('deleteWithdrawOrder error:' + err.toString());
+                    res.status(500);
+                    return res.send({error_msg:err.toString()});
+                }
+                res.send({manager:req.user.mobile});
+            });
+        });
     });
 }
 
@@ -811,6 +857,8 @@ module.exports = {
         app.post('/admin/api/confirm_alipay_order/:id', passportConf.requiresRole('admin'), confirmAlipayOrder);
 
         app.post('/admin/api/delete_alipay_order/:id', passportConf.requiresRole('admin'), deleteAlipayOrder);
+
+        app.post('/admin/api/delete_withdraw_order/:id', passportConf.requiresRole('admin'), deleteWithdrawOrder);
 
         app.get('/api/auto_fetch_pending_apply', passportConf.requiresRole('admin'), autoFetchPendingApplies);
 

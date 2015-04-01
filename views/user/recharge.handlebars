@@ -1,153 +1,203 @@
-<div class="recTop"><a href="javascript:" ng-click="capitalVM.showRechargeDetail()">查看充值记录></a></div>
-<div class="recMenuBox">
-    <div class="fl">
-        选择充值方式：
+<div class="fl tra_right">
+    <div class="tra_column">
+        <span class="dis fl">我要充值</span>
     </div>
-    <div class="fl" id="menu">
-        <span ng-repeat="type in capitalVM.payTypes" ng-class="{select: capitalVM.currentPayType === type.value}" ng-click="capitalVM.selectPayType(type)">\{{type.name}}</span>
-    </div>
-</div>
-<div class="recMainBox" id="recMainBox">
-    <div class="animate-switch-container" ng-switch on="capitalVM.currentPayType">
-        <div class="animate-switch" ng-switch-default>
-            <div class="recMoneyBox">
-                <div class="recMoneyLeft fl">
-                    <div class="recMoneyText">
-                        充值金额：
-                        <input type="number" ng-model="capitalVM.pay_amount" autofocus ng-disabled="capitalVM.pay_for_apply">
-                        元
-                    </div>
-                    <p ng-show="capitalVM.pay_for_apply" class="p01">&nbsp;当前充值相关的配资单号：\{{capitalVM.pay_order.applySerialID}},保证金和管理费至少还需支付\{{capitalVM.pay_amount | currency:'':2}}</p>
-                </div>
-                <div class="fl recMoneyRight">
-                    <p class="p01">当前可用余额为：</p>
-                    <p class="p02">￥<span>\{{capitalVM.user.finance.balance | currency:'':0}}</span>\{{capitalVM.user.finance.balance | numTrunc}}</p>
-                    <!--
-                    <p class="p03">其中冻结100,000元，可用32,789.45元</p>
-                    -->
-                </div>
+    <div class="rec2_zflist jq_rec2_zflist newRec_Box">
+        <div class="rec2_yhkText">
+            <div class="fl newRec_left">网上银行</div>
+            <div class="fl rec2_yhkBox jq_rec2_yhkBox">
+                <span><img ng-src="\{{rechargeVM.BankNameList[rechargeVM.payBank].img}}"></span>
+                <span ng-show="rechargeVM.payBank === -1">&nbsp;&nbsp;请选择银行</span>
             </div>
-            <div class="recMenuBox marTop25" id="yhkMenu">
-                <span ng-class="{select: !capitalVM.useCredit}" ng-click="capitalVM.changeCardType(false)">储蓄卡支付</span>
-                <span ng-class="{select: capitalVM.useCredit}" ng-click="capitalVM.changeCardType(true)">信用卡支付</span>
-            </div>
-            <p class="recP02">请选择在线支付的银行卡</p>
-            <div class="" id="yhkList">
-                <div class="yhList">
-                    <ul>
-                        <li ng-repeat="bank in capitalVM.BankNameList">
-                            <label>
-                                <input type="radio" name="yh" ng-click="capitalVM.selectPayBank(bank)" ng-checked="capitalVM.payBank === bank.value">
-                                <span><img ng-src="\{{bank.img}}"/></span>
-                            </label>
-                        </li>
-                    </ul>
-                    <div class="clear"></div>
-                </div>
-            </div>
-            <p class="recP03">温馨提示：<br />如果没有适合您的网银，可以通过线下汇款支付</p>
-            <alert ng-repeat="alert in capitalVM.alerts" type="\{{alert.type}}" close="capitalVM.closeAlert($index)">\{{alert.msg}}</alert>
-            <a href="javascript:" class="recBtn01 jq_recBtn02" ng-click="capitalVM.onlinePay()">下一步</a>
-        </div>
-        <div class="animate-switch" ng-switch-when="1">
-            <div class="wyRec">
-                <div class="jq_zfb01">
-                    <div class="recMoneyBox zfbMoneyBox">
-                        <div class="recMoneyLeft zfbMoneyLeft fl">
-                            <!--
-                            <p class="p01">&nbsp;当前充值相关的业务单号：000000001，操盘12万元，至少还需要支付19452元（1万9千4百52元）！</p>
-                            -->
-                            <div class="recMoneyText zfbMoneyText">
-                                <div class="fl">&nbsp;&nbsp;&nbsp;充值金额：</div>
-                                <input type="number" placeholder="请输入充值金额" name="" id="" value="" class="dis fl" />
-                                <div class="fl">&nbsp;元</div>
-                            </div>
-                            <div class="recMoneyText zfbMoneyText ">
-                                <div class="fl">支付宝账户：</div>
-                                <input type="text" placeholder="请输入支付宝账户" class="dis fl zfbMoneyInputText" name="" id="" value="" />
-                                <div class="zfbImg fl"></div>
-                            </div>
-                            <p class="p02">该账户是核对转账的唯一凭据，请确认该账户与实际转账支付宝账户一致！</p>
-                        </div>
-                        <div class="fl recMoneyRight">
-                            <p class="p01">当前可用余额为：</p>
-                            <p class="p02">￥<span>\{{capitalVM.user.finance.balance | currency:'':0}}</span>\{{capitalVM.user.finance.balance | numTrunc}}</p>
-                            <!--
-                            <p class="p03">其中冻结100,000元，可用32,789.45元</p>
-                            -->
-                        </div>
-                    </div>
-                    <a href="#" class="recBtn01 jq_recBtn02">下一步</a>
-                </div>
-                <div class="zfbBox jq_zfbBox">
-                    <div class="zfbLeft fl">
-                        <div class="zfbText">
-                            <p>您的支付宝账户：<em class="fb">875969515@qq.com</em></p>
-                            <p>您本次转账金额：<span class="color_f2991b">￥<span>1234</span>.45</span></p>
-                        </div>
-                        <div class="zfbText2">
-                            <p class="color_c82217">用手机支付宝扫一扫</p>
-                            <p>快速转账，免手续费</p>
-                            <img src="../images/ewm.jpg"/>
-                        </div>
-                    </div>
-                    <div class="zfbRight fl">
-                        <div class="zfbText zfbText3 pr">
-                            <p>收款人支付宝账户：<em class="em01" id="zfbZh">875969515@qq.com</em>
-                                <div class="zfbfzimg"></div>
-                            </p>
-                            <p>收款人账户名称：<em class="fb color_c82217">北京小牛普惠科技有限公司</em></p>
-                        </div>
-                        <div class="zfbText2">
-                            <p class="color_c82217">您还可以</p>
-                            <p>登录支付宝网站付款</p>
-                            <a href="#"><img class="img01" src="../images/zfb2.jpg"/></a>
-                        </div>
-                    </div>
-                </div>
+            <div class="rec2_yhkBtn fl" ng-click="rechargeVM.changeBtnName()">
+                <span>\{{rechargeVM.btnName}}</span>
             </div>
         </div>
-        <div class="animate-switch" ng-switch-when="2">
-            <div class="wyRec">
-                <div class="recMoneyBox">
-                    <div class="recMoneyLeft fl">
-                        <div class="fl recYhLeft">
-                            <p class="p02">您可以汇款给牛金</p>
-                            <img src="/images/yh/cmb.png"/>
-                        </div>
-                        <div class="recText fl">
-                            <p class="p03">对公账号：<span class="fb">1109 1260 9510 501</span></p>
-                            <p>开户行：<span class="fb">招商银行股份有限公司北京清华园支行</span></p>
-                            <p>户名：<span class="fb">北京小牛普惠科技有限公司</span></p>
-                        </div>
-                    </div>
-                    <div class="fl recMoneyRight">
-                        <p class="p04">将转账相关信息发送到我的手机</p>
-                        <a href="#" class="recBtn02">发送到手机</a>
-                    </div>
-                </div>
+        <div class="rec2_yhkList undis jq_rec2_yhkList newRec_yhkList">
+            <div class="rec2_column">
+                <span>网银支付</span> 需要开通网上银行
+            </div>
+            <div class="rec2_yhkTable jq_rec2_yhkTable newRec_yhkTable">
+                <table>
+                    <tr ng-repeat="bankNameList in rechargeVM.BankNameLists">
+                        <td ng-repeat="bank in bankNameList" ng-click="rechargeVM.selectPayBank(bank)">
+                            <span ng-class="{selected:rechargeVM.payBank === bank.value}"><img ng-src="\{{bank.img}}"></span>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
-</div>
+    <div class="newRec_formBox ">
+        <div class="newRec_Title fl">
+            充值金额：
+        </div>
+        <div class="newRec_FomeContent fl">
+            <input type="number" class="newRec_inputText" ng-model="rechargeVM.pay_amount" required autofocus min="0" step="100">
+        </div>
+        <div class="fl newRec_formText">
+            &nbsp;元
+        </div>
+    </div>
+    <alert ng-show="!rechargeVM.showAlipayWindow && !rechargeVM.showBankTransWindow" ng-repeat="alert in rechargeVM.alerts" type="\{{alert.type}}" close="rechargeVM.closeAlert($index)">\{{alert.msg}}</alert>
+    <a href="" class="rec2_btn newrec_Btn jq_newrec_Btn" ng-click="rechargeVM.onlinePay()">立即支付</a>
+    <div class="rec2_zfBox">
+        <div class="fl rec2_zfBoxName">其他支付</div>
+        <div class="fl" id="yhkList">
+            <a href="" class="zfbBtn" ng-click="rechargeVM.selectPayType(1)">支付宝</a>
+            <a href="" class="zfbBtn2" ng-click="rechargeVM.selectPayType(2)">转账汇款</a>
+        </div>
+    </div>
 
-<form action="https://mas.sdo.com/web-acquire-channel/cashier.htm" method="POST" id="shengPayForm" name="shengPayForm">
-    <input type="hidden" name="Name" id="Name" value="B2CPayment">
-    <input type="hidden" name="Version" id="Version" value="V4.1.1.1.1">
-    <input type="hidden" name="Charset" id="Charset" value="UTF-8">
-    <input type="hidden" name="MsgSender" id="MsgSender" value="100894">
-    <input type="hidden" name="OrderNo" id="OrderNo" >
-    <input type="hidden" name="OrderAmount" id="OrderAmount" >
-    <input type="hidden" name="OrderTime" id="OrderTime" >
-    <input type="hidden" name="PayType" id="PayType" value="PT001">
-    <input type="hidden" name="PayChannel" id="PayChannel">
-    <input type="hidden" name="InstCode" id="InstCode">
-    <input type="hidden" name="PageUrl" id="PageUrl" value="{{callback_domain}}/thank_you_for_pay">
-    <input type="hidden" name="BackUrl" id="BackUrl" value="{{callback_domain}}/pay_confirm/{{order._id}}">
-    <input type="hidden" name="NotifyUrl" id="NotifyUrl" value="{{callback_domain}}/api/shengpay_feedback">
-    <input type="hidden" name="ProductName" id="ProductName" value="股票配资">
-    <input type="hidden" name="BuyerIp" id="BuyerIp">
-    <input type="hidden" name="SignType" id="SignType" value="MD5">
-    <input type="hidden" name="SignMsg" id="SignMsg">
-</form>
+    <div class="regTcc jq_recTcc newRec_zfbTcc" ng-show="rechargeVM.showAlipayWindow">
+        <div class="tmbg"></div>
+        <div class="tar_TccBox newReczfb_TccBox">
+            <div class="regColumn">
+                支付宝转账
+                <div class="loginClose jq_loginClose" ng-click="rechargeVM.closeOtherWindow()"></div>
+            </div>
+            <div class="newRec_zfbBox jq_zfb01" ng-class="{undis:rechargeVM.alipayConfirm}">
+                <div class="newRec_zfbForm">
+                    <div class="newRec_zfbLeft fl">
+                        充值金额
+                    </div>
+                    <div class="newRec_zfbRight fl">
+                        <input type="number" step="100" class="newRec_inputText2" ng-model="rechargeVM.pay_amount" required>
+                    </div>
+                </div>
+                <div class="newRec_zfbForm">
+                    <div class="newRec_zfbLeft fl">
+                        支付宝账号
+                    </div>
+                    <div class="newRec_zfbRight fl">
+                        <input type="text" class="newRec_inputText2 newRec_inputText2zfb" ng-model="rechargeVM.alipay_account" required autofocus>
+                    </div>
+                    <div class="newRec_zfbImg fl"></div>
+                </div>
+                <div class="newRec_zfbForm">
+                    <div class="newRec_zfbLeft fl">
+                        姓名
+                    </div>
+                    <div class="newRec_zfbRight fl">
+                        <input type="text" class="newRec_inputText2" ng-model="rechargeVM.alipay_name" required>
+                    </div>
+                </div>
+                <p class="newrec_P01">请确认该账户与实际转账支付宝账户一致</p>
+                <alert ng-show="rechargeVM.showAlipayWindow" ng-repeat="alert in rechargeVM.alerts" type="\{{alert.type}}" close="rechargeVM.closeAlert($index)">\{{alert.msg}}</alert>
+                <a href="" class="newrec_btn02 newrec_zfbbtn01 jq_Btn01" ng-click="rechargeVM.aliPay()">下一步</a>
+            </div>
+            <div class="newRec_zfbBox jq_zfb02" ng-class="{undis:!rechargeVM.alipayConfirm}">
+                <div class="newRec_zfbTextLeft fl">
+                    <div class="newRec_zfbTextBox">
+                        <div class="newRec_zfbTextName fl">
+                            收款人支付宝账户
+                        </div>
+                        <div class="newRec_zfbTextContent fl">
+                            <span class="span01">chongzhi@niujinwang.com</span>
+                        </div>
+                    </div>
+                    <div class="newRec_zfbTextBox marBottom25">
+                        <div class="newRec_zfbTextName fl">
+                            收款人账户名称
+                        </div>
+                        <div class="newRec_zfbTextContent fl">
+                            <span class="span02">北京小牛普惠科技有限公司</span>
+                        </div>
+                    </div>
+                    <div class="newRec_zfbTextBox">
+                        <div class="newRec_zfbTextName fl">
+                            您的支付宝账户
+                        </div>
+                        <div class="newRec_zfbTextContent fl">
+                            <span class="span03">\{{rechargeVM.alipay_account}}</span>
+                        </div>
+                    </div>
+                    <div class="newRec_zfbTextBox marBottom25 ">
+                        <div class="newRec_zfbTextName fl">
+                            转账金额
+                        </div>
+                        <div class="newRec_zfbTextContent fl">
+                            <span class="span01">\{{rechargeVM.pay_amount | currency:'':2}}</span><span class="span04">&nbsp;元</span>
+                        </div>
+                    </div>
+                    <p class="newrec_P02">您还可以登录支付宝网站付款<a href="https://shenghuo.alipay.com/send/payment/fill.htm" target="_blank"><img class="img01" src="/images/zfb4.jpg"></a></p>
+                </div>
+                <div class="newRec_zfbTextRight fl">
+                    <p>
+                        用手机支付宝扫一扫<br />快速转账，免手续费
+                    </p>
+                    <img src="/images/zfb_pay.jpg">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="regTcc jq_recTcc newRec_zzhkTcc" ng-show="rechargeVM.showBankTransWindow">
+        <div class="tmbg"></div>
+        <div class="tar_TccBox newReczfb_TccBox">
+            <div class="regColumn">
+                转账汇款
+                <div class="loginClose jq_loginClose" ng-click="rechargeVM.closeOtherWindow()"></div>
+            </div>
+            <div class="newRec_zzhkBox">
+                <p class="newrec_P03">您可以通过银行柜台向牛金转账</p>
+                <div class="newRec_zzhkTable">
+                    <table>
+                        <tr>
+                            <td width="170" valign="top">
+                                <img src="../images/zhyk.jpg">
+                            </td>
+                            <td width="75">
+                                <p class="p01">对公账号</p>
+                                <p class="p01">开&nbsp;户&nbsp;行</p>
+                                <p class="p01">户&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</p>
+                            </td>
+                            <td>
+                                <p class="p02">1109 1260 9510 501</p>
+                                <p class="p02">招商银行股份有限公司北京清华园支行</p>
+                                <p class="p02">北京小牛普惠科技有限公司</p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <p class="newrec_P04">将转账相关信息 <a href="" ng-click="rechargeVM.sendSMSBankInfo()">发送到手机</a></p>
+                <p class="newrec_P04" style="color: red">请将您的注册手机号作为转账附加信息，方便客服人员确认！</p>
+            </div>
+        </div>
+    </div>
+
+    <form action="https://mas.sdo.com/web-acquire-channel/cashier.htm" method="POST" id="shengPayForm" name="shengPayForm" target="_blank">
+        <input type="hidden" name="Name" id="Name" value="B2CPayment">
+        <input type="hidden" name="Version" id="Version" value="V4.1.1.1.1">
+        <input type="hidden" name="Charset" id="Charset" value="UTF-8">
+        <input type="hidden" name="MsgSender" id="MsgSender" value="443818">
+        <input type="hidden" name="OrderNo" id="OrderNo" >
+        <input type="hidden" name="OrderAmount" id="OrderAmount" >
+        <input type="hidden" name="OrderTime" id="OrderTime" >
+        <input type="hidden" name="PayType" id="PayType" value="PT001">
+        <input type="hidden" name="PayChannel" id="PayChannel">
+        <input type="hidden" name="InstCode" id="InstCode">
+        <input type="hidden" name="PageUrl" id="PageUrl" value="{{callback_domain}}/thank_you_for_pay">
+        <input type="hidden" name="BackUrl" id="BackUrl" value="{{callback_domain}}/recharge2?order_id=\{{vm.pay_order._id}}">
+        <input type="hidden" name="NotifyUrl" id="NotifyUrl" value="{{callback_domain}}/api/shengpay_feedback">
+        <input type="hidden" name="ProductName" id="ProductName" value="股票配资">
+        <input type="hidden" name="BuyerIp" id="BuyerIp">
+        <input type="hidden" name="SignType" id="SignType" value="MD5">
+        <input type="hidden" name="SignMsg" id="SignMsg">
+    </form>
+
+    <div ng-class="{undis:!rechargeVM.paying}" id="tckBox">
+        <div class="tmbg"></div>
+        <div class="PopupBox">
+            <p class="p01"><span class="icon07"></span>&nbsp;请在新打开的银行页面中完成网上付款</p>
+            <p class="p02">1、付款过程中请不要关闭这个窗口；</p>
+            <p class="p02">2、完成付款后请执行相应操作。</p>
+            <div class="applyBtnBox2">
+                <a href="/user2" class="applyBtn02 marRight20">已完成付款</a>
+                <a href="" class="applyBtn03" ng-click="rechargeVM.paying = false">修改付款方式</a>
+            </div>
+            <p class="p03"><a target="_blank" href="http://wpa.b.qq.com/cgi/wpa.php?ln=1&key=XzkzODA3MjI1OV8yNTEwNzVfNDAwNjkyMTM4OF8yXw" class="color_c82217">付款遇到问题？</a></p>
+        </div>
+    </div>
+</div>
 <script src="http://pv.sohu.com/cityjson"></script>
