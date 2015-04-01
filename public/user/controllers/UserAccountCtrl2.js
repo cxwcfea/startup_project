@@ -1,5 +1,5 @@
 'use strict';
-angular.module('userApp2').controller('UserAccountCtrl2', ['$scope', '$filter', '$window', '$http', '$interval', '$location', '$timeout', function($scope, $filter, $window, $http, $interval, $location, $timeout) {
+angular.module('userApp2').controller('UserAccountCtrl2', ['$scope', '$filter', '$window', '$http', '$interval', '$location', '$timeout', 'njCachedCards', 'BankNameList', function($scope, $filter, $window, $http, $interval, $location, $timeout, njCachedCards, BankNameList) {
     var vm = this;
 
     var verifyCodeBtnText = "获取验证码";
@@ -9,6 +9,9 @@ angular.module('userApp2').controller('UserAccountCtrl2', ['$scope', '$filter', 
     vm.sendingEmail = false;
     vm.verifyCodeBtnText = verifyCodeBtnText;
     vm.showVerifyEmailWindow = false;
+    njCachedCards.setUID(vm.user._id);
+    vm.cards = njCachedCards.query();
+    vm.BankNameList = BankNameList;
 
     vm.categories = [
         {

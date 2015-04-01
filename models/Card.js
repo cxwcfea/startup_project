@@ -5,6 +5,8 @@ var cardSchema = mongoose.Schema({
     bankID: {type:Number, required:'{PATH} is required!'},
     bankName: {type:String, required:'{PATH} is required!'},
     cardID: {type:String, required:'{PATH} is required!'},
+    province: {type:String, required:'{PATH} is required!'},
+    city: {type:String, required:'{PATH} is required!'},
     userName: {type:String, required:'{PATH} is required!'}
 });
 

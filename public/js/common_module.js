@@ -218,6 +218,14 @@
             var lastNumStr = input.cardID.toString().substr(12);
             return BankNameList[input.bankID].name + ' **** **** **** ' + lastNumStr;
         };
+    }]).filter("displayCard2", ['BankNameList', function (BankNameList) {
+        return function (input) {
+            if (input && input.cardID) {
+                var last4NumStr = input.cardID.toString().substr(-4);
+                return last4NumStr;
+            }
+            return '';
+        };
     }]).filter("orderStatus", function() {
         return function (input) {
             switch (input) {

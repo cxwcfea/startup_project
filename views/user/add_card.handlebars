@@ -1,0 +1,72 @@
+<div class="fl tra_right">
+    <div class="tra_column">
+        <span class="dis fl">添加银行卡</span>
+    </div>
+    <div class="newcar_formBox marTop65">
+        <div class="newCar_left fl">
+            开户行
+        </div>
+        <div class="newcar_right fl ">
+            <!--
+            <select class="select01" ng-model="cardVM.bankSel">
+                <option value="">请选择银行</option>
+                <option ng-repeat="bank in cardVM.BankNameList" value="\{{bank.value}}">\{{bank.name}}</option>
+            </select>
+            -->
+            <select class="inputSelect" ng-model="cardVM.bankObj"
+                    ng-options="item as item.name for item in cardVM.BankNameList"></select>
+        </div>
+    </div>
+    <div class="newcar_formBox">
+        <div class="newCar_left fl">
+            开户行所在地
+        </div>
+        <div class="newcar_right fl ">
+            <select class="select01 select02" ng-model="cardVM.currentProvince" ng-options="item as item.name for item in cardVM.province" ng-change="cardVM.provinceChange()">
+            </select>
+            <select class="select01 select02" ng-model="cardVM.currentCity" ng-options="item as item.name for item in cardVM.currentProvince.sub">
+            </select>
+            <!--
+            <select name="" class="select01 select03">
+                <option value="">请选择开户网点</option>
+            </select>
+            -->
+        </div>
+    </div>
+    <div class="newcar_formBox">
+        <div class="newCar_left fl">
+           支行名称
+        </div>
+        <div class="newcar_right fl ">
+            <input type="text" class="newcar_inputText" placeholder="请输入" ng-model="cardVM.bankName">
+        </div>
+    </div>
+    <div class="newcar_formBox">
+        <div class="newCar_left fl">
+            银行卡号
+        </div>
+        <div class="newcar_right fl ">
+            <input type="text" class="newcar_inputText" minlength="16" maxlength="19" placeholder="16到19位的卡号" ng-model="cardVM.cardID" required>
+        </div>
+    </div>
+    <!--
+    <div class="newcar_formBox">
+        <div class="newCar_left fl">
+            确认银行卡号
+        </div>
+        <div class="newcar_right fl ">
+            <input type="text" class="newcar_inputText" minlength="16" maxlength="19" placeholder="16到19位的卡号" ng-model="cardVM.cardID" required>
+        </div>
+    </div>
+    -->
+    <div class="newcar_formBox">
+        <div class="newCar_left fl">
+            开户名
+        </div>
+        <div class="newcar_right fl ">
+            <input type="text" class="newcar_inputText newcar_inputText2" placeholder="持卡人姓名" ng-model="cardVM.bankUserName" required>
+        </div>
+    </div>
+    <alert ng-repeat="alert in cardVM.alerts" type="\{{alert.type}}" close="cardVM.closeAlert($index)">\{{alert.msg}}</alert>
+    <a href="" class="recBtn01 newcar_btn jq_newcar_btn" ng-click="cardVM.addCard()">保存</a>
+</div>

@@ -6,12 +6,25 @@
         账号 <span class="span01">\{{accountVM.user.mobile | displayMobile}}</span> <a href="#" class="color_2489f0">修改密码</a>
         <span class="span02">上次登录时间：2015-03-30 23:19:09</span>
     </div>
-    <div class="set_img2 fl"></div>
-    <div class="set_text2 fl">
-        <a href="#" class="set_btn01">绑定银行卡</a>
-        <p class="p01">
-            绑定银行卡后才能提现
-        </p>
+    <div ng-hide="accountVM.cards.length">
+        <div class="set_img2 fl"></div>
+        <div class="set_text2 fl">
+            <a href="/add_card" class="set_btn01">绑定银行卡</a>
+            <p class="p01">
+                绑定银行卡后才能提现
+            </p>
+        </div>
+    </div>
+    <div ng-show="accountVM.cards.length">
+        <div class="set_img fl"></div>
+        <div class="set_text fl">
+            <p class="p01">
+                <span>银行卡</span>
+                <span class="span01"><img ng-src="\{{accountVM.BankNameList[accountVM.cards[0].bankID].img}}"></span>
+                <span class="color_666666 fontSize12">尾号 \{{accountVM.cards[0] | displayCard2}}</span>
+            </p>
+            <a href="#" class="color_2489f0 a01">修改银行卡</a>
+        </div>
     </div>
     <div class="clear"></div>
     <div class="set_list">
