@@ -215,10 +215,22 @@
         };
     }).filter("displayCard", ['BankNameList', function (BankNameList) {
         return function (input) {
-            var lastNumStr = input.cardID.toString().substr(12);
-            return BankNameList[input.bankID].name + ' **** **** **** ' + lastNumStr;
+            if (input && input.cardID) {
+                var lastNumStr = input.cardID.toString().substr(12);
+                return BankNameList[input.bankID].name + ' **** **** **** ' + lastNumStr;
+            }
+            return '';
         };
-    }]).filter("displayCard2", ['BankNameList', function (BankNameList) {
+    }]).filter("displayCard3", function () {
+        return function (input) {
+            if (input && input.cardID) {
+                var lastNumStr = input.cardID.toString().substr(-4);
+                var firstNumStr = input.cardID.toString().substr(0, 4);
+                return firstNumStr + ' **** **** ' + lastNumStr;
+            }
+            return '';
+        };
+    }).filter("displayCard2", ['BankNameList', function (BankNameList) {
         return function (input) {
             if (input && input.cardID) {
                 var last4NumStr = input.cardID.toString().substr(-4);
@@ -350,21 +362,21 @@
     angular.module('commonApp').constant('BankNameList', [
         {
             name: '工商银行',
-            img: '/images/yh/icbc.png',
+            img: '/images/yh/icbc.jpg',
             instCode: 'ICBC',
             credit: true,
             value: 0
         },
         {
             name: '建设银行',
-            img: '/images/yh/ccb.png',
+            img: '/images/yh/cbc.jpg',
             instCode: 'CCB',
             credit: true,
             value: 1
         },
         {
             name: '农业银行',
-            img: '/images/yh/abc.png',
+            img: '/images/yh/abc.jpg',
             instCode: 'ABC',
             credit: true,
             value: 2
@@ -378,7 +390,7 @@
         },
         {
             name: '招商银行',
-            img: '/images/yh/cmb.png',
+            img: '/images/yh/cmb.jpg',
             instCode: 'CMB',
             credit: true,
             value: 4

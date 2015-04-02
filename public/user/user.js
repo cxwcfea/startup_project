@@ -38,6 +38,9 @@ angular.module('userApp2').config(['$routeProvider', function($routeProvider) {
         .when('/add_card', { templateUrl: '/user/add_card',
             controller: 'UserCardCtrl as cardVM'
         })
+        .when('/withdraw', { templateUrl: '/user/withdraw',
+            controller: 'UserWithdrawCtrl as withdrawVM'
+        })
         .otherwise({
             redirectTo: '/home'
         });

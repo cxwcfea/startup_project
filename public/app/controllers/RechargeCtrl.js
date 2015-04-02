@@ -202,6 +202,10 @@
         vm.useCredit = false;
         vm.BankNameList = BankNameList;
         vm.useBalance = false;
+        if (vm.user.finance.balance > 0) {
+            vm.useBalance = true;
+            calculatePayAmount();
+        }
         vm.BankNameLists = [];
         var tempList = [];
         for (var i = 0; i < BankNameList.length; ++i) {

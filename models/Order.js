@@ -13,7 +13,7 @@ var orderSchema = mongoose.Schema({
     cardInfo: {
         bank: String,
         bankName: String,
-        cardID: Number,
+        cardID: String,
         userName: String
     },
     applySerialID: String,

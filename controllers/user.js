@@ -15,6 +15,7 @@ var passport = require('passport'),
     config = require('../config/config')[env],
     _ = require('lodash'),
     sparkMD5 = require('spark-md5'),
+    moment = require('moment'),
     async = require('async');
 
 
@@ -55,6 +56,7 @@ module.exports.postLogin = function(req, res, next) {
         }
         req.login(user, function(err) {
             if (err) {return next(err);}
+            req.session.lastLogin = moment().format("YYYY-MM-DD HH:mm:ss");
             if (req.session.lastLocation) {
                 var location = req.session.lastLocation;
                 req.session.lastLocation = null;
@@ -97,6 +99,7 @@ module.exports.ajaxLogin = function(req, res) {
                 res.status(500);
                 return res.send({error_code:2, error_msg:err.toString()});
             }
+            req.session.lastLogin = moment().format("YYYY-MM-DD HH:mm:ss");
             if (req.session.lastLocation) {
                 res.send({location:req.session.lastLocation});
                 req.session.lastLocation = null;

@@ -11,6 +11,7 @@ var users = require('../controllers/user'),
 module.exports = function(app) {
     app.use(function(req, res, next) {
         res.locals.user = req.user;
+        res.locals.lastLogin = req.session.lastLogin;
         if (process.env.NODE_ENV === 'production') {
             res.locals.production = true;
         }

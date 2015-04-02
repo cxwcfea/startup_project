@@ -1,0 +1,31 @@
+<div class="fl tra_right">
+    <div class="tra_column">
+        <span class="dis fl">我要提现</span>
+    </div>
+    <div class="newwit_formBox newwit_formBox2 marTop40">
+        <div class="newwit_Title fl">
+            提现银行卡
+        </div>
+        <div class="newwit_box fl">
+            <img ng-src="\{{withdrawVM.BankNameList[withdrawVM.cards[0].bankID].img}}">
+            <span>\{{withdrawVM.cards[0] | displayCard3}}</span>
+        </div>
+
+    </div>
+    <div class="newwit_formBox ">
+        <div class="newwit_Title fl">
+            提现金额
+        </div>
+        <div class="newwit_FomeContent fl">
+            <input type="number" min="0" max="\{{withdrawVM.user.finance.balance | currency:'':2}}" class="newwit_inputText" ng-model="withdrawVM.withdrawAmount" autofocus required>
+        </div>
+        <div class="fl newwit_formText">
+            &nbsp;元
+        </div>
+        <div class="fl fontSize12 color_999999">
+            &nbsp;余额 <span class="color_a40000">\{{withdrawVM.user.finance.balance | currency:'':2}}</span>元
+        </div>
+    </div>
+    <alert ng-show="!withdrawVM.showAlipayWindow && !withdrawVM.showBankTransWindow" ng-repeat="alert in withdrawVM.alerts" type="\{{alert.type}}" close="withdrawVM.closeAlert($index)">\{{alert.msg}}</alert>
+    <a href="" class="recBtn01 newcar_btn jq_newcar_btn" ng-click="withdrawVM.withdrawStep2()">下一步</a>
+</div>

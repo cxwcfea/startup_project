@@ -17,7 +17,7 @@
         </div>
         <div ng-hide="vm.showPayConfirm">
             <div class="rec2_textBox">
-                <input type="checkbox" ng-disabled="!vm.user.finance.balance" ng-model="vm.useBalance" ng-change="vm.balanceChecked()">
+                <input type="checkbox" ng-disabled="!vm.user.finance.balance" ng-checked="vm.user.finance.balance > 0" ng-model="vm.useBalance" ng-change="vm.balanceChecked()">
                 &nbsp;<span class="span02">可用余额</span><span class="span01">\{{vm.user.finance.balance | currency:'':2}}</span>&nbsp;&nbsp;元
             </div>
             <div class="rec2_zflist jq_rec2_zflist">
