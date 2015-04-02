@@ -703,7 +703,7 @@ function confirmRechargeOrder(req, res) {
                                 res.status(500);
                                 return res.send({error_msg:err.toString()});
                             }
-                            util.sendSMS_8(user.mobile, order.amount.toFixed(2));
+                            util.sendSMS_4(user.mobile, order.amount.toFixed(2));
                             res.send({});
                         });
                     } else {
