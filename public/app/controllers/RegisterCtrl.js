@@ -1,6 +1,17 @@
 (function () {
     'use strict';
     angular.module('registerApp', ['ui.bootstrap', 'commonApp']);
+
+    angular.module('registerApp').config(['$httpProvider', function($httpProvider) {
+        // Initialize get if not there
+        if (!$httpProvider.defaults.headers.get) {
+            $httpProvider.defaults.headers.get = {};
+        }
+        // Disable IE ajax request caching
+        $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+        $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
+    }]);
+
     angular.module('registerApp').controller('RegisterCtrl', ['$http', '$location', '$window', '$interval', function($http, $location, $window, $interval) {
         var vm = this;
 

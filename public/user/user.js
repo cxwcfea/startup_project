@@ -1,6 +1,14 @@
 angular.module('userApp', ['ngResource', 'ngRoute', 'ui.bootstrap', 'commonApp']);
 
-angular.module('userApp').config(['$routeProvider', function($routeProvider) {
+angular.module('userApp').config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
+    // Initialize get if not there
+    if (!$httpProvider.defaults.headers.get) {
+        $httpProvider.defaults.headers.get = {};
+    }
+    // Disable IE ajax request caching
+    $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+    $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
+
     $routeProvider
         .when('/index', { templateUrl: '/user/home',
             controller: 'UserHomeCtrl as homeVM'
@@ -22,6 +30,14 @@ angular.module('userApp').config(['$routeProvider', function($routeProvider) {
 angular.module('userApp2', ['ngResource', 'ngRoute', 'ui.bootstrap', 'commonApp']);
 
 angular.module('userApp2').config(['$routeProvider', function($routeProvider) {
+    // Initialize get if not there
+    if (!$httpProvider.defaults.headers.get) {
+        $httpProvider.defaults.headers.get = {};
+    }
+    // Disable IE ajax request caching
+    $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+    $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
+
     $routeProvider
         .when('/home', { templateUrl: '/user/account_summary',
             controller: 'UserHomeCtrl2 as homeVM'

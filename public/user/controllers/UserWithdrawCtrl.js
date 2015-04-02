@@ -3,6 +3,7 @@ angular.module('userApp2').controller('UserWithdrawCtrl', ['$scope', '$http', '$
     var vm = this;
 
     $scope.data.menu = 6;
+    vm.step = 1;
     vm.user = $scope.data.currentUser;
     njCachedCards.setUID(vm.user._id);
     vm.cards = njCachedCards.query();
@@ -94,18 +95,20 @@ angular.module('userApp2').controller('UserWithdrawCtrl', ['$scope', '$http', '$
             });
     };
 
-    vm.withdrawStep2 = function() {
-        console.log(vm.withdrawAmount);
-        if (!vm.withdrawAmount || vm.withdrawAmount <= 0) {
-            addAlert('danger', '请输入提现金额,金额不超过余额且大于0,');
-            return;
-        }
-        vm.withdrawAmount = Number(vm.withdrawAmount.toFixed(2));
-        var balance = Number(vm.user.finance.balance.toFixed(2));
-        console.log(vm.withdrawAmount + ' ' + balance);
-        if (vm.withdrawAmount > balance) {
-            addAlert('danger', '余额不足');
-            return;
+    vm.withdrawNextStep = function() {
+        if (vm.step === 1) {
+            if (!vm.withdrawAmount || vm.withdrawAmount <= 0) {
+                addAlert('danger', '请输入提现金额,金额不超过余额且大于0,');
+                return;
+            }
+            vm.withdrawAmount = Number(vm.withdrawAmount.toFixed(2));
+            var balance = Number(vm.user.finance.balance.toFixed(2));
+            console.log(vm.withdrawAmount + ' ' + balance);
+            if (vm.withdrawAmount > balance) {
+                addAlert('danger', '余额不足');
+                return;
+            }
+            vm.step = 2;
         }
     }
 

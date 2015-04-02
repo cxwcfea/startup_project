@@ -1,7 +1,16 @@
 angular.module('myApp', ['ngResource', 'ngRoute', 'ui.bootstrap', 'commonApp']);
 
-angular.module('myApp').config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+angular.module('myApp').config(['$routeProvider', '$locationProvider', '$httpProvider', function($routeProvider, $locationProvider, $httpProvider) {
     //$locationProvider.html5Mode(true);
+
+    // Initialize get if not there
+    if (!$httpProvider.defaults.headers.get) {
+        $httpProvider.defaults.headers.get = {};
+    }
+    // Disable IE ajax request caching
+    $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+    $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
+
     $routeProvider
         .when('/index', { templateUrl: '/user/home',
             controller: 'UserMainController as homeVM'

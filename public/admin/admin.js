@@ -1,6 +1,14 @@
 angular.module('adminApp', ['ngResource', 'ngRoute', 'ui.bootstrap', 'commonApp']);
 
-angular.module('adminApp').config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+angular.module('adminApp').config(['$routeProvider', '$locationProvider', '$httpProvider', function($routeProvider, $locationProvider, $httpProvider) {
+    // Initialize get if not there
+    if (!$httpProvider.defaults.headers.get) {
+        $httpProvider.defaults.headers.get = {};
+    }
+    // Disable IE ajax request caching
+    $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+    $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
+
     //$locationProvider.html5Mode(true);
     $routeProvider
         .when('/users', { templateUrl: '/admin/user_list',

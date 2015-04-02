@@ -1,6 +1,17 @@
 (function () {
     'use strict';
     angular.module('applyApp', ['commonApp']);
+
+    angular.module('applyApp').config(['$httpProvider', function($httpProvider) {
+        // Initialize get if not there
+        if (!$httpProvider.defaults.headers.get) {
+            $httpProvider.defaults.headers.get = {};
+        }
+        // Disable IE ajax request caching
+        $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+        $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
+    }]);
+
     angular.module('applyApp').controller('ApplyController', ['$http', '$location', '$window', 'days', function($http, $location, $window, days) {
         var vm = this;
 
