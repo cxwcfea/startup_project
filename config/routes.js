@@ -12,7 +12,9 @@ module.exports = function(app) {
     app.use(function(req, res, next) {
         res.locals.user = req.user;
         res.locals.lastLogin = req.session.lastLogin;
-        res.locals.recentApply = req.session.statistic.show_applies[0];
+        if (req.session.statistic) {
+            res.locals.recentApply = req.session.statistic.show_applies[0];
+        }
         if (process.env.NODE_ENV === 'production') {
             res.locals.production = true;
         }
