@@ -8,12 +8,10 @@ angular.module('userApp2').controller('UserApplyListCtrl', ['$scope', '$location
     var currentApplies;
     vm.itemsPerPage = 3;
     vm.selected = 0;
-    vm.tableCss = {
-        even:  'even'
-    };
     vm.showApplyAccount = null;
     vm.user_total_capital = vm.user.finance.balance + vm.user.finance.freeze_capital;
     vm.showAccountWindow = false;
+    vm.profit_rate = vm.user.finance.history_deposit ? (vm.user.finance.profit / vm.user.finance.history_deposit).toFixed(0) : 0;
 
     var lang = new Array();
     var userAgent = navigator.userAgent.toLowerCase();
@@ -116,14 +114,6 @@ angular.module('userApp2').controller('UserApplyListCtrl', ['$scope', '$location
             $window.location.assign('/apply_confirm/' + apply.serialID);
         } else {
             $location.path('/apply_detail/' + apply.serialID);
-        }
-    };
-
-    vm.toggleDetail = function (e, index) {
-        if (e.type == 'mouseleave') {
-            vm.showApplyAccount = null;
-        } else {
-            vm.showApplyAccount = index;
         }
     };
 

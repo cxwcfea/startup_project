@@ -80,7 +80,7 @@ module.exports = function(app) {
 
     app.post('/finish_signup', users.finishSignup);
 
-    app.post('/api_signup', users.apiSignup);
+    app.post('/api/signup', users.apiSignup);
 
     app.post('/verify_mobile_code', users.verifyMobileCode);
 
@@ -137,7 +137,7 @@ module.exports = function(app) {
 
     app.post('/user/iapp_pay', users.getIAppPayTransid);
 
-    app.post('/api/users/pay_by_balance', passportConf.isAuthenticated, users.payByBalance);
+    app.post('/api/users/pay_by_balance', passportConf.isAuthenticated, users.payByBalance2);
 
     app.get('/pay_confirm/:orderID', passportConf.isAuthenticated, orders.confirmPayOrder);
 

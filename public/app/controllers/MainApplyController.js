@@ -243,7 +243,7 @@
                                 $window.location.assign('/apply/pay_success?serial_id=' + data.apply.serialID + '&amount=' + data.apply.amount);
                             })
                             .error(function(res, status) {
-                                console.log('error:' + res.reason);
+                                console.log('error:' + res.error_msg);
                             });
                     } else {
                         $window.location.assign('/recharge2?order_id=' + data.order._id);

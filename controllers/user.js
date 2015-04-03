@@ -1875,3 +1875,44 @@ module.exports.getRecharge2 = function(req, res, next) {
         });
     });
 };
+
+module.exports.payByBalance2 = function(req, res, next) {
+    if (!req.user) {
+        res.status(400);
+        return res.send({error_msg:'无效的用户!'});
+    }
+    var data = req.body;
+
+    async.waterfall([
+        function(callback) {
+            User.findById(req.user._id, function(err, user) {
+                if (!user) {
+                    logger.warn('payByBalance error. user not found:' + data.apply_serial_id);
+                    err = 'payByBalance error. user not found:' + data.apply_serial_id;
+                }
+                callback(err, user);
+            })
+        },
+        function(user, callback) {
+            Apply.findOne({serialID:data.apply_serial_id}, function(err, apply) {
+                if (!apply) {
+                    logger.warn('payByBalance error. apply not found:' + data.apply_serial_id);
+                    err = 'payByBalance error. apply not found:' + data.apply_serial_id;
+                }
+                callback(err, user, apply);
+            });
+        },
+        function(user, apply, callback) {
+            util.applyConfirmed(user, apply, function(err) {
+                callback(err);
+            })
+        }
+    ], function(err) {
+        if (err) {
+            logger.warn('payByBalance error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send({});
+    });
+};

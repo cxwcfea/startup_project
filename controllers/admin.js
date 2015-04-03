@@ -287,6 +287,45 @@ function homasAssignAccount(req, res) {
     });
 }
 
+function _closeApply2(serialID, profit, res) {
+    async.waterfall([
+        function(callback) {
+            Apply.findOne({serialID:serialID}, function(err, apply) {
+                if (!apply) {
+                    err = '_closeApply error:apply:' + serialID + ' not found';
+                }
+                if (apply.deposit < 0 || apply.amount < 0) {
+                    err = '_closeApply error:apply data not correct';
+                }
+                callback(err, apply);
+            })
+        },
+        function(apply, callback) {
+            User.findById(apply.userID, function(err, user) {
+                if (!user) {
+                    err = '_closeApply error: user not found';
+                }
+                callback(err, user, apply);
+            });
+        },
+        function(user, apply, callback) {
+            util.applyClosed(user, apply, profit, function(err) {
+                callback(err, apply, user.finance.balance);
+            });
+        }
+    ], function(err, apply, balance) {
+        if (err) {
+            logger.error('error happen when close apply:' + serialID + ' err:' + err.toString());
+            res.status(401);
+            res.send({"error_code":1, "error_msg":err.toString()});
+        } else {
+            var amount = balance > 0 ? balance : 0;
+            util.sendSMS_3(apply.userMobile, amount, apply.deposit, profit);
+            res.send({"error_code":0});
+        }
+    });
+}
+
 function _closeApply(serialID, profit, res) {
     async.waterfall([
         function(callback) {
@@ -437,7 +476,7 @@ function _closeApply(serialID, profit, res) {
 function closeApply(req, res) {
     logger.info('closeApply operator:' + req.user.mobile);
     var profit = req.body.profit;
-    _closeApply(req.body.apply_serial_id, Number(profit), res);
+    _closeApply2(req.body.apply_serial_id, Number(profit), res);
 }
 
 function fetchGetProfitOrders(req, res) {

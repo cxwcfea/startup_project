@@ -183,7 +183,7 @@
     }).filter("displayIncome", function () {
         return function (input, orderType) {
             var ret = input;
-            if (orderType == 2 || orderType == 9) {
+            if (orderType == 2 || orderType == 9 || orderType == 10) {
                 ret = '';
             }
             return ret;
@@ -191,7 +191,7 @@
     }).filter("displayOutcome", function () {
         return function (input, orderType) {
             var ret = '';
-            if (orderType == 2 || orderType == 9) {
+            if (orderType == 2 || orderType == 9 || orderType == 10) {
                 ret = input;
             }
             return ret;
@@ -288,6 +288,8 @@
                     return '管理费返还';
                 case 9:
                     return '保证金支出';
+                case 10:
+                    return '管理费支出';
                 default:
                     return '充值';
             }

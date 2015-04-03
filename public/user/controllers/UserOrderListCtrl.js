@@ -40,7 +40,7 @@ angular.module('userApp2').controller('UserOrderListCtrl', ['$scope', '$http', '
             } else if (item.value === 2) {
                 return elem.dealType === 5 || elem.dealType === 9;
             } else {
-                return elem.dealType === 8;
+                return elem.dealType === 8 || elem.dealType === 10;
             }
         });
         pageReset();

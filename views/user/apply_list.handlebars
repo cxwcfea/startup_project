@@ -1,7 +1,9 @@
 <div class="fl tra_right">
     <div class="tra_column">
         <span class="dis fl">我的操盘</span>
+        <!--
         <span class="dis fr span01">更新时间：昨日沪深股市收盘</span>
+        -->
     </div>
     <div class="tra_tableBox">
         <table>
@@ -16,7 +18,7 @@
                 </td>
                 <td width="145" valign="top">
                     <p class="p01">盈亏</p>
-                    <p class="p02 color_e0322d"><span>+188</span>.00</p>
+                    <p class="p02 color_e0322d"><span>\{{applyVM.user.finance.profit | currency:'':2 | integerNum}}</span>\{{applyVM.user.finance.profit | currency:'':2 | numTrunc}}</p>
                 </td>
                 <td rowspan="2" valign="top">
                     <p class="p01">可用余额</p>
@@ -35,7 +37,7 @@
                 </td>
                 <td valign="top">
                     <p class="p01">累计收益率</p>
-                    <p class="p03">28%</p>
+                    <p class="p03">\{{applyVM.profit_rate}}%</p>
                 </td>
             </tr>
         </table>
@@ -60,11 +62,13 @@
                 </td>
                 <td>
                     <p class="p03">\{{item.start_date | displayShortDate}}</p>
-                    <p class="p04">累计\{{item.days_till_now}}天</p>
+                    <p class="p04" ng-show="item.status !== 1 && item.status !== 4">累计\{{item.days_till_now}}天</p>
+                    <p class="p04" ng-show="item.status === 1 || item.status === 4">预计开始时间</p>
                 </td>
                 <td>
                     <p class="p03">\{{item.end_date | displayShortDate}}</p>
-                    <p class="p05">剩余\{{item.left_days}}天</p>
+                    <p class="p04" ng-show="item.status !== 1 && item.status !== 4">剩余\{{item.left_days}}天</p>
+                    <p class="p04" ng-show="item.status === 1 || item.status === 4">预计结束时间</p>
                 </td>
                 <td>
                     <p ng-class="{color_37c80b:item.status === 2, color_a40000:item.status === 4}">\{{item.status | applyStatus}}</p>
@@ -72,11 +76,13 @@
                 <td>
                     <div class="tra_BtnBox">
                         <a ng-hide="item.status === 1 || item.status === 4" href="" class="tra_tableBoxBtn jq_Btn" ng-click="applyVM.showAccountInfo(item)">交易账号</a>
+                        <!--
                         <div ng-show="item.status === 2">
                             <a href="" class="jq_Btn2">补充保证金</a><br />
                             <a href="">延期设置</a><br />
                             <a href="">终止操盘</a><br />
                         </div>
+                        -->
                         <a href="/apply_detail2/\{{item.serialID}}">查看详情</a>
                     </div>
                 </td>

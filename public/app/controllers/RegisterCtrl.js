@@ -46,7 +46,7 @@
                 password: vm.password,
                 confirm_password: vm.confirm_password
             };
-            $http.post('/api_signup', data)
+            $http.post('/api/signup', data)
                 .success(function(data, status, headers, config) {
                     vm.show_verify_window = true;
                     vm.getVerifyCode();
