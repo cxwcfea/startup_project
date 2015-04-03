@@ -309,6 +309,23 @@
                     return "待支付";
             }
         };
+    }).filter("payType", function() {
+        return function(input) {
+            switch (input) {
+                case 0:
+                    return "爱贝";
+                case 1:
+                    return "盛付通";
+                case 2:
+                    return "配资付款";
+                case 3:
+                    return "支付宝";
+                case 4:
+                    return "银行转账";
+                default:
+                    return "提款";
+            }
+        };
     }).service("days", function () {
         this.startTime = getStartDay;
         this.endTime = getEndDay;

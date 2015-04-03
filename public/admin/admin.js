@@ -44,6 +44,12 @@ angular.module('adminApp').config(['$routeProvider', '$locationProvider', '$http
         .when('/my_users', { templateUrl: '/admin/my_user_list',
             controller: 'AdminMyUserListCtrl as myUserVM'
         })
+        .when('/recharge_orders', { templateUrl: '/admin/recharge_order_list',
+            controller: 'AdminRechargeOrderListCtrl as rechargeOrderVM'
+        })
+        .when('/orders', { templateUrl: '/admin/orders',
+            controller: 'AdminOrderCtrl as orderVM'
+        })
         .otherwise({
             redirectTo: '/users'
         });

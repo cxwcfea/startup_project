@@ -123,6 +123,7 @@ function createOrder(req, res) {
         dealType: req.body.order_type,
         amount: req.body.order_amount,
         status: 0,
+        payType: 4, // 银行转账
         description: req.body.order_description ? req.body.order_description : '',
         bankTransID: req.body.order_bank_trans_id ? req.body.order_bank_trans_id : ''
     };
@@ -654,6 +655,87 @@ function deleteAlipayOrder(req, res) {
     });
 }
 
+function getRechargeOrders(req, res) {
+    Order.find({$and: [{dealType: 1},  {status: 0}]}, function(err, orders) {
+        if (err) {
+            logger.warn('getRechargeOrders error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send(orders);
+    });
+}
+
+function confirmRechargeOrder(req, res) {
+    Order.findById(req.params.id, function(err, order) {
+        if (err) {
+            logger.warn('confirmRechargeOrder error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        logger.info('confirmRechargeOrder operator:' + req.user.mobile);
+        if (order) {
+            if (order.status != 0) {
+                logger.warn('confirmRechargeOrder error: only order in not pay status can be approved');
+                res.status(400);
+                return res.send({error_msg:'only order in not pay status can be approved'});
+            }
+            order.status = 1;
+            // order.bankTransID = req.body.trans_id;
+            order.approvedBy = req.user.mobile;
+            order.save(function(err) {
+                if (err) {
+                    logger.warn('confirmRechargeOrder error:' + err.toString());
+                    res.status(500);
+                    return res.send({error_msg:err.toString()});
+                }
+                User.findById(order.userID, function(err, user) {
+                    if (err) {
+                        logger.warn('confirmRechargeOrder error:' + err.toString());
+                        res.status(500);
+                        return res.send({error_msg:err.toString()});
+                    }
+                    if (user) {
+                        user.finance.balance += order.amount;
+                        user.save(function(err) {
+                            if (err) {
+                                logger.warn('confirmRechargeOrder error:' + err.toString());
+                                res.status(500);
+                                return res.send({error_msg:err.toString()});
+                            }
+                            util.sendSMS_4(user.mobile, order.amount.toFixed(2));
+                            res.send({});
+                        });
+                    } else {
+                        logger.warn('confirmRechargeOrder error:user not found');
+                        res.status(400);
+                        res.send({error_msg:'confirmRechargeOrder error:user not found'});
+                    }
+                });
+            })
+        } else {
+            logger.warn('confirmRechargeOrder error:order not found');
+            res.status(400);
+            return res.send({error_msg:'order not found'});
+        }
+    });
+}
+
+function deleteRechargeOrder(req, res) {
+    if (!req.body) {
+        res.status(400);
+        return res.send({error_msg:'empty request'});
+    }
+    logger.info('deleteRechargeOrder operator:' + req.user.mobile);
+    Order.find({ $and: [{_id: req.params.id }, {status: 0}] }).remove(function(err, order) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send({});
+    });
+}
+
 function deleteWithdrawOrder(req, res) {
     if (!req.body) {
         res.status(400);
@@ -906,6 +988,12 @@ module.exports = {
         app.post('/admin/api/confirm_alipay_order/:id', passportConf.requiresRole('admin'), confirmAlipayOrder);
 
         app.post('/admin/api/delete_alipay_order/:id', passportConf.requiresRole('admin'), deleteAlipayOrder);
+
+        app.get('/admin/api/orders/recharge', passportConf.requiresRole('admin|support'), getRechargeOrders);
+
+        app.post('/admin/api/confirm_recharge_order/:id', passportConf.requiresRole('admin'), confirmRechargeOrder);
+
+        app.post('/admin/api/delete_recharge_order/:id', passportConf.requiresRole('admin'), deleteRechargeOrder);
 
         app.post('/admin/api/delete_withdraw_order/:id', passportConf.requiresRole('admin'), deleteWithdrawOrder);
 

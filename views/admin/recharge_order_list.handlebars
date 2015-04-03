@@ -1,0 +1,79 @@
+<div class="am-cf am-padding">
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">充值订单</strong></div>
+</div>
+
+<div class="am-g">
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12">
+        <form class="am-form">
+            <table class="am-table am-table-striped am-table-hover table-main">
+                <thead>
+                <tr>
+                    <th class="table-date">日期</th><th class="table-type">用户</th><th class="table-type">转账单号</th><th class="table-author">金额</th><th class="table-author">描述</th><th class="table-set">状态</th><th class="table-set">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="order in rechargeOrderVM.showingItems">
+                    <td>\{{order.createdAt | displayDate}}</td>
+                    <td>\{{order.userMobile}}</td>
+                    <td>\{{order.bankTransID}}</td>
+                    <td>\{{order.amount}}</td>
+                    <td>\{{order.description}}</td>
+                    <td>\{{order.status | orderStatus}}</td>
+                    <td>
+                        <div class="am-btn-toolbar">
+                            <div class="am-btn-group am-btn-group-xs">
+                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="rechargeOrderVM.handleOrder(order)"><span class="am-icon-pencil-square-o"></span> 管理</button>
+                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="rechargeOrderVM.deleteOrder(order)"><span class="am-icon-pencil-square-o"></span> 删除</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="am-cf">
+                共 \{{rechargeOrderVM.totalItems}} 条记录
+                <div class="am-fr">
+                    <pagination previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="rechargeOrderVM.itemsPerPage" total-items="rechargeOrderVM.totalItems" ng-model="rechargeOrderVM.currentPage" ng-change="rechargeOrderVM.pageChanged()"></pagination>
+                </div>
+            </div>
+            <hr />
+        </form>
+    </div>
+</div>
+
+<script type="text/ng-template" id="rechargeOrderModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">确认充值订单</h3>
+    </div>
+    <div class="modal-body">
+        <p>用户名：\{{name}}</p>
+        <p>转账单号: \{{trans_id}}</p>
+        <p>金额：\{{amount | currency:'':2}}</p>
+        <p>描述: \{{description}}</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">确认</button>
+        <button class="btn btn-warning" ng-click="cancel()">取消</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="rechargeOrderDeleteModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">删除充值订单</h3>
+    </div>
+    <div class="modal-body">
+        <p>用户名：\{{name}}</p>
+        <p>转账单号: \{{trans_id}}</p>
+        <p>金额：\{{amount | currency:'':2}}</p>
+        <p>描述: \{{description}}</p>
+        <p>删除后不能恢复，确认吗？</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">确认</button>
+        <button class="btn btn-warning" ng-click="cancel()">取消</button>
+    </div>
+</script>
