@@ -3,27 +3,27 @@
         <span class="dis fl">账号设置</span>
     </div>
     <div class="set_Top">
-        账号 <span class="span01">\{{accountVM.user.mobile | displayMobile}}</span> <a href="#" class="color_2489f0">修改密码</a>
+        账号 <span class="span01">\{{accountVM.user.mobile | displayMobile}}</span> <a href="" class="color_2489f0" ng-click="accountVM.showResetPasswordWindow = true">修改密码</a>
         <span class="span02">上次登录时间：{{lastLogin}}</span>
     </div>
-    <div ng-hide="accountVM.cards.length">
+    <div ng-hide="accountVM.card">
         <div class="set_img2 fl"></div>
         <div class="set_text2 fl">
-            <a href="/add_card" class="set_btn01">绑定银行卡</a>
+            <a href="/user2/#/add_card" class="set_btn01">绑定银行卡</a>
             <p class="p01">
                 绑定银行卡后才能提现
             </p>
         </div>
     </div>
-    <div ng-show="accountVM.cards.length">
+    <div ng-show="accountVM.card">
         <div class="set_img fl"></div>
         <div class="set_text fl">
             <p class="p01">
                 <span>银行卡</span>
-                <span class="span01"><img ng-src="\{{accountVM.BankNameList[accountVM.cards[0].bankID].img}}"></span>
-                <span class="color_666666 fontSize12">尾号 \{{accountVM.cards[0] | displayCard2}}</span>
+                <span class="span01"><img ng-src="\{{accountVM.BankNameList[accountVM.card.bankID].img}}"></span>
+                <span class="color_666666 fontSize12">尾号 \{{accountVM.card | displayCard2}}</span>
             </p>
-            <a href="#" class="color_2489f0 a01">修改银行卡</a>
+            <a href="/user2/#/add_card" class="color_2489f0 a01">修改银行卡</a>
         </div>
     </div>
     <div class="clear"></div>
@@ -74,3 +74,70 @@
         </div>
     </div>
 </div>
+
+<div class="traTcc jq_tcc02" ng-show="accountVM.showResetPasswordWindow">
+    <div class="tmbg"></div>
+    <div class="tar_TccBox_email">
+        <div class="regColumn">
+            修改登录密码
+            <div class="loginClose tra_close jq_tar_close02" ng-click="accountVM.showResetPasswordWindow = false; accountVM.passwordChangeSuccess = false"></div>
+        </div>
+        <br/>
+        <div class="tra_Text2" ng-hide="accountVM.passwordChangeSuccess">
+            <div class="tra_InputBox_email">
+                <div class="tra_InputBoxLeft fl">
+                    原密码
+                </div>
+                <div class="tra_InputBoxRight_email fl">
+                    <input type="password" class="inputText" ng-model="accountVM.password" minlength="6" maxlength="20" required>
+                    请输入登录密码
+                </div>
+            </div>
+            <div class="tra_InputBox_email">
+                <div class="tra_InputBoxLeft fl">
+                    新密码
+                </div>
+                <div class="tra_InputBoxRight_email fl">
+                    <input type="password" class="inputText" ng-model="accountVM.new_password" rminlength="6" maxlength="20" equired>
+                </div>
+            </div>
+            <div class="tra_InputBox_email">
+                <div class="tra_InputBoxLeft fl">
+                    确认新密码
+                </div>
+                <div class="tra_InputBoxRight_email fl">
+                    <input type="password" class="inputText" ng-model="accountVM.confirm_password" minlength="6" maxlength="20" required>
+                </div>
+            </div>
+            <alert ng-repeat="alert in accountVM.alerts" type="\{{alert.type}}" close="accountVM.closeAlert($index)">\{{alert.msg}}</alert>
+            <div class="tra_inputBtnBox tra_inputBtnBox_email">
+                <a href="" class="a01" ng-click="accountVM.changePassword()">提&nbsp;交</a>
+            </div>
+        </div>
+        <div class="" ng-show="accountVM.passwordChangeSuccess">
+            <div class="newRec_img reg_img fl"></div>
+            <div class="newRec_Text reg_text fl">
+                <p class="p01">登录密码修改成功！</p>
+                <a href="" class="newrec_btn02" ng-click="accountVM.showResetPasswordWindow = false; accountVM.passwordChangeSuccess = false">确&nbsp;定</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--
+<div class="traTcc jq_tcc02" ng-show="true">
+    <div class="tmbg"></div>
+    <div class="tar_TccBox_email">
+        <div class="regColumn">
+            修改登录密码
+            <div class="loginClose tra_close jq_tar_close02" ng-click="accountVM.showResetPasswordWindow = false"></div>
+        </div>
+        <div class="newRec_img reg_img fl"></div>
+            <div class="newRec_Text reg_text fl">
+                <p class="p01">登录密码修改成功！</p>
+                <a href="" class="newrec_btn02">确&nbsp;定</a>
+            </div>
+        </div>
+    </div>
+</div>
+-->

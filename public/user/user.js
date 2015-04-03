@@ -29,7 +29,7 @@ angular.module('userApp').config(['$routeProvider', '$httpProvider', function($r
 
 angular.module('userApp2', ['ngResource', 'ngRoute', 'ui.bootstrap', 'commonApp']);
 
-angular.module('userApp2').config(['$routeProvider', function($routeProvider) {
+angular.module('userApp2').config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
     // Initialize get if not there
     if (!$httpProvider.defaults.headers.get) {
         $httpProvider.defaults.headers.get = {};
@@ -56,6 +56,9 @@ angular.module('userApp2').config(['$routeProvider', function($routeProvider) {
         })
         .when('/withdraw', { templateUrl: '/user/withdraw',
             controller: 'UserWithdrawCtrl as withdrawVM'
+        })
+        .when('/orders', { templateUrl: '/user/order_list',
+            controller: 'UserOrderListCtrl as orderVM'
         })
         .otherwise({
             redirectTo: '/home'

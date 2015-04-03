@@ -1,0 +1,113 @@
+<div class="fl tra_right">
+    <div class="tra_column">
+        <span class="dis fl">资金明细</span>
+    </div>
+    <div class="neword_box">
+        <div class="fl neword_Left">
+            <p class="p01">总资产(元)</p>
+            <p class="p02"><span>\{{orderVM.user.finance.deposit+orderVM.user.finance.freeze_capital+orderVM.user.finance.balance | currency:'':2 | integerNum}}</span>\{{orderVM.user.finance.deposit+orderVM.user.finance.freeze_capital+orderVM.user.finance.balance | currency:'':2 | numTrunc}}</p>
+        </div>
+        <div class="fr neword_right">
+            <a href="/user2/#/recharge" class="acc_btn01">充&nbsp;值</a>
+            <a href="/user2/#/withdraw" class="acc_btn02">提&nbsp;现</a>
+        </div>
+        <div class="neword_img"></div>
+    </div>
+    <div class="neword_box2">
+        <div class="neword_text fl">
+            <p class="p01">保证金(元)</p>
+            <p class="p02">\{{orderVM.user.finance.deposit | currency:'':2}}</p>
+        </div>
+        <div class="neword_text fl">
+            <p class="p01">冻结资金(元)</p>
+            <p class="p02">\{{orderVM.user.finance.freeze_capital | currency:'':2}}</p>
+        </div>
+        <div class="neword_text fl neword_textbgnone">
+            <p class="p01">可用余额(元)</p>
+            <p class="p02">\{{orderVM.user.finance.balance | currency:'':2}}</p>
+        </div>
+    </div>
+    <div class="neword_menu">
+        <div class="fl neword_menulist jq_menuList">
+            <ul>
+                <li ng-repeat="item in orderVM.queryItems" ng-click="orderVM.queryItem(item)" ng-class="{selected: item.value === orderVM.selected}">\{{item.name}}</li>
+                <!--
+                <li class="selected">全部</li>
+                <li>充值提现</li>
+                <li>配资明细</li>
+                <li>管理费明细</li>
+                -->
+            </ul>
+        </div>
+        <div class="fr">
+            <!--
+            <select name="" class="select01 select02">
+                <option value="">资金类型</option>
+                <option value="">充值存入</option>
+                <option value="">提现支出</option>
+                <option value="">保证金支出</option>
+                <option value="">保证金返还</option>
+                <option value="">管理费支出</option>
+                <option value="">管理费返还</option>
+            </select>
+            <select name="" class="select01 select02">
+                <option value="">三天内</option>
+                <option value="">一周内</option>
+                <option value="">一个月内</option>
+                <option value="">三个月内</option>
+                <option value="">全部</option>
+            </select>
+            <input type="button" class="neward_btn" name="" id="" value="查询" />
+            -->
+        </div>
+    </div>
+    <div class="neword_tableBox jq_mainList">
+        <div ng-show="orderVM.haveOrder">
+            <table>
+                <tr>
+                    <th class="td01" width="185">创建时间</th>
+                    <th>类型</th>
+                    <th>收入(元)</th>
+                    <th>支出(元)</th>
+                    <th>余额(元)</th>
+                    <th>状态</th>
+                </tr>
+                <tr ng-repeat="order in orderVM.showingItems">
+                    <td  class="td01">\{{order.createdAt | displayDate}}</td>
+                    <td >\{{order.dealType | displayOrderType}}</td>
+                    <td >\{{order.amount | displayIncome:order.dealType}}</td>
+                    <td >\{{order.amount | displayOutcome:order.dealType}}</td>
+                    <td >0.00</td>
+                    <td >\{{order.status | orderStatus}}</td>
+                </tr>
+            </table>
+            <div class="neword_page">
+                <pagination class="pagination-sm" previous-text="&lt; 上一页" next-text="下一页 &gt;" items-per-page="orderVM.itemsPerPage" total-items="orderVM.totalItems" ng-model="orderVM.currentPage" ng-change="orderVM.pageChanged()" max-size="orderVM.maxSize" rotate="false"></pagination>
+                <!--
+                <a href="#">&lt; 上一页</a> 1/3
+                <a href="#">下一页 &gt;</a>
+                -->
+            </div>
+        </div>
+        <div ng-hide="orderVM.haveOrder">
+            <table>
+                <tr>
+                    <th class="td01" width="185">1时间/编号</th>
+                    <th>类型</th>
+                    <th>收入(元)</th>
+                    <th>支出(元)</th>
+                    <th>余额(元)</th>
+                    <th>&nbsp;</th>
+                </tr>
+                <tr>
+                    <td colspan="6" valign="top">
+                        <div class="tableNull">
+                            <p>空空如也，怎能发财！</p>
+                            <a href="/apply">开始配资第一步></a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

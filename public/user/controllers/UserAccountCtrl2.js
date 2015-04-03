@@ -1,5 +1,5 @@
 'use strict';
-angular.module('userApp2').controller('UserAccountCtrl2', ['$scope', '$filter', '$window', '$http', '$interval', '$location', '$timeout', 'njCachedCards', 'BankNameList', function($scope, $filter, $window, $http, $interval, $location, $timeout, njCachedCards, BankNameList) {
+angular.module('userApp2').controller('UserAccountCtrl2', ['$scope', '$filter', '$window', '$http', '$interval', '$location', '$timeout', 'BankNameList', 'njCard', function($scope, $filter, $window, $http, $interval, $location, $timeout, BankNameList, njCard) {
     var vm = this;
 
     var verifyCodeBtnText = "获取验证码";
@@ -9,99 +9,12 @@ angular.module('userApp2').controller('UserAccountCtrl2', ['$scope', '$filter', 
     vm.sendingEmail = false;
     vm.verifyCodeBtnText = verifyCodeBtnText;
     vm.showVerifyEmailWindow = false;
-    njCachedCards.setUID(vm.user._id);
-    vm.cards = njCachedCards.query();
+    vm.showResetPasswordWindow = false;
+    vm.passwordChangeSuccess = false;
+    var cards = njCard.query({uid:vm.user._id}, function() {
+        vm.card = cards.pop();
+    });
     vm.BankNameList = BankNameList;
-
-    vm.categories = [
-        {
-            file: '/views/user_info.html',
-            name: '个人资料',
-            menu: 0,
-            value: 0
-        },
-        {
-            file: '/views/identity.html',
-            name: '身份认证',
-            menu: 1,
-            value: 1
-        },
-        {
-            file: '/views/set_finance_pass.html',
-            name: '提现密码',
-            menu: 2,
-            value: 2
-        },
-        {
-            file: '/views/user_email.html',
-            name: '邮箱设置',
-            menu: 3,
-            value: 3
-        },
-        {
-            file: '/views/email_send_confirmation.html',
-            name: '邮箱确认',
-            menu: 3,
-            value: 4
-        }
-    ];
-
-    function resetUserInfoItem() {
-        vm.userInfoItem = [
-            {
-                value: 1,
-                title: "身份认证",
-                status: vm.user.identity.id ? "已认证" : "未认证",
-                icon: 'spanIcon01',
-                info: vm.user.identity.id ? vm.user.identity.name + '(' + $filter('displayIdentityID')(vm.user.identity.id) + ')' : '',
-                description: '提现必须先进行身份认证',
-                action: "立即认证",
-                show_action: vm.user.identity.id ? false : true
-            },
-            {
-                value: 2,
-                title: "手机",
-                status: "已绑定",
-                icon: 'spanIcon02',
-                info: $filter('displayMobile')(vm.user.mobile),
-                description: '手机用于接收牛金网的通知信息',
-                action: "修改",
-                show_action: false
-            },
-            {
-                value: 3,
-                title: "邮箱",
-                status: vm.user.profile.email_verified ? "已绑定" : "未绑定",
-                icon: 'spanIcon03',
-                info: $filter('displayEmail')(vm.user.profile.email) || '',
-                description: '邮箱用于接受账户的各种信息',
-                action: "邮箱设置",
-                show_action: true
-            },
-            {
-                value: 4,
-                title: "登录密码",
-                status: "",
-                icon: 'spanIcon04',
-                info: '',
-                description: '登录密码用于牛金账户的登录',
-                action: "修改",
-                show_action: true
-            },
-            {
-                value: 5,
-                title: "提现密码",
-                status: vm.user.finance.password ? "已设置" : "未设置",
-                icon: 'spanIcon05',
-                info: '',
-                description: '提现密码用于确认提现',
-                action: vm.user.finance.password ? "修改" : "设置",
-                show_action: true
-            }
-        ];
-    }
-
-    resetUserInfoItem();
 
     vm.alerts = [];
 
@@ -112,35 +25,6 @@ angular.module('userApp2').controller('UserAccountCtrl2', ['$scope', '$filter', 
 
     vm.closeAlert = function(index) {
         vm.alerts.splice(index, 1);
-    };
-
-    vm.selectCategory = function(c) {
-        if (!c) {
-            c = vm.categories[0];
-        }
-        vm.currentCategory = c;
-        vm.alerts = [];
-    };
-
-    vm.selectedCategory = function() {
-        return vm.currentCategory.file;
-    };
-
-    vm.itemAction = function(item) {
-        switch (item.value) {
-            case 1:
-                vm.currentCategory = vm.categories[1];
-                break;
-            case 3:
-                vm.currentCategory = vm.categories[3];
-                break;
-            case 4:
-                $window.location.assign('/forgot');
-                break;
-            case 5:
-                vm.currentCategory = vm.categories[2];
-                break;
-        }
     };
 
     /*
@@ -261,10 +145,6 @@ angular.module('userApp2').controller('UserAccountCtrl2', ['$scope', '$filter', 
             });
     };
 
-    vm.excludeCategory = function (item) {
-        return item.value != 4;
-    };
-
     vm.setupEmail = function() {
         if (!vm.user_email) {
             addAlert('danger', '请输入有效的邮箱地址');
@@ -289,6 +169,42 @@ angular.module('userApp2').controller('UserAccountCtrl2', ['$scope', '$filter', 
             })
             .error(function(data, status) {
                 addAlert('danger', '设置邮箱时出错,请稍后再试');
+            });
+    };
+
+    vm.changePassword = function() {
+        if (!vm.password) {
+            addAlert('danger', '请输入6到20位登录密码');
+            return;
+        }
+        if (!vm.new_password) {
+            addAlert('danger', '请输入6到20位新密码');
+            return;
+        }
+        if (!vm.confirm_password) {
+            addAlert('danger', '请再输入一遍新密码');
+            return;
+        }
+        if (vm.password === vm.new_password) {
+            addAlert('danger', '新密码不能与原密码相同');
+            return;
+        }
+        if (vm.new_password !== vm.confirm_password) {
+            addAlert('danger', '两次输入的新密码不同');
+            return;
+        }
+        var data = {
+            password: vm.password,
+            new_password: vm.new_password,
+            confirm_password: vm.confirm_password
+        };
+        $http.post('/user/reset_pass', data)
+            .success(function(data, status) {
+                vm.passwordChangeSuccess = true;
+                console.log('success');
+            })
+            .error(function(data, status) {
+                addAlert('danger', data.error_msg);
             });
     };
 }]);

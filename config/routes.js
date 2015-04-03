@@ -12,6 +12,7 @@ module.exports = function(app) {
     app.use(function(req, res, next) {
         res.locals.user = req.user;
         res.locals.lastLogin = req.session.lastLogin;
+        res.locals.recentApply = req.session.statistic.show_applies[0];
         if (process.env.NODE_ENV === 'production') {
             res.locals.production = true;
         }
@@ -39,6 +40,8 @@ module.exports = function(app) {
     app.get('/recharge2', passportConf.isAuthenticated, users.getRecharge2);
 
     app.get('/apply_detail/:id', passportConf.isAuthenticated, applies.getApplyDetail);
+
+    app.get('/apply_detail2/:id', passportConf.isAuthenticated, applies.getApplyDetail);
 
     app.get('/apply/get_profit/:serial_id', passportConf.isAuthenticated, applies.getProfit);
 
@@ -85,6 +88,8 @@ module.exports = function(app) {
     });
 
     app.post('/forgot', users.resetPassword);
+
+    app.post('/user/reset_pass', passportConf.isAuthenticated, users.postUpdatePassword);
 
     app.get('/apply', applies.getApplyPage);
 

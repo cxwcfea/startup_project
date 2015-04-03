@@ -23,7 +23,7 @@
                 提现金额
             </div>
             <div class="newwit_FomeContent fl">
-                <input type="number" min="0" max="\{{withdrawVM.user.finance.balance | currency:'':2}}" class="newwit_inputText" ng-model="withdrawVM.withdrawAmount" autofocus required>
+                <input type="number" min="0" class="newwit_inputText" ng-model="withdrawVM.withdrawAmount" autofocus required>
             </div>
             <div class="fl newwit_formText">
                 &nbsp;元
@@ -32,7 +32,6 @@
                 &nbsp;余额 <span class="color_a40000">\{{withdrawVM.user.finance.balance | currency:'':2}}</span>元
             </div>
         </div>
-        <alert ng-show="!withdrawVM.showAlipayWindow && !withdrawVM.showBankTransWindow" ng-repeat="alert in withdrawVM.alerts" type="\{{alert.type}}" close="withdrawVM.closeAlert($index)">\{{alert.msg}}</alert>
         <a href="" class="recBtn01 newcar_btn jq_newcar_btn" ng-click="withdrawVM.withdrawNextStep()">下一步</a>
     </div>
     <div ng-show="withdrawVM.step === 2">
@@ -54,26 +53,12 @@
             </div>
 
         </div>
-        <div class="newwit_formBox ">
-            <div class="newwit_Title fl">
-                提现金额
-            </div>
-            <div class="newwit_FomeContent fl">
-                <input type="text" class="newwit_inputText" name="" id="" value="1000" />
-            </div>
-            <div class="fl newwit_formText">
-                &nbsp;元
-            </div>
-            <div class="fl fontSize12 color_999999">
-                &nbsp;余额 <span class="color_a40000">100.00</span>元
-            </div>
-        </div>
         <div class="newwit_formBox">
             <div class="newwit_Title fl">
                 提现金额
             </div>
             <div class="newwit_FomeContent fl">
-                <span class="fontSize18 color_a40000">100.00</span>&nbsp;元
+                <span class="fontSize18 color_a40000">\{{withdrawVM.withdrawAmount | currency:'':2}}</span>&nbsp;元
             </div>
         </div>
         <div class="newwit_formBox">
@@ -81,9 +66,27 @@
                 到账时间
             </div>
             <div class="newwit_FomeContent fl">
-                <span class="fontSize18">14:00</span>&nbsp;元
+                次日&nbsp;<span class="fontSize18">22:00</span>&nbsp;前
             </div>
         </div>
-        <a href="javascript:" class="recBtn01 newcar_btn jq_newcar_btn">确认，下一步</a>
+        <a href="" class="recBtn01 newcar_btn jq_newcar_btn" ng-click="withdrawVM.withdrawNextStep()">确认，下一步</a>
     </div>
+    <div ng-show="withdrawVM.step === 3">
+        <div class="newwit_img fl"></div>
+        <div class="newwit_text fl">
+            <p class="p01">提现申请已提交成功，我们已经交给工商银行进行处理。</p>
+            <p class="p02">银行处理完成，既转账成功。</p>
+            <p class="p03">银行名称：\{{withdrawVM.BankNameList[withdrawVM.cards[0].bankID].name}}（尾号\{{withdrawVM.cards[0] | displayCard2}}）</p>
+            <p class="p03">提现金额：<span class="fontSize18">\{{withdrawVM.withdrawAmount | currency:'':2}}</span> 	元</p>
+            <p class="p03">到账时间：次日 <span class="fontSize18">22:00</span> 前</p>
+        </div>
+        <div class="clear"></div>
+        <div class="newwit_text2 color_666666">
+            友情提示：<br />
+					<span class="fontSize12">1.如果您的银行卡信息设置不正确导致提现失败，资金将自动退回到您的牛金账户。<br />
+					2.因系统原因或银行升级导致无法按时到账，我们会已短信方式通知您。<br /></span>
+        </div>
+    </div>
+    <br>
+    <alert ng-show="!withdrawVM.showAlipayWindow && !withdrawVM.showBankTransWindow" ng-repeat="alert in withdrawVM.alerts" type="\{{alert.type}}" close="withdrawVM.closeAlert($index)">\{{alert.msg}}</alert>
 </div>

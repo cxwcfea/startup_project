@@ -1,16 +1,15 @@
 'use strict';
-angular.module('userApp2').controller('UserWithdrawCtrl', ['$scope', '$http', '$window', '$location', '$routeParams', '$filter', 'njOrder', 'njCard', 'BankNameList', 'gbNotifier', 'njCachedCards', function($scope, $http, $window, $location, $routeParams, $filter, njOrder, njCard, BankNameList, gbNotifier, njCachedCards) {
+angular.module('userApp2').controller('UserWithdrawCtrl', ['$scope', '$http', '$window', '$location', '$routeParams', '$filter', 'njOrder', 'njCard', 'BankNameList', function($scope, $http, $window, $location, $routeParams, $filter, njOrder, njCard, BankNameList) {
     var vm = this;
 
-    $scope.data.menu = 6;
+    $scope.data.menu = 3;
     vm.step = 1;
     vm.user = $scope.data.currentUser;
-    njCachedCards.setUID(vm.user._id);
-    vm.cards = njCachedCards.query();
-
-    if (vm.cards.length > 0) {
-        vm.selectedCard = vm.cards[0];
-    }
+    vm.cards = njCard.query({uid:vm.user._id}, function() {
+        if (vm.cards.length === 0) {
+            $location.path('/add_card');
+        }
+    });
 
     vm.BankNameList = BankNameList;
     vm.bankObj = vm.BankNameList[0];
@@ -42,74 +41,50 @@ angular.module('userApp2').controller('UserWithdrawCtrl', ['$scope', '$http', '$
         vm.selectedCard = card;
     };
 
-    vm.withdraw = function() {
-        if (!vm.user.finance.password) {
-            addAlert('danger', '您还未设置提现密码，请先设置提现密码');
-            return;
-        }
-        if (!vm.withdrawAmount || vm.withdrawAmount < 0) {
-            addAlert('danger', '请输入有效的提现金额!');
-            return;
-        }
-        var withdrawAmount = Number(vm.withdrawAmount.toFixed(2));
-        var balance = Number(vm.user.finance.balance.toFixed(2));
-        if (withdrawAmount > balance) {
-            addAlert('danger', '余额不足!');
-            return;
-        }
-        if (!vm.finance_password) {
-            addAlert('danger', '请输入提现密码!');
-            return;
-        }
-        if (!vm.selectedCard) {
-            addAlert('danger', '请选择提现的银行卡!');
-            return;
-        }
-        var order = {
-            userID: vm.user._id,
-            userMobile: vm.user.mobile,
-            dealType: 2,
-            amount: withdrawAmount,
-            description: '余额提现',
-            cardInfo: {
-                bank: BankNameList[vm.selectedCard.bankID].name,
-                bankName: vm.selectedCard.bankName,
-                cardID: vm.selectedCard.cardID,
-                userName: vm.selectedCard.userName
-            }
-        };
-        var data = {
-            order: order,
-            password: vm.finance_password
-        };
-
-        $http.post('/user/withdraw', data)
-            .success(function(data, status, headers, config) {
-                vm.user.finance.freeze_capital += order.amount;
-                vm.user.finance.balance -= order.amount;
-                pageReset();
-                addAlert('success', '您的提现申请已经提交,我们会尽快处理!');
-            })
-            .error(function(data, status, headers, config) {
-                addAlert('danger', '提现申请提交失败,请联系客服!');
-            });
-    };
-
     vm.withdrawNextStep = function() {
         if (vm.step === 1) {
+            console.log(vm.withdrawAmount);
             if (!vm.withdrawAmount || vm.withdrawAmount <= 0) {
                 addAlert('danger', '请输入提现金额,金额不超过余额且大于0,');
                 return;
             }
             vm.withdrawAmount = Number(vm.withdrawAmount.toFixed(2));
             var balance = Number(vm.user.finance.balance.toFixed(2));
-            console.log(vm.withdrawAmount + ' ' + balance);
             if (vm.withdrawAmount > balance) {
-                addAlert('danger', '余额不足');
+                addAlert('danger', '余额不足!');
                 return;
             }
             vm.step = 2;
+        } else if (vm.step === 2) {
+            var order = {
+                userID: vm.user._id,
+                userMobile: vm.user.mobile,
+                dealType: 2,
+                amount: vm.withdrawAmount,
+                description: '余额提现',
+                cardInfo: {
+                    bank: BankNameList[vm.cards[0].bankID].name,
+                    bankName: vm.cards[0].bankName,
+                    cardID: vm.cards[0].cardID,
+                    province: vm.cards[0].province,
+                    city: vm.cards[0].city,
+                    userName: vm.cards[0].userName
+                }
+            };
+            var data = {
+                order: order
+            };
+
+            $http.post('/user/withdraw', data)
+                .success(function(data, status, headers, config) {
+                    vm.user.finance.freeze_capital += order.amount;
+                    vm.user.finance.balance -= order.amount;
+                    vm.step = 3;
+                })
+                .error(function(data, status, headers, config) {
+                    addAlert('danger', '提现申请提交失败,请联系客服!');
+                });
         }
-    }
+    };
 
 }]);

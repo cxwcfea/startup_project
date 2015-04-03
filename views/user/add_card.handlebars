@@ -48,6 +48,9 @@
         <div class="newcar_right fl ">
             <input type="text" class="newcar_inputText" minlength="16" maxlength="19" placeholder="16到19位的卡号" ng-model="cardVM.cardID" required>
         </div>
+        <div class="get-num-box">
+            <span>1</span><span>2</span><span>3</span><em class="space"></em><span>2</span><span>1</span><span>2</span>
+        </div>
     </div>
     <!--
     <div class="newcar_formBox">
@@ -69,4 +72,26 @@
     </div>
     <alert ng-repeat="alert in cardVM.alerts" type="\{{alert.type}}" close="cardVM.closeAlert($index)">\{{alert.msg}}</alert>
     <a href="" class="recBtn01 newcar_btn jq_newcar_btn" ng-click="cardVM.addCard()">保存</a>
+</div>
+
+<div class="regTcc" ng-show="cardVM.show_verify_window">
+    <div class="tmbg"></div>
+    <div class="regTccBox">
+        <div class="regColumn">
+            绑定银行卡验证
+            <div class="loginClose" ng-click="cardVM.show_verify_window=false"></div>
+        </div>
+        <p class="p01">已经向<span>\{{cardVM.user.mobile | displayMobile}}</span>发送短信，请再输入验证码完成注册</p>
+        <div class="regInputBox">
+            <div class="regInputLeft fl">
+                请输入短信验证码
+            </div>
+            <div class="regIputRight fl">
+                <input type="text" ng-model="cardVM.verify_code" ng-focus="cardVM.verify_code_error = false" class="inputText regInputText jq_regInputText" required>
+                <input type="button" name="" id="verify-code-btn" value="\{{cardVM.verifyCodeBtnText}}" class="recBtn03" ng-class="{recBtn03_disabled:cardVM.verifyBtnDisabled}" ng-click="cardVM.getVerifyCode()">
+            </div>
+        </div>
+        <p class="p02"><span class="jq_p02" ng-show="cardVM.verify_code_error">\{{cardVM.verify_error_msg}}</span></p>
+        <input type="button" ng-click="cardVM.confirmVerifyCode()" value="确定" class="recBtn04">
+    </div>
 </div>

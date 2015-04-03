@@ -8,7 +8,7 @@ $(function () {
 		$(".jq_LoginBox").hide();
 		$(this).removeClass("TopLoginBoxSelected");
 //		$(document).bind("click", LoginHide);
-	})
+	});
 //	function LoginHide() {
 //		$(".jq_LoginBox").hide();
 //	}
@@ -20,19 +20,18 @@ $(function () {
 	},function () {
 		$(this).find("div").hide();
 		$(this).removeClass("khdBoxSelected")
-	})
-	
-	
+	});
+
 	//登陆框错误提示
 	$(".errorText").click(function () {
 		$(this).hide();
 		$(this).prev("input").focus();
-	})
+	});
 	
 	$(".login-btn").click(function () {
 		$(".errorText").show();
-	})
-})
+	});
+});
 
 
 
@@ -42,20 +41,19 @@ $(function () {
 	var is_opera = userAgent.indexOf('opera') != -1 && opera.version(); 
 	var is_moz = (navigator.product == 'Gecko') && userAgent.substr(userAgent.indexOf('firefox') + 8, 3); 
 	var is_ie = (userAgent.indexOf('msie') != -1 && !is_opera) && userAgent.substr(userAgent.indexOf 
-	('msie') + 5, 3); 
+	('msie') + 5, 3);
 
-	function copycode1(obj) { 
-				
-				var a=document.getElementById(obj)
-				if(is_ie && a.style.display != 'none') { 
-				alert('复制成功'); 
-				var rng = document.body.createTextRange(); 
-				rng.moveToElementText(a); 
-				rng.scrollIntoView(); 
-				rng.select(); 
-				rng.execCommand("Copy"); 
-				rng.collapse(false); 
-				}else{
-					alert("该浏览器不支持此功能，请Ctrl+C复制");
-				}
-	}
+    function copycode1(obj) {
+        var a=document.getElementById(obj)
+        if(is_ie && a.style.display != 'none') {
+            alert('复制成功');
+            var rng = document.body.createTextRange();
+            rng.moveToElementText(a);
+            rng.scrollIntoView();
+            rng.select();
+            rng.execCommand("Copy");
+            rng.collapse(false);
+        }else{
+            alert("该浏览器不支持此功能，请Ctrl+C复制");
+        }
+    }

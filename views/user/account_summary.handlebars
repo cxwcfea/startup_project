@@ -7,16 +7,18 @@
         <div class="acc_text fl">
             <p class="p01"><span class="fb">\{{homeVM.user.mobile | displayMobile}}</span> 您好！</p>
             <p class="p02">
+                <!--
                 <span class="span01">身份认证  </span>
                 <a href="#">填写</a>
+                -->
                 <span class="span02">银行卡  </span>
-                <a href="#">填写</a>
+                <a href="/user2/#/add_card">绑定</a>
             </p>
         </div>
         <div class="acc_BtnBox fr">
             <p class="p01">上次登录时间：{{lastLogin}}</p>
             <a href="/user2/#/recharge" class="acc_btn01">充&nbsp;值</a>
-            <a href="" class="acc_btn02">提&nbsp;现</a>
+            <a href="/user2/#/withdraw" class="acc_btn02">提&nbsp;现</a>
         </div>
     </div>
     <div class="acc_tableBox">
@@ -25,17 +27,23 @@
                 <td valign="top" width="270">
                     <p class="p01">账户总资产</p>
                     <p class="p02"><span>\{{homeVM.user.finance.balance + homeVM.user.finance.freeze_capital + homeVM.user.finance.deposit | currency:'':2 | integerNum}}</span>\{{homeVM.user.finance.balance + homeVM.user.finance.freeze_capital + homeVM.user.finance.deposit | currency:'':2 | numTrunc}}</p>
+                    <!--
                     <a href="#" class="a01">查看》</a>
+                    -->
                 </td>
                 <td valign="top" width="255">
                     <p class="p01">证券账户市值</p>
                     <p class="p02"><span>0</span>.00</p>
+                    <!--
                     <a href="#" class="a01">查看》</a>
+                    -->
                 </td>
                 <td valign="top">
                     <p class="p01">可用余额</p>
                     <p class="p02"><span>\{{homeVM.user.finance.balance | currency:'':2 | integerNum}}</span>\{{homeVM.user.finance.balance | currency:'':2 | numTrunc}}</p>
+                    <!--
                     <a href="#" class="a01">查看》</a>
+                    -->
                 </td>
             </tr>
         </table>
@@ -101,7 +109,7 @@
                     <td>\{{apply.amount | currency:'':2}}</td>
                     <td>\{{apply.period}}天</td>
                     <td><p ng-class="{color_37c80b: apply.status === 2, color_c82217: apply.status === 1, color_f2991b: apply.status === 5}" class="">\{{apply.status | applyStatus}}</p></td>
-                    <td><a href="" class="acc_btn04">查看</a></td>
+                    <td><a href="/apply_detail2/\{{apply.serialID}}" class="acc_btn04">查看</a></td>
                 </tr>
             </table>
         </div>
@@ -119,8 +127,10 @@
         </div>
         <div class="newslist">
             <ul>
-                <li><a href=""><span class="span01">138****8888</span> 申请了 <span class="span02">300,000</span>元 实盘资金</a></li>
+                <li><a href=""><span class="span01">{{recentApply.userMobile}}</span> 申请了 <span class="span02">{{recentApply.amount}}</span>元 实盘资金</a></li>
+                <!--
                 <li><a href=""><span class="span01">只看盘面</span> 实盘资金2,000 收益<span class="span02">44.88</span> 收益率44.00%</a></li>
+                -->
             </ul>
         </div>
     </div>

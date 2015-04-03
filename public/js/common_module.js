@@ -180,6 +180,22 @@
             }
             return ret + input;
         };
+    }).filter("displayIncome", function () {
+        return function (input, orderType) {
+            var ret = input;
+            if (orderType == 2 || orderType == 9) {
+                ret = '';
+            }
+            return ret;
+        };
+    }).filter("displayOutcome", function () {
+        return function (input, orderType) {
+            var ret = '';
+            if (orderType == 2 || orderType == 9) {
+                ret = input;
+            }
+            return ret;
+        };
     }).filter("displayMobile", function () {
         return function (input) {
             if (input) {
@@ -271,7 +287,7 @@
                 case 8:
                     return '管理费返还';
                 case 9:
-                    return '配资保证金';
+                    return '保证金支出';
                 default:
                     return '充值';
             }

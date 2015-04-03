@@ -20,11 +20,47 @@ module.exports = function(app, config) {
 		layoutsDir: config.rootPath + '/views/layouts/',
 		defaultLayout: 'main',
         helpers: {
-            static: function(name) {
+            static: function (name) {
                 return require('../lib/static.js').map(name);
+            },
+            ifCond: function (v1, operator, v2, options) {
+                switch (operator) {
+                    case "==":
+                        return (v1 == v2) ? options.fn(this) : options.inverse(this);
+
+                    case "!=":
+                        return (v1 != v2) ? options.fn(this) : options.inverse(this);
+
+                    case "===":
+                        return (v1 === v2) ? options.fn(this) : options.inverse(this);
+
+                    case "!==":
+                        return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+
+                    case "&&":
+                        return (v1 && v2) ? options.fn(this) : options.inverse(this);
+
+                    case "||":
+                        return (v1 || v2) ? options.fn(this) : options.inverse(this);
+
+                    case "<":
+                        return (v1 < v2) ? options.fn(this) : options.inverse(this);
+
+                    case "<=":
+                        return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+
+                    case ">":
+                        return (v1 > v2) ? options.fn(this) : options.inverse(this);
+
+                    case ">=":
+                        return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+
+                    default:
+                        return eval("" + v1 + operator + v2) ? options.fn(this) : options.inverse(this);
+                }
             }
         }
-	});
+    });
 	app.engine('handlebars', handlebars.engine);
 	app.set('views', config.rootPath + '/views');
 	app.set('view engine', 'handlebars');

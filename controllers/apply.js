@@ -67,41 +67,57 @@ exports.confirmApply = function(req, res, next) {
 */
 
 exports.getApplyDetail = function (req, res, next) {
-    Apply.findOne({serialID:req.params.id}, function(err, collection) {
-        if (err) {
+    Apply.findOne({serialID:req.params.id}, function(err, apply) {
+        if (err || !apply) {
             next();
         }
-        console.log(collection);
-        if (collection.status === 5) {
-            return res.redirect(302, '/user/apply_close');
+        var serviceFee = apply.amount / 10000 * config.serviceCharge * apply.period;
+        if (apply.isTrial) {
+            serviceFee = 0;
         }
-        var serviceFee = collection.amount / 10000 * config.serviceCharge * collection.period;
-        var warnValue = config.warnFactor * collection.amount;
-        var sellValue = config.sellFactor * collection.amount;
-        var startTime, endTime;
-        if (collection.startTime) {
-            startTime = moment(collection.startTime);
-            endTime = moment(collection.endTime);
+        if (apply.startTime) {
+            startTime = moment(apply.startTime);
+            endTime = moment(apply.endTime);
         } else {
             startTime = util.getStartDay();
-            endTime = util.getEndDay(startTime, collection.period);
+            endTime = util.getEndDay(startTime, apply.period);
         }
-        res.locals.applySummary = {
-            amount: collection.amount.toFixed(2),
-            deposit: collection.deposit.toFixed(2),
-            charge: serviceFee.toFixed(2),
-            balance: req.user.finance.balance.toFixed(2),
-            warnValue: warnValue.toFixed(2),
-            sellValue: sellValue.toFixed(2),
-            startDate: startTime.format("YYYY-MM-DD HH:mm"),
-            endDate: endTime.format("YYYY-MM-DD HH:mm"),
-            checking: collection.status === 4 || collection.status === 1,
-            account: collection.account,
-            password: collection.password,
-            serialID: collection.serialID
-        };
-
-        res.render('apply_detail');
+        switch (apply.status) {
+            case 1:
+                res.locals.step = 1;
+                break;
+            case 4:
+                res.locals.step = 2;
+                break;
+            case 2:
+                res.locals.step = 3;
+                break;
+            case 5:
+            case 3:
+                res.locals.step = 4;
+                break;
+        }
+        res.locals.apply_status = util.displayApplyStatus(apply.status);
+        res.locals.apply_amount = apply.amount.toFixed(2);
+        res.locals.apply_deposit = apply.deposit.toFixed(2);
+        res.locals.apply_service_fee = serviceFee.toFixed(2);
+        res.locals.apply_serialID = apply.serialID;
+        res.locals.apply_applyAt = moment(apply.applyAt).format("YYYY-MM-DD HH:mm");
+        res.locals.apply_pay = apply.deposit + serviceFee;
+        res.locals.apply_period = apply.period;
+        res.locals.apply_fee_per_day = (serviceFee / apply.period).toFixed(2);
+        res.locals.apply_warn = (config.warnFactor * apply.amount).toFixed(2);
+        res.locals.apply_sell = (config.sellFactor * apply.amount).toFixed(2);
+        res.locals.startDate1 = startTime.format("YYYY-MM");
+        res.locals.endDate1 = endTime.format("YYYY-MM");
+        res.locals.startDate2 = startTime.format("DD");
+        res.locals.endDate2 = endTime.format("DD");
+        res.locals.pay_url = '/recharge2?order_id=' + apply.orderID;
+        res.locals.apply_account = apply.account;
+        res.locals.apply_password = apply.password;
+        res.locals.apply_detail = true;
+        res.locals.apply_isTrial = apply.isTrial;
+        res.render('user/apply_detail2');
     });
 };
 

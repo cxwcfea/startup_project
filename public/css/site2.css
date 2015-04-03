@@ -124,7 +124,7 @@ input.LoginBtn01{
 
 .tar_TccBox_email {
     width: 480px;
-    height: 280px;
+    height: 310px;
     padding-bottom: 20px;
     background: #fff;
     position: fixed;
@@ -147,6 +147,26 @@ input.LoginBtn01{
 .tra_InputBoxRight_email input.inputText {
     width: 200px;
     height: 29px;
+}
+
+.tar_TccBox_email .reg_img {
+    width: 64px;
+    height: 64px;
+    background: url(../images/img44.png);
+    margin: 80px 0px 0px 90px;
+}
+
+.tar_TccBox_email .newRec_Text {
+    width: 300px;
+    margin: 90px 0px 0px 25px;
+}
+
+.tar_TccBox_email .newrec_btn02 {
+    margin-top: 20px;
+}
+
+.full_deposit {
+    width: 84px;
 }
 
 /* for toaster */
@@ -206,4 +226,8 @@ body, input, textarea, select, button {
 
 img {
     max-width: none;
+}
+
+.tra_left ul>li>ul {
+    margin: 0;
 }

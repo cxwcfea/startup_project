@@ -54,9 +54,9 @@
                 <td><p class="p01">\{{item.amount | currency:'':2}}</p></td>
                 <td>
                     <div class="tra_jdt">
-                        <div class="tra_jdt2"></div>
+                        <div class="tra_jdt2 full_deposit"></div>
                     </div>
-                    <p class="p02">剩余<span>1209.00</span></p>
+                    <p class="p02">共<span>\{{item.deposit | currency:'':2}}</span></p>
                 </td>
                 <td>
                     <p class="p03">\{{item.start_date | displayShortDate}}</p>
@@ -77,7 +77,7 @@
                             <a href="">延期设置</a><br />
                             <a href="">终止操盘</a><br />
                         </div>
-                        <a href="">查看详情</a>
+                        <a href="/apply_detail2/\{{item.serialID}}">查看详情</a>
                     </div>
                 </td>
             </tr>

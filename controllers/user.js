@@ -361,12 +361,16 @@ module.exports.postWithdraw = function(req, res) {
             if (user.finance.balance < amount) {
                 callback('余额不足');
             } else {
-                user.compareFinancePassword(data.password, function (err, isMatch) {
-                    if (!err && !isMatch) {
-                        err = '提现密码错误!'
-                    }
-                    callback(err, user);
-                });
+                if (data.password) {
+                    user.compareFinancePassword(data.password, function (err, isMatch) {
+                        if (!err && !isMatch) {
+                            err = '提现密码错误!'
+                        }
+                        callback(err, user);
+                    });
+                } else {
+                    callback(null, user);
+                }
             }
         },
         function(user, callback) {
@@ -428,6 +432,49 @@ module.exports.updateUser = function(req, res) {
     });
 };
 
+module.exports.postUpdatePassword = function(req, res, next) {
+    req.assert('new_password', '密码至少需要6位').len(6);
+    req.assert('confirm_password', '两次密码不匹配').equals(req.body.new_password);
+
+    var errors = req.validationErrors();
+
+    if (errors) {
+        res.status(400);
+        return res.send({error_msg:errors[0].msg});
+    }
+
+    User.findById(req.user._id, function(err, user) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        if (!user) {
+            res.status(400);
+            return res.send({error_msg: 'user not found'});
+        }
+        user.comparePassword(req.body.password, function (err, isMatch) {
+            if (err) {
+                res.status(500);
+                return res.send({error_msg: err.toString()});
+            }
+            if (!isMatch) {
+                res.status(400);
+                return res.send({error_msg: '原密码错误'});
+            } else {
+                user.password = req.body.new_password;
+
+                user.save(function (err) {
+                    if (err) {
+                        res.status(500);
+                        return res.send({error_msg: err.toString()});
+                    }
+                    res.send({});
+                });
+            }
+        });
+    });
+};
+
 module.exports.resetPassword = function(req, res, next) {
     if (!req.session.sms_code) {
         res.status(400);
@@ -448,12 +495,16 @@ module.exports.resetPassword = function(req, res, next) {
 
     if (req.session.sms_code.expires < Date.now()) {
         res.status(400);
-        return res.send({error_msg:'验证码已失效'})
+        return res.send({error_msg:'验证码已失效'});
     }
 
     if (req.body.mobile != req.session.sms_code.mobile) {
         res.status(400);
-        return res.send({ error_msg: '手机号不匹配' })
+        return res.send({ error_msg: '手机号不匹配' });
+    }
+    if (req.user && req.user.mobile != req.body.mobile) {
+        res.status(400);
+        return res.send({ error_msg: '手机号不是当前用户手机号' });
     }
 
     req.session.sms_code = undefined;

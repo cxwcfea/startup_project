@@ -251,4 +251,45 @@ $(document).ready(function() {
         var apply_serial_id = $('#apply_serial_id')[0].value;
         window.location.assign('/apply/apply_postpone/' + apply_serial_id);
     });
+
+
+    function closeApply() {
+        var apply_serial_id = $('#apply_serial_id')[0].innerText;
+        $.post("/user/apply_close/"+apply_serial_id, {}, function() {
+            console.log( "close apply done" );
+        })
+        .done(function() {
+            console.log( "clocse apply success" );
+            window.location.assign('/apply_detail2/' + apply_serial_id);
+        })
+        .fail(function() {
+            console.log( "close apply error" );
+            $(".jq_jsBox03").show();
+        })
+        .always(function() {
+            console.log( "close apply finished" );
+            $(".jq_jsBox02").hide();
+        });
+    }
+
+    //关闭弹出层
+    $(".jq_loginClose").click(function () {
+        $(".jq_recTcc").hide();
+    });
+
+    //我要结算弹出层
+    $(".jq_jsBtn02").click(function (e) {
+        e.preventDefault();
+        $(".jq_jsBox").show();
+    });
+    //我要结算第一步
+    $(".jq_jsBtn01").click(function (e) {
+        e.preventDefault();
+        $(".jq_jsBox01").hide();
+        $(".jq_jsBox02").show();
+    });
+    $(".jq_jsBtn03").click(function (e) {
+        e.preventDefault();
+        closeApply();
+    });
 });
