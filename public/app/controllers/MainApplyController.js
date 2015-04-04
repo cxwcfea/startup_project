@@ -246,7 +246,7 @@
                                 console.log('error:' + res.error_msg);
                             });
                     } else {
-                        $window.location.assign('/recharge2?order_id=' + data.order._id);
+                        $window.location.assign('/recharge?order_id=' + data.order._id);
                     }
                 })
                 .error(function(data, status, headers, config) {

@@ -1,44 +1,186 @@
-<div class="fr RightMain">
-    <div class="rightMenu">
-        <ul>
-            <li class="select"><a href="/user">操盘详情</a></li>
-        </ul>
+<div class="wrapper  tep_center">
+    <div class="tep_column">
+        订单信息
     </div>
-    <alert ng-repeat="alert in applyVM.alerts" type="\{{alert.type}}" close="applyVM.closeAlert($index)">\{{alert.msg}}</alert>
-    <div class="detBox fl padLeft180">
-        <p class="p01">配资单号：\{{applyVM.currentApply.serialID}}</p>
-        <p class="p01">操盘金额：\{{applyVM.currentApply.amount | currency:'':2}}元</p>
-        <p ng-show="applyVM.currentApply.status === 2" class="p01">开始时间：\{{applyVM.currentApply.start_date | displayDate}}</p>
-        <div ng-show="applyVM.currentApply.status === 2">
-            <p>账户：\{{applyVM.currentApply.account}}，密码：\{{applyVM.currentApply.password}}</p>
-            <!--
-            <a href="javascript:" class="btn04">增加保证金</a>
-            <a href="javascript:" class="btn05">盈利提取</a>
-            -->
+    <div class="tep_contentBox">
+        <div class="tep_left fl">
+            <div class="tep_Text">
+                <span {{#ifCond step '>=' 1}}class="span01" {{else}} class="span02" {{/ifCond}}>提交配资订单</span>
+                <span class="span03"></span>
+                <span {{#ifCond step '>=' 2}}class="span01" {{else}} class="span02" {{/ifCond}}>支付保证金</span>
+                <span class="span03"></span>
+                <span {{#ifCond step '>=' 3}}class="span01" {{else}} class="span02" {{/ifCond}}>领号投资操盘</span>
+                <span class="span03"></span>
+                <span {{#ifCond step '>=' 4}}class="span01" {{else}} class="span02" {{/ifCond}}>结算盈亏</span>
+            </div>
+            <div class="tep_table01">
+                <table>
+                    <tr>
+                        <td class="td01">订单状态</td>
+                        <td class="td02 fb">{{apply_status}}</td>
+                        <td class="td03">总金额&nbsp;&nbsp;<span class="span01">{{apply_pay}}</span></td>
+                    </tr>
+                    <tr>
+                        <td class="td01">订单号</td>
+                        <td class="td02" id="apply_serial_id">{{apply_serialID}}</td>
+                        <td class="td03 color_999999">保证金&nbsp;{{apply_deposit}}</td>
+                    </tr>
+                    <tr>
+                        <td class="td01">申请日期</td>
+                        <td class="td02">{{apply_applyAt}}</td>
+                        <td class="td03 color_999999">预存账户管理费&nbsp;{{apply_service_fee}}</td>
+                    </tr>
+                </table>
+            </div>
         </div>
-    </div>
-    <div class="detBox fl">
-        <p class="p01">当前状态：\{{applyVM.currentApply.status | applyStatus}}</p>
-        <p class="p01">保证金额：\{{applyVM.currentApply.deposit | currency:'':2}}元</p>
-        <p ng-show="applyVM.currentApply.status === 2" class="p01">到期时间：\{{applyVM.currentApply.end_date | displayDate}}</p>
-        <div ng-show="applyVM.currentApply.status === 2">
-            <p>&nbsp;</p>
-            <!--
-            <a href="javascript:" class="btn04">盈利加配</a>
-            -->
-            <a href="" class="btn05" ng-click="applyVM.closeApply()">结算</a>
+        <div class="tep_right fl">
+            {{#ifCond step '===' 1}}
+                <a href="{{pay_url}}" class="tep_btn01 marTop40">立即支付</a>
+            {{/ifCond}}
+            {{#ifCond step '===' 3}}
+                <span class="tep_btn03 marTop40">我要延期</span>
+                <span class="tep_btn03">补充保证金</span>
+                <span class="tep_btn03">提取盈利</span>
+                <span class="tep_btn03">加配资金</span>
+                <!--
+                <a href="" class="tep_btn01 marTop40">我要延期</a>
+                <a href="" class="tep_btn01">补充保证金</a>
+                <span class="tep_btn03">提取盈利</span>
+                <a href="" class="tep_btn01">加配资金</a>
+                -->
+                <a href="" class="tep_btn01 jq_jsBtn02">我要结算</a>
+            {{/ifCond}}
+            {{#ifCond step '===' 4}}
+                <span class="tep_btn03 marTop40">我要延期</span>
+                <span class="tep_btn03">补充保证金</span>
+                <span class="tep_btn03">提取盈利</span>
+                <span class="tep_btn03">加配资金</span>
+                <span class="tep_btn03">我要结算</span>
+            {{/ifCond}}
         </div>
+        <div class="clear"></div>
     </div>
-    <div class="clear"></div>
-    <div class="detTextBox">
-        <p>警戒线：\{{applyVM.warn_amount | currency:'':2}}元</p>
-        <p>平仓线：\{{applyVM.sell_amount | currency:'':2}}元</p>
-        <p><a href="/info/help#operate_limitation">查看操盘限制</a></p>
-        <p>&nbsp;</p>
-        <p>管理费：每一万元19.90元/天 (免费体验不收取管理费)</p>
-        <!--
-        <p class="color_999999">服务费已经预付100元（10天），已经扣取40元（4天），剩余60元（6天）</p>
-        -->
-        <p><a href="/info/help#operate_fee">查看计费规则</a></p>
+    <div class="tep_column">
+        配资信息
+    </div>
+    <div class="tep_contentBox">
+        <div class="tep_text2">
+            您的配资金额&nbsp;<span>{{apply_amount}}</span>
+        </div>
+        <div class="tep_left fl">
+            <div class="tep_table02">
+                <table>
+                    <tr>
+                        <td valign="top" class="td01">使用天数</td>
+                        <td class="td02">
+                            <div class="tep_tableborder tep_Text3">{{apply_period}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" class="td01">使用时间</td>
+                        <td class="td02">
+                            <div class="tep_tableborder tep_Text4 fl">
+                                <p class="p01">{{startDate1}}</p>
+                                <p class="p02">{{startDate2}}</p>
+                            </div>
+                            <div class="fl tep_img"></div>
+                            <div class="tep_tableborder tep_Text4 fl">
+                                <p class="p01">{{endDate1}}</p>
+                                <p class="p02">{{endDate2}}</p>
+                            </div>
+                            {{#if apply_isTrial}}
+                                <p class="p03">下午14:00:00</p>
+                            {{else}}
+                                <p class="p03">下午14:50:00（可延期）</p>
+                            {{/if}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" class="td01">保证金</td>
+                        <td class="td02">
+                            <div class="tra_jdt tep_jdt">
+                                <div class="tra_jdt2 tep_jdt2"></div>
+                            </div>
+                            <div class="fl tep_text5">
+                                &nbsp;剩余<span>{{apply_deposit}}</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" class="td01">账户管理费用</td>
+                        <td class="td02">
+                            {{#if apply_isTrial}}
+                                0元
+                                <span class="color_999999">（免费体验操盘不收取管理费）</span>
+                           {{else}}
+                                {{apply_service_fee}}
+                                <span class="color_999999">（{{apply_fee_per_day}}元/天 按天收取，周末节假日免费）</span>
+                            {{/if}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" class="td01">警戒线</td>
+                    {{#if apply_isTrial}}
+                        <td class="td02">1800</td>
+                    {{else}}
+                        <td class="td02">{{apply_warn}}</td>
+                    {{/if}}
+                    </tr>
+                    <tr>
+                        <td valign="top" class="td01">平仓线</td>
+                        {{#if apply_isTrial}}
+                            <td class="td02">1600</td>
+                        {{else}}
+                            <td class="td02">{{apply_sell}}</td>
+                        {{/if}}
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="tep_right tep_right2 fl">
+            {{#ifCond step '===' 4}}
+                <p class="p01">账户已注销</p>
+            {{/ifCond}}
+            {{#ifCond step '>=' 3}}
+                <p>实盘交易账户  <span>{{apply_account}}</span></p>
+                <p>实盘交易密码  <span>{{apply_password}}</span></p>
+                <a href="/info/download" class="tep_btn02">下载操盘软件</a>
+                <p>操盘交易软件HOMS涌金版</p>
+            {{/ifCond}}
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="regTcc jq_recTcc undis jq_jsBox">
+        <div class="tmbg"></div>
+        <div class="tar_TccBox">
+            <div class="regColumn">
+                我要结算
+                <div class="loginClose jq_loginClose"></div>
+            </div>
+            <div class="newRec_TccBox jq_jsBox01">
+                <div class="newRec_TccImg fl"></div>
+                <div class="newRec_tccText fl">
+                    <p class="p01">请确保您的股票账户已经清仓，否则将无法结算</p>
+                    <a href="" class="newrec_btn02 jq_jsBtn01">我已清仓</a>
+                </div>
+            </div>
+            <div class="newRec_TccBox undis jq_jsBox02">
+                <div class="newRec_TccImg fl"></div>
+                <div class="newRec_tccText fl">
+                    <p class="p01">确定提交结算此次配资操盘</p>
+                    <p class="p02">提交完成后我们将为您结算，并将资金返还到平台账户</p>
+                    <a href="" class="newrec_btn02 jq_jsBtn03">确定</a>
+                </div>
+            </div>
+            <div class="newRec_TccBox undis jq_jsBox03">
+                <div class="newRec_TccImg fl"></div>
+                <div class="newRec_tccText fl">
+                    <p class="p01">结算请求提交失败,请联系我们的客服</p>
+                    <p class="p02">客服电话:400-692-1388</p>
+                    <a href="" class="newrec_btn02">确定</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

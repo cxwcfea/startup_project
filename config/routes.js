@@ -37,10 +37,6 @@ module.exports = function(app) {
         });
     });
 
-    app.get('/recharge', passportConf.isAuthenticated, users.getRecharge);
-
-    app.get('/recharge2', passportConf.isAuthenticated, users.getRecharge2);
-
     app.get('/apply_detail/:id', passportConf.isAuthenticated, applies.getApplyDetail);
 
     app.get('/apply_detail2/:id', passportConf.isAuthenticated, applies.getApplyDetail);
@@ -133,7 +129,7 @@ module.exports = function(app) {
 
     app.post('/user/iapp_pay', users.getIAppPayTransid);
 
-    app.post('/api/users/pay_by_balance', passportConf.isAuthenticated, users.payByBalance2);
+    app.post('/api/users/pay_by_balance', passportConf.isAuthenticated, users.payByBalance);
 
     app.get('/pay_confirm/:orderID', passportConf.isAuthenticated, orders.confirmPayOrder);
 
@@ -161,7 +157,7 @@ module.exports = function(app) {
 
     app.post('/api/iapp_feedback', users.iappPayFeedback);
 
-    app.post('/api/shengpay_feedback', users.shengpayFeedback2);
+    app.post('/api/shengpay_feedback', users.shengpayFeedback);
 
     app.post('/api/add_forbidden_stock', function(req, res) {
         var data = req.body;

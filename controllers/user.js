@@ -552,179 +552,6 @@ module.exports.sendVerifyCode = function(req, res, next) {
     res.send({success:true});
 };
 
-module.exports.payByBalance = function(req, res, next) {
-    if (!req.user) {
-        return res.send({success:false, reason:'无效的用户!'});
-    }
-    var data = req.body;
-    console.log(req.body);
-
-    User.findById(req.user._id, function(err, user) {
-        if (err) {
-            res.status(500);
-            logger.warn('payByBalance error:' + data.apply_serial_id);
-            return res.send({success:false, reason:err.toString()});
-        }
-        if (!user) {
-            logger.warn('payByBalance error. user not found:' + data.apply_serial_id);
-            return res.send({success:false, reason:'无效的用户!'});
-        }
-        if (data.apply_serial_id) {
-            Apply.findOne({serialID:data.apply_serial_id}, function(err, apply) {
-                if (err) {
-                    return res.send({success:false, reason:err.toString()});
-                }
-                if (data.postpone_days) {
-                    apply.period += Number(data.postpone_days);
-                    apply.save(function(err) {
-                        if (err) {
-                            logger.warn('payByBalance failed when postpone days:' + err.toString());
-                            return res.send({success:false, reason:err.toString()});
-                        }
-                    });
-                    Order.findOne({_id:data.order_id}, function(err, order) {
-                        if (err) {
-                            logger.warn('payByBalance error. update order error:' + order._id);
-                            return res.send({success:false, reason:err.toString()});
-                        } else {
-                            user.finance.freeze_capital += order.amount;
-                            user.save(function (err) {
-                                if (err) {
-                                    res.status(401);
-                                    logger.warn('payByBalance failed:' + err.toString());
-                                    return res.send({success:false, reason:err.toString()});
-                                }
-                                order.status = 1;
-                                order.save(function(err) {
-                                    if (err) {
-                                        res.status(401);
-                                        logger.warn('payByBalance failed:' + err.toString());
-                                        return res.send({success:false, reason:err.toString()});
-                                    }
-                                    res.send({success:true});
-                                });
-                            });
-                        }
-                    });
-                } else if (apply.status === 2) {
-                    var pay_amount = Number(data.total_amount);
-                    apply.deposit += pay_amount;
-                    apply.save(function (err) {
-                        if (err) {
-                            logger.warn('payByBalance failed:' + err.toString());
-                            return res.send({success:false, reason:err.toString()});
-                        }
-                        Order.update({_id:data.order_id}, {status:1}, function(err, numberAffected, raw) {
-                            if (err) {
-                                logger.warn('payByBalance error.update order error:' + data.order_id);
-                                return res.send({success:false, reason:err.toString()});
-                            }
-                            user.finance.balance -= pay_amount;
-                            user.finance.deposit += pay_amount;
-                            user.save(function (err) {
-                                if (err) {
-                                    res.status(500);
-                                    logger.warn('payByBalance failed:' + err.toString());
-                                    return res.send({success:false, reason:err.toString()});
-                                }
-                                res.send({success:true, data:user.finance.balance});
-                            });
-                        });
-                    });
-                } else if (apply.status === 1) {
-                    var serviceFee = util.getServiceFee(apply.amount, apply.period);
-                    logger.warn('fee:' + serviceFee + ' amount:' + apply.amount + ' period:' + apply.period);
-                    if (apply.isTrial) {
-                        serviceFee = 0;
-                    }
-                    var total = Number((apply.deposit + serviceFee).toFixed(2));
-                    var user_balance = Number(user.finance.balance.toFixed(2));
-                    if (user_balance < total) {
-                        logger.warn('payByBalance error. no enough balance to pay apply:' + apply.serialID + ' total:' + total + ' user_balance:' + user_balance);
-                        res.status(400);
-                        return res.send({reason:'payApply error. no enough balance to pay apply:' + apply.serialID + ' total:' + total + ' user_balance:' + user_balance});
-                    } else {
-                        apply.status = 4;
-                        apply.save(function (err) {
-                            if (err) {
-                                logger.warn('payByBalance failed:' + err.toString());
-                                return res.send({success:false, reason:err.toString()});
-                            }
-                            Order.findById(data.order_id, function(err, order) {
-                                if (err || !order) {
-                                    logger.warn('payByBalance error. update order error:' + data.order_id);
-                                    res.status(500);
-                                    return res.send({success:false, reason:err.toString()});
-                                }
-                                order.status = 1;
-                                order.save(function(err) {
-                                    if (err) {
-                                        res.status(500);
-                                        logger.warn('payByBalance failed:' + err.toString());
-                                        return res.send({success:false, reaseon:err.toString()});
-                                    }
-                                    if (order.dealType === 1) {
-                                        var orderData = {
-                                            userID: user._id,
-                                            userMobile: user.mobile,
-                                            dealType: 9,
-                                            amount: apply.deposit,
-                                            status: 1,
-                                            description: '缴纳配资保证金',
-                                            applySerialID: apply.serialID
-                                        };
-                                        Order.create(orderData, function(err, payOrder) {
-                                            if (err) {
-                                                res.status(500);
-                                                logger.warn('payByBalance failed:' + err.toString());
-                                                return res.send({success:false, reaseon:err.toString()});
-                                            }
-                                            user.finance.balance -= total;
-                                            user.finance.deposit += apply.deposit;
-                                            user.finance.total_capital += apply.amount;
-                                            user.finance.history_capital += apply.amount;
-                                            user.finance.history_deposit += apply.deposit;
-                                            user.finance.freeze_capital += serviceFee;
-                                            user.save(function (err) {
-                                                if (err) {
-                                                    res.status(500);
-                                                    logger.warn('payByBalance failed:' + err.toString());
-                                                    return res.send({success:false, reason:err.toString()});
-                                                }
-                                                res.send({success:true, data:user.finance.balance});
-                                            });
-                                        });
-                                    } else {
-                                        user.finance.balance -= total;
-                                        user.finance.deposit += apply.deposit;
-                                        user.finance.total_capital += apply.amount;
-                                        user.finance.freeze_capital += serviceFee;
-                                        user.save(function (err) {
-                                            if (err) {
-                                                res.status(500);
-                                                logger.warn('payByBalance failed:' + err.toString());
-                                                return res.send({success:false, reason:err.toString()});
-                                            }
-                                            res.send({success:true, data:user.finance.balance});
-                                        });
-                                    }
-                                });
-                            });
-                        });
-                    }
-                } else {
-                    logger.warn('payByBalance failed apply not waiting for pay');
-                    res.send({success:false, reason:'payByBalance failed apply not waiting for pay'});
-                }
-            });
-        } else {
-            logger.warn('payByBalance failed apply serialID not found in request');
-            res.status(400);
-            res.send({reason:'payByBalance failed apply serialID not found in request'});
-        }
-    });
-};
-
 module.exports.updateBalance = function (req, res, next) {
     if (!req.user) {
         return res.send({success:false, reason:'无效的用户!'});
@@ -1080,166 +907,7 @@ module.exports.iappPayFeedback = function(req, res) {
     res.send('SUCCESS');
 };
 
-module.exports.shengpayFeedback = function(req, res, next) {
-    logger.debug('shengpayFeedback');
-    logger.debug(req.body);
-    var result = req.body;
-    if (!result) {
-        res.status(400);
-        return res.send({error_msg:'empty response'});
-    }
-
-    var origin = result.Name+result.Version+result.Charset+result.TraceNo+result.MsgSender+result.SendTime+
-            result.InstCode+result.OrderNo+result.OrderAmount+result.TransNo+result.TransAmount+
-            result.TransStatus+result.TransType+result.TransTime+result.MerchantNo+result.ErrorCode+
-            result.ErrorMsg+result.Ext1+result.SignType+'JDJhJDA1JHpMRVc3UkJLR202R2hhNHZzZllMYi5';
-    var sig = sparkMD5.hash(origin);
-    sig = sig.toUpperCase();
-    logger.debug('shengpayFeedback their sign:' + result.SignMsg + ' our sign:' + sig);
-
-    if (result.TransStatus && result.TransStatus === '01') {
-        async.waterfall([
-            function(callback) {
-                Order.findById(result.OrderNo, function(err, order) {
-                    if (!err && !order) {
-                        err = 'order not found:' + result.OrderNo;
-                    }
-                    callback(err, order);
-                });
-            },
-            function(order, callback) {
-                if (order.status === 1) {
-                    callback('order already paid:' + order._id);
-                    return;
-                }
-                var pay_amount = Number(result.TransAmount);
-                if (pay_amount <= 0) {
-                    callback('pay_amount not valid:' + pay_amount);
-                    return;
-                }
-                if (order.amount !== pay_amount) {
-                    callback('pay_amount not match order\'s amount: ' + order.amount + ' vs ' + pay_amount);
-                    return;
-                }
-                order.status = 1;
-                order.payType = 1;
-                order.transID = result.TransNo;
-                order.save(function (err) {
-                    callback(err, order, pay_amount);
-                });
-            },
-            function(order, pay_amount, callback) {
-                logger.info("pay success for order:" + order._id + " by " + pay_amount);
-                User.findById(order.userID, function(err, user) {
-                    if (!err && !user) {
-                        err = 'can not find user:' + order.userID;
-                    }
-                    callback(err, user, order, pay_amount);
-                });
-            },
-            function(user, order, pay_amount, callback) {
-                user.finance.balance += pay_amount;
-                user.save(function(err) {
-                    callback(err, user, order, pay_amount);
-                });
-            },
-            function(user, order, pay_amount, callback) {
-                logger.debug('shengpayFeedback success update user:' + user._id + ' and order:' + order._id);
-                if (order.applySerialID) {
-                    logger.info('shengpayFeedback pay apply');
-                    callback(null, true, user, order.applySerialID, pay_amount);
-                } else {
-                    callback(null, false, null, null, null);
-                }
-            },
-            function(working, user, apply_serial_id, pay_amount, callback) {
-                if (working) {
-                    Apply.findOne({serialID: apply_serial_id}, function(err, apply) {
-                        if (!err && !apply) {
-                            err = 'can not found apply when pay apply:' + apply_serial_id;
-                        }
-                        callback(err, true, user, apply, pay_amount);
-                    });
-                } else {
-                    callback(null, false, null, null, null);
-                }
-            },
-            function(working, user, apply, pay_amount, callback) {
-                if (working) {
-                    if (apply.status === 1) {
-                        var serviceFee = util.getServiceFee(apply.amount, apply.period);
-                        if (apply.isTrial) {
-                            serviceFee = 0;
-                        }
-                        var total = Number((apply.deposit + serviceFee).toFixed(2));
-                        var user_balance = Number(user.finance.balance.toFixed(2));
-                        if (user_balance < total) {
-                            callback('no enough balance to pay apply:' + apply.serialID);
-                        } else {
-                            apply.status = 4;
-                            apply.save(function (err) {
-                                callback(err, true, user, total, apply, serviceFee, true);
-                            });
-                        }
-                    } else if (apply.status === 2) { // in this case (apply in process, order pay for it), it means the order is for add deposit
-                        user.finance.balance -= pay_amount;
-                        user.finance.deposit += pay_amount;
-                        user.save(function(err) {
-                            callback(err, false, null, null, null, null, null);
-                        });
-                    }
-                } else {
-                    callback(null, false, null, null, null, null, null);
-                }
-            },
-            function(working, user, total, apply, serviceFee, createOrder, callback) {
-                if (createOrder) {
-                    var orderData = {
-                        userID: user._id,
-                        userMobile: user.mobile,
-                        dealType: 9,
-                        amount: apply.deposit,
-                        status: 1,
-                        description: '缴纳配资保证金',
-                        applySerialID: apply.serialID
-                    };
-                    Order.create(orderData, function(err, payOrder) {
-                        if (!err && !payOrder) {
-                            err = 'can not create pay order when pay apply:' + apply.serialID;
-                        }
-                        callback(err, true, user, total, apply, serviceFee);
-                    });
-                } else {
-                    callback(null, false, null, null, null, null);
-                }
-            },
-            function(working, user, total, apply, serviceFee, callback) {
-                if (working) {
-                    user.finance.balance -= total;
-                    user.finance.deposit += apply.deposit;
-                    user.finance.total_capital += apply.amount;
-                    user.finance.freeze_capital += serviceFee;
-                    user.finance.history_capital += apply.amount;
-                    user.finance.history_deposit += apply.deposit;
-                    user.save(function (err) {
-                        callback(err, 'success pay apply');
-                    });
-                } else {
-                    callback(null, 'done');
-                }
-            }
-        ], function(err, result) {
-            if (err) {
-                logger.error('shengpayFeedback error:' + err.toString());
-            } else {
-                logger.info('shengpayFeedback result:'+result);
-            }
-        });
-    }
-    res.send('OK');
-};
-
-module.exports.shengpayFeedback2 = function(req, res) {
+module.exports.shengpayFeedback = function(req, res) {
     logger.debug('shengpayFeedback');
     logger.debug(req.body);
     var result = req.body;
@@ -1328,13 +996,6 @@ module.exports.shengpayFeedback2 = function(req, res) {
     res.send('OK');
 };
 
-function homeIndex(req, res, next) {
-    res.locals.user_menu = true;
-    res.render('user/index', {
-        bootstrappedUserObject: JSON.stringify(getUserViewModel(req.user))
-    });
-}
-
 function sendSMS(req, res, next) {
     var data = req.body;
     if (data.sms_content.length > 500) {
@@ -1351,19 +1012,9 @@ function sendSMS(req, res, next) {
     });
 }
 
-function getRecharge(req, res, next) {
-    res.locals.title = '充值中心';
-    res.locals.recharge = true;
-    res.locals.user_mobile = util.mobileDisplay(req.user.mobile);
-    res.render('recharge2', {
-        layout: 'no_header',
-        bootstrappedUserObject: JSON.stringify(getUserViewModel(req.user))
-    });
-}
-
 function getUserHome(req, res, next) {
     res.locals.user_menu = true;
-    res.render('user/home2', {
+    res.render('user/home', {
         bootstrappedUserObject: JSON.stringify(getUserViewModel(req.user))
     });
 }
@@ -1430,11 +1081,9 @@ function verifyEmailBySMS(req, res) {
 }
 
 module.exports.registerRoutes = function(app, passportConf) {
-    app.get('/user2', passportConf.isAuthenticated, getUserHome);
+    app.get('/user', passportConf.isAuthenticated, getUserHome);
 
-    app.get('/user', passportConf.isAuthenticated, homeIndex);
-
-    app.get('/recharge2', passportConf.isAuthenticated, getRecharge);
+    app.get('/recharge', passportConf.isAuthenticated, getRecharge);
 
     app.post('/user/verify_email_by_sms', passportConf.isAuthenticated, verifyEmailBySMS);
 
@@ -1510,15 +1159,7 @@ module.exports.fetchApplyForUser = function(req, res) {
     });
 };
 
-module.exports.getRecharge = function(req, res) {
-    res.locals.recharge = true;
-    res.locals.callback_domain = config.pay_callback_domain;
-    res.render('recharge', {
-        bootstrappedNiujinUserID: JSON.stringify(req.user._id)
-    });
-};
-
-module.exports.getRecharge2 = function(req, res, next) {
+function getRecharge(req, res, next) {
     var order_id = req.query.order_id;
     if (!order_id) {
         return next();
@@ -1532,7 +1173,7 @@ module.exports.getRecharge2 = function(req, res, next) {
         res.locals.recharge = true;
         res.locals.user_mobile = util.mobileDisplay(req.user.mobile);
         res.locals.callback_domain = config.pay_callback_domain;
-        res.render('recharge2', {
+        res.render('recharge', {
             layout: 'no_header',
             bootstrappedUserObject: JSON.stringify(getUserViewModel(req.user)),
             bootstrappedOrderObject: JSON.stringify(order)
@@ -1540,7 +1181,7 @@ module.exports.getRecharge2 = function(req, res, next) {
     });
 };
 
-module.exports.payByBalance2 = function(req, res, next) {
+module.exports.payByBalance = function(req, res, next) {
     if (!req.user) {
         res.status(400);
         return res.send({error_msg:'无效的用户!'});

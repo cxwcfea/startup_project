@@ -1,5 +1,5 @@
 'use strict';
-angular.module('userApp2').controller('UserCardCtrl', ['$scope', '$http', '$interval', '$location', 'njCard', 'BankNameList', 'njCachedCards', function($scope, $http, $interval, $location, njCard, BankNameList, njCachedCards) {
+angular.module('userApp').controller('UserCardCtrl', ['$scope', '$http', '$interval', '$location', 'njCard', 'BankNameList', 'njCachedCards', function($scope, $http, $interval, $location, njCard, BankNameList, njCachedCards) {
     var vm = this;
 
     $scope.data.menu = 4;

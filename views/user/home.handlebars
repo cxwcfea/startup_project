@@ -1,72 +1,26 @@
-<div class="fr RightMain">
-    <div class="rightMenu">
+{{#if bootstrappedUserObject}}
+    <script> window.bootstrappedUserObject = {{{bootstrappedUserObject}}} </script>
+{{/if}}
+<div class="wrapper tar_center" ng-app="userApp" ng-controller="UserIndexCtrl as userVM" ng-cloak>
+    <div class="tra_left fl">
         <ul>
-            <li class="select"><a href="">操盘总览</a></li>
+            <li ng-class="{selected:data.menu === 1}" class="li01"><a href="/user">账户总览</a></li>
+            <li ng-class="{selected:data.menu === 2}" class="li01"><a href="/user/#/applies">我的操盘</a></li>
+            <li ng-class="{selected:data.menu === 3}"><a href="/user/#/orders" ng-mouseleave="userVM.hideSubMenu($event, 1)" ng-mouseover="userVM.showSubMenu($event, 1)">资金管理</a>
+                <ul class="tar_left_menu2" ng-show="userVM.capitalSubMenu" ng-mouseenter="userVM.showSubMenu($event, 1)" ng-mouseleave="userVM.hideSubMenu($event, 1)">
+                    <li><a href="/user/#/orders">资金明细</a></li>
+                    <li><a href="/user/#/recharge">我要充值</a></li>
+                    <li><a href="/user/#/withdraw">我要提现</a></li>
+                </ul>
+            </li>
+            <li ng-class="{selected:data.menu === 4}" class="li01"><a href="/user/#/settings">账号设置</a></li>
+            <!--
+            <li class="li01"><a href="">消息中心</a></li>
+            -->
         </ul>
     </div>
-    <div class="moneyBox">
-        <div class="moneyBoxLeft fl">
-            <p class="p01">
-                <span class="dis fl">账户总资产：</span>
-                <span class="dis fr color_999999">(账户总资产 = 可用余额 + 冻结资金)&nbsp;&nbsp;</span>
-            </p>
-            <p class="p02 color_f2991b">￥<span>\{{homeVM.user_total_capital | currency:'':2}}</span></p>
-            <p class="p03">可用余额￥<span class="fb">\{{homeVM.user.finance.balance | currency:'':2}}</span>&nbsp;&nbsp;冻结资金￥\{{homeVM.user.finance.freeze_capital | currency:'':2}}</p>
-            <p class="p04">
-                <a href="/recharge" class="btn01 marRight10">充值</a>
-                <a href="/user/#/user_capital?category=0" class="btn02">提现</a>
-            </p>
-        </div>
-        <div class="moneyBoxRight fl">
-            <p class="p01">当前操盘总金额：</p>
-            <p class="p02 color_c82217">￥<span>\{{homeVM.user.finance.total_capital | currency:'':2}}</span></p>
-            <p class="p03">共有\{{homeVM.ongoing_apply_num}}笔配资，总保证金￥<span>\{{homeVM.user.finance.deposit | currency:'':2}}</span></p>
-            <p class="p04">
-                <a href="/apply" class="btn03 ">新增配资 </a>
-            </p>
-        </div>
-    </div>
-    <div class="tableMenu">
-        <ul id="tableMenu">
-            <li ng-repeat="item in homeVM.queryItems" ng-click="homeVM.queryItem(item)" ng-class="{select: item.value === homeVM.selected}">\{{item.name}}</li>
-        </ul>
-        <!--
-        <div class="searchBox fr">
-            <input type="text" class="searchInputText" name="" id="" value="" placeholder="输入充值金额/业务单号搜索" />
-            <input type="button" name="" class="searchBtn" id="" value="搜索" />
-        </div>
-        -->
-    </div>
-    <div class="tableMain" id="tableMain">
-        <div class="tableBox" id="jq_tableBox">
-            <table>
-                <tr>
-                    <th>操盘金额</th>
-                    <th>保证金额</th>
-                    <th>操盘结束时间</th>
-                    <th>状态</th>
-                    <th>操作</th>
-                </tr>
-                <tr ng-repeat="apply in homeVM.showingItems | orderBy:'applyAt':true" ng-class-even="homeVM.tableCss.even">
-                    <td>\{{apply.amount | currency:'':2}}元</td>
-                    <td>\{{apply.deposit | currency:'':2}}元</td>
-                    <td>\{{apply.end_date | displayDate}}</td>
-                    <td ng-class="{color_c82217: apply.status === 2, color_f2991b: apply.status === 5}">\{{apply.status | applyStatus}}</td>
-                    <td>
-                        <div class="pr glBox">
-                            <a href="" ng-click="homeVM.manageApply(apply)">详情</a> | <span class="tableSpan" ng-mousedown="homeVM.toggleDetail($event, $index)">操盘账户</span>
-                            <div class="tablenr jq_tablenr" ng-show="homeVM.showApplyAccount === $index" ng-mouseleave="homeVM.toggleDetail($event)">
-                                <div class="tableNrImg"></div>
-                                <p><span class="tableSpan02">账户：<span id="code01" class="jq_span">\{{apply.account}}</span></span> <!--<a href="javascript:">复制</a>--></p>
-                                <p><span class="tableSpan02">密码：<span id="code02" class="jq_span">\{{apply.password}}</span></span> <!--<a href="javascript:">复制</a>--></p>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-            <div class="fr">
-                <pagination class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="homeVM.itemsPerPage" total-items="homeVM.totalItems" ng-model="homeVM.currentPage" ng-change="homeVM.pageChanged()"></pagination>
-            </div>
-        </div>
-    </div>
+    <div ng-view></div>
+    <div class="clear"></div>
 </div>
+<script>
+</script>

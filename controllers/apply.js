@@ -112,7 +112,7 @@ exports.getApplyDetail = function (req, res, next) {
         res.locals.endDate1 = endTime.format("YYYY-MM");
         res.locals.startDate2 = startTime.format("DD");
         res.locals.endDate2 = endTime.format("DD");
-        res.locals.pay_url = '/recharge2?order_id=' + apply.orderID;
+        res.locals.pay_url = '/recharge?order_id=' + apply.orderID;
         res.locals.apply_account = apply.account;
         res.locals.apply_password = apply.password;
         res.locals.apply_detail = true;

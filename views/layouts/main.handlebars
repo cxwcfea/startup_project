@@ -74,7 +74,7 @@
             <span class="am-text-danger">您好,{{#if user.profile.name}} {{user.profile.name}} {{else}} {{user.mobile}} {{/if}}</span>
             &nbsp;&nbsp;|&nbsp;&nbsp;
             <a href="/logout" class="color_333333">退出登录</a>&nbsp;&nbsp;
-            <a href="/recharge">充值中心</a>&nbsp;&nbsp;&nbsp;
+            <a href="/user/#/recharge">充值中心</a>&nbsp;&nbsp;&nbsp;
         </div>
     {{/if}}
     {{#unless user}}
@@ -82,7 +82,7 @@
             <a href="/login" class="color_333333">立即登录</a>&nbsp;&nbsp;
             &nbsp;&nbsp;|&nbsp;&nbsp;
             <a href="/signup" class="color_333333">免费注册</a>&nbsp;&nbsp;
-            <a href="/user#/user_capital?category=0">充值中心</a>&nbsp;&nbsp;&nbsp;
+            <a href="/user/#/recharge">充值中心</a>&nbsp;&nbsp;&nbsp;
         </div>
     <!--
         <div class="TopLoginBox fr jq_topLogin" ng-app="registerApp" ng-controller="RegisterCtrl as vm">
@@ -218,7 +218,7 @@
 <script src="{{static '/js/main.js'}}"></script>
 <script src="{{static '/app/controllers/RegisterCtrl.js'}}"></script>
 -->
-<script src="{{static '/js.min/niujinwang-main.min.4beb4452.js'}}"></script>
+<script src="{{static '/js.min/niujinwang-main.min.bd0dc36b.js'}}"></script>
 {{#if main_menu}}
         <script src="{{static '/js/index.js'}}"></script>
 {{/if}}
@@ -230,20 +230,14 @@
         <script src="{{static '/user/user.js'}}"></script>
         <script src="{{static '/user/controllers/UserIndexCtrl.js'}}"></script>
         <script src="{{static '/user/controllers/UserHomeCtrl.js'}}"></script>
-        <script src="{{static '/user/controllers/UserApplyCtrl.js'}}"></script>
-        <script src="{{static '/user/controllers/UserCapitalCtrl.js'}}"></script>
-        <script src="{{static '/user/controllers/UserAccountCtrl.js'}}"></script>
-        -->
-        <script src="{{static '/js.min/niujinwang-user.min.bb113b83.js'}}"></script>
-
-        <script src="{{static '/user/controllers/UserIndexCtrl2.js'}}"></script>
-        <script src="{{static '/user/controllers/UserHomeCtrl2.js'}}"></script>
         <script src="{{static '/user/controllers/UserRechargeCtrl.js'}}"></script>
         <script src="{{static '/user/controllers/UserApplyListCtrl.js'}}"></script>
-        <script src="{{static '/user/controllers/UserAccountCtrl2.js'}}"></script>
+        <script src="{{static '/user/controllers/UserAccountCtrl.js'}}"></script>
         <script src="{{static '/user/controllers/UserCardCtrl.js'}}"></script>
         <script src="{{static '/user/controllers/UserWithdrawCtrl.js'}}"></script>
         <script src="{{static '/user/controllers/UserOrderListCtrl.js'}}"></script>
+        -->
+        <script src="{{static '/js.min/niujinwang-user.min.b89e2852.js'}}"></script>
 {{/if}}
 {{#if recharge}}
         <script src="{{static '/vendor/angular-route/angular-route.min.js'}}"></script>
@@ -251,7 +245,7 @@
         <!--
         <script src="{{static '/app/controllers/RechargeCtrl.js'}}"></script>
         -->
-        <script src="{{static '/js.min/niujinwang-recharge.min.80968987.js'}}"></script>
+        <script src="{{static '/js.min/niujinwang-recharge.min.5f07612e.js'}}"></script>
         <script src="http://pv.sohu.com/cityjson"></script>
 {{/if}}
 

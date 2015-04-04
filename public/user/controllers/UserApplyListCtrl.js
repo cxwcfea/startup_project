@@ -1,5 +1,5 @@
 'use strict';
-angular.module('userApp2').controller('UserApplyListCtrl', ['$scope', '$location', '$http', '$window', '$filter', 'days', 'njApply', function($scope, $location, $http, $window, $filter, days, njApply) {
+angular.module('userApp').controller('UserApplyListCtrl', ['$scope', '$location', '$http', '$window', '$filter', 'days', 'njApply', function($scope, $location, $http, $window, $filter, days, njApply) {
     var vm = this;
     $scope.data.menu = 2;
     vm.user = $scope.data.currentUser;
