@@ -2,10 +2,16 @@ var User = require('../models/User'),
     Apply = require('../models/Apply'),
     util = require('../lib/util'),
     log4js = require('log4js'),
+    useragent = require('useragent'),
     logger = log4js.getLogger('admin');
 
 
 function home(req, res, next) {
+    var ua = useragent.is(req.headers['user-agent']);
+    if (ua.android || ua.mobile_safari) {
+        res.redirect('/mobile');
+        return;
+    }
     if (!req.session.statistic || req.session.statistic.expires < Date.now()) {
         User.aggregate([{$match:{registered:true}}, {$group: {_id: null, count: {$sum: 1}, profit: { $sum: '$finance.profit'}, capital: { $sum: '$finance.total_capital' } }}], function(err, statistic) {
             if (err || !statistic) {
