@@ -29,7 +29,7 @@
     <div class="clear"></div>
     <div class="set_list">
         <div class="fl set_lstLeft">
-            <span class="span01">邮箱\{{accountVM.user.profile.email | displayMobile}}</span>
+            <span class="span01">邮箱 (\{{accountVM.user.profile.email | displayEmail}}) </span>
             <a href="" class="color_2489f0" ng-click="accountVM.showVerifyEmailWindow = true">\{{accountVM.user.profile.email_verified ? '修改' : '绑定'}}</a>
         </div>
         <!--
@@ -41,102 +41,106 @@
     </div>
 </div>
 
-<div class="traTcc jq_tcc02" ng-show="accountVM.showVerifyEmailWindow === true">
+<div class="regTcc jq_recTcc jq_emailBox" ng-show="accountVM.showVerifyEmailWindow === true">
     <div class="tmbg"></div>
-    <div class="tar_TccBox_email">
+    <div class="tar_TccBox">
         <div class="regColumn">
             绑定邮箱
-            <div class="loginClose tra_close jq_tar_close02" ng-click="accountVM.showVerifyEmailWindow = false"></div>
+            <div class="loginClose jq_loginClose" ng-click="accountVM.showVerifyEmailWindow = false"></div>
         </div>
-        <br/>
-        <div class="tra_Text2">
-            <div class="tra_InputBox_email">
-                <div class="tra_InputBoxLeft fl">
+        <div class="pass_Box jq_email1" ng-hide="accountVM.emailChangeSuccess">
+            <div class=" pass_formBox">
+                <div class="fl pass_left">
                     电子邮箱
                 </div>
-                <div class="tra_InputBoxRight_email fl">
-                    <input type="text" class="inputText" ng-model="accountVM.user_email" required>
+                <div class="pass_right fl">
+                    <input type="text" class="newcar_inputText pass_inputText" ng-model="accountVM.user_email" required>
+                    <span class="color_999999">请输入登陆密码</span>
                 </div>
             </div>
-            <div class="tra_InputBox_email">
-                <div class="tra_InputBoxLeft fl">
+            <div class=" pass_formBox">
+                <div class="fl pass_left">
                     邮箱验证码
                 </div>
-                <div class="tra_InputBoxRight_email fl">
-                    <input type="text" class="inputText" ng-model="accountVM.verify_code" required>
-                    <input type="button" id="verify-code-btn" value="\{{accountVM.verifyCodeBtnText}}" class="recBtn03" ng-class="{recBtn03_disabled:accountVM.verifyBtnDisabled}" ng-click="accountVM.getVerifyCode()">
+                <div class="pass_right fl">
+                    <input type="text" class="newcar_inputText pass_inputText" ng-model="accountVM.verify_code" required>
+                    <input type="button" class="recBtn03" id="verify-code-btn" value="\{{accountVM.verifyCodeBtnText}}" ng-class="{recBtn03_disabled:accountVM.verifyBtnDisabled}" ng-click="accountVM.getVerifyCode()">
                 </div>
             </div>
             <alert ng-repeat="alert in accountVM.alerts" type="\{{alert.type}}" close="accountVM.closeAlert($index)">\{{alert.msg}}</alert>
-            <div class="tra_inputBtnBox tra_inputBtnBox_email">
-                <a href="" class="a01" ng-click="accountVM.verifyEmailBySMSCode()">提&nbsp;交</a>
+            <a class="newrec_btn02 newrec_zfbbtn01 jq_Btn02" href="" ng-click="accountVM.verifyEmailBySMSCode()">提  交</a>
+        </div>
+        <div class="pass_box2 jq_email2" ng-show="accountVM.emailChangeSuccess">
+            <div class="pass_img fl"></div>
+            <div class="pass_text fl">
+                <p class="p01">邮箱绑定成功！</p>
+                <a class="newrec_btn02 " href="" ng-click="accountVM.emailChangeSuccess = false; accountVM.showVerifyEmailWindow = false">确   定</a>
             </div>
+            <div class="clear"></div>
         </div>
     </div>
 </div>
 
-<div class="traTcc jq_tcc02" ng-show="accountVM.showResetPasswordWindow">
+<div class="regTcc jq_recTcc jq_passBox" ng-show="accountVM.showResetPasswordWindow">
     <div class="tmbg"></div>
-    <div class="tar_TccBox_email">
+    <div class="tar_TccBox">
         <div class="regColumn">
-            修改登录密码
-            <div class="loginClose tra_close jq_tar_close02" ng-click="accountVM.showResetPasswordWindow = false; accountVM.passwordChangeSuccess = false"></div>
+            修改登陆密码
+            <div class="loginClose jq_loginClose" ng-click="accountVM.showResetPasswordWindow = false; accountVM.passwordChangeSuccess = false"></div>
         </div>
-        <br/>
-        <div class="tra_Text2" ng-hide="accountVM.passwordChangeSuccess">
-            <div class="tra_InputBox_email">
-                <div class="tra_InputBoxLeft fl">
+        <div class="pass_Box jq_pass_Box" ng-hide="accountVM.passwordChangeSuccess">
+            <div class=" pass_formBox">
+                <div class="fl pass_left">
                     原密码
                 </div>
-                <div class="tra_InputBoxRight_email fl">
-                    <input type="password" class="inputText" ng-model="accountVM.password" minlength="6" maxlength="20" required>
-                    请输入登录密码
+                <div class="pass_right fl">
+                    <input type="password" class="newcar_inputText pass_inputText" ng-model="accountVM.password" minlength="6" maxlength="20" required>
+                    <span class="color_999999">请输入登陆密码</span>
                 </div>
             </div>
-            <div class="tra_InputBox_email">
-                <div class="tra_InputBoxLeft fl">
+            <div class=" pass_formBox">
+                <div class="fl pass_left">
                     新密码
                 </div>
-                <div class="tra_InputBoxRight_email fl">
-                    <input type="password" class="inputText" ng-model="accountVM.new_password" rminlength="6" maxlength="20" equired>
+                <div class="pass_right fl">
+                    <input type="password" class="newcar_inputText pass_inputText" ng-model="accountVM.new_password" rminlength="6" maxlength="20" equired>
                 </div>
             </div>
-            <div class="tra_InputBox_email">
-                <div class="tra_InputBoxLeft fl">
+            <div class=" pass_formBox">
+                <div class="fl pass_left">
                     确认新密码
                 </div>
-                <div class="tra_InputBoxRight_email fl">
-                    <input type="password" class="inputText" ng-model="accountVM.confirm_password" minlength="6" maxlength="20" required>
+                <div class="pass_right fl">
+                    <input type="password" class="newcar_inputText pass_inputText" ng-model="accountVM.confirm_password" minlength="6" maxlength="20" required>
                 </div>
             </div>
             <alert ng-repeat="alert in accountVM.alerts" type="\{{alert.type}}" close="accountVM.closeAlert($index)">\{{alert.msg}}</alert>
-            <div class="tra_inputBtnBox tra_inputBtnBox_email">
-                <a href="" class="a01" ng-click="accountVM.changePassword()">提&nbsp;交</a>
-            </div>
+            <a class="newrec_btn02 newrec_zfbbtn01 jq_Btn01" href="" ng-click="accountVM.changePassword()">提  交</a>
         </div>
-        <div class="" ng-show="accountVM.passwordChangeSuccess">
-            <div class="newRec_img reg_img fl"></div>
-            <div class="newRec_Text reg_text fl">
-                <p class="p01">登录密码修改成功！</p>
-                <a href="" class="newrec_btn02" ng-click="accountVM.showResetPasswordWindow = false; accountVM.passwordChangeSuccess = false">确&nbsp;定</a>
+        <div class="pass_box2 jq_pass_box2" ng-show="accountVM.passwordChangeSuccess">
+            <div class="pass_img fl"></div>
+            <div class="pass_text fl">
+                <p class="p01">登陆密码修改成功！</p>
+                <a class="newrec_btn02 " href="" ng-click="accountVM.showResetPasswordWindow = false; accountVM.passwordChangeSuccess = false">确   定</a>
             </div>
+            <div class="clear"></div>
         </div>
     </div>
 </div>
 
+<!--修改微信弹出层-->
 <!--
-<div class="traTcc jq_tcc02" ng-show="true">
+<div class="regTcc jq_recTcc jq_wxBox undis ">
     <div class="tmbg"></div>
-    <div class="tar_TccBox_email">
+    <div class="tar_TccBox wx_tccbox">
         <div class="regColumn">
-            修改登录密码
-            <div class="loginClose tra_close jq_tar_close02" ng-click="accountVM.showResetPasswordWindow = false"></div>
+            绑定微信
+            <div class="loginClose jq_loginClose"></div>
         </div>
-        <div class="newRec_img reg_img fl"></div>
-            <div class="newRec_Text reg_text fl">
-                <p class="p01">登录密码修改成功！</p>
-                <a href="" class="newrec_btn02">确&nbsp;定</a>
-            </div>
+        <div class="wx_box">
+            <p class="p01">微信扫描二维码完成绑定账号，您可以随时获取收益信息</p>
+            <img src="../images/img55.jpg"/>
+            <p class="p02">请使用微信扫一扫绑定账号</p>
         </div>
     </div>
 </div>

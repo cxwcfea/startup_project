@@ -67,20 +67,33 @@
             </div>
         </div>
 
-        <div class="rec2_textBox" id="payConfirm" ng-show="vm.showPayConfirm">
-            <div class="payConfirmLeft fl">
-                <span class="span02">付款方式</span>
-            </div>
-            <div class="payConfirmRight fl">
-                <div class="firstLine" ng-show="vm.useBalance">
-                    <span class="span02" id="balanceTitle">账户余额</span><span class="span02">支付 <span style="color: #c82217;">\{{vm.user.finance.balance | currency:'':2}}</span> 元</span>
+        <div ng-show="vm.showPayConfirm">
+            <div class="pay_Box">
+                <div class="pay_LeftText fl">
+                    付款方式
                 </div>
-                <div class="firstLine">
-                    <img ng-src="\{{vm.BankNameList[vm.payBank].img}}"><span class="span02">支付 <span style="color: #c82217;">\{{vm.pay_amount | currency:'':2}}</span> 元</span>
+                <div class="pay_RightBox fl">
+                    <div class="pay_text" ng-show="vm.useBalance">
+                        <div class="pay_textBox fl">
+                            <span>账户余额</span>
+                        </div>
+                        <div class="pay_textBox2 fl">
+                            支付&nbsp;<span>\{{vm.user.finance.balance | currency:'':2}}</span>&nbsp;元
+                        </div>
+                    </div>
+                    <div class="pay_text">
+                        <div class="pay_textBox fl">
+                            <img ng-src="\{{vm.BankNameList[vm.payBank].img}}">
+                        </div>
+                        <div class="pay_textBox2 fl">
+                            支付&nbsp;<span>\{{vm.pay_amount | currency:'':2}}</span>&nbsp;元
+                        </div>
+                    </div>
                 </div>
-                <a href="" class="rec2_btn" ng-click="vm.onlinePay()">确认付款</a>
-                <a href="" style="color: #000088" ng-click="vm.showPayConfirm = false">选择其他付款方式</a>
+                <div class="clear"></div>
             </div>
+            <a href="" class="rec2_btn pay_btn" ng-click="vm.onlinePay()">确认付款</a>
+            <a href="" class="pay_btn02" ng-click="vm.showPayConfirm = false">选择其他付款方式</a>
         </div>
     </div>
     <div class="column6">

@@ -11,6 +11,7 @@ angular.module('userApp2').controller('UserAccountCtrl2', ['$scope', '$filter', 
     vm.showVerifyEmailWindow = false;
     vm.showResetPasswordWindow = false;
     vm.passwordChangeSuccess = false;
+    vm.emailChangeSuccess = false;
     var cards = njCard.query({uid:vm.user._id}, function() {
         vm.card = cards.pop();
     });
@@ -49,26 +50,24 @@ angular.module('userApp2').controller('UserAccountCtrl2', ['$scope', '$filter', 
             addAlert('danger', '请输入有效的邮箱地址');
             return;
         }
+        if (!vm.verify_code) {
+            addAlert('danger', '请输入短信验证码');
+            return;
+        }
         if (vm.user.profile.email && vm.user.profile.email_verified && vm.user.profile.email == vm.user_email) {
             addAlert('danger', '该邮箱已经绑定');
             return;
         }
-        $http.post('/user/verify_email_by_sms', {email:vm.user.profile.email, verify_code:vm.verify_code})
+        $http.post('/user/verify_email_by_sms', {email:vm.user_email, verify_code:vm.verify_code})
             .success(function(data, status, headers, config) {
-                addAlert('success', '提现密码设置成功');
-                vm.user.finance.password = vm.finance_pass;
-                vm.confirm_finance_pass = '';
                 vm.verify_code = '';
-                resetUserInfoItem();
-                $timeout(function() {
-                    vm.currentCategory = vm.categories[0];
-                }, 2000);
+                vm.user.profile.email = vm.user_email;
+                vm.user.profile.email_verified = true;
+                vm.emailChangeSuccess = true;
             })
             .error(function(data, status, headers, config) {
                 addAlert('danger', data.error_msg);
             });
-        vm.user.profile.email = vm.user_email;
-        vm.user.profile.email_verified = false;
     };
 
     vm.verifyUserIdentity = function() {

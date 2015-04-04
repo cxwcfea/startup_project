@@ -76,42 +76,9 @@ input.LoginBtn01{
     margin-top: 0px;
 }
 
-#payConfirm {
-    border: none;
-    height: 220px;
-}
-
-.payConfirmLeft {
-    width: 180px;
-}
-
-.payConfirmRight {
-    width: 600px;
-}
-
-.payConfirmRight img {
-    border: 1px solid #e6e6e6;
-}
-
-.payConfirmRight .firstLine {
-    border-bottom: 1px solid #e6e6e6;
-}
-
-.payConfirmLeft .span02 {
-    margin-left: 20px;
-}
-
-.payConfirmRight .span02 {
-    margin-left: 50px;
-}
-
 #balanceTitle {
     margin-left: 20px;
     margin-right: 82px;
-}
-
-.payConfirmRight .rec2_btn {
-    margin: 20px 0 0 0;
 }
 
 .serviceBox{
@@ -120,49 +87,6 @@ input.LoginBtn01{
 
 .acc_tableBox2 th {
     text-align: inherit;
-}
-
-.tar_TccBox_email {
-    width: 480px;
-    height: 310px;
-    padding-bottom: 20px;
-    background: #fff;
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    margin:-115px 0 0 -240px ;
-    z-index: 11;
-}
-
-.tra_InputBox_email {
-    height: 35px;
-    line-height: 35px;
-    padding: 10px;
-}
-
-.tra_inputBtnBox_email {
-    padding-left: 135px;
-}
-
-.tra_InputBoxRight_email input.inputText {
-    width: 200px;
-    height: 29px;
-}
-
-.tar_TccBox_email .reg_img {
-    width: 64px;
-    height: 64px;
-    background: url(../images/img44.png);
-    margin: 80px 0px 0px 90px;
-}
-
-.tar_TccBox_email .newRec_Text {
-    width: 300px;
-    margin: 90px 0px 0px 25px;
-}
-
-.tar_TccBox_email .newrec_btn02 {
-    margin-top: 20px;
 }
 
 .full_deposit {

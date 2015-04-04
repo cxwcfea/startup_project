@@ -57,10 +57,6 @@ module.exports = function(app) {
 
     app.post('/apply/apply_postpone/:serial_id', passportConf.isAuthenticated, applies.postApplyPostpone);
 
-    app.get('/thank_you_for_pay', users.thankYouForPay);
-
-    app.post('/thank_you_for_pay', users.thankYouForPay);
-
     app.get('/free_apply', function(req, res, next) {
         res.locals.free_apply_menu = true;
         res.render('apply/free_apply');
