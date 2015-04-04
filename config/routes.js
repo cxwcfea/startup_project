@@ -165,7 +165,7 @@ module.exports = function(app) {
 
     app.post('/api/iapp_feedback', users.iappPayFeedback);
 
-    app.post('/api/shengpay_feedback', users.shengpayFeedback);
+    app.post('/api/shengpay_feedback', users.shengpayFeedback2);
 
     app.post('/api/add_forbidden_stock', function(req, res) {
         var data = req.body;

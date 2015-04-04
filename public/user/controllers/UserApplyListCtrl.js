@@ -11,7 +11,7 @@ angular.module('userApp2').controller('UserApplyListCtrl', ['$scope', '$location
     vm.showApplyAccount = null;
     vm.user_total_capital = vm.user.finance.balance + vm.user.finance.freeze_capital;
     vm.showAccountWindow = false;
-    vm.profit_rate = vm.user.finance.history_deposit ? (vm.user.finance.profit / vm.user.finance.history_deposit).toFixed(0) : 0;
+    vm.profit_rate = vm.user.finance.history_deposit ? (vm.user.finance.profit / vm.user.finance.history_deposit * 100).toFixed(0) : 0;
 
     var lang = new Array();
     var userAgent = navigator.userAgent.toLowerCase();
@@ -46,7 +46,7 @@ angular.module('userApp2').controller('UserApplyListCtrl', ['$scope', '$location
         vm.ongoing_apply_num = 0;
         apply_list = njApply.query({uid:vm.user._id}, function () {
             angular.forEach(apply_list, function(value, key) {
-                if (value.status != 1 && value.status != 3) {
+                if (value.status != 1) {
                     ++vm.ongoing_apply_num;
                 }
                 formatData(value);

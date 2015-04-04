@@ -13,8 +13,8 @@
                     <p class="p02"><span>\{{applyVM.user.finance.total_capital | currency:'':2 | integerNum}}</span>\{{applyVM.user.finance.total_capital | currency:'':2 | numTrunc}}</p>
                 </td>
                 <td width="205" valign="top">
-                    <p class="p01">配资总额</p>
-                    <p class="p02"><span>\{{applyVM.user.finance.total_capital | currency:'':2 | integerNum}}</span>\{{applyVM.user.finance.total_capital | currency:'':2 | numTrunc}}</p>
+                    <p class="p01">保证金</p>
+                    <p class="p02"><span>\{{applyVM.user.finance.deposit | currency:'':2 | integerNum}}</span>\{{applyVM.user.finance.deposit | currency:'':2 | numTrunc}}</p>
                 </td>
                 <td width="145" valign="top">
                     <p class="p01">盈亏</p>
@@ -62,13 +62,15 @@
                 </td>
                 <td>
                     <p class="p03">\{{item.start_date | displayShortDate}}</p>
-                    <p class="p04" ng-show="item.status !== 1 && item.status !== 4">累计\{{item.days_till_now}}天</p>
+                    <p class="p04" ng-show="item.status !== 1 && item.status !== 4 && item.status !== 3">累计\{{item.days_till_now}}天</p>
                     <p class="p04" ng-show="item.status === 1 || item.status === 4">预计开始时间</p>
+                    <p class="p04" ng-show="item.status === 3">已结束</p>
                 </td>
                 <td>
                     <p class="p03">\{{item.end_date | displayShortDate}}</p>
-                    <p class="p04" ng-show="item.status !== 1 && item.status !== 4">剩余\{{item.left_days}}天</p>
+                    <p class="p04" style="color: #e0322d;" ng-show="item.status !== 1 && item.status !== 4 && item.status !== 3">剩余\{{item.left_days}}天</p>
                     <p class="p04" ng-show="item.status === 1 || item.status === 4">预计结束时间</p>
+                    <p class="p04" ng-show="item.status === 3">已结束</p>
                 </td>
                 <td>
                     <p ng-class="{color_37c80b:item.status === 2, color_a40000:item.status === 4}">\{{item.status | applyStatus}}</p>

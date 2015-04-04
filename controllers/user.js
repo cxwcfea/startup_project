@@ -1248,10 +1248,27 @@ module.exports.shengpayFeedback = function(req, res, next) {
     res.send('OK');
 };
 
-module.exports.shengpayFeedback_auto_assign_homas = function(req, res, next) {
+module.exports.shengpayFeedback2 = function(req, res) {
     logger.debug('shengpayFeedback');
     logger.debug(req.body);
     var result = req.body;
+    if (!result) {
+        res.status(400);
+        return res.send({error_msg:'empty response'});
+    }
+
+    var origin = result.Name+result.Version+result.Charset+result.TraceNo+result.MsgSender+result.SendTime+
+        result.InstCode+result.OrderNo+result.OrderAmount+result.TransNo+result.TransAmount+
+        result.TransStatus+result.TransType+result.TransTime+result.MerchantNo+result.ErrorCode+
+        result.ErrorMsg+result.Ext1+result.SignType+'JDJhJDA1JHpMRVc3UkJLR202R2hhNHZzZllMYi5';
+    var sig = sparkMD5.hash(origin);
+    sig = sig.toUpperCase();
+    if (sig == result.SignMsg) {
+        logger.debug('shengpayFeedback sign equal');
+    } else {
+        logger.warn('shengpayFeedback md5 sign not equal. their sign:' + result.SignMsg + ' our sign:' + sig);
+    }
+
     if (result.TransStatus && result.TransStatus === '01') {
         async.waterfall([
             function(callback) {
@@ -1263,10 +1280,16 @@ module.exports.shengpayFeedback_auto_assign_homas = function(req, res, next) {
                 });
             },
             function(order, callback) {
-                if (order.status === 1) {
-                    callback('order already paid:' + order._id);
-                    return;
-                }
+                User.findById(order.userID, function (err, user) {
+                    if (!err && !user) {
+                        err = 'can not find user:' + order.userID;
+                    }
+                    callback(err, user, order);
+                });
+            },
+            function(user, order, callback) {
+                order.payType = 1;
+                order.transID = result.TransNo;
                 var pay_amount = Number(result.TransAmount);
                 if (pay_amount <= 0) {
                     callback('pay_amount not valid:' + pay_amount);
@@ -1276,119 +1299,36 @@ module.exports.shengpayFeedback_auto_assign_homas = function(req, res, next) {
                     callback('pay_amount not match order\'s amount: ' + order.amount + ' vs ' + pay_amount);
                     return;
                 }
-                order.status = 1;
-                order.payType = 1;
-                order.transID = result.TransNo;
-                order.save(function (err) {
-                    callback(err, order, pay_amount);
+                util.orderFinished(user, order, 1, function(err) {
+                    logger.debug('shengpayFeedback success update user:' + user._id + ' and order:' + order._id);
+                    callback(err, user, order);
                 });
             },
-            function(order, pay_amount, callback) {
-                logger.info("pay success for order:" + order._id + " by " + pay_amount);
-                User.findById(order.userID, function(err, user) {
-                    if (!err && !user) {
-                        err = 'can not find user:' + order.userID;
-                    }
-                    callback(err, user, order, pay_amount);
-                });
-            },
-            function(user, order, pay_amount, callback) {
-                user.finance.balance += pay_amount;
-                user.save(function(err) {
-                    callback(err, user, order, pay_amount);
-                });
-            },
-            function(user, order, pay_amount, callback) {
-                logger.debug('shengpayFeedback success update user:' + user._id + ' and order:' + order._id);
+            function(user, order, callback) {
                 if (order.applySerialID) {
                     logger.info('shengpayFeedback pay apply');
-                    callback(null, true, user, order.applySerialID, pay_amount);
-                } else {
-                    callback(null, false, null, null, null);
-                }
-            },
-            function(working, user, apply_serial_id, pay_amount, callback) {
-                if (working) {
-                    Apply.findOne({serialID: apply_serial_id}, function(err, apply) {
+                    Apply.findOne({serialID:order.applySerialID}, function(err, apply) {
                         if (!err && !apply) {
-                            err = 'can not found apply when pay apply:' + apply_serial_id;
+                            err = 'can not found apply when pay apply:' + order.applySerialID;
                         }
-                        callback(err, true, user, apply, pay_amount);
+                        callback(err, user, apply);
                     });
                 } else {
-                    callback(null, false, null, null, null);
+                    callback(null, user, null);
                 }
             },
-            function(working, user, apply, pay_amount, callback) {
-                if (working) {
-                    if (apply.status === 1) {
-                        var serviceFee = apply.amount / 10000 * config.serviceCharge * apply.period;
-                        var total = Number((apply.deposit + serviceFee).toFixed(2));
-                        var user_balance = Number(user.finance.balance.toFixed(2));
-                        if (user_balance < total) {
-                            callback('no enough balance to pay apply:' + apply.serialID);
-                        } else {
-                            apply.status = 4;
-                            Homas.findOne({using:false}, function(err, homas) {
-                                if (!err && !homas) {
-                                    err = 'failed to assign homas account to apply:' + apply.serialID;
-                                }
-                                callback(err, true, user, apply, homas, total);
-                            });
-                        }
-                    } else if (apply.status === 2) { // in this case (apply in process, order pay for it), it means the order is for add deposit
-                        user.finance.balance -= pay_amount;
-                        user.finance.deposit += pay_amount;
-                        user.save(function(err) {
-                            callback(err, false, null, null, null, null);
-                        });
-                    }
-                } else {
-                    callback(null, false, null, null, null, null);
-                }
-            },
-            function(working, user, apply, homas, total, callback) {
-                if (working) {
-                    homas.using = true;
-                    homas.assignAt = Date.now();
-                    homas.applySerialID = apply.serialID;
-                    homas.save(function(err) {
-                        callback(err, true, user, apply, homas, total);
-                    });
-                } else {
-                    callback(null, false, user, apply, homas, total);
-                }
-            },
-            function(working, user, apply, homas, total, callback) {
-                if (working) {
-                    apply.status = 2;
-                    apply.account = homas.account;
-                    apply.password = homas.password;
-                    var startDay = util.getStartDay();
-                    apply.startTime = startDay.toDate();
-                    apply.endTime = util.getEndDay(startDay, apply.period).toDate();
-                    apply.save(function (err) {
-                        callback(err, true, user, total, apply);
-                    });
-                } else {
-                    callback(null, false, user, total, apply);
-                }
-            },
-            function(working, user, total, apply, callback) {
-                if (working) {
-                    user.finance.balance -= total;
-                    user.finance.deposit += apply.deposit;
-                    user.finance.total_capital += apply.amount;
-                    user.save(function (err) {
-                        callback(err, 'success pay apply');
-                    });
+            function(user, apply, callback) {
+                if (apply) {
+                    util.applyConfirmed(user, apply, function(err) {
+                        callback(err, 'success pay for apply');
+                    })
                 } else {
                     callback(null, 'done');
                 }
             }
         ], function(err, result) {
             if (err) {
-                logger.error('shengpayFeedback error:' + err.toString());
+                logger.warn('shengpayFeedback error:' + err.toString());
             } else {
                 logger.info('shengpayFeedback result:'+result);
             }
@@ -1916,3 +1856,4 @@ module.exports.payByBalance2 = function(req, res, next) {
         res.send({});
     });
 };
+
