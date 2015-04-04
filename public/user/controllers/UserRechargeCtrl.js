@@ -30,6 +30,7 @@ angular.module('userApp').controller('UserRechargeCtrl', ['$scope', '$window', '
     vm.bankObj = vm.BankNameList[0];
     vm.payBank = -1;
     vm.alipayConfirm = false;
+    vm.smsSend = false;
     if (vm.user.lastPayBank >= 0) {
         vm.payBank = vm.user.lastPayBank;
     } else {
@@ -104,6 +105,11 @@ angular.module('userApp').controller('UserRechargeCtrl', ['$scope', '$window', '
     };
 
     vm.sendSMSBankInfo = function() {
+        addAlert('success', '信息已发送，请勿重复点击');
+        if (vm.smsSend) {
+            return;
+        }
+        vm.smsSend = true;
         var info = '户名：北京小牛普惠科技有限公司，账号：110912609510501，开户行：招商银行股份有限公司北京清华园支行';
         $http.post('/api/send_sms', {sms_content:info})
             .success(function(data, status, headers, config) {
@@ -154,6 +160,7 @@ angular.module('userApp').controller('UserRechargeCtrl', ['$scope', '$window', '
     };
 
     vm.closeOtherWindow = function () {
+        vm.smsSend = false;
         vm.showAlipayWindow = false;
         vm.showBankTransWindow = false;
         vm.alipayConfirm = false;

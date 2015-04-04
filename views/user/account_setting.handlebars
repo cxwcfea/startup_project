@@ -23,7 +23,7 @@
                 <span class="span01"><img ng-src="\{{accountVM.BankNameList[accountVM.card.bankID].img}}"></span>
                 <span class="color_666666 fontSize12">尾号 \{{accountVM.card | displayCard2}}</span>
             </p>
-            <a href="/user2/#/add_card" class="color_2489f0 a01">修改银行卡</a>
+            <a href="/user/#/add_card" class="color_2489f0 a01">修改银行卡</a>
         </div>
     </div>
     <div class="clear"></div>
@@ -46,7 +46,7 @@
     <div class="tar_TccBox">
         <div class="regColumn">
             绑定邮箱
-            <div class="loginClose jq_loginClose" ng-click="accountVM.showVerifyEmailWindow = false"></div>
+            <div class="loginClose jq_loginClose" ng-click="accountVM.closeEmailWindow()"></div>
         </div>
         <div class="pass_Box jq_email1" ng-hide="accountVM.emailChangeSuccess">
             <div class=" pass_formBox">
@@ -54,8 +54,8 @@
                     电子邮箱
                 </div>
                 <div class="pass_right fl">
-                    <input type="text" class="newcar_inputText pass_inputText" ng-model="accountVM.user_email" required>
-                    <span class="color_999999">请输入登陆密码</span>
+                    <input type="email" class="newcar_inputText pass_inputText" ng-model="accountVM.user_email" required>
+                    <span class="color_999999">请输入电子邮箱地址</span>
                 </div>
             </div>
             <div class=" pass_formBox">
@@ -74,7 +74,7 @@
             <div class="pass_img fl"></div>
             <div class="pass_text fl">
                 <p class="p01">邮箱绑定成功！</p>
-                <a class="newrec_btn02 " href="" ng-click="accountVM.emailChangeSuccess = false; accountVM.showVerifyEmailWindow = false">确   定</a>
+                <a class="newrec_btn02 " href="" ng-click="accountVM.closeEmailWindow()">确   定</a>
             </div>
             <div class="clear"></div>
         </div>
@@ -86,7 +86,7 @@
     <div class="tar_TccBox">
         <div class="regColumn">
             修改登陆密码
-            <div class="loginClose jq_loginClose" ng-click="accountVM.showResetPasswordWindow = false; accountVM.passwordChangeSuccess = false"></div>
+            <div class="loginClose jq_loginClose" ng-click="accountVM.closePassWindow()"></div>
         </div>
         <div class="pass_Box jq_pass_Box" ng-hide="accountVM.passwordChangeSuccess">
             <div class=" pass_formBox">
@@ -121,7 +121,7 @@
             <div class="pass_img fl"></div>
             <div class="pass_text fl">
                 <p class="p01">登陆密码修改成功！</p>
-                <a class="newrec_btn02 " href="" ng-click="accountVM.showResetPasswordWindow = false; accountVM.passwordChangeSuccess = false">确   定</a>
+                <a class="newrec_btn02 " href="" ng-click="accountVM.closePassWindow()">确   定</a>
             </div>
             <div class="clear"></div>
         </div>

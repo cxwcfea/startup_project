@@ -70,28 +70,6 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
             });
     };
 
-    vm.verifyUserIdentity = function() {
-        if (!vm.identity_name || !vm.identity_id) {
-            addAlert('danger', '请输入有效的姓名及身份证号');
-            return;
-        }
-        if (vm.identity_name.length > 8) {
-            addAlert('danger', '您输入的姓名太长，请重新输入');
-            return;
-        }
-        vm.user.identity.name = vm.identity_name;
-        vm.user.identity.id = vm.identity_id;
-        $http.post('/api/user/' + vm.user._id, vm.user)
-            .success(function(data, status) {
-                vm.user = data;
-                addAlert('success', '实名认证成功');
-                resetUserInfoItem();
-            })
-            .error(function(data, status) {
-                addAlert('danger', '实名认证出错,请稍后再试');
-            });
-    };
-
     vm.getVerifyCode = function() {
         console.log('getVerifyCode ' + verifyBtnDisabled);
         if (verifyBtnDisabled) {
@@ -119,6 +97,28 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
             });
     };
 
+    /*
+     vm.verifyUserIdentity = function() {
+     if (!vm.identity_name || !vm.identity_id) {
+     addAlert('danger', '请输入有效的姓名及身份证号');
+     return;
+     }
+     if (vm.identity_name.length > 8) {
+     addAlert('danger', '您输入的姓名太长，请重新输入');
+     return;
+     }
+     vm.user.identity.name = vm.identity_name;
+     vm.user.identity.id = vm.identity_id;
+     $http.post('/api/user/' + vm.user._id, vm.user)
+     .success(function(data, status) {
+     vm.user = data;
+     addAlert('success', '实名认证成功');
+     resetUserInfoItem();
+     })
+     .error(function(data, status) {
+     addAlert('danger', '实名认证出错,请稍后再试');
+     });
+     };
     vm.setFinancePassword = function() {
         if (!vm.finance_pass || !vm.confirm_finance_pass || !vm.verify_code) {
             addAlert('danger', '请确保各项输入正确');
@@ -170,6 +170,7 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
                 addAlert('danger', '设置邮箱时出错,请稍后再试');
             });
     };
+    */
 
     vm.changePassword = function() {
         if (!vm.password) {
@@ -206,4 +207,21 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
                 addAlert('danger', data.error_msg);
             });
     };
+
+    vm.closePassWindow = function() {
+        vm.alerts = [];
+        vm.showResetPasswordWindow = false;
+        vm.passwordChangeSuccess = false;
+        vm.password = '';
+        vm.new_password = '';
+        vm.confirm_password = '';
+    };
+
+    vm.closeEmailWindow = function() {
+        vm.alerts = [];
+        vm.showVerifyEmailWindow = false;
+        vm.emailChangeSuccess = false;
+        vm.user_email = '';
+        vm.verify_code = '';
+    }
 }]);

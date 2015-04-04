@@ -23,49 +23,6 @@ exports.getAppliesForUser = function(req, res, next) {
     });
 };
 
-/*
-exports.confirmApply = function(req, res, next) {
-    res.locals.apply_menu = true;
-    Apply.findOne({serialID:req.params.id}, function(err, collection) {
-        if (err) {
-            next();
-        }
-        var serviceFee = collection.amount / 10000 * config.serviceCharge * collection.period;
-        var total = collection.deposit + serviceFee;
-        var shouldPay = total - req.user.finance.balance;
-        res.locals.applySummary = {
-            amount: collection.amount.toFixed(2),
-            deposit: collection.deposit.toFixed(2),
-            charge: serviceFee.toFixed(2),
-            total: total.toFixed(2),
-            balance: req.user.finance.balance.toFixed(2),
-            shouldPay: shouldPay.toFixed(2),
-            serialID: collection.serialID,
-            applyID: collection._id
-        };
-        res.locals.shengOrderTime = moment().format("YYYYMMDDHHmmss");
-
-        if (shouldPay <= 0) {
-            res.locals.applySummary.useBalance = true;
-        }
-
-        if (collection.orderID) {
-            Order.findById(collection.orderID, function(err, order) {
-                if (order && shouldPay === order.amount) {
-                    res.locals.applySummary.orderID = order._id;
-                    if (order.transID) {
-                        res.locals.applySummary.transID = order.transID;
-                    }
-                }
-                res.render('apply_confirm');
-            });
-        } else {
-            res.render('apply_confirm');
-        }
-    });
-};
-*/
-
 exports.getApplyDetail = function (req, res, next) {
     Apply.findOne({serialID:req.params.id}, function(err, apply) {
         if (err || !apply) {
@@ -117,7 +74,7 @@ exports.getApplyDetail = function (req, res, next) {
         res.locals.apply_password = apply.password;
         res.locals.apply_detail = true;
         res.locals.apply_isTrial = apply.isTrial;
-        res.render('user/apply_detail2');
+        res.render('user/apply_detail');
     });
 };
 

@@ -54,6 +54,7 @@
             $(".jq_rec2_yhBox").toggleClass("rec2_yhBoxSelected");
             $(".jq_rec2_yhkList").slideToggle(200);
         }
+        vm.smsSend = false;
 
         vm.payTypes = [
             {
@@ -122,6 +123,12 @@
         };
 
         vm.sendSMSBankInfo = function() {
+            addAlert('success', '信息已发送，请勿重复点击');
+            if (vm.smsSend) {
+                return;
+            }
+            vm.smsSend = true;
+
             var info = '户名：北京小牛普惠科技有限公司，账号：110912609510501，开户行：招商银行股份有限公司北京清华园支行';
             $http.post('/api/send_sms', {sms_content:info})
                 .success(function(data, status, headers, config) {
@@ -161,6 +168,8 @@
         };
 
         vm.closeOtherWindow = function () {
+            vm.alerts = [];
+            vm.smsSend = false;
             vm.showAlipayWindow = false;
             vm.showBankTransWindow = false;
             vm.alipayConfirm = false;

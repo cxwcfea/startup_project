@@ -507,27 +507,27 @@
             credit: true,
             value: 15
         },
-        /*
-        {
-            name: '杭州银行',
-            img: '/images/yh/hzyh.png',
-            value: 16
-        },
-        */
         {
             name: '宁波银行',
             img: '/images/yh/nbcb.png',
             instCode: 'NBCB',
             credit: false,
-            value: 17
+            value: 16
         },
         {
             name: '上海银行',
             img: '/images/yh/bos.png',
             instCode: 'BOS',
             credit: true,
-            value: 18
-        }
+            value: 17
+        },
+        /*
+         {
+         name: '杭州银行',
+         img: '/images/yh/hzyh.png',
+         value: 16
+         }
+         */
     ]);
 
     angular.module('commonApp').factory('njUser', ['$resource', function($resource) {

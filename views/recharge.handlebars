@@ -60,7 +60,6 @@
             <div class="rec2_zfBox">
                 <div class="fl rec2_zfBoxName">其他支付</div>
                 <div class="fl" id="yhkList">
-                    <a href=""  ng-click="vm.selectPayType(0)" style="display: none;">网银支付</a>
                     <a href="" ng-click="vm.selectPayType(1)">支付宝</a>
                     <a href="" ng-click="vm.selectPayType(2)">转账汇款</a>
                 </div>
@@ -224,7 +223,7 @@
         </div>
     </div>
 
-    <div class="regTcc jq_recTcc newRec_zzhkTcc" ng-show="vm.showBankTransWindow">
+    <div class="regTcc newRec_zzhkTcc" ng-show="vm.showBankTransWindow">
         <div class="tmbg"></div>
         <div class="tar_TccBox newReczfb_TccBox">
             <div class="regColumn">
@@ -252,6 +251,7 @@
                         </tr>
                     </table>
                 </div>
+                <alert ng-show="vm.showBankTransWindow" ng-repeat="alert in vm.alerts" type="\{{alert.type}}" close="vm.closeAlert($index)">\{{alert.msg}}</alert>
                 <p class="newrec_P04">将转账相关信息 <a href="" ng-click="vm.sendSMSBankInfo()">发送到手机</a></p>
                 <p class="newrec_P04" style="color: red">请将您的注册手机号作为转账附加信息，方便客服人员确认！</p>
             </div>

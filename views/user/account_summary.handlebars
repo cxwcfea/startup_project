@@ -103,7 +103,7 @@
                     </th>
                 </tr>
                 <tr ng-repeat="apply in homeVM.currentApplies | orderBy:'applyAt':true | limitTo:2">
-                    <td>\{{apply.startDate | displayDate}}</td>
+                    <td>\{{apply.applyAt | displayDate}}</td>
                     <td>\{{apply.serialID}}</td>
                     <td>\{{apply.deposit | currency:'':2}}</td>
                     <td>\{{apply.amount | currency:'':2}}</td>

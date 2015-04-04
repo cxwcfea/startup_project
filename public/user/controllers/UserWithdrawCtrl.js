@@ -5,9 +5,11 @@ angular.module('userApp').controller('UserWithdrawCtrl', ['$scope', '$http', '$w
     $scope.data.menu = 3;
     vm.step = 1;
     vm.user = $scope.data.currentUser;
-    vm.cards = njCard.query({uid:vm.user._id}, function() {
-        if (vm.cards.length === 0) {
+    var cards = njCard.query({uid:vm.user._id}, function() {
+        if (cards.length === 0) {
             $location.path('/add_card');
+        } else {
+            vm.card = cards.pop();
         }
     });
 
@@ -28,7 +30,7 @@ angular.module('userApp').controller('UserWithdrawCtrl', ['$scope', '$http', '$w
     vm.deleteCard = function(card) {
         $http.post('/api/delete/card/' + card._id, {card: card})
             .success(function(data, status) {
-                _.remove(vm.cards, function(c) {
+                _.remove(cards, function(c) {
                     return c._id === card._id;
                 });
             })
@@ -63,12 +65,12 @@ angular.module('userApp').controller('UserWithdrawCtrl', ['$scope', '$http', '$w
                 amount: vm.withdrawAmount,
                 description: '余额提现',
                 cardInfo: {
-                    bank: BankNameList[vm.cards[0].bankID].name,
-                    bankName: vm.cards[0].bankName,
-                    cardID: vm.cards[0].cardID,
-                    province: vm.cards[0].province,
-                    city: vm.cards[0].city,
-                    userName: vm.cards[0].userName
+                    bank: BankNameList[vm.card.bankID].name,
+                    bankName: vm.card.bankName,
+                    cardID: vm.card.cardID,
+                    province: vm.card.province,
+                    city: vm.card.city,
+                    userName: vm.card.userName
                 }
             };
             var data = {
