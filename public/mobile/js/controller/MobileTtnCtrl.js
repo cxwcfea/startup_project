@@ -117,6 +117,7 @@ angular.module('mobileApp').controller('MobileTtnCtrl', ['$scope', '$window', '$
             })
             .error(function(data, status, headers, config) {
                 if (status === 401) {
+                    $scope.data.lastLocation = '/ttn';
                     $location.path('/login');
                 } else {
                     console.log(data.error_msg);

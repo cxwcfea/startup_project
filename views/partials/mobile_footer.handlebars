@@ -3,7 +3,7 @@
     <nav class="nav-box">
         <ul>
             <li class="home">
-                <a href="/mobile" class="current">首页</a>
+                <a href="/mobile" ng-class="{current:vm.menu === 1}">首页</a>
             </li>
             <li class="ttn">
                 <a href="/mobile/#/ttn">天天牛</a>
@@ -12,7 +12,7 @@
                 <a href="/mobile/#/exp">免费体验</a>
             </li>
             <li class="user">
-                <a href="/mobile/#/user">我的帐户</a>
+                <a href="/mobile/#/user" ng-class="{current:vm.menu === 4}">我的帐户</a>
             </li>
         </ul>
     </nav>

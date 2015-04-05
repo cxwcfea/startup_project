@@ -40,8 +40,12 @@ passport.deserializeUser(function(id, done) {
  */
 module.exports.isAuthenticated = function(req, res, next) {
     if (req.isAuthenticated()) return next();
-    req.session.lastLocation = req.url;
-    res.redirect('/login');
+    if (req.url.search('/mobile') > -1) {
+        res.redirect('/mobile/#/login');
+    } else {
+        req.session.lastLocation = req.url;
+        res.redirect('/login');
+    }
 };
 
 module.exports.requiresRole = function(role) {

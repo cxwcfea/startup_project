@@ -8,6 +8,8 @@ angular.module('mobileApp').controller('MobileUserCtrl', ['$scope', '$window', '
         $location.path('/login');
     }
 
+    vm.menu = 4;
+
     vm.logout = function() {
         $http.post('/logout', {})
             .success(function(data, status) {
