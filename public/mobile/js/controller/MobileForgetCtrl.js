@@ -1,5 +1,5 @@
 'use strict';
-angular.module('mobileApp').controller('MobileForgetCtrl', ['$window', '$timeout', '$interval', '$http', function($window, $timeout, $interval, $http) {
+angular.module('mobileApp').controller('MobileForgetCtrl', ['$location', '$timeout', '$interval', '$http', function($location, $timeout, $interval, $http) {
     var vm = this;
 
     vm.showPass = false;
@@ -84,6 +84,9 @@ angular.module('mobileApp').controller('MobileForgetCtrl', ['$window', '$timeout
                 vm.verify_code = '';
                 vm.password = '';
                 vm.confirm_password = '';
+                $timeout(function() {
+                   $location.path('/');
+                }, 2000);
             })
             .error(function(data, status, headers, config) {
                 vm.signupError = true;
