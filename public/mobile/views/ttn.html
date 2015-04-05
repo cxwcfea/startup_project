@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, minimal-ui" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="牛金网" />
+    <meta name="keywords" content="牛金网"/>
+    <meta http-equiv="cleartype" content="on" />
+
+    <title>牛金网 天天牛</title>
+    <!-- build:css css/styles.css -->
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/pages.css">
+    <!-- endbuild -->
+</head>
+
+<body>
+    <!--#S header-->
+    <header id="header">
+        <div class="header-box">
+            <h1>天天牛</h1>
+            <a class="back" href="index.html"></a>
+            <a href="#" class="f-pr">规则说明</a>
+        </div>
+    </header><!--#E header-->
+
+    <div class="slogan-bd ttn-slogan">
+        <div class="line"></div>
+        <div class="pic">
+            <img src="../images/ttn-slogan.png" width="146" alt="按天配资,十倍资金,3步配资">
+        </div>
+    </div>
+
+    <div class="ttn-box">
+        <h3>申请实盘资金</h3>
+        <div class="money-select">
+            <ul class="money-options" id="J_money">
+                <li class="current" data-num="2000">2000</li>
+                <li data-num="10000">1万</li>
+                <li data-num="20000">2万</li>
+                <li data-num="30000">3万</li>
+                <li data-num="50000">5万</li>
+                <li data-num="100000">10万</li>
+                <li data-num="200000">20万</li>
+                <li data-num="300000">30万</li>
+                <li data-num="">其他金额</li>
+            </ul>
+            <div class="other-number hide" id="J_other">
+                <form class="money-form" id="J_moneyform">
+                    <input type="number" id="J_custNum" class="ipt-txt" placeholder="金额2000-300000元" maxlength="6" />
+                    <button type="submit" disabled="disabled" id="J_submit" class="submit-btn">确定</button>
+                    <p class="return">
+                        <a href="javascript:;" id="J_back">返回</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+        <div class="ttn-notice">
+            <em>操盘须知：</em>投资沪深A股，仓位不限
+        </div>
+        <div class="ttn-fee">
+            <p><span class="icon"></span>预付保证金 <strong id="J_bond">200</strong> 元</p>
+            <p><span class="free">（按天收取，周末节假日免费）</span>账户管理费 <em id="J_fee">3.98</em>元/天</p>
+        </div>
+        <div class="ttn-warn">
+            <div class="number">
+                <p>总操盘资金 <em id="J_total">2000</em> 元</p>
+                <p>亏损警戒线 <strong id="J_warn">1920</strong> 元</p>
+                <p>亏损平仓线 <strong id="J_out">1880</strong> 元</p>
+            </div>
+            <div class="icon"></div>
+        </div>
+    </div>
+
+    <!--#S footer-->
+    <footer id="footer">
+        <a href="ttn_confirm.html?money=2000" class="ft-btn" data-num="2000" id="J_2confirm">立即操盘</a>
+    </footer><!--#E wrapper-->
+
+    <!-- build:js js/script.js -->
+    <script src="../js/lib/zepto.min.js"></script>
+    <script src="../js/script.js"></script>
+    <!-- endbuild -->
+</body>
+</html>

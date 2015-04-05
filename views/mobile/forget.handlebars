@@ -1,0 +1,39 @@
+<!--#S header-->
+<header id="header">
+    <div class="header-box">
+        <h1>找回密码</h1>
+        <a class="back" href="/mobile"></a>
+    </div>
+</header><!--#E header-->
+
+<div class="form-box">
+    <form id="J_forgetForm" name="forgetForm" novalidate>
+        <div ng-hide="vm.nextStep">
+            <div class="form-item">
+                <input type="tel" class="inputText" name="mobile" id="J_forgetMobile" ng-model="vm.mobile" placeholder="请输入注册手机号" pattern="1[3|5|7|8|][0-9]{9}" autofocus required>
+            </div>
+            <div class="verify-ipt">
+                <input type="text" name="verify" class="ipt-txt" id="J_forgetVerify" ng-model="vm.verify_code" placeholder="请输入短信验证码" required>
+                <a ng-class="{disabled:vm.verifyBtnDisabled}" href="" class="get-verify forget-verify" id="J_signupGetVerify" ng-click="vm.requestVerifyCode()">\{{vm.verifyCodeBtnText}}</a>
+            </div>
+            <button type="submit" class="submit-btn" ng-click="vm.requestChangePassNext()">下一步</button>
+        </div>
+        <div ng-show="vm.nextStep">
+            <div class="form-item">
+                <input name="password" id="J_forgetSetPassword" type="password" placeholder="设置新密码" minlength="6" maxlength="20" ng-model="vm.password" required>
+                <label class="ui-switch">
+                    <input type="checkbox" id="J_forgetSetCheckbox" ng-model="vm.showPass" ng-change="vm.toggleShowPassword()">
+                    <i></i>
+                </label>
+            </div>
+            <button type="submit" class="submit-btn" ng-click="vm.requestChangePass()">重置密码</button>
+        </div>
+    </form>
+</div>
+
+<div class="ui-tip" id="J_forgetTip" ng-show="vm.signupError">\{{vm.errorMsg}}</div>
+
+<div class="ui-tip-success" id="J_forgetSetTip" ng-show="vm.resetSuccess">
+    <div class="icon"></div>
+    密码设置成功，请牢记哟！
+</div>

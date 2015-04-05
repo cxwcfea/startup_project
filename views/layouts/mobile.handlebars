@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html ng-app="mobileApp">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, minimal-ui" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="牛金网" />
+    <meta name="keywords" content="牛金网"/>
+    <meta http-equiv="cleartype" content="on" />
+
+    <title>牛金网</title>
+    <!-- build:css css/styles.css -->
+    <link rel="stylesheet" href="{{static '/mobile/css/reset.css'}}">
+    <link rel="stylesheet" href="{{static '/mobile/css/base.css'}}">
+    <link rel="stylesheet" href="{{static '/mobile/css/common.css'}}">
+    <link rel="stylesheet" href="{{static '/mobile/css/pages.css'}}">
+    <!-- endbuild -->
+    <script src="{{static '/vendor/jquery/dist/jquery.min.js'}}"></script>
+    <script src="{{static '/vendor/angular/angular.min.js'}}"></script>
+</head>
+
+<body ng-controller="MobileIndexCtrl as indexVM">
+
+{{#if bootstrappedUserObject}}
+    <script> window.bootstrappedUserObject = {{{bootstrappedUserObject}}} </script>
+{{/if}}
+{{{body}}}
+
+<!-- build:js js/script.js -->
+<script src="{{static '/mobile/js/lib/zepto.min.js'}}"></script>
+<script src="{{static '/mobile/js/script.js'}}"></script>
+<!-- endbuild -->
+<script src="{{static '/vendor/moment/min/moment.min.js'}}"></script>
+<script src="{{static '/vendor/moment/min/locales.min.js'}}"></script>
+<script src="{{static '/vendor/toastr/toastr.min.js'}}"></script>
+<script src="{{static '/vendor/angular-route/angular-route.min.js'}}"></script>
+<script src="{{static '/vendor/angular-resource/angular-resource.min.js'}}"></script>
+<script src="{{static '/js/common_module.js'}}"></script>
+<script src="{{static '/mobile/js/mobile.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobileIndexCtrl.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobileHomeCtrl.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobileLoginCtrl.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobileSignupCtrl.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobileTtnCtrl.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobileTtnConfirmCtrl.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobileForgetCtrl.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobileUserCtrl.js'}}"></script>
+</body>
+</html>

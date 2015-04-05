@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, minimal-ui" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="牛金网" />
+    <meta name="keywords" content="牛金网"/>
+    <meta http-equiv="cleartype" content="on" />
+
+    <title>牛金网 登录</title>
+    <!-- build:css css/styles.css -->
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/pages.css">
+    <!-- endbuild -->
+</head>
+
+<body>
+    <!--#S header-->
+    <header id="header">
+        <div class="header-box">
+            <h1>登录</h1>
+            <a class="back" href="index.html"></a>
+        </div>
+    </header><!--#E header-->
+
+    <div class="login-box">
+        <form action="">
+            <div class="form-item">
+                <label for="mobile">账号</label><input id="mobile" name="mobile" type="text" placeholder="请输入手机号">
+            </div>
+            <div class="form-item">
+                <label for="password">密码</label>
+                <input id="password" name="password" type="password" placeholder="请输入密码">
+            </div>
+            <p><a href="forget.html">忘记密码？</a></p>
+            <button type="submit" class="submit-btn">登录</button>
+        </form>
+
+        <a href="signup.html" class="signup-btn">免费注册</a>
+    </div>
+
+    <!-- build:js js/script.js -->
+    <script src="../js/lib/zepto.min.js"></script>
+    <script src="../js/script.js"></script>
+    <!-- endbuild -->
+</body>
+</html>

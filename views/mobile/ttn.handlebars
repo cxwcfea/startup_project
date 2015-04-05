@@ -1,0 +1,66 @@
+<!--#S header-->
+<header id="header">
+    <div class="header-box">
+        <h1>天天牛</h1>
+        <a class="back" href="/mobile"></a>
+        <a href="#" class="f-pr">规则说明</a>
+    </div>
+</header><!--#E header-->
+
+<div class="slogan-bd ttn-slogan">
+    <div class="line"></div>
+    <div class="pic">
+        <img src="/mobile/images/ttn-slogan.png" width="146" alt="按天配资,十倍资金,3步配资">
+    </div>
+</div>
+
+<div class="ttn-box">
+    <h3>申请实盘资金</h3>
+    <div class="money-select">
+        <ul class="money-options" id="J_money" ng-hide="vm.showOtherAmount">
+            <li ng-repeat="item in vm.amountList" ng-class="{current: item.select}" ng-click="vm.selectAmount(item)">
+                \{{item.name}}
+            </li>
+            <!--
+            <li class="current" data-num="2000">2000</li>
+            <li data-num="10000">1万</li>
+            <li data-num="20000">2万</li>
+            <li data-num="30000">3万</li>
+            <li data-num="50000">5万</li>
+            <li data-num="100000">10万</li>
+            <li data-num="200000">20万</li>
+            <li data-num="300000">30万</li>
+            -->
+            <li data-num="" ng-click="vm.toggleOtherAmount()">其他金额</li>
+        </ul>
+        <div class="other-number" id="J_other" ng-show="vm.showOtherAmount">
+            <form class="money-form" id="J_moneyform" name="moneyForm">
+                <input type="number" id="J_custNum" class="ipt-txt" name="apply_money" placeholder="申请资金须在2000元至30万元之间" min="2000" max="300000" step="1000" ng-model="vm.otherAmount" ng-change="vm.finishOtherAmount()" required>
+                <button type="submit" ng-disabled="moneyForm.$invalid" id="J_submit" class="submit-btn" ng-click="vm.submitApply()">确定</button>
+                <p class="return">
+                    <a href="" id="J_back" ng-click="vm.toggleOtherAmount()">返回</a>
+                </p>
+            </form>
+        </div>
+    </div>
+    <div class="ttn-notice">
+        <em>操盘须知：</em>投资沪深A股，仓位不限
+    </div>
+    <div class="ttn-fee">
+        <p><span class="icon"></span>预付保证金 <strong id="J_bond">\{{vm.summary.deposit | currency:'':2}}</strong> 元</p>
+        <p><span class="free">（按天收取，周末节假日免费）</span>账户管理费 <em id="J_fee">\{{vm.summary.charge | currency:'':2}}</em>元/天</p>
+    </div>
+    <div class="ttn-warn">
+        <div class="number">
+            <p>总操盘资金 <em id="J_total">\{{vm.summary.amount | currency:'':2}}</em> 元</p>
+            <p>警戒线 <strong id="J_warn">\{{vm.summary.warnValue | currency:'':2}}</strong> 元</p>
+            <p>平仓线 <strong id="J_out">\{{vm.summary.sellValue | currency:'':2}}</strong> 元</p>
+        </div>
+        <div class="icon"></div>
+    </div>
+</div>
+
+<!--#S footer-->
+<footer id="footer">
+    <a href="" class="ft-btn" id="J_2confirm" ng-click="vm.submitApply()">立即操盘</a>
+</footer><!--#E wrapper-->

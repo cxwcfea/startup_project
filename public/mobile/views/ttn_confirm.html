@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, minimal-ui" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="牛金网" />
+    <meta name="keywords" content="牛金网"/>
+    <meta http-equiv="cleartype" content="on" />
+
+    <title>牛金网 天天牛</title>
+    <!-- build:css css/styles.css -->
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/pages.css">
+    <!-- endbuild -->
+</head>
+
+<body>
+    <!--#S header-->
+    <header id="header">
+        <div class="header-box">
+            <h1>天天牛</h1>
+            <a class="back" href="index.html"></a>
+        </div>
+    </header><!--#E header-->
+
+    <div class="ttn-confirm-box">
+        <ul class="fee-item">
+            <li class="fee-item-bond">
+                支付风险保证金
+                <span>
+                    <em id="J_confirmBond">200.00</em>元
+                </span>
+            </li>
+            <li>
+                <p>预存账户管理费</p>
+                <div class="sel-box">
+                    <select class="ui-sel" id="J_useDay">
+                        <option value="2" selected="selected">2天</option>
+                        <option value="3">3天</option>
+                        <option value="4">4天</option>
+                        <option value="5">5天</option>
+                        <option value="6">6天</option>
+                        <option value="7">7天</option>
+                        <option value="8">8天</option>
+                        <option value="9">9天</option>
+                        <option value="10">10天</option>
+                        <option value="11">11天</option>
+                        <option value="12">12天</option>
+                        <option value="13">13天</option>
+                        <option value="14">14天</option>
+                        <option value="15">15天</option>
+                        <option value="16">16天</option>
+                        <option value="17">17天</option>
+                        <option value="18">18天</option>
+                        <option value="19">19天</option>
+                        <option value="20">20天</option>
+                    </select>
+                </div>
+                <span class="dayfee">
+                    <em id="J_confirmFee">7.96</em>元
+                </span>
+            </li>
+        </ul>
+        <p class="remind">收盘后申请的交易账户会在下个交易日9：15分前分配资金</p>
+        <p class="agree">申请操盘，代表您已同意<a href="#">《牛金操盘协议》</a></p>
+    </div>
+
+    <!--#S footer-->
+    <footer id="footer">
+        <div class="ft-pay-box">
+            <div class="ft-pay-remind">当前余额200.00元 完成支付还差<em>7.96</em>元</div>
+            <div class="ft-pay-money">
+                合计<em>207.96</em>元<a href="#">立即支付</a>
+            </div>
+        </div>
+    </footer><!--#E wrapper-->
+
+    <!-- build:js js/script.js -->
+    <script src="../js/lib/zepto.min.js"></script>
+    <script src="../js/script.js"></script>
+    <!-- endbuild -->
+</body>
+</html>

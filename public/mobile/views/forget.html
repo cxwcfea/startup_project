@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, minimal-ui" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="牛金网" />
+    <meta name="keywords" content="牛金网"/>
+    <meta http-equiv="cleartype" content="on" />
+
+    <title>牛金网 找回密码</title>
+    <!-- build:css css/styles.css -->
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/pages.css">
+    <!-- endbuild -->
+</head>
+
+<body>
+    <!--#S header-->
+    <header id="header">
+        <div class="header-box">
+            <h1>找回密码</h1>
+            <a class="back" href="login.html"></a>
+        </div>
+    </header><!--#E header-->
+
+    <div class="form-box">
+        <form action="forget_setpwd.html" id="J_forgetForm">
+            <div class="form-item">
+                <input name="mobile" id="J_forgetMobile" type="text" placeholder="请输入注册手机号">
+            </div>
+            <div class="verify-ipt">
+                <input name="verify" class="ipt-txt" id="J_forgetVerify" type="number" placeholder="请输入短信验证码">
+                <a href="javascript:;" class="get-verify forget-verify" id="J_signupGetVerify">获取验证码<span id="J_verifyTime"></span></a>
+            </div>
+            <button type="submit" class="submit-btn">下一步</button>
+        </form>
+    </div>
+
+    <div class="ui-tip hide" id="J_forgetTip">注册手机号或验证码不能为空</div>
+
+    <!-- build:js js/script.js -->
+    <script src="../js/lib/zepto.min.js"></script>
+    <script src="../js/script.js"></script>
+    <!-- endbuild -->
+</body>
+</html>

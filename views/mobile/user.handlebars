@@ -1,0 +1,48 @@
+<!--#S header-->
+<header id="header">
+    <div class="header-box">
+        <h1>我的账户</h1>
+        <a class="f-pl" href="/mobile/contact.html">服务热线</a>
+        <a class="f-pr" href="/mobile/newbie.html">新手指引</a>
+    </div>
+</header><!--#E header-->
+
+<div class="user-wel">
+    <a href="/mobile/#/account">
+        <span></span>您好，\{{vm.user.mobile | displayMobile}} <i></i>
+    </a>
+</div>
+<div class="user-money">
+    <ul class="balance">
+        <li class="number">
+            可用余额(元)
+            <em>\{{vm.user.finance.balance | currency:'':2}}</em>
+        </li>
+        <li class="toRecharge">
+            <a href="#" class="recharge-btn">充 值</a>
+            <p>提现操作请登录电脑版网站</p>
+        </li>
+    </ul>
+    <ul class="asset">
+        <li>
+            账户总资产(元)
+            <em>\{{vm.user.finance.balance + vm.user.finance.freeze_capital + vm.user.finance.deposit | currency:'':2}}</em>
+        </li>
+        <li>
+            保证金(元)<span></span>
+            <em>\{{vm.user.finance.deposit | currency:'':2}}</em>
+        </li>
+        <li>
+            冻结资金(元)<span></span>
+            <em>\{{vm.user.finance.freeze_capital | currency:'':2}}</em>
+        </li>
+    </ul>
+</div>
+<ul class="user-opts">
+    <li>
+        <a href="#"><span class="icon-ttn"></span>我的天天牛 <i></i></a>
+    </li>
+    <li>
+        <a href="#"><span class="icon-recharge"></span>充值明细 <i></i></a>
+    </li>
+</ul>

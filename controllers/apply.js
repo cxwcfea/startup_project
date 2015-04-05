@@ -377,7 +377,7 @@ exports.freeApply = function(req, res, next) {
             Order.create(orderData, function(err, order) {
                 if (err) next();
                 //res.locals.addtional_pay_info = '您的余额不足1元，请先充值1元再申请免费体验';
-                res.redirect('/recharge?pay_order=' + order._id);
+                res.redirect('/recharge?order_id=' + order._id);
             });
         }
     } else {

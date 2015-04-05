@@ -3,6 +3,7 @@ var users = require('../controllers/user'),
     orders = require('../controllers/order'),
     applies = require('../controllers/apply'),
     home = require('../controllers/home'),
+    mobile = require('../controllers/mobile'),
     sms = require('../lib/sms'),
     admin = require('../controllers/admin'),
     util = require('../lib/util'),
@@ -194,6 +195,8 @@ module.exports = function(app) {
         res.locals.other_menu = true;
         res.render('info/' + req.params[0]);
     });
+
+    mobile.registerRoutes(app, passportConf);
 
     app.get('/admin_test', passportConf.requiresRole('admin'), function(req, res, next) {
         res.render('admin_test');

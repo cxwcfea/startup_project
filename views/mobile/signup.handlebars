@@ -1,0 +1,40 @@
+<!--#S header-->
+<header id="header">
+    <div class="header-box">
+        <h1>手机注册</h1>
+        <a class="back" href="/mobile"></a>
+    </div>
+</header><!--#E header-->
+
+<div class="form-box">
+    <form name="signup-form" ng-hide="vm.show_verify_window" novalidate>
+        <div class="form-item">
+            <input type="text" autocomplete="off" placeholder="请输入手机号码" maxlength="11" pattern="1[3|5|7|8|][0-9]{9}" name="mobile" id="phone" autofocus required ng-model="vm.mobile">
+        </div>
+        <div class="form-item">
+            <input type="password" name="password" id="pwd" placeholder="登录密码" minlength="6" maxlength="20" required ng-model="vm.password">
+        </div>
+        <div class="form-item">
+            <input type="password" placeholder="确定登录密码" name="confirm_password" id="re-pwd" minlength="6" maxlength="20" required ng-model="vm.confirm_password">
+        </div>
+        <p>我已阅读并同意<a href="">牛金网用户协议</a></p>
+        <button type="submit" class="submit-btn" ng-click="vm.signup()">下一步</button>
+    </form>
+    <div class="verify-box" ng-show="vm.show_verify_window">
+        <p>注册验证码已发送到\{{vm.mobile | displayMobile}}</p>
+        <div class="verify-ipt">
+            <input type="text" ng-model="vm.verify_code" name="verify" class="ipt-txt" placeholder="请输入短信验证码" required>
+            <input type="button" class="get-verify" value="\{{vm.verifyCodeBtnText}}" ng-click="vm.getVerifyCode()">
+        </div>
+        <div class="">
+            <button type="submit" class="submit-btn" ng-click="vm.confirmVerifyCode()">确定</button>
+        </div>
+    </div>
+</div>
+
+<div class="ui-tip" ng-show="vm.signupError">\{{vm.errorMsg}}</div>
+
+<div class="ui-tip-success" ng-show="vm.signupSuccess">
+    <div class="icon"></div>
+    恭喜您，注册成功！
+</div>

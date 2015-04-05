@@ -1,0 +1,67 @@
+{{#if bootstrappedApply}}
+    <script> window.bootstrappedApplyObject = {{{bootstrappedApply}}} </script>
+{{/if}}
+<!--#S header-->
+<header id="header">
+    <div class="header-box">
+        <h1>天天牛</h1>
+        <a class="back" href="/mobile"></a>
+    </div>
+</header><!--#E header-->
+
+<div class="ttn-confirm-box">
+    <ul class="fee-item">
+        <li class="fee-item-bond">
+            支付保证金
+                <span>
+                    <em id="J_confirmBond">\{{vm.apply.deposit | currency:'':2}}</em>元
+                </span>
+        </li>
+        <li>
+            <p>预存账户管理费</p>
+            <div class="sel-box">
+                <select class="ui-sel" ng-model="vm.apply.period" ng-change="vm.selectDay()">
+                    <option ng-repeat="day in vm.validDays" value="\{{day}}">\{{day}}</option>
+                </select>
+                <!--
+                <select class="ui-sel" id="J_useDay">
+                    <option value="2" selected="selected">2天</option>
+                    <option value="3">3天</option>
+                    <option value="4">4天</option>
+                    <option value="5">5天</option>
+                    <option value="6">6天</option>
+                    <option value="7">7天</option>
+                    <option value="8">8天</option>
+                    <option value="9">9天</option>
+                    <option value="10">10天</option>
+                    <option value="11">11天</option>
+                    <option value="12">12天</option>
+                    <option value="13">13天</option>
+                    <option value="14">14天</option>
+                    <option value="15">15天</option>
+                    <option value="16">16天</option>
+                    <option value="17">17天</option>
+                    <option value="18">18天</option>
+                    <option value="19">19天</option>
+                    <option value="20">20天</option>
+                </select>
+                -->
+            </div>
+            <span class="dayfee">
+                <em id="J_confirmFee">\{{vm.serviceFee | currency:'':2}}</em>元
+            </span>
+        </li>
+    </ul>
+    <p class="remind">收盘后申请的交易账户会在下个交易日9：15分前分配资金</p>
+    <p class="agree">申请操盘，代表您已同意<a href="">《牛金操盘协议》</a></p>
+</div>
+
+<!--#S footer-->
+<footer id="footer">
+    <div class="ft-pay-box">
+        <div class="ft-pay-remind">当前余额\{{vm.apply.userBalance | currency:'':2}}元 完成支付还差<em>\{{vm.shouldPay | currency:'':2}}</em>元</div>
+        <div class="ft-pay-money">
+            合计<em>\{{vm.shouldPay | currency:'':2}}</em>元<span ng-show="vm.balancePay">,将使用余额支付。</span><a href="#">立即支付</a>
+        </div>
+    </div>
+</footer><!--#E wrapper-->

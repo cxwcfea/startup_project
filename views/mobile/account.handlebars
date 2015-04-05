@@ -1,0 +1,25 @@
+<!--#S header-->
+<header id="header">
+    <div class="header-box">
+        <h1>个人信息</h1>
+        <a class="back" href="/mobile/#/user"></a>
+    </div>
+</header><!--#E header-->
+
+<div class="account-box">
+    <div class="user-intro">
+        <span class="user-pic"></span>
+        \{{vm.user.mobile | displayMobile}}
+    </div>
+    <ul class="account-opts">
+        <li>
+            <a href="#">登录密码 <i></i><span>修改</span></a>
+        </li>
+        <li>
+            <a href="#">我的银行卡 <span>未绑定</span></a>
+        </li>
+    </ul>
+    <p class="account-tip">绑定银行卡提现请登录电脑版操作，触屏版即将开通！</p>
+
+    <a href="" class="logout-btn" ng-click="vm.logout()">退出登录</a>
+</div>

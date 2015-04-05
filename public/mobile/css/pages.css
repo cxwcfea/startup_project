@@ -1,0 +1,913 @@
+/**
+ * pages.css
+ * 页面模块样式文件
+ */
+
+/* =首页 index.html
+-------------------------------------------------------------- */
+
+/* nav */
+.nav-box {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+
+    width: 100%;
+    height: 50px;
+}
+.nav-box ul {
+    display: -webkit-box;
+    display:-moz-box;
+    width:100%;
+    box-sizing:border-box;
+    background-color: #e5e5e5;
+}
+.nav-box li {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    display: block;
+}
+.nav-box a {
+    display: block;
+    width: 100%;
+    padding-top: 34px;
+    height: 16px;
+    line-height: 16px;
+    font-size: 10px;
+    color: #666;
+    text-align: center;
+    background-size: 25px 25px;
+    background-position: center 6px;
+    background-repeat: no-repeat;
+}
+.nav-box .current {
+    color: #a40000;
+}
+.nav-box .home a {
+    background-image: url(../images/icon_home.png);
+}
+.nav-box .ttn a {
+    background-image: url(../images/icon_ttn.png);
+}
+.nav-box .exp a {
+    background-image: url(../images/icon_exp.png);
+}
+.nav-box .user a {
+    background-image: url(../images/icon_user.png);
+}
+.nav-box .home .current {
+    background-image: url(../images/icon_home_cur.png);
+}
+.nav-box .ttn .current {
+    background-image: url(../images/icon_ttn_cur.png);
+}
+.nav-box .exp .current {
+    background-image: url(../images/icon_exp_cur.png);
+}
+.nav-box .user .current {
+    background-image: url(../images/icon_user_cur.png);
+}
+
+/* banner */
+.banner a,
+.banner img {
+    display: block;
+}
+/* statistics */
+.statistics {
+    padding: 12px 0 10px;
+    font-size: 16px;
+    text-align: center;
+    color: #020000;
+}
+.statistics em {
+    font-size: 20px;
+    font-weight: 700;
+    color: #a40000;
+    font-family: arial;
+}
+/* slogan */
+.slogan {
+    padding: 8px 0 4px;
+    text-align: center;
+}
+.slogan .line {
+    height: 2px;
+    background-color: #c9c9c9;
+}
+.slogan .pic {
+    position: relative;
+    top: -8px;
+    left: 50%;
+    width: 153px;
+    margin-left: -96px;
+    padding: 0 20px;
+    background-color: #f9f4ee;
+}
+.slogan .pic img {
+    width: 153px;
+}
+
+/* products */
+.products {
+    padding: 0 14px;
+}
+.products .btn {
+    clear: both;
+    display: block;
+    text-align: center;
+    height: 44px;
+    line-height: 44px;
+    margin-top: 10px;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 20px;
+    background-color: #e30a20;
+}
+.products-list li {
+    padding: 18px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    background-color: #fff;
+}
+.products-list .pic {
+    float: left;
+    padding: 18px 18px 10px 10px;
+}
+.products-list .pic img {
+    width: 63px;
+}
+.products-list .txt {
+    overflow: hidden;
+    color: #000;
+}
+.products-list .txt h3 {
+    font-size: 22px;
+    font-weight: 700;
+}
+.products-list .txt h4 {
+    font-size: 14px;
+    font-weight: 700;
+    padding: 4px 0;
+}
+.products-list .txt p {
+    font-size: 14px;
+    color: #999;
+}
+
+/* talent */
+.talent .hd {
+    padding: 8px 0 0;
+    text-align: center;
+}
+.talent .hd .line {
+    height: 2px;
+    background-color: #c9c9c9;
+}
+.talent .hd .pic {
+    position: relative;
+    top: -8px;
+    left: 50%;
+    width: 56px;
+    margin-left: -48px;
+    padding: 0 20px;
+    background-color: #f9f4ee;
+}
+.talent .hd .pic img {
+    width: 56px;
+}
+.talent .bd {
+    padding: 0 20px;
+    margin-bottom: -1px;
+}
+.talent-list li {
+    font-size: 14px;
+    padding: 12px 0;
+    border-bottom: 1px dashed #d3d2d0;
+}
+.talent-list h3 {
+    color: #a40000;
+}
+.talent-list p {
+    display: -webkit-box;
+    display:-moz-box;
+    width:100%;
+    box-sizing:border-box;
+}
+.talent-list p span {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    display: block;
+}
+
+
+
+/* =天天牛 ttn.html
+-------------------------------------------------------------- */
+/* ttn-box */
+.ttn-box {
+    padding: 0 10px;
+}
+.ttn-box h3 {
+    font-size: 14px;
+    padding: 0 0 10px;
+}
+/* ttn-slogan */
+.ttn-slogan {
+    margin-bottom: 8px;
+}
+.ttn-slogan .pic {
+    width: 146px;
+    margin-left: -93px;
+}
+/* ttn-notice */
+.ttn-notice {
+    padding: 10px 0;
+    color: #666;
+    text-align: center;
+}
+.ttn-notice em {
+    font-weight: 700;
+    color: #a40000;
+}
+/* money-select */
+.money-select {
+    border-radius: 5px;
+    background: #fff;
+}
+.money-options {
+    width: 100%;
+    height: 182px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.money-options li {
+    float: left;
+    width: 33%;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    font-size: 20px;
+    color: #000;
+    background: #FFF;
+    border-right: 1px dotted #c9c9c9;
+    border-bottom: 1px dotted #c9c9c9;
+}
+
+.money-options li:nth-child(3),
+.money-options li:nth-child(6),
+.money-options li:nth-child(9)
+{
+    border-right-width: 0;
+}
+
+.money-options .current {
+    color: #fff;
+    background: #e0322d;
+}
+.other-number {
+    width: 100%;
+    height: 182px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.other-number .return {
+    font-size: 16px;
+    padding: 10px 5% 0 0;
+    text-align: right;
+}
+.other-number .return a {
+    color: #2489f0;
+}
+.money-form {
+    padding: 74px 14px;
+    text-align: center;
+}
+.money-form .ipt-txt {
+    width: 56%;
+    height: 30px;
+    line-height: 30px;
+    padding: 5px 10px;
+    border: 1px solid #c9c9c9;
+    font-size: 14px;
+    margin-right: 10px;
+}
+.money-form .submit-btn {
+    width: 30%;
+    height: 42px;
+    line-height: 42px;
+    background: #e0322d;
+    border: none;
+    font-size: 16px;
+    color: #fff;
+}
+.money-form .submit-btn:disabled{
+    background: #ccc;
+}
+/* ttn-fee */
+.ttn-fee {
+    padding: 12px 10px 12px 0;
+    border-radius: 5px;
+    background: #fff;
+    text-align: right;
+}
+.ttn-fee p {
+    font-size: 12px;
+    padding: 4px 0;
+}
+.ttn-fee .icon,
+.ttn-warn .icon {
+    position: relative;
+    top: 3px;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 4px;
+    background: url(../images/point.png) no-repeat 0 0;
+    background-size: 14px 14px;
+}
+.ttn-fee .free {
+    font-size: 10px;
+    color: #bbb;
+}
+.ttn-fee strong {
+    color: #a40000;
+    font-size: 18px;
+    padding: 0 4px;
+}
+.ttn-fee em {
+    color: #a40000;
+}
+/* ttn-warn */
+.ttn-warn {
+    font-size: 14px;
+    padding: 6px 20px;
+    overflow: hidden;
+}
+.ttn-warn .icon {
+    float: right;
+    top: 54px;
+}
+.ttn-warn .number {
+    float: right;
+}
+.ttn-warn p {
+    padding: 4px 0;
+}
+.ttn-warn em {
+    font-size: 16px;
+}
+.ttn-warn strong {
+    color: #2baa3f;
+    font-size: 16px;
+}
+
+/* =天天牛-确定支付 ttn_confirm.html
+-------------------------------------------------------------- */
+.ttn-confirm-box {
+    padding: 10px;
+}
+.ttn-confirm-box .fee-item li {
+    padding: 16px 0;
+    border-bottom: 1px dotted #c9c9c9;
+    overflow: hidden;
+}
+.ttn-confirm-box .fee-item .fee-item-bond {
+    padding: 16px 0 0;
+}
+.ttn-confirm-box .fee-item span {
+    float: right;
+    margin-top: -6px;
+}
+.ttn-confirm-box .fee-item .dayfee {
+    margin-top: 4px;
+}
+.ttn-confirm-box .fee-item p {
+    margin-bottom: 10px;
+}
+.ttn-confirm-box .fee-item em {
+    font-size: 20px;
+    color: #a40000;
+    padding: 0 6px 0 0;
+}
+
+.ttn-confirm-box .sel-box {
+    position: relative;
+    float: left;
+    width: 60%;
+    padding: 5px 5px 5px 10px;
+    height: 22px;
+    line-height: 22px;
+    background: #fff;
+    border: 1px solid #c0c0c0;
+}
+.ttn-confirm-box .remind {
+    font-size: 10px;
+    padding: 20px 0;
+}
+.ttn-confirm-box .agree a {
+    color: #a40000;
+}
+
+/* =免费体验 exp.html
+-------------------------------------------------------------- */
+/* exp-slogan */
+.exp-slogan {
+    margin-bottom: 8px;
+}
+.exp-slogan .pic {
+    width: 168px;
+    margin-left: -104px;
+}
+/* exp-sign */
+.exp-sign {
+    padding: 8px 0 0;
+    margin: 10px 0 -5px;
+    text-align: center;
+}
+.exp-sign .line {
+    height: 2px;
+    background-color: #c9c9c9;
+}
+.exp-sign .txt {
+    position: relative;
+    top: -15px;
+    display: inline-block;
+    padding: 0 10px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #a40000;
+    background-color: #f9f4ee;
+}
+/* exp-cont */
+.exp-cont {
+    padding: 0 10px;
+}
+.exp-cont .exp-notice {
+    font-size: 10px;
+    color: #999;
+    text-align: center;
+    padding-bottom: 20px;
+}
+.exp-item li {
+    margin-bottom: 16px;
+    padding: 10px 0 10px 10%;
+    border-radius: 10px 10px;
+    border: 2px solid #efe3d2;
+    background-color: #fff;
+}
+.exp-item span {
+    display: inline-block;
+    width: 46%;
+    font-size: 14px;
+}
+.exp-item  em {
+    padding: 0 6px;
+    font-size: 20px;
+    color: #a40000;
+}
+/* exp-contact */
+.exp-contact {
+    padding: 0 0 10px;
+    font-size: 14px;
+    color: #000;
+    text-align: center;
+}
+.exp-contact em {
+    color: #a40000;
+    padding-right: 10px;
+}
+.exp-contact strong {
+    color: #a40000;
+}
+
+
+/* =我的账户 user.html
+-------------------------------------------------------------- */
+.user-wel a {
+    display: block;
+    height: 25px;
+    line-height: 25px;
+    padding:13px 20px 12px;
+    font-size: 14px;
+    border-bottom: 1px dashed #c9c9c9;
+    background-color: #fff;
+}
+.user-wel span {
+    float: left;
+    width: 25px;
+    height: 25px;
+    margin-right: 12px;
+    border-radius: 50% 50%;
+    background: url(../images/icon_user.png) no-repeat center 0;
+    background-size: 25px 25px;
+}
+.user-money ul {
+    display: -webkit-box;
+    display: -moz-box;
+    width: 100%;
+    box-sizing: border-box;
+}
+.user-money .balance {
+    padding: 26px 20px 16px;
+    background-color: #fff;
+}
+.user-money .balance li,
+.user-money .asset li {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    display: block;
+    width: 1px;
+}
+.user-money .number {
+    color: #999;
+    font-size: 11px;
+}
+.user-money .number em {
+    display: block;
+    color: #a40000;
+    font-size: 30px;
+}
+.user-money .toRecharge {
+    text-align: center;
+    color: #999;
+}
+.user-money .toRecharge p {
+    font-size: 7px;
+}
+.user-money .recharge-btn {
+    display: inline-block;
+
+    height: 35px;
+    line-height: 35px;
+    margin-bottom: 10px;
+    padding: 0 35px;
+    font-size: 18px;
+    color: #e0322d;
+    border-radius: 5px;
+    border: 1px solid #e0322d;
+}
+.user-money .asset {
+    padding: 28px 20px;
+    background-color: #eee;
+    margin-bottom: 15px;
+}
+.user-money .asset li {
+    color: #999;
+    font-size: 11px;
+}
+.user-money .asset li:first-child {
+    margin-right: 24px;
+    border-right: 1px solid #dcdcdc;
+}
+.user-money .asset em {
+    display: block;
+    font-size: 20px;
+    color: #666;
+}
+.user-money .asset span {
+    font-size: 7px;
+}
+
+.user-wel i,
+.user-opts i {
+    float: right;
+    width: 10px;
+    height: 10px;
+    margin-top: 5px;
+    border-top: 1px solid #d2d2d2;
+    border-left: 1px solid #d2d2d2;
+    -webkit-transform: rotate(135deg) skewY(0deg);
+    -moz-transform: rotate(135deg) skewY(0deg);
+}
+.user-opts i {
+    margin-top: 15px;
+}
+
+.user-opts li {
+    margin-bottom: 15px;
+}
+.user-opts a {
+    display: block;
+    height: 44px;
+    line-height: 44px;
+    padding: 0 20px;
+    font-size: 14px;
+    background-color: #fff;
+}
+.user-opts .icon-ttn,
+.user-opts .icon-recharge {
+    float: left;
+    width: 25px;
+    height: 25px;
+    margin: 9px 12px 0 0;
+    border-radius: 50% 50%;
+    background: url(../images/icon_user_cur.png) no-repeat center 0;
+    background-size: 25px 25px;
+}
+
+.user-opts .icon-recharge {
+    background-image: url(../images/icon_ttn_cur.png);
+}
+
+/* =个人信息 account.html
+-------------------------------------------------------------- */
+.account-box .user-intro {
+    padding: 22px;
+    font-size: 16px;
+    line-height: 26px;
+}
+.account-box .user-intro .user-pic {
+    float: left;
+    width: 25px;
+    height: 25px;
+    margin-right: 12px;
+    border-radius: 50% 50%;
+    background: url(../images/icon_user_cur.png) no-repeat center 0;
+    background-size: 25px 25px;
+}
+.account-box .account-opts li {
+    margin-bottom: 15px;
+}
+.account-box .account-opts a {
+    display: block;
+    height: 44px;
+    line-height: 44px;
+    padding: 0 30px 0 22px;
+    font-size: 14px;
+    background-color: #fff;
+}
+.account-box .account-opts span {
+    float: right;
+    color: #999;
+}
+.account-box .account-opts i {
+    position: relative;
+    top: 16px;
+    left: 10px;
+    float: right;
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-top: 1px solid #d2d2d2;
+    border-left: 1px solid #d2d2d2;
+    -webkit-transform: rotate(135deg) skewY(0deg);
+    -moz-transform: rotate(135deg) skewY(0deg);
+}
+.account-box .account-tip {
+    font-size: 13px;
+    color: #999;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.account-box .logout-btn {
+    display: block;
+    height: 44px;
+    line-height: 44px;
+    margin: 0 10px;
+    text-align: center;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 18px;
+    background-color: #a40000;
+}
+
+
+
+/* =新手引导 newbie.html
+-------------------------------------------------------------- */
+.guide-soft {
+    padding: 15px;
+}
+.guide-soft h5 {
+    color: #000;
+    padding: 5px 0 8px;
+}
+.guide-soft p {
+    color: #333;
+}
+
+.guide-proc {
+    padding: 5px 0;
+    text-align: center;
+    background-color: #fff;
+}
+.guide-step {
+    color: #333;
+    padding: 15px;
+}
+.guide-box {
+    text-align: center;
+    margin: 0 15px 15px;
+    padding: 10px 0;
+    border: 1px solid #d2d2d1;
+    box-shadow: 3px 3px 4px #999;
+}
+.guide-pic {
+    display: block;
+    margin: 0 auto 15px;
+    border: 1px solid #d2d2d1;
+    box-shadow: 3px 3px 4px #999;
+}
+.guide-txt {
+    margin: 0 0 15px;
+    padding: 0 15px;
+    font-size: 10px;
+}
+.guide-down {
+    margin: 0 15px 15px;
+    padding: 10px 0;
+    border: 1px solid #d2d2d1;
+    box-shadow: 3px 3px 4px  #999;
+}
+.guide-down h5 {
+    font-size: 10px;
+    padding: 5px 15px;
+}
+.guide-down p {
+    font-size: 7px;
+    padding: 0 15px;
+}
+.guide-down a {
+    display: block;
+    background-color: #fff;
+    text-align: center;
+    margin-top: 15px;
+}
+
+/* =客服中心 contact.html
+-------------------------------------------------------------- */
+.contact-slogan {
+    margin-bottom: 8px;
+}
+.contact-slogan .pic {
+    width: 154px;
+    margin-left: -97px;
+}
+.contact-items {
+    padding: 0 10px;
+}
+.contact-items li {
+    overflow: hidden;
+    margin-bottom: 10px;
+    background-color: #fff;
+    padding: 15px;
+}
+.contact-items .pic {
+    float: left;
+    width: 40%;
+    text-align: center;
+    font-size: 10px;
+    color: #666;
+}
+.contact-items .qq .pic {
+    padding-top: 38px;
+    background: url(../images/qq.png) no-repeat center 0;
+    background-size: 31px 32px;
+}
+.contact-items .tel .pic {
+    padding-top: 48px;
+    background: url(../images/tel.png) no-repeat center 6px;
+    background-size: 35px 35px;
+}
+.contact-items .qq .text,
+.contact-items .tel .text {
+    padding: 10px 0 0;
+}
+.contact-items .tel .tel-num {
+    color: #a40000;
+}
+.contact-items .weixin .pic {
+    padding-top: 48px;
+    background: url(../images/weixin.png) no-repeat center 6px;
+    background-size: 40px 33px;
+}
+.contact-items .pic em {
+    display: block;
+    font-size: 14px;
+    color: #000;
+}
+.contact-items .text {
+    padding-left: 6%;
+    overflow: hidden;
+    text-align: center;
+}
+.contact-items .tel-num {
+    font-size: 24px;
+}
+
+.contact-items .tel p {
+    font-size: 10px;
+    color: #999;
+}
+
+/* =软件下载 download.html
+-------------------------------------------------------------- */
+.down-box {
+    padding: 10px;
+}
+.down-box  h5 {
+    padding: 10px 0;
+}
+.down-box p {
+    font-size: 10px;
+    margin:0 0 10px;
+}
+.down-box a {
+    display: block;
+    background: #fff;
+    margin:0 -10px 20px;
+    text-align: center;
+}
+
+/* =登录&注册&找回密码 login.html&sign.up&forget.html
+-------------------------------------------------------------- */
+.form-box {
+    padding: 20px 10px 10px;
+}
+.form-box .submit-btn {
+    width: 100%;
+    height: 43px;
+    line-height: 43px;
+    margin-bottom: 15px;
+    color: #fff;
+    text-align: center;
+    font-size: 18px;
+    border-radius: 3px;
+    background-color: #e30a20;
+}
+.form-box .form-item {
+    border: 1px solid #c9c9c9;
+    padding: 5px 10px;
+    margin-bottom: 15px;
+    background: #fff;
+}
+.form-box .form-item label {
+    padding-right: 10px;
+}
+.form-box .form-item .ui-switch {
+    float: right;
+    top: 5px;
+    padding-right: 0;
+}
+.form-box p {
+    margin-bottom: 15px;
+}
+.form-box form a {
+    color: #a40000;
+}
+.form-box .form-item input {
+    border: none;
+    width: 80%;
+    background-color: #fff;
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
+}
+.form-box .signup-btn {
+    display: block;
+    height: 43px;
+    line-height: 43px;
+    color: #e30a20;
+    text-align: center;
+    font-size: 18px;
+    border: 2px solid #e30a20;
+    border-radius: 3px;
+    background-color: #fff;
+}
+.form-box .ipt-txt {
+    background-color: #fff;
+}
+
+.form-box .verify-ipt {
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+.form-box .verify-ipt .ipt-txt {
+    float: left;
+    width: 45%;
+    height: 30px;
+    line-height: 30px;
+    padding: 5px 10px;
+    border: 1px solid #c9c9c9;
+}
+.form-box .verify-ipt .get-verify {
+    float: right;
+    width: 45%;
+    height: 40px;
+    line-height: 40px;
+    color: #e30a20;
+    font-size: 16px;
+    text-align: center;
+    border: 1px solid #e30a20;
+    background-color: #fff;
+}
+.form-box .verify-ipt .get-verify.disabled {
+    background-color: #eee;
+    border: 1px solid #eee;
+    color: #aaa;
+}
+
+
+

@@ -101,10 +101,10 @@ module.exports.ajaxLogin = function(req, res) {
             }
             req.session.lastLogin = moment().format("YYYY-MM-DD HH:mm:ss");
             if (req.session.lastLocation) {
-                res.send({location:req.session.lastLocation});
+                res.send({location:req.session.lastLocation, user:getUserViewModel(req.user)});
                 req.session.lastLocation = null;
             } else {
-                res.send({location:'/'});
+                res.send({location:'/', user:getUserViewModel(req.user)});
             }
         });
     });

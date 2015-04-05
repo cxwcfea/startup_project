@@ -1,0 +1,67 @@
+/* exp */
+.exp-slogan {
+    margin-bottom: 8px;
+}
+.exp-slogan .pic {
+    width: 168px;
+    margin-left: -104px;
+}
+
+.exp-sign {
+    padding: 8px 0 0;
+    margin: 10px 0 -5px;
+    text-align: center;
+}
+.exp-sign .line {
+    height: 2px;
+    background-color: #c9c9c9;
+}
+.exp-sign .txt {
+    position: relative;
+    top: -15px;
+    display: inline-block;
+    padding: 0 10px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #a40000;
+    background-color: #f9f4ee;
+}
+
+.exp-cont {
+    padding: 0 10px;
+}
+.exp-cont .exp-notice {
+    font-size: 10px;
+    color: #999;
+    text-align: center;
+    padding-bottom: 20px;
+}
+.exp-item li {
+    margin-bottom: 16px;
+    padding: 10px 0 10px 10%;
+    border-radius: 10px 10px;
+    border: 2px solid #efe3d2;
+    background-color: #fff;
+}
+.exp-item span {
+    display: inline-block;
+    width: 46%;
+    font-size: 14px;
+}
+.exp-item  em {
+    padding: 0 6px;
+    font-size: 20px;
+    color: #a40000;
+}
+.exp-contact {
+    font-size: 14px;
+    color: #000;
+    text-align: center;
+}
+.exp-contact em {
+    color: #a40000;
+    padding-right: 10px;
+}
+.exp-contact strong {
+    color: #a40000;
+}
