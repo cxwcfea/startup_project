@@ -259,8 +259,8 @@ $(document).ready(function() {
             console.log( "close apply done" );
         })
         .done(function() {
-            console.log( "clocse apply success" );
-            window.location.assign('/apply_detail2/' + apply_serial_id);
+            console.log( "close apply success" );
+            window.location.assign('/apply_detail/' + apply_serial_id);
         })
         .fail(function() {
             console.log( "close apply error" );
