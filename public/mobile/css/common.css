@@ -288,3 +288,103 @@
   -webkit-transition: margin-left 0.3s;
   transition: margin-left 0.3s;
 }
+
+/* .ui-dialog  */
+.ui-btn-group{
+    display: -webkit-box;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.ui-btn-group button {
+    color: #a40000;
+    line-height: 50px;
+    height: 48px;
+    text-align: center;
+    font-size: 16px;
+    border-right: 1px #c8c7cc solid;
+    width: 100%;
+    border-top: 1px solid #c8c7cc;
+    display: block;
+    -webkit-box-flex: 1;
+}
+.ui-dialog {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    display: -webkit-box;
+    -webkit-box-orient: horizontal;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+    background: rgba(0, 0, 0, 0.4);
+    color: #000;
+}
+.ui-dialog.show {
+    display: -webkit-box;
+    display: box;
+}
+.ui-dialog.hide{
+    display: none;
+}
+.ui-dialog .ui-dialog-cnt {
+    border-radius: 6px;
+    width: 270px;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    outline: none;
+    pointer-events: auto;
+    background-color: rgba(253, 253, 253, 0.95);
+    position: relative;
+}
+
+.ui-dialog .ui-dialog-bd {
+    min-height: 71px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    padding: 8px 18px;
+    font-size: 16px;
+    display: -webkit-box;
+    display: box;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+    -webkit-box-orient: vertical;
+}
+
+.ui-dialog .ui-dialog-bd h4 {
+    margin-bottom: 4px;
+    font-size: 16px;
+    width: 100%;
+    text-align: center;
+}
+
+.ui-dialog .ui-dialog-bd div {
+    width: 100%;
+}
+
+.ui-dialog .ui-dialog-ft {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.ui-dialog .ui-dialog-ft button {
+    height: 42px;
+    line-height: 42px;
+    background: transparent;
+}
+
+.ui-dialog .ui-dialog-ft button:active {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.ui-dialog .ui-dialog-ft button:first-child {
+    border-bottom-left-radius: 6px;
+    background-image: none;
+}
+
+.ui-dialog .ui-dialog-ft button:last-child {
+    border-bottom-right-radius: 6px;
+}
+

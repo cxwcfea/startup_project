@@ -17,15 +17,16 @@
 }
 .nav-box ul {
     display: -webkit-box;
-    display:-moz-box;
-    width:100%;
-    box-sizing:border-box;
+    display: -moz-box;
+    width: 100%;
+    box-sizing: border-box;
     background-color: #e5e5e5;
 }
 .nav-box li {
-    -webkit-box-flex: 1;
-    -moz-box-flex: 1;
     display: block;
+    -webkit-box-flex: 1;
+       -moz-box-flex: 1;
+            box-flex: 1;
 }
 .nav-box a {
     display: block;
@@ -173,7 +174,7 @@
     padding: 0 20px;
     background-color: #f9f4ee;
 }
-.talent .hd .pic img {
+.talent .pic img {
     width: 56px;
 }
 .talent .bd {
@@ -190,9 +191,9 @@
 }
 .talent-list p {
     display: -webkit-box;
-    display:-moz-box;
-    width:100%;
-    box-sizing:border-box;
+    display: -moz-box;
+    width: 100%;
+    box-sizing: border-box;
 }
 .talent-list p span {
     -webkit-box-flex: 1;
@@ -302,7 +303,7 @@
     font-size: 16px;
     color: #fff;
 }
-.money-form .submit-btn:disabled{
+.money-form .submit-btn:disabled {
     background: #ccc;
 }
 /* ttn-fee */
@@ -326,6 +327,20 @@
     margin-right: 4px;
     background: url(../images/point.png) no-repeat 0 0;
     background-size: 14px 14px;
+}
+.ttn-warning {
+    text-align: center;
+    font-size: 14px;
+}
+.ttn-warning i {
+    position: relative;
+    top: 6px;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-right: 4px;
+    background: url(../images/ttn-warning-icon.png) no-repeat 0 0;
+    background-size: 24px 24px;
 }
 .ttn-fee .free {
     font-size: 10px;
@@ -407,6 +422,36 @@
     padding: 20px 0;
 }
 .ttn-confirm-box .agree a {
+    color: #a40000;
+}
+
+.ttn-pay-success {
+    padding: 15px;
+}
+
+.ttn-pay-success .suc-txt {
+    text-align: center;
+    padding: 30px 0;
+    font-size: 18px;
+}
+.ttn-pay-success .suc-txt span {
+    color: #a40000;
+}
+.ttn-pay-success .suc-txt em {
+    font-size: 24px;
+    padding: 0 4px;
+    color: #a40000;
+}
+.ttn-pay-success .remaind {
+    padding: 15px 25px;
+    margin: 0 -15px;
+    color: #999;
+    background-color: #eee;
+}
+.ttn-pay-success .to {
+    padding: 15px 10px;
+}
+.ttn-pay-success .to a {
     color: #a40000;
 }
 
@@ -675,6 +720,198 @@
 
 
 
+/* =我的账户-我的天天牛 user_ttn.html
+-------------------------------------------------------------- */
+.user-ttn {
+    padding: 0 0 24px;
+}
+.ttn-list li {
+    font-size: 10px;
+    margin-top: 24px;
+    color: #666;
+}
+.ttn-list .row {
+    display: block;
+    position: relative;
+    padding: 12px 25px;
+    background-color: #fff;
+    border-bottom: 1px dotted #c9c9c9;
+    overflow: hidden;
+}
+.ttn-list .row:last-child{
+    border-bottom-width: 0;
+}
+.ttn-list .row-gray {
+    background-color: #eee;
+}
+.ttn-list .row-gray em {
+    font-size: 16px;
+    color: #a40000;
+}
+.ttn-list .col {
+    display: block;
+    float: left;
+    width: 50%;
+}
+.ttn-list .state {
+    font-size: 12px;
+    color: #a40000;
+}
+.ttn-list .no {
+    color: #999;
+}
+.ttn-list .row-pay{
+    font-size: 14px;
+    color: #a40000;
+    text-align: center;
+    background-color: #eee;
+}
+.ttn-list .icon-free {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: block;
+    width: 28px;
+    height: 28px;
+    background: url(../images/icon-free.png) no-repeat;
+    background-size: 28px 28px;
+}
+
+
+
+/* =我的账户-天天牛详情 user_ttn_info.html
+-------------------------------------------------------------- */
+.user-ttn-info {
+    color: #666;
+}
+.user-ttn-info .state-box {
+    padding: 10px 0;
+    text-align: center;
+    border-bottom: 1px dotted #c9c9c9;
+    background: #fff;
+}
+.user-ttn-info .state-box .state {
+    font-size: 16px;
+}
+.user-ttn-info .state em,
+.user-ttn-info .trading em {
+    color: #a40000;
+    font-weight: 100;
+}
+.user-ttn-info .state p {
+    font-size: 10px;
+}
+.user-ttn-info .trading {
+    overflow: hidden;
+    background: #fff;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border-bottom: 1px dotted #c9c9c9;
+}
+.user-ttn-info .trading em {
+    font-size: 14px;
+}
+.user-ttn-info .trading .col {
+    float:left;
+    width: 49%;
+    padding: 4px 0;
+    border-right: 1px solid #eee;
+}
+.user-ttn-info .trading .col a {
+    color: #a40000;
+}
+.user-ttn-info .trading .col:last-child {
+    text-align: center;
+    border-right-width: 0;
+}
+.user-ttn-info .settling {
+    color: #a40000;
+    padding: 15px 0;
+    overflow: hidden;
+    background: #fff;
+    margin-bottom: 20px;
+    border-bottom: 1px dotted #c9c9c9;
+}
+.user-ttn-info .settling .col {
+    float: left;
+    width: 40%;
+    padding-left: 10%;
+}
+.user-ttn-info .settling em {
+    display: block;
+    font-size: 18px;
+}
+.user-ttn-info .ttn-agree {
+    padding: 20px 0;
+    text-align: center;
+}
+.user-ttn-info .ttn-param {
+    padding: 10px 0;
+    background-color: #fff;
+}
+.user-ttn-info .ttn-param li {
+    padding: 5px 15px;
+    overflow: hidden;
+}
+.user-ttn-info .ttn-param .col,
+.user-ttn-info .ttn-amount .col {
+    float: left;
+    width: 50%;
+}
+.user-ttn-info .ttn-amount {
+    margin-bottom: 20px;
+    background: #fff;
+}
+.user-ttn-info .ttn-amount li {
+    padding: 10px 15px;
+    overflow: hidden;
+    border-bottom: 1px dotted #c9c9c9;
+}
+.user-ttn-info .ttn-amount li:last-child {
+    border-bottom: 0;
+}
+.user-ttn-info .ttn-amount em {
+    font-size: 22px;
+    color: #a40000;
+}
+.user-ttn-info .ttn-amount .warn {
+    background: #f9efdd;
+}
+.user-ttn-info .ttn-amount strong {
+    font-size: 16px;
+    font-weight: 100;
+}
+.user-ttn-info .ttn-amount .warn strong {
+    color: #157b2a;
+}
+
+.user-ttn-info .ttn-amount .no {
+    float: right;
+    margin-top: -18px;
+    font-size: 10px;
+    color: #999;
+}
+.ttn-btn-group {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    font-size: 20px;
+    text-align: center;
+}
+.ttn-btn-group button {
+    color: #fff;
+    height: 50px;
+    background-color: #a40000;
+    border-top: 0;
+    border-right:1px solid #fff;
+}
+.ttn-btn-group button:last-child {
+    border-right: 0;
+}
+
 /* =新手引导 newbie.html
 -------------------------------------------------------------- */
 .guide-soft {
@@ -821,6 +1058,239 @@
     text-align: center;
 }
 
+/* =充值 recharge.html
+-------------------------------------------------------------- */
+.recharge-box {
+    padding: 10px;
+}
+
+.recharge-box .recharge-title {
+    margin-bottom: 10px;
+    padding: 10px 0 5px;
+    border-bottom: 1px dotted #c9c9c9;
+}
+.recharge-cate {
+    padding: 0 6px;
+    margin-bottom: 30px;
+}
+.recharge-cate li {
+    background: #fff;
+
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+.recharge-cate li span {
+    float: right;
+    color: #666;
+}
+.recharge-cate a {
+    display: block;
+    padding: 25px;
+}
+.recharge-cate i {
+    font-size: 12px;
+}
+.recharge-cate .coming {
+    padding: 25px;
+}
+.recharge-cate .coming,
+.recharge-cate .coming span {
+    color: #999;
+    background: #eee;
+}
+.recharge-record {
+    padding: 0 10px;
+}
+.recharge-record .record-list li {
+    padding: 8px 0;
+    margin-top: 10px;
+    border-bottom: 1px dotted #c9c9c9;
+}
+.recharge-record .record-list li:last-child {
+    border-bottom: 0;
+}
+.recharge-record .record-list h5 {
+    font-size: 14px;
+    padding: 0 0 6px;
+}
+.recharge-record .record-list p {
+    color: #999;
+    font-size: 10px;
+    line-height: 24px;
+}
+.recharge-record .record-list .state {
+    color: #a40000;
+}
+.recharge-bank {
+    padding: 10px;
+}
+.recharge-bank .txt {
+    font-size: 10px;
+    margin-bottom: 15px;
+    padding: 10px 0 5px;
+    border-bottom: 1px dotted #c9c9c9;
+}
+.recharge-bank .bank-list {
+    margin-bottom: 15px;
+    background: #fff;
+}
+.recharge-bank .bank-logo {
+    text-align: center;
+    padding: 12px 0;
+    border-bottom: 1px dotted #c9c9c9;
+}
+.recharge-bank .bank-info {
+    padding: 25px;
+    font-size: 10px;
+}
+.recharge-bank .bank-info p {
+    line-height: 16px;
+    font-weight: 700;
+}
+.recharge-bank .bank-info label {
+    display: inline-block;
+    width: 70px;
+    color: #999;
+    font-weight: 100;
+}
+.recharge-bank .send-btn {
+    display: block;
+    height: 44px;
+    line-height: 44px;
+    margin-top: 15px;
+    font-size: 14px;
+    text-align: center;
+    border: 1px solid #e0322d;
+    border-radius: 2px;
+    color: #e0322d;
+}
+.recharge-bank .tel {
+    height: 44px;
+    line-height: 44px;
+    font-size: 16px;
+    text-align: center;
+    background-color: #e0322d;
+    border-radius: 2px;
+    color: #fff;
+}
+
+.recharge-alipay {
+    padding: 10px;
+}
+.recharge-alipay .balance {
+    margin-bottom: 10px;
+    padding: 5px 0;
+    border-bottom: 1px dotted #c9c9c9;
+}
+.recharge-alipay .balance em {
+    font-size: 16px;
+    color: #a40000;
+}
+.recharge-alipay .arrive-time {
+    padding: 10px 0 10px 60px;
+    font-size: 10px;
+    border-top: 1px dotted #c9c9c9;
+}
+.recharge-alipay .arrive-time .f-fl {
+    margin-left: -60px;
+}
+.recharge-alipay .pay-form {
+    padding: 15px 0;
+}
+.recharge-alipay .pay-form .form-item {
+    margin-bottom: 15px;
+}
+.recharge-alipay .pay-form label {
+    display: block;
+    margin-bottom: 4px;
+}
+.recharge-alipay .pay-form input {
+    width: 100%;
+    height: 20px;
+    line-height: 20px;
+    padding: 10px 0;
+    text-indent: 10px;
+    font-size: 14px;
+    border: 1px solid #c9c9c9;
+}
+.recharge-alipay .pay-form .unit {
+    position: relative;
+    right: 10px;
+    float: right;
+    font-size: 14px;
+    margin-top: -30px;
+}
+.recharge-alipay .pay-form .submit-btn {
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #e30a20;
+}
+.recharge-alipay .payee-account {
+    margin-bottom: 15px;
+    border-bottom: 1px dotted #c9c9c9;
+}
+.recharge-alipay .payee-account .payee-account-info {
+    margin-bottom: 15px;
+    padding: 14px 10px;
+    color: #000;
+    background-color: #fff;
+}
+.recharge-alipay .payee-account .account {
+    font-size: 18px;
+    color: #a40000;
+    padding-bottom: 4px;
+}
+.recharge-alipay .payee-account .title {
+    padding-bottom: 6px;
+    color: #999;
+}
+.recharge-alipay .payee-account .f-fs0 {
+    color: #999;
+}
+.recharge-alipay .recharge-amount {
+    margin-bottom: 15px;
+    line-height: 20px;
+    color: #999;
+}
+.recharge-alipay .recharge-amount em {
+    color: #a40000;
+    font-size: 16px;
+}
+.recharge-alipay .recharge-amount strong {
+    color: #000;
+    font-weight: 700;
+}
+.recharge-alipay .recharge-open a {
+    display: block;
+    margin-bottom: 15px;
+    padding: 35px 30px 35px 20px;
+    background-color: #fff;
+    color: #000;
+}
+.recharge-alipay .recharge-open em {
+    font-size: 10px;
+    color: #ea6948;
+}
+.recharge-alipay .recharge-open img {
+    float: right;
+}
+.recharge-alipay .recharge-open .icon-wallet {
+    margin-top: -28px;
+}
+.recharge-alipay .recharge-open .icon-webpay {
+    margin-top: -4px;
+}
+.recharge-tip {
+    padding-left: 10px;
+    font-size: 12px;
+}
+.recharge-tip li {
+    list-style: initial;
+}
+
 /* =登录&注册&找回密码 login.html&sign.up&forget.html
 -------------------------------------------------------------- */
 .form-box {
@@ -909,5 +1379,35 @@
     color: #aaa;
 }
 
+.agree-box {
+    padding: 15px;
+}
+.agree-box p {
+    padding: 4px 0;
+}
+.agree-box h5 {
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 0 5px;
+}
+.agree-box .warn {
+    color: #a40000;
+}
 
+.hzjg ul {
+    overflow: hidden;
+}
+.hzjg li {
+    float: left;
+}
+.lxwm p {
+    padding: 2px 0 2px 80px;
+}
+.lxwm span {
+    float: left;
+    margin-left: -80px;
+    display: inline-block;
+    width: 80px;
+    text-align: right;
+}
 

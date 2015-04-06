@@ -99,8 +99,25 @@ $(function () {
     var sendMobileVerify = function (mobile, type) {
         $.get('/api/send_sms_verify_code?mobile=' + mobile + '&type=' + type, function (response){
         });
-    }
+    };
 
+
+    var dialog = (function () {
+        var dialog = $('.ui-dialog');
+
+        var show = function () {
+            $dialog.removeClass('hide').addClass('show');
+        };
+
+        var hide = function () {
+            $('.ui-dialog').removeClass('show').addClass('hide');
+        };
+
+        return {
+            show: show,
+            hide: hide
+        }
+    })();
 
     /**
      * ttn.html
@@ -190,6 +207,24 @@ $(function () {
      * 天天牛-支付确定页面
      */
 
+    /**
+     * 充值页面
+     */
+    $('#J_rechargeOpenWallet,#J_rechargeOpenWeb').click(function (e) {
+        var $failBtn = $('#J_rechargeFail');
+        var $sucBtn = $('#J_rechargeSuccess');
+
+        dialog.show();
+    });
+    $('#J_rechargeFail').click(function () {
+        dialog.hide();
+    });
+    $('#J_rechargeSuccess').click(function () {
+        dialog.hide();
+    });
+    $('#J_ttnSureSettle').click(function () {
+        dialog.hide();
+    });
 
 
     /**

@@ -1,0 +1,79 @@
+{{#if bootstrappedOrderObject}}
+    <script> window.bootstrappedOrderObject = {{{bootstrappedOrderObject}}} </script>
+{{/if}}
+<!--#S header-->
+<header id="header">
+    <div class="header-box">
+        <h1>支付宝转账</h1>
+        <a class="back" href="/mobile/#/recharge"></a>
+    </div>
+</header><!--#E header-->
+
+<div class="recharge-alipay" ng-hide="vm.alipayConfirm">
+    <div class="balance">
+        账户余额： <em>\{{vm.user.finance.balance | currency:'':2}}</em> 元
+    </div>
+    <form name="aliPayForm" class="pay-form" novalidate>
+        <div class="form-item">
+            <label for="">支付宝账号</label>
+            <input type="text" name="account" ng-model="vm.alipay_account" required autofocus placeholder="请确认该账户与实际转账支付宝账户一致">
+        </div>
+        <div class="form-item">
+            <label for="">充值金额</label>
+            <input type="number" step="100" name="amount" ng-model="vm.pay_amount" ng-disabled="vm.pay_order">
+            <span class="unit">元</span>
+        </div>
+        <button type="submit" class="submit-btn" ng-click="vm.aliPay()">下一步</button>
+    </form>
+    <div class="arrive-time">
+        <span class="f-fl">到账时间</span>
+        <p>08:30-20:30  （30分钟内到账）</p>
+        <p>20:30以后  （次日09:00前到账）</p>
+    </div>
+</div>
+
+<div class="recharge-alipay" ng-show="vm.alipayConfirm">
+    <div class="payee-account">
+        <div class="title">收款人支付宝企业账户：</div>
+        <div class="payee-account-info">
+            <div class="account">chongzhi@niujinwang.com</div>
+            北京小牛普惠科技有限公司 <span class="f-fs0">［长按复制支付宝账号］</span>
+        </div>
+    </div>
+    <div class="recharge-amount">
+        <p>充值金额：<em>\{{vm.pay_amount | currency:'':2}}</em> 元</p>
+        <p>您的支付宝账户：<strong>\{{vm.alipay_account}}</strong></p>
+    </div>
+    <div class="recharge-open">
+        <a href="#" target="_blank" id="J_rechargeOpenWallet">
+            打开支付宝钱包完成转账 <br> <em>支付宝钱包转账0手续费哦！</em>
+            <img src="images/alipay-wallet.jpg" width="57" class="icon-wallet" alt="去支付宝网站完成转账">
+        </a>
+        <a href="#" target="_blank"  id="J_rechargeOpenWeb">
+            去支付宝网站完成转账<img src="images/alipay.jpg" class="icon-webpay" width="63" alt="去支付宝网站完成转账">
+        </a>
+    </div>
+    <form class="pay-form">
+        <button type="submit" class="submit-btn" ng-click="vm.confirmAlipay()">确认</button>
+    </form>
+</div>
+
+<div class="ui-dialog" ng-show="vm.orderCreateSuccess">
+    <div class="ui-dialog-cnt">
+        <div class="ui-dialog-bd">
+            <div>
+                <h4>充值确认</h4>
+                <ul class="recharge-tip">
+                    <li>如果您已完成充值，请耐心等候工作人员审核。</li>
+                    <li>充值失败可以重新充值或者选择其他充值方式。</li>
+                </ul>
+            </div>
+        </div>
+        <div class="ui-dialog-ft ui-btn-group">
+            <button type="button" id="J_rechargeFail" ng-click="vm.finish()">失败</button>
+            <button type="button" id="J_rechargeSuccess" ng-click="vm.finish()">完成</button>
+        </div>
+    </div>
+</div>
+
+<div class="ui-tip" ng-show="vm.inputError">\{{vm.errorMsg}}</div>

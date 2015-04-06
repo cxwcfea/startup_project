@@ -21,7 +21,7 @@
             <p>预存账户管理费</p>
             <div class="sel-box">
                 <select class="ui-sel" ng-model="vm.apply.period" ng-change="vm.selectDay()">
-                    <option ng-repeat="day in vm.validDays" value="\{{day}}">\{{day}}</option>
+                    <option ng-repeat="day in vm.validDays" value="\{{day}}">\{{day}}天</option>
                 </select>
                 <!--
                 <select class="ui-sel" id="J_useDay">
@@ -53,7 +53,7 @@
         </li>
     </ul>
     <p class="remind">收盘后申请的交易账户会在下个交易日9：15分前分配资金</p>
-    <p class="agree">申请操盘，代表您已同意<a href="">《牛金操盘协议》</a></p>
+    <p class="agree">申请操盘，代表您已同意<a href="/mobile/trader_agreement.html">《牛金操盘协议》</a></p>
 </div>
 
 <!--#S footer-->
@@ -61,7 +61,7 @@
     <div class="ft-pay-box">
         <div class="ft-pay-remind">当前余额\{{vm.apply.userBalance | currency:'':2}}元 完成支付还差<em>\{{vm.shouldPay | currency:'':2}}</em>元</div>
         <div class="ft-pay-money">
-            合计<em>\{{vm.shouldPay | currency:'':2}}</em>元<span ng-show="vm.balancePay">,将使用余额支付。</span><a href="#">立即支付</a>
+            合计<em>\{{vm.shouldPay | currency:'':2}}</em>元<span ng-show="vm.balancePay">,将使用余额支付。</span><a href="" ng-click="vm.payForApply()">立即支付</a>
         </div>
     </div>
 </footer><!--#E wrapper-->

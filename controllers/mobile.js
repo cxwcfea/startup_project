@@ -1,12 +1,12 @@
 var User = require('../models/User'),
     Apply = require('../models/Apply'),
+    Order = require('../models/Order'),
     applies = require('../controllers/apply'),
     util = require('../lib/util'),
     useragent = require('useragent'),
     _ = require('lodash'),
     log4js = require('log4js'),
     logger = log4js.getLogger('admin');
-
 
 function home(req, res, next) {
     if (!req.session.statistic || req.session.statistic.expires < Date.now()) {
@@ -112,6 +112,78 @@ function getAccount(req, res, next) {
     });
 }
 
+function getRechargeBank(req, res, next) {
+    res.render('mobile/recharge_bank', {
+        layout:null
+    })
+}
+
+function getRechargeRecord(req, res, next) {
+    res.render('mobile/recharge_record', {
+        layout:null
+    })
+}
+
+function getDownload(req, res, next) {
+    var ua = useragent.is(req.headers['user-agent']);
+    res.locals.otherPlatform = true;
+    if (ua.android) {
+        res.locals.android = true;
+        res.locals.otherPlatform = false;
+    }
+    if (ua.mobile_safari) {
+        res.locals.ios = true;
+        res.locals.otherPlatform = false;
+    }
+    res.render('mobile/download', {
+        layout:null
+    })
+}
+
+function getChangePass(req, res, next) {
+    res.render('mobile/change_password', {
+        layout:null
+    })
+}
+
+function getRechargeAlipay(req, res, next) {
+    var order_id = req.query.order_id;
+    console.log(req.query);
+    if (!order_id) {
+        res.render('mobile/recharge_alipay', {
+            layout:null
+        });
+    } else {
+        Order.findById(order_id, function(err, order) {
+            if (err || !order) {
+                logger.warn('mobile getRecharge err:' + err.toString());
+            }
+            res.render('mobile/recharge_alipay', {
+                layout:null,
+                bootstrappedOrderObject: JSON.stringify(order)
+            });
+        });
+    }
+}
+
+function getUserTtn(req, res, next) {
+    res.render('mobile/user_ttn', {
+        layout:null
+    })
+}
+
+function getTtnInfo(req, res, next) {
+    Apply.findOne({serialID:req.params.apply_serial_id}, function(err, apply) {
+        if (err || !apply) {
+            next();
+        }
+        res.render('mobile/user_ttn_info', {
+            layout:null,
+            bootstrappedApplyObject: JSON.stringify(apply)
+        });
+    });
+}
+
 function getTTNConfirm(req, res, next) {
     Apply.findOne({serialID:req.params.apply_serial_id}, function(err, apply) {
         if (err || !apply) {
@@ -139,10 +211,20 @@ function getTTNConfirm(req, res, next) {
     });
 }
 
+function getAlipayOrderListForCurrentUser(req, res) {
+    Order.find({$and: [{payType: 3},  {userID: req.user._id}]}, function(err, orders) {
+        if (err) {
+            logger.warn('getAlipayOrderListForCurrentUser error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send(orders);
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/mobile', function(req, res, next) {
-            console.log(req.user);
             res.render('mobile/index', {
                 layout:'mobile',
                 bootstrappedUserObject: req.user ? JSON.stringify(util.getUserViewModel(req.user)) : null
@@ -163,8 +245,30 @@ module.exports = {
 
         app.get('/mobile/account', getAccount);
 
+        app.get('/mobile/recharge_bank', getRechargeBank);
+
+        app.get('/mobile/recharge_alipay', getRechargeAlipay);
+
+        app.get('/mobile/recharge_record', getRechargeRecord);
+
+        app.get('/mobile/user_ttn', getUserTtn);
+
+        app.get('/mobile/change_password', getChangePass);
+
+        app.get('/mobile/download', getDownload);
+
+        app.get('/mobile/user_ttn_info/:apply_serial_id', getTtnInfo);
+
+        app.get('/mobile/apply/pay_success', passportConf.isAuthenticated, applies.paySuccess);
+
         app.get('/mobile/exp', function(req, res, next) {
             res.render('mobile/exp', {
+                layout: null
+            })
+        });
+
+        app.get('/mobile/recharge', function(req, res, next) {
+            res.render('mobile/recharge', {
                 layout: null
             })
         });
@@ -172,5 +276,7 @@ module.exports = {
         app.get('/mobile/forget', getForget);
 
         app.get('/mobile/free_apply_confirm', passportConf.isAuthenticated, applies.freeApply);
+
+        app.get('/api/alipay/orders', passportConf.isAuthenticated, getAlipayOrderListForCurrentUser);
     }
 };

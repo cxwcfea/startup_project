@@ -1,0 +1,95 @@
+<!--#S header-->
+<header id="header">
+    <div class="header-box">
+        <h1>我的天天牛</h1>
+        <a class="back" href="/mobile/#/user"></a>
+        <a class="f-pr" href="/mobile/#/ttn">我要配资</a>
+    </div>
+</header><!--#E header-->
+
+<div class="user-ttn">
+    <ul class="ttn-list">
+        <li ng-repeat="apply in vm.apply_list | orderBy:'applyAt':true">
+            <div class="row">
+                <span class="state">\{{apply.status | applyStatus}}</span>
+                <span class="f-fr no">\{{apply.serialID}}</span>
+                <span class="icon-free" ng-show="apply.isTrial"></span>
+            </div>
+            <div class="row">
+                总操盘资金(元)
+                <em class="f-fr">\{{apply.amount}}</em>
+            </div>
+            <div class="row">
+                <div class="col">
+                    警戒线(元) <br>
+                    <span class="f-fs2">\{{apply.apply_warn}}</span>
+                </div>
+                <div class="col f-tar">
+                    平仓线(元) <br>
+                    <span class="f-fs2">\{{apply.apply_sell}}</span>
+                </div>
+            </div>
+            <a href="/mobile/#/user_ttn_info/\{{apply.serialID}}" class="row row-gray" ng-show="apply.status !== 1 && apply.status !== 4">
+                    <span class="col">
+                        交易账户  <em>\{{apply.account}}</em>
+                    </span>
+                    <span class="col f-tar">
+                        交易密码  <em>\{{apply.password}}</em>
+                    </span>
+            </a>
+            <a href="/mobile/#/ttn_confirm/\{{apply.serialID}}" class="row row-pay" ng-show="apply.status === 1">立即付款</a>
+        </li>
+        <!--
+        <li>
+            <div class="row">
+                <span class="state">资金划拨中</span>
+                <span class="f-fr no">P203203</span>
+                <span class="icon-free"></span>
+            </div>
+            <div class="row">
+                总操盘资金(元)
+                <em class="f-fr">50000</em>
+            </div>
+            <div class="row">
+                <div class="col">
+                    亏损警戒线(元) <br>
+                    <span class="f-fs2">48000</span>
+                </div>
+                <div class="col f-tar">
+                    亏损平仓线(元) <br>
+                    <span class="f-fs2">47000</span>
+                </div>
+            </div>
+            <a href="user_ttn_info.html" class="row row-gray">
+                    <span class="col">
+                        交易账户  <em>74870985</em>
+                    </span>
+                    <span class="col f-tar">
+                        交易密码  <em>093242</em>
+                    </span>
+            </a>
+        </li>
+        <li>
+            <div class="row">
+                <span class="state">待支付</span>
+                <span class="f-fr no">P203203</span>
+            </div>
+            <div class="row">
+                总操盘资金(元)
+                <em class="f-fr">50000</em>
+            </div>
+            <div class="row">
+                <div class="col">
+                    亏损警戒线(元) <br>
+                    <span class="f-fs2">48000</span>
+                </div>
+                <div class="col f-tar">
+                    亏损平仓线(元) <br>
+                    <span class="f-fs2">47000</span>
+                </div>
+            </div>
+            <a href="user_ttn_info.html" class="row row-pay">立即付款</a>
+        </li>
+        -->
+    </ul>
+</div>

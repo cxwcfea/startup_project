@@ -69,7 +69,7 @@ exports.getApplyDetail = function (req, res, next) {
         res.locals.endDate1 = endTime.format("YYYY-MM");
         res.locals.startDate2 = startTime.format("DD");
         res.locals.endDate2 = endTime.format("DD");
-        res.locals.pay_url = '/recharge?order_id=' + apply.orderID;
+        res.locals.pay_url = '/apply_confirm/' + apply.serialID;
         res.locals.apply_account = apply.account;
         res.locals.apply_password = apply.password;
         res.locals.apply_detail = true;
@@ -361,7 +361,11 @@ exports.freeApply = function(req, res, next) {
                             logger.debug('freeApply error:' + err.toString());
                             return next();
                         }
-                        res.redirect('/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000);
+                        if (req.url.search('/mobile') > -1) {
+                            res.redirect('/mobile/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000);
+                        } else {
+                            res.redirect('/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000);
+                        }
                     });
                 });
             });
@@ -377,7 +381,11 @@ exports.freeApply = function(req, res, next) {
             Order.create(orderData, function(err, order) {
                 if (err) next();
                 //res.locals.addtional_pay_info = '您的余额不足1元，请先充值1元再申请免费体验';
-                res.redirect('/recharge?order_id=' + order._id);
+                if (req.url.search('/mobile') > -1) {
+                    res.redirect('/mobile/#/recharge_alipay?order_id=' + order._id);
+                } else {
+                    res.redirect('/recharge?order_id=' + order._id);
+                }
             });
         }
     } else {
@@ -501,6 +509,12 @@ exports.paySuccess = function(req, res, next) {
     res.locals.apply_menu = true;
     res.locals.serial_id = req.query.serial_id;
     res.locals.amount = req.query.amount;
-    res.render('apply/apply_pay_success');
+    if (req.url.search('/mobile') > -1) {
+        res.render('mobile/ttn_pay_success', {
+            layout: 'mobile'
+        });
+    } else {
+        res.render('apply/apply_pay_success');
+    }
 };
 

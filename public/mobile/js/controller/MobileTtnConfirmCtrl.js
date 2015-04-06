@@ -31,6 +31,7 @@ angular.module('mobileApp').controller('MobileTtnConfirmCtrl', ['$scope', '$wind
         vm.apply.totalAmount = vm.totalAmount;
         $http.post('/apply_confirm', vm.apply)
             .success(function(data, status, headers, config) {
+                console.log('success');
                 if (vm.shouldPay === 0) {
                     var dataObj = {
                         apply_serial_id: data.apply.serialID,
@@ -38,13 +39,13 @@ angular.module('mobileApp').controller('MobileTtnConfirmCtrl', ['$scope', '$wind
                     };
                     $http.post('/api/users/pay_by_balance', dataObj)
                         .success(function(res) {
-                            $window.location.assign('/apply/pay_success?serial_id=' + data.apply.serialID + '&amount=' + data.apply.amount);
+                            $window.location.assign('/mobile/apply/pay_success?serial_id=' + data.apply.serialID + '&amount=' + data.apply.amount);
                         })
                         .error(function(res, status) {
                             console.log('error:' + res.error_msg);
                         });
                 } else {
-                    $window.location.assign('/recharge?order_id=' + data.order._id);
+                    $window.location.assign('/mobile/#/recharge_alipay?order_id=' + data.order._id);
                 }
             })
             .error(function(data, status, headers, config) {

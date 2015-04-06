@@ -1,0 +1,154 @@
+{{#if bootstrappedApplyObject}}
+    <script> window.bootstrappedApplyObject = {{{bootstrappedApplyObject}}} </script>
+{{/if}}
+<!--#S header-->
+<header id="header">
+    <div class="header-box">
+        <h1>天天牛详情</h1>
+        <a class="back" href="/mobile/#/user_ttn"></a>
+    </div>
+</header><!--#E header-->
+
+<div class="user-ttn-info">
+    <div class="state-box">
+        <div class="state"><em>\{{vm.apply.status | applyStatus}}</em></div>
+        <p ng-show="vm.apply.status === 3">结算金额：\{{vm.finalValue | currency:'':2}}元</p>
+        <p ng-show="vm.apply.status === 5">预计20分钟完成结算，盈利及剩余保证金将转入您的账户余额</p>
+    </div>
+    <div class="trading" ng-show="vm.apply.status !== 1 && vm.apply.status !== 4 && vm.apply.status !== 3">
+        <div class="col">
+            <p>交易账户 <em>\{{vm.apply.account}}</em></p>
+            <p>交易密码 <em>\{{vm.apply.password}}</em></p>
+        </div>
+        <div class="col">
+            <p>HOMS涌金版</p>
+            <a href="/mobile/#/download">立即下载&gt;&gt;</a>
+        </div>
+    </div>
+    <div class="settling" ng-show="vm.apply.status === 3">
+        <div class="col">
+            投资盈利(元)
+            <em>\{{vm.profit}}</em>
+        </div>
+        <div class="col">
+            投资收益率
+            <em>\{{vm.profit_rate | currency:'':0}}%</em>
+        </div>
+    </div>
+    <!--
+    <div class="state-box">
+        <div class="state"><em>结算中</em></div>
+        <p>预计20分钟完成结算，保证金转入您的账户余额</p>
+    </div>
+    <div class="trading">
+        <div class="col">
+            <p>交易账户 <em>74870985</em></p>
+            <p>交易密码 <em>093242</em></p>
+        </div>
+        <div class="col">
+            <p>HOMS涌金版</p>
+            <a href="#">立即下载&gt;&gt;</a>
+        </div>
+    </div>
+    <div class="state-box">
+        <div class="state">已结算</div>
+        <p>结算金额：55000.00元</p>
+    </div>
+    <div class="settling">
+        <div class="col">
+            投资盈利(元)
+            <em>+5000.00</em>
+        </div>
+        <div class="col">
+            投资收益率
+            <em>100%</em>
+        </div>
+    </div>
+    -->
+    <div class="ttn-amount">
+        <ul>
+            <li>
+                <p>总操盘资金(元)</p>
+                <em>\{{vm.apply.amount | currency:'':2}}</em>
+                <span class="no">\{{vm.apply.serialID}}</span>
+            </li>
+            <li>
+                <div class="col">
+                    <p>预付保证金(元)</p>
+                    <strong>\{{vm.apply.deposit | currency:'':2}}</strong>
+                </div>
+                <div class="col">
+                    <p>账户管理费</p>
+                    <strong>\{{vm.serviceFee}}</strong>元/天
+                </div>
+            </li>
+            <li class="warn">
+                <div class="col">
+                    <p>警戒线(元)</p>
+                    <strong>\{{vm.apply_warn | currency:'':2}}</strong>
+                </div>
+                <div class="col">
+                    <p>平仓线(元)</p>
+                    <strong>\{{vm.apply_sell | currency:'':2}}</strong>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="ttn-param">
+        <ul>
+            <li>
+                <div class="col">开始交易时间</div>
+                <div class="col">\{{vm.apply.startDate | displayDate}}</div>
+            </li>
+            <li ng-show="vm.apply.status === 2">
+                <div class="col">累计交易天数</div>
+                <div class="col">\{{vm.days_till_now}}天</div>
+            </li>
+            <li>
+                <div class="col">投资方向</div>
+                <div class="col">沪深A股</div>
+            </li>
+            <li>
+                <div class="col">仓位限制</div>
+                <div class="col">不限制</div>
+            </li>
+        </ul>
+    </div>
+    <div class="ttn-agree">
+        <a href="/mobile/trader_agreement.html">《天天牛合作操盘协议》</a>
+    </div>
+</div>
+
+<!--#S footer-->
+<footer id="footer">
+    <div class="ui-btn-group ttn-btn-group" ng-show="vm.apply.status === 2">
+        <!--
+        <button>补充保证金</button>
+        -->
+        <button ng-click="vm.requestClose()">我要结算</button>
+    </div>
+</footer><!--#E footer-->
+
+<div class="ui-dialog" ng-show="vm.showCloseWindow">
+    <div class="ui-dialog-cnt">
+        <div class="ui-dialog-bd">
+            <div>
+                <h4>我要结算</h4>
+                <div class="ttn-warning">
+                    <i></i>结算前请确保您的股票已经全部卖出
+                </div>
+            </div>
+        </div>
+        <div class="ui-dialog-ft ui-btn-group">
+            <button type="button" id="J_ttnSureSettle" ng-click="vm.closeApply()">提交</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="ui-tip" ng-show="vm.resultError">\{{vm.errorMsg}}</div>
+
+<div class="ui-tip-success" ng-show="vm.resultSuccess">
+    <div class="icon"></div>
+    结算请求已经成功提交
+</div>

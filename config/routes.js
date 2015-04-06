@@ -179,6 +179,7 @@ module.exports = function(app) {
 
     app.get('/apply/pay_success', passportConf.isAuthenticated, applies.paySuccess);
 
+
     users.registerRoutes(app, passportConf);
 
     app.get('/api/user/:id', passportConf.isAuthenticated, users.fetchUser);

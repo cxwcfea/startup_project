@@ -2,8 +2,11 @@
 angular.module('mobileApp').controller('MobileUserCtrl', ['$scope', '$window', '$location', '$http', function($scope, $window, $location, $http) {
     var vm = this;
 
-    vm.user = $scope.data.currentUser;
+    vm.user = $window.bootstrappedUserObject;
     if (!vm.user) {
+        if (!$scope.data) {
+            $scope.data = {};
+        }
         $scope.data.lastLocation = '/user';
         $location.path('/login');
     }
@@ -14,6 +17,7 @@ angular.module('mobileApp').controller('MobileUserCtrl', ['$scope', '$window', '
         $http.post('/logout', {})
             .success(function(data, status) {
                 $scope.data.currentUser = null;
+                $window.bootstrappedUserObject = null;
                 $location.path('/');
             })
             .error(function(data, status) {

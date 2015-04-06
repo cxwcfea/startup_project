@@ -15,6 +15,10 @@ angular.module('mobileApp').config(['$routeProvider', '$httpProvider', function(
         })
         .when('/exp', { templateUrl: '/mobile/exp'
         })
+        .when('/recharge', { templateUrl: '/mobile/recharge'
+        })
+        .when('/download', { templateUrl: '/mobile/download'
+        })
         .when('/login', { templateUrl: '/mobile/login',
             controller: 'MobileLoginCtrl as vm'
         })
@@ -30,11 +34,29 @@ angular.module('mobileApp').config(['$routeProvider', '$httpProvider', function(
         .when('/forget', { templateUrl: '/mobile/forget',
             controller: 'MobileForgetCtrl as vm'
         })
+        .when('/change_pass', { templateUrl: '/mobile/change_password',
+            controller: 'MobileChangePassCtrl as vm'
+        })
         .when('/user', { templateUrl: '/mobile/user',
             controller: 'MobileUserCtrl as vm'
         })
         .when('/account', { templateUrl: '/mobile/account',
             controller: 'MobileUserCtrl as vm'
+        })
+        .when('/recharge_bank', { templateUrl: '/mobile/recharge_bank',
+            controller: 'MobileRechargeCtrl as vm'
+        })
+        .when('/recharge_alipay', { templateUrl: function(params) { return params.order_id ? '/mobile/recharge_alipay?order_id=' + params.order_id : '/mobile/recharge_alipay'; },
+            controller: 'MobileRechargeCtrl as vm'
+        })
+        .when('/recharge_record', { templateUrl: '/mobile/recharge_record',
+            controller: 'MobileRechargeRecordCtrl as vm'
+        })
+        .when('/user_ttn', { templateUrl: '/mobile/user_ttn',
+            controller: 'MobileApplyListCtrl as vm'
+        })
+        .when('/user_ttn_info/:apply_serial_id', { templateUrl: function(params) { return '/mobile/user_ttn_info/' + params.apply_serial_id; },
+            controller: 'MobileApplyDetailCtrl as vm'
         })
         .otherwise({
             redirectTo: '/home'

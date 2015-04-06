@@ -1,0 +1,39 @@
+<!--#S header-->
+<header id="header">
+    <div class="header-box">
+        <h1>充值明细</h1>
+        <a class="back" href="/mobile/#/user"></a>
+    </div>
+</header><!--#E header-->
+
+<div class="recharge-record" ng-cloak>
+    <ul class="record-list">
+        <li ng-repeat="order in vm.orderList">
+            <h5>支付宝 <span class="f-fr">+\{{order.amount | currency:'':2}}</span></h5>
+            <p>\{{order.createdAt | displayDate}} <span class="f-fr state">\{{order.status === 1 ? '成功' : '待确认'}}</span></p>
+            <p><!--cz000000001--> <span class="f-fr">\{{order.otherInfo}}</span></p>
+        </li>
+        <!--
+        <li>
+            <h5>支付宝 <span class="f-fr">+12.00</span></h5>
+            <p>2015-04-02 13:52:33 <span class="f-fr state">未处理</span></p>
+            <p>cz000000001 <span class="f-fr">382282789@qq.com</span></p>
+        </li>
+        <li>
+            <h5>支付宝 <span class="f-fr">+12.00</span></h5>
+            <p>2015-04-02 13:52:33 <span class="f-fr state">未处理</span></p>
+            <p>cz000000001 <span class="f-fr">382282789@qq.com</span></p>
+        </li>
+        <li>
+            <h5>支付宝 <span class="f-fr">+12.00</span></h5>
+            <p>2015-04-02 13:52:33 <span class="f-fr state">未处理</span></p>
+            <p>cz000000001 <span class="f-fr">382282789@qq.com</span></p>
+        </li>
+        <li>
+            <h5>支付宝 <span class="f-fr">+12.00</span></h5>
+            <p>2015-04-02 13:52:33 <span class="f-fr state">未处理</span></p>
+            <p>cz000000001 <span class="f-fr">382282789@qq.com</span></p>
+        </li>
+        -->
+    </ul>
+</div>
