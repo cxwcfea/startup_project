@@ -23,6 +23,7 @@ var orderSchema = mongoose.Schema({
     otherInfo: String,
     payType: Number,  // 0: iapppay, 1: shengpay, 2: apply, 3: alipay, 4: bank, undefine: withdraw
     approvedBy: String,
+    approvedAt: {type:Date, default: 0},
     manager: String
 });
 

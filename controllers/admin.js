@@ -594,6 +594,7 @@ function confirmAlipayOrder(req, res) {
             order.status = 1;
             order.bankTransID = req.body.trans_id;
             order.approvedBy = req.user.mobile;
+            order.approvedAt = Date.now();
             order.save(function(err) {
                 if (err) {
                     logger.warn('confirmAlipayOrder error:' + err.toString());
@@ -722,6 +723,7 @@ function confirmRechargeOrder(req, res) {
             order.status = 1;
             // order.bankTransID = req.body.trans_id;
             order.approvedBy = req.user.mobile;
+            order.approvedAt = Date.now();
             order.save(function(err) {
                 if (err) {
                     logger.warn('confirmRechargeOrder error:' + err.toString());
