@@ -97,6 +97,25 @@ input.LoginBtn01{
     color: #e0322d;
 }
 
+.freeDownloadBox {
+    height: 250px;
+}
+
+.freeDownloadBox img {
+    width: 80px;
+    height: 80px;
+    margin-top: 5px;
+    margin-left: 40px
+}
+
+#ios_code {
+    margin-left: 90px;
+}
+
+#android_code {
+    margin-left: 90px;
+}
+
 /* for toaster */
 .toast-top-right {
     top: 70px;
