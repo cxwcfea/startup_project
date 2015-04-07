@@ -16,7 +16,14 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
         vm.orderCreateSuccess = false;
         vm.pay_order = $window.bootstrappedOrderObject;
         if (vm.pay_order) {
-            vm.pay_amount = Number(vm.pay_order.amount.toFixed(2));
+            if (vm.user.finance.balance > 0) {
+                vm.pay_amount = Number((vm.pay_order.amount - vm.user.finance.balance).toFixed(2));
+                if (vm.pay_amount < 0) {
+                    vm.pay_amount = 0;
+                }
+            } else {
+                vm.pay_amount = Number(vm.pay_order.amount.toFixed(2));
+            }
         }
     }
 
