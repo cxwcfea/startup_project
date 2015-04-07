@@ -24,7 +24,8 @@ module.exports = function (grunt) {
                     'public/js.min/niujinwang.min.js': ['public/js/**/*.js', 'public/app/**/*.js', '!public/js/legacy/**/*.js', '!public/app/app.js'],
                     'public/js.min/niujinwang-main.min.js': ['public/app/controllers/MainApplyController.js', 'public/app/controllers/RegisterCtrl.js', 'public/js/main.js', 'public/js/common.js', 'public/js/common_module.js'],
                     'public/js.min/niujinwang-user.min.js': ['public/user/user.js', 'public/user/controllers/*.js', 'public/js/user.js'],
-                    'public/js.min/niujinwang-recharge.min.js': ['public/app/controllers/RechargeCtrl.js']
+                    'public/js.min/niujinwang-recharge.min.js': ['public/app/controllers/RechargeCtrl.js'],
+                    'public/js.min/niujinwang-mobile.min.js': ['public/mobile/js/controller/*.js', 'public/js/common_module.js']
                 }
             }
         },
@@ -36,12 +37,17 @@ module.exports = function (grunt) {
                         'public/css/css.css',
                         'public/css/common.css',
                         'public/vendor/toastr/toastr.css',
-                        '!public/css/niujinwang*.css']
+                        '!public/css/niujinwang*.css'],
+                    'public/mobile/css/niujinwang-mobile.css': ['public/mobile/css/reset.css',
+                        'public/mobile/css/base.css',
+                        'public/mobile/css/common.css',
+                        'public/mobile/css/pages.css'
+                    ]
                 }
             },
             minify: {
-                src: 'public/css/niujinwang.css',
-                dest: 'public/css/niujinwang.min.css'
+                src: 'public/mobile/css/niujinwang-mobile.css',
+                dest: 'public/mobile/css/niujinwang-mobile.min.css'
             }
         },
         hashres: {
@@ -53,7 +59,8 @@ module.exports = function (grunt) {
                     'public/js.min/niujinwang-main.min.js',
                     'public/js.min/niujinwang-user.min.js',
                     'public/js.min/niujinwang-recharge.min.js',
-                    'public/css/niujinwang.min.css'
+                    'public/js.min/niujinwang-mobile.min.js',
+                    'public/mobile/css/niujinwang-mobile.min.css'
                 ],
                 dest: [
                     'views/layouts/*.handlebars'

@@ -358,6 +358,7 @@ module.exports.postWithdraw = function(req, res) {
             });
         },
         function(user, callback) {
+            user.finance.balance = Number(user.finance.balance.toFixed(2));
             if (user.finance.balance < amount) {
                 callback('余额不足');
             } else {

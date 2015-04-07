@@ -29,7 +29,7 @@
     <div class="clear"></div>
     <div class="set_list">
         <div class="fl set_lstLeft">
-            <span class="span01">邮箱 (\{{accountVM.user.profile.email | displayEmail}}) </span>
+            <span class="span01">邮箱 \{{(accountVM.user.profile.email | displayEmail)}} </span>
             <a href="" class="color_2489f0" ng-click="accountVM.showVerifyEmailWindow = true">\{{accountVM.user.profile.email_verified ? '修改' : '绑定'}}</a>
         </div>
         <!--
