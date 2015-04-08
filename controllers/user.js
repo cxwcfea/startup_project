@@ -187,6 +187,13 @@ module.exports.apiSignup = function(req, res) {
     });
 };
 
+function getClientIp(req) {
+    return req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress;
+}
+
 module.exports.finishSignup = function(req, res, next) {
     if (!req.session.sms_code) {
         res.status(400);
@@ -240,7 +247,7 @@ module.exports.finishSignup = function(req, res, next) {
                 }
                 logger.info('user ' + existingUser.mobile + ' signup');
                 logger.info('ua ' + req.headers['user-agent']);
-                logger.info('ip ' + req.ip);
+                logger.info('ip ' + getClientIp(req));
                 res.send({});
             });
         });
