@@ -13,7 +13,7 @@ function home(req, res, next) {
         return;
     }
     if (!req.session.statistic || req.session.statistic.expires < Date.now()) {
-        User.aggregate([{$match:{registered:true}}, {$group: {_id: null, count: {$sum: 1}, profit: { $sum: '$finance.profit'}, capital: { $sum: '$finance.total_capital' } }}], function(err, statistic) {
+        User.aggregate([{$match:{registered:true}}, {$group: {_id: null, count: {$sum: 1}, profit: { $sum: '$finance.profit'}, capital: { $sum: '$finance.history_capital' } }}], function(err, statistic) {
             if (err || !statistic) {
                 logger.warn('error when fetch total user count:' + err.toString());
                 statistic = [{
