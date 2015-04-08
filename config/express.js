@@ -112,4 +112,5 @@ module.exports = function(app, config) {
     app.use(passport.session());
     app.use(flash());
     app.use(express.static(config.rootPath + '/public'));
+    app.enable('trust proxy');
 };

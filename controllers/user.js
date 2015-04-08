@@ -248,6 +248,7 @@ module.exports.finishSignup = function(req, res, next) {
                 logger.info('user ' + existingUser.mobile + ' signup');
                 logger.info('ua ' + req.headers['user-agent']);
                 logger.info('ip ' + getClientIp(req));
+                logger.info('ip ' + req.ip);
                 res.send({});
             });
         });
