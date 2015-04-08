@@ -11,12 +11,11 @@ angular.module('mobileApp').controller('MobileApplyListCtrl', ['$scope', '$windo
         $scope.data.lastLocation = '/recharge_record';
         $location.path('/login');
     } else {
-        vm.apply_list = njApply.query({uid:vm.user._id}, function () {
-            angular.forEach(vm.apply_list, function(value, key) {
-                formatData(value);
-            });
-        }).$promise.then(function(value) {
-                console.log('success');
+        vm.apply_list = njApply.query({uid:vm.user._id}).$promise.then(function(value) {
+                vm.apply_list = value;
+                angular.forEach(vm.apply_list, function(value, key) {
+                    formatData(value);
+                });
             }, function(reason) {
                 if (!$scope.data) {
                     $scope.data = {};

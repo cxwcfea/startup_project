@@ -12,9 +12,8 @@ angular.module('mobileApp').controller('MobileRechargeRecordCtrl', ['$scope', '$
         $location.path('/login');
     } else {
         var OrderResource = $resource('/api/alipay/orders', {});
-        vm.orderList = OrderResource.query(function () {
-        }).$promise.then(function(value) {
-                console.log('success');
+        vm.orderList = OrderResource.query().$promise.then(function(value) {
+                vm.orderList = value;
             }, function(reason) {
                 if (!$scope.data) {
                     $scope.data = {};
@@ -23,6 +22,5 @@ angular.module('mobileApp').controller('MobileRechargeRecordCtrl', ['$scope', '$
                 $location.path('/login');
             });
     }
-
 
 }]);

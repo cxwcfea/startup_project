@@ -28,6 +28,18 @@
     <!-- endbuild -->
     <script src="{{static '/vendor/jquery/dist/jquery.min.js'}}"></script>
     <script src="{{static '/vendor/angular/angular.min.js'}}"></script>
+    {{#if production}}
+        <script>
+            var _hmt = _hmt || [];
+            (function() {
+                var hm = document.createElement("script");
+                hm.src = "//hm.baidu.com/hm.js?0f1e3c8e66c63704a066d89a633200e3";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+        <script type="text/javascript" src="http://ga.istreamsche.com/stat/j_REACH.js"></script>
+    {{/if}}
 </head>
 
 <body ng-controller="MobileIndexCtrl as indexVM">
@@ -65,7 +77,7 @@
 <script src="{{static '/mobile/js/controller/MobileApplyDetailCtrl.js'}}"></script>
 <script src="{{static '/mobile/js/controller/MobileChangePassCtrl.js'}}"></script>
 -->
-<script src="{{static '/js.min/niujinwang-mobile.min.29bf7770.js'}}"></script>
+<script src="{{static '/js.min/niujinwang-mobile.min.f20b210b.js'}}"></script>
 
 </body>
 </html>

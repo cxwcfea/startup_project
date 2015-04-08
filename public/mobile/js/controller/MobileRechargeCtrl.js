@@ -32,6 +32,9 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
             return;
         }
         vm.smsSend = true;
+        $timeout(function() {
+            vm.smsSend = false;
+        }, 60000);
         var info = '户名：北京小牛普惠科技有限公司，账号：110912609510501，开户行：招商银行股份有限公司北京清华园支行';
         $http.post('/api/send_sms', {sms_content:info})
             .success(function(data, status, headers, config) {
