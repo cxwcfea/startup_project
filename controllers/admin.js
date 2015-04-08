@@ -152,7 +152,6 @@ function fetchOrdersForUser(req, res) {
 function fetchNearExpireApplies(req, res) {
     var startTime = util.getStartDay();
     var endTime = util.getEndDay(startTime, 2).toDate();
-    console.log(endTime);
 
     Apply.find({ $and: [{ endTime: {$lte: endTime } }, {status: 2}] }, function(err, applies) {
         if (err) {

@@ -1092,10 +1092,57 @@ function verifyEmailBySMS(req, res) {
     });
 }
 
+function payMiddleStep(req, res, next) {
+    if (!req.body) {
+        return next();
+    }
+    var Name = req.body.Name;
+    var Version = req.body.Version;
+    var Charset = req.body.Charset;
+    var MsgSender = req.body.MsgSender;
+    var OrderNo = req.body.OrderNo;
+    var OrderAmount = req.body.OrderAmount;
+    var OrderTime = moment().format("YYYYMMDDHHmmss");
+    var PayType = req.body.PayType;
+    var PayChannel = 19;
+    var InstCode = req.body.InstCode;
+    var PageUrl = req.body.PageUrl;
+    var BackUrl = req.body.BackUrl;
+    var NotifyUrl = req.body.NotifyUrl;
+    var ProductName = req.body.ProductName;
+    var BuyerIp = req.body.BuyerIp;
+    var SignType = 'MD5';
+    var md5Key = 'JDJhJDA1JHpMRVc3UkJLR202R2hhNHZzZllMYi5';
+
+    var sign_origin = Name+Version+Charset+MsgSender+OrderNo+OrderAmount+OrderTime+
+        PayType+PayChannel+InstCode+PageUrl+BackUrl+NotifyUrl+ProductName+BuyerIp+SignType+md5Key;
+    var sig = sparkMD5.hash(sign_origin);
+    sig = sig.toUpperCase();
+
+    logger.debug('sign1:' + req.body.SignMsg + ' sign2:' + sig);
+
+    res.render('shengpay_middle_step', {
+        callback_domain: config.pay_callback_domain,
+        order_id: req.body.OrderNo,
+        order_amount: req.body.OrderAmount,
+        order_time: req.body.OrderTime,
+        pay_channel: req.body.PayChannel,
+        bank_id: req.body.InstCode,
+        user_ip: req.body.BuyerIp,
+        sign_value: sig,
+        page_url: PageUrl,
+        back_url: BackUrl,
+        notify_url: NotifyUrl,
+        layout: null
+    });
+}
+
 module.exports.registerRoutes = function(app, passportConf) {
     app.get('/user', passportConf.isAuthenticated, getUserHome);
 
     app.get('/recharge', passportConf.isAuthenticated, getRecharge);
+
+    app.post('/pay_middle_step', passportConf.isAuthenticated, payMiddleStep);
 
     app.post('/user/verify_email_by_sms', passportConf.isAuthenticated, verifyEmailBySMS);
 

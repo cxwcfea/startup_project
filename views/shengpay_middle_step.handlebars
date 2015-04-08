@@ -1,0 +1,23 @@
+<script src="{{static '/vendor/jquery/dist/jquery.min.js'}}"></script>
+<form action="https://mas.sdo.com/web-acquire-channel/cashier.htm" method="POST" id="shengPayForm" name="shengPayForm">
+    <input type="hidden" name="Name" id="Name" value="B2CPayment">
+    <input type="hidden" name="Version" id="Version" value="V4.1.1.1.1">
+    <input type="hidden" name="Charset" id="Charset" value="UTF-8">
+    <input type="hidden" name="MsgSender" id="MsgSender" value="443818">
+    <input type="hidden" name="OrderNo" id="OrderNo" value="{{order_id}}">
+    <input type="hidden" name="OrderAmount" id="OrderAmount" value="{{order_amount}}">
+    <input type="hidden" name="OrderTime" id="OrderTime" value="{{order_time}}">
+    <input type="hidden" name="PayType" id="PayType" value="PT001">
+    <input type="hidden" name="PayChannel" id="PayChannel" value="{{pay_channel}}">
+    <input type="hidden" name="InstCode" id="InstCode" valud="{{bank_id}}">
+    <input type="hidden" name="PageUrl" id="PageUrl" value="{{page_url}}">
+    <input type="hidden" name="BackUrl" id="BackUrl" value="{{back_url}}">
+    <input type="hidden" name="NotifyUrl" id="NotifyUrl" value="{{notify_url}}">
+    <input type="hidden" name="ProductName" id="ProductName" value="股票配资">
+    <input type="hidden" name="BuyerIp" id="BuyerIp" value="{{user_ip}}">
+    <input type="hidden" name="SignType" id="SignType" value="MD5">
+    <input type="hidden" name="SignMsg" id="SignMsg" value="{{sign_value}}">
+</form>
+<script>
+    $('#shengPayForm')[0].submit();
+</script>

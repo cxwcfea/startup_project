@@ -95,6 +95,7 @@ module.exports = function(app, config) {
 
     var sessionStore = new mongoSessionStore({ url: config.db, autoReconnect: true });
 
+    app.enable('trust proxy');
     app.use(cookieParser(credentials.cookieSecret));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
@@ -112,5 +113,4 @@ module.exports = function(app, config) {
     app.use(passport.session());
     app.use(flash());
     app.use(express.static(config.rootPath + '/public'));
-    app.enable('trust proxy');
 };
