@@ -355,6 +355,8 @@ exports.freeApply = function(req, res, next) {
                     user.finance.balance -= 1;
                     user.finance.total_capital += 2000;
                     user.finance.deposit += 1;
+                    user.finance.history_capital += 2000;
+                    user.finance.history_deposit += 1;
                     user.freeApply = apply.serialID;
                     user.save(function (err, user) {
                         if (err) {
