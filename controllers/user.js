@@ -1122,8 +1122,8 @@ function payMiddleStep(req, res, next) {
     res.render('shengpay_middle_step', {
         order_id: req.body.OrderNo,
         order_amount: req.body.OrderAmount,
-        order_time: req.body.OrderTime,
-        pay_channel: req.body.PayChannel,
+        order_time: OrderTime,
+        pay_channel: PayChannel,
         bank_id: req.body.InstCode,
         user_ip: req.body.BuyerIp,
         sign_value: sig,
