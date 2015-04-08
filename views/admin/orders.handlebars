@@ -33,7 +33,7 @@
             <div class="am-cf">
                 共 \{{orderVM.totalItems}} 条记录
                 <div class="am-fr">
-                    <pagination previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="orderVM.itemsPerPage" total-items="orderVM.totalItems" ng-model="orderVM.currentPage" ng-change="orderVM.pageChanged()"></pagination>
+                    <pagination previous-text="&lsaquo;" next-text="&rsaquo;" max-size="orderVM.maxSize" rotate="false" items-per-page="orderVM.itemsPerPage" total-items="orderVM.totalItems" ng-model="orderVM.currentPage" ng-change="orderVM.pageChanged()"></pagination>
                 </div>
             </div>
             <hr />

@@ -1,6 +1,7 @@
 'use strict';
 angular.module('adminApp').controller('AdminUserListCtrl', ['$scope', '$http', '$modal', '$location', 'gbUser', 'gbNotifier', '$filter', function($scope, $http, $modal, $location, gbUser, gbNotifier, $filter) {
     var vm = this;
+    vm.maxSize = 5;
     vm.users = gbUser.query(function() {
         vm.users = $filter('orderBy')(vm.users, 'registerAt', true);
         vm.showAllUsers();

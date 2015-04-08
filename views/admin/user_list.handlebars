@@ -54,7 +54,7 @@
             <div class="am-cf">
                 共 \{{userVM.currentUsers.length}} 条记录
                 <div class="am-fr">
-                    <pagination previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="userVM.itemsPerPage" total-items="userVM.totalItems" ng-model="userVM.currentPage" ng-change="userVM.pageChanged()"></pagination>
+                    <pagination previous-text="&lsaquo;" next-text="&rsaquo;" max-size="userVM.maxSize" rotate="false" items-per-page="userVM.itemsPerPage" total-items="userVM.totalItems" ng-model="userVM.currentPage" ng-change="userVM.pageChanged()"></pagination>
                 </div>
             </div>
             <hr />

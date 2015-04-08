@@ -4,6 +4,7 @@ angular.module('adminApp').controller('AdminOrderCtrl', ['$scope', '$location', 
     var order_list = {};
     var currentOrders;
     vm.itemsPerPage = 15;
+    vm.maxSize = 5;
 
     initData();
 
