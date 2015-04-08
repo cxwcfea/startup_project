@@ -94,6 +94,18 @@ angular.module('adminApp').controller('AdminExpireApplyCtrl', ['$scope', '$http'
         }, function () {
         });
     };
+
+    vm.sendSellSMS = function() {
+        gbNotifier.notify('短信发送中...');
+        $http.post('/admin/api/send_sell_sms', {})
+            .success(function(data, status) {
+                gbNotifier.notify('短信已发送');
+                console.log('ok');
+            })
+            .error(function(data, status) {
+                console.log('fail');
+            });
+    }
 }]);
 
 angular.module('adminApp').controller('forceCloseModalCtrl', ['$scope', '$modalInstance', 'apply', function ($scope, $modalInstance, apply) {

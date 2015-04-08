@@ -882,6 +882,31 @@ function takeApply(req, res) {
     });
 }
 
+function sendSellSMS(req, res) {
+    var startTime = util.getStartDay();
+    var endTime = util.getEndDay(startTime, 1).toDate();
+
+    Apply.find({ $and: [{ endTime: {$lte: endTime } }, {endTime: {$gt: startTime.toDate()}}, {status: 2}] }, function(err, applies) {
+        var mobile = {};
+        var results = applies.filter(function(elem) {
+            if (mobile[elem.userMobile]) {
+                return false;
+            } else {
+                mobile[elem.userMobile] = true;
+                return true;
+            }
+        });
+        results.map(function(elem) {
+            if (elem.isTrial) {
+                util.sendSMS_10(elem.userMobile);
+            } else {
+                util.sendSMS_9(elem.userMobile, elem.amount);
+            }
+        });
+        res.send({});
+    });
+}
+
 function autoFetchPendingApplies(req, res) {
     //logger.debug('autoFetchPendingApplies operator:', req.user.mobile);
     Apply.find({status: 4}, function(err, applies) {
@@ -1053,6 +1078,8 @@ module.exports = {
         app.post('/admin/api/take_order', passportConf.requiresRole('admin|support'), takeOrder);
 
         app.post('/admin/api/take_apply', passportConf.requiresRole('admin|support'), takeApply);
+
+        app.post('/admin/api/send_sell_sms', passportConf.requiresRole('admin|support'), sendSellSMS);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

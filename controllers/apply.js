@@ -391,7 +391,13 @@ exports.freeApply = function(req, res, next) {
     } else {
         logger.warn('user:' + req.user.mobile + ' already tried free apply, refuse it');
         res.locals.serial_id = req.user.freeApply;
-        res.render('apply/free_apply_refuse');
+        if (req.url.search('/mobile') > -1) {
+            res.render('mobile/free_apply_refuse', {
+                layout: 'mobile'
+            });
+        } else {
+            res.render('apply/free_apply_refuse');
+        }
     }
 };
 

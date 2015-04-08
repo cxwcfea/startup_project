@@ -1,5 +1,5 @@
 'use strict';
-angular.module('mobileApp').controller('MobileApplyListCtrl', ['$scope', '$window', 'njApply', 'warn_factor', 'sell_factor', 'days', function($scope, $window, njApply, warn_factor, sell_factor, days) {
+angular.module('mobileApp').controller('MobileApplyListCtrl', ['$scope', '$window', '$location', 'njApply', 'warn_factor', 'sell_factor', 'days', function($scope, $window, $location, njApply, warn_factor, sell_factor, days) {
     var vm = this;
 
     vm.user = $window.bootstrappedUserObject;
@@ -15,7 +15,15 @@ angular.module('mobileApp').controller('MobileApplyListCtrl', ['$scope', '$windo
             angular.forEach(vm.apply_list, function(value, key) {
                 formatData(value);
             });
-        });
+        }).$promise.then(function(value) {
+                console.log('success');
+            }, function(reason) {
+                if (!$scope.data) {
+                    $scope.data = {};
+                }
+                $scope.data.lastLocation = '/user_ttn';
+                $location.path('/login');
+            });
     }
 
     function formatData (item) {
