@@ -1122,7 +1122,6 @@ function payMiddleStep(req, res, next) {
     logger.debug('sign1:' + req.body.SignMsg + ' sign2:' + sig);
 
     res.render('shengpay_middle_step', {
-        callback_domain: config.pay_callback_domain,
         order_id: req.body.OrderNo,
         order_amount: req.body.OrderAmount,
         order_time: req.body.OrderTime,
@@ -1130,9 +1129,9 @@ function payMiddleStep(req, res, next) {
         bank_id: req.body.InstCode,
         user_ip: req.body.BuyerIp,
         sign_value: sig,
-        page_url: PageUrl,
-        back_url: BackUrl,
-        notify_url: NotifyUrl,
+        page_url: req.body.PageUrl,
+        back_url: req.body.BackUrl,
+        notify_url: req.body.NotifyUrl,
         layout: null
     });
 }

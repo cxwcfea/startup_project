@@ -194,9 +194,9 @@
             var MsgSender = $('#MsgSender')[0].value;
             var OrderNo = $('#OrderNo')[0].value = order._id;
             var OrderAmount = $('#OrderAmount')[0].value = order.amount.toFixed(2);
-            var OrderTime = $('#OrderTime')[0].value = moment().format("YYYYMMDDHHmmss");
+            //var OrderTime = $('#OrderTime')[0].value = moment().format("YYYYMMDDHHmmss");
             var PayType = $('#PayType')[0].value;
-            var PayChannel = $('#PayChannel')[0].value = vm.useCredit ? 20 : 19;
+            //var PayChannel = $('#PayChannel')[0].value = vm.useCredit ? 20 : 19;
             var InstCode = $('#InstCode')[0].value = BankNameList[vm.payBank].instCode;
             var PageUrl = $('#PageUrl')[0].value;
             var BackUrl = $('#BackUrl')[0].value;
@@ -204,13 +204,14 @@
             var ProductName = $('#ProductName')[0].value;
             var BuyerIp = $('#BuyerIp')[0].value = $window.returnCitySN["cip"];
             var SignType = $('#SignType')[0].value;
-            var md5Key = 'JDJhJDA1JHpMRVc3UkJLR202R2hhNHZzZllMYi5';
 
+            /*
             var sign_origin = Name+Version+Charset+MsgSender+OrderNo+OrderAmount+OrderTime+
                 PayType+PayChannel+InstCode+PageUrl+BackUrl+NotifyUrl+ProductName+BuyerIp+SignType+md5Key;
             var SignMsg = SparkMD5.hash(sign_origin);
             SignMsg = SignMsg.toUpperCase();
             $('#SignMsg')[0].value = SignMsg;
+            */
             $('#shengPayForm')[0].submit();
         }
 
