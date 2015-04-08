@@ -15,18 +15,18 @@ angular.module('mobileApp').controller('MobileApplyDetailCtrl', ['$scope', '$win
         vm.apply.start_date = vm.apply.startTime ? vm.apply.startTime : days.startTime();
         vm.apply.end_date = vm.apply.endTime ? vm.apply.endTime : days.endTime(vm.apply.start_date, vm.apply.period);
         vm.days_till_now = days.tradeDaysTillNow(vm.apply);
-        if (vm.profit) {
-            vm.finalValue = vm.apply.deposit + vm.apply.profit;
-            if (vm.finalValue < 0) {
-                vm.finalValue = 0;
-            }
-            vm.profit = vm.apply.profit >= 0 ? '+' : '';
-            vm.profit += vm.apply.profit.toString();
-            vm.profit_rate = 0;
-            if (vm.apply.profit > 0) {
-                vm.profit_rate = vm.apply.profit / vm.apply.deposit * 100;
-            }
+
+        vm.finalValue = vm.apply.deposit + vm.apply.profit;
+        if (vm.finalValue < 0) {
+            vm.finalValue = 0;
         }
+        vm.profit = vm.apply.profit >= 0 ? '+' : '';
+        vm.profit += vm.apply.profit.toString();
+        vm.profit_rate = 0;
+        if (vm.apply.profit > 0) {
+            vm.profit_rate = vm.apply.profit / vm.apply.deposit * 100;
+        }
+
         vm.serviceFee = vm.apply.isTrial ? 0 : 19.90;
         vm.apply_warn = vm.apply.isTrial ? 1800 : (warn_factor * vm.apply.amount).toFixed(2);
         vm.apply_sell = vm.apply.isTrial ? 1600 : (sell_factor * vm.apply.amount).toFixed(2);
