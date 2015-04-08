@@ -1119,8 +1119,6 @@ function payMiddleStep(req, res, next) {
     var sig = sparkMD5.hash(sign_origin);
     sig = sig.toUpperCase();
 
-    logger.debug('sign1:' + req.body.SignMsg + ' sign2:' + sig);
-
     res.render('shengpay_middle_step', {
         order_id: req.body.OrderNo,
         order_amount: req.body.OrderAmount,
