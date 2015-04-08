@@ -77,13 +77,17 @@ module.exports = function(app, config) {
             app.use(logger('dev'));
             break;
         case 'production':
-            // module 'express-logger' supports daily log rotation
             app.use(logger('tiny'));
+            // module 'express-logger' supports daily log rotation
             //app.use(require('express-logger')({ path: config.rootPath + '/log/requests.log'}));
             log4js.configure({
                 appenders: [
                     { type: 'console' },
-                    { type: 'file', filename: 'log/server.log' }
+                    {
+                        type: 'file',
+                        filename: 'log/server.log',
+                        "maxLogSize": 20480
+                    }
                 ]
             });
             break;

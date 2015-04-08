@@ -238,6 +238,9 @@ module.exports.finishSignup = function(req, res, next) {
                     res.status(500);
                     return res.send({ error_msg: err.toString() });
                 }
+                logger.info('user ' + existingUser.mobile + ' signup');
+                logger.info('ua ' + req.headers['user-agent']);
+                logger.info('ip ' + req.ip);
                 res.send({});
             });
         });
