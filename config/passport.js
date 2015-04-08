@@ -62,7 +62,10 @@ module.exports.requiresRole = function(role) {
         }
         if (!req.isAuthenticated() || !match) {
             res.status(403);
-            res.end('需要管理员权限');
+            //res.end('需要管理员权限');
+            res.render('admin/admin_login', {
+                layout: null
+            });
         } else {
             next();
         }
