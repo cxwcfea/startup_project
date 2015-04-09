@@ -96,6 +96,10 @@ function getTTN(req, res, next) {
     res.render('mobile/ttn', {layout:null});
 }
 
+function getYYN(req, res, next) {
+    res.render('mobile/yyn', {layout:null});
+}
+
 function getForget(req, res, next) {
     res.render('mobile/forget', {layout:null});
 }
@@ -238,6 +242,8 @@ module.exports = {
         app.get('/mobile/signup', getSignup);
 
         app.get('/mobile/ttn', getTTN);
+
+        app.get('/mobile/yyn', getYYN);
 
         app.get('/mobile/ttn_confirm/:apply_serial_id', passportConf.isAuthenticated, getTTNConfirm);
 

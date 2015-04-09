@@ -28,6 +28,9 @@ angular.module('mobileApp').config(['$routeProvider', '$httpProvider', function(
         .when('/ttn', { templateUrl: '/mobile/ttn',
             controller: 'MobileTtnCtrl as vm'
         })
+        .when('/yyn', { templateUrl: '/mobile/yyn',
+            controller: 'MobileYynCtrl as vm'
+        })
         .when('/ttn_confirm/:apply_serial_id', { templateUrl: function(params){ return '/mobile/ttn_confirm/' + params.apply_serial_id; },
             controller: 'MobileTtnConfirmCtrl as vm'
         })
