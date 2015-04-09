@@ -77,8 +77,8 @@ function home(req, res, next) {
         res.render('mobile/home', {
             layout: null,
             user_count: req.session.statistic.user_count,
-            total_capital: req.session.statistic.total_capital.toFixed(0),
-            total_profit: req.session.statistic.total_profit.toFixed(0),
+            total_capital: util.formatDisplayNum(req.session.statistic.total_capital),
+            total_profit: req.session.statistic.total_profit,
             apply_infos: req.session.statistic.show_applies
         });
     }

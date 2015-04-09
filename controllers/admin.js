@@ -518,7 +518,7 @@ function handleWithdrawOrder(req, res) {
                 });
             },
             function(order, callback) {
-                Order.update({_id:req.params.order_id}, {status: 1, bankTransID:req.body.bank_trans_id, approvedBy:req.user.mobile, order.approvedAt:Date.now()}, function(err, numberAffected, raw) {
+                Order.update({_id:req.params.order_id}, {status: 1, bankTransID:req.body.bank_trans_id, approvedBy:req.user.mobile, approvedAt:Date.now()}, function(err, numberAffected, raw) {
                     callback(err, order);
                 });
             },
