@@ -56,7 +56,7 @@
                 <td><p class="p01">\{{item.amount | currency:'':2}}</p></td>
                 <td>
                     <div class="tra_jdt">
-                        <div class="tra_jdt2 full_deposit"></div>
+                        <div class="tra_jdt2 full_deposit" ng-class="{empty_deposit: item.status === 1}"></div>
                     </div>
                     <p class="p02">共<span>\{{item.deposit | currency:'':2}}</span></p>
                 </td>
@@ -73,10 +73,11 @@
                     <p class="p04" ng-show="item.status === 3">已结束</p>
                 </td>
                 <td>
-                    <p ng-class="{color_37c80b:item.status === 2, color_a40000:item.status === 4}">\{{item.status | applyStatus}}</p>
+                    <p ng-class="{color_red:item.status === 1, color_37c80b:item.status === 2, color_a40000:item.status === 4}">\{{item.status | applyStatus}}</p>
                 </td>
                 <td>
                     <div class="tra_BtnBox">
+                        <a ng-show="item.status === 1" href="/apply_confirm/\{{item.serialID}}" class="tra_tableBoxBtn jq_Btn">去支付</a>
                         <a ng-hide="item.status === 1 || item.status === 4" href="" class="tra_tableBoxBtn jq_Btn" ng-click="applyVM.showAccountInfo(item)">交易账号</a>
                         <!--
                         <div ng-show="item.status === 2">

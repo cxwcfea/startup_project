@@ -60,9 +60,9 @@ angular.module('userApp').controller('UserHomeCtrl', ['$scope', '$window', '$fil
             angular.forEach(apply_list, function(value, key) {
                 formatData(value);
             });
-            vm.currentApplies = $filter('filter')(apply_list, {status: 2}, true);
+            vm.currentApplies = $filter('filter')(apply_list, {status: 1}, true);
             if (vm.currentApplies.length === 0) {
-                vm.currentApplies = $filter('filter')(apply_list, {status: 1}, true);
+                vm.currentApplies = $filter('filter')(apply_list, {status: 2}, true);
             }
             if (vm.currentApplies.length === 0) {
                 vm.currentApplies = $filter('filter')(apply_list, {status: 4}, true);

@@ -93,6 +93,10 @@ input.LoginBtn01{
     width: 84px;
 }
 
+.empty_deposit {
+    width: 0px;
+}
+
 .color_red {
     color: #e0322d;
 }

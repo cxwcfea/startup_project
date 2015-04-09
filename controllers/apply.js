@@ -60,7 +60,7 @@ exports.getApplyDetail = function (req, res, next) {
         res.locals.apply_service_fee = serviceFee.toFixed(2);
         res.locals.apply_serialID = apply.serialID;
         res.locals.apply_applyAt = moment(apply.applyAt).format("YYYY-MM-DD HH:mm");
-        res.locals.apply_pay = apply.deposit + serviceFee;
+        res.locals.apply_pay = (apply.deposit + serviceFee).toFixed(2);
         res.locals.apply_period = apply.period;
         res.locals.apply_fee_per_day = (serviceFee / apply.period).toFixed(2);
         res.locals.apply_warn = (apply.amount - config.warnFactor * apply.deposit).toFixed(2);
@@ -431,7 +431,7 @@ exports.placeApply = function(req, res, next) {
         lever: req.body.lever,
         warnValue: Number(Number(req.body.warnValue).toFixed(2)),
         sellValue: Number(Number(req.body.sellValue).toFixed(2)),
-        period: 2
+        period: 5
     });
 
     Apply.create(applyData, function(err, apply) {
