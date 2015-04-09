@@ -61,7 +61,7 @@ function home(req, res, next) {
                     req.session.statistic = {
                         user_count: statistic[0].count + 7000,
                         total_capital: statistic[0].capital + 200000000,
-                        total_profit: statistic[0].profit + 4000000,
+                        total_profit: (statistic[0].profit + 4000000).toFixed(0),
                         show_applies: theApplies,
                         expires: Date.now() + 3600000 * 1
                     };
