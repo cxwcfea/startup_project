@@ -1,0 +1,83 @@
+<!--#S header-->
+<header id="header">
+    <div class="header-box">
+        <h1>月月牛</h1>
+        <a class="back" href="/mobile/#/"></a>
+        <a href="#" class="f-pr">规则说明</a>
+    </div>
+</header><!--#E header-->
+
+<div class="slogan-bd ttn-slogan">
+    <div class="line"></div>
+    <div class="pic">
+        <img src="images/yyn-slogan.png" width="146" alt="按月配资,十倍资金,3步配资">
+    </div>
+</div>
+
+<div class="yyn-box">
+    <h3>您的投资本金(元) <span>最少1万，最多100万</span></h3>
+    <div class="yyn-principal">
+        <input type="number" id="J_yynPrincipal" />
+    </div>
+
+    <h3>您可配资金(元)</h3>
+    <div class="money-select">
+        <ul class="money-options" id="J_yynMoney">
+            <li class="current" data-num="1.3">
+                <strong>1万</strong>
+                <span>1.3分/月</span>
+            </li>
+            <li data-num="1.4">
+                <strong>2万</strong>
+                <span>1.4分/月</span>
+            </li>
+            <li data-num="1.6">
+                <strong>3万</strong>
+                <span>1.6分/月</span>
+            </li>
+            <li data-num="1.7">
+                <strong>4万</strong>
+                <span>1.7分/月</span>
+            </li>
+            <li data-num="1.9">
+                <strong>5万</strong>
+                <span>1.9分/月</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="yyn-month">
+        <h3>资金使用期限</h3>
+        <div class="sel-box">
+            <span class="yyn-permonth" id="J_yynPerMonth"><em>1.3</em>分/月</span>
+            <span class="icon"></span>
+            <select class="ui-sel" id="J_yynMonth">
+                <option value="1" selected="selected">1个月</option>
+                <option value="2">2个月</option>
+                <option value="3">3个月</option>
+                <option value="4">4个月</option>
+                <option value="5">5个月</option>
+                <option value="6">6个月</option>
+                <option value="7">7个月</option>
+                <option value="8">8个月</option>
+                <option value="9">9个月</option>
+                <option value="10">10个月</option>
+                <option value="11">11个月</option>
+            </select>
+        </div>
+    </div>
+    <h3>操盘确认 <span class="f-fr"><em>操盘须知：</em>投资沪深A股，仓位不限</span></h3>
+    <div class="ttn-warn">
+        <div class="number">
+            <p>总操盘资金 <em id="J_yynTotal">2000</em> 元</p>
+            <p>亏损警戒线 <strong id="J_yynWarn">1920</strong> 元</p>
+            <p>亏损平仓线 <strong id="J_yynOut">1880</strong> 元</p>
+        </div>
+        <div class="icon"></div>
+    </div>
+</div>
+
+<!--#S footer-->
+<footer id="footer">
+    <a href="ttn_confirm.html?money=2000&multiple=1" class="ft-btn" data-num="2000" data-multiple="1" id="J_2confirm">立即操盘</a>
+</footer><!--#E wrapper-->
