@@ -24,7 +24,7 @@ angular.module('mobileApp').controller('MobileLoginCtrl', ['$scope', '$location'
                 if ($scope.data.lastLocation) {
                     $location.path($scope.data.lastLocation);
                 } else {
-                    $location.path('/exp');
+                    $location.path('/');
                 }
             })
             .error(function(data, status, headers, config) {

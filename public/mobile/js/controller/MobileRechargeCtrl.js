@@ -56,6 +56,14 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
             }, 1500);
             return;
         }
+        if (!vm.alipay_name) {
+            vm.errorMsg = '请输入支付宝实名认证姓名';
+            vm.inputError = true;
+            $timeout(function() {
+                vm.inputError = false;
+            }, 1500);
+            return;
+        }
         if (!vm.pay_amount || vm.pay_amount < 0) {
             vm.errorMsg = '请输入有效的充值金额';
             vm.inputError = true;
@@ -64,12 +72,6 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
             }, 1500);
             return;
         }
-        /*
-        if (!vm.alipay_name) {
-            addAlert('danger', '请输入支付宝实名认证姓名');
-            return;
-        }
-        */
         vm.alipayConfirm = true;
 
         var newOrder = new njOrder({uid:vm.user._id});
@@ -81,6 +83,7 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
         newOrder.payType = 3;
         newOrder.status = 2;
         newOrder.otherInfo = vm.alipay_account;
+        newOrder.transID = vm.alipay_name;
         newOrder.$save(function(o, responseHeaders) {
         }, function(response) {
             vm.errorMsg = '服务暂时不可用，请稍后再试';

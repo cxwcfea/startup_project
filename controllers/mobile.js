@@ -57,9 +57,9 @@ function home(req, res, next) {
                         });
                     }
                     req.session.statistic = {
-                        user_count: statistic[0].count,
-                        total_capital: statistic[0].capital + statistic[0].profit * 2,
-                        total_profit: statistic[0].profit,
+                        user_count: statistic[0].count + 7000,
+                        total_capital: statistic[0].capital + 200000000,
+                        total_profit: (statistic[0].profit + 4000000).toFixed(0),
                         show_applies: theApplies,
                         expires: Date.now() + 3600000 * 1
                     };
@@ -67,8 +67,8 @@ function home(req, res, next) {
                     res.render('mobile/home', {
                         layout: null,
                         user_count: req.session.statistic.user_count,
-                        total_capital: req.session.statistic.total_capital.toFixed(0),
-                        total_profit: req.session.statistic.total_profit.toFixed(0),
+                        total_capital: util.formatDisplayNum(req.session.statistic.total_capital),
+                        total_profit: req.session.statistic.total_profit,
                         apply_infos: req.session.statistic.show_applies
                     });
                 });
