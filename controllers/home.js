@@ -16,9 +16,9 @@ function home(req, res, next) {
             if (err || !statistic) {
                 logger.warn('error when fetch total user count:' + err.toString());
                 statistic = [{
-                    count: 100,
-                    capital: 100000,
-                    profit: 10000
+                    count: 7000,
+                    capital: 200000000,
+                    profit: 4000000
                 }];
             }
             Apply
@@ -54,14 +54,14 @@ function home(req, res, next) {
                         theApplies = applies.map(function(a) {
                             return {
                                 userMobile: util.mobileDisplay(a.userMobile),
-                                amount: a.amount
+                                amount: a.amount > 20000 ? a.amount : a.amount * 10
                             }
                         });
                     }
                     req.session.statistic = {
-                        user_count: statistic[0].count,
-                        total_capital: statistic[0].capital + statistic[0].profit * 2,
-                        total_profit: statistic[0].profit,
+                        user_count: statistic[0].count + 7000,
+                        total_capital: statistic[0].capital + 200000000,
+                        total_profit: statistic[0].profit + 4000000,
                         show_applies: theApplies,
                         expires: Date.now() + 3600000 * 1
                     };
@@ -69,8 +69,8 @@ function home(req, res, next) {
                     res.locals.main_menu = true;
                     res.render('home', {
                         user_count: req.session.statistic.user_count,
-                        total_capital: req.session.statistic.total_capital.toFixed(0),
-                        total_profit: req.session.statistic.total_profit.toFixed(0),
+                        total_capital: util.formatDisplayNum(req.session.statistic.total_capital),
+                        total_profit: req.session.statistic.total_profit,
                         apply_infos: req.session.statistic.show_applies
                     });
                 });
@@ -79,8 +79,8 @@ function home(req, res, next) {
         res.locals.main_menu = true;
         res.render('home', {
             user_count: req.session.statistic.user_count,
-            total_capital: req.session.statistic.total_capital.toFixed(0),
-            total_profit: req.session.statistic.total_profit.toFixed(0),
+            total_capital: util.formatDisplayNum(req.session.statistic.total_capital),
+            total_profit: req.session.statistic.total_profit,
             apply_infos: req.session.statistic.show_applies
         });
     }
