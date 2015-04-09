@@ -23,6 +23,11 @@
     <h3>您可配资金(元)</h3>
     <div class="money-select">
         <ul class="money-options" id="J_yynMoney">
+            <li ng-repeat="item in vm.parameterList" ng-class="{current: item === vm.selectedValue}">
+                <strong>\{{item.name}}</strong>
+                <span>\{{item.interest}}分/月</span>
+            </li>
+            <!--
             <li class="current" data-num="1.3">
                 <strong>1万</strong>
                 <span>1.3分/月</span>
@@ -43,6 +48,7 @@
                 <strong>5万</strong>
                 <span>1.9分/月</span>
             </li>
+            -->
         </ul>
     </div>
 
