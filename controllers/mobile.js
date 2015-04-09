@@ -125,14 +125,16 @@ function getRechargeRecord(req, res, next) {
 }
 
 function getDownload(req, res, next) {
-    var ua = useragent.is(req.headers['user-agent']);
+    var ua = req.headers['user-agent'];
     res.locals.otherPlatform = true;
-    if (ua.android) {
+    if (util.isAndroid(ua)) {
         res.locals.android = true;
+        res.locals.ios = false;
         res.locals.otherPlatform = false;
     }
-    if (ua.mobile_safari) {
+    if (util.isApple(ua)) {
         res.locals.ios = true;
+        res.locals.android = false;
         res.locals.otherPlatform = false;
     }
     res.render('mobile/download', {
