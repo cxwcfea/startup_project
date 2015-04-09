@@ -17,13 +17,13 @@
 <div class="yyn-box">
     <h3>您的投资本金(元) <span>最少1万，最多100万</span></h3>
     <div class="yyn-principal">
-        <input type="number" id="J_yynPrincipal" placeholder="最少1万，最多100万" >
+        <input type="number" id="J_yynPrincipal" min="10000" max="1000000" placeholder="最少1万，最多100万" ng-model="vm.amount" required autofocus>
     </div>
 
-    <h3>您可配资金(元)</h3>
+    <h3>配资比例</h3>
     <div class="money-select">
         <ul class="money-options" id="J_yynMoney">
-            <li ng-repeat="item in vm.parameterList" ng-class="{current: item === vm.selectedValue}">
+            <li ng-repeat="item in vm.parameterList" ng-class="{current: item === vm.selectedValue}" ng-click="vm.selectLever(item)">
                 <strong>\{{item.name}}</strong>
                 <span>\{{item.interest}}分/月</span>
             </li>

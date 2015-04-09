@@ -31,4 +31,14 @@ angular.module('mobileApp').controller('MobileYynCtrl', ['$scope', '$window', fu
     ];
 
     vm.selectedValue = vm.parameterList[0];
+
+    vm.selectLever = function(item) {
+        vm.selectedValue = item;
+    };
+
+    vm.calculateValue = function() {
+        if (vm.amount >= 10000 && vm.amount <= 1000000) {
+
+        }
+    };
 }]);
