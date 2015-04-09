@@ -919,10 +919,10 @@ function autoFetchPendingApplies(req, res) {
                 "apply_serialID":apply.serialID,
                 "mobile":apply.userMobile,
                 "deposit": apply.isTrial ? 1 : apply.deposit,
-                "lever":apply.isTrial ? 2000 : 9,
+                "lever":apply.isTrial ? 2000 : (apply.lever ? apply.lever - 1 : 9),
                 "amount":apply.isTrial ? 2000 : apply.amount-apply.deposit,
-                "margin_call":apply.isTrial ? 1800 : (apply.amount - config.warnFactor * apply.deposit).toFixed(2),
-                "close":apply.isTrial ? 1600 : (apply.amount - config.sellFactor * apply.deposit).toFixed(2)
+                "margin_call":apply.isTrial ? 1800 : Number((apply.amount - config.warnFactor * apply.deposit).toFixed(2)),
+                "close":apply.isTrial ? 1600 : Number((apply.amount - config.sellFactor * apply.deposit).toFixed(2))
             }
         });
         res.send(ret);
