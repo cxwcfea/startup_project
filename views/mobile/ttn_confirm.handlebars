@@ -21,7 +21,7 @@
             <p>预存账户管理费</p>
             <div class="sel-box">
                 <select class="ui-sel" ng-model="vm.apply.period" ng-change="vm.selectDay()">
-                    <option ng-repeat="day in vm.validDays" value="\{{day}}">\{{day}}天</option>
+                    <option ng-repeat="day in vm.validDays" value="\{{day}}" ng-selected="day === 5">\{{day}}天</option>
                 </select>
                 <!--
                 <select class="ui-sel" id="J_useDay">
