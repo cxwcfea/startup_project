@@ -30,6 +30,10 @@
         <p>08:30-20:30  （30分钟内到账）</p>
         <p>20:30以后  （次日09:00前到账）</p>
     </div>
+    <form class="pay-form">
+        <label for="">没有支付宝账号？您还可以通过银行转账付款</label>
+        <button type="submit" class="submit-btn" ng-click="vm.useBankTransPay()">去银行转账</button>
+    </form>
 </div>
 
 <div class="recharge-alipay" ng-show="vm.alipayConfirm">

@@ -98,4 +98,8 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
     vm.finish = function() {
         $location.path('/recharge');
     };
+
+    vm.useBankTransPay = function() {
+        $location.path('/recharge_bank');
+    }
 }]);
