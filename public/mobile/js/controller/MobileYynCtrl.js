@@ -2,6 +2,7 @@
 angular.module('mobileApp').controller('MobileYynCtrl', ['$scope', '$window', function($scope, $window) {
     var vm = this;
 
+    vm.amount = 0;
     vm.parameterList = [
         {
             name: '2倍',
@@ -34,11 +35,14 @@ angular.module('mobileApp').controller('MobileYynCtrl', ['$scope', '$window', fu
 
     vm.selectLever = function(item) {
         vm.selectedValue = item;
+        vm.calculateValue();
     };
 
     vm.calculateValue = function() {
-        if (vm.amount >= 10000 && vm.amount <= 1000000) {
-
+        if (vm.deposit >= 10000 && vm.deposit <= 500000) {
+            vm.amount = vm.deposit * vm.selectedValue.value;
+        } else {
+            vm.amount = 0;
         }
     };
 }]);

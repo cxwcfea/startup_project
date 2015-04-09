@@ -15,9 +15,9 @@
 </div>
 
 <div class="yyn-box">
-    <h3>您的投资本金(元) <span>最少1万，最多100万</span></h3>
+    <h3>您的投资本金(元) <span>最少1万，最多50万</span></h3>
     <div class="yyn-principal">
-        <input type="number" id="J_yynPrincipal" min="10000" max="1000000" placeholder="最少1万，最多100万" ng-model="vm.amount" required autofocus>
+        <input type="number" id="J_yynPrincipal" min="10000" max="500000" placeholder="最少1万，最多50万" ng-model="vm.deposit" ng-change="vm.calculateValue()" required autofocus>
     </div>
 
     <h3>配资比例</h3>
@@ -75,9 +75,9 @@
     <h3>操盘确认 <span class="f-fr"><em>操盘须知：</em>投资沪深A股，仓位不限</span></h3>
     <div class="ttn-warn">
         <div class="number">
-            <p>总操盘资金 <em id="J_yynTotal">2000</em> 元</p>
-            <p>警戒线 <strong id="J_yynWarn">1920</strong> 元</p>
-            <p>平仓线 <strong id="J_yynOut">1880</strong> 元</p>
+            <p>总操盘资金 <em id="J_yynTotal">\{{vm.amount | currency:'':2}}</em> 元</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;警戒线 <strong id="J_yynWarn">1920</strong> 元</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;平仓线 <strong id="J_yynOut">1880</strong> 元</p>
         </div>
         <div class="icon"></div>
     </div>
