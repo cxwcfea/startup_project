@@ -1,10 +1,9 @@
 var User = require('../models/User'),
     Apply = require('../models/Apply'),
     util = require('../lib/util'),
-    log4js = require('log4js'),
     useragent = require('useragent'),
-    logger = log4js.getLogger('admin');
-
+    log4js = require('log4js'),
+    logger = log4js.getLogger('home');
 
 function home(req, res, next) {
     var ua = useragent.is(req.headers['user-agent']);

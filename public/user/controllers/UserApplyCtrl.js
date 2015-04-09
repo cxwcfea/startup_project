@@ -1,5 +1,5 @@
 'use strict';
-angular.module('userApp').controller('UserApplyCtrl', ['$scope', '$window', '$location', '$routeParams', '$modal', '$http', 'njApply', 'warn_factor', 'sell_factor', 'days', function($scope, $window, $location, $routeParams, $modal, $http, njApply, warn_factor, sell_factor, days) {
+angular.module('userApp').controller('UserApplyCtrl', ['$scope', '$window', '$location', '$routeParams', '$modal', '$http', 'njApply', 'days', 'util', function($scope, $window, $location, $routeParams, $modal, $http, njApply, days, util) {
     var vm = this;
     $('.footer').addClass('marTop200');
 
@@ -14,8 +14,8 @@ angular.module('userApp').controller('UserApplyCtrl', ['$scope', '$window', '$lo
                     vm.warn_amount = 1800;
                     vm.sell_amount = 1600;
                 } else {
-                    vm.warn_amount = vm.currentApply.amount * warn_factor;
-                    vm.sell_amount = vm.currentApply.amount * sell_factor;
+                    vm.warn_amount = util.getWarnValue(vm.currentApply.amount, vm.currentApply.deposit);
+                    vm.sell_amount = util.getSellValue(vm.currentApply.amount, vm.currentApply.deposit);
                 }
             });
         }

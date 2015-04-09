@@ -7,11 +7,17 @@ var users = require('../controllers/user'),
     sms = require('../lib/sms'),
     admin = require('../controllers/admin'),
     util = require('../lib/util'),
+    log4js = require('log4js'),
+    logger = log4js.getLogger('routes'),
     passportConf = require('./passport');
 
 module.exports = function(app) {
     app.use(function(req, res, next) {
         res.locals.user = req.user;
+        logger.debug(req.headers['user-agent']);
+        if (req.user) {
+            logger.debug('user ' + req.user.mobile + '(balance:' + req.user.finance.balance + ') active');
+        }
         res.locals.lastLogin = req.session.lastLogin;
         if (req.session.statistic) {
             res.locals.recentApply = req.session.statistic.show_applies[0];

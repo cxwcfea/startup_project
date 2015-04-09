@@ -6,7 +6,7 @@ var User = require('../models/User'),
     useragent = require('useragent'),
     _ = require('lodash'),
     log4js = require('log4js'),
-    logger = log4js.getLogger('admin');
+    logger = log4js.getLogger('mobile');
 
 function home(req, res, next) {
     if (!req.session.statistic || req.session.statistic.expires < Date.now()) {

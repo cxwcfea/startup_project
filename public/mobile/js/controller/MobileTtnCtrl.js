@@ -1,18 +1,43 @@
 'use strict';
-angular.module('mobileApp').controller('MobileTtnCtrl', ['$scope', '$window', '$location', '$http', 'days', function($scope, $window, $location, $http, days) {
+angular.module('mobileApp').controller('MobileTtnCtrl', ['$scope', '$window', '$location', '$http', 'days', 'util', function($scope, $window, $location, $http, days, util) {
     var vm = this;
 
     vm.min_amount = 2000;
     vm.max_amount = 300000;
-    var warnFactor = 0.96;
-    var sellFactor = 0.94;
     var depositFactor = 0.1;
-    var serviceCharge = 19.9;
+    var serviceCharge = util.serviceCharge;
     var startTime = days.startTime();
 
+    vm.leverList = [
+        {
+            name: '10倍',
+            value: 10
+        },
+        {
+            name: '9倍',
+            value: 9
+        },
+        {
+            name: '8倍',
+            value: 8
+        },
+        {
+            name: '7倍',
+            value: 7
+        },
+        {
+            name: '6倍',
+            value: 6
+        },
+        {
+            name: '5倍',
+            value: 5
+        }
+    ];
     vm.agree = true;
     vm.showOtherAmount = false;
     vm.otherAmount;
+    vm.selectedLever = vm.leverList[0];
 
     vm.summary = {
         day: 1,
@@ -21,9 +46,10 @@ angular.module('mobileApp').controller('MobileTtnCtrl', ['$scope', '$window', '$
     vm.endTime = days.endTime(startTime, vm.summary.day);
 
     function calculateSummery() {
-        vm.summary.warnValue = vm.summary.amount * warnFactor;
-        vm.summary.sellValue = vm.summary.amount * sellFactor;
+        vm.summary.lever = vm.selectedLever.value;
         vm.summary.deposit = vm.summary.amount * depositFactor;
+        vm.summary.warnValue = util.getWarnValue(vm.summary.amount, vm.summary.deposit);
+        vm.summary.sellValue = util.getSellValue(vm.summary.amount, vm.summary.deposit);
         var charge = vm.summary.amount / 10000 * serviceCharge; // * vm.summary.day;
         vm.summary.charge = charge;
         vm.summary.total = vm.summary.deposit + charge;
@@ -67,6 +93,7 @@ angular.module('mobileApp').controller('MobileTtnCtrl', ['$scope', '$window', '$
             value: "300000"
         }
     ];
+
 
     function unselectAll() {
         angular.forEach(vm.amountList, function(value, key) {
@@ -135,5 +162,10 @@ angular.module('mobileApp').controller('MobileTtnCtrl', ['$scope', '$window', '$
             return;
         }
         _submitApply();
+    };
+
+    vm.leverChange = function() {
+        depositFactor = 1 / vm.selectedLever.value;
+        calculateSummery();
     };
 }]);

@@ -332,12 +332,18 @@
         this.startTime = getStartDay;
         this.endTime = getEndDay;
         this.tradeDaysTillNow = tradeDaysTillNow;
-    }).service("util", function () {
+    }).service("util", ['warn_factor', 'sell_factor', function (warn_factor, sell_factor) {
         this.serviceCharge = 19.9;
         this.getServiceFee = function(amount, period) {
               return Number((amount / 10000 * this.serviceCharge * period).toFixed(2));
         };
-    });
+        this.getWarnValue = function(amount, deposit) {
+            return Number((amount - warn_factor * deposit).toFixed(2));
+        };
+        this.getSellValue = function(amount, deposit) {
+            return Number((amount - sell_factor * deposit).toFixed(2));
+        }
+    }]);
 
     var sms_macro = [
         {
@@ -391,8 +397,8 @@
         .constant('sell_sms_content', '您有一笔金额为TOTAL_AMOUNT元的操盘业务已经亏损到达平仓线SELL_AMOUNT元，系统已经将交易账户平仓，请登录牛金网查看相应信息，或者联系QQ客服400 692 1388或电话客服400 692 1388。感谢您对牛金网的支持，祝您投资愉快。')
         .constant('sms_macro', sms_macro)
         .constant('service_charge', 19.9)
-        .constant('warn_factor', 0.96)
-        .constant('sell_factor', 0.94);
+        .constant('warn_factor', 0.4)
+        .constant('sell_factor', 0.6);
 
     angular.module('commonApp').constant('BankNameList', [
         {

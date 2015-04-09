@@ -203,6 +203,86 @@
 
 
 
+/* =月月牛 yyn.html
+-------------------------------------------------------------- */
+/* yyn-slogan */
+.yyn-slogan {
+    margin-bottom: 8px;
+}
+.yyn-slogan .pic {
+    width: 164px;
+    margin-left: -102px;
+}
+/* yyn-box */
+.yyn-box {
+    padding: 0 10px;
+}
+.yyn-box h3 {
+    font-size: 14px;
+    padding: 0 0 5px;
+}
+.yyn-box h3 em {
+    color: #a40000;
+}
+.yyn-box h3 span {
+    font-size: 10px;
+    color: #999;
+}
+.yyn-box h3 .f-fr {
+    margin-top: 2px;
+}
+.yyn-box .yyn-principal {
+    margin-bottom: 10px;
+    padding: 8px 0;
+    border: 1px solid #c9c9c9;
+    background-color: #fff;
+}
+.yyn-box .yyn-principal input {
+    width: 100%;
+    border: 0 none;
+    font-size: 18px;
+    line-height: 18px;
+    text-indent: 8px;
+}
+.yyn-box .money-select {
+    margin-bottom: 10px;
+    background-color: #f9f4ee;
+}
+.yyn-box .money-options {
+    height: auto;
+}
+.yyn-box .money-options li {
+    line-height: 1.0;
+}
+.yyn-box .money-options strong {
+    display: block;
+    padding: 12px 0 0 0;
+}
+.yyn-box .money-options .current span {
+    color: #fff;
+    border-color: #fff;
+}
+.yyn-box .money-options span {
+    display: inline-block;
+    border: 1px solid #999;
+    color: #666;
+    font-size: 10px;
+    padding: 2px;
+}
+.yyn-box .yyn-month {
+    margin-bottom: 10px;
+}
+.yyn-box .yyn-permonth {
+    position: absolute;
+    top: 2px;
+    right: 24px;
+}
+.yyn-box .yyn-permonth em {
+    padding-right: 2px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
 /* =天天牛 ttn.html
 -------------------------------------------------------------- */
 /* ttn-box */
@@ -222,10 +302,36 @@
     margin-left: -93px;
 }
 /* ttn-notice */
+.ttn-multiple {
+    margin-bottom: 20px;
+}
+.yyn-month .sel-box,
+.ttn-multiple .sel-box {
+    position: relative;
+    border: 1px solid #c9c9c9;
+    background-color: #fff;
+    padding: 5px 10px;
+}
+.ttn-multiple .icon,
+.yyn-month .icon {
+    position: absolute;
+    top: 12px;
+    right: 4px;
+    display: block;
+    width: 1px;
+    height: 1px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: #c0c0c0 #fff #fff #fff;
+}
+
+/* ttn-notice */
 .ttn-notice {
-    padding: 10px 0;
+    float: right;
+    display: inline-block;
+    font-size: 9px;
+    margin: -30px 0 0;
     color: #666;
-    text-align: center;
 }
 .ttn-notice em {
     font-weight: 700;
@@ -233,16 +339,14 @@
 }
 /* money-select */
 .money-select {
-    border-radius: 5px;
     background: #fff;
+    margin-bottom: 20px;
 }
 .money-options {
     width: 100%;
     height: 182px;
-    border-radius: 5px;
     overflow: hidden;
 }
-
 .money-options li {
     float: left;
     width: 33%;
@@ -309,7 +413,6 @@
 /* ttn-fee */
 .ttn-fee {
     padding: 12px 10px 12px 0;
-    border-radius: 5px;
     background: #fff;
     text-align: right;
 }
@@ -1400,7 +1503,13 @@
 }
 .hzjg li {
     float: left;
+    width: 50%;
 }
+.hzjg li:nth-child(2),
+.hzjg li:nth-child(4){
+    float: right;
+}
+
 .lxwm p {
     padding: 2px 0 2px 80px;
 }

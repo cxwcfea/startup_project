@@ -12,21 +12,46 @@
         $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
     }]);
 
-    angular.module('mainApp').controller('MainApplyController', ['$http', '$location', '$window', 'days', '$modal', function($http, $location, $window, days, $modal) {
+    angular.module('mainApp').controller('MainApplyController', ['$http', '$location', '$window', 'days', 'util', function($http, $location, $window, days, util) {
         var vm = this;
 
         vm.min_amount = 2000;
         vm.max_amount = 300000;
-        var warnFactor = 0.96;
-        var sellFactor = 0.94;
         var depositFactor = 0.1;
-        var serviceCharge = 19.9;
+        var serviceCharge = util.serviceCharge;
         var startTime = days.startTime();
 
+        vm.leverList = [
+            {
+                name: '10倍',
+                value: 10
+            },
+            {
+                name: '9倍',
+                value: 9
+            },
+            {
+                name: '8倍',
+                value: 8
+            },
+            {
+                name: '7倍',
+                value: 7
+            },
+            {
+                name: '6倍',
+                value: 6
+            },
+            {
+                name: '5倍',
+                value: 5
+            }
+        ];
         vm.agree = true;
         vm.showOtherAmount = false;
         vm.otherAmount;
         vm.showLoginWindow = false;
+        vm.selectedLever = vm.leverList[0];
 
         vm.summary = {
             day: 1,
@@ -37,8 +62,10 @@
         vm.forbiddenStockList;
 
         function calculateSummery() {
-            vm.summary.warnValue = vm.summary.amount * warnFactor;
-            vm.summary.sellValue = vm.summary.amount * sellFactor;
+            vm.summary.lever = vm.selectedLever.value;
+            vm.summary.deposit = vm.summary.amount * depositFactor;
+            vm.summary.warnValue = util.getWarnValue(vm.summary.amount, vm.summary.deposit);
+            vm.summary.sellValue = util.getSellValue(vm.summary.amount, vm.summary.deposit);
             vm.summary.deposit = vm.summary.amount * depositFactor;
             var charge = vm.summary.amount / 10000 * serviceCharge; // * vm.summary.day;
             vm.summary.charge = charge;
@@ -152,6 +179,11 @@
             _submitApply();
         };
 
+        vm.leverChange = function() {
+            depositFactor = 1 / vm.selectedLever.value;
+            calculateSummery();
+        };
+
         vm.showForbiddenStocks = function() {
             if (!vm.forbiddenStockList) {
                 $http.get('/api/fetch_forbidden_stocks').
@@ -253,5 +285,6 @@
                     console.log('error:' + data.reason);
                 });
         };
+
     }]);
 }());

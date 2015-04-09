@@ -43,9 +43,28 @@
             </form>
         </div>
     </div>
-    <div class="ttn-notice">
-        <em>操盘须知：</em>投资沪深A股,盈利全归您
+
+    <div class="ttn-multiple">
+        <h3>资金杠杆</h3>
+        <p class="ttn-notice">
+            <em>操盘须知：</em>投资沪深A股，盈利全归您
+        </p>
+        <div class="sel-box">
+            <span class="icon"></span>
+            <select class="ui-sel" id="J_ttnMultiple" ng-options="item.name for item in vm.leverList" ng-model="vm.selectedLever" ng-change="vm.leverChange()"></select>
+            <!--
+            <select class="ui-sel" id="J_ttnMultiple">
+                <option value="1" selected="selected">1倍</option>
+                <option value="2">2倍</option>
+                <option value="3">3倍</option>
+                <option value="4">4倍</option>
+                <option value="5">5倍</option>
+                <option value="6">6倍</option>
+            </select>
+            -->
+        </div>
     </div>
+
     <div class="ttn-fee">
         <p><span class="icon"></span>预付保证金 <strong id="J_bond">\{{vm.summary.deposit | currency:'':2}}</strong> 元</p>
         <p><span class="free">（按天收取，周末节假日免费）</span>账户管理费 <em id="J_fee">\{{vm.summary.charge | currency:'':2}}</em>元/天</p>

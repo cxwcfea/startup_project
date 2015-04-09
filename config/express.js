@@ -12,6 +12,7 @@ var express = require('express'),
     credentials = require('../credentials.js'),
     mongoSessionStore = require('session-mongoose')(require('connect')),
     exphbs = require('express-handlebars'),
+    moment = require('moment'),
     log4js = require('log4js');
 
 module.exports = function(app, config) {
@@ -85,8 +86,8 @@ module.exports = function(app, config) {
                     { type: 'console' },
                     {
                         type: 'file',
-                        filename: 'log/server.log',
-                        "maxLogSize": 20480
+                        filename: 'log/' + moment().format("YYYYMMDDHHmmSSS") + '-server.log',
+                        "maxLogSize": 81920
                     }
                 ]
             });

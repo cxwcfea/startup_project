@@ -1,10 +1,10 @@
 var Order = require('../models/Order'),
     Apply = require('../models/Apply'),
-    log4js = require('log4js'),
     moment = require('moment'),
     env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
     config = require('../config/config')[env],
-    logger = log4js.getLogger('admin');
+    log4js = require('log4js'),
+    logger = log4js.getLogger('order');
 
 exports.fetchOrdersForUser = function(req, res) {
     Order.find({ $and: [{userID:req.params.uid}, {status: {$ne: 2}}] }, function(err, order) {

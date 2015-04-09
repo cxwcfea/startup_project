@@ -5,7 +5,7 @@ var Apply = require('../models/Apply'),
     env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
     config = require('../config/config')[env],
     log4js = require('log4js'),
-    logger = log4js.getLogger('admin'),
+    logger = log4js.getLogger('apply'),
     _ = require('lodash'),
     util = require('../lib/util');
 
@@ -63,8 +63,8 @@ exports.getApplyDetail = function (req, res, next) {
         res.locals.apply_pay = apply.deposit + serviceFee;
         res.locals.apply_period = apply.period;
         res.locals.apply_fee_per_day = (serviceFee / apply.period).toFixed(2);
-        res.locals.apply_warn = (config.warnFactor * apply.amount).toFixed(2);
-        res.locals.apply_sell = (config.sellFactor * apply.amount).toFixed(2);
+        res.locals.apply_warn = (apply.amount - config.warnFactor * apply.deposit).toFixed(2);
+        res.locals.apply_sell = (apply.amount - config.sellFactor * apply.deposit).toFixed(2);
         res.locals.startDate1 = startTime.format("YYYY-MM");
         res.locals.endDate1 = endTime.format("YYYY-MM");
         res.locals.startDate2 = startTime.format("DD");
@@ -428,6 +428,9 @@ exports.placeApply = function(req, res, next) {
         serialID: util.generateSerialID(),
         amount: Number(Number(req.body.amount).toFixed(2)),
         deposit: Number(Number(req.body.deposit).toFixed(2)),
+        lever: req.body.lever,
+        warnValue: Number(Number(req.body.warnValue).toFixed(2)),
+        sellValue: Number(Number(req.body.sellValue).toFixed(2)),
         period: 2
     });
 

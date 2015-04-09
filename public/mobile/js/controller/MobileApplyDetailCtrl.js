@@ -1,5 +1,5 @@
 'use strict';
-angular.module('mobileApp').controller('MobileApplyDetailCtrl', ['$scope', '$window', '$location', '$http', '$timeout', 'warn_factor', 'sell_factor', 'days', function($scope, $window, $location, $http, $timeout, warn_factor, sell_factor, days) {
+angular.module('mobileApp').controller('MobileApplyDetailCtrl', ['$scope', '$window', '$location', '$http', '$timeout', 'days', 'util', function($scope, $window, $location, $http, $timeout, days, util) {
     var vm = this;
 
     vm.user = $window.bootstrappedUserObject;
@@ -20,16 +20,20 @@ angular.module('mobileApp').controller('MobileApplyDetailCtrl', ['$scope', '$win
         if (vm.finalValue < 0) {
             vm.finalValue = 0;
         }
-        vm.profit = vm.apply.profit >= 0 ? '+' : '';
-        vm.profit += vm.apply.profit.toString();
+        var profit = 0;
+        if (vm.apply.profit !== null && vm.apply.profit !== undefined) {
+            profit = vm.apply.profit;
+        }
+        vm.profit = profit >= 0 ? '+' : '';
+        vm.profit += profit.toString();
         vm.profit_rate = 0;
-        if (vm.apply.profit > 0) {
-            vm.profit_rate = vm.apply.profit / vm.apply.deposit * 100;
+        if (profit > 0) {
+            vm.profit_rate = profit / vm.apply.deposit * 100;
         }
 
         vm.serviceFee = vm.apply.isTrial ? 0 : 19.90;
-        vm.apply_warn = vm.apply.isTrial ? 1800 : (warn_factor * vm.apply.amount).toFixed(2);
-        vm.apply_sell = vm.apply.isTrial ? 1600 : (sell_factor * vm.apply.amount).toFixed(2);
+        vm.apply_warn = vm.apply.isTrial ? 1800 : util.getWarnValue(vm.apply.amount, vm.apply.deposit);
+        vm.apply_sell = vm.apply.isTrial ? 1600 : util.getSellValue(vm.apply.amount, vm.apply.deposit);
     }
 
     vm.requestClose = function() {
