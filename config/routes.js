@@ -47,9 +47,11 @@ module.exports = function(app) {
 
     app.post('/apply/get_profit/:serial_id', passportConf.isAuthenticated, applies.postGetProfit);
 
-    app.get('/apply/add_deposit/:serial_id', passportConf.isAuthenticated, applies.getAddDeposit);
+    //app.get('/apply/add_deposit/:serial_id', passportConf.isAuthenticated, applies.getAddDeposit);
 
-    app.post('/apply/add_deposit/:serial_id', passportConf.isAuthenticated, applies.postAddDeposit);
+    //app.post('/apply/add_deposit/:serial_id', passportConf.isAuthenticated, applies.postAddDeposit);
+
+    app.post('/apply/add_deposit/:serial_id', passportConf.isAuthenticated, applies.addDeposit);
 
     app.get('/apply/apply_postpone/:serial_id', passportConf.isAuthenticated, applies.getApplyPostpone);
 

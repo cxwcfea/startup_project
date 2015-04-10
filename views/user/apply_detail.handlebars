@@ -1,4 +1,4 @@
-<div class="wrapper  tep_center">
+<div class="wrapper tep_center">
     <div class="tep_column">
         订单信息
     </div>
@@ -39,7 +39,10 @@
             {{/ifCond}}
             {{#ifCond step '===' 3}}
                 <span class="tep_btn03 marTop40">我要延期</span>
-                <span class="tep_btn03">补充保证金</span>
+                <a href="" class="tep_btn01 jq_bcbzjBtn">补充保证金</a>
+                <!--
+                    <span class="tep_btn03">补充保证金</span>
+                    -->
                 <span class="tep_btn03">提取盈利</span>
                 <span class="tep_btn03">加配资金</span>
                 <!--
@@ -151,6 +154,7 @@
         <div class="clear"></div>
     </div>
 
+    <!-- close apply popup -->
     <div class="regTcc jq_recTcc undis jq_jsBox">
         <div class="tmbg"></div>
         <div class="tar_TccBox">
@@ -183,4 +187,73 @@
             </div>
         </div>
     </div>
+
+    <!-- 补充保证金弹出层-->
+    <div class="regTcc jq_recTcc undis jq_bzbzj">
+        <div class="tmbg"></div>
+        <div class="tar_TccBox">
+            <div class="regColumn">
+                补充保证金
+                <div class="loginClose jq_loginClose"></div>
+            </div>
+            <div class="pass_Box jq_bzbzjbox2">
+                <!--
+                <div class=" pass_formBox ">
+                    <div class="fl pass_left">
+                        剩余保证金
+                    </div>
+                    <div class="pass_right fl">
+                        1000.00元
+                    </div>
+                </div>
+                -->
+                <div class=" pass_formBox">
+                    <div class="fl pass_left">
+                        补充金额
+                    </div>
+                    <div class="pass_right fl">
+                        <input type="number" class="newcar_inputText pass_inputText" name="add_deposit" min="0" max="30000" id="add_deposit_input" >
+                        元
+                    </div>
+                </div>
+                <a class="newrec_btn02 newrec_zfbbtn01 jq_btn01" href="javascript:">提  交</a>
+                <div class="clear"></div>
+            </div>
+            <div class="newRec_TccBox undis jq_bzbzjbox">
+                <div class="newRec_TccImg fl"></div>
+                <div class="newRec_tccText fl">
+                    <p class="p01">请在新打开的页面完成支付</p>
+                    <p class="p02">完成前请不要关闭窗口</p>
+                    <a href="" class="newrec_btn02 jq_btn02">已完成支付</a>
+                    <a href="" class="newrec_btn03">支付失败</a>
+                </div>
+            </div>
+            <div class="pass_box2 undis jq_bzbzjbox3">
+                <div class="pass_img fl"></div>
+                <div class="pass_text fl">
+                    <p class="p01">您的申请已经提交</p>
+                    <p class="p02">我们会尽快处理，结果会短信通知您！</p>
+                    <a class="newrec_btn02 " href="">完  成</a>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="newRec_TccBox undis jq_bzbzjbox_fail">
+                <div class="newRec_TccImg fl"></div>
+                <div class="newRec_tccText fl">
+                    <p class="p01">追加保证金申请提交失败</p>
+                    <p class="p02">请联系我们的客服</p>
+                    <a href="" class="newrec_btn02 jq_btn_fail">确  定</a>
+                </div>
+            </div>
+            <div class="pass_box2 undis jq_bzbzjbox_success">
+                <div class="pass_img fl"></div>
+                <div class="pass_text fl">
+                    <p class="p01">保证补充成功！</p>
+                    <a class="newrec_btn02 " href="">完  成</a>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+
 </div>

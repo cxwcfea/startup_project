@@ -7,6 +7,7 @@ var Apply = require('../models/Apply'),
     log4js = require('log4js'),
     logger = log4js.getLogger('apply'),
     _ = require('lodash'),
+    async = require('async'),
     util = require('../lib/util');
 
 exports.getApplyPage = function(req, res, next) {
@@ -26,7 +27,7 @@ exports.getAppliesForUser = function(req, res, next) {
 exports.getApplyDetail = function (req, res, next) {
     Apply.findOne({serialID:req.params.id}, function(err, apply) {
         if (err || !apply) {
-            next();
+            return next();
         }
         var serviceFee = apply.amount / 10000 * config.serviceCharge * apply.period;
         if (apply.isTrial) {
@@ -257,6 +258,85 @@ exports.getAddDeposit = function(req, res, next) {
         res.locals.apply = apply;
         res.render('add_deposit');
     })
+};
+
+exports.addDeposit = function(req, res, next) {
+    var amount = Number(req.body.deposit_amount);
+    if (amount <= 0 || amount > 30000) {
+        res.status(400);
+        return res.send({error_msg:'deposit amount invalid:' + amount});
+    }
+    var serial_id = req.params.serial_id;
+    async.waterfall([
+        function(callback) {
+            Apply.findOne({serialID:serial_id}, function(err, apply) {
+                if (!apply) {
+                    err = 'failed to find apply for when add deposit for apply:' + serial_id;
+                } else if (apply.status !== 2) {
+                    err = 'apply not in the valid state';
+                }
+                callback(err, apply);
+            });
+        },
+        function(apply, callback) {
+            var orderData = {
+                userID: apply.userID,
+                userMobile: apply.userMobile,
+                dealType: 9,
+                amount: Number(amount.toFixed(2)),
+                status: 2,
+                description: '追加配资保证金',
+                applySerialID: apply.serialID
+            };
+            Order.create(orderData, function(err, order) {
+                if (!err && !order) {
+                    err = 'can not create pay order when add deposit for apply:' + serial_id;
+                }
+                callback(err, order, apply);
+            });
+        },
+        function(order, apply, callback) {
+            User.findById(order.userID, function(err, user) {
+                user.finance.balance = Number(user.finance.balance.toFixed(2));
+                if (user.finance.balance >= order.amount) {
+                    util.orderFinished(user, order, 2, function(err) {
+                        callback(err, user, order, apply, true);
+                    });
+                } else {
+                    order.dealType = 1;
+                    order.description += '充值';
+                    order.save(function(err) {
+                        callback(err, user, order, apply, false);
+                    });
+                }
+            });
+        },
+        function(user, order, apply, paid, callback) {
+            if (paid) {
+                apply.deposit += order.amount;
+                apply.save(function(err) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        user.finance.deposit += order.amount;
+                        user.finance.history_deposit += order.amount;
+                        user.save(function(err) {
+                            callback(err, order, true);
+                        });
+                    }
+                });
+            } else {
+                callback(null, order, false);
+            }
+        },
+    ], function(err, order, paid) {
+        if (err) {
+            logger.warn('addDeposit error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send({order:order, paid:paid});
+    });
 };
 
 exports.postAddDeposit = function(req, res, next) {

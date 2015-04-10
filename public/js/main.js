@@ -29,41 +29,6 @@ $(document).ready(function() {
         $.get("/api/send_sms_verify_code", requestData, function (data) {});
     });
 
-    window.aibeiNotify = function(data) {
-        console.log("RetCode=" + data.RetCode+":TransId=" + data.TransId + ":OrderStatus=" + data.OrderStatus);
-        if (data.RetCode === 0) {
-            console.log('iapp pay complete');
-            if (data.OrderStatus === 0) {
-                console.log('iapp pay success');
-            } else {
-                console.log('iapp pay failed');
-            }
-        }
-    };
-
-    function showPayWindow(trans_id) {
-        $.aibei_mask({
-            tip : 'loading'
-        });
-        $.aibei_showIframePayWindow(trans_id, 'window.aibeiNotify');
-        $.aibei_unmask();
-
-        $('#pay-confirm').modal({
-            relatedTarget: this,
-            onConfirm: function (options) {
-                var apply_id = $('#apply_id')[0] ? $('#apply_id')[0].value : null;
-                if (apply_id) {
-                    window.location.replace('/thank_you_for_pay?apply_id=' + apply_id);
-                } else {
-                    window.location.replace('/thank_you_for_pay');
-                }
-            },
-            onCancel: function () {
-                window.location.replace('/support_contact');
-            }
-        });
-    }
-
     function getTransId(order_id, user_id, pay_amount) {
         var trans_id = $('#trans_id')[0] ? $('#trans_id')[0].value : null;
         var data = {
@@ -112,95 +77,6 @@ $(document).ready(function() {
             }
         });
     }
-
-    function payByShengpay(order_id) {
-        console.log('payByShengpay');
-        var Name = $('#Name')[0].value;
-        var Version = $('#Version')[0].value;
-        var Charset = $('#Charset')[0].value;
-        var MsgSender = $('#MsgSender')[0].value;
-        if (order_id) {
-            $('#OrderNo')[0].value = order_id;
-        }
-        var OrderNo = $('#OrderNo')[0].value;
-        var OrderAmount = $('#OrderAmount')[0].value;
-        var OrderTime = $('#OrderTime')[0].value;
-        var PageUrl = $('#PageUrl')[0].value;
-        var BackUrl = $('#BackUrl')[0].value;
-        var NotifyUrl = $('#NotifyUrl')[0].value;
-        var BuyerIp = returnCitySN["cip"];
-        var ProductName = $('#ProductName')[0].value;
-        var SignType = $('#SignType')[0].value;
-        var md5Key = 'shengfutongSHENGFUTONGtest';
-
-        var sign_origin = Name+Version+Charset+MsgSender+OrderNo+OrderAmount+OrderTime+
-                PageUrl+BackUrl+NotifyUrl+ProductName+BuyerIp+SignType+md5Key;
-        var SignMsg = SparkMD5.hash(sign_origin);
-        SignMsg = SignMsg.toUpperCase();
-
-        $('#BuyerIp')[0].value = BuyerIp;
-        $('#SignMsg')[0].value = SignMsg;
-
-        $('#shengPayForm')[0].submit();
-    }
-
-    $('#go-to-pay').on('click', function(e) {
-        e.preventDefault();
-        var uid = $('#user_id')[0].value;
-        var pay_amount = $('#pay_amount')[0].value;
-        var apply_id = $('#apply_id')[0] ? $('#apply_id')[0].value : null;
-        var order_id = $('#order_id')[0] ? $('#order_id')[0].value : null;
-
-        var pay_option = $('#pay-select')[0].value;
-        console.log('pay option:' + pay_option);
-        if (pay_option === 'option1') {
-            if (order_id) {
-                payByShengpay();
-            } else {
-                placeOrder(uid, pay_amount, apply_id, 1);
-            }
-            return;
-        }
-
-        if (order_id) {
-            getTransId(order_id, uid, pay_amount);
-        } else {
-            placeOrder(uid, pay_amount, apply_id, 0);
-        }
-    });
-
-    $('#go-to-use-balance').on('click', function(e) {
-        e.preventDefault();
-        var formData = $("#financingForm").serialize();
-        $.post("/api/users/pay_by_balance", formData, function (data) {
-            if (data.success) {
-                window.location.replace('/thank_you_for_pay');
-            } else {
-                window.location.replace('/failed_to_pay');
-            }
-        });
-    });
-
-    $('#close-apply').on('click', function(e) {
-        e.preventDefault();
-        $('#close-apply-prompt').modal({
-            relatedTarget: this,
-            onConfirm: function(e) {
-                var apply_serial_id = $('#apply_serial_id')[0].value;
-                $.post("/user/apply_close/"+apply_serial_id, {}, function (data) {
-                    console.log(data);
-                    if (data.success) {
-                        window.location.replace('/user/apply_close');
-                    } else {
-                        window.location.replace('/support_contact');
-                    }
-                });
-            },
-            onCancel: function(e) {
-                console.log('cancel');
-            }
-        });
-    });
 
     $('#get-profit').on('click', function(e) {
         e.preventDefault();
@@ -292,4 +168,46 @@ $(document).ready(function() {
         e.preventDefault();
         closeApply();
     });
+
+    //补充保证金弹出层
+    $(".jq_bcbzjBtn").click(function (e) {
+        e.preventDefault();
+        $(".jq_bzbzj").show();
+    });
+    //补充保证金下一步
+    $(".jq_btn01").click(function (e) {
+        var apply_serial_id = $('#apply_serial_id')[0].innerText;
+        var amount = Number($("#add_deposit_input")[0].value);
+        if (amount <= 0 || amount > 30000) {
+            alert('请输入有效的金额，金额大于0元小于3万元');
+            return;
+        }
+        $.post("/apply/add_deposit/"+apply_serial_id, {deposit_amount:amount}, function() {
+            console.log( "post add deposit done" );
+        })
+        .done(function(data) {
+            if (data.paid) {
+                $(".jq_bzbzjbox_success").show();
+            } else {
+                window.open('/recharge?order_id=' + data.order._id);
+                $(".jq_bzbzjbox").show();
+            }
+        })
+        .fail(function() {
+            $(".jq_bzbzjbox_fail").show();
+        })
+        .always(function() {
+            $(".jq_bzbzjbox2").hide();
+        });
+    });
+    //补充保证金第二步
+    $(".jq_btn02").click(function (e) {
+        $(".jq_bzbzjbox").hide();
+        $(".jq_bzbzjbox3").show();
+    });
+    //补充保证金失败
+    $(".jq_btn_fail").click(function(e) {
+        $(".jq_bzbzjbox_fail").hide();
+    });
+
 });

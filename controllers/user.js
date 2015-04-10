@@ -984,21 +984,30 @@ module.exports.shengpayFeedback = function(req, res) {
                         if (!err && !apply) {
                             err = 'can not found apply when pay apply:' + order.applySerialID;
                         }
-                        callback(err, user, apply);
+                        callback(err, user, apply, order);
                     });
                 } else {
-                    callback(null, user, null);
+                    callback(null, user, null, null);
                 }
             },
-            function(user, apply, callback) {
+            function(user, apply, order, callback) {
                 if (apply) {
-                    util.applyConfirmed(user, apply, function(err) {
-                        callback(err, 'success pay for apply');
-                    })
+                    if (apply.status === 1) {
+                        util.applyConfirmed(user, apply, function(err) {
+                            callback(err, 'success pay for apply');
+                        });
+                    } else if (apply.status === 2) {
+                        logger.info('shengpayFeedback apply add deposit');
+                        util.applyDepositAdded(user, apply, order.amount, function(err) {
+                            callback(err, 'success add deposit to apply');
+                        });
+                    } else {
+                        callback(null, 'done');
+                    }
                 } else {
                     callback(null, 'done');
                 }
-            }
+            },
         ], function(err, result) {
             if (err) {
                 logger.warn('shengpayFeedback error:' + err.toString());
