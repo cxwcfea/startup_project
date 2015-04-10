@@ -17,7 +17,7 @@
 <div class="yyn-box">
     <h3>您的投资本金(元) <span>最少1万，最多50万</span></h3>
     <div class="yyn-principal">
-        <input type="number" id="J_yynPrincipal" min="10000" max="500000" placeholder="最少1万，最多50万" ng-model="vm.deposit" ng-change="vm.calculateValue()" required autofocus>
+        <input type="number" id="J_yynPrincipal" min="10000" max="200000" placeholder="最少1万，最多20万" ng-model="vm.summary.deposit" ng-change="vm.calculateValue()" required autofocus>
     </div>
 
     <h3>配资比例</h3>
@@ -55,8 +55,10 @@
     <div class="yyn-month">
         <h3>资金使用期限</h3>
         <div class="sel-box">
-            <span class="yyn-permonth" id="J_yynPerMonth"><em>1.3</em>分/月</span>
+            <span class="yyn-permonth" id="J_yynPerMonth"><em>\{{vm.selectedValue.interest}}</em>分/月</span>
             <span class="icon"></span>
+            <select class="ui-sel" id="J_yynMonth" ng-options="item.name for item in vm.periodList" ng-model="vm.selectedMonth" ng-change="vm.monthChange()"></select>
+            <!--
             <select class="ui-sel" id="J_yynMonth">
                 <option value="1" selected="selected">1个月</option>
                 <option value="2">2个月</option>
@@ -70,20 +72,26 @@
                 <option value="10">10个月</option>
                 <option value="11">11个月</option>
             </select>
+            -->
         </div>
     </div>
     <h3>操盘确认 <span class="f-fr"><em>操盘须知：</em>投资沪深A股，仓位不限</span></h3>
     <div class="ttn-warn">
         <div class="number">
-            <p>总操盘资金 <em id="J_yynTotal">\{{vm.amount | currency:'':2}}</em> 元</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;警戒线 <strong id="J_yynWarn">1920</strong> 元</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;平仓线 <strong id="J_yynOut">1880</strong> 元</p>
+            <p>总操盘资金 <em id="J_yynTotal">\{{vm.summary.amount | currency:'':2}}</em> 元</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;警戒线 <strong id="J_yynWarn">\{{vm.summary.warnValue | currency:'':2}}</strong> 元</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;平仓线 <strong id="J_yynOut">\{{vm.summary.sellValue | currency:'':2}}</strong> 元</p>
         </div>
-        <div class="icon"></div>
+    </div>
+    <div class="ttn-warn">
+        <div class="number">
+            <p>支付保证金 <em id="J_yynTotal">\{{vm.summary.deposit || 0 | currency:'':2}}</em> 元</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;支付利息 <strong id="J_yynWarn">\{{vm.summary.charge | currency:'':2}}</strong> 元</p>
+        </div>
     </div>
 </div>
 
 <!--#S footer-->
 <footer id="footer">
-    <a href="ttn_confirm.html?money=2000&multiple=1" class="ft-btn" data-num="2000" data-multiple="1" id="J_2confirm">立即操盘</a>
+    <a href="" class="ft-btn" data-num="2000" data-multiple="1" id="J_2confirm">立即操盘</a>
 </footer><!--#E wrapper-->
