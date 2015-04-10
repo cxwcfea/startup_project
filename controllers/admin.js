@@ -47,7 +47,6 @@ function sendSMS(req, res, next) {
 }
 
 function fetchAppliesForUser(req, res, next) {
-    logger.debug(req.params.uid);
     Apply.find({userID:req.params.uid}, function(err, collection) {
         if (err) {
             logger.error(err.toString());
