@@ -15,7 +15,7 @@
         <p ng-show="vm.apply.status === 3">结算金额：\{{vm.finalValue | currency:'':2}}元</p>
         <p ng-show="vm.apply.status === 5">预计20分钟完成结算，盈利及剩余保证金将转入您的账户余额</p>
     </div>
-    <div class="trading" ng-show="vm.apply.status !== 1 && vm.apply.status !== 4 && vm.apply.status !== 3">
+    <div class="trading" ng-show="vm.apply.status === 2 || vm.apply.status === 3 || vm.apply.status === 5">
         <div class="col">
             <p>交易账户 <em>\{{vm.apply.account}}</em></p>
             <p>交易密码 <em>\{{vm.apply.password}}</em></p>

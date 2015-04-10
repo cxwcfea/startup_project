@@ -62,13 +62,13 @@
                 </td>
                 <td>
                     <p class="p03">\{{item.start_date | displayShortDate}}</p>
-                    <p class="p04" ng-show="item.status !== 1 && item.status !== 4 && item.status !== 3">累计\{{item.days_till_now}}天</p>
+                    <p class="p04" ng-show="item.status === 2 || item.status === 5">累计\{{item.days_till_now}}天</p>
                     <p class="p04" ng-show="item.status === 1 || item.status === 4">预计开始时间</p>
                     <p class="p04" ng-show="item.status === 3">已结束</p>
                 </td>
                 <td>
                     <p class="p03">\{{item.end_date | displayShortDate}}</p>
-                    <p class="p04" style="color: #e0322d;" ng-show="item.status !== 1 && item.status !== 4 && item.status !== 3">剩余\{{item.left_days}}天</p>
+                    <p class="p04" style="color: #e0322d;" ng-show="item.status === 2 || item.status === 5">剩余\{{item.left_days}}天</p>
                     <p class="p04" ng-show="item.status === 1 || item.status === 4">预计结束时间</p>
                     <p class="p04" ng-show="item.status === 3">已结束</p>
                 </td>

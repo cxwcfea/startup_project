@@ -53,6 +53,9 @@ exports.getApplyDetail = function (req, res, next) {
             case 3:
                 res.locals.step = 4;
                 break;
+            default:
+                res.locals.step = 1;
+                break;
         }
         res.locals.apply_status = util.displayApplyStatus(apply.status);
         res.locals.apply_amount = apply.amount.toFixed(2);

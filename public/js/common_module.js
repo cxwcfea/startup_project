@@ -307,6 +307,8 @@
                     return "审核中";
                 case 5:
                     return "结算中";
+                case 9:
+                    return "排队中";
                 default:
                     return "待支付";
             }

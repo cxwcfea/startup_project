@@ -29,7 +29,7 @@
                     <span class="f-fs2">\{{apply.apply_sell}}</span>
                 </div>
             </div>
-            <a href="/mobile/#/user_ttn_info/\{{apply.serialID}}" class="row row-gray" ng-show="apply.status !== 1 && apply.status !== 4">
+            <a href="/mobile/#/user_ttn_info/\{{apply.serialID}}" class="row row-gray" ng-show="apply.status === 2 || apply.status === 3 || apply.status === 5">
                     <span class="col">
                         交易账户  <em>\{{apply.account}}</em>
                     </span>

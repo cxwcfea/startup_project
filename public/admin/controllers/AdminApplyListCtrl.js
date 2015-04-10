@@ -51,6 +51,10 @@ angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', 
             {
                 name: '结算中',
                 value: 5
+            },
+            {
+                name: '排队中',
+                value: 9
             }
         ];
     }
