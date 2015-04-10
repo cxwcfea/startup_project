@@ -14,10 +14,6 @@ var users = require('../controllers/user'),
 module.exports = function(app) {
     app.use(function(req, res, next) {
         res.locals.user = req.user;
-        logger.debug(req.headers['user-agent']);
-        if (req.user) {
-            logger.debug('user ' + req.user.mobile + '(balance:' + req.user.finance.balance + ') active');
-        }
         res.locals.lastLogin = req.session.lastLogin;
         if (req.session.statistic) {
             res.locals.recentApply = req.session.statistic.show_applies[0];
@@ -37,6 +33,7 @@ module.exports = function(app) {
     });
 
     app.get('/welcome', passportConf.isAuthenticated, function(req, res, next) {
+        util.debugInfo(logger, req);
         res.locals.title = '用户注册';
         res.locals.signup = true;
         res.render('register/success', {
@@ -82,6 +79,7 @@ module.exports = function(app) {
     app.post('/verify_mobile_code', users.verifyMobileCode);
 
     app.get('/forgot', function(req, res) {
+        util.debugInfo(logger, req);
         res.locals.other_menu = true;
         res.render('register/forgot');
     });
@@ -97,6 +95,7 @@ module.exports = function(app) {
     app.get('/free_apply_confirm', passportConf.isAuthenticated, applies.freeApply);
 
     app.get('/login', function (req, res) {
+        util.debugInfo(logger, req);
         if (req.isAuthenticated()) {
             res.redirect('/');
         } else {
@@ -206,6 +205,7 @@ module.exports = function(app) {
     mobile.registerRoutes(app, passportConf);
 
     app.get('/admin_test', passportConf.requiresRole('admin'), function(req, res, next) {
+        util.debugInfo(logger, req);
         res.render('admin_test');
     });
 

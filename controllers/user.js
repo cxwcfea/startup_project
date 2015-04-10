@@ -359,6 +359,7 @@ module.exports.postWithdraw = function(req, res) {
     var data = req.body;
     var amount = Number(data.order.amount);
 
+    util.debugInfo(logger, req);
     async.waterfall([
         function(callback) {
             User.findById(req.user.id, function(err, user) {
@@ -419,6 +420,7 @@ module.exports.updateUser = function(req, res) {
         res.status(401);
         return res.send({reason:'无效的用户'});
     }
+    util.debugInfo(logger, req);
     var protectedProperties = [
         'mobile',
         'password',
@@ -1025,6 +1027,7 @@ function sendSMS(req, res, next) {
 }
 
 function getUserHome(req, res, next) {
+    util.debugInfo(logger, req);
     res.locals.user_menu = true;
     res.render('user/home', {
         bootstrappedUserObject: JSON.stringify(getUserViewModel(req.user))
@@ -1220,6 +1223,7 @@ function getRecharge(req, res, next) {
     if (!order_id) {
         return next();
     }
+    util.debugInfo(logger, req);
     Order.findById(order_id, function(err, order) {
         if (err || !order) {
             logger.warn('getRecharge2 err:' + err.toString());
@@ -1244,6 +1248,7 @@ module.exports.payByBalance = function(req, res, next) {
     }
     var data = req.body;
 
+    util.debugInfo(logger, req);
     async.waterfall([
         function(callback) {
             User.findById(req.user._id, function(err, user) {
