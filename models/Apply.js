@@ -19,6 +19,8 @@ var applySchema = mongoose.Schema({
     password: String,
     profit: Number,
     orderID: String,
+    type: {type:Number, default: 1},  // 1 means ttn, 2 means yyn
+    interestRate: Number,
     manager: String
 });
 

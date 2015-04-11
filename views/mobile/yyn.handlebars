@@ -15,9 +15,9 @@
 </div>
 
 <div class="yyn-box">
-    <h3>您的投资本金(元) <span>最少1万，最多50万</span></h3>
+    <h3>您的投资本金(元) <span>最少25万，最多100万</span></h3>
     <div class="yyn-principal">
-        <input type="number" id="J_yynPrincipal" min="10000" max="200000" placeholder="最少1万，最多20万" ng-model="vm.summary.deposit" ng-change="vm.calculateValue()" required autofocus>
+        <input type="number" id="J_yynPrincipal" min="250000" max="1000000" placeholder="最少25万，最多100万" ng-model="vm.summary.deposit" ng-change="vm.calculateValue()" required autofocus>
     </div>
 
     <h3>配资比例</h3>
@@ -93,5 +93,5 @@
 
 <!--#S footer-->
 <footer id="footer">
-    <a href="" class="ft-btn" data-num="2000" data-multiple="1" id="J_2confirm">立即操盘</a>
+    <a href="" class="ft-btn" id="J_2confirm" ng-click="vm.submitApply()">立即操盘</a>
 </footer><!--#E wrapper-->

@@ -1,5 +1,5 @@
 'use strict';
-angular.module('mobileApp').controller('MobileYynCtrl', ['$scope', '$window', 'util', function($scope, $window, util) {
+angular.module('mobileApp').controller('MobileYynCtrl', ['$scope', '$window', '$http', '$location', 'util', function($scope, $window, $http, $location, util) {
     var vm = this;
 
     vm.summary = {};
@@ -10,33 +10,27 @@ angular.module('mobileApp').controller('MobileYynCtrl', ['$scope', '$window', 'u
     vm.parameterList = [
         {
             name: '2倍',
-            interest: 1.3,
+            interest: 1.2,
             value: 2,
             i_value: 0.013
         },
         {
             name: '3倍',
-            interest: 1.4,
+            interest: 1.3,
             value: 3,
             i_value: 0.014
         },
         {
             name: '4倍',
-            interest: 1.5,
+            interest: 1.4,
             value: 4,
             i_value: 0.015
         },
         {
             name: '5倍',
-            interest: 1.6,
+            interest: 1.5,
             value: 5,
             i_value: 0.016
-        },
-        {
-            name: '6倍',
-            interest: 1.7,
-            value: 6,
-            i_value: 0.017
         }
     ];
 
@@ -60,7 +54,7 @@ angular.module('mobileApp').controller('MobileYynCtrl', ['$scope', '$window', 'u
     };
 
     vm.calculateValue = function() {
-        if (vm.summary.deposit >= 10000 && vm.summary.deposit <= 200000) {
+        if (vm.summary.deposit >= 250000 && vm.summary.deposit <= 1000000) {
             vm.summary.lever = vm.selectedValue.value;
             vm.summary.amount = vm.summary.deposit * vm.selectedValue.value;
             vm.summary.warnValue = util.getWarnValue(vm.summary.amount, vm.summary.deposit);
@@ -78,5 +72,26 @@ angular.module('mobileApp').controller('MobileYynCtrl', ['$scope', '$window', 'u
     vm.monthChange = function() {
         vm.summary.month = vm.selectedMonth.value;
         vm.calculateValue();
+    };
+
+    vm.submitApply = function() {
+        if (vm.summary.amount <= 0) {
+            alert('请输入有效资金,最低25万,最高100万');
+            return;
+        }
+        vm.summary.type = 2;
+        vm.summary.interestRate = vm.selectedValue.i_value;
+        $http.post('/apply', vm.summary)
+            .success(function(data, status, headers, config) {
+                $location.path('/yyn_confirm/' + data.apply_serial_id);
+            })
+            .error(function(data, status, headers, config) {
+                if (status === 401) {
+                    $scope.data.lastLocation = '/yyn';
+                    $location.path('/login');
+                } else {
+                    console.log(data.error_msg);
+                }
+            });
     };
 }]);
