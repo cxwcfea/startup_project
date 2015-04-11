@@ -159,6 +159,12 @@
                             <td class="infoTableNr"><span class="infoText02">\{{applyVM.summary.sellValue | currency:'':2}}</span> 元</td>
                         </tr>
                         <tr>
+                            <td class="infoTableTitle">资金倍数</td>
+                            <td class="infoTableNr">
+                                <select ng-options="item.name for item in applyVM.leverList" ng-model="applyVM.selectedLever" ng-change="applyVM.leverChange()"></select>
+                            </td>
+                        </tr>
+                        <tr>
                             <td class="infoTableTitle">账户管理费</td>
                             <td class="infoTableNr"><span class="infoText03">\{{applyVM.summary.charge | currency:'':2}}</span>元/每天  <span class="infoText04">（按天收取，周末节假日免费）</span></td>
                         </tr>

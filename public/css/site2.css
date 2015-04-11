@@ -120,6 +120,11 @@ input.LoginBtn01{
     margin-left: 90px;
 }
 
+.infoTable tr {
+    height: 42px;
+    line-height: 42px;
+}
+
 /* for toaster */
 .toast-top-right {
     top: 70px;
