@@ -1,0 +1,39 @@
+{{#if bootstrappedApply}}
+    <script> window.bootstrappedApplyObject = {{{bootstrappedApply}}} </script>
+{{/if}}
+<!--#S header-->
+<header id="header">
+    <div class="header-box">
+        <h1>月月牛</h1>
+        <a class="back" href="/mobile/#/yyn"></a>
+    </div>
+</header><!--#E header-->
+
+<div class="ttn-confirm-box">
+    <ul class="fee-item">
+        <li class="fee-item-bond">
+            支付保证金
+                <span>
+                    <em id="J_confirmBond">\{{vm.apply.deposit | currency:'':2}}</em>元
+                </span>
+        </li>
+        <li class="fee-item-bond">
+            支付利息
+                <span>
+                    <em id="J_confirmBond">\{{vm.interest | currency:'':2}}</em>元
+                </span>
+        </li>
+    </ul>
+    <p class="remind">交易账户将会在下个交易日9：15分前分配资金</p>
+    <p class="agree">申请操盘，代表您已同意<a href="/mobile/trader_agreement.html">《牛金操盘协议》</a></p>
+</div>
+
+<!--#S footer-->
+<footer id="footer">
+    <div class="ft-pay-box">
+        <div class="ft-pay-remind">当前余额\{{vm.apply.userBalance | currency:'':2}}元 完成支付还差<em>\{{vm.shouldPay | currency:'':2}}</em>元</div>
+        <div class="ft-pay-money">
+            合计<em>\{{vm.shouldPay | currency:'':2}}</em>元<span ng-show="vm.balancePay">,将使用余额支付。</span><a href="" ng-click="vm.payForApply()">立即支付</a>
+        </div>
+    </div>
+</footer><!--#E wrapper-->

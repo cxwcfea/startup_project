@@ -96,6 +96,10 @@ function getTTN(req, res, next) {
     res.render('mobile/ttn', {layout:null});
 }
 
+function getYYN(req, res, next) {
+    res.render('mobile/yyn', {layout:null});
+}
+
 function getForget(req, res, next) {
     res.render('mobile/forget', {layout:null});
 }
@@ -193,12 +197,12 @@ function getTTNConfirm(req, res, next) {
         }
         if (req.user._id != apply.userID) {
             res.status(406);
-            logger.warn('error when placeNewApply: not the same user who create the apply');
+            logger.warn('error when get ttn confirm: not the same user who create the apply');
             return next();
         }
         User.findById(apply.userID, function(err, user) {
             if (err) {
-                logger.warn('error when placeNewApply:' + err.toString());
+                logger.warn('error when get ttn confirm:' + err.toString());
                 return next();
             }
             var applyData = apply._doc;
@@ -206,6 +210,33 @@ function getTTNConfirm(req, res, next) {
                 userBalance: user.finance.balance
             });
             res.render('mobile/ttn_confirm', {
+                layout:null,
+                bootstrappedApply: JSON.stringify(applyVM)
+            });
+        });
+    });
+}
+
+function getYYNConfirm(req, res, next) {
+    Apply.findOne({serialID:req.params.apply_serial_id}, function(err, apply) {
+        if (err || !apply) {
+            return next();
+        }
+        if (req.user._id != apply.userID) {
+            res.status(406);
+            logger.warn('error when get yyn confirm: not the same user who create the apply');
+            return next();
+        }
+        User.findById(apply.userID, function(err, user) {
+            if (err) {
+                logger.warn('error when get yyn confirm:' + err.toString());
+                return next();
+            }
+            var applyData = apply._doc;
+            var applyVM = _.extend(applyData, {
+                userBalance: user.finance.balance
+            });
+            res.render('mobile/yyn_confirm', {
                 layout:null,
                 bootstrappedApply: JSON.stringify(applyVM)
             });
@@ -241,7 +272,11 @@ module.exports = {
 
         app.get('/mobile/ttn', getTTN);
 
+        app.get('/mobile/yyn', getYYN);
+
         app.get('/mobile/ttn_confirm/:apply_serial_id', passportConf.isAuthenticated, getTTNConfirm);
+
+        app.get('/mobile/yyn_confirm/:apply_serial_id', passportConf.isAuthenticated, getYYNConfirm);
 
         app.get('/mobile/user', getUser);
 

@@ -32,6 +32,18 @@ angular.module('mobileApp').controller('MobileTtnCtrl', ['$scope', '$window', '$
         {
             name: '5倍',
             value: 5
+        },
+        {
+            name: '4倍',
+            value: 4
+        },
+        {
+            name: '3倍',
+            value: 3
+        },
+        {
+            name: '2倍',
+            value: 2
         }
     ];
     vm.agree = true;

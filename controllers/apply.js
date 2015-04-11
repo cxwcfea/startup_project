@@ -487,6 +487,7 @@ exports.freeApply = function(req, res, next) {
 };
 
 exports.placeApply = function(req, res, next) {
+    console.log(req.body);
     if (!req.isAuthenticated()) {
         req.session.lastLocation = '/apply';
         res.status(401);
@@ -499,7 +500,7 @@ exports.placeApply = function(req, res, next) {
         return res.send({error_msg:'invalid data'});
     }
 
-    if (req.body.amount < 2000 || req.body.amount > 300000 || req.body.deposit < req.body.amount * config.depositFactor - 0.01) {
+    if (req.body.deposit >= req.body.amount) {
         logger.debug('placeApply error: invalid data amount:' + req.body.amount + ' deposit:' + req.body.deposit);
         res.status(400);
         return res.send({error_msg:'invalid data'});
@@ -516,6 +517,14 @@ exports.placeApply = function(req, res, next) {
         sellValue: Number(Number(req.body.sellValue).toFixed(2)),
         period: 5
     });
+
+    if (req.body.type) {
+        applyData.type = req.body.type;
+        if (applyData.type === 2) {
+            applyData.period = req.body.month;
+            applyData.interestRate = req.body.interestRate;
+        }
+    }
 
     Apply.create(applyData, function(err, apply) {
         if(err) {
@@ -586,7 +595,7 @@ exports.postConfirmApply = function(req, res, next) {
             apply.period = Number(applyData.period);
             var startDay = util.getStartDay();
             apply.startTime = startDay.toDate();
-            apply.endTime = util.getEndDay(startDay, apply.period).toDate();
+            apply.endTime = util.getEndDay(startDay, apply.period, apply.type).toDate();
             apply.save(function(err) {
                 if (err) {
                     res.status(500);
