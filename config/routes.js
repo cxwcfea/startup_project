@@ -36,6 +36,7 @@ module.exports = function(app) {
         util.debugInfo(logger, req);
         res.locals.title = '用户注册';
         res.locals.signup = true;
+        res.locals.uid = req.user._id;
         res.render('register/success', {
             layout: 'no_header'
         });
