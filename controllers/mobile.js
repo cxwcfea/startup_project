@@ -178,6 +178,12 @@ function getUserTtn(req, res, next) {
     })
 }
 
+function getUserYyn(req, res, next) {
+    res.render('mobile/user_yyn', {
+        layout:null
+    })
+}
+
 function getTtnInfo(req, res, next) {
     Apply.findOne({serialID:req.params.apply_serial_id}, function(err, apply) {
         if (err || !apply) {
@@ -289,6 +295,8 @@ module.exports = {
         app.get('/mobile/recharge_record', getRechargeRecord);
 
         app.get('/mobile/user_ttn', getUserTtn);
+
+        app.get('/mobile/user_yyn', getUserYyn);
 
         app.get('/mobile/change_password', getChangePass);
 

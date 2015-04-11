@@ -75,23 +75,41 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
         vm.alipayConfirm = true;
 
         var newOrder = new njOrder({uid:vm.user._id});
-        newOrder.userID = vm.user._id;
-        newOrder.userMobile = vm.user.mobile;
-        newOrder.dealType = 1;
-        newOrder.amount = Number(vm.pay_amount.toFixed(2));
-        newOrder.description = '支付宝转账(移动)';
-        newOrder.payType = 3;
-        newOrder.status = 2;
-        newOrder.otherInfo = vm.alipay_account;
-        newOrder.transID = vm.alipay_name;
-        newOrder.$save(function(o, responseHeaders) {
-        }, function(response) {
-            vm.errorMsg = '服务暂时不可用，请稍后再试';
-            vm.inputError = true;
-            $timeout(function() {
-                vm.inputError = false;
-            }, 1500);
-        });
+        if (vm.pay_order) {
+            vm.pay_order.description += ' 支付宝转账(移动)';
+            vm.pay_order.payType = 3;
+            vm.pay_order.otherInfo = vm.alipay_account;
+            vm.pay_order.transID = vm.alipay_name;
+            $http.post('/api/user/' + vm.user._id + '/orders/' + vm.pay_order._id, vm.pay_order)
+                .success(function(data, status) {
+                })
+                .error(function(data, status) {
+                    console.log('order update failed');
+                    vm.errorMsg = '服务暂时不可用，请稍后再试';
+                    vm.inputError = true;
+                    $timeout(function() {
+                        vm.inputError = false;
+                    }, 1500);
+                });
+        } else {
+            newOrder.userID = vm.user._id;
+            newOrder.userMobile = vm.user.mobile;
+            newOrder.dealType = 1;
+            newOrder.amount = Number(vm.pay_amount.toFixed(2));
+            newOrder.description = '支付宝转账(移动)';
+            newOrder.payType = 3;
+            newOrder.status = 2;
+            newOrder.otherInfo = vm.alipay_account;
+            newOrder.transID = vm.alipay_name;
+            newOrder.$save(function(o, responseHeaders) {
+            }, function(response) {
+                vm.errorMsg = '服务暂时不可用，请稍后再试';
+                vm.inputError = true;
+                $timeout(function() {
+                    vm.inputError = false;
+                }, 1500);
+            });
+        }
     };
 
     vm.confirmAlipay = function() {

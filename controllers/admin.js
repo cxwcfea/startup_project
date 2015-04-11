@@ -202,59 +202,10 @@ function fetchClosingApplies(req, res) {
 
 function assignAccoutToApply(req, res) {
     logger.info('assignAccountToApply operator:' + req.user.mobile);
-    if (req.body.homas) {
-        homasAssignAccount(req, res);
-    } else {
-        homasAutoAssignAccount(req, res);
-    }
+    homsAssignAccount(req, res);
 }
 
-function homasAutoAssignAccount(req, res) {
-    var apply = req.body.apply;
-    async.waterfall([
-        function(callback) {
-            Homas.findOne({using:false}, function(err, homas) {
-                if (!homas) {
-                    err = 'no available homas account';
-                }
-                callback(err, homas);
-            });
-        },
-        function (homas, callback) {
-            homas.using = true;
-            homas.assignAt = Date.now();
-            homas.applyID = apply._id;
-            homas.save(function(err) {
-                callback(err, homas);
-            });
-        },
-        function (homas, callback) {
-            Apply.findById(apply._id, function(err, apply) {
-                callback(err, apply, homas);
-            });
-        },
-        function (apply, homas, callback) {
-            apply.status = 2;
-            apply.account = homas.account;
-            apply.password = homas.password;
-            var startDay = util.getStartDay();
-            apply.startTime = startDay.toDate();
-            apply.endTime = util.getEndDay(startDay, apply.period).toDate();
-            apply.save(function (err) {
-                callback(err, apply);
-            });
-        }
-    ], function(err, apply) {
-        if (err) {
-            res.status(401);
-            res.send({reason:err.toString()});
-        } else {
-            res.send({apply:apply});
-        }
-    });
-}
-
-function homasAssignAccount(req, res) {
+function homsAssignAccount(req, res) {
     var apply = req.body.apply;
     var homas = req.body.homas;
     async.waterfall([
@@ -269,7 +220,7 @@ function homasAssignAccount(req, res) {
             apply.password = homas.password;
             var startDay = util.getStartDay();
             apply.startTime = startDay.toDate();
-            apply.endTime = util.getEndDay(startDay, apply.period).toDate();
+            apply.endTime = util.getEndDay(startDay, apply.period, apply.type).toDate();
             apply.save(function (err) {
                 callback(err, apply);
             });
@@ -285,7 +236,7 @@ function homasAssignAccount(req, res) {
     });
 }
 
-function _closeApply2(serialID, profit, res) {
+function _closeApply(serialID, profit, res) {
     async.waterfall([
         function(callback) {
             Apply.findOne({serialID:serialID}, function(err, apply) {
@@ -324,6 +275,7 @@ function _closeApply2(serialID, profit, res) {
     });
 }
 
+/*
 function _closeApply(serialID, profit, res) {
     async.waterfall([
         function(callback) {
@@ -470,11 +422,12 @@ function _closeApply(serialID, profit, res) {
         }
     });
 }
+*/
 
 function closeApply(req, res) {
     logger.info('closeApply operator:' + req.user.mobile);
     var profit = req.body.profit;
-    _closeApply2(req.body.apply_serial_id, Number(profit), res);
+    _closeApply(req.body.apply_serial_id, Number(profit), res);
 }
 
 function fetchGetProfitOrders(req, res) {
@@ -582,85 +535,74 @@ function confirmAlipayOrder(req, res) {
             res.status(500);
             return res.send({error_msg:err.toString()});
         }
-        logger.info('confirmAlipayOrder operator:' + req.user.mobile);
-        if (order) {
-            if (order.status != 2) {
-                logger.warn('confirmAlipayOrder error: only order in not pay status can be approved');
-                res.status(400);
-                return res.send({error_msg:'only order in not pay status can be approved'});
+        if (!order) {
+            logger.warn('confirmAlipayOrder error:order not found');
+            res.status(400);
+            return res.send({error_msg:'order not found'});
+        }
+        if (order.status != 2) {
+            logger.warn('confirmAlipayOrder error: only order in not pay status can be approved');
+            res.status(400);
+            return res.send({error_msg:'only order in not pay status can be approved'});
+        }
+        User.findById(order.userID, function(err, user) {
+            if (err) {
+                logger.warn('confirmAlipayOrder error:' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
             }
-            order.status = 1;
+            if (!user) {
+                logger.warn('confirmAlipayOrder error:user not found');
+                res.status(400);
+                res.send({error_msg:'confirmAlipayOrder error:user not found'});
+            }
+
             order.bankTransID = req.body.trans_id;
             order.approvedBy = req.user.mobile;
             order.approvedAt = Date.now();
-            order.save(function(err) {
+            util.orderFinished(user, order, 1, function(err) {
                 if (err) {
                     logger.warn('confirmAlipayOrder error:' + err.toString());
                     res.status(500);
                     return res.send({error_msg:err.toString()});
                 }
-                User.findById(order.userID, function(err, user) {
-                    if (err) {
-                        logger.warn('confirmAlipayOrder error:' + err.toString());
-                        res.status(500);
-                        return res.send({error_msg:err.toString()});
-                    }
-                    if (user) {
-                        user.finance.balance += order.amount;
-                        user.save(function(err) {
-                            if (err) {
-                                logger.warn('confirmAlipayOrder error:' + err.toString());
-                                res.status(500);
-                                return res.send({error_msg:err.toString()});
-                            }
-                            util.sendSMS_8(user.mobile, order.amount.toFixed(2));
-                            if (order.applySerialID) {
-                                Apply.findOne({serialID:order.applySerialID}, function(err, apply) {
-                                    if (err) {
-                                        logger.warn('confirmAlipayOrder error when update apply:' + err.toString());
-                                        res.status(500);
-                                        return res.send({error_msg:'confirmAlipayOrder error when update apply:' + err.toString()});
-                                    }
-                                    if (apply.status === 1) {
-                                        util.applyConfirmed(user, apply, function(err) {
-                                            if (err) {
-                                                logger.error('confirmAlipayOrder error when confirm apply:' + err.toString());
-                                                res.status(500);
-                                                return res.send({error_msg:'confirmAlipayOrder error:' + err.toString()});
-                                            }
-                                            res.send({});
-                                        });
-                                    } else if (apply.status === 2) {
-                                        util.applyDepositAdded(user, apply, order.amount, function(err) {
-                                            if (err) {
-                                                logger.error('confirmAlipayOrder error when confirm apply for add deposit:' + err.toString());
-                                                res.status(500);
-                                                return res.send({error_msg:'confirmAlipayOrder error:' + err.toString()});
-                                            }
-                                            res.send({});
-                                        });
-                                    } else {
-                                        logger.error('confirmAlipayOrder error: apply not in valid state ' + apply.serialID);
-                                        res.status(400);
-                                        return res.send({error_msg:'confirmAlipayOrder error: apply not in valid state ' + apply.serialID});
-                                    }
-                                });
-                            } else {
+                util.sendSMS_8(user.mobile, order.amount.toFixed(2));
+                if (order.applySerialID) {
+                    Apply.findOne({serialID:order.applySerialID}, function(err, apply) {
+                        if (err) {
+                            logger.warn('confirmAlipayOrder error when update apply:' + err.toString());
+                            res.status(500);
+                            return res.send({error_msg:'confirmAlipayOrder error when update apply:' + err.toString()});
+                        }
+                        if (apply.status === 1) {
+                            util.applyConfirmed(user, apply, function(err) {
+                                if (err) {
+                                    logger.error('confirmAlipayOrder error when confirm apply:' + err.toString());
+                                    res.status(500);
+                                    return res.send({error_msg:'confirmAlipayOrder error:' + err.toString()});
+                                }
                                 res.send({});
-                            }
-                        });
-                    } else {
-                        logger.warn('confirmAlipayOrder error:user not found');
-                        res.status(400);
-                        res.send({error_msg:'confirmAlipayOrder error:user not found'});
-                    }
-                });
-            })
-        } else {
-            logger.warn('confirmAlipayOrder error:order not found');
-            res.status(400);
-            return res.send({error_msg:'order not found'});
-        }
+                            });
+                        } else if (apply.status === 2) {
+                            util.applyDepositAdded(user, apply, order.amount, function(err) {
+                                if (err) {
+                                    logger.error('confirmAlipayOrder error when confirm apply for add deposit:' + err.toString());
+                                    res.status(500);
+                                    return res.send({error_msg:'confirmAlipayOrder error:' + err.toString()});
+                                }
+                                res.send({});
+                            });
+                        } else {
+                            logger.error('confirmAlipayOrder error: apply not in valid state ' + apply.serialID);
+                            res.status(400);
+                            return res.send({error_msg:'confirmAlipayOrder error: apply not in valid state ' + apply.serialID});
+                        }
+                    });
+                } else {
+                    res.send({});
+                }
+            });
+        });
     });
 }
 
@@ -936,7 +878,7 @@ function autoApproveApply(req, res) {
             apply.password = password;
             var startDay = util.getStartDay();
             apply.startTime = startDay.toDate();
-            apply.endTime = util.getEndDay(startDay, apply.period).toDate();
+            apply.endTime = util.getEndDay(startDay, apply.period, apply.type).toDate();
             apply.save(function (err) {
                 callback(err, apply);
             });

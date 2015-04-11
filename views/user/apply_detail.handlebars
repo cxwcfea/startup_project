@@ -28,7 +28,7 @@
                     <tr>
                         <td class="td01">申请日期</td>
                         <td class="td02">{{apply_applyAt}}</td>
-                        <td class="td03 color_999999">预存账户管理费&nbsp;{{apply_service_fee}}</td>
+                        <td class="td03 color_999999">{{display_for_fee}}&nbsp;{{apply_service_fee}}</td>
                     </tr>
                 </table>
             </div>
@@ -110,16 +110,24 @@
                         </td>
                     </tr>
                     <tr>
-                        <td valign="top" class="td01">账户管理费用</td>
-                        <td class="td02">
-                            {{#if apply_isTrial}}
-                                0元
-                                <span class="color_999999">（免费体验操盘不收取管理费）</span>
-                           {{else}}
-                                {{apply_service_fee}}
-                                <span class="color_999999">（{{apply_fee_per_day}}元/天 按天收取，周末节假日免费）</span>
-                            {{/if}}
-                        </td>
+                        {{#ifCond apply_type '===' 2}}
+                            <td valign="top" class="td01">每月利息</td>
+                            <td class="td02">
+                                {{apply_fee_per_month}}
+                                <span class="color_999999">（按月扣除）</span>
+                            </td>
+                        {{else}}
+                            <td valign="top" class="td01">账户管理费用</td>
+                            <td class="td02">
+                                {{#if apply_isTrial}}
+                                    0元
+                                    <span class="color_999999">（免费体验操盘不收取管理费）</span>
+                                {{else}}
+                                    {{apply_service_fee}}
+                                    <span class="color_999999">（{{apply_fee_per_day}}元/天 按天收取，周末节假日免费）</span>
+                                {{/if}}
+                            </td>
+                        {{/ifCond}}
                     </tr>
                     <tr>
                         <td valign="top" class="td01">警戒线</td>

@@ -9,7 +9,7 @@
 
 <div class="user-ttn">
     <ul class="ttn-list">
-        <li ng-repeat="apply in vm.apply_list | orderBy:'applyAt':true">
+        <li ng-repeat="apply in vm.apply_list | filter:{type:!2} | orderBy:'applyAt':true">
             <div class="row">
                 <span class="state">\{{apply.status | applyStatus}}</span>
                 <span class="f-fr no">\{{apply.serialID}}</span>
@@ -17,16 +17,16 @@
             </div>
             <div class="row">
                 总操盘资金(元)
-                <em class="f-fr">\{{apply.amount}}</em>
+                <em class="f-fr">\{{apply.amount | currency:'':2}}</em>
             </div>
             <div class="row">
                 <div class="col">
                     警戒线(元) <br>
-                    <span class="f-fs2">\{{apply.apply_warn}}</span>
+                    <span class="f-fs2">\{{apply.apply_warn | currency:'':2}}</span>
                 </div>
                 <div class="col f-tar">
                     平仓线(元) <br>
-                    <span class="f-fs2">\{{apply.apply_sell}}</span>
+                    <span class="f-fs2">\{{apply.apply_sell | currency:'':2}}</span>
                 </div>
             </div>
             <a href="/mobile/#/user_ttn_info/\{{apply.serialID}}" class="row row-gray" ng-show="apply.status === 2 || apply.status === 3 || apply.status === 5">
@@ -37,7 +37,7 @@
                         交易密码  <em>\{{apply.password}}</em>
                     </span>
             </a>
-            <a href="/mobile/#/ttn_confirm/\{{apply.serialID}}" class="row row-pay" ng-show="apply.status === 1">立即付款</a>
+            <a href="/mobile/#/\{{apply.type === 2 ? 'yyn_confirm' : 'ttn_confirm'}}/\{{apply.serialID}}" class="row row-pay" ng-show="apply.status === 1">立即付款</a>
         </li>
         <!--
         <li>
