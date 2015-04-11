@@ -1,5 +1,5 @@
 'use strict';
-angular.module('supportApp').controller('SupportUserListCtrl', ['$scope', '$http', '$modal', '$location', 'gbUser', 'gbNotifier', '$filter', function($scope, $http, $modal, $location, gbUser, gbNotifier, $filter) {
+angular.module('supportApp').controller('SupportUserListCtrl', ['$scope', '$http', '$modal', '$location', 'gbUser', 'gbNotifier', '$filter', '$window', function($scope, $http, $modal, $location, gbUser, gbNotifier, $filter, $window) {
     var vm = this;
     vm.users = gbUser.query(function() {
         vm.users = $filter('orderBy')(vm.users, 'registerAt', true);
@@ -42,12 +42,14 @@ angular.module('supportApp').controller('SupportUserListCtrl', ['$scope', '$http
 
     vm.showApplies = function(user) {
         $scope.data.selectedUser = user;
-        $location.path('/applies/' + user._id);
+        //$location.path('/applies/' + user._id);
+        $window.open('/support/#/applies/' + user._id);
     };
 
     vm.showOrders = function(user) {
         $scope.data.selectedUser = user;
-        $location.path('/orders/' + user._id);
+        //$location.path('/orders/' + user._id);
+        $window.open('/support/#/orders/' + user._id);
     };
 
     vm.open = function (mobile) {

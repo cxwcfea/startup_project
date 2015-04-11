@@ -50,12 +50,14 @@ angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$ht
 
     vm.showApplies = function(user) {
         $scope.data.selectedUser = user;
-        $location.path('/applies/' + user._id);
+        // $location.path('/applies/' + user._id);
+        $window.open('/support/#/applies/' + user._id);
     };
 
     vm.showOrders = function(user) {
         $scope.data.selectedUser = user;
-        $location.path('/orders/' + user._id);
+        // $location.path('/orders/' + user._id);
+        $window.open('/support/#/orders/' + user._id);
     };
 
     vm.open = function (mobile) {
