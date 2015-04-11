@@ -1,4 +1,4 @@
-<div ng-app="mainApp" ng-controller="MainApplyController as applyVM" ng-cloak>
+<div ng-app="mainApp" ng-controller="MainApplyController as applyVM">
     <div class="Banner" id="imgFocus">
         <ul class="ImgContent" id="ImgContent">
             <li style="background-image: url(/images/banner.png);background-color: #e41f45;"></li>
@@ -80,7 +80,7 @@
             </div>
         </div>
 
-        <div>
+        <div ng-cloak>
             <div class="fl moneyListBox">
                 <div class="conlumn2">选择资金</div>
                 <div class="moneyList" id="jq_moneyList">
@@ -157,6 +157,12 @@
                         <tr>
                             <td class="infoTableTitle">平仓线</td>
                             <td class="infoTableNr"><span class="infoText02">\{{applyVM.summary.sellValue | currency:'':2}}</span> 元</td>
+                        </tr>
+                        <tr>
+                            <td class="infoTableTitle">资金倍数</td>
+                            <td class="infoTableNr">
+                                <select ng-options="item.name for item in applyVM.leverList" ng-model="applyVM.selectedLever" ng-change="applyVM.leverChange()"></select>
+                            </td>
                         </tr>
                         <tr>
                             <td class="infoTableTitle">账户管理费</td>

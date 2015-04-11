@@ -4,7 +4,7 @@
 <!--#S header-->
 <header id="header">
     <div class="header-box">
-        <h1>天天牛详情</h1>
+        <h1>\{{vm.apply.type === 2 ? '月月牛' : '天天牛'}}详情</h1>
         <a class="back" href="/mobile/#/user_ttn"></a>
     </div>
 </header><!--#E header-->
@@ -77,9 +77,13 @@
                     <p>预付保证金(元)</p>
                     <strong>\{{vm.apply.deposit | currency:'':2}}</strong>
                 </div>
-                <div class="col">
+                <div class="col" ng-hide="vm.apply.type === 2">
                     <p>账户管理费</p>
                     <strong>\{{vm.serviceFee}}</strong>元/天
+                </div>
+                <div class="col" ng-show="vm.apply.type === 2">
+                    <p>利息</p>
+                    <strong>\{{vm.interest | currency:'':2}}</strong>元/月
                 </div>
             </li>
             <li class="warn">
@@ -114,8 +118,11 @@
             </li>
         </ul>
     </div>
-    <div class="ttn-agree">
+    <div class="ttn-agree" ng-hide="vm.apply.type === 2">
         <a href="/mobile/trader_agreement.html">《天天牛合作操盘协议》</a>
+    </div>
+    <div class="ttn-agree" ng-show="vm.apply.type === 2">
+        <a href="/mobile/trader_agreement.html">《月月牛合作操盘协议》</a>
     </div>
 </div>
 

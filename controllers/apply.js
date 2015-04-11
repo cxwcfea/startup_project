@@ -10,6 +10,11 @@ var Apply = require('../models/Apply'),
     async = require('async'),
     util = require('../lib/util');
 
+exports.getYYnPage = function(req, res, next) {
+    res.locals.yyn_menu = true;
+    res.render('apply/yyn');
+};
+
 exports.getApplyPage = function(req, res, next) {
     res.locals.apply_menu = true;
     res.render('apply/apply');
@@ -29,7 +34,7 @@ exports.getApplyDetail = function (req, res, next) {
         if (err || !apply) {
             return next();
         }
-        var serviceFee = apply.amount / 10000 * config.serviceCharge * apply.period;
+        var serviceFee = util.getServiceFee(apply.amount, apply.period, apply.type, apply.interestRate);
         if (apply.isTrial) {
             serviceFee = 0;
         }
@@ -38,7 +43,7 @@ exports.getApplyDetail = function (req, res, next) {
             endTime = moment(apply.endTime);
         } else {
             startTime = util.getStartDay();
-            endTime = util.getEndDay(startTime, apply.period);
+            endTime = util.getEndDay(startTime, apply.period, apply.type);
         }
         switch (apply.status) {
             case 1:
@@ -67,6 +72,7 @@ exports.getApplyDetail = function (req, res, next) {
         res.locals.apply_pay = (apply.deposit + serviceFee).toFixed(2);
         res.locals.apply_period = apply.period;
         res.locals.apply_fee_per_day = (serviceFee / apply.period).toFixed(2);
+        res.locals.apply_fee_per_month = (apply.amount * apply.interestRate).toFixed(2);
         res.locals.apply_warn = (apply.amount - config.warnFactor * apply.deposit).toFixed(2);
         res.locals.apply_sell = (apply.amount - config.sellFactor * apply.deposit).toFixed(2);
         res.locals.startDate1 = startTime.format("YYYY-MM");
@@ -78,6 +84,8 @@ exports.getApplyDetail = function (req, res, next) {
         res.locals.apply_password = apply.password;
         res.locals.apply_detail = true;
         res.locals.apply_isTrial = apply.isTrial;
+        res.locals.display_for_fee = apply.type === 2 ? '预付利息' : '预存账户管理费';
+        res.locals.apply_type = apply.type;
         res.render('user/apply_detail');
     });
 };
@@ -487,7 +495,6 @@ exports.freeApply = function(req, res, next) {
 };
 
 exports.placeApply = function(req, res, next) {
-    console.log(req.body);
     if (!req.isAuthenticated()) {
         req.session.lastLocation = '/apply';
         res.status(401);
@@ -533,6 +540,33 @@ exports.placeApply = function(req, res, next) {
             return res.send({success:false, reason:err.toString()});
         }
         res.send({apply_serial_id:apply.serialID});
+    });
+};
+
+exports.yynConfirmApply = function(req, res, next) {
+    res.locals.yyn_menu = true;
+    Apply.findOne({serialID:req.params.serial_id}, function(err, apply) {
+        if (err || !apply) {
+            return next();
+        }
+        if (req.user._id != apply.userID) {
+            res.status(406);
+            logger.warn('error when yynConfirmApply: not the same user who create the apply');
+            return next();
+        }
+        User.findById(apply.userID, function(err, user) {
+            if (err) {
+                logger.warn('error when yynConfirmApply:' + err.toString());
+                return next();
+            }
+            var applyData = apply._doc;
+            var applyVM = _.extend(applyData, {
+                userBalance: user.finance.balance
+            });
+            res.render('apply/yyn_confirm', {
+                bootstrappedApply: JSON.stringify(applyVM)
+            });
+        });
     });
 };
 
@@ -596,6 +630,7 @@ exports.postConfirmApply = function(req, res, next) {
             var startDay = util.getStartDay();
             apply.startTime = startDay.toDate();
             apply.endTime = util.getEndDay(startDay, apply.period, apply.type).toDate();
+            console.log(apply);
             apply.save(function(err) {
                 if (err) {
                     res.status(500);

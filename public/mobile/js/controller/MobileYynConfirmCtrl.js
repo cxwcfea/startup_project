@@ -6,7 +6,7 @@ angular.module('mobileApp').controller('MobileYynConfirmCtrl', ['$scope', '$wind
         angular.extend(vm.apply, $window.bootstrappedApplyObject);
     }
 
-    vm.interest = vm.apply.amount * vm.apply.interestRate * vm.apply.period;
+    vm.interest = vm.apply.amount * vm.apply.interestRate;
     vm.totalAmount = vm.apply.deposit + vm.interest;
     vm.shouldPay = vm.totalAmount - vm.apply.userBalance;
     if (vm.shouldPay <= 0) {

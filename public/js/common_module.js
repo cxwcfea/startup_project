@@ -108,13 +108,20 @@
         return startDay;
     };
 
-    var getEndDay = function(startDay, days) {
-        --days;
+    var getEndDay = function(startDay, period, type) {
         var endDay = startDay.clone();
-        while (days) {
+        if (type && type === 2) {
+            endDay = endDay.add(period, 'months');
+            while (holiday.indexOf(endDay.dayOfYear()) !== -1) {
+                endDay = endDay.add(1, 'day');
+            }
+            return endDay;
+        }
+        --period;
+        while (period) {
             endDay = endDay.add(1, 'day');
             if (holiday.indexOf(endDay.dayOfYear()) !== -1) continue;
-            --days;
+            --period;
         }
         endDay.hour(14);
         endDay.minute(50);
@@ -180,23 +187,23 @@
             }
             return ret + input;
         };
-    }).filter("displayIncome", function () {
+    }).filter("displayIncome", ['$filter', function ($filter) {
         return function (input, orderType) {
             var ret = input;
             if (orderType == 2 || orderType == 9 || orderType == 10) {
-                ret = '';
+                return '';
             }
-            return ret;
+            return $filter('currency')(ret, '', 2);
         };
-    }).filter("displayOutcome", function () {
+    }]).filter("displayOutcome", ['$filter', function ($filter) {
         return function (input, orderType) {
             var ret = '';
             if (orderType == 2 || orderType == 9 || orderType == 10) {
-                ret = input;
+                ret = $filter('currency')(input, '', 2);
             }
             return ret;
         };
-    }).filter("displayMobile", function () {
+    }]).filter("displayMobile", function () {
         return function (input) {
             if (input) {
                 input = input.toString();
@@ -336,8 +343,11 @@
         this.tradeDaysTillNow = tradeDaysTillNow;
     }).service("util", ['warn_factor', 'sell_factor', function (warn_factor, sell_factor) {
         this.serviceCharge = 19.9;
-        this.getServiceFee = function(amount, period) {
-              return Number((amount / 10000 * this.serviceCharge * period).toFixed(2));
+        this.getServiceFee = function(amount, period, type, interestRate) {
+            if (type && type === 2) {
+                return Number((amount * interestRate)).toFixed(2);
+            }
+            return Number((amount / 10000 * this.serviceCharge * period).toFixed(2));
         };
         this.getWarnValue = function(amount, deposit) {
             return Number((amount - warn_factor * deposit).toFixed(2));

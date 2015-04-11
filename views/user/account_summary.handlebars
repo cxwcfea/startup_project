@@ -107,7 +107,7 @@
                     <td>\{{apply.serialID}}</td>
                     <td>\{{apply.deposit | currency:'':2}}</td>
                     <td>\{{apply.amount | currency:'':2}}</td>
-                    <td>\{{apply.period}}天</td>
+                    <td>\{{apply.period}}\{{apply.type === 2 ? '月' : '天'}}</td>
                     <td><p ng-class="{color_37c80b: apply.status === 2, color_c82217: apply.status === 1, color_f2991b: apply.status === 5}" class="">\{{apply.status | applyStatus}}</p></td>
                     <td><a href="/apply_detail/\{{apply.serialID}}" class="acc_btn04">查看</a></td>
                 </tr>

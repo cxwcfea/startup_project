@@ -1,9 +1,7 @@
 <div class="wrapper" ng-app="mainApp" ng-controller="MainApplyController as applyVM" ng-cloak>
     <div class="freeTitle">
         <div class="fl"><span>天天牛</span> &nbsp;&nbsp;短线炒股、最高30万、利润放大10倍</div>
-        <!--
-        <a href="#">新手引导>></a>
-        -->
+        <a href="/info/guide">新手引导>></a>
         <div class="clear"></div>
     </div>
     <div class="column">
@@ -98,6 +96,12 @@
                 <tr>
                     <td class="infoTableTitle">平仓线</td>
                     <td class="infoTableNr"><span class="infoText02">\{{applyVM.summary.sellValue | currency:'':2}}</span> 元</td>
+                </tr>
+                <tr>
+                    <td class="infoTableTitle">资金倍数</td>
+                    <td class="infoTableNr">
+                        <select ng-options="item.name for item in applyVM.leverList" ng-model="applyVM.selectedLever" ng-change="applyVM.leverChange()"></select>
+                    </td>
                 </tr>
                 <tr>
                     <td class="infoTableTitle">账户管理费</td>
