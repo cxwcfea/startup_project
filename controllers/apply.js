@@ -10,6 +10,11 @@ var Apply = require('../models/Apply'),
     async = require('async'),
     util = require('../lib/util');
 
+exports.getYYnPage = function(req, res, next) {
+    res.locals.yyn_menu = true;
+    res.render('apply/yyn');
+};
+
 exports.getApplyPage = function(req, res, next) {
     res.locals.apply_menu = true;
     res.render('apply/apply');
@@ -535,6 +540,33 @@ exports.placeApply = function(req, res, next) {
             return res.send({success:false, reason:err.toString()});
         }
         res.send({apply_serial_id:apply.serialID});
+    });
+};
+
+exports.yynConfirmApply = function(req, res, next) {
+    res.locals.yyn_menu = true;
+    Apply.findOne({serialID:req.params.serial_id}, function(err, apply) {
+        if (err || !apply) {
+            return next();
+        }
+        if (req.user._id != apply.userID) {
+            res.status(406);
+            logger.warn('error when yynConfirmApply: not the same user who create the apply');
+            return next();
+        }
+        User.findById(apply.userID, function(err, user) {
+            if (err) {
+                logger.warn('error when yynConfirmApply:' + err.toString());
+                return next();
+            }
+            var applyData = apply._doc;
+            var applyVM = _.extend(applyData, {
+                userBalance: user.finance.balance
+            });
+            res.render('apply/yyn_confirm', {
+                bootstrappedApply: JSON.stringify(applyVM)
+            });
+        });
     });
 };
 

@@ -343,8 +343,11 @@
         this.tradeDaysTillNow = tradeDaysTillNow;
     }).service("util", ['warn_factor', 'sell_factor', function (warn_factor, sell_factor) {
         this.serviceCharge = 19.9;
-        this.getServiceFee = function(amount, period) {
-              return Number((amount / 10000 * this.serviceCharge * period).toFixed(2));
+        this.getServiceFee = function(amount, period, type, interestRate) {
+            if (type && type === 2) {
+                return Number((amount * interestRate)).toFixed(2);
+            }
+            return Number((amount / 10000 * this.serviceCharge * period).toFixed(2));
         };
         this.getWarnValue = function(amount, deposit) {
             return Number((amount - warn_factor * deposit).toFixed(2));

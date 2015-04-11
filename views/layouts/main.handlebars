@@ -131,6 +131,7 @@
         <ul class="nav fr">
             <li {{#if main_menu}} class="select" {{/if}}><a href="/">首页</a></li>
             <li {{#if apply_menu}} class="select" {{/if}}><a href="/apply">天天牛</a></li>
+            <li {{#if yyn_menu}} class="select" {{/if}}><a href="/yyn">月月牛</a></li>
             <li {{#if free_apply_menu}} class="select" {{/if}}><a href="/free_apply">免费体验</a></li>
             <li {{#if user_menu}} class="select" {{/if}}><a href="/user">我的账户</a></li>
         </ul>
@@ -154,9 +155,9 @@
 {{#if user_menu}}
 <div class="footer">
 {{/if}}
-{{#if apply_menu}}
+{{#ifCond apply_menu '||' yyn_menu}}
 <div class="footer marTop200">
-{{/if}}
+{{/ifCond}}
 {{#if free_apply_menu}}
 <div class="footer marTop200">
 {{/if}}
@@ -223,7 +224,7 @@
 <script src="{{static '/js/main.js'}}"></script>
 <script src="{{static '/app/controllers/RegisterCtrl.js'}}"></script>
 -->
-<script src="{{static '/js.min/niujinwang-main.min.2f79b2bb.js'}}"></script>
+<script src="{{static '/js.min/niujinwang-main.min.4b8829b7.js'}}"></script>
 {{#if main_menu}}
         <script src="{{static '/js/index.js'}}"></script>
 {{/if}}

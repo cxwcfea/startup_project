@@ -90,6 +90,8 @@ module.exports = function(app) {
 
     app.post('/user/reset_pass', passportConf.isAuthenticated, users.postUpdatePassword);
 
+    app.get('/yyn', applies.getYYnPage);
+
     app.get('/apply', applies.getApplyPage);
 
     app.post('/apply', applies.placeApply);
@@ -181,6 +183,8 @@ module.exports = function(app) {
     admin.registerRoutes(app, passportConf);
 
     app.get('/apply_confirm/:serial_id', passportConf.isAuthenticated, applies.confirmApply);
+
+    app.get('/yyn_confirm/:serial_id', passportConf.isAuthenticated, applies.yynConfirmApply);
 
     app.post('/apply_confirm', passportConf.isAuthenticated, applies.postConfirmApply);
 

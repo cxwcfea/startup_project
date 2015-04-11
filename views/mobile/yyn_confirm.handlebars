@@ -18,9 +18,21 @@
                 </span>
         </li>
         <li class="fee-item-bond">
-            支付利息
+            首月利息
                 <span>
                     <em id="J_confirmBond">\{{vm.interest | currency:'':2}}</em>元
+                </span>
+        </li>
+        <li class="fee-item-bond">
+            资金使用期限
+                <span>
+                    <em id="J_confirmBond">\{{vm.apply.period}}</em>个月
+                </span>
+        </li>
+        <li class="fee-item-bond">
+            利率
+                <span>
+                    <em id="J_confirmBond">\{{vm.apply.interestRate * 100 | currency:'':1}}</em>分/月
                 </span>
         </li>
     </ul>
