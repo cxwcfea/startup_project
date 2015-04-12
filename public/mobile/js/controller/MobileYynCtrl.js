@@ -82,7 +82,7 @@ angular.module('mobileApp').controller('MobileYynCtrl', ['$scope', '$window', '$
 
     vm.submitApply = function() {
         if (vm.summary.deposit <= 0) {
-            alert('请输入有效资金,最低25万,最高50万');
+            alert('请输入有效资金,最低50万,最高300万');
             return;
         }
         vm.summary.type = 2;

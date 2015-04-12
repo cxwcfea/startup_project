@@ -40,6 +40,16 @@ angular.module('supportApp').controller('SupportUserListCtrl', ['$scope', '$http
         vm.totalItems = vm.currentUsers.length;
     };
 
+    vm.showUsersNotComplete = function() {
+        vm.currentUsers = vm.users.filter(function (elem) {
+            return !elem.registered;
+        });
+        vm.totalItems = vm.currentUsers.length;
+        vm.currentPage = 1;
+        vm.pageChanged();
+        return;
+    };
+
     vm.showApplies = function(user) {
         $scope.data.selectedUser = user;
         //$location.path('/applies/' + user._id);

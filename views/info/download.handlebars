@@ -1,36 +1,103 @@
-<div class="wrapper paddTop30">
-    <div class="LeftMenu fl aboutLeft">
-        <ul>
-            <li><a href="/info/help" class="LiIcon01 select">帮助中心</a>
-            <li><a href="/info/trader_agreement" class="LiIcon02 ">协议声明</a></li>
-            <li><a href="/info/about" class="LiIcon03">关于牛金</a></li>
-            <li class="select"><a href="/info/download" class="LiIcon04 ">软件下载</a></li>
-        </ul>
-    </div>
-    <div class="fr RightMain">
-        <div class="rightMenu">
-            <ul>
-                <li class="select"><a href="/download">客户端下载</a></li>
-            </ul>
-        </div>
-        <div class="helBox">
-            <p>恒生电子（股票交易代码：600570）是中国最专业的证券交易系统服务商，其系统与各大证券公司进行了无缝对接。</p>
-            <p>2014年04月04日马云33亿入主恒生电子扩张金融版图，牛金网与恒生开展合作，为您提供专业、高效、安全的理财服务。</p>
-        </div>
-        <div class="freeDownloadBox marTop25">
-            <div class="freeContent">
-                <p class="p01">立即下载客户端进行交易 (iOS用户可直接去应用商店搜索《Homs 涌金版》下载)</p>
-                <a href="http://www.ihoms.com/file/xunlei/downloadxunlei/HOMS_YONGJINBAN_zhuanyeban.exe?fileCode=40&sourceType=4"><span class="icon icon02">&nbsp;</span> Windows版</a>
-                <a href="http://www.ihoms.com/file/xunlei/downloadxunlei/HOMS_YONGJINBAN_iPhone.ipa?fileCode=57&sourceType=4"><span class="icon icon03">&nbsp;</span>iOS版</a>
-                <a class="a01" href="http://www.ihoms.com/file/xunlei/downloadxunlei/HOMS_YONGJINBAN_android.apk?fileCode=38&sourceType=4"><span class="icon icon04">&nbsp;</span>Android版</a>
-                <img src="/images/win_code.png" />
-                <img src="/images/ios_code.png" id="ios_code" />
-                <img src="/images/android_code.png" id="android_code" />
-                <div class="clear"></div>
-                <p class="p02">暂不支持Mac操盘，苹果电脑用户请使用手机软件操盘，由此带来不便，敬请谅解。</p>
+<style>
+    .dn-box{}
+    .dn-box h1,
+    .dn-box h2,
+    .dn-box h3,
+    .dn-box h4{background-image:url(/images/dn_sprite.png);background-repeat: no-repeat;}
+    .dn-box .dn-banner{overflow:hidden;padding-top:63px;background-color:#f17d00;}
+    .dn-box .dn-banner h1{width:479px;height:50px;margin:0 0 10px;background-position:0 0;}
+    .dn-box .dn-banner h2{width:484px;height:28px;margin:0 0 20px;background-position:0 -59px;}
+    .dn-box .dn-banner .pull-left{margin-right:40px;}
+    .dn-box .pcbtn{display:block;width:304px;height:77px;margin:0 0 4px;background:url(/images/dn_btn.jpg) no-repeat;}
+    .dn-box .dn-banner p{font-size:14px;color:#fff;}
+    .dn-box .dn-banner a{color:#fff;}
+    .dn-box h1 span,
+    .dn-box h2 span,
+    .dn-box h3 span,
+    .dn-box h4 span,
+    .dn-box .pcbtn span{visibility:hidden;}
+    .dn-box .headline{overflow:hidden;}
+    .dn-box .dn-4mobile{overflow:hidden;padding:0 0 60px;text-align:center;background-color:#f9f9f9;}
+    .dn-mod .dn-hd{padding-top:90px;border-bottom:1px dotted #c9c9c9;}
+    .dn-mod h3{height:40px;margin:0 auto 20px;}
+    .dn-mod h4{height:30px;margin:0 auto 20px;}
+    .dn-mod .dn-bd{padding:40px 0 0;text-align:center;}
+
+
+    .dn-4mobile h3{width:400px;background-position:0 -103px;}
+    .dn-4mobile h4{width:660px;background-position:0 -143px;}
+    .platform-list{margin:0 0 60px;overflow:hidden;*zoom:1;}
+    .platform-list li{float:left;width:360px;padding:0 60px;border-right:1px dotted #e1e1e1;}
+    .platform-list .last{border-right:0;}
+    .dn-4mobile .txt{font-size:20px}
+    .dn-4mobile .txt a{color:#a40000;}
+
+    .dn-partner h3{width:221px;background-position:0 -211px;}
+    .dn-partner h4{width:760px;background-position:0 -255px;}
+    .partner-list{padding-left:40px;overflow:hidden;*zoom:1;}
+    .partner-list li{float:left;width:217px;height:100px;margin-right:10px;}
+    .partner-list li a{display:block;padding:6px 0;border:1px solid #e6e6e6;background-color:#f1f1f1;}
+
+    .dn-soft h3{width:368px;background-position:0 -318px;}
+    .dn-soft h4{width:740px;background-position:0 -367px;}
+</style>
+<div class="dn-box">
+    <div class="dn-banner">
+        <div class="wrapper">
+            <img class="pull-left" src="/images/dn_1.jpg" alt="">
+            <div class="headline">
+                <h1><span>恒生电子HOMS涌金版</span></h1>
+                <h2><span>采用上市公司《恒生电子》专业股票交易软件</span></h2>
+                <a class="pcbtn" href="http://www.ihoms.com/file/xunlei/downloadxunlei/HOMS_YONGJINBAN_zhuanyeban.exe?fileCode=40&sourceType=4"><span>立即下载 (电脑版)</span></a>
+                <p>您可通过手机浏览器访问<a href="htt://m.niujinwang.com">m.niujinwang.com</a></p>
             </div>
         </div>
-
     </div>
-    <div class="clear"></div>
+    <div class="dn-4mobile">
+        <div class="dn-mod wrapper">
+            <div class="dn-hd">
+                <h3><span>HOMS涌金版手机客户端</span></h3>
+                <h4><span>手机交易更便捷，实时关注，随时操盘，祝您轻松理财！</span></h4>
+            </div>
+            <div class="dn-bd">
+                <ul class="platform-list">
+                    <li>
+                        <a href="http://www.ihoms.com/file/xunlei/downloadxunlei/HOMS_YONGJINBAN_iPhone.ipa?fileCode=57&sourceType=4"><img src="/images/dn_ios.jpg" alt=""></a>
+                        <p>可直接在AppStore搜索homs涌金版下载</p>
+                    </li>
+                    <li class="last">
+                        <a href="http://www.ihoms.com/file/xunlei/downloadxunlei/HOMS_YONGJINBAN_android.apk?fileCode=38&sourceType=4"><img src="/images/dn_android.jpg" alt=""></a>
+                    </li>
+                </ul>
+                <p class="txt">也可以到恒生电子的官网下载交易软件<a href="http://www.ihoms.com/www/download/download.do?modelName=2">［下载地址］</a></p>
+            </div>
+        </div>
+    </div>
+    <div class="dn-partner">
+        <div class="dn-mod wrapper">
+            <div class="dn-hd">
+                <h3><span>交易合作券商</span></h3>
+                <h4><span>我们的交易全部通过《恒生电子交易系统》下单到以下合作券商</span></h4>
+            </div>
+            <div class="dn-bd">
+                <ul class="partner-list">
+                    <li><a href="#"><img src="/images/dn_zs.jpg" alt=""></a></li>
+                    <li><a href="#"><img src="/images/dn_ht.jpg" alt=""></a></li>
+                    <li><a href="#"><img src="/images/dn_gf.jpg" alt=""></a></li>
+                    <li><a href="#"><img src="/images/dn_cmb.jpg" alt=""></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="dn-soft">
+        <div class="dn-mod wrapper">
+            <div class="dn-hd">
+                <h3><span>股票交易软件界面截图</span></h3>
+                <h4><span>操作习惯同其他券商交易软件一样，让您轻松上手，极速投资！</span></h4>
+            </div>
+            <div class="dn-bd">
+                <img src="/images/dn_2.jpg" alt="">
+            </div>
+        </div>
+    </div>
 </div>
