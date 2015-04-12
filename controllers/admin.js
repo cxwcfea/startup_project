@@ -374,8 +374,8 @@ function _closeApply(serialID, profit, res) {
             }
             if (!apply.isTrial) {
                 var tradeDays = util.tradeDaysTillNow(apply.startTime, apply.period);
-                var totalServiceFee = util.getServiceFee(apply.amount, apply.period);
-                var actualServiceFee = util.getServiceFee(apply.amount, tradeDays);
+                var totalServiceFee = util.getServiceFee(apply, apply.period);
+                var actualServiceFee = util.getServiceFee(apply, tradeDays);
                 var returnedServiceFee = totalServiceFee - actualServiceFee;
                 if (totalServiceFee > 0) {
                     user.finance.freeze_capital -= totalServiceFee;

@@ -22,15 +22,21 @@ angular.module('mobileApp').controller('MobileYynCtrl', ['$scope', '$window', '$
         },
         {
             name: '4倍',
-            interest: 1.4,
+            interest: 1.6,
             value: 4,
-            i_value: 0.014
+            i_value: 0.016
         },
         {
             name: '5倍',
-            interest: 1.5,
+            interest: 1.7,
             value: 5,
-            i_value: 0.015
+            i_value: 0.017
+        },
+        {
+            name: '6倍',
+            interest: 1.8,
+            value: 6,
+            i_value: 0.018
         }
     ];
 
@@ -54,12 +60,12 @@ angular.module('mobileApp').controller('MobileYynCtrl', ['$scope', '$window', '$
     };
 
     vm.calculateValue = function() {
-        if (vm.summary.deposit >= 250000 && vm.summary.deposit <= 1000000) {
+        if (vm.summary.deposit >= 250000 && vm.summary.deposit <= 500000) {
             vm.summary.lever = vm.selectedValue.value;
             vm.summary.amount = vm.summary.deposit * vm.selectedValue.value;
             vm.summary.warnValue = util.getWarnValue(vm.summary.amount, vm.summary.deposit);
             vm.summary.sellValue = util.getSellValue(vm.summary.amount, vm.summary.deposit);
-            var charge = vm.summary.amount * vm.selectedValue.i_value * vm.summary.month;
+            var charge = (vm.summary.amount - vm.summary.deposit) * vm.selectedValue.i_value;
             vm.summary.charge = charge;
         } else {
             vm.summary.amount = 0;
@@ -76,7 +82,7 @@ angular.module('mobileApp').controller('MobileYynCtrl', ['$scope', '$window', '$
 
     vm.submitApply = function() {
         if (vm.summary.amount <= 0) {
-            alert('请输入有效资金,最低25万,最高100万');
+            alert('请输入有效资金,最低25万,最高50万');
             return;
         }
         vm.summary.type = 2;

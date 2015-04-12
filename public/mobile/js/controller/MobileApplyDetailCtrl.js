@@ -31,7 +31,7 @@ angular.module('mobileApp').controller('MobileApplyDetailCtrl', ['$scope', '$win
             vm.profit_rate = profit / vm.apply.deposit * 100;
         }
 
-        vm.serviceFee = vm.apply.isTrial ? 0 : 19.90;
+        vm.serviceFee = vm.apply.isTrial ? 0 : util.getServiceCharge(vm.apply.lever);
         vm.interest = vm.apply.amount * vm.apply.interestRate;
         vm.apply_warn = vm.apply.isTrial ? 1800 : util.getWarnValue(vm.apply.amount, vm.apply.deposit);
         vm.apply_sell = vm.apply.isTrial ? 1600 : util.getSellValue(vm.apply.amount, vm.apply.deposit);

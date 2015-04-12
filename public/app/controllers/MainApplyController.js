@@ -18,7 +18,6 @@
         vm.min_amount = 2000;
         vm.max_amount = 300000;
         var depositFactor = 0.1;
-        var serviceCharge = util.serviceCharge;
         var startTime = days.startTime();
 
         vm.leverList = [
@@ -45,7 +44,8 @@
             {
                 name: '5倍',
                 value: 5
-            },
+            }
+            /*
             {
                 name: '4倍',
                 value: 4
@@ -58,6 +58,7 @@
                 name: '2倍',
                 value: 2
             }
+            */
         ];
         vm.agree = true;
         vm.showOtherAmount = false;
@@ -79,7 +80,7 @@
             vm.summary.warnValue = util.getWarnValue(vm.summary.amount, vm.summary.deposit);
             vm.summary.sellValue = util.getSellValue(vm.summary.amount, vm.summary.deposit);
             vm.summary.deposit = vm.summary.amount * depositFactor;
-            var charge = vm.summary.amount / 10000 * serviceCharge; // * vm.summary.day;
+            var charge = vm.summary.amount / 10000 * util.getServiceCharge(vm.summary.lever); // * vm.summary.day;
             vm.summary.charge = charge;
             vm.summary.total = vm.summary.deposit + charge;
             vm.endTime = days.endTime(startTime, vm.summary.day);
@@ -245,17 +246,17 @@
         };
     }]);
 
-    angular.module('mainApp').controller('MainApplyConfirmController', ['$http', '$location', '$window', 'days', 'service_charge', function($http, $location, $window, days, service_charge) {
+    angular.module('mainApp').controller('MainApplyConfirmController', ['$http', '$location', '$window', 'days', 'util', function($http, $location, $window, days, util) {
         var vm = this;
         vm.apply = {};
         if (!!$window.bootstrappedApplyObject) {
             angular.extend(vm.apply, $window.bootstrappedApplyObject);
         }
 
-        vm.validDays = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+        vm.validDays = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 
         function calculateAmount() {
-            vm.serviceFee = vm.apply.amount / 10000 * service_charge * vm.apply.period;
+            vm.serviceFee = vm.apply.amount / 10000 * util.getServiceCharge(vm.apply.lever) * vm.apply.period;
             vm.totalAmount = vm.apply.deposit + vm.serviceFee;
             vm.shouldPay = vm.totalAmount - vm.apply.userBalance;
             if (vm.shouldPay <= 0) {
@@ -325,15 +326,21 @@
             },
             {
                 name: '4倍',
-                interest: 1.4,
+                interest: 1.6,
                 value: 4,
-                i_value: 0.014
+                i_value: 0.016
             },
             {
                 name: '5倍',
-                interest: 1.5,
+                interest: 1.7,
                 value: 5,
-                i_value: 0.015
+                i_value: 0.017
+            },
+            {
+                name: '6倍',
+                interest: 1.8,
+                value: 6,
+                i_value: 0.018
             }
         ];
 
@@ -358,12 +365,12 @@
         };
 
         $scope.calculateValue = function() {
-            if ($scope.summary.deposit >= 250000 && $scope.summary.deposit <= 1000000) {
+            if ($scope.summary.deposit >= 250000 && $scope.summary.deposit <= 500000) {
                 $scope.summary.lever = $scope.selectedValue.value;
                 $scope.summary.amount = $scope.summary.deposit * $scope.selectedValue.value;
                 $scope.summary.warnValue = util.getWarnValue($scope.summary.amount, $scope.summary.deposit);
                 $scope.summary.sellValue = util.getSellValue($scope.summary.amount, $scope.summary.deposit);
-                $scope.charge = $scope.summary.amount * $scope.selectedValue.i_value;
+                $scope.charge = ($scope.summary.amount - $scope.summary.deposit) * $scope.selectedValue.i_value;
                 $scope.summary.charge = $scope.charge * $scope.summary.month;
             } else {
                 $scope.summary.amount = 0;
@@ -462,7 +469,7 @@
             angular.extend($scope.apply, $window.bootstrappedApplyObject);
         }
 
-        $scope.interest = $scope.apply.amount * $scope.apply.interestRate;
+        $scope.interest = ($scope.apply.amount - $scope.apply.deposit) * $scope.apply.interestRate;
         $scope.totalAmount = $scope.apply.deposit + $scope.interest;
         $scope.shouldPay = $scope.totalAmount - $scope.apply.userBalance;
         if ($scope.shouldPay <= 0) {

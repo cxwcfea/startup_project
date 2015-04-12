@@ -40,7 +40,7 @@
 </style>
 <div class="wrapper" ng-app="mainApp" ng-controller="MainYynCtrl" ng-cloak>
     <div class="freeTitle">
-        <div class="fl"><span>月月牛</span> &nbsp;&nbsp;炒股利器、最高100万、可投资1-6个月</div>
+        <div class="fl"><span>月月牛</span> &nbsp;&nbsp;炒股利器、最高300万、可投资1-12个月</div>
         <a href="/info/guide">新手引导>></a>
         <div class="clear"></div>
     </div>
@@ -60,9 +60,9 @@
     </div>
 
     <div class="fl moneyListBox">
-        <div class="conlumn2">您可投入本金 <em class="infoText05">最低25万，最高100万元</em></div>
+        <div class="conlumn2">您可投入本金 <em class="infoText05">最低25万，最高50万元</em></div>
         <div class="ipt-box">
-            <input type="number" min="250000" max="1000000" placeholder="最少25万，最多100万" ng-model="summary.deposit" ng-change="calculateValue()" required autofocus>元
+            <input type="number" min="250000" max="500000" placeholder="最少25万，最多50万" ng-model="summary.deposit" ng-change="calculateValue()" required autofocus>元
         </div>
         <div class="conlumn2">选择配资比例</div>
         <div class="moneyList">
@@ -96,7 +96,7 @@
                 <a href="" class="am-close am-close-spin" data-am-modal-close>&times;</a>
             </div>
             <div class="am-modal-bd">
-                请输入有效资金,最低25万,最高100万
+                请输入有效资金,最低25万,最高50万
             </div>
             <div class="am-modal-footer">
                 <span class="am-modal-btn">确定</span>

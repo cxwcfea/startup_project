@@ -844,7 +844,7 @@ module.exports.iappPayFeedback = function(req, res) {
                 function(working, user, apply, pay_amount, callback) {
                     if (working) {
                         if (apply.status === 1) {
-                            var serviceFee = util.getServiceFee(apply.amount, apply.period);
+                            var serviceFee = util.getServiceFee(apply, apply.period);
                             if (apply.isTrial) {
                                 serviceFee = 0;
                             }

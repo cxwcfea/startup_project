@@ -34,7 +34,7 @@ exports.getApplyDetail = function (req, res, next) {
         if (err || !apply) {
             return next();
         }
-        var serviceFee = util.getServiceFee(apply.amount, apply.period, apply.type, apply.interestRate);
+        var serviceFee = util.getServiceFee(apply, apply.period);
         if (apply.isTrial) {
             serviceFee = 0;
         }
@@ -160,7 +160,7 @@ exports.postApplyPostpone = function(req, res, next) {
             req.flash('errors', {msg:'该配资不是操盘状态，操作无效'});
             return res.redirect('/apply/apply_postpone/' + serial_id);
         }
-        var serviceFee = util.getServiceFee(apply.amount, add_days);
+        var serviceFee = util.getServiceFee(apply, add_days);
         var shouldPay = serviceFee - req.user.finance.balance;
         var orderData = {
             userID: apply.userID,

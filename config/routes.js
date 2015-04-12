@@ -91,7 +91,7 @@ module.exports = function(app) {
 
     app.post('/user/reset_pass', passportConf.isAuthenticated, users.postUpdatePassword);
 
-    app.get('/yyn', applies.getYYnPage);
+    //app.get('/yyn', applies.getYYnPage);
 
     app.get('/apply', applies.getApplyPage);
 
@@ -185,7 +185,7 @@ module.exports = function(app) {
 
     app.get('/apply_confirm/:serial_id', passportConf.isAuthenticated, applies.confirmApply);
 
-    app.get('/yyn_confirm/:serial_id', passportConf.isAuthenticated, applies.yynConfirmApply);
+    //app.get('/yyn_confirm/:serial_id', passportConf.isAuthenticated, applies.yynConfirmApply);
 
     app.post('/apply_confirm', passportConf.isAuthenticated, applies.postConfirmApply);
 
@@ -209,12 +209,12 @@ module.exports = function(app) {
         res.render('info/' + req.params[0]);
     });
 
-    app.get('/yyn2', function(req, res) {
+    app.get('/yyn', function(req, res) {
         res.locals.yyn_menu = true;
         res.render('apply/yyn2');
     });
 
-    app.get('/yyn_confirm2/:serial_id', passportConf.isAuthenticated, applies.yynConfirmApply2);
+    app.get('/yyn_confirm/:serial_id', passportConf.isAuthenticated, applies.yynConfirmApply2);
 
     mobile.registerRoutes(app, passportConf);
 

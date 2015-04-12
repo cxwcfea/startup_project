@@ -4,7 +4,7 @@
             <form method="POST" action="/signup" id="signup-form" name="signup-form">
                 <input type="hidden" name="verify_code" id="verify_code">
                 <dl class="left left-v1">
-                    <dt><b class="breadCrumb"></b>10秒快速注册</dt>
+                    <dt><b class="breadCrumb"></b>10秒快速注册<span class="color_red">&nbsp;领取2000元免费炒股资金</span></dt>
                     <alert ng-repeat="alert in vm.alerts" type="\{{alert.type}}" close="vm.closeAlert($index)">\{{alert.msg}}</alert>
                     <dd>
                         <div class="left"><label for="phone">手机号码</label></div>
@@ -40,7 +40,7 @@
                     <dd>
                         <div class="left">&nbsp;</div>
                         <div class="right">
-                            <input type="button" value="立即注册" class="submit" ng-click="vm.register()" > <span class="color_red">领取2000元免费炒股资金</span>
+                            <input type="button" value="立即注册" class="submit" ng-click="vm.register()" >
                         </div>
                         <div class="newslist">
                             <ul>

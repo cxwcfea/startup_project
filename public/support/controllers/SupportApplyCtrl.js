@@ -34,7 +34,7 @@ angular.module('supportApp').controller('SupportApplyCtrl', ['$scope', '$http', 
     function formatData (item) {
         item.start_date = item.startTime ? item.startTime : days.startTime();
         item.end_date = item.endTime ? item.endTime : days.endTime(item.start_date, item.period);
-        item.fee = util.getServiceFee(item.amount, item.period);
+        item.fee = util.getServiceFee(item, item.period);
     }
 
     vm.searchApply = function() {
