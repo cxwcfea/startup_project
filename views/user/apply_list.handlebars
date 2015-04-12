@@ -77,7 +77,7 @@
                 </td>
                 <td>
                     <div class="tra_BtnBox">
-                        <a ng-show="item.status === 1" href="/apply_confirm/\{{item.serialID}}" class="tra_tableBoxBtn jq_Btn">去支付</a>
+                        <a ng-show="item.status === 1" href="/\{{item.type === 2 ? 'yyn_confirm' : 'apply_confirm'}}/\{{item.serialID}}" class="tra_tableBoxBtn jq_Btn">去支付</a>
                         <a ng-hide="item.status === 1 || item.status === 4" href="" class="tra_tableBoxBtn jq_Btn" ng-click="applyVM.showAccountInfo(item)">交易账号</a>
                         <!--
                         <div ng-show="item.status === 2">
