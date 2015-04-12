@@ -103,6 +103,20 @@ angular.module('adminApp').controller('AdminPendingApplyCtrl', ['$scope', '$http
         }, function () {
         });
     };
+
+    vm.showVip = function(vip) {
+        if (!vip) {
+            currentApplies = apply_list.filter(function (elem) {
+                return true;
+            });
+            pageReset();
+            return;
+        }
+        currentApplies = apply_list.filter(function (elem) {
+            return !elem.isTrial;
+        });
+        pageReset();
+    };
 }]);
 
 angular.module('adminApp').controller('SMSModalCtrl2', ['$scope', '$modalInstance', 'apply', 'sms_macro', function ($scope, $modalInstance, apply, sms_macro) {
