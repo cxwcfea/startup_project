@@ -3,8 +3,8 @@ angular.module('mobileApp').controller('MobileYynCtrl', ['$scope', '$window', '$
     var vm = this;
 
     vm.summary = {};
-    vm.summary.amount = 0;
-    //vm.summary.deposit = 0;
+    //vm.summary.amount = 0;
+    vm.summary.deposit = 0;
     vm.summary.warnValue = 0;
     vm.summary.sellValue = 0;
     vm.parameterList = [
@@ -41,7 +41,7 @@ angular.module('mobileApp').controller('MobileYynCtrl', ['$scope', '$window', '$
     ];
 
     vm.periodList = [];
-    for (var i = 1; i <= 12; ++i) {
+    for (var i = 1; i <= 6; ++i) {
         var obj = {
             name: i+'个月',
             value: i
@@ -60,15 +60,15 @@ angular.module('mobileApp').controller('MobileYynCtrl', ['$scope', '$window', '$
     };
 
     vm.calculateValue = function() {
-        if (vm.summary.deposit >= 250000 && vm.summary.deposit <= 500000) {
+        if (vm.summary.amount >= 500000 && vm.summary.amount <= 3000000) {
             vm.summary.lever = vm.selectedValue.value;
-            vm.summary.amount = vm.summary.deposit * vm.selectedValue.value;
+            vm.summary.deposit = vm.summary.amount / vm.selectedValue.value;
             vm.summary.warnValue = util.getWarnValue(vm.summary.amount, vm.summary.deposit);
             vm.summary.sellValue = util.getSellValue(vm.summary.amount, vm.summary.deposit);
             var charge = (vm.summary.amount - vm.summary.deposit) * vm.selectedValue.i_value;
             vm.summary.charge = charge;
         } else {
-            vm.summary.amount = 0;
+            vm.summary.deposit = 0;
             vm.summary.warnValue = 0;
             vm.summary.sellValue = 0;
             vm.summary.charge = 0;
@@ -81,7 +81,7 @@ angular.module('mobileApp').controller('MobileYynCtrl', ['$scope', '$window', '$
     };
 
     vm.submitApply = function() {
-        if (vm.summary.amount <= 0) {
+        if (vm.summary.deposit <= 0) {
             alert('请输入有效资金,最低25万,最高50万');
             return;
         }

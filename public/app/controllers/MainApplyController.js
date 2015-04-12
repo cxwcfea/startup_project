@@ -307,8 +307,8 @@
         $scope.forbiddenStockList;
         $scope.agree = true;
         $scope.summary = {};
-        $scope.summary.amount = 0;
-        //$scope.summary.deposit = 0;
+        //$scope.summary.amount = 0;
+        $scope.summary.deposit = 0;
         $scope.summary.warnValue = 0;
         $scope.summary.sellValue = 0;
         $scope.parameterList = [
@@ -345,7 +345,7 @@
         ];
 
         $scope.periodList = [];
-        for (var i = 1; i <= 12; ++i) {
+        for (var i = 1; i <= 6; ++i) {
             var obj = {
                 name: i+'个月',
                 value: i
@@ -365,15 +365,15 @@
         };
 
         $scope.calculateValue = function() {
-            if ($scope.summary.deposit >= 250000 && $scope.summary.deposit <= 500000) {
+            if ($scope.summary.amount >= 500000 && $scope.summary.amount <= 3000000) {
                 $scope.summary.lever = $scope.selectedValue.value;
-                $scope.summary.amount = $scope.summary.deposit * $scope.selectedValue.value;
+                $scope.summary.deposit = $scope.summary.amount / $scope.selectedValue.value;
                 $scope.summary.warnValue = util.getWarnValue($scope.summary.amount, $scope.summary.deposit);
                 $scope.summary.sellValue = util.getSellValue($scope.summary.amount, $scope.summary.deposit);
                 $scope.charge = ($scope.summary.amount - $scope.summary.deposit) * $scope.selectedValue.i_value;
                 $scope.summary.charge = $scope.charge * $scope.summary.month;
             } else {
-                $scope.summary.amount = 0;
+                $scope.summary.deposit = 0;
                 $scope.summary.warnValue = 0;
                 $scope.summary.sellValue = 0;
                 $scope.summary.charge = 0;
@@ -406,7 +406,7 @@
                 alert('您必须同意《牛金操盘协议》');
                 return;
             }
-            if ($scope.summary.amount <= 0) {
+            if ($scope.summary.deposit <= 0) {
                 var theModal = $('#invalid-value-modal');
                 theModal.modal('open');
                 return;

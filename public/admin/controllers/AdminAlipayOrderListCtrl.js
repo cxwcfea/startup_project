@@ -1,5 +1,5 @@
 'use strict';
-angular.module('adminApp').controller('AdminAlipayOrderListCtrl', ['$scope', '$location', '$routeParams', '$modal', '$http', 'gbNotifier', 'adminApply', function($scope, $location, $routeParams, $modal, $http, gbNotifier, adminApply) {
+angular.module('adminApp').controller('AdminAlipayOrderListCtrl', ['$scope', '$location', '$routeParams', '$modal', '$http', '$filter', 'gbNotifier', 'adminApply', function($scope, $location, $routeParams, $modal, $http, $filter, gbNotifier, adminApply) {
     var vm = this;
     var order_list = {};
     var currentOrders;
@@ -9,7 +9,7 @@ angular.module('adminApp').controller('AdminAlipayOrderListCtrl', ['$scope', '$l
 
     function initData() {
         $http.get('/admin/api/orders/alipay').success(function(data) {
-            order_list = data;
+            order_list = $filter('orderBy')(data, 'createdAt', true);
             currentOrders = order_list;
             pageReset();
         });
@@ -90,6 +90,7 @@ angular.module('adminApp').controller('alipayOrderModalCtrl', ['$scope', '$modal
     $scope.amount = order.amount;
     $scope.account = order.otherInfo;
     $scope.name = order.transID;
+    $scope.mobile = order.userMobile;
 
     $scope.ok = function () {
         $modalInstance.close($scope.trans_id);

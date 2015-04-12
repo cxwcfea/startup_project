@@ -40,7 +40,7 @@
 </style>
 <div class="wrapper" ng-app="mainApp" ng-controller="MainYynCtrl" ng-cloak>
     <div class="freeTitle">
-        <div class="fl"><span>月月牛</span> &nbsp;&nbsp;炒股利器、最高300万、可投资1-12个月</div>
+        <div class="fl"><span>月月牛</span> &nbsp;&nbsp;炒股利器、最高300万、可投资1-6个月</div>
         <a href="/info/guide">新手引导>></a>
         <div class="clear"></div>
     </div>
@@ -60,9 +60,9 @@
     </div>
 
     <div class="fl moneyListBox">
-        <div class="conlumn2">您可投入本金 <em class="infoText05">最低25万，最高50万元</em></div>
+        <div class="conlumn2">您需要的金额 <em class="infoText05">最低50万，最高300万元</em></div>
         <div class="ipt-box">
-            <input type="number" min="250000" max="500000" placeholder="最少25万，最多50万" ng-model="summary.deposit" ng-change="calculateValue()" required autofocus>元
+            <input type="number" min="500000" max="3000000" step="10000" placeholder="最少50万，最多300万" ng-model="summary.amount" ng-change="calculateValue()" required autofocus>元
         </div>
         <div class="conlumn2">选择配资比例</div>
         <div class="moneyList">
@@ -113,8 +113,8 @@
                     <td class="infoTableNr">投资沪深A股，盈利全归你</td>
                 </tr>
                 <tr>
-                    <td class="infoTableTitle">总操盘金额</td>
-                    <td class="infoTableNr"><span class="infoText02">\{{summary.amount | currency:'':2}}</span> 元</td>
+                    <td class="infoTableTitle">缴纳保证金额</td>
+                    <td class="infoTableNr"><span class="infoText02">\{{summary.deposit | currency:'':2}}</span> 元</td>
                 </tr>
                 <tr>
                     <td class="infoTableTitle">警戒线</td>
