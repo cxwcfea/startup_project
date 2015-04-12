@@ -84,10 +84,6 @@
                     <td class="infoTableNr"><span class="infoText02">\{{summary.amount | currency:'':2}}</span> 元</td>
                 </tr>
                 <tr>
-                    <td class="infoTableTitle">保证金</td>
-                    <td class="infoTableNr"><span class="infoText02">\{{summary.deposit || 0 | currency:'':2}}</span> 元</td>
-                </tr>
-                <tr>
                     <td class="infoTableTitle">警戒线</td>
                     <td class="infoTableNr"><span class="infoText02">\{{summary.warnValue | currency:'':2}}</span> 元</td>
                 </tr>
@@ -103,7 +99,7 @@
                 </tr>
                 <tr>
                     <td class="infoTableTitle">每月需还息</td>
-                    <td class="infoTableNr"><span class="infoText03">\{{charge || 0 | currency:'':2}}</span>元/每月  <span class="infoText04">（\{{selectedValue.interest}}分/月）</span></td>
+                    <td class="infoTableNr"><span class="infoText03">\{{charge || 0 | currency:'':2}}</span>元  <span class="infoText04">（\{{selectedValue.interest}}分/月）</span></td>
                 </tr>
                 <tr>
                     <td class="infoTableTitle">开始时间</td>
