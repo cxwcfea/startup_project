@@ -1,0 +1,178 @@
+<style>
+    .column{margin-bottom: 20px;}
+    .infoTable {padding: 20px;background:#fffaed;border:2px solid #facd89;font-size:12px;color:#666;}
+    .infoTable td {border:0;}
+
+    .infoTable tr.line {border-top: 1px dotted #ccc;}
+    .infoTable td.infoTableNr{font-size: 14px;}
+    .infoTable td span.infoText02 {font-size: 18px;}
+    .infoTable td span.infoText03 {font-size: 14px;color:#094;}
+    .conlumn2 .infoText05 {color:#999;}
+    .infoTable tr {height: 44px;line-height: 44px;}
+    .infoTable table td.infoTableTitle{padding-right: 30px;border:0;background: #fffaed;}
+    .ipt-box {font-size:28px;margin-left:10px;height:40px;padding:10px;border:2px solid #e5e5e5;background:#fff;}
+    .ipt-box input {font-size:28px;width:93%;height:40px;line-height:40px;border:0;color:#e0322d;font-weight:700;outline:none;}
+    .moneyListBox{width: 550px;margin-right:20px;}
+    .moneyList{width: 100%;height:auto;}
+    .moneyList li {width:180px;height:110px;}
+    .moneyList li p.p01{font-size:28px;margin: 20px 0 4px;}
+    .moneyList .p0 {display:inline-block;font-size:18px;padding:2px;border:1px solid #666;color:#666;*zoom:1;}
+    .moneyList li.select .p0{border-color:#fff;color:#fff;}
+    .infoBox {width: 360px;}
+    .btnBox {padding-top: 40px;text-align:center;}
+    .btnBox .text-center {padding: 10px 0 0;}
+    .btnBox input{position:relative;top:0;margin-top:0;}
+    .yyn-confirm{padding: 50px;}
+    .yyn-confirm .confirm-capital{margin-bottom:110px;}
+    .yyn-confirm .confirm-capital h5{margin:0 0 10px;font-size:14px;color:#333;font-weight:700;}
+    .yyn-confirm .confirm-capital table{width: 100%;border-top:1px dotted #e4e4e4;border-bottom:1px dotted #e4e4e4;}
+    .yyn-confirm .confirm-capital table td {padding:14px 6px;}
+    .yyn-confirm .confirm-capital em{font-size:18px;}
+    .yyn-confirm .money-box{margin-bottom:20px;color:#000;padding:25px;border:2px solid #facd89;background-color: #fffaed;}
+    .yyn-confirm .money-box em {padding:0 4px;font-size:20px;color:#a40000;}
+    .yyn-confirm .money-box span{padding-left:100px;}
+    .yyn-confirm .money-box .plus{padding:0 60px;font-size:20px;color:#999;}
+    .yyn-confirm .money-txt {margin-bottom:20px;text-align:right;color:#999;}
+    .yyn-confirm .money-txt a{display:inline-block;margin:0 30px;*zoom:1;color:#2489f0;}
+    .yyn-confirm .money-txt .paybtn{display:inline-block;width:180px;height:50px;background: #e23024;color: #fff;border:none;border-radius:5px;font-size:16px;}
+    .trader-notes{font-size:12px;line-height:20px;color:#999;}
+    .trader-notes h5{margin:0 0 4px;padding:5px 0;color:#626262;font-weight:700;border-bottom:1px dotted #e4e4e4;}
+</style>
+<div class="wrapper" ng-app="mainApp" ng-controller="MainYynCtrl" ng-cloak>
+    <div class="freeTitle">
+        <div class="fl"><span>月月牛</span> &nbsp;&nbsp;炒股利器、最高100万、可投资1-6个月</div>
+        <a href="/info/guide">新手引导>></a>
+        <div class="clear"></div>
+    </div>
+    <div class="column">
+        <div class="fl num01">
+            <span class="numSpan">1</span>
+            选择操盘资金
+        </div>
+        <div class="fl num02">
+            <span class="numSpan2">2</span>
+            支付保证金
+        </div>
+        <div class="fl num02">
+            <span class="numSpan2">3</span>
+            申请成功开始操盘
+        </div>
+    </div>
+
+    <div class="fl moneyListBox">
+        <div class="conlumn2">您可投入本金 <em class="infoText05">最低25万，最高100万元</em></div>
+        <div class="ipt-box">
+            <input type="number" min="250000" max="1000000" placeholder="最少25万，最多100万" ng-model="summary.deposit" ng-change="calculateValue()" required autofocus>元
+        </div>
+        <div class="conlumn2">选择配资比例</div>
+        <div class="moneyList">
+            <ul>
+                <li ng-repeat="item in parameterList" ng-class="{select: item === selectedValue}" ng-click="selectLever(item)">
+                    <p class="p01"><span>\{{item.name}}</span></p>
+                    <p class="p0">\{{item.interest}}分/月</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="am-modal am-modal-no-btn" tabindex="-1" id="forbidden-stock-modal">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd"><h1>今日限制买入股票</h1>
+                <a href="" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+            </div>
+            <div class="am-modal-bd">
+                <div class="limitstock">
+                    <ul>
+                        <li ng-repeat="stock in forbiddenStockList"><span>\{{stock.stockID}}</span>\{{stock.stockName}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="am-modal am-modal-alert" tabindex="-1" id="invalid-value-modal">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">
+                <a href="" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+            </div>
+            <div class="am-modal-bd">
+                请输入有效资金,最低25万,最高100万
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn">确定</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="fl infoBox">
+        <div class="conlumn2"><span>配资说明</span></div>
+        <div class="infoTable">
+            <table>
+                <tr>
+                    <td class="infoTableTitle">操盘须知</td>
+                    <td class="infoTableNr">投资沪深A股，盈利全归你</td>
+                </tr>
+                <tr>
+                    <td class="infoTableTitle">总操盘金额</td>
+                    <td class="infoTableNr"><span class="infoText02">\{{summary.amount | currency:'':2}}</span> 元</td>
+                </tr>
+                <tr>
+                    <td class="infoTableTitle">警戒线</td>
+                    <td class="infoTableNr"><span class="infoText03">\{{summary.warnValue | currency:'':2}}</span> 元</td>
+                </tr>
+                <tr>
+                    <td class="infoTableTitle">平仓线</td>
+                    <td class="infoTableNr"><span class="infoText03">\{{summary.sellValue | currency:'':2}}</span> 元</td>
+                </tr>
+                <tr class="line">
+                    <td class="infoTableTitle">资金使用期限</td>
+                    <td class="infoTableNr">
+                        <select ng-options="item.name for item in periodList" ng-model="selectedMonth" ng-change="monthChange()"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="infoTableTitle">每月还息</td>
+                    <td class="infoTableNr"><span class="infoText03">\{{charge || 0 | currency:'':2}}</span>元 <span class="infoText04">（\{{selectedValue.interest}}分/月）</span></td>
+                </tr>
+                <tr>
+                    <td class="infoTableTitle">开始时间</td>
+                    <td class="infoTableNr">下个交易日9:15之前</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="btnBox">
+        <input type="button" id="applyBtn" value="立即操盘" class="infoBtn" ng-click="submitApply()">
+        <p class="text-center"><input type="checkbox" ng-model="agree">&nbsp;同意<a href="/info/trader_agreement" class="color_e23024">《牛金操盘协议》</a></p>
+    </div>
+    <div class="loginTcc" ng-show="showLoginWindow" ng-cloak>
+        <div class="tmbg"></div>
+        <div id="login" class="ui-logon clearfix logintcc">
+            <div class="loginClose jq_loginClose" ng-click="showLoginWindow = false"></div>
+            <form method="POST" ng-submit="login()" name="login-form" novalidate>
+                <ul class="logon-con">
+                    <li class="title">
+                        <h2>登录</h2>
+                    </li>
+                    <li><alert ng-repeat="alert in alerts" type="\{{alert.type}}" close="closeAlert($index)">\{{alert.msg}}</alert></li>
+                    <li class="logon-ipt z-index10" id="username1">
+                        <em class="user"></em>
+                        <input placeholder="请输入注册手机号码" type="tel" autocomplete="off" accesskey="n" tabindex="1" class="holder" name="mobile" id="name" pattern="1[3|5|7|8|][0-9]{9}" required autofocus ng-model="mobile">
+                    </li>
+                    <li class="logon-ipt mgt20" id="pwd">
+                        <em class="key"></em>
+                        <input type="password" tabindex="2" placeholder="密码" name="password" minlength="6" maxlength="12" ng-model="password" required>
+                    </li>
+                    <li class="ui-pwd">
+                        <a href="/forgot">忘记密码</a>
+                    </li>
+                    <li>
+                        <input type="submit" value="登录" accesskey="l" name="submit" tabindex="4" class="login-btn">
+                    </li>
+                    <li class="li01" style="">没有账号？ <a style="" href="/signup" class="register">免费注册</a></li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>

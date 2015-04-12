@@ -40,7 +40,15 @@
                     <dd>
                         <div class="left">&nbsp;</div>
                         <div class="right">
-                            <input type="button" value="马上注册" class="submit" ng-click="vm.register()" >
+                            <input type="button" value="立即注册" class="submit" ng-click="vm.register()" > <span class="color_red">领取2000元免费炒股资金</span>
+                        </div>
+                        <div class="newslist">
+                            <ul>
+                                <li><a href="/free_apply"><span class="span01">{{recentApply.userMobile}}</span> 成功申请了 <span class="span02">{{recentApply.amount}}</span>元 实盘资金</a></li>
+                                <!--
+                                <li><a href=""><span class="span01">只看盘面</span> 实盘资金2,000 收益<span class="span02">44.88</span> 收益率44.00%</a></li>
+                                -->
+                            </ul>
                         </div>
                     </dd>
                 </dl>

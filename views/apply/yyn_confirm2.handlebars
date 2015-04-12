@@ -1,0 +1,117 @@
+<style>
+    .column{margin-bottom: 20px;}
+    .infoTable {padding: 20px;background:#fffaed;border:2px solid #facd89;font-size:12px;color:#666;}
+    .infoTable td {border:0;}
+
+    .infoTable tr.line {border-top: 1px dotted #ccc;}
+    .infoTable td.infoTableNr{font-size: 14px;}
+    .infoTable td span.infoText02 {font-size: 18px;}
+    .infoTable td span.infoText03 {font-size: 14px;color:#094;}
+    .conlumn2 .infoText05 {color:#999;}
+    .infoTable tr {height: 44px;line-height: 44px;}
+    .infoTable table td.infoTableTitle{padding-right: 30px;border:0;background: #fffaed;}
+    .ipt-box {font-size:28px;margin-left:10px;height:40px;padding:10px;border:2px solid #e5e5e5;background:#fff;}
+    .ipt-box input {font-size:28px;width:93%;height:40px;line-height:40px;border:0;color:#e0322d;font-weight:700;outline:none;}
+    .moneyListBox{width: 550px;margin-right:20px;}
+    .moneyList{width: 100%;height:auto;}
+    .moneyList li {width:180px;height:110px;}
+    .moneyList li p.p01{font-size:28px;margin: 20px 0 4px;}
+    .moneyList .p0 {display:inline-block;font-size:18px;padding:2px;border:1px solid #666;color:#666;*zoom:1;}
+    .moneyList li.select .p0{border-color:#fff;color:#fff;}
+    .infoBox {width: 360px;}
+    .btnBox {padding-top: 40px;text-align:center;}
+    .btnBox .text-center {padding: 10px 0 0;}
+    .btnBox input{position:relative;top:0;margin-top:0;}
+    .yyn-confirm{padding: 50px;}
+    .yyn-confirm .confirm-capital{margin-bottom:110px;}
+    .yyn-confirm .confirm-capital h5{margin:0 0 10px;font-size:14px;color:#333;font-weight:700;}
+    .yyn-confirm .confirm-capital table{width: 100%;border-top:1px dotted #e4e4e4;border-bottom:1px dotted #e4e4e4;}
+    .yyn-confirm .confirm-capital table td {padding:14px 6px;}
+    .yyn-confirm .confirm-capital em{font-size:18px;}
+    .yyn-confirm .money-box{margin-bottom:20px;color:#000;padding:25px;border:2px solid #facd89;background-color: #fffaed;}
+    .yyn-confirm .money-box em {padding:0 4px;font-size:20px;color:#a40000;}
+    .yyn-confirm .money-box span{padding-left:100px;}
+    .yyn-confirm .money-box .plus{padding:0 60px;font-size:20px;color:#999;}
+    .yyn-confirm .money-txt {margin-bottom:20px;text-align:right;color:#999;}
+    .yyn-confirm .money-txt a{display:inline-block;margin:0 30px;*zoom:1;color:#2489f0;}
+    .yyn-confirm .money-txt .paybtn{display:inline-block;width:180px;height:50px;background: #e23024;color: #fff;border:none;border-radius:5px;font-size:16px;}
+    .trader-notes{font-size:12px;line-height:20px;color:#999;}
+    .trader-notes h5{margin:0 0 4px;padding:5px 0;color:#626262;font-weight:700;border-bottom:1px dotted #e4e4e4;}
+</style>
+{{#if bootstrappedApply}}
+    <script> window.bootstrappedApplyObject = {{{bootstrappedApply}}} </script>
+{{/if}}
+<div class="wrapper" ng-app="mainApp" ng-controller="MainYYnConfirmCtrl" ng-cloak>
+    <div class="freeTitle">
+        <div class="fl"><span>月月牛</span> &nbsp;&nbsp;炒股利器、最高100万、可投资1-6个月</div>
+        <a href="/info/guide">新手引导>></a>
+        <div class="clear"></div>
+    </div>
+    <div class="column">
+        <div class="fl num02">
+            <span class="numSpan2">1</span>
+            选择操盘资金
+        </div>
+        <div class="fl num01">
+            <span class="numSpan">2</span>
+            支付保证金
+        </div>
+        <div class="fl num02">
+            <span class="numSpan2">3</span>
+            申请成功开始操盘
+        </div>
+    </div>
+
+    <div class="yyn-confirm">
+        <div class="confirm-money">
+            <div class="money-box">
+                预存配资保证金 <em>\{{apply.deposit | currency:'':2}}</em>元
+                <span class="plus">+</span>
+                首月利息<em>\{{interest | currency:'':2}}</em>元
+                <span>合计需支付<em>\{{totalAmount | currency:'':2}}</em>元</span>
+            </div>
+            <div class="applyContentBox2">
+                <div class="fl">
+                    <span class="icon01">&nbsp;</span>&nbsp;当前余额：\{{apply.userBalance | currency:'':2}}元，还差<span class="color_c82217">\{{shouldPay | currency:'':2}}</span>元<span ng-show="vm.balancePay">,将使用余额支付。</span>
+                </div>
+            </div>
+            <div class="money-txt">
+                <span>交易账户会在下一个交易日09:15之前分配好</span>
+                <a href="/yyn2">返回修改</a>
+                <input type="button" value="立即支付" class="paybtn" ng-click="payForApply()">
+            </div>
+        </div>
+        <div class="confirm-capital">
+            <h5>配资方案</h5>
+            <table>
+                <tr>
+                    <td>配资金额(元)</td>
+                    <td>总操盘金额(元)</td>
+                    <td>警戒线(元)</td>
+                    <td>平仓线(元)</td>
+                    <td>资金使用时间</td>
+                    <td>借款月利息</td>
+                </tr>
+                <tr>
+                    <td><em>\{{apply.deposit | currency:'':2}}</em></td>
+                    <td><em>\{{apply.amount | currency:'':2}}</em></td>
+                    <td><em>\{{apply.warnValue | currency:'':2}}</em></td>
+                    <td><em>\{{apply.sellValue | currency:'':2}}</em></td>
+                    <td><em>\{{apply.period}}</em>个月</td>
+                    <td><em>\{{apply.interestRate * 100 | currency:'':1}}</em>分/月</td>
+                </tr>
+            </table>
+        </div>
+        <div class="trader-notes">
+            <h5>操盘须知</h5>
+            <ol>
+                <!--
+                <li>1、全程只需按天支付配资管理费，无其他任何费用；</li>
+                <li>2、资金使用期限：最短2天，最长10天，账户管理费在配资成功后一次性收取；配资到期默认每天自动延期，费用不足时自动终止；</li>
+                <li>3、风险保证金：在您操盘出现亏损后用于支付亏损金，结束时如无亏损全额退还，保证金越低收益越大，同时风险也越大；</li>
+                <li>4、配资管理费：不包含交易印花税、过户费和佣金，且直接由券商和证券交易所收取，实际费用以交易所和券商规定为准。</li>
+                -->
+            </ol>
+        </div>
+    </div>
+</div>

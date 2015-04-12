@@ -209,6 +209,13 @@ module.exports = function(app) {
         res.render('info/' + req.params[0]);
     });
 
+    app.get('/yyn2', function(req, res) {
+        res.locals.yyn_menu = true;
+        res.render('apply/yyn2');
+    });
+
+    app.get('/yyn_confirm2/:serial_id', passportConf.isAuthenticated, applies.yynConfirmApply2);
+
     mobile.registerRoutes(app, passportConf);
 
     app.get('/admin_test', passportConf.requiresRole('admin'), function(req, res, next) {

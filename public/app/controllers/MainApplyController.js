@@ -465,7 +465,6 @@
         $scope.interest = $scope.apply.amount * $scope.apply.interestRate;
         $scope.totalAmount = $scope.apply.deposit + $scope.interest;
         $scope.shouldPay = $scope.totalAmount - $scope.apply.userBalance;
-        console.log($scope.apply);
         if ($scope.shouldPay <= 0) {
             $scope.shouldPay = 0;
             $scope.balancePay = true;
