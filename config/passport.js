@@ -44,7 +44,11 @@ module.exports.isAuthenticated = function(req, res, next) {
         res.redirect('/mobile/#/login');
     } else {
         req.session.lastLocation = req.url;
-        res.redirect('/login');
+        if (req.url.search('free_apply_confirm') > -1) {
+            res.redirect('/signup');
+        } else {
+            res.redirect('/login');
+        }
     }
 };
 
