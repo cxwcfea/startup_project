@@ -34,4 +34,8 @@ angular.module('mobileApp').controller('MobileApplyListCtrl', ['$scope', '$windo
         item.apply_sell = item.isTrial ? 1600 : util.getSellValue(item.amount, item.deposit);
     }
 
+    vm.selectTTN = function (item) {
+        return item.type !== 2;
+    };
+
 }]);
