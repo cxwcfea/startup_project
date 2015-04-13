@@ -423,6 +423,9 @@ exports.freeApply = function(req, res, next) {
         if (req.user.finance.balance >= 1) {
 
             var startTime = moment();
+            if (startTime.hour() < 5) {
+                startTime.subtract(1, 'days');
+            }
             startTime.hour(05);
             startTime.minute(00);
             startTime.second(00);
