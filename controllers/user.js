@@ -1163,21 +1163,38 @@ module.exports.registerRoutes = function(app, passportConf) {
     });
 
     app.post('/test_sign', function(req, res, next) {
-        var data = _.assign({}, req.body);
-        var keys = _.keys(data);
-        keys = _.sortBy(keys);
-        var str = '';
-        for (var i = 0; i < keys.length-1; ++i) {
-            str += keys[i] + '=' + data[keys[i]] + '&';
-        }
-        str += keys[i] + '=' + data[keys[i]];
         var md5key = '9UCKYZ6Q804CO5O43TGHLMDO4YTU10hggixe';
-        console.log(str+md5key);
-        var sign = sparkMD5.hash(str+md5key);
-        str += '&sign=' + sign;
-        console.log(str);
 
-        res.redirect('https://www.ebatong.com/direct/gateway.htm?' + str);
+        var timeStr = "input_charset=UTF-8&partner=201204201739476361&service=query_timestamp&sign_type=MD5";
+        var sign1 = sparkMD5.hash(timeStr+md5key);
+        timeStr += '&sign=' + sign1;
+        var url = 'http://www.ebatong.com/gateway.htm?' + timeStr;
+
+        var options = {
+            follow_max         : 3    // follow up to five redirects
+        };
+        console.log(url);
+        needle.get(url, options, function(err, resp, body) {
+            //logger.debug(body.ebatong.response.timestamp.encrypt_key);
+            var timestamp = body.ebatong.response.timestamp.encrypt_key;
+
+            var data = _.assign({}, req.body);
+            data.anti_phishing_key = timestamp;
+            var keys = _.keys(data);
+            keys = _.sortBy(keys);
+            var str = '';
+            for (var i = 0; i < keys.length-1; ++i) {
+                str += keys[i] + '=' + data[keys[i]] + '&';
+            }
+            str += keys[i] + '=' + data[keys[i]];
+            console.log(str+md5key);
+            var sign = sparkMD5.hash(str+md5key);
+            str += '&sign=' + sign;
+            console.log(str);
+
+            res.redirect('https://www.ebatong.com/direct/gateway.htm?' + str);
+        });
+
         //res.send('got');
     });
 };

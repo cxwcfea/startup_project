@@ -85,6 +85,7 @@ exports.getApplyDetail = function (req, res, next) {
         res.locals.apply_detail = true;
         res.locals.apply_isTrial = apply.isTrial;
         res.locals.display_for_fee = apply.type === 2 ? '预付利息' : '预存账户管理费';
+        res.locals.display_for_period = apply.type === 2 ? '使用月数' : '使用天数';
         res.locals.apply_type = apply.type;
         res.render('user/apply_detail');
     });
