@@ -369,7 +369,7 @@
         };
         this.getServiceFee = function(apply, period) {
             if (apply.type && apply.type === 2) {
-                return Number((((apply.amount - apply.deposit) * apply.interestRate)).toFixed(2));
+                return Number(((apply.amount - (apply.amount / apply.lever)) * apply.interestRate).toFixed(2));
             }
             return Number((apply.amount / 10000 * this.getServiceCharge(apply.lever) * apply.period).toFixed(2));
         };
