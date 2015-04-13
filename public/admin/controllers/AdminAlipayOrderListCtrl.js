@@ -48,6 +48,11 @@ angular.module('adminApp').controller('AdminAlipayOrderListCtrl', ['$scope', '$l
             $http.post('/admin/api/confirm_alipay_order/' + order._id, {trans_id:trans_id})
                 .success(function(data, status) {
                     gbNotifier.notify('确认成功');
+                    _.remove(order_list, function(o) {
+                        return o._id === order._id;
+                    });
+                    currentOrders = order_list;
+                    pageReset();
                 })
                 .error(function(data, status) {
                     console.log(data.error_msg);

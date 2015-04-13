@@ -133,6 +133,7 @@ angular.module('adminApp').controller('WithdrawModalCtrl', ['$scope', '$modalIns
     $scope.bankName = order.cardInfo.bankName;
     $scope.cardID = order.cardInfo.cardID;
     $scope.userName = order.cardInfo.userName;
+    $scope.userMobile = order.userMobile;
     $scope.data.sms_content = sms_macro[7].content.replace('AMOUNT', order.amount);
 
     $scope.ok = function () {

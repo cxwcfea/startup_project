@@ -11,12 +11,13 @@
             <table class="am-table am-table-striped am-table-hover table-main">
                 <thead>
                 <tr>
-                    <th class="table-date">日期</th><th class="table-type">客户手机号</th><th class="table-type">支付宝账号</th><th class="table-author">金额</th><th class="table-set">状态</th><th class="table-set">操作</th>
+                    <th class="table-date">日期</th><th class="table-type">支付宝姓名</th><th class="table-type">客户手机号</th><th class="table-type">支付宝账号</th><th class="table-author">金额</th><th class="table-set">状态</th><th class="table-set">操作</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="order in alipayOrderListVM.showingItems">
                     <td>\{{order.createdAt | displayDate}}</td>
+                    <td>\{{order.transID}}</td>
                     <td>\{{order.userMobile}}</td>
                     <td>\{{order.otherInfo}}</td>
                     <td>\{{order.amount}}</td>
