@@ -22,8 +22,12 @@
         <p class="freeContent_p01">申请完成，本次配资单号为{{serial_id}}</p>
         <p class="freeContent_p02">成功获得 <span class="span01">{{amount}}</span><span class="color_c82217">元</span>操盘资金</p>
         <div class="freeUserInfo">
-            <p>您的操盘申请正在审核中</p>
-            <p>我们将会尽快为您分配操盘账户</p>
+            {{#if pending}}
+                <p>由于目前申请免费体验人数过多，您已进入排队中，请电话我们的客服，以及时操盘</p>
+            {{else}}
+                <p>您的操盘申请正在审核中</p>
+                <p>我们将会尽快为您分配操盘账户</p>
+            {{/if}}
             <!--
             <p>操盘账户：<span class="color_c82217">12345678</span>&nbsp;&nbsp;&nbsp;密码：<span class="color_c82217">123456</span></p>
             <a href="#">发送到手机</a>

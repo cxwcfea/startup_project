@@ -9,8 +9,12 @@
 <div class="ttn-pay-success">
     <p class="suc-txt">成功获取<em>{{amount}}</em><span>元</span>操盘资金</p>
     <div class="remaind">
-        <p>您的操盘申请正在审核中</p>
-        <p>我们会尽快为您分配操盘账户</p>
+        {{#if pending}}
+            <p>由于目前申请免费体验人数过多，您已进入排队中，请电话我们的客服，以及时操盘</p>
+        {{else}}
+            <p>您的操盘申请正在审核中</p>
+            <p>我们会尽快为您分配操盘账户</p>
+        {{/if}}
     </div>
     <p class="to">您可以到<a href="/mobile/#/user">我的账户</a>&gt;<a href="/mobile/#/user_ttn">我的操盘</a>中查看你的操盘账户信息。</p>
 </div>

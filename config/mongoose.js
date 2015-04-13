@@ -1,12 +1,13 @@
 var mongoose = require('mongoose'),
     User = require('../models/User'),
     Homas = require('../models/Homas'),
-    Order = require('../models/Order');
+    Order = require('../models/Order'),
+    Apply = require('../models/Apply');
 
 function createDefaultUsers() {
     User.find({}).exec(function (err, collection) {
         if (collection && collection.length === 0) {
-            User.create({mobile: 13439695920, password: 'xxxxxx', registered:true, finance: {balance:0}, profile: {name:'cxwcfea'}, roles: ['admin']}, function (err, user) {
+            User.create({mobile: 13439695920, password: 'xxxxxx', registered:true, finance: {balance:1000}, profile: {name:'cxwcfea'}, roles: ['admin']}, function (err, user) {
                 if (err) console.log('create & find user err:' + err);
                 /*
                 if (user) {
@@ -16,7 +17,12 @@ function createDefaultUsers() {
             });
 
             User.create({mobile: 13810655219, registered:true, password: 'xxxxxx', roles: ['admin']});
+
             /*
+            for (var i = 0; i < 201; ++i) {
+                var id = '11111';
+                Apply.create({userID: '123450', serialID: id + 1, amount:30, deposit:20, period:2, status:2, isTrial:true});
+            }
             User.create({mobile: 13121909306, password: 'xxxxxx', roles: ['admin']});
             User.create({mobile: 18911535534, password: 'xxxxxx', roles: ['admin']});
             User.create({mobile: 18612921262, password: 'xxxxxx', roles: ['admin']});

@@ -421,45 +421,62 @@ exports.postAddDeposit = function(req, res, next) {
 exports.freeApply = function(req, res, next) {
     if (!req.user.freeApply) {
         if (req.user.finance.balance >= 1) {
-            var applyData = new Apply({
-                userID: req.user._id,
-                userMobile: req.user.mobile,
-                serialID: util.generateSerialID(),
-                amount: 2000,
-                deposit: 1,
-                isTrial: true,
-                status: 4,
-                period: 2
-            });
-            Apply.create(applyData, function(err, apply) {
-                if(err) next();
-                User.findById(req.user._id, function(err, user) {
-                    if (err) {
+
+            var startTime = moment();
+            startTime.hour(05);
+            startTime.minute(00);
+            startTime.second(00);
+
+            Apply.count({ $and: [{isTrial: true}, {applyAt: {$gte: startTime.toDate()}}] }, function (err, count) {
+                var freeApplyState = 4;
+                if (err) {
+                    logger.warn('freeApply error when count apply num ' + err.toString());
+                } else {
+                    console.log(count);
+                    if (count > 200) {
+                        freeApplyState = 9;
+                    }
+                }
+                var applyData = new Apply({
+                    userID: req.user._id,
+                    userMobile: req.user.mobile,
+                    serialID: util.generateSerialID(),
+                    amount: 2000,
+                    deposit: 1,
+                    isTrial: true,
+                    status: freeApplyState,
+                    period: 2
+                });
+                Apply.create(applyData, function(err, apply) {
+                    if(err) next();
+                    User.findById(req.user._id, function(err, user) {
                         if (err) {
-                            logger.debug('freeApply error:' + err.toString());
+                            if (err) {
+                                logger.debug('freeApply error:' + err.toString());
+                                return next();
+                            }
+                        }
+                        if (!user) {
+                            logger.debug('freeApply error: user not found');
                             return next();
                         }
-                    }
-                    if (!user) {
-                        logger.debug('freeApply error: user not found');
-                        return next();
-                    }
-                    user.finance.balance -= 1;
-                    user.finance.total_capital += 2000;
-                    user.finance.deposit += 1;
-                    user.finance.history_capital += 2000;
-                    user.finance.history_deposit += 1;
-                    user.freeApply = apply.serialID;
-                    user.save(function (err, user) {
-                        if (err) {
-                            logger.debug('freeApply error:' + err.toString());
-                            return next();
-                        }
-                        if (req.url.search('/mobile') > -1) {
-                            res.redirect('/mobile/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000);
-                        } else {
-                            res.redirect('/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000);
-                        }
+                        user.finance.balance -= 1;
+                        user.finance.total_capital += 2000;
+                        user.finance.deposit += 1;
+                        user.finance.history_capital += 2000;
+                        user.finance.history_deposit += 1;
+                        user.freeApply = apply.serialID;
+                        user.save(function (err, user) {
+                            if (err) {
+                                logger.debug('freeApply error:' + err.toString());
+                                return next();
+                            }
+                            if (req.url.search('/mobile') > -1) {
+                                res.redirect('/mobile/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000 + '&status=' + freeApplyState);
+                            } else {
+                                res.redirect('/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000 + '&status=' + freeApplyState);
+                            }
+                        });
                     });
                 });
             });
@@ -675,6 +692,12 @@ exports.paySuccess = function(req, res, next) {
     res.locals.apply_menu = true;
     res.locals.serial_id = req.query.serial_id;
     res.locals.amount = req.query.amount;
+    var status = req.query.status;
+    if (status == 9) {
+        res.locals.pending = true;
+    } else {
+        res.locals.pending = false;
+    }
     if (req.url.search('/mobile') > -1) {
         res.render('mobile/ttn_pay_success', {
             layout: 'mobile'
