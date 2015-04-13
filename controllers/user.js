@@ -1161,6 +1161,25 @@ module.exports.registerRoutes = function(app, passportConf) {
         res.locals.callback_domain = config.pay_callback_domain;
         res.render('user/' + req.params[0], {layout:null});
     });
+
+    app.post('/test_sign', function(req, res, next) {
+        var data = _.assign({}, req.body);
+        var keys = _.keys(data);
+        keys = _.sortBy(keys);
+        var str = '';
+        for (var i = 0; i < keys.length-1; ++i) {
+            str += keys[i] + '=' + data[keys[i]] + '&';
+        }
+        str += keys[i] + '=' + data[keys[i]];
+        var md5key = '9UCKYZ6Q804CO5O43TGHLMDO4YTU10hggixe';
+        console.log(str+md5key);
+        var sign = sparkMD5.hash(str+md5key);
+        str += '&sign=' + sign;
+        console.log(str);
+
+        res.redirect('https://www.ebatong.com/direct/gateway.htm?' + str);
+        //res.send('got');
+    });
 };
 
 var privateProperties = [
