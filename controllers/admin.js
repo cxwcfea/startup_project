@@ -13,17 +13,23 @@ var User = require('../models/User'),
     sms = require('../lib/sms');
 
 function main(req, res, next) {
-    if (req.user && req.user.roles) {
-      if (req.url.indexOf('/admin') == 0) {
-        if (req.user.roles.indexOf('admin') !== -1) {
-          res.render('admin/main', {layout:null, bootstrappedUser: JSON.stringify(req.user)});
-        } else if (req.user.roles.indexOf('support') !== -1) {
-          res.render('support/main', {layout:null, bootstrappedUser: JSON.stringify(req.user)});
+    util.getPayUserNum(function(err, count) {
+        if (err) {
+            count = 0;
         }
-      } else if (req.url.indexOf('/support') == 0) {
-          res.render('support/main', {layout:null, bootstrappedUser: JSON.stringify(req.user)});
-      }
-    }
+        res.locals.pay_user_count = count;
+        if (req.user && req.user.roles) {
+            if (req.url.indexOf('/admin') == 0) {
+                if (req.user.roles.indexOf('admin') !== -1) {
+                    res.render('admin/main', {layout:null, bootstrappedUser: JSON.stringify(req.user)});
+                } else if (req.user.roles.indexOf('support') !== -1) {
+                    res.render('support/main', {layout:null, bootstrappedUser: JSON.stringify(req.user)});
+                }
+            } else if (req.url.indexOf('/support') == 0) {
+                res.render('support/main', {layout:null, bootstrappedUser: JSON.stringify(req.user)});
+            }
+        }
+    });
 }
 
 function fetchUserList(req, res, next) {
