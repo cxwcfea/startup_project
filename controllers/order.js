@@ -46,11 +46,40 @@ exports.getOrderById = function(req, res) {
 exports.addOrderForUser = function(req, res) {
     var orderData = req.body;
 
-    User.findOne({'profile.alipay_account':orderData.otherInfo}, function(err, user) {
-        if (user && user._id != orderData.userID) {
-            res.status(403);
-            return res.send('该支付宝账号已经绑定了其他牛金网用户!');
-        }
+    if (orderData.otherInfo) {
+        User.findOne({'profile.alipay_account':orderData.otherInfo}, function(err, user) {
+            if (user && user._id != orderData.userID) {
+                res.status(403);
+                return res.send('该支付宝账号已经绑定了其他牛金网用户!');
+            }
+            Order.create(orderData, function(err, order) {
+                if(err) {
+                    logger.error(err.toString());
+                    res.status(500);
+                    return res.send({success:false, reason:err.toString()});
+                }
+                if (order.applySerialID) {
+                    Apply.findOne({ serialID: order.applySerialID }, function(err, apply) {
+                        if (err) {
+                            logger.error("error when save orderId to apply: " + err.toString());
+                        } else if (!apply) {
+                            logger.error("error when save orderId to apply: apply " + order.applySerialID + " not found");
+                        } else {
+                            if (apply.status === 1) {
+                                apply.orderID = order._id;
+                                apply.save(function(err) {
+                                    if (err) {
+                                        logger.error("error when save orderId to apply: " + err.toString());
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+                res.send(order);
+            });
+        });
+    } else {
         Order.create(orderData, function(err, order) {
             if(err) {
                 logger.error(err.toString());
@@ -77,17 +106,27 @@ exports.addOrderForUser = function(req, res) {
             }
             res.send(order);
         });
-    });
+    }
 };
 
 exports.updateOrder = function(req, res) {
     var orderData = req.body;
 
-    User.findOne({'profile.alipay_account':orderData.otherInfo}, function(err, user) {
-        if (user && user._id != orderData.userID) {
-            res.status(403);
-            return res.send('该支付宝账号已经绑定了其他牛金网用户!');
-        }
+    if (orderData.otherInfo) {
+        User.findOne({'profile.alipay_account':orderData.otherInfo}, function(err, user) {
+            if (user && user._id != orderData.userID) {
+                res.status(403);
+                return res.send('该支付宝账号已经绑定了其他牛金网用户!');
+            }
+            Order.update({_id:req.params.id}, orderData, function (err, numberAffected, raw) {
+                if (err) {
+                    logger.warn('error when updateOrder:' + err.toString());
+                    return res.send({success:false, reason:err.toString()});
+                }
+                res.send({success:true});
+            });
+        });
+    } else {
         Order.update({_id:req.params.id}, orderData, function (err, numberAffected, raw) {
             if (err) {
                 logger.warn('error when updateOrder:' + err.toString());
@@ -95,7 +134,7 @@ exports.updateOrder = function(req, res) {
             }
             res.send({success:true});
         });
-    });
+    }
 };
 
 exports.confirmPayOrder = function(req, res, next) {
