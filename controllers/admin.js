@@ -1,6 +1,7 @@
 var User = require('../models/User'),
     Apply = require('../models/Apply'),
     Order = require('../models/Order'),
+    AlipayOrder = require('../models/AlipayOrder'),
     Homas = require('../models/Homas'),
     log4js = require('log4js'),
     logger = log4js.getLogger('admin'),
@@ -555,65 +556,77 @@ function confirmAlipayOrder(req, res) {
             res.status(400);
             return res.send({error_msg:'only order in not pay status can be approved'});
         }
-        User.findById(order.userID, function(err, user) {
+        User.findOne({'profile.alipay_account':order.otherInfo}, function(err, user) {
             if (err) {
                 logger.warn('confirmAlipayOrder error:' + err.toString());
                 res.status(500);
                 return res.send({error_msg:err.toString()});
             }
-            if (!user) {
-                logger.warn('confirmAlipayOrder error:user not found');
-                res.status(400);
-                res.send({error_msg:'confirmAlipayOrder error:user not found'});
+            if (user) {
+                logger.warn('confirmAlipayOrder error:already have user bind to the alipay account');
+                res.status(403);
+                return res.send({error_msg:'order not found'});
             }
-
-            order.bankTransID = req.body.trans_id;
-            order.approvedBy = req.user.mobile;
-            order.approvedAt = Date.now();
-
-            user.profile.alipay_account = order.otherInfo;
-            user.profile.alipay_name = order.transID;
-            util.orderFinished(user, order, 1, function(err) {
+            User.findById(order.userID, function(err, user) {
                 if (err) {
                     logger.warn('confirmAlipayOrder error:' + err.toString());
                     res.status(500);
                     return res.send({error_msg:err.toString()});
                 }
-                util.sendSMS_8(user.mobile, order.amount.toFixed(2));
-                if (order.applySerialID) {
-                    Apply.findOne({serialID:order.applySerialID}, function(err, apply) {
-                        if (err) {
-                            logger.warn('confirmAlipayOrder error when update apply:' + err.toString());
-                            res.status(500);
-                            return res.send({error_msg:'confirmAlipayOrder error when update apply:' + err.toString()});
-                        }
-                        if (apply.status === 1) {
-                            util.applyConfirmed(user, apply, function(err) {
-                                if (err) {
-                                    logger.error('confirmAlipayOrder error when confirm apply:' + err.toString());
-                                    res.status(500);
-                                    return res.send({error_msg:'confirmAlipayOrder error:' + err.toString()});
-                                }
-                                res.send({});
-                            });
-                        } else if (apply.status === 2) {
-                            util.applyDepositAdded(user, apply, order.amount, function(err) {
-                                if (err) {
-                                    logger.error('confirmAlipayOrder error when confirm apply for add deposit:' + err.toString());
-                                    res.status(500);
-                                    return res.send({error_msg:'confirmAlipayOrder error:' + err.toString()});
-                                }
-                                res.send({});
-                            });
-                        } else {
-                            logger.error('confirmAlipayOrder error: apply not in valid state ' + apply.serialID);
-                            res.status(400);
-                            return res.send({error_msg:'confirmAlipayOrder error: apply not in valid state ' + apply.serialID});
-                        }
-                    });
-                } else {
-                    res.send({});
+                if (!user) {
+                    logger.warn('confirmAlipayOrder error:user not found');
+                    res.status(400);
+                    return res.send({error_msg:'confirmAlipayOrder error:user not found'});
                 }
+
+                order.bankTransID = req.body.trans_id;
+                order.approvedBy = req.user.mobile;
+                order.approvedAt = Date.now();
+
+                user.profile.alipay_account = order.otherInfo;
+                user.profile.alipay_name = order.transID;
+                util.orderFinished(user, order, 1, function(err) {
+                    if (err) {
+                        logger.warn('confirmAlipayOrder error:' + err.toString());
+                        res.status(500);
+                        return res.send({error_msg:err.toString()});
+                    }
+                    util.sendSMS_8(user.mobile, order.amount.toFixed(2));
+                    if (order.applySerialID) {
+                        Apply.findOne({serialID:order.applySerialID}, function(err, apply) {
+                            if (err) {
+                                logger.warn('confirmAlipayOrder error when update apply:' + err.toString());
+                                res.status(500);
+                                return res.send({error_msg:'confirmAlipayOrder error when update apply:' + err.toString()});
+                            }
+                            if (apply.status === 1) {
+                                util.applyConfirmed(user, apply, function(err) {
+                                    if (err) {
+                                        logger.error('confirmAlipayOrder error when confirm apply:' + err.toString());
+                                        res.status(500);
+                                        return res.send({error_msg:'confirmAlipayOrder error:' + err.toString()});
+                                    }
+                                    res.send({});
+                                });
+                            } else if (apply.status === 2) {
+                                util.applyDepositAdded(user, apply, order.amount, function(err) {
+                                    if (err) {
+                                        logger.error('confirmAlipayOrder error when confirm apply for add deposit:' + err.toString());
+                                        res.status(500);
+                                        return res.send({error_msg:'confirmAlipayOrder error:' + err.toString()});
+                                    }
+                                    res.send({});
+                                });
+                            } else {
+                                logger.error('confirmAlipayOrder error: apply not in valid state ' + apply.serialID);
+                                res.status(400);
+                                return res.send({error_msg:'confirmAlipayOrder error: apply not in valid state ' + apply.serialID});
+                            }
+                        });
+                    } else {
+                        res.send({});
+                    }
+                });
             });
         });
     });
@@ -762,6 +775,16 @@ function fetchApply(req, res) {
             return res.send({});
         }
         res.send(apply);
+    });
+}
+
+function fetchOrdersOfAlipay(req, res) {
+    AlipayOrder.find({}, function(err, orders) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send(orders);
     });
 }
 
@@ -946,6 +969,115 @@ function autoApproveClosingSettlement(req, res) {
     }
 }
 
+function autoConfirmAlipayOrder(req, res) {
+    var alipayAccount = req.query.alipay_account;
+    var amount = Number(req.query.amount);
+    var transID = req.query.trans_id;
+    var name = req.query.name;
+
+    async.waterfall([
+        function (callback) {
+            Order.findOne({bankTransID:transID}, function(err, order) {
+                if (!err && order) {
+                    err = "the alipay order already confirmed";
+                }
+                callback(err);
+            })
+        },
+        function (callback) {
+            User.findOne({'profile.alipay_account':alipayAccount}, function(err, user) {
+                callback(err, user);
+            });
+        },
+        function (user, callback) {
+            if (user) {
+                var orderData = {
+                    userID: user._id,
+                    userMobile: user.mobile,
+                    dealType: 1,
+                    amount: Number(amount.toFixed(2)),
+                    description: '支付宝转账',
+                    payType: 3,
+                    status: 2,
+                    otherInfo: alipayAccount,
+                    bankTransID: transID
+                };
+                Order.create(orderData, function(err, order) {
+                    if (!err && !order) {
+                        err = 'failed create order when auto confirm alipay order';
+                    }
+                    callback(err, user, order, null);
+                });
+            } else {
+                Order.findOne({ $and: [{ amount: amount }, {otherInfo: alipayAccount}] }, function(err, order) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        if (order) {
+                            User.findById(order.userID, function(err, user) {
+                                if (err) {
+                                    callback(err);
+                                } else {
+                                    user.profile.alipay_account = order.otherInfo;
+                                    user.profile.alipay_name = order.transID;
+                                    var orderData = {
+                                        userID: user._id,
+                                        userMobile: user.mobile,
+                                        dealType: 1,
+                                        amount: Number(amount.toFixed(2)),
+                                        description: '支付宝转账',
+                                        payType: 3,
+                                        status: 2,
+                                        otherInfo: alipayAccount,
+                                        bankTransID: transID
+                                    };
+                                    Order.create(orderData, function(err, order) {
+                                        if (!err && !order) {
+                                            err = 'failed create order when auto confirm alipay order';
+                                        }
+                                        callback(err, user, order, null);
+                                    });
+                                }
+                            });
+                        } else {
+                            var data = {
+                                alipayAccount: alipayAccount,
+                                amount: amount,
+                                transID: transID,
+                                name: name
+                            };
+                            AlipayOrder.create(data, function(err, alipayOrder) {
+                                if (!err && !alipayOrder) {
+                                    err = 'failed create alipay order when auto confirm alipay order';
+                                }
+                                callback(err, user, null, alipayOrder);
+                            });
+                        }
+                    }
+                });
+            }
+        },
+        function(user, order, alipayOrder, callback) {
+            if (order) {
+                util.orderFinished(user, order, 1, function(err) {
+                    callback(err, 'success update user for alipay order');
+                });
+            } else if (alipayOrder) {
+                callback(null, 'success create alipay order when auto confirm alipay order');
+            }
+        }
+    ], function(err, msg) {
+        if (err) {
+            logger.debug('autoConfirmAlipayOrder error ' + err.toString());
+            res.status(500);
+            res.send({error_code:1, error_msg:err.toString()});
+        } else {
+            logger.debug('autoConfirmAlipayOrder ' + msg);
+            res.send({error_code:0});
+        }
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -1022,6 +1154,8 @@ module.exports = {
 
         app.get('/api/auto_approve_closing_settlement', passportConf.requiresRole('admin'), autoApproveClosingSettlement);
 
+        app.get('/api/auto_confirm_alipay_order', passportConf.requiresRole('admin'), autoConfirmAlipayOrder);
+
         app.post('/admin/api/create/order', passportConf.requiresRole('admin|support'), createOrder);
 
         app.post('/admin/api/take_customer', passportConf.requiresRole('admin|support'), takeCustomer);
@@ -1031,6 +1165,8 @@ module.exports = {
         app.post('/admin/api/take_apply', passportConf.requiresRole('admin|support'), takeApply);
 
         app.post('/admin/api/send_sell_sms', passportConf.requiresRole('admin|support'), sendSellSMS);
+
+        app.get('/admin/api/alipay_orders', passportConf.requiresRole('admin'), fetchOrdersOfAlipay);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

@@ -140,7 +140,7 @@
         </div>
     </div>
 
-    <div class="regTcc jq_recTcc newRec_zfbTcc" ng-show="vm.showAlipayWindow">
+    <div class="regTcc newRec_zfbTcc" ng-show="vm.showAlipayWindow">
         <div class="tmbg"></div>
         <div class="tar_TccBox newReczfb_TccBox">
             <div class="regColumn">
@@ -148,6 +148,7 @@
                 <div class="loginClose jq_loginClose" ng-click="vm.closeOtherWindow()"></div>
             </div>
             <div class="newRec_zfbBox jq_zfb01" ng-class="{undis:vm.alipayConfirm}">
+                <p class="newrec_P01" ng-hide="vm.alipayAccountConfirm">转账成功后该账号将会绑定您的牛金网账号,方便后续充值</p>
                 <div class="newRec_zfbForm">
                     <div class="newRec_zfbLeft fl">
                         充值金额
@@ -173,7 +174,8 @@
                         <input type="text" class="newRec_inputText2" ng-model="vm.alipay_name" required>
                     </div>
                 </div>
-                <p class="newrec_P01">请确认该账户与实际转账支付宝账户一致</p>
+                <p class="newrec_P01" ng-hide="vm.alipayAccountConfirm">请确认该账户与实际转账支付宝账户一致</p>
+                <p class="newrec_P01" ng-show="vm.alipayAccountConfirm">您的支付宝账号已经绑定，请务必使用该账号进行支付</p>
                 <alert ng-show="vm.showAlipayWindow" ng-repeat="alert in vm.alerts" type="\{{alert.type}}" close="vm.closeAlert($index)">\{{alert.msg}}</alert>
                 <a href="" class="newrec_btn02 newrec_zfbbtn01 jq_Btn01" ng-click="vm.aliPay()">下一步</a>
             </div>
