@@ -921,7 +921,15 @@ function autoApproveClosingSettlement(req, res) {
     if (success === 'true') {
         _closeApply(serialID, Number(profit), res);
     } else {
-        res.send({"error_code":0});
+        Apply.update({serialID:serialID}, {status:2}, function(err, numberAffected, raw) {
+            if(err) {
+                logger.warn('error when return apply from closing to processing by admin:', err.toString());
+                res.status(500);
+                return res.send({'error_code':1, error_msg:err.toString()});
+            }
+            logger.info('change apply from closing to processing by admin when autoApproveClosingSettlement');
+            res.send({"error_code":0});
+        });
     }
 }
 
