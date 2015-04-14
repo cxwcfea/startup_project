@@ -1009,7 +1009,7 @@ function autoConfirmAlipayOrder(req, res) {
                     callback(err, user, order, null);
                 });
             } else {
-                Order.findOne({ $and: [{ amount: amount }, {otherInfo: alipayAccount}] }, function(err, order) {
+                Order.findOne({ $and: [{ amount: amount }, {otherInfo: alipayAccount}, {transID: name}, {status: 2}] }, function(err, order) {
                     if (err) {
                         callback(err);
                     } else {
