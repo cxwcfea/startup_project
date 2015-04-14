@@ -13,11 +13,15 @@ var User = require('../models/User'),
     sms = require('../lib/sms');
 
 function main(req, res, next) {
-    util.getPayUserNum(function(err, count) {
+    util.getPayUserNum(function(err, dataObj) {
         if (err) {
-            count = 0;
+            dataObj.count = 0;
+            dataObj.amount = 0;
+            dataObj.deposit = 0;
         }
-        res.locals.pay_user_count = count;
+        res.locals.pay_user_count = dataObj.count;
+        res.locals.amount = dataObj.amount.toFixed(2);
+        res.locals.deposit = dataObj.deposit.toFixed(2);
         if (req.user && req.user.roles) {
             if (req.url.indexOf('/admin') == 0) {
                 if (req.user.roles.indexOf('admin') !== -1) {
