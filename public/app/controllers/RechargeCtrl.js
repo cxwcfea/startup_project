@@ -58,6 +58,8 @@
         vm.alipayAccountConfirm = false;
         if (vm.user.profile.alipay_account) {
             vm.alipayAccountConfirm = true;
+            vm.alipay_account = vm.user.profile.alipay_account;
+            vm.alipay_name = vm.user.profile.alipay_name;
         }
 
         vm.payTypes = [
@@ -89,6 +91,8 @@
         };
 
         vm.selectPayType = function (type) {
+            console.log('selectPayType');
+            console.log(type + '  ' + vm.showAlipayWindow);
             vm.alerts = [];
             vm.alipayConfirm = false;
             vm.currentPayType = type;
@@ -172,7 +176,6 @@
         };
 
         vm.closeOtherWindow = function () {
-            vm.alerts = [];
             vm.smsSend = false;
             vm.showAlipayWindow = false;
             vm.showBankTransWindow = false;
@@ -221,8 +224,13 @@
                     console.log('order update success');
                 })
                 .error(function(data, status) {
-                    console.log('order update failed');
-                    addAlert('danger', '服务暂时不可用，请稍后再试');
+                    vm.alipayConfirm = false;
+                    if (response.status === 403) {
+                        addAlert('danger', response.data);
+                    } else {
+                        console.log('order update failed');
+                        addAlert('danger', '服务暂时不可用，请稍后再试');
+                    }
                 });
         };
 

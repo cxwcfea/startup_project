@@ -49,7 +49,7 @@
         </div>
     </div>
 
-    <div class="regTcc jq_recTcc newRec_zfbTcc" ng-show="rechargeVM.showAlipayWindow">
+    <div class="regTcc newRec_zfbTcc" ng-show="rechargeVM.showAlipayWindow">
         <div class="tmbg"></div>
         <div class="tar_TccBox newReczfb_TccBox">
             <div class="regColumn">
@@ -57,6 +57,7 @@
                 <div class="loginClose jq_loginClose" ng-click="rechargeVM.closeOtherWindow()"></div>
             </div>
             <div class="newRec_zfbBox jq_zfb01" ng-class="{undis:rechargeVM.alipayConfirm}">
+                <p class="newrec_P01" ng-hide="rechargeVM.alipayAccountConfirm">转账成功后该账号将会绑定您的牛金网账号,方便后续充值</p>
                 <div class="newRec_zfbForm">
                     <div class="newRec_zfbLeft fl">
                         充值金额
@@ -70,7 +71,7 @@
                         支付宝账号
                     </div>
                     <div class="newRec_zfbRight fl">
-                        <input type="text" class="newRec_inputText2 newRec_inputText2zfb" ng-model="rechargeVM.alipay_account" required autofocus>
+                        <input type="text" class="newRec_inputText2 newRec_inputText2zfb" ng-model="rechargeVM.alipay_account" required autofocus ng-disabled="rechargeVM.alipayAccountConfirm">
                     </div>
                     <div class="newRec_zfbImg fl"></div>
                 </div>
@@ -79,10 +80,11 @@
                         姓名
                     </div>
                     <div class="newRec_zfbRight fl">
-                        <input type="text" class="newRec_inputText2" ng-model="rechargeVM.alipay_name" required>
+                        <input type="text" class="newRec_inputText2" ng-model="rechargeVM.alipay_name" required ng-disabled="rechargeVM.alipayAccountConfirm">
                     </div>
                 </div>
-                <p class="newrec_P01">请确认该账户与实际转账支付宝账户一致</p>
+                <p class="newrec_P01" ng-hide="rechargeVM.alipayAccountConfirm">请确认该账户与实际转账支付宝账户一致</p>
+                <p class="newrec_P01" ng-show="rechargeVM.alipayAccountConfirm">您的支付宝账号已经绑定，请务必使用该账号进行支付</p>
                 <alert ng-show="rechargeVM.showAlipayWindow" ng-repeat="alert in rechargeVM.alerts" type="\{{alert.type}}" close="rechargeVM.closeAlert($index)">\{{alert.msg}}</alert>
                 <a href="" class="newrec_btn02 newrec_zfbbtn01 jq_Btn01" ng-click="rechargeVM.aliPay()">下一步</a>
             </div>
@@ -132,7 +134,7 @@
         </div>
     </div>
 
-    <div class="regTcc jq_recTcc newRec_zzhkTcc" ng-show="rechargeVM.showBankTransWindow">
+    <div class="regTcc newRec_zzhkTcc" ng-show="rechargeVM.showBankTransWindow">
         <div class="tmbg"></div>
         <div class="tar_TccBox newReczfb_TccBox">
             <div class="regColumn">

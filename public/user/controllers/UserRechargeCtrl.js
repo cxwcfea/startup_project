@@ -31,6 +31,14 @@ angular.module('userApp').controller('UserRechargeCtrl', ['$scope', '$window', '
     vm.payBank = -1;
     vm.alipayConfirm = false;
     vm.smsSend = false;
+
+    vm.alipayAccountConfirm = false;
+    if (vm.user.profile.alipay_account) {
+        vm.alipayAccountConfirm = true;
+        vm.alipay_account = vm.user.profile.alipay_account;
+        vm.alipay_name = vm.user.profile.alipay_name;
+    }
+
     if (vm.user.lastPayBank >= 0) {
         vm.payBank = vm.user.lastPayBank;
     } else {
@@ -215,8 +223,13 @@ angular.module('userApp').controller('UserRechargeCtrl', ['$scope', '$window', '
         newOrder.$save(function(o, responseHeaders) {
             console.log('order create success');
         }, function(response) {
-            console.log('order create failed');
-            addAlert('danger', '服务暂时不可用，请稍后再试');
+            vm.alipayConfirm = false;
+            if (response.status === 403) {
+                addAlert('danger', response.data);
+            } else {
+                console.log('order create failed');
+                addAlert('danger', '服务暂时不可用，请稍后再试');
+            }
         });
     };
 
