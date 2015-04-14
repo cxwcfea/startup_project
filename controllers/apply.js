@@ -136,73 +136,85 @@ exports.getApplyPostpone = function(req, res, next) {
 };
 
 exports.postApplyPostpone = function(req, res, next) {
-    req.assert('postpone_days', '日期不能为空').notEmpty();
-    req.assert('postpone_days', '日期必须为正数').isInt();
+    var period = Number(req.body.period);
+    if (period <= 0 || period > 22) {
+        res.status(400);
+        return res.send({error_msg:'period invalid:' + period});
+    }
 
     var serial_id = req.params.serial_id;
-    var errors = req.validationErrors();
-    if (errors) {
-        req.flash('errors', errors);
-        return res.redirect('/apply/apply_postpone/' + serial_id);
-    }
-    var add_days = Number(req.body.postpone_days);
-    Apply.findOne({serialID:serial_id}, function(err, apply) {
-        if (err) {
-            logger.warn('error when postpone for apply:' + apply.serialID);
-            req.flash('errors', err);
-            return res.redirect('/apply/apply_postpone/' + serial_id);
-        }
-        if (!apply) {
-            logger.warn('failed to find apply when postpone for apply:' + apply.serialID);
-            req.flash('errors', {msg:'没有找到配资记录'});
-            return res.redirect('/apply/apply_postpone/' + serial_id);
-        }
-        if (apply.status !== 2) {
-            req.flash('errors', {msg:'该配资不是操盘状态，操作无效'});
-            return res.redirect('/apply/apply_postpone/' + serial_id);
-        }
-        var serviceFee = util.getServiceFee(apply, add_days);
-        var shouldPay = serviceFee - req.user.finance.balance;
-        var orderData = {
-            userID: apply.userID,
-            dealType: 7,
-            amount: Number(serviceFee.toFixed(2)),
-            status: 2,
-            description: '配资延期',
-            applySerialID: apply.serialID
-        };
-        Order.create(orderData, function(err, order) {
-            if (err || !order) {
-                logger.warn('failed create order when postpone for apply:' + apply.serialID + ' err:' + err.toString());
-                req.flash('errors', {msg:'创建订单失败'});
-                return res.redirect('/apply/apply_postpone/' + serial_id);
-            }
 
-            res.locals.applySummary = {
-                amount: apply.amount.toFixed(2),
-                serviceFee: serviceFee.toFixed(2),
-                balance: req.user.finance.balance.toFixed(2),
-                shouldPay: shouldPay.toFixed(2),
-                serialID: apply.serialID,
-                period: apply.period,
-                addDays: add_days,
-                applyID: apply._id
-            };
-            res.locals.shengOrderTime = moment().format("YYYYMMDDHHmmss");
-            res.locals.callback_domain = config.pay_callback_domain;
-
-            if (shouldPay <= 0) {
-                res.locals.applySummary.useBalance = true;
-            }
-
-            res.locals.applySummary.orderID = order._id;
-            if (order && shouldPay === order.amount) {
-                if (order.transID) {
-                    res.locals.applySummary.transID = order.transID;
+    async.waterfall([
+        function(callback) {
+            Apply.findOne({serialID:serial_id}, function(err, apply) {
+                if (!apply) {
+                    err = 'failed to find apply when postpone for apply:' + serial_id;
+                } else if (apply.status !== 2) {
+                    err = 'apply not in the valid state';
                 }
+                callback(err, apply);
+            });
+        },
+        function(apply, callback) {
+            var amount = util.getServiceFee(apply, period);
+            var orderData = {
+                userID: apply.userID,
+                userMobile: apply.userMobile,
+                dealType: 10,
+                amount: Number(amount.toFixed(2)),
+                status: 2,
+                description: '追加配资保证金'
+                //applySerialID: apply.serialID   do not add serial id, so the pay order will only add balance for user
+            };
+            Order.create(orderData, function(err, order) {
+                if (!err && !order) {
+                    err = 'can not create pay order when postpone for apply:' + serial_id;
+                }
+                callback(err, order, apply);
+            });
+        },
+        function(order, apply, callback) {
+            User.findById(order.userID, function(err, user) {
+                user.finance.balance = Number(user.finance.balance.toFixed(2));
+                if (user.finance.balance >= order.amount) {
+                    util.orderFinished(user, order, 2, function(err) {
+                        callback(err, user, order, apply, true);
+                    });
+                } else {
+                    order.dealType = 1;
+                    order.description += '充值';
+                    order.save(function(err) {
+                        callback(err, user, order, apply, false);
+                    });
+                }
+            });
+        },
+        function(user, order, apply, paid, callback) {
+            if (paid) {
+                apply.period += period;
+                var startTime = moment(apply.startTime);
+                apply.endTime = util.getEndDay(startTime, apply.period, apply.type).toDate();
+                apply.save(function(err) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        user.finance.freeze_capital += order.amount;
+                        user.save(function(err) {
+                            callback(err, order, true);
+                        });
+                    }
+                });
+            } else {
+                callback(null, order, false);
             }
-            res.render('apply_postpone_confirm');
-        });
+        }
+    ], function(err, order, paid) {
+        if (err) {
+            logger.warn('postpone error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send({order:order, paid:paid});
     });
 };
 

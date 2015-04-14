@@ -210,4 +210,43 @@ $(document).ready(function() {
         $(".jq_bzbzjbox_fail").hide();
     });
 
+
+    //我要延期弹出层
+    $(".jq_yqBtn03").click(function (e) {
+        e.preventDefault();
+        $(".jq_yqBox").show();
+    });
+
+    //我要延期下一步
+    $(".jq_yzBtn01").click(function () {
+        var period = Number($("#postpone_input")[0].value);
+        if (period <= 0 || period > 22) {
+            alert('请输入有效的日期，日期大于1小于23');
+            return;
+        }
+        var apply_serial_id = $('#apply_serial_id')[0].innerText;
+        $.post("/apply/apply_postpone/"+apply_serial_id, {period:period}, function() {
+            console.log( "post postpone done" );
+        })
+        .done(function(data) {
+            if (data.paid) {
+                $(".jq_yqBox_success").show();
+            } else {
+                window.open('/recharge?order_id=' + data.order._id);
+                $(".jq_yqBox02").show();
+            }
+        })
+        .fail(function() {
+            $(".jq_yqBox_fail").show();
+        })
+        .always(function() {
+            $(".jq_yqBox01").hide();
+        });
+    });
+    //我要延期第二部
+    $(".jq_yqBtn02").click(function () {
+        $(".jq_yqBox02").hide();
+        $(".jq_yqBox03").show();
+    });
+
 });

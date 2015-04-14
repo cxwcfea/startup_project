@@ -371,7 +371,10 @@
             if (apply.type && apply.type === 2) {
                 return Number(((apply.amount - (apply.amount / apply.lever)) * apply.interestRate).toFixed(2));
             }
-            return Number((apply.amount / 10000 * this.getServiceCharge(apply.lever) * apply.period).toFixed(2));
+            if (!period) {
+                period = apply.period;
+            }
+            return Number((apply.amount / 10000 * this.getServiceCharge(apply.lever) * period).toFixed(2));
         };
         this.getWarnValue = function(amount, deposit) {
             return Number((amount - warn_factor * deposit).toFixed(2));
