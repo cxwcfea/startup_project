@@ -250,10 +250,10 @@
                             </td>
                         </tr>
                     </table>
+                    <p class="newrec_P04" style="color: red">请<strong>务必</strong>将您的注册手机号作为转账附加信息，方便客服人员确认！</p>
                 </div>
                 <alert ng-show="vm.showBankTransWindow" ng-repeat="alert in vm.alerts" type="\{{alert.type}}" close="vm.closeAlert($index)">\{{alert.msg}}</alert>
                 <p class="newrec_P04">将转账相关信息 <a href="" ng-click="vm.sendSMSBankInfo()">发送到手机</a></p>
-                <p class="newrec_P04" style="color: red">请将您的注册手机号作为转账附加信息，方便客服人员确认！</p>
             </div>
         </div>
     </div>
