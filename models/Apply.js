@@ -20,7 +20,8 @@ var applySchema = mongoose.Schema({
     profit: Number,
     orderID: String,
     type: {type:Number, default: 1},  // 1 means ttn, 2 means yyn
-    interestRate: Number,
+    interestRate: Number, // for month
+    serviceCharge: Number,  // for day
     manager: String
 });
 

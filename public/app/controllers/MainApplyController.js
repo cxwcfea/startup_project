@@ -80,7 +80,8 @@
             vm.summary.warnValue = util.getWarnValue(vm.summary.amount, vm.summary.deposit);
             vm.summary.sellValue = util.getSellValue(vm.summary.amount, vm.summary.deposit);
             vm.summary.deposit = vm.summary.amount * depositFactor;
-            var charge = vm.summary.amount / 10000 * util.getServiceCharge(vm.summary.lever); // * vm.summary.day;
+            vm.summary.serviceCharge = util.getServiceCharge(vm.summary.lever);
+            var charge = vm.summary.amount / 10000 * vm.summary.serviceCharge; // * vm.summary.day;
             vm.summary.charge = charge;
             vm.summary.total = vm.summary.deposit + charge;
             vm.endTime = days.endTime(startTime, vm.summary.day);
@@ -256,6 +257,7 @@
         vm.validDays = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 
         function calculateAmount() {
+            vm.apply.serviceCharge = util.getServiceCharge(vm.apply.lever);
             vm.serviceFee = vm.apply.amount / 10000 * util.getServiceCharge(vm.apply.lever) * vm.apply.period;
             vm.totalAmount = vm.apply.deposit + vm.serviceFee;
             vm.shouldPay = vm.totalAmount - vm.apply.userBalance;
@@ -295,6 +297,9 @@
                     }
                 })
                 .error(function(data, status, headers, config) {
+                    if (status === 403) {
+                        alert('对不起，同一用户最多只能有5笔操盘中的配资。暂不能再申请新的配资。');
+                    }
                     console.log('error:' + data.reason);
                 });
         };

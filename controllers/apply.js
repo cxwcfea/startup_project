@@ -555,6 +555,7 @@ exports.placeApply = function(req, res, next) {
         lever: req.body.lever,
         warnValue: Number(Number(req.body.warnValue).toFixed(2)),
         sellValue: Number(Number(req.body.sellValue).toFixed(2)),
+        serviceCharge: req.body.serviceCharge,
         period: 5
     });
 
@@ -664,41 +665,52 @@ exports.postConfirmApply = function(req, res, next) {
         logger.warn('postConfirmApply error:apply is not belongs to the user');
         return res.send({reason:'apply is not belongs to the user'});
     }
-    var orderData = {
-        userID: applyData.userID,
-        userMobile: applyData.userMobile,
-        dealType: applyData.shouldPay ? 1 : 9,
-        amount: applyData.shouldPay ? Number(applyData.totalAmount.toFixed(2)) : Number(applyData.deposit.toFixed(2)),
-        status: 2,
-        description: '股票配资',
-        applySerialID: applyData.serialID
-    };
-    Order.create(orderData, function(err, order) {
+    Apply.count({ $and: [{isTrial: false}, {status: 2}, {userMobile:req.user.mobile}] }, function (err, count) {
         if (err) {
-            res.status(503);
-            logger.warn('postConfirmApply error:' + err.toString());
-            return res.send({reason:err.toString()});
+            logger.warn('postConfirmApply error when get apply count:' + err.toString());
+            count = 0;
         }
-        Apply.findById(applyData._id, function(err, apply) {
-            if (err) {
-                res.status(503);
-                logger.warn('postConfirmApply error:' + err.toString());
-                return res.send({error_msg:'postConfirmApply error:' + err.toString()});
-            }
-            apply.orderID = order._id;
-            apply.period = Number(applyData.period);
-            var startDay = util.getStartDay();
-            apply.startTime = startDay.toDate();
-            apply.endTime = util.getEndDay(startDay, apply.period, apply.type).toDate();
-            console.log(apply);
-            apply.save(function(err) {
+        if (count >= 5) {
+            res.status(403);
+            logger.warn('postConfirmApply error:the same user have too much active apply');
+            return res.send({reason:'the same user have too much active apply'});
+        } else {
+            var orderData = {
+                userID: applyData.userID,
+                userMobile: applyData.userMobile,
+                dealType: applyData.shouldPay ? 1 : 9,
+                amount: applyData.shouldPay ? Number(applyData.totalAmount.toFixed(2)) : Number(applyData.deposit.toFixed(2)),
+                status: 2,
+                description: '股票配资',
+                applySerialID: applyData.serialID
+            };
+            Order.create(orderData, function(err, order) {
                 if (err) {
-                    res.status(500);
-                    return res.send({error_msg:err.toString()});
+                    res.status(503);
+                    logger.warn('postConfirmApply error:' + err.toString());
+                    return res.send({reason:err.toString()});
                 }
-                res.send({order:order, apply:apply});
+                Apply.findById(applyData._id, function(err, apply) {
+                    if (err) {
+                        res.status(503);
+                        logger.warn('postConfirmApply error:' + err.toString());
+                        return res.send({error_msg:'postConfirmApply error:' + err.toString()});
+                    }
+                    apply.orderID = order._id;
+                    apply.period = Number(applyData.period);
+                    var startDay = util.getStartDay();
+                    apply.startTime = startDay.toDate();
+                    apply.endTime = util.getEndDay(startDay, apply.period, apply.type).toDate();
+                    apply.save(function(err) {
+                        if (err) {
+                            res.status(500);
+                            return res.send({error_msg:err.toString()});
+                        }
+                        res.send({order:order, apply:apply});
+                    });
+                });
             });
-        });
+        }
     });
 };
 
