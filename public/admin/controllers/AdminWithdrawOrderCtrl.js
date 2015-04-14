@@ -60,11 +60,10 @@ angular.module('adminApp').controller('AdminWithdrawOrderCtrl', ['$scope', '$loc
     };
 
     vm.handleOrder = function(order) {
-        if (!currentUser) {
-            gbUser.get({id:order.userID}, function(user) {
-                currentUser = user;
-            });
-        }
+        currentUser = null;
+        gbUser.get({id:order.userID}, function(user) {
+            currentUser = user;
+        });
         var modalInstance = $modal.open({
             templateUrl: '/views/withdrawModal.html',
             controller: 'WithdrawModalCtrl',
@@ -77,6 +76,10 @@ angular.module('adminApp').controller('AdminWithdrawOrderCtrl', ['$scope', '$loc
         modalInstance.result.then(function (result) {
             if (!result.bank_trans_id) {
                 gbNotifier.error('必须输入银行单号！');
+                return;
+            }
+            if (!currentUser) {
+                gbNotifier.error('数据还未准备好，请稍后再试！');
                 return;
             }
 

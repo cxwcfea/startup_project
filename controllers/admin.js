@@ -20,8 +20,8 @@ function main(req, res, next) {
             dataObj.deposit = 0;
         }
         res.locals.pay_user_count = dataObj.count;
-        res.locals.amount = dataObj.amount.toFixed(2);
-        res.locals.deposit = dataObj.deposit.toFixed(2);
+        res.locals.amount = util.formatDisplayNum(dataObj.amount);
+        res.locals.deposit = util.formatDisplayNum(dataObj.deposit);
         if (req.user && req.user.roles) {
             if (req.url.indexOf('/admin') == 0) {
                 if (req.user.roles.indexOf('admin') !== -1) {
