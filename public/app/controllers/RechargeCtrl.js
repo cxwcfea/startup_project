@@ -55,6 +55,10 @@
             $(".jq_rec2_yhkList").slideToggle(200);
         }
         vm.smsSend = false;
+        vm.alipayAccountConfirm = false;
+        if (vm.user.profile.alipay_account) {
+            vm.alipayAccountConfirm = true;
+        }
 
         vm.payTypes = [
             {

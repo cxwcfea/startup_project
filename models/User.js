@@ -35,7 +35,9 @@ var userSchema = new mongoose.Schema({
         location: String,
         qq: Number,
         weibo: String,
-        picture: {type: String, default: ''}
+        picture: {type: String, default: ''},
+        alipay_account: String,
+        alipay_name: String
     },
 
     identity: {
