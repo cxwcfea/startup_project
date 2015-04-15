@@ -334,7 +334,7 @@
                 case 4:
                     return "银行转账";
                 default:
-                    return "提款";
+                    return "无";
             }
         };
     }).service("days", function () {

@@ -6,6 +6,17 @@ angular.module('adminApp').controller('AdminOrderCtrl', ['$scope', '$location', 
     vm.itemsPerPage = 15;
     vm.maxSize = 5;
 
+    vm.queryItems = [
+        {
+            name: '全部',
+            value: 0
+        },
+        {
+            name: '已确认的提现',
+            value: 1
+        }
+    ];
+
     initData();
 
     function initData() {
@@ -29,6 +40,17 @@ angular.module('adminApp').controller('AdminOrderCtrl', ['$scope', '$location', 
             end = vm.totalItems;
         }
         vm.showingItems = currentOrders.slice(start, end);
+    };
+
+    vm.queryItem = function (item) {
+        if (item.value === 1) {
+            currentOrders = order_list.filter(function (elem) {
+                return elem.dealType === 2 && elem.status === 1;
+            });
+        } else {
+           currentOrders = order_list;
+        }
+        pageReset();
     };
 }]);
 
