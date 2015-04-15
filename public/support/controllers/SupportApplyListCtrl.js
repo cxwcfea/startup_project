@@ -91,6 +91,17 @@ angular.module('supportApp').controller('SupportApplyListCtrl', ['$scope', '$htt
         pageReset();
     };
 
+    vm.moveApplyToPending = function(apply) {
+        $http.post('/admin/change_apply_to_pending', {serial_id:apply.serialID})
+            .success(function(data, status) {
+                apply.status = 4;
+                gbNotifier.notify('更新成功');
+            })
+            .error(function(data, status) {
+                gbNotifier.error(data.error_msg);
+            });
+    };
+
     vm.manageApply = function(apply) {
         if (apply.status === 4 || apply.status === 1) {
             vm.assignAccount(apply);
