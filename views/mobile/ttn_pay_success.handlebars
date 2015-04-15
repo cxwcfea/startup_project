@@ -7,14 +7,20 @@
 </header><!--#E header-->
 
 <div class="ttn-pay-success">
+{{#if pending}}
+    <p class="suc-txt">免费体验每天限额<em>200</em><span>名</span></p>
+    <div class="remaind">
+            <p>由于目前申请免费体验人数过多，今日免费体验限额已经用完</p>
+            <p>有疑问请咨询客服</p>
+            <p>客服电话：<a href="tel://400-692-1388">400-692-1388</a></p>
+    </div>
+    <p class="to">您可以去<a href="/mobile/#/ttn">天天牛</a> 直接申请操盘资金。</p>
+{{else}}
     <p class="suc-txt">成功获取<em>{{amount}}</em><span>元</span>操盘资金</p>
     <div class="remaind">
-        {{#if pending}}
-            <p>由于目前申请免费体验人数过多，您已进入排队中，请电话我们的客服，以及时操盘</p>
-        {{else}}
-            <p>您的操盘申请正在审核中</p>
-            <p>我们会尽快为您分配操盘账户</p>
-        {{/if}}
+        <p>您的操盘申请正在审核中</p>
+        <p>我们会尽快为您分配操盘账户</p>
     </div>
     <p class="to">您可以到<a href="/mobile/#/user">我的账户</a>&gt;<a href="/mobile/#/user_ttn">我的操盘</a>中查看你的操盘账户信息。</p>
+{{/if}}
 </div>

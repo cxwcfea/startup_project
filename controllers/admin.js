@@ -1029,6 +1029,7 @@ function autoConfirmAlipayOrder(req, res) {
                     payType: 3,
                     status: 2,
                     otherInfo: alipayAccount,
+                    transID: name,
                     bankTransID: transID
                 };
                 Order.create(orderData, function(err, order) {
@@ -1058,6 +1059,7 @@ function autoConfirmAlipayOrder(req, res) {
                                         payType: 3,
                                         status: 2,
                                         otherInfo: alipayAccount,
+                                        transID: name,
                                         bankTransID: transID
                                     };
                                     Order.create(orderData, function(err, order) {

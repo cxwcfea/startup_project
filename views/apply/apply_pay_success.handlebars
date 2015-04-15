@@ -19,15 +19,22 @@
         </div>
     </div>
     <div class="freeContent">
+    {{#if pending}}
+        <p class="freeContent_p01">今日免费体验限额已经用完</p>
+        <p class="freeContent_p02">免费体验每天限额<span class="span01">200</span>名</p>
+        <div class="freeUserInfo">
+            <p>有疑问请咨询客服</p>
+            <p>客服电话：400-692-1388</p>
+        </div>
+        <div class="freeText2">
+            您也可以去 <a href="/apply" class="color_f2991b fb">天天牛</a> 直接申请操盘资金。
+        </div>
+    {{else}}
         <p class="freeContent_p01">申请完成，本次配资单号为{{serial_id}}</p>
         <p class="freeContent_p02">成功获得 <span class="span01">{{amount}}</span><span class="color_c82217">元</span>操盘资金</p>
         <div class="freeUserInfo">
-            {{#if pending}}
-                <p>由于目前申请免费体验人数过多，您已进入排队中，请电话我们的客服，以及时操盘</p>
-            {{else}}
-                <p>您的操盘申请正在审核中</p>
-                <p>我们将会尽快为您分配操盘账户</p>
-            {{/if}}
+            <p>您的操盘申请正在审核中</p>
+            <p>我们将会尽快为您分配操盘账户</p>
             <!--
             <p>操盘账户：<span class="color_c82217">12345678</span>&nbsp;&nbsp;&nbsp;密码：<span class="color_c82217">123456</span></p>
             <a href="#">发送到手机</a>
@@ -40,6 +47,7 @@
             -->
             您也可以在 <a href="/user" class="color_f2991b fb">我的账户</a> > <a href="/user" class="color_f2991b fb">我的操盘</a> 中查看您的操盘账户信息。
         </div>
+    {{/if}}
     </div>
     <div class="freeDownloadBox">
         <div class="freeContent">
