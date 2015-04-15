@@ -91,8 +91,6 @@
         };
 
         vm.selectPayType = function (type) {
-            console.log('selectPayType');
-            console.log(type + '  ' + vm.showAlipayWindow);
             vm.alerts = [];
             vm.alipayConfirm = false;
             vm.currentPayType = type;

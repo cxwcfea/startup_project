@@ -154,7 +154,7 @@
                         充值金额
                     </div>
                     <div class="newRec_zfbRight fl">
-                        <input type="number" class="newRec_inputText2" value="\{{vm.pay_amount | currency:'':2}}" disabled>
+                        <input type="number" class="newRec_inputText2" ng-model="vm.pay_amount" disabled>
                     </div>
                 </div>
                 <div class="newRec_zfbForm">
@@ -162,7 +162,7 @@
                         支付宝账号
                     </div>
                     <div class="newRec_zfbRight fl">
-                        <input type="text" class="newRec_inputText2 newRec_inputText2zfb" ng-model="vm.alipay_account" required autofocus>
+                        <input type="text" class="newRec_inputText2 newRec_inputText2zfb" ng-model="vm.alipay_account" required autofocus ng-disabled="vm.alipayAccountConfirm">
                     </div>
                     <div class="newRec_zfbImg fl"></div>
                 </div>
@@ -171,7 +171,7 @@
                         姓名
                     </div>
                     <div class="newRec_zfbRight fl">
-                        <input type="text" class="newRec_inputText2" ng-model="vm.alipay_name" required>
+                        <input type="text" class="newRec_inputText2" ng-model="vm.alipay_name" required ng-disabled="vm.alipayAccountConfirm">
                     </div>
                 </div>
                 <p class="newrec_P01" ng-hide="vm.alipayAccountConfirm">请确认该账户与实际转账支付宝账户一致</p>
@@ -221,6 +221,7 @@
                     </p>
                     <img src="/images/zfb_pay.png">
                 </div>
+                <a href="" class="newrec_btn02 newrec_zfbbtn01" ng-click="vm.closeOtherWindow()">完成</a>
             </div>
         </div>
     </div>
