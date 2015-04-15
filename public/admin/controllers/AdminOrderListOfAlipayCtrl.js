@@ -30,6 +30,22 @@ angular.module('adminApp').controller('AdminOrderListOfAlipayCtrl', ['$scope', '
         vm.showingItems = currentOrders.slice(start, end);
     };
 
+    vm.removeOrder = function(order) {
+        console.log('run');
+        $http.post('/admin/api/delete_order_of_alipay/' + order._id, {})
+            .success(function(data, status) {
+                _.remove(order_list, function(o) {
+                    return o._id === order._id;
+                });
+                currentOrders = order_list;
+                pageReset();
+                gbNotifier.notify('删除成功');
+            })
+            .error(function(data, status) {
+                gbNotifier.notify('删除失败');
+            });
+    };
+
     vm.handleOrder = function(order) {
         if (order.dealType === 2) {
             var modalInstance = $modal.open({

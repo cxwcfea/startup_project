@@ -29,7 +29,7 @@
             <table class="am-table am-table-striped am-table-hover table-main">
                 <thead>
                 <tr>
-                    <th class="table-date">日期</th><th class="table-type">支付宝账号</th><th class="table-author">金额</th><th class="table-set">姓名</th><th class="table-set">单号</th>
+                    <th class="table-date">日期</th><th class="table-type">支付宝账号</th><th class="table-author">金额</th><th class="table-set">姓名</th><th class="table-set">单号</th><th class="table-set">操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -39,6 +39,13 @@
                     <td>\{{order.amount}}</td>
                     <td>\{{order.name}}</td>
                     <td>\{{order.transID}}</td>
+                    <td>
+                        <div class="am-btn-toolbar">
+                            <div class="am-btn-group am-btn-group-xs">
+                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="vm.removeOrder(order)"><span class="am-icon-pencil"></span> 删除</button>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
                 </tbody>
             </table>

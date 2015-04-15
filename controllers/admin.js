@@ -767,6 +767,20 @@ function deleteWithdrawOrder(req, res) {
     });
 }
 
+function deleteOrderOfAlipay(req, res) {
+    if (!req.body) {
+        res.status(400);
+        return res.send({error_msg:'empty request'});
+    }
+    AlipayOrder.findById(req.params.id).remove(function(err, order) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send({});
+    });
+}
+
 function fetchApply(req, res) {
     //console.log(req.body);
     Apply.findOne({serialID:req.params.id}, function(err, apply) {
@@ -1163,6 +1177,8 @@ module.exports = {
         app.post('/admin/api/delete_recharge_order/:id', passportConf.requiresRole('admin'), deleteRechargeOrder);
 
         app.post('/admin/api/delete_withdraw_order/:id', passportConf.requiresRole('admin'), deleteWithdrawOrder);
+
+        app.post('/admin/api/delete_order_of_alipay/:id', passportConf.requiresRole('admin'), deleteOrderOfAlipay);
 
         app.get('/api/auto_fetch_pending_apply', passportConf.requiresRole('admin'), autoFetchPendingApplies);
 
