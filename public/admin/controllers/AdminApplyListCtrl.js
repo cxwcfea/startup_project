@@ -155,6 +155,17 @@ angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', 
         });
     };
 
+    vm.moveApplyToPending = function(apply) {
+        $http.post('/admin/change_apply_to_pending', {serial_id:apply.serialID})
+            .success(function(data, status) {
+                apply.status = 4;
+                gbNotifier.notify('更新成功');
+            })
+            .error(function(data, status) {
+                gbNotifier.error(data.error_msg);
+            });
+    };
+
     vm.updateApply = function (apply) {
         var modalInstance = $modal.open({
             templateUrl: 'applyUpdateModal.html',

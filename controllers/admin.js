@@ -844,6 +844,21 @@ function takeApply(req, res) {
     });
 }
 
+function changeApplyToPending(req, res) {
+    Apply.update({serialID:req.body.serial_id}, {status:4}, function(err, numberAffected, raw) {
+        if (err) {
+            logger.debug('changeApplyToPending error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        if (numberAffected == 0) {
+            res.status(400);
+            return res.send({error_msg:'apply not found'});
+        }
+        res.send({});
+    });
+}
+
 function sendSellSMS(req, res) {
     var startTime = moment().startOf('day');
     var endTime = startTime.clone();
@@ -1060,6 +1075,9 @@ function autoConfirmAlipayOrder(req, res) {
         function(user, order, alipayOrder, callback) {
             if (order) {
                 util.orderFinished(user, order, 1, function(err) {
+                    if (!err) {
+                        util.sendSMS_8(user.mobile, order.amount.toFixed(2));
+                    }
                     callback(err, 'success update user for alipay order');
                 });
             } else if (alipayOrder) {
@@ -1167,6 +1185,8 @@ module.exports = {
         app.post('/admin/api/send_sell_sms', passportConf.requiresRole('admin|support'), sendSellSMS);
 
         app.get('/admin/api/alipay_orders', passportConf.requiresRole('admin'), fetchOrdersOfAlipay);
+
+        app.post('/admin/change_apply_to_pending', passportConf.requiresRole('admin|support'), changeApplyToPending);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
