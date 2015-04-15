@@ -92,23 +92,22 @@ angular.module('adminApp').controller('AdminWithdrawOrderCtrl', ['$scope', '$loc
                 .success(function(data, status, headers, config) {
                     order = data;
                     gbNotifier.notify('更新成功');
+                    currentUser.finance.freeze_capital -= order.amount;
+                    var data = {
+                        user_mobile: currentUser.mobile,
+                        sms_content: result.sms_content.replace('BALANCE', currentUser.finance.balance.toFixed(2))
+                    };
+                    $http.post('/admin/api/send_sms', data)
+                        .then(function(response) {
+                            if (response.data.success) {
+                                gbNotifier.notify('短信已发送');
+                            } else {
+                                gbNotifier.error('短信发送失败:' + response.data.reason);
+                            }
+                        });
                 }).
                 error(function(data, status, headers, config) {
                     gbNotifier.error('更新失败:' + data.error_msg);
-                });
-
-            currentUser.finance.freeze_capital -= order.amount;
-            var data = {
-                user_mobile: currentUser.mobile,
-                sms_content: result.sms_content.replace('BALANCE', currentUser.finance.balance.toFixed(2))
-            };
-            $http.post('/admin/api/send_sms', data)
-                .then(function(response) {
-                    if (response.data.success) {
-                        gbNotifier.notify('短信已发送');
-                    } else {
-                        gbNotifier.error('短信发送失败:' + response.data.reason);
-                    }
                 });
         }, function () {
         });
