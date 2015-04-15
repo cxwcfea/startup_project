@@ -33,27 +33,41 @@ angular.module('adminApp').controller('AdminAddDepositOrderListCtrl', ['$scope',
     vm.handleOrder = function(order) {
         adminApply.get({id:order.applySerialID, uid:order.userID}, function(apply) {
             var modalInstance = $modal.open({
-                templateUrl: 'homasInfoModal.html',
-                controller: 'HomasInfoModalCtrl',
+                templateUrl: 'addDepositInfoModal.html',
+                controller: 'AddDepositInfoModalCtrl',
                 resolve: {
                     order: function () {
                         return order;
                     },
-                    apply: function () {
+                    apply: function() {
                         return apply;
                     }
                 }
             });
             modalInstance.result.then(function () {
+                order.dealType = 9;
+                $http.post('/admin/api/orders/' + order._id, order)
+                    .success(function(data, status) {
+                        gbNotifier.notify('订单更新成功');
+                        _.remove(order_list, function(o) {
+                            return o._id === order._id;
+                        });
+                        currentOrders = order_list;
+                        pageReset();
+                    })
+                    .error(function(data, status) {
+                        gbNotifier.error('订单更新失败');
+                    });
             }, function () {
             });
         });
     };
 }]);
 
-angular.module('adminApp').controller('HomasInfoModalCtrl', ['$scope', '$modalInstance', 'order', 'apply', function ($scope, $modalInstance, order, apply) {
-    $scope.applySerialID = order.applySerialID;
-    $scope.homasAccount = apply.account;
+angular.module('adminApp').controller('AddDepositInfoModalCtrl', ['$scope', '$modalInstance', 'order', 'apply', function ($scope, $modalInstance, order, apply) {
+    $scope.userMobile = order.userMobile;
+    $scope.homsAccount = apply.account;
+    $scope.amount = order.amount;
 
     $scope.ok = function () {
         $modalInstance.close();

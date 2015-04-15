@@ -303,11 +303,11 @@ exports.addDeposit = function(req, res, next) {
             var orderData = {
                 userID: apply.userID,
                 userMobile: apply.userMobile,
-                dealType: 9,
+                dealType: 6,
                 amount: Number(amount.toFixed(2)),
                 status: 2,
-                description: '追加配资保证金',
-                applySerialID: apply.serialID
+                description: '追加配资保证金'
+                //applySerialID: apply.serialID
             };
             Order.create(orderData, function(err, order) {
                 if (!err && !order) {
@@ -320,6 +320,7 @@ exports.addDeposit = function(req, res, next) {
             User.findById(order.userID, function(err, user) {
                 user.finance.balance = Number(user.finance.balance.toFixed(2));
                 if (user.finance.balance >= order.amount) {
+                    order.applySerialID = apply.serialID;
                     util.orderFinished(user, order, 2, function(err) {
                         callback(err, user, order, apply, true);
                     });
@@ -342,14 +343,25 @@ exports.addDeposit = function(req, res, next) {
                         user.finance.deposit += order.amount;
                         user.finance.history_deposit += order.amount;
                         user.save(function(err) {
-                            callback(err, order, true);
+                            callback(err, order, apply, true);
                         });
                     }
                 });
             } else {
-                callback(null, order, false);
+                callback(null, order, apply, false);
             }
         },
+        function(order, apply, paid, callback) {
+            if (paid) {
+                var content = 'user:' + order.userMobile + ' account:' + apply.account + ' amount:' + order.amount;
+                util.sendEmail('op@niujinwang.com', '追加配资保证金', content, function(err) {
+                    logger.debug('add deposit send email success');
+                    callback(err, order, paid);
+                })
+            } else {
+                callback(null, order, paid);
+            }
+        }
     ], function(err, order, paid) {
         if (err) {
             logger.warn('addDeposit error:' + err.toString());

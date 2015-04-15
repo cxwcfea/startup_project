@@ -52,13 +52,14 @@
     </div>
 </div>
 
-<script type="text/ng-template" id="homasInfoModal.html">
+<script type="text/ng-template" id="addDepositInfoModal.html">
     <div class="modal-header">
-        <h3 class="modal-title">盈利提取信息</h3>
+        <h3 class="modal-title">追加配资保证金确认</h3>
     </div>
     <div class="modal-body">
-        <p>配资单号：\{{applySerialID}}</p>
-        <p>Homas账号：\{{homasAccount}}</p>
+        <p>用户：\{{::userMobile}}</p>
+        <p>Homas账号：\{{::homsAccount}}</p>
+        <p>金额：\{{::amount}}</p>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-click="ok()">完成</button>

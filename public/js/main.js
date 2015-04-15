@@ -176,14 +176,21 @@ $(document).ready(function() {
     });
     //补充保证金下一步
     $(".jq_btn01").click(function (e) {
+        console.log(window.niujin_adding_deposit);
+        if (window.niujin_adding_deposit) {
+            alert('正在处理中，请稍侯');
+            return;
+        }
         var apply_serial_id = $('#apply_serial_id')[0].innerText;
         var amount = Number($("#add_deposit_input")[0].value);
         if (amount <= 0 || amount > 30000) {
             alert('请输入有效的金额，金额大于0元小于3万元');
             return;
         }
+        window.niujin_adding_deposit = true;
         $.post("/apply/add_deposit/"+apply_serial_id, {deposit_amount:amount}, function() {
             console.log( "post add deposit done" );
+            window.niujin_adding_deposit = false;
         })
         .done(function(data) {
             if (data.paid) {
