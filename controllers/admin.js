@@ -562,10 +562,10 @@ function confirmAlipayOrder(req, res) {
                 res.status(500);
                 return res.send({error_msg:err.toString()});
             }
-            if (user) {
+            if (user && user._id != order.userID) {
                 logger.warn('confirmAlipayOrder error:already have user bind to the alipay account');
                 res.status(403);
-                return res.send({error_msg:'order not found'});
+                return res.send({error_msg:'the same alipay account can not pay for different niujin user'});
             }
             User.findById(order.userID, function(err, user) {
                 if (err) {
