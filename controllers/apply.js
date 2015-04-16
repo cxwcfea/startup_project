@@ -73,8 +73,8 @@ exports.getApplyDetail = function (req, res, next) {
         res.locals.apply_period = apply.period;
         res.locals.apply_fee_per_day = (serviceFee / apply.period).toFixed(2);
         res.locals.apply_fee_per_month = serviceFee.toFixed(2);
-        res.locals.apply_warn = (apply.amount - config.warnFactor * apply.deposit).toFixed(2);
-        res.locals.apply_sell = (apply.amount - config.sellFactor * apply.deposit).toFixed(2);
+        res.locals.apply_warn = apply.warnValue ? apply.warnValue.toFixed(2) : (apply.amount - config.warnFactor * apply.deposit).toFixed(2);
+        res.locals.apply_sell = apply.sellValue ? apply.sellValue.toFixed(2) : (apply.amount - config.sellFactor * apply.deposit).toFixed(2);
         res.locals.startDate1 = startTime.format("YYYY-MM");
         res.locals.endDate1 = endTime.format("YYYY-MM");
         res.locals.startDate2 = startTime.format("DD");
@@ -163,7 +163,7 @@ exports.postApplyPostpone = function(req, res, next) {
                 dealType: 10,
                 amount: Number(amount.toFixed(2)),
                 status: 2,
-                description: '追加配资保证金'
+                description: '配资延期 ' + apply.serialID
                 //applySerialID: apply.serialID   do not add serial id, so the pay order will only add balance for user
             };
             Order.create(orderData, function(err, order) {
@@ -182,7 +182,7 @@ exports.postApplyPostpone = function(req, res, next) {
                     });
                 } else {
                     order.dealType = 1;
-                    order.description += '充值';
+                    order.description += ' 充值';
                     order.save(function(err) {
                         callback(err, user, order, apply, false);
                     });
@@ -310,7 +310,7 @@ exports.addDeposit = function(req, res, next) {
                 dealType: 6,
                 amount: Number(amount.toFixed(2)),
                 status: 2,
-                description: '追加配资保证金'
+                description: '追加配资保证金 ' + apply.serialID
                 //applySerialID: apply.serialID
             };
             Order.create(orderData, function(err, order) {
@@ -330,7 +330,7 @@ exports.addDeposit = function(req, res, next) {
                     });
                 } else {
                     order.dealType = 1;
-                    order.description += '充值';
+                    order.description += ' 充值';
                     order.save(function(err) {
                         callback(err, user, order, apply, false);
                     });

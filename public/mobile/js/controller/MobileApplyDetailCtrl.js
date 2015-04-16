@@ -33,8 +33,8 @@ angular.module('mobileApp').controller('MobileApplyDetailCtrl', ['$scope', '$win
 
         vm.serviceFee = vm.apply.isTrial ? 0 : util.getServiceCharge(vm.apply.lever);
         vm.interest = vm.apply.amount * vm.apply.interestRate;
-        vm.apply_warn = vm.apply.isTrial ? 1800 : util.getWarnValue(vm.apply.amount, vm.apply.deposit);
-        vm.apply_sell = vm.apply.isTrial ? 1600 : util.getSellValue(vm.apply.amount, vm.apply.deposit);
+        vm.apply_warn = vm.apply.isTrial ? 1800 : (vm.apply.warnValue ? vm.apply.warnValue : util.getWarnValue(vm.apply.amount, vm.apply.deposit));
+        vm.apply_sell = vm.apply.isTrial ? 1600 : (vm.apply.sellValue ? vm.apply.sellValue : util.getSellValue(vm.apply.amount, vm.apply.deposit));
     }
 
     vm.requestClose = function() {
