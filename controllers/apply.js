@@ -461,13 +461,13 @@ exports.freeApply = function(req, res, next) {
                     res.redirect('/apply/pay_success?status=' + 9);
                 }
             } else {
-                if (req.user.finance.balance >= 1) {
+                if (req.user.finance.balance >= 100) {
                     var applyData = new Apply({
                         userID: req.user._id,
                         userMobile: req.user.mobile,
                         serialID: util.generateSerialID(),
                         amount: 2000,
-                        deposit: 1,
+                        deposit: 100,
                         isTrial: true,
                         status: 4,
                         period: 2
@@ -483,11 +483,11 @@ exports.freeApply = function(req, res, next) {
                                 logger.debug('freeApply error: user not found');
                                 return next();
                             }
-                            user.finance.balance -= 1;
+                            user.finance.balance -= 100;
                             user.finance.total_capital += 2000;
-                            user.finance.deposit += 1;
+                            user.finance.deposit += 100;
                             user.finance.history_capital += 2000;
-                            user.finance.history_deposit += 1;
+                            user.finance.history_deposit += 100;
                             user.freeApply = apply.serialID;
                             user.save(function (err, user) {
                                 if (err) {
@@ -507,9 +507,9 @@ exports.freeApply = function(req, res, next) {
                         userID: req.user._id,
                         userMobile: req.user.mobile,
                         dealType: 1,
-                        amount: 1,
+                        amount: 100,
                         status: 2,
-                        description: '免费配资体验'
+                        description: '免费配资体验充值'
                     };
                     Order.create(orderData, function(err, order) {
                         if (err) next();
