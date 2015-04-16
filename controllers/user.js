@@ -1212,16 +1212,16 @@ module.exports.registerRoutes = function(app, passportConf) {
         var sign = sparkMD5.hash(str+md5key);
         str += '&sign=' + sign;
         console.log(str);
-        var url = 'https://www.ebatong.com/mobileFast/getDynNum.htm?' + str;
+        var url = 'https://www.ebatong.com/mobileFast/getDynNum.htm';
 
-        res.redirect(url);
-
-        /*
+        data.sign = sign;
         var options = {
             follow_max         : 3    // follow up to five redirects
         };
-        needle.get(url, options, function(err, resp, body) {
+        console.log(data);
+        needle.post(url, data, options, function(err, resp, body) {
             console.log(body);
+            /*
             var timestamp = body.ebatong.response.timestamp.encrypt_key;
 
             var data = _.assign({}, req.body);
@@ -1240,8 +1240,9 @@ module.exports.registerRoutes = function(app, passportConf) {
 
             res.redirect('https://www.ebatong.com/direct/gateway.htm?' + str);
             res.send({});
+            */
+            res.send({});
         });
-         */
     });
 };
 

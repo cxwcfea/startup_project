@@ -1112,6 +1112,25 @@ function autoConfirmAlipayOrder(req, res) {
     });
 }
 
+function autoConfirmAddDepositOrder(req, res) {
+    var order_id = req.params.id;
+    if (order_id) {
+        Order.update({_id:order_id}, {dealType:9}, function(err, numberAffected, raw) {
+            if (numberAffected) {
+                res.send({error_code:0});
+            } else {
+                logger.debug('autoConfirmAddDepositOrder error order not found');
+                res.status(400);
+                res.send({error_code:1, error_msg:'order not found'});
+            }
+        });
+    } else {
+        logger.debug('autoConfirmAddDepositOrder error ' + err.toString());
+        res.status(400);
+        res.send({error_code:1, error_msg:err.toString()});
+    }
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -1191,6 +1210,8 @@ module.exports = {
         app.get('/api/auto_approve_closing_settlement', passportConf.requiresRole('admin'), autoApproveClosingSettlement);
 
         app.get('/api/auto_confirm_alipay_order', passportConf.requiresRole('admin'), autoConfirmAlipayOrder);
+
+        app.get('/api/auto_confirm_add_deposit_order', passportConf.requiresRole('admin'), autoConfirmAddDepositOrder);
 
         app.post('/admin/api/create/order', passportConf.requiresRole('admin|support'), createOrder);
 
