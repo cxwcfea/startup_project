@@ -11,8 +11,8 @@ angular.module('userApp').controller('UserApplyCtrl', ['$scope', '$window', '$lo
                 vm.currentApply = apply;
                 formatApply(vm.currentApply);
                 if (vm.currentApply.isTrial) {
-                    vm.warn_amount = 1800;
-                    vm.sell_amount = 1600;
+                    vm.warn_amount = 1900;
+                    vm.sell_amount = 1800;
                 } else {
                     vm.warn_amount = vm.currentApply.warnValue ? vm.currentApply.warnValue : util.getWarnValue(vm.currentApply.amount, vm.currentApply.deposit);
                     vm.sell_amount = vm.currentApply.sellValue ? vm.currentApply.sellValue : util.getSellValue(vm.currentApply.amount, vm.currentApply.deposit);

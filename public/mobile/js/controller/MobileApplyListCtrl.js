@@ -30,8 +30,8 @@ angular.module('mobileApp').controller('MobileApplyListCtrl', ['$scope', '$windo
         item.end_date = item.endTime ? item.endTime : days.endTime(item.start_date, item.period);
         item.days_till_now = days.tradeDaysTillNow(item);
         item.left_days = item.period - item.days_till_now;
-        item.apply_warn = item.isTrial ? 1800 : (item.warnValue ? item.warnValue : util.getWarnValue(item.amount, item.deposit));
-        item.apply_sell = item.isTrial ? 1600 : (item.sellValue ? item.sellValue : util.getSellValue(item.amount, item.deposit));
+        item.apply_warn = item.isTrial ? 1900 : (item.warnValue ? item.warnValue : util.getWarnValue(item.amount, item.deposit));
+        item.apply_sell = item.isTrial ? 1800 : (item.sellValue ? item.sellValue : util.getSellValue(item.amount, item.deposit));
     }
 
     vm.selectTTN = function (item) {
