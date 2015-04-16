@@ -156,6 +156,26 @@ exports.postApplyPostpone = function(req, res, next) {
             });
         },
         function(apply, callback) {
+            var todayEndTime = moment();
+            todayEndTime.hour(15);
+            todayEndTime.minute(00);
+            todayEndTime.second(00);
+            todayEndTime = todayEndTime.toDate();
+
+            var deadline = moment();
+            deadline.hour(14);
+            deadline.minute(00);
+            deadline.second(00);
+
+            var currentTime = moment();
+            if (apply.endTime < todayEndTime && currentTime > deadline) {
+                err = '1';
+                callback(err);
+            } else {
+                callback(null, apply);
+            }
+        },
+        function(apply, callback) {
             var amount = util.getServiceFee(apply, period);
             var orderData = {
                 userID: apply.userID,
@@ -214,9 +234,15 @@ exports.postApplyPostpone = function(req, res, next) {
         }
     ], function(err, order, paid) {
         if (err) {
-            logger.warn('postpone error:' + err.toString());
-            res.status(500);
-            return res.send({error_msg:err.toString()});
+            if (err == '1') {
+                logger.warn('postpone error: 该配资已过延期的最后期限，无法延期');
+                res.status(403);
+                return res.send({error_msg:'该配资已过延期的最后期限，无法延期'});
+            } else {
+                logger.warn('postpone error:' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
         }
         res.send({order:order, paid:paid});
     });
@@ -287,7 +313,7 @@ exports.getAddDeposit = function(req, res, next) {
 
 exports.addDeposit = function(req, res, next) {
     var amount = Number(req.body.deposit_amount);
-    if (amount <= 0 || amount > 30000) {
+    if (Number.isNaN(amount) || amount <= 0 || amount > 30000) {
         res.status(400);
         return res.send({error_msg:'deposit amount invalid:' + amount});
     }

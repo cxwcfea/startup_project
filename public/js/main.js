@@ -243,7 +243,10 @@ $(document).ready(function() {
                 $(".jq_yqBox02").show();
             }
         })
-        .fail(function() {
+        .fail(function(data, text) {
+            if (data.status === 403) {
+                console.log(JSON.parse(data.responseText).error_msg);
+            }
             $(".jq_yqBox_fail").show();
         })
         .always(function() {
