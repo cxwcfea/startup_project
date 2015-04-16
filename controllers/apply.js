@@ -386,8 +386,8 @@ exports.addDeposit = function(req, res, next) {
                 var content = 'user:' + order.userMobile + ' account:' + apply.account + ' amount:' + order.amount;
                 util.sendEmail('op@niujinwang.com', '追加配资保证金', content, function(err) {
                     logger.debug('add deposit send email success');
-                    callback(err, order, paid);
-                })
+                });
+                callback(null, order, paid);
             } else {
                 callback(null, order, paid);
             }
