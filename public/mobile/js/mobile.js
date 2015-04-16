@@ -19,6 +19,8 @@ angular.module('mobileApp').config(['$routeProvider', '$httpProvider', function(
         })
         .when('/download', { templateUrl: '/mobile/download'
         })
+        .when('/recharge_beifu', { templateUrl: '/mobile/recharge_beifu'
+        })
         .when('/login', { templateUrl: '/mobile/login',
             controller: 'MobileLoginCtrl as vm'
         })

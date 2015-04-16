@@ -1199,27 +1199,48 @@ module.exports.registerRoutes = function(app, passportConf) {
     });
 
     app.post('/test_sign2', function(req, res, next) {
-        var md5key = '9UCKYZ6Q804CO5O43TGHLMDO4YTU10hggixe';
+        var md5key = 'ATWRX42FSTWJCMPVUBJSCSZN2T7OBZsdtkpu';
 
         var data = _.assign({}, req.body);
         var keys = _.keys(data);
         keys = _.sortBy(keys);
+        var sendData = {};
         var str = '';
         for (var i = 0; i < keys.length-1; ++i) {
             str += keys[i] + '=' + data[keys[i]] + '&';
+            sendData[keys[i].toString()] = data[keys[i]];
         }
         str += keys[i] + '=' + data[keys[i]];
+        sendData[keys[i].toString()] = data[keys[i]];
         var sign = sparkMD5.hash(str+md5key);
+        sendData['sign'] = sign;
         str += '&sign=' + sign;
-        console.log(str);
+        console.log(sendData);
         var url = 'https://www.ebatong.com/mobileFast/getDynNum.htm';
 
-        data.sign = sign;
+        var objData = {
+            'amount': '3.20',
+            'bank_code': 'CMB_D_B2C',
+            'card_bind_mobile_phone_no': '13439695920',
+            'card_no': '6226090104776295',
+            'cert_no': '620102198108041833',
+            'cert_type': '01',
+            'customer_id': '552e4252333bf12c75ce09e8',
+            'input_charset': 'UTF-8',
+            'out_trade_no': '2015041217271095',
+            'partner': '201206281102516718',
+            'real_name': '程翔',
+            'service': 'ebatong_mp_dyncode',
+            'sign_type': 'MD5',
+            'sign': '92cc9daa328e76461e0052ccc446e2cb' };
+
+        console.log(objData);
+
         var options = {
+            json: true,
             follow_max         : 3    // follow up to five redirects
         };
-        console.log(data);
-        needle.post(url, data, options, function(err, resp, body) {
+        needle.post(url, objData, options, function(err, resp, body) {
             console.log(body);
             /*
             var timestamp = body.ebatong.response.timestamp.encrypt_key;

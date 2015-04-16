@@ -152,6 +152,25 @@ function getChangePass(req, res, next) {
     })
 }
 
+function getRechargeBeiFu(req, res, next) {
+    var order_id = req.query.order_id;
+    if (!order_id) {
+        res.render('mobile/recharge_beifu', {
+            layout:null
+        });
+    } else {
+        Order.findById(order_id, function(err, order) {
+            if (err || !order) {
+                logger.warn('mobile getRecharge err:' + err.toString());
+            }
+            res.render('mobile/recharge_beifu', {
+                layout:null,
+                bootstrappedOrderObject: JSON.stringify(order)
+            });
+        });
+    }
+}
+
 function getRechargeAlipay(req, res, next) {
     var order_id = req.query.order_id;
     console.log(req.query);
@@ -291,6 +310,8 @@ module.exports = {
         app.get('/mobile/recharge_bank', getRechargeBank);
 
         app.get('/mobile/recharge_alipay', getRechargeAlipay);
+
+        app.get('/mobile/recharge_beifu', getRechargeBeiFu);
 
         app.get('/mobile/recharge_record', getRechargeRecord);
 

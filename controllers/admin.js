@@ -964,7 +964,7 @@ function autoConfirmAlipayOrder(req, res) {
 }
 
 function autoConfirmAddDepositOrder(req, res) {
-    var order_id = req.params.id;
+    var order_id = req.query.id;
     if (order_id) {
         Order.update({_id:order_id}, {dealType:9}, function(err, numberAffected, raw) {
             if (numberAffected) {
@@ -976,9 +976,9 @@ function autoConfirmAddDepositOrder(req, res) {
             }
         });
     } else {
-        logger.debug('autoConfirmAddDepositOrder error ' + err.toString());
+        logger.debug('autoConfirmAddDepositOrder error order id not passed');
         res.status(400);
-        res.send({error_code:1, error_msg:err.toString()});
+        res.send({error_code:1, error_msg:'order id not passed'});
     }
 }
 
