@@ -1,5 +1,5 @@
 'use strict';
-angular.module('adminApp').controller('AdminPendingApplyCtrl', ['$scope', '$http', '$location', '$modal', 'gbNotifier', 'days', function($scope, $http, $location, $modal, gbNotifier, days) {
+angular.module('adminApp').controller('AdminPendingApplyCtrl', ['$scope', '$http', '$location', '$modal', '$filter', 'gbNotifier', 'days', function($scope, $http, $location, $modal, $filter, gbNotifier, days) {
     var vm = this;
     var apply_list = {};
     var currentApplies;
