@@ -314,7 +314,7 @@ exports.addDeposit = function(req, res, next) {
         function(callback) {
             Apply.findOne({serialID:serial_id}, function(err, apply) {
                 if (!apply) {
-                    err = 'failed to find apply for when add deposit for apply:' + serial_id;
+                    err = 'failed to find apply when add deposit for apply:' + serial_id;
                 } else if (apply.status !== 2) {
                     err = 'apply not in the valid state';
                 }

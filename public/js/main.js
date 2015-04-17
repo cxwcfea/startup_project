@@ -183,7 +183,7 @@ $(document).ready(function() {
         }
         var apply_serial_id = $('#apply_serial_id')[0].innerText;
         var amount = Number($("#add_deposit_input")[0].value);
-        if (Number.isNaN(amount) || amount <= 0 || amount > 30000) {
+        if (amount <= 0 || amount > 30000) {
             alert('请输入有效的金额，金额大于0元小于3万元');
             return;
         }
@@ -200,7 +200,8 @@ $(document).ready(function() {
                 $(".jq_bzbzjbox").show();
             }
         })
-        .fail(function() {
+        .fail(function(data) {
+            console.log(data);
             $(".jq_bzbzjbox_fail").show();
         })
         .always(function() {
@@ -227,7 +228,7 @@ $(document).ready(function() {
     //我要延期下一步
     $(".jq_yzBtn01").click(function () {
         var period = Number($("#postpone_input")[0].value);
-        if (Number.isNaN(period) || period <= 0 || period > 22) {
+        if (period <= 0 || period > 22) {
             alert('请输入有效的日期，日期大于1小于23');
             return;
         }
@@ -274,7 +275,7 @@ $(document).ready(function() {
     $(".jq_tqylBtn02").click(function (e) {
         e.preventDefault();
         var amount = Number($("#get_profit_input")[0].value);
-        if (Number.isNaN(amount) || amount < 1) {
+        if (amount < 1) {
             alert('请输入有效的金额，最少1元');
             return;
         }
