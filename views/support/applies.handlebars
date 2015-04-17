@@ -28,11 +28,11 @@
                     <td class="am-hide-sm-only">\{{apply.serialID}}</td>
                     <td class="am-text-right">\{{apply.userMobile}}</td>
                     <td class="am-text-center">\{{apply.start_date | displayDate}}<br>\{{apply.end_date | displayDate}}</td>
-                    <td class="am-text-right"><span class="am-icon-rmb"></span><strong>\{{apply.amount}}</strong></td>
+                    <td class="am-text-right"><span class="am-icon-rmb"></span><strong>\{{apply.amount | currency:'':2}}</strong></td>
                     <td class="am-text-right"><strong>\{{apply.period}}</strong></td>
                     <td class="am-text-right"><span class="am-icon-rmb"></span><strong>\{{apply.fee}}</strong></td>
 
-                    <td class="am-text-right am-hide-sm-only"><span class="am-icon-rmb"></span><strong>\{{apply.deposit}}</strong></td>
+                    <td class="am-text-right am-hide-sm-only"><span class="am-icon-rmb"></span><strong>\{{apply.deposit | currency:'':2}}</strong></td>
                     <td class="am-text-center">\{{apply.status | applyStatus}}</td>
                     <td class="">\{{apply.account || '尚未分配' }}</td>
                     <td class="">\{{apply.manager || '尚未分配' }}</td>
@@ -40,7 +40,7 @@
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs">
                                 <!-- <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="applyVM.manageApply(apply)"><span class="am-icon-pencil-square-o"></span> 管理</button> -->
-                                <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-click="applyVM.takeApply(apply)"><span class="am-icon-user"></span> 我要接手</button>
+                                <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-hide="apply.manager" ng-click="applyVM.takeApply(apply)"><span class="am-icon-user"></span> 我要接手</button>
                             </div>
                         </div>
                     </td>

@@ -44,7 +44,7 @@
                                 <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="userVM.updateBalance(user)"><span class="am-icon-pencil"></span> 修改余额</button>
                                 <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="userVM.createOrder(user)"><span class="am-icon-pencil"></span> 创建订单</button>
                                 -->
-                                <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-click="userVM.takeCustomer(user)"><span class="am-icon-user"></span> 我要接手</button>
+                                <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-hide="user.manager" ng-click="userVM.takeCustomer(user)"><span class="am-icon-user"></span> 我要接手</button>
                             </div>
                         </div>
                     </td>

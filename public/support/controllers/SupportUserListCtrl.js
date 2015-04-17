@@ -1,6 +1,10 @@
 'use strict';
 angular.module('supportApp').controller('SupportUserListCtrl', ['$scope', '$http', '$modal', '$location', 'gbUser', 'gbNotifier', '$filter', '$window', function($scope, $http, $modal, $location, gbUser, gbNotifier, $filter, $window) {
     var vm = this;
+    vm.maxSize = 5;
+    if ($scope.data.searchKey) {
+        vm.searchKey = $scope.data.searchKey;
+    }
     vm.users = gbUser.query(function() {
         vm.users = $filter('orderBy')(vm.users, 'registerAt', true);
         vm.showAllUsers();
@@ -30,6 +34,7 @@ angular.module('supportApp').controller('SupportUserListCtrl', ['$scope', '$http
         if (!vm.searchKey) {
             return;
         }
+        $scope.data.searchKey = vm.searchKey;
         vm.currentUsers = [];
         for (var key in vm.users) {
             if (vm.users[key].mobile == vm.searchKey) {

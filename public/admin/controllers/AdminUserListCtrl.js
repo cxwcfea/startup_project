@@ -2,6 +2,9 @@
 angular.module('adminApp').controller('AdminUserListCtrl', ['$scope', '$http', '$modal', '$location', 'gbUser', 'gbNotifier', '$filter', function($scope, $http, $modal, $location, gbUser, gbNotifier, $filter) {
     var vm = this;
     vm.maxSize = 5;
+    if ($scope.data.searchKey) {
+        vm.searchKey = $scope.data.searchKey;
+    }
     vm.users = gbUser.query(function() {
         vm.users = $filter('orderBy')(vm.users, 'registerAt', true);
         vm.showAllUsers();
@@ -31,6 +34,7 @@ angular.module('adminApp').controller('AdminUserListCtrl', ['$scope', '$http', '
         if (!vm.searchKey) {
             return;
         }
+        $scope.data.searchKey = vm.searchKey;
         vm.currentUsers = [];
         for (var key in vm.users) {
             if (vm.users[key].mobile == vm.searchKey) {

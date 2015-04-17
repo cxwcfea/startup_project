@@ -328,7 +328,7 @@
                 case 1:
                     return "盛付通";
                 case 2:
-                    return "配资付款";
+                    return "股票配资盈利";
                 case 3:
                     return "支付宝";
                 case 4:
