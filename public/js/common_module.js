@@ -350,19 +350,19 @@
                 case 9:
                     return 18.9;
                 case 8:
-                    return 17.9;
+                    return 19.9;
                 case 7:
-                    return 16.9;
+                    return 18.9;
                 case 6:
-                    return 15.9;
+                    return 17.9;
                 case 5:
-                    return 10.9;
+                    return 14.9;
                 case 4:
-                    return 10.9;
+                    return 13.9;
                 case 3:
                     return 10.9;
                 case 2:
-                    return 10.9;
+                    return 9.9;
                 default:
                     return 19.9;
             }
@@ -374,7 +374,7 @@
             if (!period) {
                 period = apply.period;
             }
-            return Number((apply.amount / 10000 * this.getServiceCharge(apply.lever) * period).toFixed(2));
+            return Number((apply.amount / 10000 * (apply.serviceCharge ? apply.serviceCharge : this.getServiceCharge(apply.lever)) * period).toFixed(2));
         };
         this.getWarnValue = function(amount, deposit) {
             return Number((amount - warn_factor * deposit).toFixed(2));

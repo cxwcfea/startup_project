@@ -9,6 +9,7 @@ var applySchema = mongoose.Schema({
     period: {type:Number, required:'{PATH} is required!'},
     status: {type:Number, required:'{PATH} is required!', default: 1}, // 1 means 待支付, 2 means 操盘, 3 means 已结算, 4 means 审核中, 5 means 结算中, 9 means special
     applyAt: {type:Date, default: Date.now},
+    closeAt: Date,
     isTrial: {type:Boolean, default: false},
     lever: {type:Number, default: 10},
     warnValue: Number,

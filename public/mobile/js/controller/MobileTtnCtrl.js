@@ -8,6 +8,7 @@ angular.module('mobileApp').controller('MobileTtnCtrl', ['$scope', '$window', '$
     var startTime = days.startTime();
 
     vm.leverList = [
+        /*
         {
             name: '10倍',
             value: 10
@@ -16,6 +17,7 @@ angular.module('mobileApp').controller('MobileTtnCtrl', ['$scope', '$window', '$
             name: '9倍',
             value: 9
         },
+        */
         {
             name: '8倍',
             value: 8
@@ -31,8 +33,7 @@ angular.module('mobileApp').controller('MobileTtnCtrl', ['$scope', '$window', '$
         {
             name: '5倍',
             value: 5
-        }
-        /*
+        },
         {
             name: '4倍',
             value: 4
@@ -45,7 +46,6 @@ angular.module('mobileApp').controller('MobileTtnCtrl', ['$scope', '$window', '$
             name: '2倍',
             value: 2
         }
-        */
     ];
     vm.agree = true;
     vm.showOtherAmount = false;
@@ -63,7 +63,8 @@ angular.module('mobileApp').controller('MobileTtnCtrl', ['$scope', '$window', '$
         vm.summary.deposit = vm.summary.amount * depositFactor;
         vm.summary.warnValue = util.getWarnValue(vm.summary.amount, vm.summary.deposit);
         vm.summary.sellValue = util.getSellValue(vm.summary.amount, vm.summary.deposit);
-        var charge = vm.summary.amount / 10000 * util.getServiceCharge(vm.summary.lever); // * vm.summary.day;
+        vm.summary.serviceCharge = util.getServiceCharge(vm.summary.lever);
+        var charge = vm.summary.amount / 10000 * vm.summary.serviceCharge; // * vm.summary.day;
         vm.summary.charge = charge;
         vm.summary.total = vm.summary.deposit + charge;
         vm.endTime = days.endTime(startTime, vm.summary.day);

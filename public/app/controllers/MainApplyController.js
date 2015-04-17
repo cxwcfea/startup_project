@@ -21,6 +21,7 @@
         var startTime = days.startTime();
 
         vm.leverList = [
+            /*
             {
                 name: '10倍',
                 value: 10
@@ -29,6 +30,7 @@
                 name: '9倍',
                 value: 9
             },
+            */
             {
                 name: '8倍',
                 value: 8
@@ -44,8 +46,7 @@
             {
                 name: '5倍',
                 value: 5
-            }
-            /*
+            },
             {
                 name: '4倍',
                 value: 4
@@ -58,7 +59,6 @@
                 name: '2倍',
                 value: 2
             }
-            */
         ];
         vm.agree = true;
         vm.showOtherAmount = false;
@@ -79,7 +79,6 @@
             vm.summary.deposit = vm.summary.amount * depositFactor;
             vm.summary.warnValue = util.getWarnValue(vm.summary.amount, vm.summary.deposit);
             vm.summary.sellValue = util.getSellValue(vm.summary.amount, vm.summary.deposit);
-            vm.summary.deposit = vm.summary.amount * depositFactor;
             vm.summary.serviceCharge = util.getServiceCharge(vm.summary.lever);
             var charge = vm.summary.amount / 10000 * vm.summary.serviceCharge; // * vm.summary.day;
             vm.summary.charge = charge;
