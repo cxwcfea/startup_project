@@ -2,6 +2,7 @@ var mongoose = require('mongoose'),
     Apply = require('./models/Apply'),
     Order = require('./models/Order'),
 	User = require('./models/User'),
+    moment = require('moment'),
     config = require('./config/config')['production'];
 
 var getPayUserNum = function() {
@@ -24,6 +25,7 @@ var getPayUserNum = function() {
 };
 
 var withDrawOrder = function() {
+    console.log('withdrawOrder');
     var today = moment().startOf('day');
     /*
     Order.find({ $and: [{approvedAt:{$gte:today}},  {dealType:2}] }, function(err, order) {
