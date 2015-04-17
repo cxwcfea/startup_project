@@ -21,13 +21,13 @@
             <table class="am-table am-table-striped am-table-hover table-main">
                 <thead>
                 <tr>
-                    <th class="table-date">日期</th><th class="table-type">交易类型</th><th class="table-author">金额</th><th class="table-set">状态</th><th class="table-set">操作</th>
+                    <th class="table-date">日期</th><th class="table-type">手机号</th><th class="table-author">金额</th><th class="table-set">状态</th><th class="table-set">操作</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="order in profitOrderListVM.showingItems">
                     <td>\{{order.createdAt | displayDate}}</td>
-                    <td>\{{order.dealType | displayOrderType}}</td>
+                    <td>\{{order.userMobile}}</td>
                     <td>\{{order.amount}}</td>
                     <td>\{{order.status | orderStatus}}</td>
                     <td>
