@@ -161,7 +161,27 @@ function fetchOrdersForUser(req, res) {
 
 function fetchNearExpireApplies(req, res) {
     var startTime = util.getStartDay();
-    var endTime = util.getEndDay(startTime, 2).toDate();
+    var endTime = util.getEndDay(startTime, 2);
+    endTime.hour(15);
+    endTime.minute(10);
+    endTime.second(00);
+
+    Apply.find({ $and: [{ endTime: {$lte: endTime } }, {status: 2}] }, function(err, applies) {
+        if (err) {
+            logger.warn(err.toString());
+            res.status(401);
+            return res.send({success:false, reason:err.toString()});
+        }
+        res.send(applies);
+    });
+}
+
+function fetchOneDayExpireApplies(req, res) {
+    var startTime = util.getStartDay();
+    var endTime = util.getEndDay(startTime, 2);
+    endTime.hour(15);
+    endTime.minute(10);
+    endTime.second(00);
 
     Apply.find({ $and: [{ endTime: {$lte: endTime } }, {status: 2}] }, function(err, applies) {
         if (err) {
@@ -807,7 +827,7 @@ function autoFetchPendingApplies(req, res) {
             return {
                 "apply_serialID":apply.serialID,
                 "mobile":apply.userMobile,
-                "deposit": apply.isTrial ? 100 : apply.deposit,
+                "deposit": apply.deposit,
                 "lever":apply.isTrial ? 2000 : (apply.lever ? apply.lever - 1 : 9),
                 "amount":apply.isTrial ? 2000 : apply.amount-apply.deposit,
                 "margin_call":apply.isTrial ? 1900 : Number((apply.amount - config.warnFactor * apply.deposit).toFixed(2)),
@@ -1058,6 +1078,8 @@ module.exports = {
         app.post('/admin/api/orders/:id', passportConf.requiresRole('admin|support'), updateOrder);
 
         app.get('/admin/api/applies/expire', passportConf.requiresRole('admin|support'), fetchNearExpireApplies);
+
+        app.get('/admin/api/applies/expire_in_one_day', passportConf.requiresRole('admin|support'), fetchOneDayExpireApplies);
 
         app.get('/admin/api/applies/closing', passportConf.requiresRole('admin|support'), fetchClosingApplies);
 
