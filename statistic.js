@@ -40,12 +40,18 @@ var withDrawOrder = function() {
                     return;
                 }
                 Card.find({userID:user._id}, function(err, card) {
-                    for (var j = 0; j < card.length; ++j) {
+                    if (!card) {
                         console.log('===============================');
-                        console.log(card[j].userName);
-                        console.log(card[j].cardID);
                         console.log(user.mobile);
                         console.log('===============================');
+                    } else {
+                        for (var j = 0; j < card.length; ++j) {
+                            console.log('===============================');
+                            console.log(card[j].userName);
+                            console.log(card[j].cardID);
+                            console.log(user.mobile);
+                            console.log('===============================');
+                        }
                     }
                 });
             });
