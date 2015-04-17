@@ -16,6 +16,7 @@ angular.module('adminApp').controller('AdminPendingApplyCtrl', ['$scope', '$http
     function initData() {
         $http.get('/admin/api/applies/pending').success(function(data) {
             apply_list = data;
+            apply_list = $filter('orderBy')(apply_list, 'applyAt', true);
             angular.forEach(apply_list, function(value, key) {
                 formatData(value);
             });
