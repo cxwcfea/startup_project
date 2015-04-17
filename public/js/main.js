@@ -183,7 +183,7 @@ $(document).ready(function() {
         }
         var apply_serial_id = $('#apply_serial_id')[0].innerText;
         var amount = Number($("#add_deposit_input")[0].value);
-        if (amount <= 0 || amount > 30000) {
+        if (Number.isNaN(amount) || amount <= 0 || amount > 30000) {
             alert('请输入有效的金额，金额大于0元小于3万元');
             return;
         }
@@ -227,7 +227,7 @@ $(document).ready(function() {
     //我要延期下一步
     $(".jq_yzBtn01").click(function () {
         var period = Number($("#postpone_input")[0].value);
-        if (period <= 0 || period > 22) {
+        if (Number.isNaN(period) || period <= 0 || period > 22) {
             alert('请输入有效的日期，日期大于1小于23');
             return;
         }
@@ -258,5 +258,40 @@ $(document).ready(function() {
         $(".jq_yqBox02").hide();
         $(".jq_yqBox03").show();
     });
+
+    //提取盈利弹出层
+    $(".jq_tqylBtn03").click(function (e) {
+        e.preventDefault();
+        $(".jq_tqylBox").show();
+    });
+    //提取盈利第一步
+    $(".jq_tqylBtn01").click(function (e) {
+        e.preventDefault();
+        $(".jq_tqylBox01").hide();
+        $(".jq_tqylBox02").show();
+    });
+    //提取盈利第二步
+    $(".jq_tqylBtn02").click(function (e) {
+        e.preventDefault();
+        var amount = Number($("#get_profit_input")[0].value);
+        if (Number.isNaN(amount) || amount < 1) {
+            alert('请输入有效的金额，最少1元');
+            return;
+        }
+        var apply_serial_id = $('#apply_serial_id')[0].innerText;
+        $.post("/apply/get_profit/" + apply_serial_id, {amount:amount}, function() {
+            console.log( "post get profit done" );
+        })
+        .done(function(data) {
+            $(".jq_tqylBox03").show();
+        })
+        .fail(function(data, text) {
+            $(".jq_tqylBox_fail").show();
+        })
+        .always(function() {
+            $(".jq_tqylBox02").hide();
+        });
+    });
+
 
 });

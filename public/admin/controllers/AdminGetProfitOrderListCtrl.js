@@ -46,7 +46,7 @@ angular.module('adminApp').controller('AdminGetProfitOrderListCtrl', ['$scope', 
         });
         modalInstance.result.then(function (result) {
             order.status = 1;
-            $http.post('/admin/api/orders/'+order._id, order)
+            $http.post('/admin/api/finish_get_profit?id='+order._id, {})
                 .success(function(data, status, headers, config) {
                     currentUser.finance.balance += order.amount;
                     _.remove(order_list, function(o) {
@@ -54,18 +54,12 @@ angular.module('adminApp').controller('AdminGetProfitOrderListCtrl', ['$scope', 
                     });
                     currentOrders = order_list;
                     pageReset();
-                    currentUser.$save(function(u) {
-                        gbNotifier.notify('更新成功');
-                    }, function(err) {
-                        console.log(err);
-                        console.log(currentUser);
-                        currentUser.finance.balance -= order.amount;
-                        gbNotifier.error('更新失败:' + err.toString());
-                    });
+                    gbNotifier.notify('更新成功');
                 }).
                 error(function(data, status, headers, config) {
-                    gbNotifier.error('更新失败:' + data.reason);
+                    gbNotifier.error('更新失败:' + data.error_msg);
                 });
+            /*
             var data = {
                 user_mobile: currentUser.mobile,
                 sms_content: result.sms_content
@@ -78,6 +72,7 @@ angular.module('adminApp').controller('AdminGetProfitOrderListCtrl', ['$scope', 
                         gbNotifier.error('短信发送失败:' + response.data.reason);
                     }
                 });
+                */
         }, function () {
         });
     };
@@ -86,6 +81,7 @@ angular.module('adminApp').controller('AdminGetProfitOrderListCtrl', ['$scope', 
 angular.module('adminApp').controller('GetProfitModalCtrl', ['$scope', '$modalInstance', 'order', 'get_profit_sms_content', function ($scope, $modalInstance, order, get_profit_sms_content) {
     $scope.data = {};
     $scope.applySerialID = order.applySerialID;
+    $scope.amount = order.amount;
     $scope.data.sms_content = get_profit_sms_content;
 
     $scope.ok = function () {

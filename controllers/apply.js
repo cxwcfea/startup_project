@@ -248,42 +248,31 @@ exports.postApplyPostpone = function(req, res, next) {
     });
 };
 
-exports.getProfit = function(req, res, next) {
-    Apply.findOne({serialID:req.params.serial_id}, function(err, apply) {
-        if (err) {
-            next();
-        }
-        res.locals.apply = apply;
-        res.render('get_profit');
-    });
-};
-
 exports.postGetProfit = function(req, res, next) {
-    req.assert('profit_amount', '金额必须是正数').isInt();
-    req.assert('profit_amount', '金额不能为空').notEmpty();
+    var amount = Number(req.body.amount);
+    if (Number.isNaN(amount) || amount < 1) {
+        res.status(400);
+        return res.send({error_msg:'amount invalid:' + amount});
+    }
 
     var serial_id = req.params.serial_id;
-    var errors = req.validationErrors();
-    if (errors) {
-        req.flash('errors', errors);
-        return res.redirect('/apply/get_profit/' + serial_id);
-    }
-    var profit = Number(req.body.profit_amount);
+
     Apply.findOne({serialID:serial_id}, function(err, apply) {
         if (err) {
-            logger.warn('error when get profit for apply:' + apply.serialID);
-            req.flash('errors', err);
-            return res.redirect('/apply/get_profit/' + serial_id);
+            logger.warn('getProfit error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
         }
         if (!apply) {
-            logger.warn('failed to find apply for when get profit for apply:' + apply.serialID);
-            req.flash('errors', {msg:'没有找到配资记录'});
-            return res.redirect('/apply/get_profit/' + serial_id);
+            logger.warn('getProfit error apply not found:' + serial_id);
+            res.status(400);
+            return res.send('getProfit error apply not found:' + serial_id);
         }
         var orderData = {
             userID: apply.userID,
+            userMobile: apply.userMobile,
             dealType: 3,
-            amount: Number(profit.toFixed(2)),
+            amount: Number(amount.toFixed(2)),
             status: 0,
             description: '配资盈利提取',
             payType: 2,
@@ -292,11 +281,14 @@ exports.postGetProfit = function(req, res, next) {
         Order.create(orderData, function(err, order) {
             if (err || !order) {
                 logger.warn('failed create order when get profit for apply:' + apply.serialID);
-                req.flash('errors', {msg:'创建订单失败'});
-                return res.redirect('/apply/get_profit/' + serial_id);
+                res.status(500);
+                return res.send('failed create order when get profit for apply:' + serial_id);
             }
-            req.flash('info', {msg:'申请提交成功，订单已创建，我们会尽快处理'});
-            res.redirect('/apply_detail/' + serial_id);
+            var content = 'user:' + order.userMobile + ' account:' + apply.account + ' amount:' + order.amount;
+            util.sendEmail('op@niujinwang.com', '盈利提取', content, function(err) {
+                logger.debug('get profit send email success');
+            });
+            res.send({});
         });
     });
 };

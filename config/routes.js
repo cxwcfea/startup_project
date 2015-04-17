@@ -44,7 +44,7 @@ module.exports = function(app) {
 
     app.get('/apply_detail/:id', passportConf.isAuthenticated, applies.getApplyDetail);
 
-    app.get('/apply/get_profit/:serial_id', passportConf.isAuthenticated, applies.getProfit);
+    //app.get('/apply/get_profit/:serial_id', passportConf.isAuthenticated, applies.getProfit);
 
     app.post('/apply/get_profit/:serial_id', passportConf.isAuthenticated, applies.postGetProfit);
 

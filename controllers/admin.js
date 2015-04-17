@@ -753,6 +753,48 @@ function sendSellSMS(req, res) {
     });
 }
 
+function finishGetProfit(req, res) {
+    var order_id = req.query.id;
+    if (!order_id) {
+        logger.warn('finishGetProfit error, order not found:' + order_id);
+        res.status(400);
+        return res.send({error_msg:'finishGetProfit error, order not found:' + order_id});
+    }
+    Order.findById(order_id, function(err, order) {
+        if (err) {
+            logger.warn('finishGetProfit error' + err.toString());
+            res.status(500);
+            return res.send({error_msg:'finishGetProfit error' + err.toString()});
+        }
+        if (!order) {
+            logger.warn('finishGetProfit error order not found');
+            res.status(400);
+            return res.send({error_msg:'finishGetProfit error order not found'});
+        }
+        User.findById(order.userID, function(err, user) {
+            if (err) {
+                logger.warn('finishGetProfit error' + err.toString());
+                res.status(500);
+                return res.send({error_msg:'finishGetProfit error' + err.toString()});
+            }
+            if (!order) {
+                logger.warn('finishGetProfit error user not found');
+                res.status(400);
+                return res.send({error_msg:'finishGetProfit error user not found'});
+            }
+            util.orderFinished(user, order, 1, function(err) {
+                if (err) {
+                    logger.warn('finishGetProfit error' + err.toString());
+                    res.status(500);
+                    return res.send({error_msg:'finishGetProfit error' + err.toString()});
+                }
+                util.sendSMS_11(user.mobile, order.amount);
+                res.send({});
+            });
+        });
+    });
+}
+
 function autoFetchPendingApplies(req, res) {
     //logger.debug('autoFetchPendingApplies operator:', req.user.mobile);
     Apply.find({status: 4}, function(err, applies) {
@@ -1075,6 +1117,8 @@ module.exports = {
         app.post('/admin/api/send_sell_sms', passportConf.requiresRole('admin|support'), sendSellSMS);
 
         app.get('/admin/api/alipay_orders', passportConf.requiresRole('admin'), fetchOrdersOfAlipay);
+
+        app.post('/admin/api/finish_get_profit', passportConf.requiresRole('admin'), finishGetProfit);
 
         app.post('/admin/change_apply_to_pending', passportConf.requiresRole('admin|support'), changeApplyToPending);
 
