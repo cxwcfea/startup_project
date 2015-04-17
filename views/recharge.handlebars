@@ -231,10 +231,17 @@
         <div class="tmbg"></div>
         <div class="tar_TccBox newReczfb_TccBox">
             <div class="regColumn">
-                转账汇款 <span class="color_red"><strong>重要！转账后，请拨打4006921388方便客服人员确认！</strong></span>
+                转账汇款
+                <!--
                 <div class="loginClose jq_loginClose" ng-click="vm.closeOtherWindow()"></div>
+                -->
             </div>
-            <div class="newRec_zzhkBox">
+            <div class="newRec_zzhkBox" ng-class="{undis:!vm.bankTransConfirm}">
+                <span class="color_red"><strong>重要！转账后，请拨打4006921388联系客服人员以完成充值！</strong></span>
+                <p><span class="newrec_P04">请务必将您的注册手机号作为转账附加信息！</span></p>
+                <a href="" class="newrec_btn02 newrec_zfbbtn01" ng-click="vm.closeOtherWindow()">完 成</a>
+            </div>
+            <div class="newRec_zzhkBox" ng-class="{undis:vm.bankTransConfirm}">
                 <p class="newrec_P03">您可以通过银行柜台向牛金转账</p>
                 <div class="newRec_zzhkTable">
                     <table>
@@ -254,10 +261,10 @@
                             </td>
                         </tr>
                     </table>
-                    <p class="newrec_P04" style="color: red">请<strong>务必</strong>将您的注册手机号作为转账附加信息，方便客服人员确认！</p>
                 </div>
                 <alert ng-show="vm.showBankTransWindow" ng-repeat="alert in vm.alerts" type="\{{alert.type}}" close="vm.closeAlert($index)">\{{alert.msg}}</alert>
-                <p class="newrec_P04">将转账相关信息 <a href="" ng-click="vm.sendSMSBankInfo()">发送到手机</a></p>
+                <p class="newrec_P04">将转账相关信息 <a href="" ng-click="vm.sendSMSBankInfo()">发送到手机</a><a href="" ng-click="vm.bankTransNext()">下一步</a></p>
+                <br>
             </div>
         </div>
     </div>

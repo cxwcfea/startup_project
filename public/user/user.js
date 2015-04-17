@@ -32,6 +32,6 @@ angular.module('userApp').config(['$routeProvider', '$httpProvider', function($r
             controller: 'UserOrderListCtrl as orderVM'
         })
         .otherwise({
-            redirectTo: '/home'
+            redirectTo: '/applies'
         });
 }]);

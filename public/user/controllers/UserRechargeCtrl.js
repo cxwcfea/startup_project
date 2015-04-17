@@ -30,6 +30,7 @@ angular.module('userApp').controller('UserRechargeCtrl', ['$scope', '$window', '
     vm.bankObj = vm.BankNameList[0];
     vm.payBank = -1;
     vm.alipayConfirm = false;
+    vm.bankTransConfirm = false;
     vm.smsSend = false;
 
     vm.alipayAccountConfirm = false;
@@ -172,6 +173,7 @@ angular.module('userApp').controller('UserRechargeCtrl', ['$scope', '$window', '
         vm.showAlipayWindow = false;
         vm.showBankTransWindow = false;
         vm.alipayConfirm = false;
+        vm.bankTransConfirm = false;
         vm.alerts = [];
     };
 
@@ -231,6 +233,10 @@ angular.module('userApp').controller('UserRechargeCtrl', ['$scope', '$window', '
                 addAlert('danger', '服务暂时不可用，请稍后再试');
             }
         });
+    };
+
+    vm.bankTransNext = function() {
+        vm.bankTransConfirm = true;
     };
 
 }]);

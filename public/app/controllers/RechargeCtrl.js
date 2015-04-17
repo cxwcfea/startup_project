@@ -47,6 +47,7 @@
         vm.bankObj = vm.BankNameList[0];
         vm.payBank = -1;
         vm.alipayConfirm = false;
+        vm.bankTransConfirm = false;
         if (vm.user.lastPayBank >= 0) {
             vm.payBank = vm.user.lastPayBank;
         } else {
@@ -178,6 +179,7 @@
             vm.showAlipayWindow = false;
             vm.showBankTransWindow = false;
             vm.alipayConfirm = false;
+            vm.bankTransConfirm = false;
             vm.alerts = [];
         };
 
@@ -230,6 +232,10 @@
                         addAlert('danger', '服务暂时不可用，请稍后再试');
                     }
                 });
+        };
+
+        vm.bankTransNext = function() {
+            vm.bankTransConfirm = true;
         };
 
         function calculatePayAmount() {
