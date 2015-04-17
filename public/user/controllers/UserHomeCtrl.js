@@ -1,6 +1,7 @@
 'use strict';
 angular.module('userApp').controller('UserHomeCtrl', ['$scope', '$window', '$filter', 'njApply', 'days', function($scope, $window, $filter, njApply, days) {
     var vm = this;
+    $scope.data.menu = 1;
 
     vm.user = $scope.data.currentUser;
 

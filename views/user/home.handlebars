@@ -4,7 +4,7 @@
 <div class="wrapper tar_center" ng-app="userApp" ng-controller="UserIndexCtrl as userVM" ng-cloak>
     <div class="tra_left fl">
         <ul>
-            <li ng-class="{selected:data.menu === 1}" class="li01"><a href="/user">账户总览</a></li>
+            <li ng-class="{selected:data.menu === 1}" class="li01"><a href="/user/#/home">账户总览</a></li>
             <li ng-class="{selected:data.menu === 2}" class="li01"><a href="/user/#/applies">我的操盘</a></li>
             <li ng-class="{selected:data.menu === 3}"><a href="/user/#/orders" ng-mouseleave="userVM.hideSubMenu($event, 1)" ng-mouseover="userVM.showSubMenu($event, 1)">资金管理</a>
                 <ul class="tar_left_menu2" ng-show="userVM.capitalSubMenu" ng-mouseenter="userVM.showSubMenu($event, 1)" ng-mouseleave="userVM.hideSubMenu($event, 1)">
