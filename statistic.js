@@ -1,13 +1,14 @@
 var mongoose = require('mongoose'),
     Apply = require('./models/Apply'),
+    Card = require('./models/Card'),
     Order = require('./models/Order'),
-	User = require('./models/User'),
     moment = require('moment'),
+    User = require('./models/User'),
     config = require('./config/config')['production'];
 
 var getPayUserNum = function() {
     console.log('getPayUserNum');
-	Apply.find({ $and: [{isTrial:false}, {status:{$ne:1}}, {status:{$ne:9}}] }, function(err, applies) {
+    Apply.find({ $and: [{isTrial:false}, {status:{$ne:1}}, {status:{$ne:9}}] }, function(err, applies) {
         if (err) {
             console.log('err when getPayUserNum ' + err.toString());
             return;
@@ -26,29 +27,10 @@ var getPayUserNum = function() {
 
 var withDrawOrder = function() {
     console.log('withdrawOrder');
-    var today = moment().startOf('day');
-    /*
-    Order.find({ $and: [{approvedAt:{$gte:today}},  {dealType:2}] }, function(err, order) {
-        if (err || !order) {
-            console.log(err.toString());
-        } else {
-
-        }
-    })
-    */
-    var yestoday = today.subtract(1, 'days');
-    Apply.find({$and:[{isTrial:true}, {endTime:{$lte:today}}, {endTime:{$gte:yestoday}}]}, function(err, applies) {
-        console.log('run');
-        if (err) {
-            console.log('error ' + err.toString());
-            return;
-        }
-        if (!applies) {
-            console.log('applies not found');
-            return;
-        }
-        for (var i = 0; i < applies.length; ++i) {
-            User.findById(applies[i].userID, function(err, user) {
+    Order.find({$and:[{dealType:5},{amount:100.00}]}, function(err, order) {
+        console.log(order.length);
+        for(var i = 0; i < order.length; ++i) {
+            User.findById(order[i].userID, function(err, user) {
                 if (err) {
                     console.log('error ' + err.toString());
                     return;
@@ -57,11 +39,52 @@ var withDrawOrder = function() {
                     console.log('user not found');
                     return;
                 }
-                console.log(user);
+                Card.find({userID:user._id}, function(err, card) {
+                    for (var j = 0; j < card.length; ++j) {
+                        console.log('===============================');
+                        console.log(card[j].userName);
+                        console.log(card[j].cardID);
+                        console.log(user.mobile);
+                        console.log('===============================');
+                    }
+                });
             });
         }
     });
+    /*
+     var today = moment().startOf('day');
+     var yestoday = today.clone();
+     yestoday = yestoday.subtract(1, 'days');
+     today = today.toDate();
+     yestoday = yestoday.toDate();
+     Apply.find({$and:[{isTrial:true}, {status:{$ne:4}}, {endTime:{$lte:today}}, {endTime:{$gte:yestoday}}]}, function(err, applies) {
+     console.log('run');
+     if (err) {
+     console.log('error ' + err.toString());
+     return;
+     }
+     if (!applies) {
+     console.log('applies not found');
+     return;
+     }
+     console.log(applies.length);
+     for (var i = 0; i < applies.length; ++i) {
+     User.findById(applies[i].userID, function(err, user) {
+     if (err) {
+     console.log('error ' + err.toString());
+     return;
+     }
+     if (!user) {
+     console.log('user not found');
+     return;
+     }
+     console.log(user);
+     });
+     }
+     });
+     */
 };
+
 
 var options = {};
 mongoose.connect(config.db, options);
@@ -71,4 +94,3 @@ db.once('open', function callback() {
     console.log('goldenbull db opened');
     withDrawOrder();
 });
-//getPayUserNum();

@@ -83,7 +83,6 @@ angular.module('adminApp').controller('AdminUserListCtrl', ['$scope', '$http', '
         });
     };
 
-    /*
     vm.updateBalance = function(user) {
         var modalInstance = $modal.open({
             templateUrl: 'userUpdateModal.html',
@@ -111,7 +110,6 @@ angular.module('adminApp').controller('AdminUserListCtrl', ['$scope', '$http', '
         }, function () {
         });
     };
-    */
 
     vm.createOrder = function(user) {
         var modalInstance = $modal.open({
