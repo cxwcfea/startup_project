@@ -30,7 +30,7 @@ var withDrawOrder = function() {
     Order.find({$and:[{dealType:5},{amount:100.00}]}, function(err, order) {
         console.log(order.length);
         for(var i = 0; i < order.length; ++i) {
-            console.log(order.userMobile);
+            console.log(order[i].userMobile);
             User.findById(order[i].userID, function(err, user) {
                 if (err) {
                     console.log('error ' + err.toString());
