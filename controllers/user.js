@@ -963,6 +963,7 @@ module.exports.shengpayFeedback = function(req, res) {
             function(user, order, callback) {
                 order.payType = 1;
                 order.transID = result.TransNo;
+                order.bankTransID = result.PaymentNo;
                 var pay_amount = Number(result.TransAmount);
                 if (pay_amount <= 0) {
                     callback('pay_amount not valid:' + pay_amount);
