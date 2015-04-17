@@ -163,7 +163,7 @@ exports.postApplyPostpone = function(req, res, next) {
             todayEndTime = todayEndTime.toDate();
 
             var deadline = moment();
-            deadline.hour(12);
+            deadline.hour(13);
             deadline.minute(00);
             deadline.second(00);
 

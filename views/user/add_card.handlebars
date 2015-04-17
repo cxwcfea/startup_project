@@ -71,6 +71,7 @@
         </div>
     </div>
     <alert ng-repeat="alert in cardVM.alerts" type="\{{alert.type}}" close="cardVM.closeAlert($index)">\{{alert.msg}}</alert>
+    <p class="color_red">请仔细核对每一项信息，确保无误，方能顺利提现。</p>
     <a href="" class="recBtn01 newcar_btn jq_newcar_btn" ng-click="cardVM.addCard()">保存</a>
 </div>
 
