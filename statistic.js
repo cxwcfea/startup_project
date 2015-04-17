@@ -38,8 +38,25 @@ var withDrawOrder = function() {
     */
     var yestoday = today.subtract(1, 'days');
     Apply.find({$and:[{isTrial:true}, {endTime:{$lte:today}}, {endTime:{$gte:yestoday}}]}, function(err, applies) {
+        console.log('run');
+        if (err) {
+            console.log('error ' + err.toString());
+            return;
+        }
+        if (!applies) {
+            console.log('applies not found');
+            return;
+        }
         for (var i = 0; i < applies.length; ++i) {
             User.findById(applies[i].userID, function(err, user) {
+                if (err) {
+                    console.log('error ' + err.toString());
+                    return;
+                }
+                if (!user) {
+                    console.log('user not found');
+                    return;
+                }
                 console.log(user);
             });
         }
@@ -52,6 +69,6 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error...'));
 db.once('open', function callback() {
     console.log('goldenbull db opened');
+    withDrawOrder();
 });
 //getPayUserNum();
-withDrawOrder();
