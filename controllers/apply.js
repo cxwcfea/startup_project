@@ -34,6 +34,10 @@ exports.getApplyDetail = function (req, res, next) {
         if (err || !apply) {
             return next();
         }
+        if (apply.userMobile != req.user.mobile) {
+            logger.debug('getApplyDetail error, the user:' + req.user.mobile + ' not have rights to see the apply of ' + apply.userMobile);
+            return next();
+        }
         var serviceFee = util.getServiceFee(apply, apply.period);
         if (apply.isTrial) {
             serviceFee = 0;
@@ -317,6 +321,8 @@ exports.addDeposit = function(req, res, next) {
                     err = 'failed to find apply when add deposit for apply:' + serial_id;
                 } else if (apply.status !== 2) {
                     err = 'apply not in the valid state';
+                } else  if (apply.userMobile != req.user.mobile) {
+                    err = 'not the same user to do the request apply user:' + apply.userMobile + ' currentUser:' + req.user.mobile;
                 }
                 callback(err, apply);
             });
