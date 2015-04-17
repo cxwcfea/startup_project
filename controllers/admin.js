@@ -1010,6 +1010,9 @@ function autoConfirmAddDepositOrder(req, res) {
     if (order_id) {
         Order.update({_id:order_id}, {dealType:9}, function(err, numberAffected, raw) {
             if (numberAffected) {
+                Order.findById(order_id, function(err, order) {
+                    util.sendSMS_12(order.userMobile, order.amount);
+                });
                 res.send({error_code:0});
             } else {
                 logger.debug('autoConfirmAddDepositOrder error order not found');
