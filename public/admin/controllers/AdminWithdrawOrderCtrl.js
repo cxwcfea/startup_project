@@ -156,11 +156,19 @@ angular.module('adminApp').controller('withdrawOrderDeleteModalCtrl', ['$scope',
 
 angular.module('adminApp').controller('orderHistoryModalCtrl', ['$scope', '$modalInstance', 'order', 'orders', function ($scope, $modalInstance, order, orders) {
     $scope.userMobile = order.userMobile;
+    $scope.amount = order.amount;
     $scope.rechargeOrders = orders.filter(function(elem) {
         return elem.dealType === 1;
     });
     $scope.withdrawOrders = orders.filter(function(elem) {
         return elem.dealType === 2;
+    });
+    $scope.profitOrders = orders.filter(function(elem) {
+        return elem.dealType === 4;
+    });
+    $scope.profitAmount = 0;
+    $scope.profitOrders.map(function(elem) {
+        $scope.profitAmount += elem.amount;
     });
     $scope.rechargeAmount = 0;
     $scope.rechargeOrders.map(function(elem) {
@@ -170,7 +178,7 @@ angular.module('adminApp').controller('orderHistoryModalCtrl', ['$scope', '$moda
     $scope.withdrawOrders.map(function(elem) {
         $scope.withdrawAmount += elem.amount;
     });
-    $scope.delta = $scope.rechargeAmount - $scope.withdrawAmount;
+    $scope.delta = $scope.rechargeAmount + $scope.profitAmount - $scope.withdrawAmount;
 
     $scope.ok = function () {
         $modalInstance.close();

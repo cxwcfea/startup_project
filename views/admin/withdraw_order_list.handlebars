@@ -84,13 +84,19 @@
             <li ng-repeat="order in rechargeOrders">\{{order.payType | payType}}:\{{order.amount | currency:'':2}}</li>
         </ol>
         <p class="am-text-primary">充值共计:\{{::rechargeAmount | currency:'':2}}</p>
+        <p class="am-text-success"><strong>股票盈利订单:</strong></p>
+        <ol>
+            <li ng-repeat="order in profitOrders">\{{order.amount | currency:'':2}}</li>
+        </ol>
+        <p class="am-text-primary">盈利共计:\{{::profitAmount | currency:'':2}}</p>
         <p class="am-text-danger"><strong>提现订单:</strong></p>
         <ol>
             <li ng-repeat="order in withdrawOrders">\{{order.amount | currency:'':2}}</li>
         </ol>
         <p class="am-text-primary">提现共计:\{{::withdrawAmount | currency:'':2}}</p>
         <br>
-        <p>充值/提现 差额:\{{::delta | currency:'':2}}</p>
+        <p>充值+盈利-提现 差额:\{{::delta | currency:'':2}}</p>
+        <p>当前提现金额：\{{::amount}}</p>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-click="ok()">确认</button>
