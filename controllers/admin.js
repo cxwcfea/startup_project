@@ -1047,6 +1047,26 @@ function autoConfirmAddDepositOrder(req, res) {
     }
 }
 
+function sendGroupSMS(req, res) {
+    var content = '周五证监会新闻发布会后，外盘A50期指跌幅一度超过5%，预计周一大盘将有深度调整。请您适度控制仓位，并及时追加保证金，避免平仓风险。';
+    util.getPayUserInProcessing(function(err, users) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        var user_mobiles = _.keys(users);
+        user_mobiles.push('13810655219');
+        user_mobiles.push('13121909306');
+        user_mobiles.push('18911535534');
+        user_mobiles.push('18612921262');
+        user_mobiles.map(function(mobile) {
+            sms.sendSMS(mobile, '', content, function() {
+            });
+        });
+        res.send({});
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -1146,6 +1166,8 @@ module.exports = {
         app.post('/admin/api/finish_get_profit', passportConf.requiresRole('admin'), finishGetProfit);
 
         app.post('/admin/change_apply_to_pending', passportConf.requiresRole('admin|support'), changeApplyToPending);
+
+        app.get('/admin/api/group_sms', passportConf.requiresRole('admin'), sendGroupSMS);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
