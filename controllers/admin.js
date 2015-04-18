@@ -1073,6 +1073,7 @@ function autoConfirmAddDepositOrder(req, res) {
 
 function sendGroupSMS(req, res) {
     var content = '周五证监会新闻发布会后，外盘A50期指跌幅一度超过5%，预计周一大盘将有深度调整。请您适度控制仓位，并及时追加保证金，避免平仓风险。';
+    /*
     util.getPayUserInProcessing(function(err, users) {
         if (err) {
             res.status(500);
@@ -1089,6 +1090,7 @@ function sendGroupSMS(req, res) {
         });
         res.send({num:user_mobiles.length});
     });
+    */
 }
 
 function changeWrongOrders(req, res) {
@@ -1209,8 +1211,6 @@ module.exports = {
         app.post('/admin/change_apply_to_pending', passportConf.requiresRole('admin|support'), changeApplyToPending);
 
         app.get('/admin/api/group_sms', passportConf.requiresRole('admin'), sendGroupSMS);
-
-        app.get('/admin/api/change_wrong_orders', passportConf.requiresRole('admin'), changeWrongOrders);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

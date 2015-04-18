@@ -17,7 +17,6 @@
 
         vm.min_amount = 2000;
         vm.max_amount = 300000;
-        var depositFactor = 0.1;
         var startTime = days.startTime();
 
         vm.leverList = [
@@ -66,6 +65,7 @@
         vm.showLoginWindow = false;
         vm.selectedLever = vm.leverList[0];
 
+
         vm.summary = {
             day: 1,
             amount: 2000
@@ -86,6 +86,7 @@
             vm.endTime = days.endTime(startTime, vm.summary.day);
         }
 
+        var depositFactor = 1 / vm.selectedLever.value;
         calculateSummery();
 
         vm.amountList = [

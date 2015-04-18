@@ -4,7 +4,6 @@ angular.module('mobileApp').controller('MobileTtnCtrl', ['$scope', '$window', '$
 
     vm.min_amount = 2000;
     vm.max_amount = 300000;
-    var depositFactor = 0.1;
     var startTime = days.startTime();
 
     vm.leverList = [
@@ -70,6 +69,7 @@ angular.module('mobileApp').controller('MobileTtnCtrl', ['$scope', '$window', '$
         vm.endTime = days.endTime(startTime, vm.summary.day);
     }
 
+    var depositFactor = 1 / vm.selectedLever.value;
     calculateSummery();
 
     vm.amountList = [
