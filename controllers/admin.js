@@ -1063,7 +1063,7 @@ function sendGroupSMS(req, res) {
             sms.sendSMS(mobile, '', content, function() {
             });
         });
-        res.send({});
+        res.send({num:user_mobiles.length});
     });
 }
 
