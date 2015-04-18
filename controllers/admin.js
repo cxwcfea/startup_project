@@ -39,7 +39,7 @@ function main(req, res, next) {
         function(data, callback) {
             util.getTodayActiveFreeApplyData(function(err, dataObj) {
                 if (!err) {
-                    data.current_free_apply_amount = dataObj.amount;
+                    data.current_free_apply_amount = util.formatDisplayNum(dataObj.amount);
                 }
                 callback(err, data);
             });
