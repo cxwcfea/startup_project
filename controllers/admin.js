@@ -313,7 +313,7 @@ function closeApply(req, res) {
 }
 
 function fetchGetProfitOrders(req, res) {
-    Order.find({$and: [{ dealType: 3 }, {status: 0}]}, function(err, orders) {
+    Order.find({$and: [{ dealType: 3 }, {status: {$ne:1}}]}, function(err, orders) {
         if (err) {
             logger.warn(err.toString());
             res.status(401);
@@ -595,6 +595,30 @@ function deleteRechargeOrder(req, res) {
         if (err) {
             res.status(500);
             return res.send({error_msg:err.toString()});
+        }
+        res.send({});
+    });
+}
+
+function deleteGetProfitOrder(req, res) {
+    if (!req.body) {
+        res.status(400);
+        return res.send({error_msg:'empty request'});
+    }
+    logger.info('deleteRechargeOrder operator:' + req.user.mobile);
+    var amount = req.body.amount;
+    var account = req.body.account;
+    var order = req.body.order;
+    Order.find({ $and: [{_id: req.params.id }, {status: {$ne:1}}, {dealType:3}] }).remove(function(err) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        if (amount >= 0 && account && order) {
+            var content = '您的' + order.amount + '元盈利提取申请,由于操盘账户(' + account + ')中可提取金额(' + amount + ')不足，已经取消。';
+            console.log(order.userMobile);
+            sms.sendSMS(order.userMobile, '', content, function () {
+            })
         }
         res.send({});
     });
@@ -1138,6 +1162,8 @@ module.exports = {
         app.post('/admin/api/delete_withdraw_order/:id', passportConf.requiresRole('admin'), deleteWithdrawOrder);
 
         app.post('/admin/api/delete_order_of_alipay/:id', passportConf.requiresRole('admin'), deleteOrderOfAlipay);
+
+        app.post('/admin/api/delete_get_profit_order/:id', passportConf.requiresRole('admin'), deleteGetProfitOrder);
 
         app.get('/api/auto_fetch_pending_apply', passportConf.requiresRole('admin'), autoFetchPendingApplies);
 

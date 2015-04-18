@@ -277,7 +277,7 @@ exports.postGetProfit = function(req, res, next) {
             userMobile: apply.userMobile,
             dealType: 3,
             amount: Number(amount.toFixed(2)),
-            status: 0,
+            status: 2,
             description: '配资盈利提取',
             payType: 2,
             applySerialID: apply.serialID

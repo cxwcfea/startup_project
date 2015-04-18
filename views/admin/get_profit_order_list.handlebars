@@ -21,7 +21,7 @@
             <table class="am-table am-table-striped am-table-hover table-main">
                 <thead>
                 <tr>
-                    <th class="table-date">日期</th><th class="table-type">手机号</th><th class="table-author">金额</th><th class="table-set">状态</th><th class="table-set">操作</th>
+                    <th class="table-date">日期</th><th class="table-type">手机号</th><th class="table-author">金额</th><th class="table-set">操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -29,11 +29,11 @@
                     <td>\{{order.createdAt | displayDate}}</td>
                     <td>\{{order.userMobile}}</td>
                     <td>\{{order.amount}}</td>
-                    <td>\{{order.status | orderStatus}}</td>
                     <td>
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs">
-                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-show="!order.status" ng-click="profitOrderListVM.handleOrder(order)"><span class="am-icon-pencil-square-o"></span> 管理</button>
+                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="profitOrderListVM.handleOrder(order)"><span class="am-icon-pencil-square-o"></span> 管理</button>
+                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="profitOrderListVM.deleteOrder(order)"><span class="am-icon-close"></span> 删除</button>
                             </div>
                         </div>
                     </td>
@@ -58,13 +58,25 @@
     </div>
     <div class="modal-body">
         <p>配资单号：\{{applySerialID}}</p>
+        <p>Homs: \{{account}}</p>
         <p>计划盈提金额: \{{amount}}</p>
-        <!--
-        <div class="am-form-group">
-            <label for="sms-content">短信内容</label>
-            <textarea class="" rows="4" id="sms-content" ng-model="data.sms_content"></textarea>
-        </div>
-        -->
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">完成盈利提取</button>
+        <button class="btn btn-warning" ng-click="cancel()">取消</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="deleteProfitModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">删除盈提订单</h3>
+    </div>
+    <div class="modal-body">
+        <p>配资单号：\{{::applySerialID}}</p>
+        <p>Homs: \{{::account}}</p>
+        <p>计划盈提金额: \{{::amount}}</p>
+        <p>实际可提金额:</p>
+        <input type="number" min="0" ng-model="actual_profit">
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-click="ok()">完成盈利提取</button>

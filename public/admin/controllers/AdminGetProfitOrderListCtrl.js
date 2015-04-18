@@ -1,5 +1,5 @@
 'use strict';
-angular.module('adminApp').controller('AdminGetProfitOrderListCtrl', ['$scope', '$location', '$routeParams', '$modal', '$http', 'gbNotifier', 'gbUser', function($scope, $location, $routeParams, $modal, $http, gbNotifier, gbUser) {
+angular.module('adminApp').controller('AdminGetProfitOrderListCtrl', ['$scope', '$location', '$routeParams', '$modal', '$http', 'gbNotifier', 'gbUser', 'adminApply', function($scope, $location, $routeParams, $modal, $http, gbNotifier, gbUser, adminApply) {
     var vm = this;
     var order_list = {};
     var currentOrders;
@@ -35,57 +35,131 @@ angular.module('adminApp').controller('AdminGetProfitOrderListCtrl', ['$scope', 
         gbUser.get({id:order.userID}, function(user) {
             currentUser = user;
         });
-        var modalInstance = $modal.open({
-            templateUrl: 'getProfitModal.html',
-            controller: 'GetProfitModalCtrl',
-            resolve: {
-                order: function () {
-                    return order;
-                }
-            }
-        });
-        modalInstance.result.then(function (result) {
-            order.status = 1;
-            $http.post('/admin/api/finish_get_profit?id='+order._id, {})
-                .success(function(data, status, headers, config) {
-                    currentUser.finance.balance += order.amount;
-                    _.remove(order_list, function(o) {
-                        return o._id === order._id;
-                    });
-                    currentOrders = order_list;
-                    pageReset();
-                    gbNotifier.notify('更新成功');
-                }).
-                error(function(data, status, headers, config) {
-                    gbNotifier.error('更新失败:' + data.error_msg);
-                });
-            /*
-            var data = {
-                user_mobile: currentUser.mobile,
-                sms_content: result.sms_content
-            };
-            $http.post('/admin/api/send_sms', data)
-                .then(function(response) {
-                    if (response.data.success) {
-                        gbNotifier.notify('短信已发送');
-                    } else {
-                        gbNotifier.error('短信发送失败:' + response.data.reason);
+        adminApply.get({id:order.applySerialID, uid:order.userID}, function(apply) {
+            var modalInstance = $modal.open({
+                templateUrl: 'getProfitModal.html',
+                controller: 'GetProfitModalCtrl',
+                resolve: {
+                    order: function () {
+                        return order;
+                    },
+                    apply: function () {
+                        return apply;
                     }
-                });
-                */
-        }, function () {
+                }
+            });
+            modalInstance.result.then(function (result) {
+                order.status = 1;
+                $http.post('/admin/api/finish_get_profit?id=' + order._id, {})
+                    .success(function (data, status, headers, config) {
+                        currentUser.finance.balance += order.amount;
+                        _.remove(order_list, function (o) {
+                            return o._id === order._id;
+                        });
+                        currentOrders = order_list;
+                        pageReset();
+                        gbNotifier.notify('更新成功');
+                    }).
+                    error(function (data, status, headers, config) {
+                        gbNotifier.error('更新失败:' + data.error_msg);
+                    });
+                /*
+                 var data = {
+                 user_mobile: currentUser.mobile,
+                 sms_content: result.sms_content
+                 };
+                 $http.post('/admin/api/send_sms', data)
+                 .then(function(response) {
+                 if (response.data.success) {
+                 gbNotifier.notify('短信已发送');
+                 } else {
+                 gbNotifier.error('短信发送失败:' + response.data.reason);
+                 }
+                 });
+                 */
+            }, function () {
+            });
+        });
+    };
+
+    vm.deleteOrder = function(order) {
+        gbUser.get({id:order.userID}, function(user) {
+            currentUser = user;
+        });
+        adminApply.get({id:order.applySerialID, uid:order.userID}, function(apply) {
+            var modalInstance = $modal.open({
+                templateUrl: 'deleteProfitModal.html',
+                controller: 'DeleteProfitModalCtrl',
+                resolve: {
+                    order: function () {
+                        return order;
+                    },
+                    apply: function () {
+                        return apply;
+                    }
+                }
+            });
+            modalInstance.result.then(function (result) {
+                console.log(result);
+                if (result === null || result === undefined) {
+                    gbNotifier.error('请输入实际金额');
+                    return;
+                }
+                $http.post('/admin/api/delete_get_profit_order/' + order._id, {amount:result, account:apply.account, order:order})
+                    .success(function (data, status, headers, config) {
+                        _.remove(order_list, function (o) {
+                            return o._id === order._id;
+                        });
+                        currentOrders = order_list;
+                        pageReset();
+                        gbNotifier.notify('更新成功');
+                    }).
+                    error(function (data, status, headers, config) {
+                        gbNotifier.error('更新失败:' + data.error_msg);
+                    });
+                /*
+                 var data = {
+                 user_mobile: currentUser.mobile,
+                 sms_content: result.sms_content
+                 };
+                 $http.post('/admin/api/send_sms', data)
+                 .then(function(response) {
+                 if (response.data.success) {
+                 gbNotifier.notify('短信已发送');
+                 } else {
+                 gbNotifier.error('短信发送失败:' + response.data.reason);
+                 }
+                 });
+                 */
+            }, function () {
+            });
         });
     };
 }]);
 
-angular.module('adminApp').controller('GetProfitModalCtrl', ['$scope', '$modalInstance', 'order', 'get_profit_sms_content', function ($scope, $modalInstance, order, get_profit_sms_content) {
+angular.module('adminApp').controller('GetProfitModalCtrl', ['$scope', '$modalInstance', 'order', 'apply', 'get_profit_sms_content', function ($scope, $modalInstance, order, apply, get_profit_sms_content) {
     $scope.data = {};
     $scope.applySerialID = order.applySerialID;
     $scope.amount = order.amount;
-    $scope.data.sms_content = get_profit_sms_content;
+    $scope.account = apply.account;
 
     $scope.ok = function () {
         $modalInstance.close($scope.data);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+}]);
+
+angular.module('adminApp').controller('DeleteProfitModalCtrl', ['$scope', '$modalInstance', 'order', 'apply', 'get_profit_sms_content', function ($scope, $modalInstance, order, apply, get_profit_sms_content) {
+    $scope.data = {};
+    $scope.applySerialID = order.applySerialID;
+    $scope.amount = order.amount;
+    $scope.account = apply.account;
+
+    $scope.ok = function () {
+        $modalInstance.close($scope.actual_profit);
     };
 
     $scope.cancel = function () {
