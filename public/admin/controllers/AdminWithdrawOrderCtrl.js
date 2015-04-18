@@ -112,6 +112,31 @@ angular.module('adminApp').controller('AdminWithdrawOrderCtrl', ['$scope', '$loc
         }, function () {
         });
     };
+
+    vm.orderHistory = function(order) {
+        $http.get('/admin/api/fetch_user_order_history?user_id=' + order.userID)
+            .success(function(data, status) {
+                var modalInstance = $modal.open({
+                    templateUrl: 'orderHistoryModal.html',
+                    controller: 'orderHistoryModalCtrl',
+                    size:'lg',
+                    resolve: {
+                        order: function () {
+                            return order;
+                        },
+                        orders: function () {
+                            return data;
+                        }
+                    }
+                });
+                modalInstance.result.then(function (trans_id) {
+                }, function () {
+                });
+            })
+            .error(function(data, status) {
+                console.log(data);
+            });
+    }
 }]);
 
 angular.module('adminApp').controller('withdrawOrderDeleteModalCtrl', ['$scope', '$modalInstance', 'order', function ($scope, $modalInstance, order) {
@@ -119,6 +144,33 @@ angular.module('adminApp').controller('withdrawOrderDeleteModalCtrl', ['$scope',
     $scope.bank = order.cardInfo.bank;
     $scope.bankName = order.cardInfo.bankName;
     $scope.cardID = order.cardInfo.cardID;
+
+    $scope.ok = function () {
+        $modalInstance.close();
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+}]);
+
+angular.module('adminApp').controller('orderHistoryModalCtrl', ['$scope', '$modalInstance', 'order', 'orders', function ($scope, $modalInstance, order, orders) {
+    $scope.userMobile = order.userMobile;
+    $scope.rechargeOrders = orders.filter(function(elem) {
+        return elem.dealType === 1;
+    });
+    $scope.withdrawOrders = orders.filter(function(elem) {
+        return elem.dealType === 2;
+    });
+    $scope.rechargeAmount = 0;
+    $scope.rechargeOrders.map(function(elem) {
+        $scope.rechargeAmount += elem.amount;
+    });
+    $scope.withdrawAmount = 0;
+    $scope.withdrawOrders.map(function(elem) {
+        $scope.withdrawAmount += elem.amount;
+    });
+    $scope.delta = $scope.rechargeAmount - $scope.withdrawAmount;
 
     $scope.ok = function () {
         $modalInstance.close();

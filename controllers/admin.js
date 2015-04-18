@@ -1141,6 +1141,27 @@ function changeWrongOrders(req, res) {
     });
 }
 
+function fetchUserOrderHistory(req, res) {
+    var user_id = req.query.user_id;
+    if (!user_id) {
+        res.status(400);
+        return res.send({error_msg:'require user id'});
+    }
+    async.waterfall([
+        function(callback) {
+            Order.find({ $and: [{userID:user_id}, {status:1}] }, function(err, orders) {
+                callback(err, orders);
+            });
+        }
+    ], function(err, orders) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send(orders);
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -1244,6 +1265,8 @@ module.exports = {
         app.post('/admin/change_apply_to_pending', passportConf.requiresRole('admin|support'), changeApplyToPending);
 
         app.get('/admin/api/group_sms', passportConf.requiresRole('admin'), sendGroupSMS);
+
+        app.get('/admin/api/fetch_user_order_history', passportConf.requiresRole('admin'), fetchUserOrderHistory);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
