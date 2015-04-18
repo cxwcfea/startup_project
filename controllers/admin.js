@@ -35,6 +35,14 @@ function main(req, res, next) {
                 }
                 callback(err, data);
             });
+        },
+        function(data, callback) {
+            util.getTodayActiveFreeApplyData(function(err, dataObj) {
+                if (!err) {
+                    data.current_free_apply_amount = dataObj.amount;
+                }
+                callback(err, data);
+            });
         }
     ], function(err, data) {
         if (err) {
@@ -45,6 +53,7 @@ function main(req, res, next) {
             data.active_pay_user_count = 0;
             data.active_apply_amount = 0;
             data.active_deposit_amount = 0;
+            data.current_free_apply_amount = 0;
         }
         res.locals.data = data;
         if (req.user && req.user.roles) {
