@@ -62,16 +62,8 @@ angular.module('userApp').controller('UserApplyListCtrl', ['$scope', '$location'
                 value: 0
             },
             {
-                name: '待支付',
-                value: 1
-            },
-            {
-                name: '当前操盘',
+                name: '操盘中',
                 value: 2
-            },
-            {
-                name: '已结算',
-                value: 3
             },
             {
                 name: '审核中',
@@ -80,6 +72,10 @@ angular.module('userApp').controller('UserApplyListCtrl', ['$scope', '$location'
             {
                 name: '结算中',
                 value: 5
+            },
+            {
+                name: '已结算',
+                value: 3
             }
         ];
     }

@@ -42,6 +42,13 @@
             </tr>
         </table>
     </div>
+    <div class="neword_menu">
+        <div class="fl neword_menulist">
+            <ul>
+                <li ng-repeat="item in applyVM.queryItems" ng-click="applyVM.queryItem(item)" ng-class="{selected: item.value === applyVM.selected}">\{{item.name}}</li>
+            </ul>
+        </div>
+    </div>
     <div class="tra_tableBox02">
         <table>
             <tr>
