@@ -14,15 +14,39 @@ var User = require('../models/User'),
     sms = require('../lib/sms');
 
 function main(req, res, next) {
-    util.getPayUserNum(function(err, dataObj) {
-        if (err) {
-            dataObj.count = 0;
-            dataObj.amount = 0;
-            dataObj.deposit = 0;
+    async.waterfall([
+        function(callback) {
+            util.getPayUserData(function(err, dataObj) {
+                var data = {};
+                if (!err) {
+                    data.history_pay_user_count = dataObj.count;
+                    data.history_apply_amount = util.formatDisplayNum(dataObj.amount);
+                    data.history_deposit_amount = util.formatDisplayNum(dataObj.deposit);
+                }
+                callback(err, data);
+            });
+        },
+        function(data, callback) {
+            util.getTodayActiveApplyData(function(err, dataObj) {
+                if (!err) {
+                    data.active_pay_user_count = dataObj.count;
+                    data.active_apply_amount = util.formatDisplayNum(dataObj.amount);
+                    data.active_deposit_amount = util.formatDisplayNum(dataObj.deposit);
+                }
+                callback(err, data);
+            });
         }
-        res.locals.pay_user_count = dataObj.count;
-        res.locals.amount = util.formatDisplayNum(dataObj.amount);
-        res.locals.deposit = util.formatDisplayNum(dataObj.deposit);
+    ], function(err, data) {
+        if (err) {
+            console.log('error when get statistic ' + err.toString());
+            data.history_pay_user_count = 0;
+            data.history_apply_amount = 0;
+            data.history_deposit_amount = 0;
+            data.active_pay_user_count = 0;
+            data.active_apply_amount = 0;
+            data.active_deposit_amount = 0;
+        }
+        res.locals.data = data;
         if (req.user && req.user.roles) {
             if (req.url.indexOf('/admin') == 0) {
                 if (req.user.roles.indexOf('admin') !== -1) {

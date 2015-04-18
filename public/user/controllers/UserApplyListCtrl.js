@@ -12,6 +12,7 @@ angular.module('userApp').controller('UserApplyListCtrl', ['$scope', '$location'
     vm.user_total_capital = vm.user.finance.balance + vm.user.finance.freeze_capital;
     vm.showAccountWindow = false;
     vm.profit_rate = vm.user.finance.history_deposit ? (vm.user.finance.profit / vm.user.finance.history_deposit * 100).toFixed(0) : 0;
+    vm.showNotPay = false;
 
     var lang = new Array();
     var userAgent = navigator.userAgent.toLowerCase();
@@ -42,6 +43,17 @@ angular.module('userApp').controller('UserApplyListCtrl', ['$scope', '$location'
         vm.pageChanged();
     }
 
+    function toggleShowNotPay() {
+        if (vm.showNotPay) {
+            currentApplies = apply_list;
+        } else {
+            currentApplies = apply_list.filter(function (elem) {
+                return elem.status !== 1;
+            });
+        }
+        pageReset();
+    }
+
     function initData() {
         vm.ongoing_apply_num = 0;
         apply_list = njApply.query({uid:vm.user._id}, function () {
@@ -52,8 +64,7 @@ angular.module('userApp').controller('UserApplyListCtrl', ['$scope', '$location'
                 formatData(value);
             });
             apply_list = $filter('orderBy')(apply_list, 'applyAt', true);
-            currentApplies = apply_list;
-            pageReset();
+            toggleShowNotPay();
         });
 
         vm.queryItems = [
@@ -99,6 +110,9 @@ angular.module('userApp').controller('UserApplyListCtrl', ['$scope', '$location'
     vm.queryItem = function(item) {
         vm.selected = item.value;
         currentApplies = apply_list.filter(function (elem) {
+            if (!vm.showNotPay && elem.status === 1) {
+                return false;
+            }
             if (!item.value) return true;
             return elem.status === item.value;
         });
@@ -117,5 +131,11 @@ angular.module('userApp').controller('UserApplyListCtrl', ['$scope', '$location'
         vm.showAccountWindow = true;
         vm.showingApply = apply;
     };
+
+    vm.toggleShowNotPay = function() {
+        if (vm.selected === 0) {
+            toggleShowNotPay();
+        }
+    }
 
 }]);
