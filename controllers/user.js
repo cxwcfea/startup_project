@@ -921,6 +921,10 @@ module.exports.iappPayFeedback = function(req, res) {
     res.send('SUCCESS');
 };
 
+module.exports.beifuFeedback = function(req, res) {
+    res.send('OK');
+};
+
 module.exports.shengpayFeedback = function(req, res) {
     logger.debug('shengpayFeedback');
     logger.debug(req.body);
@@ -1147,6 +1151,196 @@ function payMiddleStep(req, res, next) {
     });
 }
 
+function beifuGetDynCode(req, res, next) {
+    var order_id = req.body.out_trade_no;
+    async.waterfall([
+        function(callback) {
+            if (order_id) {
+                Order.findById(req.body.out_trade_no, function(err, order) {
+                    if (!order) {
+                        err = 'order not found';
+                    }
+                    if (err) {
+                        callback(err);
+                    } else {
+                        order.description += ' 贝付移动充值';
+                        order.amount = Number(Number(req.body.amount).toFixed(2));
+                        order.payType = 5;
+                        order.save(function(err) {
+                            callback(err, order);
+                        });
+                    }
+                });
+            } else {
+                var newOrder = {};
+                newOrder.userID = req.user._id;
+                newOrder.userMobile = req.user.mobile;
+                newOrder.dealType = 1;
+                newOrder.amount = Number(Number(req.body.amount).toFixed(2));
+                newOrder.description = '贝付移动充值';
+                newOrder.payType = 5;
+                newOrder.status = 2;
+                Order.create(newOrder, function(err, order) {
+                    if (!err && !order) {
+                        err = 'can not create order';
+                    }
+                    order_id = order._id;
+                    callback(err, order);
+                });
+            }
+        },
+        function(order, callback) {
+            var data = {
+                service: 'ebatong_mp_dyncode',
+                partner: '201504141356306494',
+                input_charset: 'UTF-8',
+                sign_type: 'MD5',
+                customer_id: req.user._id,
+                card_no: req.body.card_no,
+                real_name: req.body.real_name,
+                cert_no: req.body.cert_no,
+                cert_type: '01',
+                out_trade_no: order_id,
+                amount: Number(Number(req.body.amount).toFixed(2)),
+                bank_code: req.body.bank_code,
+                card_bind_mobile_phone_no: req.body.card_bind_mobile_phone_no
+            };
+            var md5key = 'DH7WNCLKEB7KM897T8YBUB6Y3ETO3Atykisu';
+
+            var keys = _.keys(data);
+            keys = _.sortBy(keys);
+            var str = '';
+            for (var i = 0; i < keys.length-1; ++i) {
+                str += keys[i] + '=' + data[keys[i]] + '&';
+            }
+            str += keys[i] + '=' + data[keys[i]];
+            var sign = sparkMD5.hash(str+md5key);
+            data['sign'] = sign;
+            console.log(str);
+            var url = 'https://www.ebatong.com/mobileFast/getDynNum.htm';
+            var options = {
+                json: true,
+                follow_max: 3 // follow up to three redirects
+            };
+            needle.post(url, data, options, function(err, resp, body) {
+                callback(err, body);
+            });
+        }
+    ], function(err, data) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        var dataObj = JSON.parse(data);
+        console.log(dataObj);
+        if (dataObj['result'] === "T") {
+            if (dataObj['out_trade_no'] == order_id && dataObj['customer_id'] == req.user._id) {
+                res.send({token:dataObj.token, order_id:order_id});
+            } else {
+                res.status(503);
+                res.send({error_msg:'数据不匹配'});
+            }
+        } else {
+            res.status(400);
+            res.send({error_msg:dataObj['error_message']});
+        }
+    });
+}
+
+function beifuPay(req, res) {
+    var verify_code = req.body.verify_code;
+    if (!verify_code) {
+        res.status(400);
+        return res.send({error_msg:'验证码不能为空'});
+    }
+    console.log(req.body);
+    var data = {
+        sign_type: 'MD5',
+        service: 'create_direct_pay_by_mp',
+        partner: '201504141356306494',
+        input_charset: 'UTF-8',
+        notify_url: config.pay_callback_domain + '/api/beifu_feedback',
+        customer_id: req.user._id,
+        dynamic_code_token: req.body.token,
+        dynamic_code: verify_code,
+        bank_card_no: req.body.card_no,
+        real_name: req.body.real_name,
+        cert_no: req.body.cert_no,
+        cert_type: '01',
+        out_trade_no: req.body.out_trade_no,
+        card_bind_mobile_phone_no: req.body.card_bind_mobile_phone_no,
+        subject: 'margin trade',
+        total_fee: Number(Number(req.body.amount).toFixed(2)),
+        default_bank: req.body.bank_code
+    };
+    var md5key = 'DH7WNCLKEB7KM897T8YBUB6Y3ETO3Atykisu';
+
+    async.waterfall([
+        function (callback) {
+            var timeStr = "input_charset=UTF-8&partner=201504141356306494&service=query_timestamp&sign_type=MD5";
+            var sign1 = sparkMD5.hash(timeStr+md5key);
+            timeStr += '&sign=' + sign1;
+            var url = 'http://www.ebatong.com/gateway.htm?' + timeStr;
+
+            var options = {
+                follow_max: 3 // follow up to three redirects
+            };
+            needle.get(url, options, function(err, resp, body) {
+                if (err) {
+                    callback(err);
+                } else {
+                    var timestamp = body.ebatong.response.timestamp.encrypt_key;
+                    callback(null, timestamp);
+                }
+            });
+        },
+        function(timestamp, callback) {
+            if (!timestamp) {
+                callback('can not get timestamp');
+            }
+            data.anti_phishing_key = timestamp;
+            var keys = _.keys(data);
+            keys = _.sortBy(keys);
+            var str = '';
+            for (var i = 0; i < keys.length-1; ++i) {
+                str += keys[i] + '=' + data[keys[i]] + '&';
+            }
+            str += keys[i] + '=' + data[keys[i]];
+            var sign = sparkMD5.hash(str+md5key);
+            data['sign'] = sign;
+
+            console.log(data);
+
+            var url = 'https://www.ebatong.com/mobileFast/pay.htm';
+            var options = {
+                json: true,
+                follow_max: 3 // follow up to three redirects
+            };
+            needle.post(url, data, options, function(err, resp, body) {
+                callback(err, body);
+            });
+        }
+    ], function(err, body) {
+        if (err) {
+            res.status(503);
+            return res.send({error_msg:'支付失败'});
+        }
+        var result = JSON.parse(body);
+        console.log(result);
+        if (result['result'] === "T") {
+            if (result['out_trade_no'] == order_id && result['customer_id'] == req.user._id) {
+                res.send({});
+            } else {
+                res.status(503);
+                res.send({error_msg:'数据不匹配'});
+            }
+        } else {
+            res.status(400);
+            res.send({error_msg:result['error_message']});
+        }
+    });
+}
+
 module.exports.registerRoutes = function(app, passportConf) {
     app.get('/user', passportConf.isAuthenticated, getUserHome);
 
@@ -1157,6 +1351,10 @@ module.exports.registerRoutes = function(app, passportConf) {
     app.post('/user/verify_email_by_sms', passportConf.isAuthenticated, verifyEmailBySMS);
 
     app.post('/api/send_sms', passportConf.isAuthenticated, sendSMS);
+
+    app.post('/user/beifu_get_dyncode', passportConf.isAuthenticated, beifuGetDynCode);
+
+    app.post('/user/beifu_pay', passportConf.isAuthenticated, beifuPay);
 
     app.get('/user/*', passportConf.isAuthenticated, function(req, res, next) {
         res.locals.callback_domain = config.pay_callback_domain;

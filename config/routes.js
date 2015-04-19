@@ -168,6 +168,8 @@ module.exports = function(app) {
 
     app.post('/api/shengpay_feedback', users.shengpayFeedback);
 
+    app.post('/api/beifu_feedback', users.beifuFeedback);
+
     app.post('/api/add_forbidden_stock', function(req, res) {
         var data = req.body;
         data = JSON.parse(data.data);
