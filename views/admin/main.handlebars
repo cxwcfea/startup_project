@@ -60,16 +60,31 @@
         <div class="am-offcanvas-bar admin-offcanvas-bar">
             <ul class="am-list admin-sidebar-list">
                 <li><a href="/admin/#/users"><span class="am-icon-users"></span> 用户列表</a></li>
-                <li><a href="/admin/#/one_day_expire_apply"><span class="am-icon-clock-o"></span> 两天内到期配资</a></li>
-                <li><a href="/admin/#/pending_applies"><span class="am-icon-shopping-cart"></span> 审核中的配资</a></li>
-                <li><a href="/admin/#/closing_applies"><span class="am-icon-shopping-cart"></span> 结算中的配资</a></li>
-                <li><a href="/admin/#/get_profit_orders"><span class="am-icon-money"></span> 盈利提取的订单</a></li>
+                <li class="admin-parent">
+                    <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 配资列表<span class="am-icon-angle-right am-fr am-margin-right"></span></a>
+                    <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav">
+                        <li><a href="/admin/#/one_day_expire_apply"><span class="am-icon-clock-o"></span> 两天内到期配资</a></li>
+                        <li><a href="/admin/#/pending_applies"><span class="am-icon-shopping-cart"></span> 审核中的配资</a></li>
+                        <li><a href="/admin/#/closing_applies"><span class="am-icon-shopping-cart"></span> 结算中的配资</a></li>
+                    </ul>
+                </li>
+                <li class="admin-parent">
+                    <a class="am-cf" data-am-collapse="{target: '#collapse-nav-2'}"><span class="am-icon-file"></span> 充值订单列表<span class="am-icon-angle-right am-fr am-margin-right"></span></a>
+                    <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav-2">
+                        <li><a href="/admin/#/alipay_orders"><span class="am-icon-cart-plus"></span> 支付宝待确认订单</a></li>
+                        <li><a href="/admin/#/recharge_orders"><span class="am-icon-cart-plus"></span> 充值订单</a></li>
+                        <li><a href="/admin/#/orders_of_alipay"><span class="am-icon-cart-plus"></span> 无法确认的支付宝</a></li>
+                    </ul>
+                </li>
+                <li class="admin-parent">
+                    <a class="am-cf" data-am-collapse="{target: '#collapse-nav-3'}"><span class="am-icon-file"></span> 配资相关订单列表<span class="am-icon-angle-right am-fr am-margin-right"></span></a>
+                    <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav-3">
+                        <li><a href="/admin/#/get_profit_orders"><span class="am-icon-money"></span> 盈利提取的订单</a></li>
+                        <li><a href="/admin/#/add_deposit_orders"><span class="am-icon-cart-plus"></span> 追加配资保证金的申请</a></li>
+                    </ul>
+                </li>
                 <li><a href="/admin/#/withdraw_orders"><span class="am-icon-money"></span> 提现的订单</a></li>
-                <li><a href="/admin/#/add_deposit_orders"><span class="am-icon-cart-plus"></span> 追加配资保证金的申请</a></li>
-                <li><a href="/admin/#/alipay_orders"><span class="am-icon-cart-plus"></span> 支付宝待确认订单</a></li>
-                <li><a href="/admin/#/recharge_orders"><span class="am-icon-cart-plus"></span> 充值订单</a></li>
                 <li><a href="/admin/#/orders"><span class="am-icon-cart-plus"></span> 所有订单</a></li>
-                <li><a href="/admin/#/orders_of_alipay"><span class="am-icon-cart-plus"></span> 无法确认的支付宝</a></li>
                 <!--<li><a href="/admin/#/my_users"><span class="am-icon-cart-plus"></span> 我接手的客户</a></li>-->
             </ul>
 
