@@ -3,6 +3,7 @@ var express = require('express'),
     env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
     log4js = require('log4js'),
     logger = log4js.getLogger(),
+    task = require('./lib/task'),
     config = require('./config/config')[env];
 
 /*
@@ -80,6 +81,8 @@ function startServer() {
         logger.info('Express started on ' + app.get('port') + '; press Ctrl-C to terminate.');
     });
 }
+
+task.scheduleJob();
 
 if(require.main === module){
     // application run directly; start app server

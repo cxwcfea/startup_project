@@ -1,6 +1,7 @@
 {{#if bootstrappedOrderObject}}
     <script> window.bootstrappedOrderObject = {{{bootstrappedOrderObject}}} </script>
 {{/if}}
+<script src="http://pv.sohu.com/cityjson"></script>
 <!--#S header-->
 <header id="header">
     <div class="header-box">
@@ -16,7 +17,7 @@
     <form name="beiFuForm" class="pay-form" novalidate>
         <div class="form-item">
             <label for="">充值金额</label>
-            <input type="number" min="1" max="100" step="10" name="amount" ng-model="vm.pay_amount" ng-disabled="vm.pay_order" placeholder="请输入充值金额">
+            <input type="number" min="2" max="100" step="10" name="amount" ng-model="vm.pay_amount" ng-disabled="vm.pay_order" placeholder="请输入充值金额,2~100元">
             <span class="unit">元</span>
         </div>
         <div class="form-item">
@@ -47,7 +48,7 @@
         </div>
         <div class="arrive-time">
             <span class="f-fl">充值小贴士</span>
-            <p>1. 首次充值金额不能大于100元，但不少于1元</p>
+            <p>1. 首次充值金额不能大于100元，但不少于2元</p>
             <p>2. 只支持储蓄卡充值</p>
         </div>
         <button type="submit" class="submit-btn" ng-click="vm.onlinePayStepOne()">下一步</button>

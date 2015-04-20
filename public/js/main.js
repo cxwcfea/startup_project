@@ -176,7 +176,7 @@ $(document).ready(function() {
     });
     //补充保证金下一步
     $(".jq_btn01").click(function (e) {
-        console.log(window.niujin_adding_deposit);
+        e.preventDefault();
         if (window.niujin_adding_deposit) {
             alert('正在处理中，请稍侯');
             return;
@@ -226,7 +226,8 @@ $(document).ready(function() {
     });
 
     //我要延期下一步
-    $(".jq_yzBtn01").click(function () {
+    $(".jq_yzBtn01").click(function (e) {
+        e.preventDefault();
         var period = Number($("#postpone_input")[0].value);
         if (period <= 0 || period > 22) {
             alert('请输入有效的日期，日期大于1小于23');
@@ -255,7 +256,8 @@ $(document).ready(function() {
         });
     });
     //我要延期第二部
-    $(".jq_yqBtn02").click(function () {
+    $(".jq_yqBtn02").click(function (e) {
+        e.preventDefault();
         $(".jq_yqBox02").hide();
         $(".jq_yqBox03").show();
     });

@@ -169,7 +169,7 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
             return;
         }
         if (!vm.pay_amount || vm.pay_amount < 0) {
-            vm.errorMsg = '请输入有效的充值金额,1至100元';
+            vm.errorMsg = '请输入有效的充值金额,2至100元';
             vm.inputError = true;
             $timeout(function() {
                 vm.inputError = false;
@@ -256,6 +256,7 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
             }, 1500);
             return;
         }
+        beifuData.exter_invoke_ip = $window.returnCitySN["cip"];
         beifuData.verify_code = vm.verify_code;
         vm.processing = true;
         $http.post('/user/beifu_pay', beifuData)

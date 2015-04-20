@@ -3,6 +3,7 @@ var passport = require('passport'),
     Order = require('../models/Order'),
     Apply = require('../models/Apply'),
     Homas = require('../models/Homas'),
+    PayInfo = require('../models/PayInfo'),
     nodemailer = require('nodemailer'),
     crypto = require('crypto'),
     sms = require('../lib/sms'),
@@ -1271,7 +1272,8 @@ function beifuPay(req, res) {
         card_bind_mobile_phone_no: req.body.card_bind_mobile_phone_no,
         subject: 'margin trade',
         total_fee: Number(Number(req.body.amount).toFixed(2)),
-        default_bank: req.body.bank_code
+        default_bank: req.body.bank_code,
+        exter_invoke_ip: req.body.exter_invoke_ip
     };
     var md5key = 'DH7WNCLKEB7KM897T8YBUB6Y3ETO3Atykisu';
 
@@ -1319,25 +1321,57 @@ function beifuPay(req, res) {
             needle.post(url, data, options, function(err, resp, body) {
                 callback(err, body);
             });
+        },
+        function(body, callback) {
+            var result = JSON.parse(body);
+            console.log(result);
+            if (result['result'] === "T") {
+                if (result['customer_id'] == req.user._id) {
+                    logger.info('beifuPay success user:' + req.user.mobile);
+                    callback(null);
+                } else {
+                    callback('数据不匹配');
+                }
+            } else {
+                callback(result['error_message']);
+            }
+        },
+        function(callback) {
+            PayInfo.findOne({userID:req.user._id}, function (err, payInfo) {
+                callback(err, payInfo);
+            });
+        },
+        function(payInfo, callback) {
+            var payInfoData = {
+                userID: req.user._id,
+                mobile: data.card_bind_mobile_phone_no,
+                certNo: data.cert_no,
+                bankCode: data.default_bank,
+                cardID: data.bank_card_no,
+                userName: data.real_name
+            };
+            if (payInfo) {
+                PayInfo.update({userID:req.user._id}, payInfoData, function (err, numberAffected, raw) {
+                    if (!numberAffected) {
+                        logger.warn('beifuPay update payinfo fail for user:' + req.user.mobile);
+                    }
+                    callback(err);
+                });
+            } else {
+                PayInfo.create(payInfoData, function (err, payInfo) {
+                    if (!payInfo) {
+                        logger.warn('beifuPay create payinfo fail for user:' + req.user.mobile);
+                    }
+                    callback(err);
+                });
+            }
         }
-    ], function(err, body) {
+    ], function(err) {
         if (err) {
             res.status(503);
             return res.send({error_msg:'支付失败'});
         }
-        var result = JSON.parse(body);
-        console.log(result);
-        if (result['result'] === "T") {
-            if (result['out_trade_no'] == order_id && result['customer_id'] == req.user._id) {
-                res.send({});
-            } else {
-                res.status(503);
-                res.send({error_msg:'数据不匹配'});
-            }
-        } else {
-            res.status(400);
-            res.send({error_msg:result['error_message']});
-        }
+        res.send({});
     });
 }
 
