@@ -165,6 +165,32 @@ angular.module('supportApp').controller('SupportUserListCtrl', ['$scope', '$http
                 gbNotifier.error('更新失败!');
             });
     };
+
+    vm.takeNote = function(user) {
+        var modalInstance = $modal.open({
+            templateUrl: 'takeNoteModal.html',
+            controller: 'TakeNoteModalCtrl',
+            //size: size,
+            resolve: {}
+        });
+
+        modalInstance.result.then(function (result) {
+            console.log(result);
+            if (result && result.content) {
+                result.mobile = user.mobile;
+                $http.post('/admin/api/create_user_note', result)
+                    .success(function(data, status) {
+                        gbNotifier.notify('创建成功');
+                    })
+                    .error(function(data, status) {
+                        gbNotifier.error('创建失败');
+                    });
+            } else {
+                gbNotifier.error('无效的数据，重新输入！');
+            }
+        }, function () {
+        });
+    };
 }]);
 
 angular.module('supportApp').controller('ModalInstanceCtrl', ['$scope', '$modalInstance', 'sms_macro', function ($scope, $modalInstance, sms_macro) {
@@ -210,9 +236,10 @@ angular.module('supportApp').controller('ModalInstanceCtrl', ['$scope', '$modalI
     };
 }]);
 
-angular.module('supportApp').controller('UserUpdateModalCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+angular.module('supportApp').controller('TakeNoteModalCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+    $scope.data = {};
     $scope.ok = function () {
-        $modalInstance.close($scope.user);
+        $modalInstance.close($scope.data);
     };
 
     $scope.cancel = function () {

@@ -3,6 +3,7 @@ var User = require('../models/User'),
     Order = require('../models/Order'),
     AlipayOrder = require('../models/AlipayOrder'),
     Homas = require('../models/Homas'),
+    Note = require('../models/Note'),
     log4js = require('log4js'),
     logger = log4js.getLogger('admin'),
     util = require('../lib/util'),
@@ -1206,6 +1207,23 @@ function fetchUserNotHaveApply(req, res) {
     });
 }
 
+function createUserNote(req, res) {
+    var data = {
+        userMobile: req.body.mobile,
+        title: req.body.title,
+        content: req.body.content,
+        writer: req.user.mobile
+    };
+    Note.create(data, function(err, note) {
+        if (err) {
+            logger.debug(err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send(note);
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -1313,6 +1331,8 @@ module.exports = {
         app.get('/admin/api/fetch_user_order_history', passportConf.requiresRole('admin'), fetchUserOrderHistory);
 
         app.get('/admin/api/fetch_not_pay_users', passportConf.requiresRole('admin|support'), fetchUserNotHaveApply);
+
+        app.post('/admin/api/create_user_note', passportConf.requiresRole('admin|support'), createUserNote);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

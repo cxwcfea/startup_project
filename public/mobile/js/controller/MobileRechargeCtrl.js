@@ -67,6 +67,8 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
         vm.finishOnlinePayWindow = false;
         vm.processing = false;
         vm.pay_order = $window.bootstrappedOrderObject;
+        vm.fee = 0;
+        vm.total_fee = 0;
         if (vm.pay_order) {
             if (vm.user.finance.balance > 0) {
                 vm.pay_amount = Number((vm.pay_order.amount - vm.user.finance.balance).toFixed(2));
@@ -76,6 +78,21 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
             } else {
                 vm.pay_amount = Number(vm.pay_order.amount.toFixed(2));
             }
+            calculatePayAmount();
+        }
+    }
+
+    function calculatePayAmount() {
+        if (vm.pay_amount) {
+            vm.fee = vm.pay_amount * 0.0035;
+            if (vm.fee < 2.0) {
+                vm.fee = 2.0;
+            }
+            vm.fee = Number(vm.fee.toFixed(2));
+            vm.total_fee = vm.fee + vm.pay_amount;
+        } else {
+            vm.fee = 0;
+            vm.total_fee = 0;
         }
     }
 
@@ -219,6 +236,7 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
         }
         var data = {
             amount: vm.pay_amount,
+            total_fee: vm.total_fee,
             real_name: vm.user_name,
             cert_no: vm.user_id,
             bank_code: vm.user_bank.code,
@@ -261,6 +279,7 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
         }
         var data = {
             amount: vm.pay_amount,
+            total_fee: vm.total_fee,
             firstPay: false
         };
         if (vm.pay_order) {
@@ -332,4 +351,8 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
     vm.gotoApply = function() {
         $location.path('/ttn');
     };
+
+    vm.inputPayAmount = function() {
+        calculatePayAmount();
+    }
 }]);

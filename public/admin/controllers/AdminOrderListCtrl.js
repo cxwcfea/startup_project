@@ -138,6 +138,8 @@ angular.module('adminApp').controller('AdminOrderListCtrl', ['$scope', '$locatio
     vm.showDetail = function(order) {
         alert(order.description);
     };
+
+    vm.queryItem(vm.queryItems[3]);
 }]);
 
 angular.module('adminApp').controller('WithdrawModalCtrl', ['$scope', '$modalInstance', 'order', 'sms_macro', function ($scope, $modalInstance, order, sms_macro) {

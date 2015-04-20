@@ -5,7 +5,7 @@
 <!--#S header-->
 <header id="header">
     <div class="header-box">
-        <h1>网银支付</h1>
+        <h1>网银支付(贝付)</h1>
         <a class="back" href="/mobile/#/recharge"></a>
     </div>
 </header><!--#E header-->
@@ -19,6 +19,16 @@
         <div class="form-item">
             <label for="">充值金额</label>
             <input type="number" min="2.01" max="100" step="10" name="amount" ng-model="vm.pay_amount" ng-disabled="vm.pay_order" placeholder="请输入充值金额,2.01~100元">
+            <span class="unit">元</span>
+        </div>
+        <div class="form-item">
+            <label for="">手续费</label>
+            <input type="number" min="0" name="fee" ng-model="vm.fee" disabled>
+            <span class="unit">元</span>
+        </div>
+        <div class="form-item">
+            <label for="">共需支付</label>
+            <input type="number" min="0" name="total_fee" ng-model="vm.total_fee" disabled>
             <span class="unit">元</span>
         </div>
         <div class="form-item">
@@ -49,8 +59,9 @@
         </div>
         <div class="arrive-time">
             <span class="f-fl">充值小贴士</span>
-            <p>1. 首次充值金额不能大于100元，但必须高于2元</p>
+            <p>1. 首次充值金额不能大于98元</p>
             <p>2. 只支持储蓄卡充值</p>
+            <p>3. 每笔会收取千分之3.5的手续费，最低2元，手续费由贝付收取</p>
         </div>
         <button type="submit" class="submit-btn" ng-click="vm.onlinePayStepOneForFirstTime()">下一步</button>
     </form>
@@ -66,8 +77,23 @@
     <form name="beiFuForm" class="pay-form" novalidate>
         <div class="form-item">
             <label for="">充值金额</label>
-            <input type="number" min="2.01" step="10" name="amount" ng-model="vm.pay_amount" ng-disabled="vm.pay_order" placeholder="请输入充值金额, 2元以上">
+            <input type="number" min="0.01" step="10" name="amount" ng-model="vm.pay_amount" ng-disabled="vm.pay_order" ng-change="vm.inputPayAmount()" placeholder="请输入充值金额">
             <span class="unit">元</span>
+        </div>
+        <div class="form-item">
+            <label for="">手续费</label>
+            <input type="number" min="0" name="fee" ng-model="vm.fee" disabled>
+            <span class="unit">元</span>
+        </div>
+        <div class="form-item">
+            <label for="">共需支付</label>
+            <input type="number" min="0" name="total_fee" ng-model="vm.total_fee" disabled>
+            <span class="unit">元</span>
+        </div>
+        <div class="arrive-time">
+            <span class="f-fl">充值小贴士</span>
+            <p>1. 只支持储蓄卡充值</p>
+            <p>2. 每笔会收取千分之3.5的手续费，最低2元，手续费由贝付收取</p>
         </div>
         <button type="submit" class="submit-btn" ng-click="vm.onlinePayStepOne()">下一步</button>
     </form>
