@@ -1229,7 +1229,6 @@ function beifuGetDynCode(req, res, next) {
             str += keys[i] + '=' + data[keys[i]];
             var sign = sparkMD5.hash(str+md5key);
             data['sign'] = sign;
-            console.log(str);
             var url = 'https://www.ebatong.com/mobileFast/getDynNum.htm';
             var options = {
                 json: true,
@@ -1245,7 +1244,7 @@ function beifuGetDynCode(req, res, next) {
             return res.send({error_msg:err.toString()});
         }
         var dataObj = JSON.parse(data);
-        console.log(dataObj);
+        logger.debug(dataObj);
         if (dataObj['result'] === "T") {
             if (dataObj['out_trade_no'] == order_id && dataObj['customer_id'] == req.user._id) {
                 res.send({token:dataObj.token, order_id:order_id});
@@ -1266,7 +1265,6 @@ function beifuPay(req, res) {
         res.status(400);
         return res.send({error_msg:'验证码不能为空'});
     }
-    console.log(req.body);
     var data;
     if (req.body.card_no) {
         data = {
@@ -1341,8 +1339,6 @@ function beifuPay(req, res) {
             var sign = sparkMD5.hash(str+md5key);
             data['sign'] = sign;
 
-            console.log(data);
-
             var url = 'https://www.ebatong.com/mobileFast/pay.htm';
             var options = {
                 json: true,
@@ -1354,7 +1350,7 @@ function beifuPay(req, res) {
         },
         function(body, callback) {
             var result = JSON.parse(body);
-            console.log(result);
+            logger.debug(result);
             if (result['result'] === "T") {
                 if (result['customer_id'] == req.user._id) {
                     logger.info('beifuPay success user:' + req.user.mobile);
@@ -1367,7 +1363,6 @@ function beifuPay(req, res) {
             }
         },
         function(amount, callback) {
-            console.log('amount ' + amount);
             User.findById(req.user._id, function(err, user) {
                 if (!err && !user) {
                     err = 'user not found';
@@ -1376,7 +1371,6 @@ function beifuPay(req, res) {
             });
         },
         function(user, amount, callback) {
-            console.log('find order');
             Order.findById(req.body.out_trade_no, function(err, order) {
                 if (!err && !order) {
                     err = 'order not found';
@@ -1386,12 +1380,10 @@ function beifuPay(req, res) {
         },
         function(user, order, amount, callback) {
             if (amount <= 0) {
-                console.log('pay amount <= 0');
                 callback('pay amount not valid:' + amount);
                 return;
             }
-            if (Number(order.amount.toFixed(2)) !== amount) {
-                console.log('pay amount not match');
+            if (Number(order.amount.toFixed(2)) != Number(amount)) {
                 callback('pay amount not match order\'s amount: ' + order.amount + ' vs ' + amount);
                 return;
             }
@@ -1438,25 +1430,29 @@ function beifuPay(req, res) {
             });
         },
         function(payInfo, callback) {
-            var payInfoData = {
-                userID: req.user._id,
-                mobile: data.card_bind_mobile_phone_no,
-                certNo: data.cert_no,
-                bankCode: data.default_bank,
-                cardID: data.bank_card_no,
-                userName: data.real_name
-            };
-            if (payInfo) {
-                PayInfo.update({userID:req.user._id}, payInfoData, function (err, numberAffected, raw) {
-                    callback(err);
-                });
+            if (data.bank_card_no) {
+                var payInfoData = {
+                    userID: req.user._id,
+                    mobile: data.card_bind_mobile_phone_no,
+                    certNo: data.cert_no,
+                    bankCode: data.default_bank,
+                    cardID: data.bank_card_no,
+                    userName: data.real_name
+                };
+                if (payInfo) {
+                    PayInfo.update({userID:req.user._id}, payInfoData, function (err, numberAffected, raw) {
+                        callback(err);
+                    });
+                } else {
+                    PayInfo.create(payInfoData, function (err, payInfo) {
+                        if (!payInfo) {
+                            logger.warn('beifuPay create payinfo fail for user:' + req.user.mobile);
+                        }
+                        callback(err);
+                    });
+                }
             } else {
-                PayInfo.create(payInfoData, function (err, payInfo) {
-                    if (!payInfo) {
-                        logger.warn('beifuPay create payinfo fail for user:' + req.user.mobile);
-                    }
-                    callback(err);
-                });
+                callback(null);
             }
         }
     ], function(err) {
