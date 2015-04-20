@@ -15,17 +15,17 @@
     </div>
     <form name="aliPayForm" class="pay-form" novalidate>
         <div class="form-item">
+            <label for="">充值金额</label>
+            <input type="number" step="100" name="amount" ng-model="vm.pay_amount" ng-disabled="vm.pay_order">
+            <span class="unit">元</span>
+        </div>
+        <div class="form-item">
             <label for="">支付宝账号</label>
             <input type="text" name="account" ng-model="vm.alipay_account" required autofocus placeholder="请确认该账户与实际转账支付宝账户一致" ng-disabled="vm.alipayAccountConfirm">
         </div>
         <div class="form-item">
             <label for="">姓名</label>
             <input type="text" name="name" ng-model="vm.alipay_name" required placeholder="请填写支付宝实名" ng-disabled="vm.alipayAccountConfirm">
-        </div>
-        <div class="form-item">
-            <label for="">充值金额</label>
-            <input type="number" step="100" name="amount" ng-model="vm.pay_amount" ng-disabled="vm.pay_order">
-            <span class="unit">元</span>
         </div>
         <button type="submit" class="submit-btn" ng-click="vm.aliPay()">下一步</button>
     </form>
