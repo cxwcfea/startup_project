@@ -16,11 +16,11 @@
     <form name="aliPayForm" class="pay-form" novalidate>
         <div class="form-item">
             <label for="">支付宝账号</label>
-            <input type="text" name="account" ng-model="vm.alipay_account" required autofocus placeholder="请确认该账户与实际转账支付宝账户一致">
+            <input type="text" name="account" ng-model="vm.alipay_account" required autofocus placeholder="请确认该账户与实际转账支付宝账户一致" ng-disabled="vm.alipayAccountConfirm">
         </div>
         <div class="form-item">
             <label for="">姓名</label>
-            <input type="text" name="name" ng-model="vm.alipay_name" required placeholder="请填写支付宝实名">
+            <input type="text" name="name" ng-model="vm.alipay_name" required placeholder="请填写支付宝实名" ng-disabled="vm.alipayAccountConfirm">
         </div>
         <div class="form-item">
             <label for="">充值金额</label>
@@ -30,17 +30,10 @@
         <button type="submit" class="submit-btn" ng-click="vm.aliPay()">下一步</button>
     </form>
     <div class="arrive-time">
-        <span class="f-fl">到账时间</span>
-        <p>08:30-20:30  （30分钟内到账）</p>
-        <p>20:30以后  （次日09:00前到账）</p>
+        <span class="f-fl">提示</span>
+        <p>请确保所输入信息与实际支付宝转账信息完全一致</p>
+        <p>首次支付成功后支付宝账号将会绑定您的牛金网账号</p>
     </div>
-    <form class="pay-form">
-        <label for="">没有支付宝账号？您还可以通过银行转账付款</label>
-        <button type="submit" class="submit-btn" ng-click="vm.useBankTransPay()">去银行转账</button>
-    </form>
-    <form class="pay-form">
-        <label for="">您还可以使用PC访问我们的网站(http://www.niujinwang.com)并使用网银进行付款</label>
-    </form>
 </div>
 
 <div class="recharge-alipay" ng-show="vm.alipayConfirm">

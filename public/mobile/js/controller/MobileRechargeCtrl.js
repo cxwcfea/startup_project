@@ -80,6 +80,12 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
             }
             calculatePayAmount();
         }
+        vm.alipayAccountConfirm = false;
+        if (vm.user.profile.alipay_account) {
+            vm.alipayAccountConfirm = true;
+            vm.alipay_account = vm.user.profile.alipay_account;
+            vm.alipay_name = vm.user.profile.alipay_name;
+        }
     }
 
     function calculatePayAmount() {
