@@ -483,6 +483,7 @@ function confirmAlipayOrder(req, res) {
                     return res.send({error_msg:'confirmAlipayOrder error:user not found'});
                 }
 
+                order.payType = 3;
                 order.bankTransID = req.body.trans_id;
                 order.approvedBy = req.user.mobile;
                 order.approvedAt = Date.now();

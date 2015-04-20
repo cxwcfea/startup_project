@@ -164,7 +164,7 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
         }
     };
 
-    vm.onlinePayStepOne = function() {
+    vm.onlinePayStepOneForFirstTime = function() {
         if (vm.processing) {
             return;
         }
@@ -224,6 +224,44 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
             bank_code: vm.user_bank.code,
             card_no: vm.user_bank_card_id,
             card_bind_mobile_phone_no: vm.user_mobile
+        };
+        if (vm.pay_order) {
+            data.out_trade_no = vm.pay_order._id;
+        }
+        beifuData = data;
+        vm.processing = true;
+        $http.post('/user/beifu_get_dyncode', data)
+            .success(function(data, status) {
+                vm.processing = false;
+                vm.showVerifyCodeWindow = true;
+                beifuData.token = data.token;
+                beifuData.out_trade_no = data.order_id;
+            })
+            .error(function(data, status) {
+                vm.processing = false;
+                vm.errorMsg = data.error_msg;
+                vm.inputError = true;
+                $timeout(function() {
+                    vm.inputError = false;
+                }, 1500);
+            });
+    };
+
+    vm.onlinePayStepOne = function() {
+        if (vm.processing) {
+            return;
+        }
+        if (!vm.pay_amount || vm.pay_amount < 0) {
+            vm.errorMsg = '请输入有效的充值金额,2至100元';
+            vm.inputError = true;
+            $timeout(function() {
+                vm.inputError = false;
+            }, 1500);
+            return;
+        }
+        var data = {
+            amount: vm.pay_amount,
+            firstPay: false
         };
         if (vm.pay_order) {
             data.out_trade_no = vm.pay_order._id;

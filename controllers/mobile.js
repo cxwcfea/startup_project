@@ -1,10 +1,12 @@
 var User = require('../models/User'),
     Apply = require('../models/Apply'),
     Order = require('../models/Order'),
+    PayInfo = require('../models/PayInfo'),
     applies = require('../controllers/apply'),
     util = require('../lib/util'),
     useragent = require('useragent'),
     _ = require('lodash'),
+    async = require('async'),
     log4js = require('log4js'),
     logger = log4js.getLogger('mobile');
 
@@ -153,22 +155,50 @@ function getChangePass(req, res, next) {
 }
 
 function getRechargeBeiFu(req, res, next) {
-    var order_id = req.query.order_id;
-    if (!order_id) {
-        res.render('mobile/recharge_beifu', {
-            layout:null
-        });
-    } else {
-        Order.findById(order_id, function(err, order) {
-            if (err || !order) {
-                logger.warn('mobile getRecharge err:' + err.toString());
+    async.waterfall([
+        function(callback) {
+            if (req.user) {
+                PayInfo.findOne({userID:req.user._id}, function(err, payInfo) {
+                    callback(err, payInfo);
+                });
+            } else {
+                callback(null, null);
             }
+        },
+        function (payInfo, callback) {
+            if (payInfo) {
+                res.locals.firstPay = false;
+                var cardNo = '尾号' + payInfo.cardID.substr(-4);
+                res.locals.cardNo = cardNo;
+                res.locals.mobile = payInfo.mobile;
+                res.locals.bankName = util.getBeifuBankName(payInfo.bankCode);
+            } else {
+                res.locals.firstPay = true;
+            }
+            callback(null);
+        }
+    ], function(err) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        var order_id = req.query.order_id;
+        if (!order_id) {
             res.render('mobile/recharge_beifu', {
-                layout:null,
-                bootstrappedOrderObject: JSON.stringify(order)
+                layout:null
             });
-        });
-    }
+        } else {
+            Order.findById(order_id, function(err, order) {
+                if (err || !order) {
+                    logger.warn('mobile getRecharge err:' + err.toString());
+                }
+                res.render('mobile/recharge_beifu', {
+                    layout:null,
+                    bootstrappedOrderObject: JSON.stringify(order)
+                });
+            });
+        }
+    });
 }
 
 function getRechargeAlipay(req, res, next) {

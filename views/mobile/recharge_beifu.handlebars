@@ -10,14 +10,15 @@
     </div>
 </header><!--#E header-->
 
-<div class="recharge-alipay" ng-hide="vm.showVerifyCodeWindow">
+{{#if firstPay}}
+<div class="recharge-alipay" ng-hide="vm.showVerifyCodeWindow || vm.finishOnlinePayWindow">
     <div class="balance">
         账户余额： <em>\{{vm.user.finance.balance | currency:'':2}}</em> 元
     </div>
     <form name="beiFuForm" class="pay-form" novalidate>
         <div class="form-item">
             <label for="">充值金额</label>
-            <input type="number" min="2" max="100" step="10" name="amount" ng-model="vm.pay_amount" ng-disabled="vm.pay_order" placeholder="请输入充值金额,2~100元">
+            <input type="number" min="2.01" max="100" step="10" name="amount" ng-model="vm.pay_amount" ng-disabled="vm.pay_order" placeholder="请输入充值金额,2.01~100元">
             <span class="unit">元</span>
         </div>
         <div class="form-item">
@@ -48,16 +49,38 @@
         </div>
         <div class="arrive-time">
             <span class="f-fl">充值小贴士</span>
-            <p>1. 首次充值金额不能大于100元，但不少于2元</p>
+            <p>1. 首次充值金额不能大于100元，但必须高于2元</p>
             <p>2. 只支持储蓄卡充值</p>
+        </div>
+        <button type="submit" class="submit-btn" ng-click="vm.onlinePayStepOneForFirstTime()">下一步</button>
+    </form>
+</div>
+{{else}}
+<div class="recharge-alipay" ng-hide="vm.showVerifyCodeWindow || vm.finishOnlinePayWindow">
+    <div class="balance">
+        账户余额： <em>\{{vm.user.finance.balance | currency:'':2}}</em> 元
+    </div>
+    <div class="balance">
+        将使用您绑定的{{bankName}}储蓄卡({{cardNo}})支付
+    </div>
+    <form name="beiFuForm" class="pay-form" novalidate>
+        <div class="form-item">
+            <label for="">充值金额</label>
+            <input type="number" min="2.01" step="10" name="amount" ng-model="vm.pay_amount" ng-disabled="vm.pay_order" placeholder="请输入充值金额, 2元以上">
+            <span class="unit">元</span>
         </div>
         <button type="submit" class="submit-btn" ng-click="vm.onlinePayStepOne()">下一步</button>
     </form>
 </div>
+{{/if}}
 
 <div class="recharge-alipay" ng-show="vm.showVerifyCodeWindow">
     <div class="balance">
-        需要进行短信验证，验证码已发送到您的手机:\{{vm.user.mobile}}
+{{#if firstPay}}
+    需要进行短信验证，验证码已发送到您的手机:\{{vm.user_mobile}}
+{{else}}
+    需要进行短信验证，验证码已发送到您的手机:{{mobile}}
+{{/if}}
     </div>
     <form name="beiFuForm2" class="pay-form" novalidate>
         <div class="form-item">

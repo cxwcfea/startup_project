@@ -413,7 +413,7 @@
         {
             name: 'warn_sms_content',
             value: 5,
-            content: '金额为AMOUNT元的操盘业务已经亏损到达警戒线WARN_AMOUNT元，请尽快追加保证金以维持仓位。'
+            content: '您的账户（XXXXXXXX）的操盘业务已经亏损到达警戒线，请尽快追加至少XXXX元保证金以维持仓位。'
         },
         {
             name: 'sell_sms_content',

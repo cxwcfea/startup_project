@@ -19,7 +19,6 @@ var passport = require('passport'),
     moment = require('moment'),
     async = require('async');
 
-
 module.exports.postLogin = function(req, res, next) {
     req.assert('mobile', '无效的手机号码').len(11, 11).isInt();
     req.assert('password', '密码不能为空').notEmpty();
@@ -1191,21 +1190,34 @@ function beifuGetDynCode(req, res, next) {
             }
         },
         function(order, callback) {
-            var data = {
-                service: 'ebatong_mp_dyncode',
-                partner: '201504141356306494',
-                input_charset: 'UTF-8',
-                sign_type: 'MD5',
-                customer_id: req.user._id,
-                card_no: req.body.card_no,
-                real_name: req.body.real_name,
-                cert_no: req.body.cert_no,
-                cert_type: '01',
-                out_trade_no: order_id,
-                amount: Number(Number(req.body.amount).toFixed(2)),
-                bank_code: req.body.bank_code,
-                card_bind_mobile_phone_no: req.body.card_bind_mobile_phone_no
-            };
+            var data;
+            if (req.body.card_no) {
+                data = {
+                    service: 'ebatong_mp_dyncode',
+                    partner: '201504141356306494',
+                    input_charset: 'UTF-8',
+                    sign_type: 'MD5',
+                    customer_id: req.user._id,
+                    card_no: req.body.card_no,
+                    real_name: req.body.real_name,
+                    cert_no: req.body.cert_no,
+                    cert_type: '01',
+                    out_trade_no: order_id,
+                    amount: Number(Number(req.body.amount).toFixed(2)),
+                    bank_code: req.body.bank_code,
+                    card_bind_mobile_phone_no: req.body.card_bind_mobile_phone_no
+                };
+            } else {
+                data = {
+                    service: 'ebatong_mp_dyncode',
+                    partner: '201504141356306494',
+                    input_charset: 'UTF-8',
+                    sign_type: 'MD5',
+                    customer_id: req.user._id,
+                    out_trade_no: order_id,
+                    amount: Number(Number(req.body.amount).toFixed(2))
+                };
+            }
             var md5key = 'DH7WNCLKEB7KM897T8YBUB6Y3ETO3Atykisu';
 
             var keys = _.keys(data);
@@ -1255,26 +1267,44 @@ function beifuPay(req, res) {
         return res.send({error_msg:'验证码不能为空'});
     }
     console.log(req.body);
-    var data = {
-        sign_type: 'MD5',
-        service: 'create_direct_pay_by_mp',
-        partner: '201504141356306494',
-        input_charset: 'UTF-8',
-        notify_url: config.pay_callback_domain + '/api/beifu_feedback',
-        customer_id: req.user._id,
-        dynamic_code_token: req.body.token,
-        dynamic_code: verify_code,
-        bank_card_no: req.body.card_no,
-        real_name: req.body.real_name,
-        cert_no: req.body.cert_no,
-        cert_type: '01',
-        out_trade_no: req.body.out_trade_no,
-        card_bind_mobile_phone_no: req.body.card_bind_mobile_phone_no,
-        subject: 'margin trade',
-        total_fee: Number(Number(req.body.amount).toFixed(2)),
-        default_bank: req.body.bank_code,
-        exter_invoke_ip: req.body.exter_invoke_ip
-    };
+    var data;
+    if (req.body.card_no) {
+        data = {
+            sign_type: 'MD5',
+            service: 'create_direct_pay_by_mp',
+            partner: '201504141356306494',
+            input_charset: 'UTF-8',
+            notify_url: config.pay_callback_domain + '/api/beifu_feedback',
+            customer_id: req.user._id,
+            dynamic_code_token: req.body.token,
+            dynamic_code: verify_code,
+            bank_card_no: req.body.card_no,
+            real_name: req.body.real_name,
+            cert_no: req.body.cert_no,
+            cert_type: '01',
+            out_trade_no: req.body.out_trade_no,
+            card_bind_mobile_phone_no: req.body.card_bind_mobile_phone_no,
+            subject: 'margin trade',
+            total_fee: Number(Number(req.body.amount).toFixed(2)),
+            default_bank: req.body.bank_code,
+            exter_invoke_ip: req.body.exter_invoke_ip
+        };
+    } else {
+        data = {
+            sign_type: 'MD5',
+            service: 'create_direct_pay_by_mp',
+            partner: '201504141356306494',
+            input_charset: 'UTF-8',
+            notify_url: config.pay_callback_domain + '/api/beifu_feedback',
+            customer_id: req.user._id,
+            dynamic_code_token: req.body.token,
+            dynamic_code: verify_code,
+            out_trade_no: req.body.out_trade_no,
+            subject: 'margin trade',
+            total_fee: Number(Number(req.body.amount).toFixed(2)),
+            exter_invoke_ip: req.body.exter_invoke_ip
+        };
+    }
     var md5key = 'DH7WNCLKEB7KM897T8YBUB6Y3ETO3Atykisu';
 
     async.waterfall([
@@ -1328,12 +1358,78 @@ function beifuPay(req, res) {
             if (result['result'] === "T") {
                 if (result['customer_id'] == req.user._id) {
                     logger.info('beifuPay success user:' + req.user.mobile);
-                    callback(null);
+                    callback(null, result.total_fee);
                 } else {
                     callback('数据不匹配');
                 }
             } else {
                 callback(result['error_message']);
+            }
+        },
+        function(amount, callback) {
+            console.log('amount ' + amount);
+            User.findById(req.user._id, function(err, user) {
+                if (!err && !user) {
+                    err = 'user not found';
+                }
+                callback(err, user, amount);
+            });
+        },
+        function(user, amount, callback) {
+            console.log('find order');
+            Order.findById(req.body.out_trade_no, function(err, order) {
+                if (!err && !order) {
+                    err = 'order not found';
+                }
+                callback(err, user, order, amount);
+            });
+        },
+        function(user, order, amount, callback) {
+            if (amount <= 0) {
+                console.log('pay amount <= 0');
+                callback('pay amount not valid:' + amount);
+                return;
+            }
+            if (Number(order.amount.toFixed(2)) !== amount) {
+                console.log('pay amount not match');
+                callback('pay amount not match order\'s amount: ' + order.amount + ' vs ' + amount);
+                return;
+            }
+            order.payType = 5;
+            util.orderFinished(user, order, 1, function(err) {
+                callback(err, user, order);
+            });
+        },
+        function(user, order, callback) {
+            logger.info('beifuPay update user & order successfully');
+            if (order.applySerialID) {
+                logger.info('beifuPay pay apply');
+                Apply.findOne({serialID:order.applySerialID}, function(err, apply) {
+                    if (!err && !apply) {
+                        err = 'can not found apply when pay apply:' + order.applySerialID;
+                    }
+                    callback(err, user, apply, order);
+                });
+            } else {
+                callback(null, user, null, null);
+            }
+        },
+        function(user, apply, order, callback) {
+            if (apply) {
+                if (apply.status === 1) {
+                    util.applyConfirmed(user, apply, function(err) {
+                        callback(err);
+                    });
+                } else if (apply.status === 2) {
+                    logger.info('beifuPay apply add deposit');
+                    util.applyDepositAdded(user, apply, order.amount, function(err) {
+                        callback(err);
+                    });
+                } else {
+                    callback(null);
+                }
+            } else {
+                callback(null);
             }
         },
         function(callback) {
@@ -1352,9 +1448,6 @@ function beifuPay(req, res) {
             };
             if (payInfo) {
                 PayInfo.update({userID:req.user._id}, payInfoData, function (err, numberAffected, raw) {
-                    if (!numberAffected) {
-                        logger.warn('beifuPay update payinfo fail for user:' + req.user.mobile);
-                    }
                     callback(err);
                 });
             } else {
@@ -1368,6 +1461,7 @@ function beifuPay(req, res) {
         }
     ], function(err) {
         if (err) {
+            logger.debug('beifuPay error:' + err.toString());
             res.status(503);
             return res.send({error_msg:'支付失败'});
         }
