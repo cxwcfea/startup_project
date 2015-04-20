@@ -35,7 +35,7 @@ angular.module('mobileApp').controller('MobileApplyListCtrl', ['$scope', '$windo
     }
 
     vm.selectTTN = function (item) {
-        return item.type !== 2;
+        return item.type !== 2 && item.status !== 1;
     };
 
 }]);
