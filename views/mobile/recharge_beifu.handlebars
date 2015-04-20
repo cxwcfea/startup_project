@@ -18,7 +18,7 @@
     <form name="beiFuForm" class="pay-form" novalidate>
         <div class="form-item">
             <label for="">充值金额</label>
-            <input type="number" min="0.01" max="98" step="10" name="amount" ng-model="vm.pay_amount" ng-disabled="vm.pay_order" placeholder="请输入充值金额,0.01~98元">
+            <input type="number" min="0.01" max="98" step="10" name="amount" ng-model="vm.pay_amount" ng-disabled="vm.pay_order" ng-change="vm.inputPayAmount()" placeholder="请输入充值金额,0.01~98元">
             <span class="unit">元</span>
         </div>
         <div class="form-item">
