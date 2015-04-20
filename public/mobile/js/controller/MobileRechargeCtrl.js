@@ -90,6 +90,7 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
             }
             vm.fee = Number(vm.fee.toFixed(2));
             vm.total_fee = vm.fee + vm.pay_amount;
+            vm.total_fee = Number(vm.total_fee.toFixed(2));
         } else {
             vm.fee = 0;
             vm.total_fee = 0;
