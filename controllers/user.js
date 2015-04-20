@@ -1383,10 +1383,12 @@ function beifuPay(req, res) {
                 callback('pay amount not valid:' + amount);
                 return;
             }
+            /*
             if (Number(order.amount.toFixed(2)) != Number(amount)) {
                 callback('pay amount not match order\'s amount: ' + order.amount + ' vs ' + amount);
                 return;
             }
+            */
             order.payType = 5;
             util.orderFinished(user, order, 1, function(err) {
                 callback(err, user, order);
