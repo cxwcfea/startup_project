@@ -1,11 +1,13 @@
 'use strict';
-angular.module('supportApp').controller('SupportUserListCtrl', ['$scope', '$http', '$modal', '$location', 'gbUser', 'gbNotifier', '$filter', '$window', function($scope, $http, $modal, $location, gbUser, gbNotifier, $filter, $window) {
+angular.module('supportApp').controller('SupportNotPayUserListCtrl', ['$scope', '$http', '$modal', '$location', 'gbNotifier', '$filter', '$window', '$resource', function($scope, $http, $modal, $location, gbNotifier, $filter, $window, $resource) {
     var vm = this;
     vm.maxSize = 5;
     if ($scope.data.searchKey) {
         vm.searchKey = $scope.data.searchKey;
     }
-    vm.users = gbUser.query(function() {
+
+    var UserResource = $resource('/admin/api/fetch_not_pay_users', {});
+    vm.users = UserResource.query(function() {
         vm.users = $filter('orderBy')(vm.users, 'registerAt', true);
         vm.showAllUsers();
     });
@@ -63,8 +65,8 @@ angular.module('supportApp').controller('SupportUserListCtrl', ['$scope', '$http
 
     vm.showOrders = function(user) {
         $scope.data.selectedUser = user;
-        $location.path('/orders/' + user._id);
-        //$window.open('/support/#/orders/' + user._id);
+        //$location.path('/orders/' + user._id);
+        $window.open('/support/#/orders/' + user._id);
     };
 
     vm.open = function (mobile) {
@@ -96,34 +98,34 @@ angular.module('supportApp').controller('SupportUserListCtrl', ['$scope', '$http
     };
 
     /*
-    vm.updateBalance = function(user) {
-        var modalInstance = $modal.open({
-            templateUrl: 'userUpdateModal.html',
-            controller: 'UserUpdateModalCtrl',
-            //size: size,
-            resolve: {}
-        });
+     vm.updateBalance = function(user) {
+     var modalInstance = $modal.open({
+     templateUrl: 'userUpdateModal.html',
+     controller: 'UserUpdateModalCtrl',
+     //size: size,
+     resolve: {}
+     });
 
-        modalInstance.result.then(function (result) {
-            if (result && result.balance && angular.isNumber(result.balance)) {
-                var value = user.finance.balance + result.balance;
-                if (value < 0) {
-                    gbNotifier.error('无效的数据，重新输入！');
-                } else {
-                    user.finance.balance += result.balance;
-                    user.$save(function(u) {
-                        gbNotifier.notify('更新成功');
-                    }, function(err) {
-                        gbNotifier.error('更新失败:' + err.toString());
-                    });
-                }
-            } else {
-                gbNotifier.error('无效的数据，重新输入！');
-            }
-        }, function () {
-        });
-    };
-    */
+     modalInstance.result.then(function (result) {
+     if (result && result.balance && angular.isNumber(result.balance)) {
+     var value = user.finance.balance + result.balance;
+     if (value < 0) {
+     gbNotifier.error('无效的数据，重新输入！');
+     } else {
+     user.finance.balance += result.balance;
+     user.$save(function(u) {
+     gbNotifier.notify('更新成功');
+     }, function(err) {
+     gbNotifier.error('更新失败:' + err.toString());
+     });
+     }
+     } else {
+     gbNotifier.error('无效的数据，重新输入！');
+     }
+     }, function () {
+     });
+     };
+     */
 
     vm.createOrder = function(user) {
         var modalInstance = $modal.open({

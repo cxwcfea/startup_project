@@ -15,6 +15,9 @@ angular.module('supportApp').controller('SupportOrderListCtrl', ['$scope', '$loc
 
     function initData(id) {
         order_list = supportOrder.query({uid:id}, function () {
+            order_list = order_list.filter(function(elem) {
+                return elem.status === 1;
+            });
             currentOrders = order_list;
             pageReset();
         });

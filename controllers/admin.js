@@ -1163,6 +1163,49 @@ function fetchUserOrderHistory(req, res) {
     });
 }
 
+function fetchUserNotHaveApply(req, res) {
+    async.waterfall([
+        function(callback) {
+            User.find({}, function(err, users) {
+                callback(err, users);
+            });
+        },
+        function(users, callback) {
+            Apply.find({ $and:[{isTrial: false}, {status: {$ne:1}}, {status: {$ne:9}}] }, function(err, applies) {
+                callback(err, users, applies);
+            });
+        },
+        function(users, applies, callback) {
+            if (!users || !applies) {
+                callback('content not found');
+                return;
+            }
+
+            var userMap = {};
+            applies.forEach(function (element, index, array) {
+                userMap[element.userID] = element.userID;
+            });
+            var today = moment().startOf('day');
+            var compareDay = today.subtract(5, 'days');
+            var userList = [];
+            users.forEach(function (element, index, array) {
+                if (!userMap[element._id] && element.registered) {
+                    if (element.registerAt <= compareDay) {
+                        userList.push(element);
+                    }
+                }
+            });
+            callback(null, userList);
+        }
+    ], function(err, users) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send(users);
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -1268,6 +1311,8 @@ module.exports = {
         app.get('/admin/api/group_sms', passportConf.requiresRole('admin'), sendGroupSMS);
 
         app.get('/admin/api/fetch_user_order_history', passportConf.requiresRole('admin'), fetchUserOrderHistory);
+
+        app.get('/admin/api/fetch_not_pay_users', passportConf.requiresRole('admin|support'), fetchUserNotHaveApply);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

@@ -33,6 +33,9 @@ angular.module('supportApp').config(['$routeProvider', '$locationProvider', func
         .when('/expire_applies_in_one_day', { templateUrl: '/support/expire_applies_in_one_day',
             controller: 'SupportExpireApplyOneDayListCtrl as vm'
         })
+        .when('/not_pay_users', { templateUrl: '/support/not_pay_user_list',
+            controller: 'SupportNotPayUserListCtrl as vm'
+        })
         .otherwise({
             redirectTo: '/users'
         });
