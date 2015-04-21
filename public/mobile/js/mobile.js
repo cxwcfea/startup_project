@@ -70,6 +70,9 @@ angular.module('mobileApp').config(['$routeProvider', '$httpProvider', function(
         .when('/user_ttn_info/:apply_serial_id', { templateUrl: function(params) { return '/mobile/user_ttn_info/' + params.apply_serial_id; },
             controller: 'MobileApplyDetailCtrl as vm'
         })
+        .when('/add_deposit', { templateUrl: '/mobile/add_deposit',
+            controller: 'MobileAddDepositCtrl as vm'
+        })
         .otherwise({
             redirectTo: '/home'
         });

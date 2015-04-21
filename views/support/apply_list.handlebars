@@ -45,6 +45,7 @@
                             <div class="am-btn-group am-btn-group-xs">
                                 <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-show="apply.status === 9" ng-click="applyVM.moveApplyToPending(apply)"><span class="am-icon-pencil"></span> 移出排队中</button>
                                 <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-show="apply.status === 2" ng-click="applyVM.addDeposit(apply)"><span class="am-icon-pencil"></span> 追加保证金</button>
+                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-show="apply.status === 2" ng-click="applyVM.postponeOneDay(apply)"><span class="am-icon-pencil"></span> 配资延期1天 </button>
                             </div>
                         </div>
                     </td>
@@ -78,6 +79,23 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-click="ok()">确认追加</button>
+        <button class="btn btn-warning" ng-click="cancel()">取消</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="postponeModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">配资延期</h3>
+    </div>
+    <div class="modal-body">
+        <p>当前结束时间：\{{apply.endTime | displayDate}}</p>
+        <p>配资单号: \{{apply.serialID}}</p>
+        <p>homs：\{{apply.account}}</p>
+        <p>用户手机：\{{apply.userMobile}}</p>
+        <p>如果客户余额充足，将会延期1天</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">确认延期</button>
         <button class="btn btn-warning" ng-click="cancel()">取消</button>
     </div>
 </script>

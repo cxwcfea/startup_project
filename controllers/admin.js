@@ -1236,6 +1236,117 @@ function fetchUserNotes(req, res) {
     });
 }
 
+function autoPostponeApply(req, res) {
+    /*
+    var period = Number(req.body.period);
+    if (period <= 0 || period > 22) {
+        res.status(400);
+        return res.send({error_msg:'period invalid:' + period});
+    }
+    */
+    var period = 1;
+    var serial_id = req.body.serial_id;
+
+    async.waterfall([
+        function(callback) {
+            Apply.findOne({serialID:serial_id}, function(err, apply) {
+                if (!apply) {
+                    err = 'failed to find apply when postpone for apply:' + serial_id;
+                } else if (apply.status !== 2) {
+                    err = 'apply not in the valid state';
+                }
+                callback(err, apply);
+            });
+        },
+        function(apply, callback) {
+            var todayEndTime = moment();
+            todayEndTime.hour(15);
+            todayEndTime.minute(00);
+            todayEndTime.second(00);
+            todayEndTime = todayEndTime.toDate();
+
+            /*
+            var deadline = moment();
+            deadline.hour(13);
+            deadline.minute(00);
+            deadline.second(00);
+            */
+
+            callback(null, apply);
+            /*
+            var currentTime = moment();
+            if (apply.endTime < todayEndTime && currentTime > deadline) {
+                err = '1';
+                callback(err);
+            } else {
+            }
+            */
+        },
+        function(apply, callback) {
+            var amount = util.getServiceFee(apply, period);
+            var orderData = {
+                userID: apply.userID,
+                userMobile: apply.userMobile,
+                dealType: 10,
+                amount: Number(amount.toFixed(2)),
+                status: 2,
+                description: '配资延期 ' + apply.serialID
+                //applySerialID: apply.serialID   do not add serial id, so the pay order will only add balance for user
+            };
+            Order.create(orderData, function(err, order) {
+                if (!err && !order) {
+                    err = 'can not create pay order when postpone for apply:' + serial_id;
+                }
+                callback(err, order, apply);
+            });
+        },
+        function(order, apply, callback) {
+            User.findById(order.userID, function(err, user) {
+                user.finance.balance = Number(user.finance.balance.toFixed(2));
+                if (user.finance.balance >= order.amount) {
+                    util.orderFinished(user, order, 2, function(err) {
+                        callback(err, user, order, apply);
+                    });
+                } else {
+                    callback('用户余额不足');
+                }
+            });
+        },
+        function(user, order, apply, callback) {
+            apply.period += period;
+            var startTime = moment(apply.startTime);
+            apply.endTime = util.getEndDay(startTime, apply.period, apply.type).toDate();
+            apply.save(function(err) {
+                if (err) {
+                    callback(err);
+                } else {
+                    user.finance.freeze_capital += order.amount;
+                    user.save(function(err) {
+                        var content = 'user:' + order.userMobile + ' account:' + apply.account + ' period:' + period;
+                        util.sendEmail('op@niujinwang.com', '配资延期', content, function(err) {
+                            logger.debug('error when send postpone email');
+                        });
+                        callback(err, order, true);
+                    });
+                }
+            });
+        }
+    ], function(err, order, paid) {
+        if (err) {
+            if (err == '1') {
+                logger.warn('postpone error: 该配资已过延期的最后期限，无法延期');
+                res.status(403);
+                return res.send({error_msg:'该配资已过延期的最后期限，无法延期'});
+            } else {
+                logger.warn('postpone error:' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+        }
+        res.send({order:order});
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -1347,6 +1458,8 @@ module.exports = {
         app.post('/admin/api/create_user_note', passportConf.requiresRole('admin|support'), createUserNote);
 
         app.get('/admin/api/fetch_user_notes/:mobile', passportConf.requiresRole('admin|support'), fetchUserNotes);
+
+        app.post('/admin/api/auto_postpone_apply', passportConf.requiresRole('admin|support'), autoPostponeApply);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

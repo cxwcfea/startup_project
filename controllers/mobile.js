@@ -310,6 +310,12 @@ function getAlipayOrderListForCurrentUser(req, res) {
     });
 }
 
+function getAddDeposit(req, res) {
+    res.render('mobile/add_deposit', {
+        layout:null
+    })
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/mobile', function(req, res, next) {
@@ -352,6 +358,8 @@ module.exports = {
         app.get('/mobile/change_password', getChangePass);
 
         app.get('/mobile/download', getDownload);
+
+        app.get('/mobile/add_deposit', getAddDeposit);
 
         app.get('/mobile/user_ttn_info/:apply_serial_id', getTtnInfo);
 

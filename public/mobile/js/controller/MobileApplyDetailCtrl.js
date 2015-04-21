@@ -60,4 +60,10 @@ angular.module('mobileApp').controller('MobileApplyDetailCtrl', ['$scope', '$win
                 vm.showCloseWindow = false;
             });
     };
+
+    vm.addDeposit = function() {
+        console.log('addDeposit');
+        $scope.data.currentApply = vm.apply;
+        $location.path('/add_deposit');
+    };
 }]);

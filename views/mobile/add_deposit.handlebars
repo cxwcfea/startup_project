@@ -1,0 +1,48 @@
+<!--#S header-->
+<header id="header">
+    <div class="header-box">
+        <h1>补充保证金</h1>
+        <a class="back" href="" onclick="history.back();  return false;"></a>
+    </div>
+</header><!--#E header-->
+
+<div class="recharge-alipay">
+    <div class="balance">
+        已支付保证金： <em>\{{vm.apply.deposit | currency:'':2}}</em> 元
+    </div>
+    <form name="aliPayForm" class="pay-form" novalidate>
+        <div class="form-item">
+            <label for="">补充金额</label>
+            <input type="number" step="100" name="amount" min="1" ng-model="vm.pay_amount" required>
+            <span class="unit">元</span>
+        </div>
+        <button type="submit" class="submit-btn" ng-click="vm.addDeposit()">立即追加</button>
+    </form>
+    <div class="arrive-time">
+        <span class="f-fl">提示</span>
+        <p>请确保牛金账户余额充足</p>
+        <p>补充成功后，金额会在半小时内反映在您的牛金账户中</p>
+    </div>
+</div>
+
+<!--
+<div class="ui-dialog" ng-show="vm.orderCreateSuccess">
+    <div class="ui-dialog-cnt">
+        <div class="ui-dialog-bd">
+            <div>
+                <h4>充值确认</h4>
+                <ul class="recharge-tip">
+                    <li>如果您已完成充值，请耐心等候工作人员审核。</li>
+                    <li>充值失败可以重新充值或者选择其他充值方式。</li>
+                </ul>
+            </div>
+        </div>
+        <div class="ui-dialog-ft ui-btn-group">
+            <button type="button" id="J_rechargeFail" ng-click="vm.finish()">失败</button>
+            <button type="button" id="J_rechargeSuccess" ng-click="vm.finish()">完成</button>
+        </div>
+    </div>
+</div>
+-->
+
+<div class="ui-tip" ng-show="vm.inputError">\{{vm.errorMsg}}</div>

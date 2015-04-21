@@ -233,20 +233,37 @@ angular.module('supportApp').controller('SupportApplyListCtrl', ['$scope', '$htt
                 })
         }, function () {
         });
-    }
+    };
+
+    vm.postponeOneDay = function(apply) {
+        var modalInstance = $modal.open({
+            templateUrl: 'postponeModal.html',
+            controller: 'PostponeModalCtrl',
+            resolve: {
+                apply: function() {
+                    return apply;
+                }
+            }
+        });
+
+        modalInstance.result.then(function () {
+            $http.post('/admin/api/auto_postpone_apply', {serial_id:apply.serialID})
+                .success(function(data, status, headers, config) {
+                    gbNotifier.notify('延期成功');
+                }).
+                error(function(data, status, headers, config) {
+                    gbNotifier.error('延期失败:' + data.error_msg);
+                });
+        }, function () {
+        });
+    };
 }]);
 
-angular.module('supportApp').controller('AccountModalCtrl', ['$scope', '$modalInstance', 'apply', function ($scope, $modalInstance, apply) {
-    $scope.userMobile = apply.userMobile;
-    $scope.homs_password = apply.userMobile.toString().substr(5);
+angular.module('supportApp').controller('PostponeModalCtrl', ['$scope', '$modalInstance', 'apply', function ($scope, $modalInstance, apply) {
+    $scope.apply = apply;
 
     $scope.ok = function () {
-        var result = {
-            account: $scope.homs_account,
-            password: $scope.homs_password
-        };
-
-        $modalInstance.close(result);
+        $modalInstance.close();
     };
 
     $scope.cancel = function () {
