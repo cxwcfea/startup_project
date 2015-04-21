@@ -83,6 +83,7 @@ function startServer() {
 }
 
 task.scheduleJob();
+task.scheduleAutoPostponeJob();
 
 if(require.main === module){
     // application run directly; start app server

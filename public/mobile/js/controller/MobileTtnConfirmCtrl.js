@@ -7,6 +7,7 @@ angular.module('mobileApp').controller('MobileTtnConfirmCtrl', ['$scope', '$wind
     }
 
     vm.validDays = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
+    vm.autoPostpone = true;
 
     function calculateAmount() {
         vm.serviceFee = vm.apply.amount / 10000 * util.getServiceCharge(vm.apply.lever) * vm.apply.period;
@@ -27,6 +28,7 @@ angular.module('mobileApp').controller('MobileTtnConfirmCtrl', ['$scope', '$wind
     };
 
     vm.payForApply = function() {
+        vm.apply.autoPostpone = vm.autoPostpone;
         vm.apply.shouldPay = vm.shouldPay;
         vm.apply.totalAmount = vm.totalAmount;
         $http.post('/apply_confirm', vm.apply)

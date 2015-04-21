@@ -1314,8 +1314,8 @@ function autoPostponeApply(req, res) {
         },
         function(user, order, apply, callback) {
             apply.period += period;
-            var startTime = moment(apply.startTime);
-            apply.endTime = util.getEndDay(startTime, apply.period, apply.type).toDate();
+            var startTime = moment(apply.endTime);
+            apply.endTime = util.getEndDay(startTime, period+1, apply.type).toDate();
             apply.save(function(err) {
                 if (err) {
                     callback(err);
@@ -1324,7 +1324,9 @@ function autoPostponeApply(req, res) {
                     user.save(function(err) {
                         var content = 'user:' + order.userMobile + ' account:' + apply.account + ' period:' + period;
                         util.sendEmail('op@niujinwang.com', '配资延期', content, function(err) {
-                            logger.debug('error when send postpone email');
+                            if (err) {
+                                logger.debug('error when send postpone email ' + err.toString());
+                            }
                         });
                         callback(err, order, true);
                     });
@@ -1460,6 +1462,8 @@ module.exports = {
         app.get('/admin/api/fetch_user_notes/:mobile', passportConf.requiresRole('admin|support'), fetchUserNotes);
 
         app.post('/admin/api/auto_postpone_apply', passportConf.requiresRole('admin|support'), autoPostponeApply);
+
+        app.post('/api/auto_postpone_apply', autoPostponeApply);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

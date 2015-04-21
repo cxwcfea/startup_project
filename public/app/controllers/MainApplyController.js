@@ -249,6 +249,7 @@
 
     angular.module('mainApp').controller('MainApplyConfirmController', ['$http', '$location', '$window', 'days', 'util', function($http, $location, $window, days, util) {
         var vm = this;
+        vm.autoPostpone = true;
         vm.apply = {};
         if (!!$window.bootstrappedApplyObject) {
             angular.extend(vm.apply, $window.bootstrappedApplyObject);
@@ -276,6 +277,7 @@
         };
 
         vm.payForApply = function() {
+            vm.apply.autoPostpone = vm.autoPostpone;
             vm.apply.shouldPay = vm.shouldPay;
             vm.apply.totalAmount = vm.totalAmount;
             $http.post('/apply_confirm', vm.apply)

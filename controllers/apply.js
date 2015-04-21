@@ -734,6 +734,7 @@ exports.postConfirmApply = function(req, res, next) {
                     var startDay = util.getStartDay();
                     apply.startTime = startDay.toDate();
                     apply.endTime = util.getEndDay(startDay, apply.period, apply.type).toDate();
+                    apply.autoPostpone = applyData.autoPostpone;
                     apply.save(function(err) {
                         if (err) {
                             res.status(500);

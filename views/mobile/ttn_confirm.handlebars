@@ -23,32 +23,14 @@
                 <select class="ui-sel" ng-model="vm.apply.period" ng-change="vm.selectDay()">
                     <option ng-repeat="day in vm.validDays" value="\{{day}}" ng-selected="day === 5">\{{day}}天</option>
                 </select>
-                <!--
-                <select class="ui-sel" id="J_useDay">
-                    <option value="2" selected="selected">2天</option>
-                    <option value="3">3天</option>
-                    <option value="4">4天</option>
-                    <option value="5">5天</option>
-                    <option value="6">6天</option>
-                    <option value="7">7天</option>
-                    <option value="8">8天</option>
-                    <option value="9">9天</option>
-                    <option value="10">10天</option>
-                    <option value="11">11天</option>
-                    <option value="12">12天</option>
-                    <option value="13">13天</option>
-                    <option value="14">14天</option>
-                    <option value="15">15天</option>
-                    <option value="16">16天</option>
-                    <option value="17">17天</option>
-                    <option value="18">18天</option>
-                    <option value="19">19天</option>
-                    <option value="20">20天</option>
-                </select>
-                -->
             </div>
             <span class="dayfee">
                 <em id="J_confirmFee">\{{vm.serviceFee | currency:'':2}}</em>元
+            </span>
+        </li>
+        <li>
+            <span class="dayfee">
+                <input type="checkbox" ng-model="vm.autoPostpone">&nbsp;余额充足，自动延期
             </span>
         </li>
     </ul>

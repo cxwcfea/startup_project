@@ -11,6 +11,7 @@ var applySchema = mongoose.Schema({
     applyAt: {type:Date, default: Date.now},
     closeAt: Date,
     isTrial: {type:Boolean, default: false},
+    autoPostpone: Boolean,
     lever: {type:Number, default: 10},
     warnValue: Number,
     sellValue: Number,
