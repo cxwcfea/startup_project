@@ -221,10 +221,10 @@ function fetchOrdersForUser(req, res) {
 }
 
 function fetchNearExpireApplies(req, res) {
-    var startTime = util.getStartDay();
+    var startTime = moment();
     var endTime = util.getEndDay(startTime, 2);
     endTime.hour(15);
-    endTime.minute(10);
+    endTime.minute(00);
     endTime.second(00);
 
     Apply.find({ $and: [{ endTime: {$lte: endTime } }, {status: 2}] }, function(err, applies) {
@@ -238,10 +238,10 @@ function fetchNearExpireApplies(req, res) {
 }
 
 function fetchOneDayExpireApplies(req, res) {
-    var startTime = util.getStartDay();
+    var startTime = moment();
     var endTime = util.getEndDay(startTime, 2);
     endTime.hour(15);
-    endTime.minute(10);
+    endTime.minute(00);
     endTime.second(00);
 
     Apply.find({ $and: [{ endTime: {$lte: endTime } }, {status: 2}] }, function(err, applies) {
