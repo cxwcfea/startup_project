@@ -206,6 +206,33 @@ angular.module('supportApp').controller('SupportApplyListCtrl', ['$scope', '$htt
             });
         }, function () {
         });
+    };
+
+    vm.addDeposit = function(apply) {
+        var modalInstance = $modal.open({
+            templateUrl: 'addDepositModal.html',
+            controller: 'addDepositModalCtrl',
+            resolve: {
+                apply: function() {
+                    return apply;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (result) {
+            console.log(result);
+            if (!result.amount) {
+                gbNotifier.error('必须输入追加金额');
+            }
+            $http.post('/apply/add_deposit/' + apply.serialID, {deposit_amount:result.amount})
+                .success(function(data, status) {
+                    gbNotifier.notify('追加成功');
+                })
+                .error(function(data, status) {
+                    gbNotifier.error('追加失败');
+                })
+        }, function () {
+        });
     }
 }]);
 
@@ -239,40 +266,9 @@ angular.module('supportApp').controller('SMSModalCtrl', ['$scope', '$modalInstan
     };
 }]);
 
-angular.module('supportApp').controller('UpdateApplyModalCtrl', ['$scope', '$modalInstance', 'apply', function ($scope, $modalInstance, apply) {
+angular.module('supportApp').controller('addDepositModalCtrl', ['$scope', '$modalInstance', 'apply', function ($scope, $modalInstance, apply) {
     $scope.data = {};
-    $scope.data.status = apply.status;
-    /*
-    $scope.today = function() {
-        $scope.data.dt = apply.endTime ? apply.endTime : apply.end_date.toDate();
-    };
-    $scope.today();
-    */
-
-    $scope.clear = function () {
-        $scope.data.dt = null;
-    };
-
-    $scope.toggleMin = function() {
-        $scope.minDate = $scope.minDate ? null : new Date();
-    };
-    $scope.toggleMin();
-
-    // Disable weekend selection
-    $scope.disabled = function(date, mode) {
-        return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-    };
-
-    $scope.open = function($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-
-        $scope.opened = true;
-    };
-
-    $scope.dateOptions = {
-        startingDay: 1
-    };
+    $scope.apply = apply;
 
     $scope.ok = function () {
         $modalInstance.close($scope.data);

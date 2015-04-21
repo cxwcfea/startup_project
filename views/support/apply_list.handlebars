@@ -44,6 +44,7 @@
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs">
                                 <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-show="apply.status === 9" ng-click="applyVM.moveApplyToPending(apply)"><span class="am-icon-pencil"></span> 移出排队中</button>
+                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-show="apply.status === 2" ng-click="applyVM.addDeposit(apply)"><span class="am-icon-pencil"></span> 追加保证金</button>
                             </div>
                         </div>
                     </td>
@@ -61,35 +62,22 @@
     </div>
 </div>
 
-<script type="text/ng-template" id="applyUpdateModal.html">
+<script type="text/ng-template" id="addDepositModal.html">
     <div class="modal-header">
-        <h3 class="modal-title">更新配资信息</h3>
+        <h3 class="modal-title">追加配资保证金</h3>
     </div>
     <div class="modal-body">
-        <div class="row">
-            <div class="col-md-6">
-                <label>配资结束时间:</label>
-                <p class="input-group">
-                    <input type="text" class="form-control" datepicker-popup="yyyy/MM/dd" ng-model="data.dt" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                </p>
-            </div>
-            <div class="am-form-group">
-                <label>配资状态:</label>
-                <select id="doc-select-1" ng-model="data.status">
-                    <option value="1">待支付</option>
-                    <option value="2">操盘中</option>
-                    <option value="3">已结算</option>
-                    <option value="4">审核中</option>
-                    <option value="5">结算中</option>
-                </select>
-            </div>
+        <p>当前保证金：\{{apply.deposit | currency:'':2}}</p>
+        <p>配资单号: \{{apply.serialID}}</p>
+        <p>homs：\{{apply.account}}</p>
+        <p>用户手机：\{{apply.userMobile}}</p>
+        <div class="am-form-group">
+            <label>追加金额:</label>
+            <input type="number" ng-model="data.amount" min="1" required>必填
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()">更新</button>
+        <button class="btn btn-primary" ng-click="ok()">确认追加</button>
         <button class="btn btn-warning" ng-click="cancel()">取消</button>
     </div>
 </script>
