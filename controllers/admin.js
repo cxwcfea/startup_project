@@ -516,8 +516,6 @@ function confirmAlipayOrder(req, res) {
                 order.approvedBy = req.user.mobile;
                 order.approvedAt = Date.now();
 
-                user.profile.alipay_account = order.otherInfo;
-                user.profile.alipay_name = order.transID;
                 util.orderFinished(user, order, 1, function(err) {
                     if (err) {
                         logger.warn('confirmAlipayOrder error:' + err.toString());
