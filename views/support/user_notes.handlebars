@@ -1,0 +1,82 @@
+<div class="am-cf am-padding">
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">用户记录列表</strong> / <small>Notes</small></div>
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12 am-u-md-3">
+        <!--
+        <div class="am-input-group am-input-group-sm">
+            <input type="text" class="am-form-field" placeholder="输入用户手机号" ng-model="userVM.searchKey">
+            <span class="am-input-group-btn">
+                <button class="am-btn am-btn-default" type="button" ng-click="userVM.searchUser()">搜索</button>
+                <button class="am-btn am-btn-default" type="button" ng-click="userVM.showAllUsers()">全部</button>
+            </span>
+        </div>
+        <button class="am-btn am-btn-default" type="button" ng-click="userVM.showUsersNotComplete()">未完成注册的</button>
+        -->
+    </div>
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12">
+        <div class="am-panel am-panel-default">
+            <div class="am-panel-hd am-cf" data-am-collapse="{target: '#collapse-panel-3'}">最近留言<span class="am-icon-chevron-down am-fr" ></span></div>
+            <div class="am-panel-bd am-collapse am-in am-cf" id="collapse-panel-3">
+                <ul class="am-comments-list admin-content-comment">
+                    <li class="am-comment">
+                        <a href="#"><img src="http://amui.qiniudn.com/bw-2014-06-19.jpg?imageView/1/w/96/h/96" alt="" class="am-comment-avatar" width="48" height="48"></a>
+                        <div class="am-comment-main">
+                            <header class="am-comment-hd">
+                                <div class="am-comment-meta"><a href="#" class="am-comment-author">某人</a> 评论于 <time>2014-7-12 15:30</time></div>
+                            </header>
+                            <div class="am-comment-bd"><p>遵循 “移动优先（Mobile First）”、“渐进增强（Progressive enhancement）”的理念，可先从移动设备开始开发网站，逐步在扩展的更大屏幕的设备上，专注于最重要的内容和交互，很好。</p>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="am-comment">
+                        <a href="#"><img src="http://amui.qiniudn.com/bw-2014-06-19.jpg?imageView/1/w/96/h/96" alt="" class="am-comment-avatar" width="48" height="48"></a>
+                        <div class="am-comment-main">
+                            <header class="am-comment-hd">
+                                <div class="am-comment-meta"><a href="#" class="am-comment-author">某人</a> 评论于 <time>2014-7-12 15:30</time></div>
+                            </header>
+                            <div class="am-comment-bd"><p>有效减少为兼容旧浏览器的臃肿代码；基于 CSS3 的交互效果，平滑、高效。AMUI专注于现代浏览器（支持HTML5），不再为过时的浏览器耗费资源，为更有价值的用户提高更好的体验。</p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="am-pagination am-fr admin-content-pagination">
+                    <li class="am-disabled"><a href="#">&laquo;</a></li>
+                    <li class="am-active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li><a href="#">&raquo;</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="takeNoteModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">修改用户</h3>
+    </div>
+    <div class="modal-body">
+        <form class="am-form">
+            <div class="am-form-group">
+                <label>标题</label>
+                <input type="text" ng-model="data.title">
+            </div>
+            <div class="am-form-group">
+                <label for="doc-ta-1">内容</label>
+                <textarea class="" rows="5" id="doc-ta-1" ng-model="data.content"></textarea>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">确认修改</button>
+        <button class="btn btn-warning" ng-click="cancel()">取消</button>
+    </div>
+</script>

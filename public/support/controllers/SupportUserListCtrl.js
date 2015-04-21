@@ -191,6 +191,11 @@ angular.module('supportApp').controller('SupportUserListCtrl', ['$scope', '$http
         }, function () {
         });
     };
+
+    vm.viewUserNotes = function(user) {
+        $scope.data.selectedUser = user;
+        $location.path('/user_notes/' + user._id);
+    };
 }]);
 
 angular.module('supportApp').controller('ModalInstanceCtrl', ['$scope', '$modalInstance', 'sms_macro', function ($scope, $modalInstance, sms_macro) {
