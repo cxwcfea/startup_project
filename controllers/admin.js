@@ -44,6 +44,30 @@ function main(req, res, next) {
                 }
                 callback(err, data);
             });
+        },
+        function(data, callback) {
+            util.getTotalServiceFee(function (err, totalServiceFee) {
+                if (!err) {
+                    data.totalServiceFee = totalServiceFee;
+                }
+                callback(err, data);
+            });
+        },
+        function (data, callback) {
+            util.getReturnedServiceFee(function(err, returnedServiceFee) {
+                if (!err) {
+                    data.returnedServiceFee = returnedServiceFee;
+                }
+                callback(err, data);
+            });
+        },
+        function (data, callback) {
+            util.getServiceFeeNotGet(function(err, serviceFeeNotGet) {
+                if (!err) {
+                    data.serviceFeeNotGet = serviceFeeNotGet;
+                }
+                callback(err, data);
+            });
         }
     ], function(err, data) {
         if (err) {
@@ -55,7 +79,10 @@ function main(req, res, next) {
             data.active_apply_amount = 0;
             data.active_deposit_amount = 0;
             data.current_free_apply_amount = 0;
+            data.total_fee = 0;
         }
+        data.total_fee = data.totalServiceFee - data.returnedServiceFee - data.serviceFeeNotGet;
+        data.total_fee = data.total_fee.toFixed(0);
         res.locals.data = data;
         if (req.user && req.user.roles) {
             if (req.url.indexOf('/admin') == 0) {
