@@ -36,7 +36,7 @@ angular.module('supportApp').config(['$routeProvider', '$locationProvider', func
         .when('/not_pay_users', { templateUrl: '/support/not_pay_user_list',
             controller: 'SupportNotPayUserListCtrl as vm'
         })
-        .when('/user_notes/:uid', { templateUrl: '/support/user_notes',
+        .when('/user_notes/:mobile', { templateUrl: '/support/user_notes',
             controller: 'SupportUserNotesCtrl as vm'
         })
         .otherwise({

@@ -1,43 +1,44 @@
 'use strict';
-angular.module('supportApp').controller('SupportUserNotesCtrl', ['$scope', '$location', '$routeParams', '$modal', '$http', 'supportOrder', 'gbNotifier', 'gbUser', function($scope, $location, $routeParams, $modal, $http, supportOrder, gbNotifier, gbUser) {
+angular.module('supportApp').controller('SupportUserNotesCtrl', ['$scope', '$location', '$routeParams', '$modal', '$http', '$resource', 'supportOrder', 'gbNotifier', 'gbUser', function($scope, $location, $routeParams, $modal, $http, $resource, supportOrder, gbNotifier, gbUser) {
     var vm = this;
-    var order_list = {};
-    var currentOrders;
+    var note_list = {};
+    var currentNotes;
     vm.itemsPerPage = 15;
     var currentUser = $scope.data.selectedUser;
 
     $scope.$on("$routeChangeSuccess", function () {
         if ($location.path().indexOf("/user_notes/") == 0) {
-            var id = $routeParams["uid"];
-            //initData(id);
-            console.log('user notes ' + id);
+            var mobile = $routeParams["mobile"];
+            initData(mobile);
         }
     });
 
-    function initData(id) {
-        order_list = supportOrder.query({uid:id}, function () {
-            order_list = order_list.filter(function(elem) {
-                return elem.status === 1;
-            });
-            currentOrders = order_list;
+    function initData(mobile) {
+        vm.user = currentUser;
+        var NotesResource = $resource('/admin/api/fetch_user_notes/:mobile', {});
+        note_list = NotesResource.query({mobile:mobile}, function () {
+            currentNotes = note_list;
+            console.log(currentNotes.length);
             pageReset();
         });
 
+        /*
         if (!currentUser) {
             gbUser.get({id:id}, function(user) {
                 currentUser = user;
             });
         }
+        */
     }
 
     function pageReset() {
-        vm.totalItems = currentOrders.length;
+        vm.totalItems = currentNotes.length;
         vm.currentPage = 1;
         vm.pageChanged();
     }
 
     vm.queryItem = function (item) {
-        currentOrders = order_list.filter(function (elem) {
+        currentNotes = note_list.filter(function (elem) {
             if (!item.value) return true;
             return elem.dealType === item.value;
         });
@@ -50,7 +51,7 @@ angular.module('supportApp').controller('SupportUserNotesCtrl', ['$scope', '$loc
         if (end > vm.totalItems) {
             end = vm.totalItems;
         }
-        vm.showingItems = currentOrders.slice(start, end);
+        vm.showingItems = currentNotes.slice(start, end);
     };
 
     vm.handleOrder = function(order) {

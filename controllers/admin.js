@@ -1225,7 +1225,8 @@ function createUserNote(req, res) {
 }
 
 function fetchUserNotes(req, res) {
-    Note.find({userID:req.params.uid}, function(err, notes) {
+    console.log(req.params.mobile);
+    Note.find({userMobile:req.params.mobile}, function(err, notes) {
         if (err) {
             logger.error(err.toString());
             res.status(500);
@@ -1345,7 +1346,7 @@ module.exports = {
 
         app.post('/admin/api/create_user_note', passportConf.requiresRole('admin|support'), createUserNote);
 
-        app.get('/admin/api/fetch_user_notes', passportConf.requiresRole('admin|support'), fetchUserNotes);
+        app.get('/admin/api/fetch_user_notes/:mobile', passportConf.requiresRole('admin|support'), fetchUserNotes);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

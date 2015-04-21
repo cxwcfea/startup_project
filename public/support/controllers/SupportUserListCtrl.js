@@ -194,7 +194,7 @@ angular.module('supportApp').controller('SupportUserListCtrl', ['$scope', '$http
 
     vm.viewUserNotes = function(user) {
         $scope.data.selectedUser = user;
-        $location.path('/user_notes/' + user._id);
+        $location.path('/user_notes/' + user.mobile);
     };
 }]);
 
