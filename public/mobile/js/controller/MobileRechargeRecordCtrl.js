@@ -11,7 +11,7 @@ angular.module('mobileApp').controller('MobileRechargeRecordCtrl', ['$scope', '$
         $scope.data.lastLocation = '/recharge_record';
         $location.path('/login');
     } else {
-        var OrderResource = $resource('/api/alipay/orders', {});
+        var OrderResource = $resource('/api/mobile_recharge/orders', {});
         vm.orderList = OrderResource.query().$promise.then(function(value) {
                 vm.orderList = value;
             }, function(reason) {

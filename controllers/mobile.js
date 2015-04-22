@@ -299,8 +299,8 @@ function getYYNConfirm(req, res, next) {
     });
 }
 
-function getAlipayOrderListForCurrentUser(req, res) {
-    Order.find({$and: [{payType: 3},  {userID: req.user._id}]}, function(err, orders) {
+function getRechargeOrderListForCurrentUser(req, res) {
+    Order.find({$and: [{$or:[{payType: 3}, {payType:5}]}, {status:1}, {userID: req.user._id}]}, function(err, orders) {
         if (err) {
             logger.warn('getAlipayOrderListForCurrentUser error:' + err.toString());
             res.status(500);
@@ -389,6 +389,6 @@ module.exports = {
 
         app.get('/mobile/free_apply_confirm', passportConf.isAuthenticated, applies.freeApply);
 
-        app.get('/api/alipay/orders', passportConf.isAuthenticated, getAlipayOrderListForCurrentUser);
+        app.get('/api/mobile_recharge/orders', passportConf.isAuthenticated, getRechargeOrderListForCurrentUser);
     }
 };
