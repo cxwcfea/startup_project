@@ -3,7 +3,6 @@ var express = require('express'),
     env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
     log4js = require('log4js'),
     logger = log4js.getLogger(),
-    task = require('./lib/task'),
     config = require('./config/config')[env];
 
 /*
@@ -85,8 +84,6 @@ function startServer() {
 if(require.main === module){
     // application run directly; start app server
     startServer();
-    task.scheduleJob();
-    task.scheduleAutoPostponeJob();
 } else {
     // application imported as a module via "require": export function to create server
     module.exports = startServer;

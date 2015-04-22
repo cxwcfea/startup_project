@@ -1,4 +1,5 @@
 var cluster = require('cluster');
+var task = require('./lib/task');
 
 function startWorker() {
     var worker = cluster.fork();
@@ -8,6 +9,13 @@ function startWorker() {
 if(cluster.isMaster){
     require('os').cpus().forEach(function(){
         startWorker();
+    });
+
+    cluster.on('online', function(worker) {
+        if (worker.id === 1) {
+            task.scheduleJob();
+            task.scheduleAutoPostponeJob();
+        }
     });
 
     // log any workers that disconnect; if a worker disconnects, it

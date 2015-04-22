@@ -191,6 +191,7 @@ db.once('open', function callback() {
     endTime = endTime.toDate();
     async.series(
         [
+            /*
             function(callback){
                 historyFreeApplyData(startTime, function(err) {
                     callback(err);
@@ -201,6 +202,7 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
+            */
             function(callback){
                 dailyAddedPayApplyData(startTime, endTime, function(err) {
                     callback(err);
