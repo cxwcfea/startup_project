@@ -22,7 +22,10 @@ angular.module('adminApp').controller('AdminOrderCtrl', ['$scope', '$location', 
     function initData() {
         $http.get('/admin/api/orders/all').success(function(data) {
             order_list = $filter('orderBy')(data, 'createdAt', true);
-            currentOrders = order_list;
+            //currentOrders = order_list;
+            currentOrders = order_list.filter(function (elem) {
+                return elem.dealType === 2 && elem.status === 1;
+            });
             pageReset();
         });
     }
