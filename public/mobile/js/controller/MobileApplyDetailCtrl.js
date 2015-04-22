@@ -62,8 +62,12 @@ angular.module('mobileApp').controller('MobileApplyDetailCtrl', ['$scope', '$win
     };
 
     vm.addDeposit = function() {
-        console.log('addDeposit');
         $scope.data.currentApply = vm.apply;
         $location.path('/add_deposit');
+    };
+
+    vm.postponeApply = function() {
+        $scope.data.currentApply = vm.apply;
+        $location.path('/postpone_apply');
     };
 }]);

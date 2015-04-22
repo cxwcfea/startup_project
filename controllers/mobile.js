@@ -316,6 +316,12 @@ function getAddDeposit(req, res) {
     })
 }
 
+function getPostponeApply(req, res) {
+    res.render('mobile/postpone_apply', {
+        layout:null
+    })
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/mobile', function(req, res, next) {
@@ -360,6 +366,8 @@ module.exports = {
         app.get('/mobile/download', getDownload);
 
         app.get('/mobile/add_deposit', getAddDeposit);
+
+        app.get('/mobile/postpone_apply', getPostponeApply);
 
         app.get('/mobile/user_ttn_info/:apply_serial_id', getTtnInfo);
 

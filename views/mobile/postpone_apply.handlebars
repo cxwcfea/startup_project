@@ -1,0 +1,32 @@
+<!--#S header-->
+<header id="header">
+    <div class="header-box">
+        <h1>配资延期</h1>
+        <a class="back" href="" onclick="history.back();  return false;"></a>
+    </div>
+</header><!--#E header-->
+
+<div class="recharge-alipay">
+    <div class="balance">
+        已申请天数： <em>\{{vm.apply.period}}</em> 天
+    </div>
+    <form name="aliPayForm" class="pay-form" novalidate>
+        <div class="form-item">
+            <label for="">预延期天数</label>
+            <input type="number" name="days" min="1" max="23" ng-model="vm.period" required>
+            <span class="unit">天</span>
+        </div>
+        <button type="submit" class="submit-btn" ng-click="vm.postpone()">立即延期</button>
+    </form>
+    <div class="arrive-time">
+        <span class="f-fl">提示</span>
+        <p>请确保牛金账户余额充足</p>
+    </div>
+</div>
+
+<div class="ui-tip" ng-show="vm.inputError">\{{vm.errorMsg}}</div>
+
+<div class="ui-tip-success" ng-show="vm.success">
+    <div class="icon"></div>
+    已延期\{{vm.period}}天
+</div>

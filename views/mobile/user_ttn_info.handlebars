@@ -128,7 +128,8 @@
 
 <!--#S footer-->
 <footer id="footer">
-    <div class="ui-btn-group ttn-btn-group" ng-show="vm.apply.status === 2">
+    <div class="ui-btn-group ttn-btn-group" ng-show="vm.apply.status === 2 && !vm.apply.isTrial">
+        <button ng-click="vm.postponeApply()">申请延期</button>
         <button ng-click="vm.addDeposit()">补充保证金</button>
         <button ng-click="vm.requestClose()">我要结算</button>
     </div>
