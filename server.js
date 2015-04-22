@@ -82,12 +82,11 @@ function startServer() {
     });
 }
 
-task.scheduleJob();
-task.scheduleAutoPostponeJob();
-
 if(require.main === module){
     // application run directly; start app server
     startServer();
+    task.scheduleJob();
+    task.scheduleAutoPostponeJob();
 } else {
     // application imported as a module via "require": export function to create server
     module.exports = startServer;
