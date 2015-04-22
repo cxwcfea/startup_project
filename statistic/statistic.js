@@ -9,6 +9,58 @@ var mongoose = require('mongoose'),
     User = require('../models/User'),
     config = require('../config/config')['production'];
 
+var historyFreeApplyData = function(startTime, callback) {
+    console.log('historyFreeApplyData');
+
+    Apply.find({$and:[{$or:[{closeAt:{$lte:startTime}}, {closeAt:{$exists:false}}]}, {isTrial:true}, {status:3}]}, function(err, applies) {
+        if (err) {
+            console.log(err.toString());
+            return;
+        }
+        var options = { encoding: 'utf8', flag: 'w' };
+        var fileWriteStream = fs.createWriteStream("historyFreeApplyDataTill-" + moment().format("YYYY-MM-DD") + ".txt",  options);
+        fileWriteStream.on("close", function() {
+            console.log("File Closed.");
+        });
+        var data = 'userID, userMobile, serialID, amount, deposit, period, status, applyAt, closeAt, isTrial, autoPostpone, lever, warnValue, sellValue, startTime, endTime, account, profit, type, interestRate, serviceCharge\n';
+        applies.forEach(function (apply) {
+            data += apply.userID + ', ' + apply.userMobile + ', ' + apply.serialID + ', ' + apply.amount.toFixed(2) + ', ' + apply.deposit.toFixed(2) + ', '
+            + apply.period + ', ' + apply.status + ', ' + apply.applyAt + ', ' + apply.closeAt + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
+            + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + apply.startTime + ', ' + apply.endTime + ', ' + apply.account + ', '
+            + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + '\n';
+            fileWriteStream.write(data);
+        });
+        fileWriteStream.end();
+        callback(null);
+    });
+};
+
+var historyPayApplyData = function(startTime, callback) {
+    console.log('historyPayApplyData');
+
+    Apply.find({$and:[{$or:[{closeAt:{$lte:startTime}}, {closeAt:{$exists:false}}]}, {isTrial:false}, {status:3}]}, function(err, applies) {
+        if (err) {
+            console.log(err.toString());
+            return;
+        }
+        var options = { encoding: 'utf8', flag: 'w' };
+        var fileWriteStream = fs.createWriteStream("historyPayApplyDataTill-" + moment().format("YYYY-MM-DD") + ".txt",  options);
+        fileWriteStream.on("close", function() {
+            console.log("File Closed.");
+        });
+        var data = 'userID, userMobile, serialID, amount, deposit, period, status, applyAt, closeAt, isTrial, autoPostpone, lever, warnValue, sellValue, startTime, endTime, account, profit, type, interestRate, serviceCharge\n';
+        applies.forEach(function (apply) {
+            data += apply.userID + ', ' + apply.userMobile + ', ' + apply.serialID + ', ' + apply.amount.toFixed(2) + ', ' + apply.deposit.toFixed(2) + ', '
+            + apply.period + ', ' + apply.status + ', ' + apply.applyAt + ', ' + apply.closeAt + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
+            + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + apply.startTime + ', ' + apply.endTime + ', ' + apply.account + ', '
+            + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + '\n';
+            fileWriteStream.write(data);
+        });
+        fileWriteStream.end();
+        callback(null);
+    });
+};
+
 var dailyFreeApplyData = function(startTime, endTime, callback) {
     console.log('dailyFreeApplyData');
 
@@ -80,6 +132,16 @@ db.once('open', function callback() {
     endTime = endTime.toDate();
     async.series(
         [
+            function(callback){
+                historyPayApplyData(startTime, function(err) {
+                    callback(err);
+                });
+            },
+            function(callback){
+                historyFreeApplyData(startTime, function(err) {
+                    callback(err);
+                });
+            },
             function(callback){
                 dailyFreeApplyData(startTime, endTime, function(err) {
                     callback(err);
