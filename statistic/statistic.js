@@ -31,15 +31,11 @@ var dailyFreeApplyData = function(db) {
             console.log("File Closed.");
         });
         applies.forEach(function (apply) {
-            var data = '';
-            var keys = _.keys(apply);
-            for (var i = 0; i < keys.length-1; ++i) {
-                data += apply[keys[i]] + ', ';
-            }
-            data += apply[keys[i]];
-            //var data = apply.userID + ', ' + apply.userMobile + ', ' + apply.serialID +
+            var data = apply.userID + ', ' + apply.userMobile + ', ' + apply.serialID + ', ' + apply.amount.toFixed(2) + ', ' + apply.deposit.toFixed(2) + ', '
+                + apply.period + ', ' + apply.status + ', ' + apply.applyAt + ', ' + apply.closeAt + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
+                + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + apply.startTime + ', ' + apply.endTime + ', ' + apply.account + ', '
+                + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge;
             fileWriteStream.write(data);
-            //console.log("Wrote: %s", data);
         });
         fileWriteStream.end();
         db.close();
