@@ -56,6 +56,10 @@ angular.module('supportApp').controller('SupportOrderListCtrl', ['$scope', '$loc
             {
                 name: '追加配资保证金',
                 value: 6
+            },
+            {
+                name: '交易完成',
+                value: 7
             }
         ];
     }
@@ -69,6 +73,9 @@ angular.module('supportApp').controller('SupportOrderListCtrl', ['$scope', '$loc
     vm.queryItem = function (item) {
         currentOrders = order_list.filter(function (elem) {
             if (!item.value) return true;
+            if (item.value === 7) {
+                return elem.status === 1;
+            }
             return elem.dealType === item.value;
         });
         pageReset();
