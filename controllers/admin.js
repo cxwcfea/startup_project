@@ -24,8 +24,8 @@ function getStatisticsPage(req, res, next) {
             util.getTodayActiveApplyData(function(err, dataObj) {
                 if (!err) {
                     data.active_apply_num = dataObj.num;
-                    data.active_apply_amount = util.formatDisplayNum(dataObj.amount);
-                    data.active_deposit_amount = util.formatDisplayNum(dataObj.deposit);
+                    data.active_apply_amount = dataObj.amount.toFixed(2);
+                    data.active_deposit_amount = dataObj.deposit.toFixed(2);
                 }
                 callback(err, data);
             });
@@ -33,7 +33,7 @@ function getStatisticsPage(req, res, next) {
         function(data, callback) {
             util.getTodayActiveFreeApplyData(function(err, dataObj) {
                 if (!err) {
-                    data.current_free_apply_amount = util.formatDisplayNum(dataObj.amount);
+                    data.current_free_apply_amount = dataObj.amount.toFixed(2);
                     data.current_free_apply_num = dataObj.num;
                 }
                 callback(err, data);
@@ -42,7 +42,7 @@ function getStatisticsPage(req, res, next) {
         function(data, callback) {
             util.getTodayAddedFreeApplyData(function(err, dataObj) {
                 if (!err) {
-                    data.added_free_apply_amount = util.formatDisplayNum(dataObj.amount);
+                    data.added_free_apply_amount = dataObj.amount.toFixed(2);
                     data.added_free_apply_num = dataObj.num;
                 }
                 callback(err, data);
@@ -51,9 +51,9 @@ function getStatisticsPage(req, res, next) {
         function(data, callback) {
             util.getTodayAddedPayApplyData(function(err, dataObj) {
                 if (!err) {
-                    data.added_pay_apply_amount = util.formatDisplayNum(dataObj.amount);
+                    data.added_pay_apply_amount = dataObj.amount.toFixed(2);
                     data.added_pay_apply_num = dataObj.num;
-                    data.added_fee = dataObj.fee;
+                    data.added_fee = dataObj.fee.toFixed(2);
                 }
                 callback(err, data);
             });
@@ -61,7 +61,7 @@ function getStatisticsPage(req, res, next) {
         function(data, callback) {
             util.getTodayAddedDeposit(function(err, dataObj) {
                 if (!err) {
-                    data.added_deposit = util.formatDisplayNum(dataObj.deposit);
+                    data.added_deposit = dataObj.deposit.toFixed(2);
                 }
                 callback(err, data);
             });
