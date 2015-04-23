@@ -927,6 +927,25 @@ module.exports.beifuFeedback = function(req, res) {
 
 module.exports.beifuWithdrawFeedback = function(req, res) {
     var notify_id = req.query.notify_id;
+    if (req.query.trade_status) {
+        if (req.query.trade_status == 3) {
+            Order.update({_id:req.query.out_trade_no}, {status:1}, function(err, numberAffected, raw) {
+                if (err) {
+                    logger.warn('beifuWithdrawFeedback error when order success for order ' + req.query.out_trade_no + ' :' + err.toString());
+                } else {
+                    if (numberAffected == 0) {
+                        logger.warn('beifuWithdrawFeedback error when order success for order ' + req.query.out_trade_no + ' :order not found');
+                    } else {
+                        logger.info('beifuWithdrawFeedback success for order ' + req.query.out_trade_no);
+                    }
+                }
+            });
+        } else if (req.query.trade_status == 4) {
+            Order.update({_id:req.query.out_trade_no}, {status:0}, function(err, numberAffected, raw) {
+                logger.warn('beifuWithdrawFeedback failed for order ' + req.query.error_message);
+            });
+        }
+    }
     res.send(notify_id);
 };
 
