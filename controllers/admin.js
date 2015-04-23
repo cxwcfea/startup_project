@@ -85,7 +85,23 @@ function getStatisticsPage(req, res, next) {
         function(data, callback) {
             util.getTotalServiceFee(function(err, dataObj) {
                 if (!err) {
-                    data.total_service_fee = dataObj.toFixed(2);
+                    data.totalServiceFee = dataObj.toFixed(2);
+                }
+                callback(err, data);
+            });
+        },
+        function (data, callback) {
+            util.getReturnedServiceFee(function(err, returnedServiceFee) {
+                if (!err) {
+                    data.returnedServiceFee = returnedServiceFee;
+                }
+                callback(err, data);
+            });
+        },
+        function (data, callback) {
+            util.getServiceFeeNotGet(function(err, serviceFeeNotGet) {
+                if (!err) {
+                    data.serviceFeeNotGet = serviceFeeNotGet;
                 }
                 callback(err, data);
             });
