@@ -9,9 +9,11 @@ var User = require('../models/User'),
     util = require('../lib/util'),
     async = require('async'),
     _ = require('lodash'),
+    sparkMD5 = require('spark-md5'),
     moment = require('moment'),
     env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
     config = require('../config/config')[env],
+    needle = require('needle'),
     sms = require('../lib/sms');
 
 function main(req, res, next) {
@@ -387,6 +389,18 @@ function fetchGetProfitOrders(req, res) {
 function fetchWithdrawOrders(req, res) {
     logger.debug('fetchWithdrawOrders');
     Order.find({$and: [{ dealType: 2 }, { status: 0 }]}, function(err, orders) {
+        if (err) {
+            logger.warn(err.toString());
+            res.status(401);
+            return res.send({success:false, reason:err.toString()});
+        }
+        res.send(orders);
+    });
+}
+
+function fetchWaitingCompleteWithdrawOrders(req, res) {
+    logger.debug('fetchWaitingCompleteWithdrawOrders');
+    Order.find({$and: [{ dealType: 2 }, { status: 2 }]}, function(err, orders) {
         if (err) {
             logger.warn(err.toString());
             res.status(401);
@@ -1374,6 +1388,83 @@ function autoPostponeApply(req, res) {
     });
 }
 
+function approveWithdrawOrder(req, res) {
+    Order.update({_id:req.params.order_id}, {status:2}, function(err, numberAffected, raw) {
+        if (err) {
+            logger.debug('approveWithdrawOrders error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        if (numberAffected == 0) {
+            res.status(400);
+            return res.send({error_msg:'order not found'});
+        }
+        res.send({changed:numberAffected});
+    });
+}
+
+function rejectWithdrawOrder(req, res) {
+    Order.update({_id:req.params.order_id}, {status:0}, function(err, numberAffected, raw) {
+        if (err) {
+            logger.debug('rejectWithdrawOrders error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        if (numberAffected == 0) {
+            res.status(400);
+            return res.send({error_msg:'order not found'});
+        }
+        res.send({changed:numberAffected});
+    });
+}
+
+function autoHandleWithdrawOrder(req, res) {
+    //console.log(req.query);
+    var md5key = 'K1JETRBFGCESTMNRUGKGW0KQNCITNWjehvpq';
+    var data = {
+        service: 'ebatong_agent_distribution',
+        input_charset: 'UTF-8',
+        partner: '201504141356306494',
+        sign_type: 'MD5',
+        return_url: config.pay_callback_domain + '/api/beifu_withdraw_feedback',
+        out_trade_no: req.body.order_id,
+        bank_name: req.body.bank,
+        bank_site_name: req.body.bank_name,
+        bank_account_name: req.body.user_name,
+        bank_account_no: req.body.card_id,
+        amount_str: req.body.amount,
+        agent_time: moment().format('YYYYMMDDHHmmss'),
+        to_account_mode: '1000'
+    };
+
+    var keys = _.keys(data);
+    keys = _.sortBy(keys);
+    var str = '';
+    for (var i = 0; i < keys.length-1; ++i) {
+        str += keys[i] + '=' + data[keys[i]] + '&';
+    }
+    str += keys[i] + '=' + data[keys[i]];
+    //console.log(str+md5key);
+    var sign = sparkMD5.hash(str+md5key);
+    str += '&sign=' + sign;
+    console.log(str);
+
+    var url = 'https://www.ebatong.com/gateway/agentDistribution.htm?' + str;
+
+    var options = {
+        follow_max: 3 // follow up to three redirects
+    };
+    needle.get(url, options, function(err, resp, body) {
+        if (err) {
+            res.status(500);
+            res.send({error_msg:err});
+        } else {
+            console.log(body);
+            res.send({});
+        }
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -1488,7 +1579,15 @@ module.exports = {
 
         app.post('/admin/api/auto_postpone_apply', passportConf.requiresRole('admin|support'), autoPostponeApply);
 
+        app.get('/admin/api/orders/waiting_complete_withdraw', passportConf.requiresRole('admin'), fetchWaitingCompleteWithdrawOrders);
+
+        app.post('/admin/api/approve_with_draw_order/:order_id', passportConf.requiresRole('admin'), approveWithdrawOrder);
+
+        app.post('/admin/api/reject_withdraw_order/:order_id', passportConf.requiresRole('admin'), rejectWithdrawOrder);
+
         app.post('/api/auto_postpone_apply', autoPostponeApply);
+
+        app.post('/admin/api/handle_with_draw_order', passportConf.requiresRole('admin'), autoHandleWithdrawOrder);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

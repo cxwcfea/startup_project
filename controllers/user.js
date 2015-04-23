@@ -925,6 +925,11 @@ module.exports.beifuFeedback = function(req, res) {
     res.send('OK');
 };
 
+module.exports.beifuWithdrawFeedback = function(req, res) {
+    var notify_id = req.query.notify_id;
+    res.send(notify_id);
+};
+
 module.exports.shengpayFeedback = function(req, res) {
     logger.debug('shengpayFeedback');
     logger.debug(req.body);

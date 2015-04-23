@@ -1,0 +1,92 @@
+<div class="am-cf am-padding">
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">等待完成提现的订单</strong></div>
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12 am-u-md-3">
+        <div class="am-input-group am-input-group-sm">
+          <span class="am-input-group-btn">
+            <button class="am-btn am-btn-default" type="button" ng-click="vm.startToPay()">开始支付</button>
+          </span>
+        </div>
+    </div>
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12">
+        <form class="am-form">
+            <table class="am-table am-table-striped am-table-hover table-main">
+                <thead>
+                <tr>
+                    <th class="table-date">日期</th><th class="table-type">客户手机号</th><th class="table-author">姓名</th><th class="table-type">银行</th><th class="table-author">金额</th><th class="table-set">状态</th><th class="table-set">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="order in vm.showingItems">
+                    <td>\{{order.createdAt | displayDate}}</td>
+                    <td>\{{order.userMobile}}</td>
+                    <td>\{{order.cardInfo.userName}}</td>
+                    <td>\{{order.cardInfo.bank}}</td>
+                    <td>\{{order.amount}}</td>
+                    <td>\{{order.status | orderStatus}}</td>
+                    <td>
+                        <div class="am-btn-toolbar">
+                            <div class="am-btn-group am-btn-group-xs">
+                                <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="vm.removeOrder(order)"><span class="am-icon-remove"></span> 驳回</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="am-cf">
+                共 \{{vm.totalItems}} 条记录
+                <div class="am-fr">
+                    <pagination previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="vm.itemsPerPage" total-items="vm.totalItems" ng-model="vm.currentPage" ng-change="vm.pageChanged()"></pagination>
+                </div>
+            </div>
+            <hr />
+        </form>
+    </div>
+</div>
+
+<form id="handle_withdraw_order_form" action="/admin/api/handle_with_draw_order" method="get">
+    <input type="hidden" name="order_id" id="order_id">
+    <input type="hidden" name="bank" id="bank">
+    <input type="hidden" name="bank_name" id="bank_name">
+    <input type="hidden" name="user_name" id="user_name">
+    <input type="hidden" name="card_id" id="card_id">
+    <input type="hidden" name="amount" id="amount">
+    <!--
+    <input type="hidden" name="service" value="ebatong_agent_distribution">
+    <input type="hidden" name="input_charset" value="UTF-8">
+    <input type="hidden" name="partner" value="201204201739476361">
+    <input type="hidden" name="sign_type" value="MD5">
+    <input type="hidden" name="notify_url" value="/">
+    <input type="hidden" name="return_url" value="/">
+    <input type="hidden" name="error_notify_url" value="">
+
+    <input type="hidden" name="anti_phishing_key" value="">
+    <input type="hidden" id="ip_address" name="exter_invoke_ip" value="">
+
+    <input type="hidden" name="out_trade_no" value="2015041217271095">
+    <input type="hidden" name="subject" value="123">
+    <input type="hidden" name="payment_type" value="1">
+
+    <input type="hidden" name="seller_email" value="">
+    <input type="hidden" name="seller_id" value="201204201739476361">
+
+    <input type="hidden" name="buyer_email" value="">
+    <input type="hidden" name="buyer_id" value="">
+
+    <input type="hidden" name="price" value="">
+    <input type="hidden" name="total_fee" value="3.20">
+    <input type="hidden" name="quantity" value="">
+
+    <input type="hidden" name="body" value="">
+    <input type="hidden" name="show_url" value="">
+    <input type="hidden" name="pay_method" value="bankPay">
+    <input type="hidden" name="default_bank" value="CMB_B2C">
+    -->
+</form>

@@ -136,6 +136,22 @@ angular.module('adminApp').controller('AdminWithdrawOrderCtrl', ['$scope', '$loc
             .error(function(data, status) {
                 console.log(data);
             });
+    };
+
+    vm.approveOrder = function(order) {
+        console.log('approve order');
+        $http.post('/admin/api/approve_with_draw_order/' + order._id, {})
+            .success(function(data, status, headers, config) {
+                gbNotifier.notify('更新成功');
+                _.remove(order_list, function(o) {
+                    return o._id === order._id;
+                });
+                currentOrders = order_list;
+                pageReset();
+            }).
+            error(function(data, status, headers, config) {
+                gbNotifier.error('更新失败:' + data.error_msg);
+            });
     }
 }]);
 

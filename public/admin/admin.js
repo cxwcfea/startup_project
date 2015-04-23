@@ -38,6 +38,9 @@ angular.module('adminApp').config(['$routeProvider', '$locationProvider', '$http
         .when('/withdraw_orders', { templateUrl: '/admin/withdraw_order_list',
             controller: 'AdminWithdrawOrderCtrl as withdrawOrderVM'
         })
+        .when('/waiting_confirm_withdraw_order_list', { templateUrl: '/admin/waiting_confirm_withdraw_order_list',
+            controller: 'AdminWaitingCompleteWithdrawOrderCtrl as vm'
+        })
         .when('/alipay_orders', { templateUrl: '/admin/alipay_order_list',
             controller: 'AdminAlipayOrderListCtrl as alipayOrderListVM'
         })
