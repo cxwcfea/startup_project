@@ -16,6 +16,100 @@ var User = require('../models/User'),
     needle = require('needle'),
     sms = require('../lib/sms');
 
+function getStatisticsPage(req, res, next) {
+    console.log('getStatisticsPage');
+    var data = {};
+    async.waterfall([
+        function(callback) {
+            util.getTodayActiveApplyData(function(err, dataObj) {
+                if (!err) {
+                    data.active_apply_num = dataObj.num;
+                    data.active_apply_amount = util.formatDisplayNum(dataObj.amount);
+                    data.active_deposit_amount = util.formatDisplayNum(dataObj.deposit);
+                }
+                callback(err, data);
+            });
+        },
+        function(data, callback) {
+            util.getTodayActiveFreeApplyData(function(err, dataObj) {
+                if (!err) {
+                    data.current_free_apply_amount = util.formatDisplayNum(dataObj.amount);
+                    data.current_free_apply_num = dataObj.num;
+                }
+                callback(err, data);
+            });
+        },
+        function(data, callback) {
+            util.getTodayAddedFreeApplyData(function(err, dataObj) {
+                if (!err) {
+                    data.added_free_apply_amount = util.formatDisplayNum(dataObj.amount);
+                    data.added_free_apply_num = dataObj.num;
+                }
+                callback(err, data);
+            });
+        },
+        function(data, callback) {
+            util.getTodayAddedPayApplyData(function(err, dataObj) {
+                if (!err) {
+                    data.added_pay_apply_amount = util.formatDisplayNum(dataObj.amount);
+                    data.added_pay_apply_num = dataObj.num;
+                    data.added_fee = dataObj.fee;
+                }
+                callback(err, data);
+            });
+        },
+        function(data, callback) {
+            util.getTodayAddedDeposit(function(err, dataObj) {
+                if (!err) {
+                    data.added_deposit = util.formatDisplayNum(dataObj.deposit);
+                }
+                callback(err, data);
+            });
+        },
+        function(data, callback) {
+            util.getUserData(function(err, dataObj) {
+                if (!err) {
+                    data.total_user_num = dataObj.num;
+                }
+                callback(err, data);
+            });
+        },
+        function(data, callback) {
+            util.getTodayUserData(function(err, dataObj) {
+                if (!err) {
+                    data.today_user_num = dataObj.num;
+                }
+                callback(err, data);
+            });
+        },
+        function(data, callback) {
+            util.getTotalServiceFee(function(err, dataObj) {
+                if (!err) {
+                    data.total_service_fee = dataObj.toFixed(2);
+                }
+                callback(err, data);
+            });
+        }
+    ], function(err, data) {
+        if (err) {
+            console.log('error when get statistic ' + err.toString());
+            //data.history_pay_user_count = 0;
+            //data.history_apply_amount = 0;
+            //data.history_deposit_amount = 0;
+            //data.active_pay_user_count = 0;
+            data.active_apply_num = 0;
+            data.active_apply_amount = 0;
+            data.active_deposit_amount = 0;
+            data.current_free_apply_amount = 0;
+            data.total_fee = 0;
+        }
+        data.total_fee = data.totalServiceFee - data.returnedServiceFee - data.serviceFeeNotGet;
+        data.total_fee = data.total_fee.toFixed(0);
+        res.locals.data = data;
+        res.render('admin/statistics', {layout:null});
+    });
+}
+
 function main(req, res, next) {
     async.waterfall([
         function(callback) {
@@ -1588,6 +1682,8 @@ module.exports = {
         app.post('/api/auto_postpone_apply', autoPostponeApply);
 
         app.post('/admin/api/handle_with_draw_order', passportConf.requiresRole('admin'), autoHandleWithdrawOrder);
+
+        app.get('/admin/statistics', passportConf.requiresRole('admin'), getStatisticsPage);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

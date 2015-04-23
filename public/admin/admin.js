@@ -56,6 +56,8 @@ angular.module('adminApp').config(['$routeProvider', '$locationProvider', '$http
         .when('/orders_of_alipay', { templateUrl: '/admin/order_list_of_alipay',
             controller: 'AdminOrderListOfAlipayCtrl as vm'
         })
+        .when('/statistics', { templateUrl: '/admin/statistics'
+        })
         .otherwise({
             redirectTo: '/users'
         });
