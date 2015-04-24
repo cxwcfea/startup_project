@@ -69,6 +69,7 @@ function getStatisticsPage(req, res, next) {
             util.getUserData(function(err, dataObj) {
                 if (!err) {
                     data.total_user_num = dataObj.num;
+                    data.total_balance = dataObj.amount;
                 }
                 callback(err, data);
             });
