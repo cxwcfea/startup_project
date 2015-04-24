@@ -230,6 +230,54 @@ var dailyPayApplyDataTillNow = function(callback) {
     });
 };
 
+var incomeOrderData = function(callback) {
+    Order.find({ $and: [{status:1}, {dealType:10}] }, function(err, orders) {
+        if (err) {
+            console.log(err.toString());
+            callback(err);
+            return;
+        }
+        var options = { encoding: 'utf8', flag: 'w' };
+        var fileWriteStream = fs.createWriteStream("IncomeOrderTillNow-" + moment().format("YYYY-MM-DD") + ".csv",  options);
+        fileWriteStream.on("close", function() {
+            console.log("File Closed.");
+        });
+        var data = 'userID, userMobile, userBalance, createdAt, dealType, amount, status, applySerialID, payType\n';
+        fileWriteStream.write(data);
+        orders.forEach(function (order) {
+            data = order.userID + ', ' + order.userMobile + ', ' + order.userBalance + ', ' + order.createdAt + ', ' + order.dealType + ', '
+            + order.amount.toFixed(2) + ', ' + order.status + ', ' + order.applySerialID + ', ' + order.payType + '\n';
+            fileWriteStream.write(data);
+        });
+        fileWriteStream.end();
+        callback(null);
+    });
+};
+
+var outcomeOrderData = function(callback) {
+    Order.find({ $and: [{status:1}, {dealType:8}] }, function(err, orders) {
+        if (err) {
+            console.log(err.toString());
+            callback(err);
+            return;
+        }
+        var options = { encoding: 'utf8', flag: 'w' };
+        var fileWriteStream = fs.createWriteStream("outcomeOrderTillNow-" + moment().format("YYYY-MM-DD") + ".csv",  options);
+        fileWriteStream.on("close", function() {
+            console.log("File Closed.");
+        });
+        var data = 'userID, userMobile, userBalance, createdAt, dealType, amount, status, applySerialID, payType\n';
+        fileWriteStream.write(data);
+        orders.forEach(function (order) {
+            data = order.userID + ', ' + order.userMobile + ', ' + order.userBalance + ', ' + order.createdAt + ', ' + order.dealType + ', '
+            + order.amount.toFixed(2) + ', ' + order.status + ', ' + order.applySerialID + ', ' + order.payType + '\n';
+            fileWriteStream.write(data);
+        });
+        fileWriteStream.end();
+        callback(null);
+    });
+};
+
 var options = {};
 mongoose.connect(config.db, options);
 var db = mongoose.connection;
@@ -247,6 +295,16 @@ db.once('open', function callback() {
     endTime = endTime.toDate();
     async.series(
         [
+            function(callback){
+                incomeOrderData(function(err) {
+                    callback(err);
+                });
+            },
+            function(callback){
+                outcomeOrderData(function(err) {
+                    callback(err);
+                });
+            },
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
                     callback(err);
