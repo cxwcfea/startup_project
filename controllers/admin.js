@@ -69,7 +69,7 @@ function getStatisticsPage(req, res, next) {
             util.getUserData(function(err, dataObj) {
                 if (!err) {
                     data.total_user_num = dataObj.num;
-                    data.total_balance = dataObj.amount;
+                    data.total_balance = dataObj.amount.toFixed(2);
                 }
                 callback(err, data);
             });
