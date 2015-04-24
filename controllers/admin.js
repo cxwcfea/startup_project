@@ -1557,7 +1557,7 @@ function autoHandleWithdrawOrder(req, res) {
     //console.log(str+md5key);
     var sign = sparkMD5.hash(str+md5key);
     str += '&sign=' + sign;
-    console.log(str);
+    //console.log(str);
 
     var url = 'https://www.ebatong.com/gateway/agentDistribution.htm?' + str;
 
@@ -1568,8 +1568,11 @@ function autoHandleWithdrawOrder(req, res) {
         if (err) {
             res.status(500);
             res.send({error_msg:err});
+        } else if (resp.statusCode != 200) {
+            logger.warn(resp.body);
+            res.status(400);
+            res.send({error_msg:resp.body});
         } else {
-            console.log(body);
             res.send({});
         }
     });
