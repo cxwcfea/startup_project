@@ -17,6 +17,14 @@ var historyFreeApplyData = function(startTime, callback) {
             console.log(err.toString());
             return;
         }
+        var amount = 0;
+        for (var i = 0; i < applies.length; ++i) {
+            var value = applies[i].profit;
+            if (value < 0) {
+                amount += value;
+            }
+        }
+        console.log('免费亏损 ' + amount);
         var options = { encoding: 'utf8', flag: 'w' };
         var fileWriteStream = fs.createWriteStream("historyFreeApplyDataTill-" + moment().format("YYYY-MM-DD") + ".txt",  options);
         fileWriteStream.on("close", function() {
@@ -44,6 +52,14 @@ var historyPayApplyData = function(startTime, callback) {
             console.log(err.toString());
             return;
         }
+        var amount = 0;
+        for (var i = 0; i < applies.length; ++i) {
+            var value = applies[i].deposit + applies[i].profit;
+            if (value < 0) {
+                amount += value;
+            }
+        }
+        console.log('穿仓 ' + amount);
         var options = { encoding: 'utf8', flag: 'w' };
         var fileWriteStream = fs.createWriteStream("historyPayApplyDataTill-" + moment().format("YYYY-MM-DD") + ".txt",  options);
         fileWriteStream.on("close", function() {
@@ -319,12 +335,22 @@ db.once('open', function callback() {
     endTime = endTime.toDate();
     async.series(
         [
+            function(callback) {
+                historyFreeApplyData(startTime, function(err) {
+                    callback(err);
+                });
+            },
+            function(callback) {
+                historyPayApplyData(startTime, function(err) {
+                    callback(err);
+                });
+            }
+            /*
             function(callback){
                 allOrderData(function(err) {
                     callback(err);
                 });
             },
-            /*
             function(callback){
                 incomeOrderData(function(err) {
                     callback(err);
