@@ -321,9 +321,9 @@ exports.addDeposit = function(req, res, next) {
                     err = 'failed to find apply when add deposit for apply:' + serial_id;
                 } else if (apply.status !== 2) {
                     err = 'apply not in the valid state';
-                } else  if (apply.userMobile != req.user.mobile) {
-                    err = 'not the same user to do the request apply user:' + apply.userMobile + ' currentUser:' + req.user.mobile;
-                }
+                } //else  if (apply.userMobile != req.user.mobile) {
+                  //  err = 'not the same user to do the request apply user:' + apply.userMobile + ' currentUser:' + req.user.mobile;
+                //}
                 callback(err, apply);
             });
         },
