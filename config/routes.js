@@ -221,16 +221,12 @@ module.exports = function(app) {
 
     mobile.registerRoutes(app, passportConf);
 
+    /*
     app.get('/admin_test', passportConf.requiresRole('admin'), function(req, res, next) {
         util.debugInfo(logger, req);
         res.render('admin_test');
     });
-
-    app.get('/beifu_test', function(req, res, next) {
-        console.log('beifu_test', req.query);
-        res.status(400);
-        res.send({});
-    });
+    */
 
     function getClientIp(req) {
         return req.headers['x-forwarded-for'] ||

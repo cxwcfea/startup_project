@@ -1553,15 +1553,10 @@ function autoHandleWithdrawOrder(req, res) {
         str += keys[i] + '=' + data[keys[i]] + '&';
     }
     str += keys[i] + '=' + data[keys[i]];
-    //console.log(str+md5key);
-    var strBuf = new Buffer(str+md5key, 'utf8');
-    var sign = sparkMD5.hash(strBuf.toString('utf8'));
+    var sign = sparkMD5.hash(str+md5key);
     str += '&sign=' + sign;
-    strBuf = new Buffer(str, 'utf8');
-    str = strBuf.toString('utf8');
-    console.log('beifu withdraw ' + str);
 
-    var url = 'https://www.ebatong.com/gateway/agentDistribution.htm?' + str;
+    var url = 'https://www.ebatong.com/gateway/agentDistribution.htm?' + encodeURI(str);
 
     var options = {
         follow_max: 3 // follow up to three redirects
