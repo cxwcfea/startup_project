@@ -1557,7 +1557,7 @@ function autoHandleWithdrawOrder(req, res) {
     //console.log(str+md5key);
     var sign = sparkMD5.hash(str+md5key);
     str += '&sign=' + sign;
-    //console.log(str);
+    console.log('beifu withdraw ' + str);
 
     var url = 'https://www.ebatong.com/gateway/agentDistribution.htm?' + str;
 

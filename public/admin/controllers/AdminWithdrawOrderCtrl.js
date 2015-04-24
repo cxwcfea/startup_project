@@ -152,7 +152,47 @@ angular.module('adminApp').controller('AdminWithdrawOrderCtrl', ['$scope', '$loc
             error(function(data, status, headers, config) {
                 gbNotifier.error('更新失败:' + data.error_msg);
             });
+    };
+
+    vm.sendSMS = function(order) {
+        var modalInstance = $modal.open({
+            templateUrl: '/views/smsModal.html',
+            controller: 'withdrawSMSCtrl',
+            //size: size,
+            resolve: {
+                order: function() {
+                    return order;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (content) {
+            vm.sms_content = content;
+            var data = {
+                user_mobile: order.userMobile,
+                sms_content: vm.sms_content
+            };
+            $http.post('/admin/api/send_sms', data)
+                .then(function(response) {
+                    if (response.data.success) {
+                        gbNotifier.notify('短信已发送');
+                    } else {
+                        gbNotifier.error('短信发送失败:' + response.data.reason);
+                    }
+                });
+        }, function () {
+        });
     }
+}]);
+
+angular.module('adminApp').controller('withdrawSMSCtrl', ['$scope', '$modalInstance', 'order', function ($scope, $modalInstance, order) {
+    $scope.ok = function () {
+        $modalInstance.close($scope.sms_content);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
 }]);
 
 angular.module('adminApp').controller('withdrawOrderDeleteModalCtrl', ['$scope', '$modalInstance', 'order', function ($scope, $modalInstance, order) {
