@@ -927,6 +927,7 @@ module.exports.beifuFeedback = function(req, res) {
 
 module.exports.beifuWithdrawFeedback = function(req, res) {
     var notify_id = req.query.notify_id;
+    logger.debug('beifuWithdrawFeedback ' + req.query);
     if (req.query.trade_status) {
         if (req.query.trade_status == 3) {
             async.waterfall([

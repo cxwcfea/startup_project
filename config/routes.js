@@ -170,7 +170,7 @@ module.exports = function(app) {
 
     app.post('/api/beifu_feedback', users.beifuFeedback);
 
-    app.post('/api/beifu_withdraw_feedback', users.beifuWithdrawFeedback);
+    app.get('/api/beifu_withdraw_feedback', users.beifuWithdrawFeedback);
 
     app.post('/api/add_forbidden_stock', function(req, res) {
         var data = req.body;
