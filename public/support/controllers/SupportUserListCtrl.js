@@ -196,6 +196,17 @@ angular.module('supportApp').controller('SupportUserListCtrl', ['$scope', '$http
         $scope.data.selectedUser = user;
         $location.path('/user_notes/' + user.mobile);
     };
+
+    vm.releaseCustomer = function(user) {
+        $http.post('/admin/api/release_customer', {userMobile:user.mobile})
+            .success(function(data, status) {
+                user.manager = null;
+                gbNotifier.notify('更新成功!');
+            })
+            .error(function(data, status) {
+                gbNotifier.error('更新失败! ' + data.error_msg);
+            });
+    };
 }]);
 
 angular.module('supportApp').controller('ModalInstanceCtrl', ['$scope', '$modalInstance', 'sms_macro', function ($scope, $modalInstance, sms_macro) {

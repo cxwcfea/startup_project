@@ -891,6 +891,34 @@ function fetchPendingApplies(req, res) {
     });
 }
 
+function releaseCustomer(req, res) {
+    User.findOne({mobile:req.body.userMobile}, function(err, user) {
+        if (err) {
+            logger.debug('releaseCustomer error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        if (!user) {
+            logger.debug('releaseCustomer error:user not found');
+            res.status(500);
+            return res.send({error_msg:'user not found'});
+        }
+        if (user.manager != req.user.mobile) {
+            res.status(403);
+            return res.send({error_msg:'您不是该客户的客服'});
+        }
+        user.manager = null;
+        user.save(function(err) {
+            if (err) {
+                logger.debug('releaseCustomer error:' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+            res.send({});
+        });
+    });
+}
+
 function takeCustomer(req, res) {
     User.update({mobile:req.body.userMobile}, {$set: {'manager':req.user.mobile}}, function(err, numberAffected, raw) {
         if (err) {
@@ -1671,6 +1699,8 @@ module.exports = {
         app.post('/admin/api/create/order', passportConf.requiresRole('admin|support'), createOrder);
 
         app.post('/admin/api/take_customer', passportConf.requiresRole('admin|support'), takeCustomer);
+
+        app.post('/admin/api/release_customer', passportConf.requiresRole('admin|support'), releaseCustomer);
 
         app.post('/admin/api/take_order', passportConf.requiresRole('admin|support'), takeOrder);
 

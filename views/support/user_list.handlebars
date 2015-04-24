@@ -46,6 +46,7 @@
                                 -->
                                 <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-hide="user.manager" ng-click="userVM.takeCustomer(user)"><span class="am-icon-user"></span> 我要接手</button>
                                 <button class="am-btn am-btn-default am-btn-xs am-text-primary" ng-click="userVM.takeNote(user)"><span class="am-icon-pencil"></span> 记录</button>
+                                <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-show="user.manager" ng-click="userVM.releaseCustomer(user)"><span class="am-icon-user"></span> 放弃客户</button>
                             </div>
                         </div>
                     </td>
