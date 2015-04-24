@@ -44,6 +44,7 @@ angular.module('adminApp').controller('AdminWaitingCompleteWithdrawOrderCtrl', [
             $('#amount')[0].value = order.amount.toFixed(2);
             $('#handle_withdraw_order_form')[0].submit();
             */
+            /*
             var data = {
                 order_id: order._id,
                 bank: order.cardInfo.bank,
@@ -52,7 +53,8 @@ angular.module('adminApp').controller('AdminWaitingCompleteWithdrawOrderCtrl', [
                 card_id: order.cardInfo.cardID,
                 amount: order.amount.toFixed(2)
             };
-            $http.post('/admin/api/handle_with_draw_order', data)
+            */
+            $http.post('/admin/api/handle_with_draw_order', order)
                 .success(function(data, status) {
                     gbNotifier.notify('成功');
                 })

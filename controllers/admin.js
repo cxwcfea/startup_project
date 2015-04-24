@@ -1537,12 +1537,12 @@ function autoHandleWithdrawOrder(req, res) {
         partner: '201504141356306494',
         sign_type: 'MD5',
         return_url: config.pay_callback_domain + '/api/beifu_withdraw_feedback',
-        out_trade_no: req.body.order_id,
-        bank_name: req.body.bank,
-        bank_site_name: req.body.bank_name,
-        bank_account_name: req.body.user_name,
-        bank_account_no: req.body.card_id,
-        amount_str: req.body.amount,
+        out_trade_no: req.body._id,
+        bank_name: req.body.cardInfo.bank,
+        bank_site_name: req.body.cardInfo.bankName,
+        bank_account_name: req.body.cardInfo.userName,
+        bank_account_no: req.body.cardInfo.cardID,
+        amount_str: req.body.amount.toFixed(2),
         agent_time: moment().format('YYYYMMDDHHmmss'),
         to_account_mode: '1000'
     };
