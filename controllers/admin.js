@@ -17,7 +17,6 @@ var User = require('../models/User'),
     sms = require('../lib/sms');
 
 function getStatisticsPage(req, res, next) {
-    console.log('getStatisticsPage');
     var data = {};
     async.waterfall([
         function(callback) {
@@ -1555,8 +1554,11 @@ function autoHandleWithdrawOrder(req, res) {
     }
     str += keys[i] + '=' + data[keys[i]];
     //console.log(str+md5key);
-    var sign = sparkMD5.hash(str+md5key);
+    var strBuf = new Buffer(str+md5key, 'utf8');
+    var sign = sparkMD5.hash(strBuf.toString('utf8'));
     str += '&sign=' + sign;
+    strBuf = new Buffer(str, 'utf8');
+    str = strBuf.toString('utf8');
     console.log('beifu withdraw ' + str);
 
     var url = 'https://www.ebatong.com/gateway/agentDistribution.htm?' + str;
@@ -1573,6 +1575,12 @@ function autoHandleWithdrawOrder(req, res) {
             res.status(400);
             res.send({error_msg:resp.body});
         } else {
+            var result = resp.body;
+            if (result.charAt(result.length-1) === 'F') {
+                logger.warn(resp.body);
+                res.status(400);
+                return res.send({error_msg:resp.body});
+            }
             logger.debug('beifu withdraw ' + resp.body);
             res.send({});
         }
