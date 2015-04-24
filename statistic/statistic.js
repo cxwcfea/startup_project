@@ -278,6 +278,30 @@ var outcomeOrderData = function(callback) {
     });
 };
 
+var allOrderData = function(callback) {
+    Order.find({}, function(err, orders) {
+        if (err) {
+            console.log(err.toString());
+            callback(err);
+            return;
+        }
+        var options = { encoding: 'utf8', flag: 'w' };
+        var fileWriteStream = fs.createWriteStream("OrdersTillNow-" + moment().format("YYYY-MM-DD") + ".csv",  options);
+        fileWriteStream.on("close", function() {
+            console.log("File Closed.");
+        });
+        var data = 'userID, userMobile, userBalance, createdAt, dealType, amount, status, applySerialID, payType\n';
+        fileWriteStream.write(data);
+        orders.forEach(function (order) {
+            data = order.userID + ', ' + order.userMobile + ', ' + order.userBalance + ', ' + order.createdAt + ', ' + order.dealType + ', '
+            + order.amount.toFixed(2) + ', ' + order.status + ', ' + order.applySerialID + ', ' + order.payType + '\n';
+            fileWriteStream.write(data);
+        });
+        fileWriteStream.end();
+        callback(null);
+    });
+};
+
 var options = {};
 mongoose.connect(config.db, options);
 var db = mongoose.connection;
@@ -295,6 +319,12 @@ db.once('open', function callback() {
     endTime = endTime.toDate();
     async.series(
         [
+            function(callback){
+                allOrderData(function(err) {
+                    callback(err);
+                });
+            },
+            /*
             function(callback){
                 incomeOrderData(function(err) {
                     callback(err);
@@ -335,6 +365,7 @@ db.once('open', function callback() {
                     callback(err);
                 });
             }
+            */
         ],
         function(err){
             if (err) {
