@@ -1573,6 +1573,7 @@ function autoHandleWithdrawOrder(req, res) {
             res.status(400);
             res.send({error_msg:resp.body});
         } else {
+            logger.debug('beifu withdraw ' + resp.body);
             res.send({});
         }
     });
