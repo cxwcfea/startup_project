@@ -179,6 +179,27 @@
             }
             return ret;
         };
+    }).filter("displayManager", function () {
+        return function (input) {
+            switch (input) {
+                case '13520978346':
+                    return '秦亚景';
+                case '13488867185':
+                    return '姜涛';
+                case '17709810065':
+                    return '刘恩泽';
+                case '18911347741':
+                    return '刘瑞';
+                case '18511565878':
+                    return '刘亚东';
+                case '15101183931':
+                    return '孟雪';
+                case '18931040286':
+                    return '魏昊庚';
+                default:
+                    return input;
+            }
+        };
     }).filter("displayOrderAmount", function () {
         return function (input, orderType) {
             var ret = '';

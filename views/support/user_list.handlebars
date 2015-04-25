@@ -33,7 +33,7 @@
                     <td>\{{user.profile.email || 'N/A'}}</td>
                     <td>\{{user.finance.balance.toFixed(2)}}</td>
                     <td>\{{userVM.registerDate(user.registerAt)}}</td>
-                    <td>\{{user.manager || '还未分配'}}</td>
+                    <td>\{{user.manager || '还未分配' | displayManager}}</td>
                     <td>
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs">
