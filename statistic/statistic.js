@@ -470,7 +470,7 @@ db.once('open', function callback() {
                     }
                     amount += applydata[applykeys[i]];
                 }
-                callback(null, applydata);
+                callback(null, amount);
             }
         ], function(err, data) {
             if (err) {
