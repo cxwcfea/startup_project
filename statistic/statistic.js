@@ -41,38 +41,6 @@ var historyFreeApplyData = function(startTime, callback) {
         });
         fileWriteStream.end();
 
-        var fee = 0;
-        for (var i = 0; i < applies.length; ++i) {
-            if (applies[i].serviceCharge) {
-                fee += applies[i].serviceCharge * applies[i].amount / 10000;
-            } else {
-                switch (applies[i].lever) {
-                    case 10:
-                        fee += 19.9 * applies[i].amount / 10000;
-                        break;
-                    case 9:
-                        fee += 18.9 * applies[i].amount / 10000;
-                        break;
-                    case 8:
-                        fee += 17.9 * applies[i].amount / 10000;
-                        break;
-                    case 7:
-                        fee += 16.9 * applies[i].amount / 10000;
-                        break;
-                    case 6:
-                        fee += 15.9 * applies[i].amount / 10000;
-                        break;
-                    case 5:
-                        fee += 10.9 * applies[i].amount / 10000;
-                        break;
-                    default :
-                        fee += 19.9 * applies[i].amount / 10000;
-                        break;
-                }
-            }
-        }
-        console.log('total fee:' + fee.toFixed(2));
-
         callback(null);
     });
 };
@@ -108,6 +76,39 @@ var historyPayApplyData = function(startTime, callback) {
             fileWriteStream.write(data);
         });
         fileWriteStream.end();
+
+        var fee = 0;
+        for (var i = 0; i < applies.length; ++i) {
+            if (applies[i].serviceCharge) {
+                fee += applies[i].serviceCharge * applies[i].amount / 10000;
+            } else {
+                switch (applies[i].lever) {
+                    case 10:
+                        fee += 19.9 * applies[i].amount / 10000;
+                        break;
+                    case 9:
+                        fee += 18.9 * applies[i].amount / 10000;
+                        break;
+                    case 8:
+                        fee += 17.9 * applies[i].amount / 10000;
+                        break;
+                    case 7:
+                        fee += 16.9 * applies[i].amount / 10000;
+                        break;
+                    case 6:
+                        fee += 15.9 * applies[i].amount / 10000;
+                        break;
+                    case 5:
+                        fee += 10.9 * applies[i].amount / 10000;
+                        break;
+                    default :
+                        fee += 19.9 * applies[i].amount / 10000;
+                        break;
+                }
+            }
+        }
+        console.log('total fee:' + fee.toFixed(2));
+
         callback(null);
     });
 };
