@@ -306,11 +306,11 @@ var allOrderData = function(callback) {
         fileWriteStream.on("close", function() {
             console.log("File Closed.");
         });
-        var data = 'userID, userMobile, userBalance, createdAt, dealType, amount, status, applySerialID, payType\n';
+        var data = 'userID, userMobile, userBalance, createdAt, dealType, amount, status, applySerialID, payType, bankTransID\n';
         fileWriteStream.write(data);
         orders.forEach(function (order) {
             data = order.userID + ', ' + order.userMobile + ', ' + order.userBalance + ', ' + order.createdAt + ', ' + order.dealType + ', '
-            + order.amount.toFixed(2) + ', ' + order.status + ', ' + order.applySerialID + ', ' + order.payType + '\n';
+            + order.amount.toFixed(2) + ', ' + order.status + ', ' + order.applySerialID + ', ' + order.payType + ', ' + order.bankTransID + '\n';
             fileWriteStream.write(data);
         });
         fileWriteStream.end();
@@ -335,6 +335,7 @@ db.once('open', function callback() {
     endTime = endTime.toDate();
     async.series(
         [
+            /*
             function(callback) {
                 historyFreeApplyData(startTime, function(err) {
                     callback(err);
@@ -345,12 +346,13 @@ db.once('open', function callback() {
                     callback(err);
                 });
             }
-            /*
+            */
             function(callback){
                 allOrderData(function(err) {
                     callback(err);
                 });
             },
+            /*
             function(callback){
                 incomeOrderData(function(err) {
                     callback(err);
