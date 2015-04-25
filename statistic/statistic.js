@@ -530,7 +530,7 @@ db.once('open', function callback() {
                     }
                     amount += applydata[applykeys[i]];
                 }
-                console.log('已结算服务费:' + data.toFixed(2));
+                console.log('已结算服务费:' + amount.toFixed(2));
                 callback(null, amount);
             },
             function(amount, callback) {
