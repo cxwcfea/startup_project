@@ -31,31 +31,31 @@
             },
             */
             {
-                name: '8倍',
+                name: '7倍',
                 value: 8
             },
             {
-                name: '7倍',
+                name: '6倍',
                 value: 7
             },
             {
-                name: '6倍',
+                name: '5倍',
                 value: 6
             },
             {
-                name: '5倍',
+                name: '4倍',
                 value: 5
             },
             {
-                name: '4倍',
+                name: '3倍',
                 value: 4
             },
             {
-                name: '3倍',
+                name: '2倍',
                 value: 3
             },
             {
-                name: '2倍',
+                name: '1倍',
                 value: 2
             }
         ];
