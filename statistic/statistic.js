@@ -449,7 +449,7 @@ db.once('open', function callback() {
 
     startTime = moment("2015-04-18");
 
-    async.series(
+    async.waterfall(
         [
             function(callback) {
                 historyCloseApplyFee(function(err, data) {
