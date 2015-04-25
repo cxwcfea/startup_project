@@ -432,19 +432,6 @@ var historyReturnFeeOrderData = function(callback) {
     })
 };
 
-var tradeDaysTillNow  = function(startDay, days) {
-    var startDayOfYear = moment(startDay).dayOfYear();
-    var currentDayOfYear = moment().dayOfYear();
-    var ret = 0;
-    while (currentDayOfYear >= startDayOfYear) {
-        if (holiday.indexOf(currentDayOfYear) === -1) {
-            ++ret;
-        }
-        --currentDayOfYear;
-    }
-    return ret;
-};
-
 var activeApplyFeeTillNow = function(callback) {
     console.log('activeApplyFeeTillNow');
 
@@ -456,7 +443,7 @@ var activeApplyFeeTillNow = function(callback) {
 
         var fee = 0;
         for (var i = 0; i < applies.length; ++i) {
-            var days = tradeDaysTillNow(applies[i].startTime);
+            var days = util.tradeDaysTillNow(applies[i].startTime);
             if (applies[i].serviceCharge) {
                 fee += applies[i].serviceCharge * applies[i].amount / 10000 * days;
             } else {
