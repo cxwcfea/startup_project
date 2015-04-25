@@ -3,6 +3,7 @@ var mongoose = require('mongoose'),
     moment = require('moment'),
     _ = require('lodash'),
     async = require('async'),
+    util = require('../lib/util'),
     Apply = require('../models/Apply'),
     Card = require('../models/Card'),
     Order = require('../models/Order'),
@@ -431,6 +432,65 @@ var historyReturnFeeOrderData = function(callback) {
     })
 };
 
+var tradeDaysTillNow  = function(startDay, days) {
+    var startDayOfYear = moment(startDay).dayOfYear();
+    var currentDayOfYear = moment().dayOfYear();
+    var ret = 0;
+    while (currentDayOfYear >= startDayOfYear) {
+        if (holiday.indexOf(currentDayOfYear) === -1) {
+            ++ret;
+        }
+        --currentDayOfYear;
+    }
+    return ret;
+};
+
+var activeApplyFeeTillNow = function(callback) {
+    console.log('activeApplyFeeTillNow');
+
+    Apply.find({$and:[{isTrial:false}, {status:2}, {type:{$ne:2}}]}, function(err, applies) {
+        if (err) {
+            console.log(err.toString());
+            return callback(err);
+        }
+
+        var fee = 0;
+        for (var i = 0; i < applies.length; ++i) {
+            var days = tradeDaysTillNow(applies[i].startTime);
+            if (applies[i].serviceCharge) {
+                fee += applies[i].serviceCharge * applies[i].amount / 10000 * days;
+            } else {
+                switch (applies[i].lever) {
+                    case 10:
+                        fee += 19.9 * applies[i].amount / 10000 * days;
+                        break;
+                    case 9:
+                        fee += 18.9 * applies[i].amount / 10000 * days;
+                        break;
+                    case 8:
+                        fee += 17.9 * applies[i].amount / 10000 * days;
+                        break;
+                    case 7:
+                        fee += 16.9 * applies[i].amount / 10000 * days;
+                        break;
+                    case 6:
+                        fee += 15.9 * applies[i].amount / 10000 * days;
+                        break;
+                    case 5:
+                        fee += 10.9 * applies[i].amount / 10000 * days;
+                        break;
+                    default :
+                        fee += 19.9 * applies[i].amount / 10000 * days;
+                        break;
+                }
+            }
+        }
+        //console.log('total fee:' + fee.toFixed(2));
+
+        callback(null, fee);
+    });
+};
+
 var options = {};
 mongoose.connect(config.db, options);
 var db = mongoose.connection;
@@ -470,13 +530,20 @@ db.once('open', function callback() {
                     }
                     amount += applydata[applykeys[i]];
                 }
+                console.log('已结算服务费:' + data.toFixed(2));
                 callback(null, amount);
+            },
+            function(amount, callback) {
+                activeApplyFeeTillNow(function(err, data) {
+                    console.log('应收取服务费:' + data.toFixed(2));
+                    callback(null, amount+data);
+                });
             }
         ], function(err, data) {
             if (err) {
                 console.log(err.toString());
             } else {
-                console.log('已结算服务费:' + data.toFixed(2));
+                console.log('总服务费:' + data.toFixed(2));
             }
         }
     );
