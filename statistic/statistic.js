@@ -374,18 +374,18 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
+             */
             function(callback) {
                 historyPayApplyData(startTime, function(err) {
                     callback(err);
                 });
             }
-            */
+            /*
             function(callback){
                 allOrderData(function(err) {
                     callback(err);
                 });
             },
-            /*
             function(callback){
                 incomeOrderData(function(err) {
                     callback(err);
