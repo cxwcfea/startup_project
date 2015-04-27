@@ -83,8 +83,18 @@ var getApplyServiceFee = function(apply) {
                 break;
         }
     }
+    var days = apply.period;
+    if (apply.closeAt) {
+        var closeDay = moment(apply.closeAt).dayOfYear();
+        var startDay = moment(apply.startTime).dayOfYear();
+
+        days = closeDay - startDay;
+        if (days < 0) {
+            days = apply.period;
+        }
+    }
     if (apply.status === 3) {
-        fee = fee * apply.amount / 10000 * apply.period;
+        fee = fee * apply.amount / 10000 * days;
     } else {
         fee = fee * apply.amount / 10000 * util.tradeDaysTillNow(apply.startTime);
     }
