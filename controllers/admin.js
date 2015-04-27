@@ -4,6 +4,7 @@ var User = require('../models/User'),
     AlipayOrder = require('../models/AlipayOrder'),
     Homas = require('../models/Homas'),
     Note = require('../models/Note'),
+    SalesData = require('../models/SalesData'),
     log4js = require('log4js'),
     logger = log4js.getLogger('admin'),
     util = require('../lib/util'),
@@ -1611,6 +1612,16 @@ function autoHandleWithdrawOrder(req, res) {
     });
 }
 
+function getSalesStatisticsData(req, res) {
+    SalesData.find({}, function(err, data) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send(data);
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -1738,6 +1749,8 @@ module.exports = {
         app.post('/admin/api/handle_with_draw_order', passportConf.requiresRole('admin'), autoHandleWithdrawOrder);
 
         app.get('/admin/statistics', passportConf.requiresRole('admin'), getStatisticsPage);
+
+        app.get('/admin/api/sales_statistics', passportConf.requiresRole('admin'), getSalesStatisticsData);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

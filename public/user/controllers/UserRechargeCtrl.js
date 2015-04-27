@@ -220,8 +220,8 @@ angular.module('userApp').controller('UserRechargeCtrl', ['$scope', '$window', '
         newOrder.description = '支付宝转账';
         newOrder.payType = 3;
         newOrder.status = 2;
-        newOrder.otherInfo = vm.alipay_account;
-        newOrder.transID = vm.alipay_name;
+        newOrder.otherInfo = vm.alipay_account.trim().toLowerCase();
+        newOrder.transID = vm.alipay_name.trim().toLowerCase();
         newOrder.$save(function(o, responseHeaders) {
             console.log('order create success');
         }, function(response) {

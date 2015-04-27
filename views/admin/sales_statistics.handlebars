@@ -1,0 +1,37 @@
+<div class="am-cf am-padding">
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">销售数据</strong></div>
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12 am-u-md-3">
+    </div>
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12">
+        <form class="am-form">
+            <div class="am-scrollable-horizontal">
+                <table class="am-table am-table-striped am-table-hover table-main">
+                    <thead>
+                        <tr>
+                            <th>姓名</th><th>基本工资</th><th>本月利润</th><th>新接手客户数</th><th>客户转化数</th><th>转化率</th><th>坏账</th><th>投诉</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in vm.salesData">
+                            <td>\{{data.name}}</td>
+                            <td>\{{data.baseSalary}}</td>
+                            <td>\{{data.profit | currency:'':2}}</td>
+                            <td>\{{data.newCustomers.length}}</td>
+                            <td>\{{data.newPayCustomers.length}}</td>
+                            <td>\{{data.transRate}}%</td>
+                            <td>\{{data.loss | currency:'':2}}</td>
+                            <td>\{{data.complain || 0}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr />
+        </form>
+    </div>
+</div>

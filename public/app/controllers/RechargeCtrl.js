@@ -217,8 +217,8 @@
             vm.pay_amount = Number(vm.pay_amount.toFixed(2));
             vm.pay_order.amount = vm.pay_amount;
             vm.pay_order.payType = 3;
-            vm.pay_order.otherInfo = vm.alipay_account;
-            vm.pay_order.transID = vm.alipay_name;
+            vm.pay_order.otherInfo = vm.alipay_account.trim().toLowerCase();
+            vm.pay_order.transID = vm.alipay_name.trim().toLowerCase();
             $http.post('/api/user/' + vm.user._id + '/orders/' + vm.pay_order._id, vm.pay_order)
                 .success(function(data, status) {
                     console.log('order update success');
