@@ -90,7 +90,7 @@ var getApplyServiceFee = function(apply) {
 
         days = closeDay - startDay;
         if (days < 0) {
-            days = apply.period;
+            days = 0;
         }
     }
     if (apply.status === 3) {
