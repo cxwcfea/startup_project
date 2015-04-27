@@ -53,7 +53,14 @@ function getStatisticsPage(req, res, next) {
                 if (!err) {
                     data.added_pay_apply_amount = dataObj.amount.toFixed(2);
                     data.added_pay_apply_num = dataObj.num;
-                    data.added_fee = dataObj.fee.toFixed(2);
+                }
+                callback(err, data);
+            });
+        },
+        function(data, callback) {
+            util.getTodayActiveApplyData(function(err, dataObj) {
+                if (!err) {
+                    data.added_fee = dataObj.amount.toFixed(2);
                 }
                 callback(err, data);
             });
