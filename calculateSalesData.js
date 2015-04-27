@@ -59,7 +59,7 @@ var getApplyServiceFee = function(apply) {
     if (apply.serviceCharge) {
         fee = apply.serviceCharge;
     } else {
-        switch (applies[i].lever) {
+        switch (apply.lever) {
             case 10:
                 fee = 19.9;
                 break;
