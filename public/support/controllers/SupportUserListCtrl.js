@@ -162,7 +162,7 @@ angular.module('supportApp').controller('SupportUserListCtrl', ['$scope', '$http
                 gbNotifier.notify('更新成功!');
             })
             .error(function(data, status) {
-                gbNotifier.error('更新失败!');
+                gbNotifier.error('更新失败! ' + data.error_msg);
             });
     };
 

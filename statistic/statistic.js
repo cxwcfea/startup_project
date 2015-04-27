@@ -320,7 +320,7 @@ var dailyFreeApplyDataTillNow = function(callback) {
 var dailyPayApplyDataTillNow = function(callback) {
     console.log('dailyPayApplyDataTillNow');
 
-    Apply.find({$and:[{isTrial:false}, {status:2}]}, function(err, applies) {
+    Apply.find({$and:[{isTrial:false}, {status:2}, {status:5}]}, function(err, applies) {
         if (err) {
             console.log(err.toString());
             callback(err);
@@ -496,6 +496,7 @@ db.once('open', function callback() {
 
     startTime = moment("2015-04-18");
 
+    /*
     async.waterfall(
         [
             function(callback) {
@@ -534,9 +535,10 @@ db.once('open', function callback() {
             }
         }
     );
-    /*
+    */
     async.series(
         [
+    /*
             function(callback) {
                 historyFreeApplyData(startTime, function(err) {
                     callback(err);
@@ -567,11 +569,13 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
+            */
             function(callback){
                 dailyPayApplyDataTillNow(function(err) {
                     callback(err);
                 });
-            },
+            }
+            /*
             function(callback){
                 dailyAddedPayApplyData(startTime, endTime, function(err) {
                     callback(err);
@@ -592,6 +596,7 @@ db.once('open', function callback() {
                     callback(err);
                 });
             }
+            */
         ],
         function(err){
             if (err) {
@@ -599,6 +604,5 @@ db.once('open', function callback() {
             }
             db.close();
         });
-     */
 });
 

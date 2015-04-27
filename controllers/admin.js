@@ -929,17 +929,25 @@ function releaseCustomer(req, res) {
 }
 
 function takeCustomer(req, res) {
-    User.update({mobile:req.body.userMobile}, {$set: {'manager':req.user.mobile}}, function(err, numberAffected, raw) {
+    User.findOne({mobile:req.body.userMobile}, function (err, user) {
         if (err) {
             logger.debug('takeCustomer error:' + err.toString());
             res.status(500);
             return res.send({error_msg:err.toString()});
         }
-        if (numberAffected == 0) {
-            res.status(400);
-            return res.send({error_msg:'user not found'});
+        if (user.manager) {
+            res.status(403);
+            return res.send({error_msg:'该用户已被接手'});
         }
-        res.send({manager:req.user.mobile});
+        user.manager = req.user.mobile;
+        user.save(function(err) {
+            if (err) {
+                logger.debug('takeCustomer error:' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+            res.send({manager:req.user.mobile});
+        })
     });
 }
 
