@@ -30,7 +30,7 @@
                     <td>\{{user.profile.alipay_name || 'N/A'}}</td>
                     <td>\{{user.finance.history_capital | currency:'':2}}</td>
                     <td>\{{user.freeApply ? '是' : '否'}}</td>
-                    <td>\{{user.finance.balance}}</td>
+                    <td>\{{user.finance.balance | currency:'':2}}</td>
                     <td>\{{user.manager || '还未分配' | displayManager}}</td>
                     <td>\{{userVM.registerDate(user.registerAt)}}</td>
                     <td>

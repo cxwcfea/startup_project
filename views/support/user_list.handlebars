@@ -22,18 +22,18 @@
             <table class="am-table am-table-striped am-table-hover table-main">
                 <thead>
                 <tr>
-                    <th class="table-id">手机号</th><th class="table-title">姓名</th><th class="table-id">QQ号</th><th class="table-author">邮件</th><th class="table-id">余额</th><th class="table-date">注册日期</th><th class="table-set">接手客服</th><th class="table-set">操作</th>
+                    <th class="table-id">手机号</th><th class="table-title">姓名</th><th class="table-id">配资额</th><th class="table-author">免费配资</th><th class="table-id">余额</th><th>客服人员</th><th class="table-date">注册日期</th><th class="table-set">操作</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="user in userVM.currentUsers">
                     <td><a href="" ng-click="userVM.viewUserNotes(user)">\{{user.mobile}}</a></td>
-                    <td>\{{user.identity.name || 'N/A'}}</td>
-                    <td>\{{user.profile.qq || 'N/A'}}</td>
-                    <td>\{{user.profile.email || 'N/A'}}</td>
-                    <td>\{{user.finance.balance.toFixed(2)}}</td>
-                    <td>\{{userVM.registerDate(user.registerAt)}}</td>
+                    <td>\{{user.profile.alipay_name || 'N/A'}}</td>
+                    <td>\{{user.finance.history_capital | currency:'':2}}</td>
+                    <td>\{{user.freeApply ? '是' : '否'}}</td>
+                    <td>\{{user.finance.balance | currency:'':2}}</td>
                     <td>\{{user.manager || '还未分配' | displayManager}}</td>
+                    <td>\{{userVM.registerDate(user.registerAt)}}</td>
                     <td>
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs">
