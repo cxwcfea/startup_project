@@ -147,9 +147,8 @@ var returnFeeOrderData = function(callback) {
         }
         var data = {};
         for (var i = 0; i < orders.length; ++i) {
-            data[orders[i].applySerialID] = orders.amount;
+            data[orders[i].applySerialID] = orders[i].amount;
         }
-        console.log(data);
         callback(null, data);
     })
 };
