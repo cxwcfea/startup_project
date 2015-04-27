@@ -60,7 +60,7 @@ function getStatisticsPage(req, res, next) {
         function(data, callback) {
             util.getTodayActiveApplyData(function(err, dataObj) {
                 if (!err) {
-                    data.added_fee = dataObj.amount.toFixed(2);
+                    data.added_fee = dataObj.total_fee.toFixed(2);
                 }
                 callback(err, data);
             });
