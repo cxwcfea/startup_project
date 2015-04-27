@@ -219,7 +219,9 @@ db.once('open', function callback() {
         function(applydata, orderdata, callback) {
             for (var i = 0; i < applydata.length; ++i) {
                 if (orderdata[applydata[i].applySerialID]) {
+                    console.log(applydata[i].amount);
                     applydata[i].amount -= orderdata[applydata[i].applySerialID];
+                    console.log(applydata[i].amount);
                 }
             }
             callback(null, applydata);
