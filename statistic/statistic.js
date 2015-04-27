@@ -320,14 +320,14 @@ var dailyFreeApplyDataTillNow = function(callback) {
 var dailyPayApplyDataTillNow = function(callback) {
     console.log('dailyPayApplyDataTillNow');
 
-    Apply.find({$and:[{isTrial:false}, {status:2}, {status:5}]}, function(err, applies) {
+    Apply.find({$and:[{isTrial:false}, {$or:[{status:2}, {status:5}]}]}, function(err, applies) {
         if (err) {
             console.log(err.toString());
             callback(err);
             return;
         }
         var options = { encoding: 'utf8', flag: 'w' };
-        var fileWriteStream = fs.createWriteStream("dailyPayApplyDataTillNow-" + moment().format("YYYY-MM-DD") + ".txt",  options);
+        var fileWriteStream = fs.createWriteStream("dailyPayApplyDataTillNow-" + moment().format("YYYY-MM-DD") + ".csv",  options);
         fileWriteStream.on("close", function() {
             console.log("File Closed.");
         });
