@@ -149,6 +149,7 @@ var returnFeeOrderData = function(callback) {
         for (var i = 0; i < orders.length; ++i) {
             data[orders[i].applySerialID] = orders.amount;
         }
+        console.log(data);
         callback(null, data);
     })
 };
