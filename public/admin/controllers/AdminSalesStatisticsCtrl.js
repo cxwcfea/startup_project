@@ -7,6 +7,7 @@ angular.module('adminApp').controller('AdminSalesStatisticsCtrl', ['$scope', '$l
         var month = moment().startOf('month').format('YYYYMM');
         vm.salesData = data.filter(function(elem) {
             elem.transRate = elem.newCustomers.length ? (elem.newPayCustomers.length / elem.newCustomers.length * 100) : 0;
+            elem.transRate = elem.transRate.toFixed(2);
             return elem.month === month;
         });
     });
