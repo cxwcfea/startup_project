@@ -138,6 +138,21 @@ var changeApplyData = function(applyObj, callback) {
     })
 };
 
+var returnFeeOrderData = function(callback) {
+    Order.find({$and:[{dealType:8}, {createdAt:{$lte:endOfMonth}}, {createdAt:{$gte:startOfMonth}}]}, function(err, orders) {
+        if (err) {
+            console.log(err.toString());
+            callback(err);
+            return;
+        }
+        var data = {};
+        for (var i = 0; i < orders.length; ++i) {
+            data[orders[i].applySerialID] = orders.amount;
+        }
+        callback(null, data);
+    })
+};
+
 var sales = [
     {
         mobile: '13520978346',
@@ -195,6 +210,19 @@ db.once('open', function callback() {
             gatherApplyData(function(err, applyData) {
                 callback(err, applyData);
             });
+        },
+        function(applydata, callback) {
+            returnFeeOrderData(function(err, orderData) {
+                callback(err, applydata, orderData);
+            });
+        },
+        function(applydata, orderdata, callback) {
+            for (var i = 0; i < applydata.length; ++i) {
+                if (orderdata[applydata[i].applySerialID]) {
+                    applydata[i].amount -= orderdata[applydata[i].applySerialID];
+                }
+            }
+            callback(null, applydata);
         },
         function(data, callback) {
             async.mapSeries(data, changeApplyData, function(err, result) {
