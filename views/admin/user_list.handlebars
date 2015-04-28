@@ -5,9 +5,9 @@
 <div class="am-g">
     <div class="am-u-sm-12">
         <ul class="am-avg-sm-1 am-avg-md-3 am-margin am-padding am-text-center admin-content-list ">
-            <li><a href="#" class="am-text-success"><br/>新注册用户<br/>\{{userVM.users.length}}</a>位</li>
-            <li><a href="#" class="am-text-warning"><br/>免费体验<br/>\{{userVM.num_of_free_user}}</a>位</li>
-            <li><a href="#" class="am-text-danger"><br/>转化用户<br/>\{{userVM.num_of_pay_user}}</a>位</li>
+            <li>新注册用户<a href="" class="am-text-success"><br/>\{{userVM.users.length}}</a>位</li>
+            <li>免费体验<a href="" class="am-text-warning"><br/>\{{userVM.num_of_free_user}}</a>位</li>
+            <li>转化用户<a href="" class="am-text-danger"><br/>\{{userVM.num_of_pay_user}}</a>位</li>
         </ul>
     </div>
 </div>
@@ -41,7 +41,9 @@
                                 <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="userVM.updateBalance(user)"><span class="am-icon-pencil"></span> 修改余额</button>
                                 -->
                                 <button class="am-btn am-btn-default am-btn-xs am-text-warning" ng-click="userVM.createOrder(user)"><span class="am-icon-pencil"></span> 创建订单</button>
+                                <!--
                                 <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-click="userVM.takeCustomer(user)"><span class="am-icon-user"></span> 接手客服</button>
+                                -->
                             </div>
                         </div>
                     </td>
