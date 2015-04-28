@@ -59,12 +59,12 @@ var gatherData = function(salesObj, callback) {
         fileWriteStream.write(data);
         data = salesObj.name + ', ' + loss.toFixed(2) + ', ' + profit.toFixed(2) + '\n';
         fileWriteStream.write(data);
-        fileWriteStream.write('接受客户');
+        fileWriteStream.write('接手客户:\n');
         var j;
         for (j = 0; j < userMobiles.length; ++j) {
             fileWriteStream.write(userMobiles[j] + '\n');
         }
-        fileWriteStream.write('转化客户');
+        fileWriteStream.write('转化客户:\n');
         for (j = 0; j < payUserMobiles.length; ++j) {
             fileWriteStream.write(payUserMobiles[j] + '\n');
         }
