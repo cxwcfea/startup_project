@@ -229,7 +229,7 @@ function fetchUserList(req, res, next) {
 
 function fetchNewUserList(req, res, next) {
     var today = moment();
-    var yesterday = moment().subtract(2, 'days');
+    var yesterday = moment().subtract(1, 'days');
     User.find({$and:[{registerAt:{$lte:today}}, {registerAt:{$gte:yesterday}}]}, function(err, collection) {
         if (err) {
             return res.send({success:false, reason:err.toString()});

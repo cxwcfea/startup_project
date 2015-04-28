@@ -1,16 +1,14 @@
 <div class="am-cf am-padding">
-    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">用户列表</strong> / <small>Users</small></div>
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">新用户列表</strong> / <small>New Users</small></div>
 </div>
 
 <div class="am-g">
-    <div class="am-u-sm-12 am-u-md-3">
-        <div class="am-input-group am-input-group-sm">
-            <input type="text" class="am-form-field" placeholder="输入用户手机号" ng-model="userVM.searchKey">
-            <span class="am-input-group-btn">
-                <button class="am-btn am-btn-default" type="button" ng-click="userVM.searchUser()">搜索</button>
-                <button class="am-btn am-btn-default" type="button" ng-click="userVM.showAllUsers()">全部</button>
-            </span>
-        </div>
+    <div class="am-u-sm-12">
+        <ul class="am-avg-sm-1 am-avg-md-3 am-margin am-padding am-text-center admin-content-list ">
+            <li><a href="#" class="am-text-success"><br/>新注册用户<br/>\{{userVM.users.length}}</a>位</li>
+            <li><a href="#" class="am-text-warning"><br/>免费体验<br/>\{{userVM.num_of_free_user}}</a>位</li>
+            <li><a href="#" class="am-text-danger"><br/>转化用户<br/>\{{userVM.num_of_pay_user}}</a>位</li>
+        </ul>
     </div>
 </div>
 

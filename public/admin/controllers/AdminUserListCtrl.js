@@ -1,12 +1,31 @@
 'use strict';
-angular.module('adminApp').controller('AdminUserListCtrl', ['$scope', '$http', '$modal', '$location', 'gbUser', 'gbNotifier', '$filter', function($scope, $http, $modal, $location, gbUser, gbNotifier, $filter) {
+angular.module('adminApp').controller('AdminUserListCtrl', ['$scope', '$http', '$modal', '$location', 'gbNotifier', '$filter', '$resource', function($scope, $http, $modal, $location, gbNotifier, $filter, $resource) {
     var vm = this;
     vm.maxSize = 5;
     if ($scope.data.searchKey) {
         vm.searchKey = $scope.data.searchKey;
     }
-    vm.users = gbUser.query(function() {
+
+    var UserResource = $resource('/admin/api/new_users', {});
+
+    vm.users = UserResource.query(function() {
         vm.users = $filter('orderBy')(vm.users, 'registerAt', true);
+        var payUser = vm.users.filter(function(elem) {
+            return elem.history_deposit > 100;
+        });
+        vm.num_of_pay_user = payUser.length;
+        var freeUser = vm.users.filter(function(elem) {
+            return elem.freeApply != null && elem.freeApply != undefined;
+        });
+        vm.num_of_free_user = freeUser.length;
+
+        if (vm.users.length > 0) {
+            vm.pay_rate = (vm.num_of_pay_user / vm.users.length * 100).toFixed(0);
+            vm.free_rate = (vm.num_of_free_user / vm.users.length * 100).toFixed(0);
+        } else {
+            vm.pay_rate = 0;
+            vm.free_rate = 0;
+        }
         vm.showAllUsers();
     });
 
