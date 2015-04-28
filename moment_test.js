@@ -113,5 +113,16 @@ var getStartDay = function() {
 console.log(getStartDay().format('YYYYMMDDHHmmSSS'));
 var today = moment();
 var yesterday = moment().subtract(1, 'days');
+console.log(yesterday);
 console.log(today.toDate());
 console.log(yesterday.toDate());
+today = today.toDate();
+yesterday = yesterday.toDate();
+
+if (today < yesterday) {
+	console.log('today < yesterday');
+} else if (today > yesterday) {
+	console.log('today > yesterday');
+} else {
+	console.log('today = yesterday');
+}

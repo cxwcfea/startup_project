@@ -230,11 +230,79 @@ function fetchUserList(req, res, next) {
 function fetchNewUserList(req, res, next) {
     var today = moment();
     var yesterday = moment().subtract(1, 'days');
-    User.find({$and:[{registerAt:{$lte:today}}, {registerAt:{$gte:yesterday}}]}, function(err, collection) {
+    User.find({$and:[{registerAt:{$lte:today.toDate()}}, {registerAt:{$gte:yesterday.toDate()}}]}, function(err, collection) {
         if (err) {
             return res.send({success:false, reason:err.toString()});
         }
         res.send(collection);
+    });
+}
+
+function calculateRate(users) {
+    var vm = {};
+    var payUser = users.filter(function(elem) {
+        return elem.finance.history_deposit > 100;
+    });
+    vm.num_of_pay_user = payUser.length;
+    var freeUser = users.filter(function(elem) {
+        return elem.freeApply != null && elem.freeApply != undefined;
+    });
+    vm.num_of_free_user = freeUser.length;
+
+    if (users.length > 0) {
+        vm.pay_rate = (vm.num_of_pay_user / users.length * 100).toFixed(0);
+        vm.free_rate = (vm.num_of_free_user / users.length * 100).toFixed(0);
+    } else {
+        vm.pay_rate = 0;
+        vm.free_rate = 0;
+    }
+    return vm;
+}
+
+function calculateRateInFiveDays(req, res, next) {
+    var today = moment().toDate();
+    var beforeOneDay = moment().subtract(1, 'days').toDate();
+    var beforeTwoDay = moment().subtract(2, 'days').toDate();
+    var beforeThreeDay = moment().subtract(3, 'days').toDate();
+    var beforeFourDay = moment().subtract(4, 'days').toDate();
+    var beforeFiveDay = moment().subtract(5, 'days').toDate();
+    User.find({$and:[{registerAt:{$lte:today}}, {registerAt:{$gte:beforeFiveDay}}]}, function(err, collection) {
+        if (err) {
+            return res.send({success:false, reason:err.toString()});
+        }
+        var inOneDayUsers = collection.filter(function(elem) {
+            return elem.registerAt <= today && elem.registerAt >= beforeOneDay;
+        });
+        var oneDayData = calculateRate(inOneDayUsers);
+
+        var inTwoDayUsers = collection.filter(function(elem) {
+            return elem.registerAt <= today && elem.registerAt >= beforeTwoDay;
+        });
+        var twoDayData = calculateRate(inTwoDayUsers);
+
+        var inThreeDayUsers = collection.filter(function(elem) {
+            return elem.registerAt <= today && elem.registerAt >= beforeThreeDay;
+        });
+        var threeDayData = calculateRate(inThreeDayUsers);
+
+        var inFourDayUsers = collection.filter(function(elem) {
+            return elem.registerAt <= today && elem.registerAt >= beforeFourDay;
+        });
+        var fourDayData = calculateRate(inFourDayUsers);
+
+        var inFiveDayUsers = collection.filter(function(elem) {
+            return elem.registerAt <= today && elem.registerAt >= beforeFiveDay;
+        });
+        var fiveDayData = calculateRate(inFiveDayUsers);
+
+        var ret = [];
+        ret.push(oneDayData);
+        ret.push(twoDayData);
+        ret.push(threeDayData);
+        ret.push(fourDayData);
+        ret.push(fiveDayData);
+
+        res.send(ret);
     });
 }
 
@@ -1824,6 +1892,8 @@ module.exports = {
         app.get('/admin/statistics', passportConf.requiresRole('admin'), getStatisticsPage);
 
         app.get('/admin/api/sales_statistics', passportConf.requiresRole('admin'), getSalesStatisticsData);
+
+        app.get('/admin/api/user_rate_data', passportConf.requiresRole('admin'), calculateRateInFiveDays);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
