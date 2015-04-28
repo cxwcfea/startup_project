@@ -9,6 +9,10 @@
             <li>免费体验<a href="" class="am-text-warning"><br/>\{{userVM.num_of_free_user}}</a>位</li>
             <li>转化用户<a href="" class="am-text-danger"><br/>\{{userVM.num_of_pay_user}}</a>位</li>
         </ul>
+        <small><em>付费率</em></small>
+        <progressbar animate="false" value="userVM.free_rate" type="success"><b>{{userVM.free_rate}}%</b></progressbar>
+        <small><em>转化率</em></small>
+        <progressbar animate="false" value="userVM.pay_rate" type="success"><b>{{userVM.pay_rate}}%</b></progressbar>
     </div>
 </div>
 
