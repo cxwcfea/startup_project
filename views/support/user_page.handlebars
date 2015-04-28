@@ -1,0 +1,53 @@
+<div class="am-cf am-padding">
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">搜索用户</strong> / <small>User</small></div>
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12 am-u-md-3">
+        <div class="am-input-group am-input-group-sm">
+            <input type="text" class="am-form-field" placeholder="输入用户手机号" ng-model="vm.searchKey">
+            <span class="am-input-group-btn">
+                <button class="am-btn am-btn-default" type="button" ng-click="vm.searchUser()">搜索</button>
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12">
+        <form class="am-form">
+            <div class="am-scrollable-horizontal">
+                <table class="am-table am-table-striped am-table-hover table-main">
+                    <thead>
+                    <tr>
+                        <th class="table-id">手机号</th><th class="table-title">姓名</th><th class="table-id">配资额</th><th class="table-author">免费配资</th><th class="table-id">余额</th><th>客服人员</th><th class="table-date">注册日期</th><th class="table-set">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-show="vm.user">
+                        <td>\{{vm.user.mobile}}</td>
+                        <td>\{{vm.user.profile.alipay_name || 'N/A'}}</td>
+                        <td>\{{vm.user.finance.history_capital | currency:'':2}}</td>
+                        <td>\{{vm.user.freeApply ? '是' : '否'}}</td>
+                        <td>\{{vm.user.finance.balance | currency:'':2}}</td>
+                        <td>\{{vm.user.manager || '还未分配' | displayManager}}</td>
+                        <td>\{{vm.registerDate(vm.user.registerAt)}}</td>
+                        <td>
+                            <div class="am-btn-toolbar">
+                                <div class="am-btn-group am-btn-group-xs">
+                                    <button class="am-btn am-btn-default am-btn-xs" ng-click="vm.showApplies(user)"><span class="am-icon-bar-chart"></span> 配资</button>
+                                    <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="vm.showOrders(user)"><span class="am-icon-money"></span> 订单</button>
+                                    <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-hide="user.manager" ng-click="vm.takeCustomer(user)"><span class="am-icon-user"></span> 我要接手</button>
+                                    <button class="am-btn am-btn-default am-btn-xs am-text-primary" ng-click="vm.takeNote(user)"><span class="am-icon-pencil"></span> 记录</button>
+                                    <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-show="user.manager" ng-click="vm.releaseCustomer(user)"><span class="am-icon-user"></span> 放弃客户</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+        <span ng-repeat="tag in vm.user.tags"><a class="am-badge am-badge-primary">\{{::tag}}</a> </span>
+    </div>
+</div>

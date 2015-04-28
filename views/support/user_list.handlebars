@@ -64,29 +64,3 @@
         </form>
     </div>
 </div>
-
-<script type="text/ng-template" id="takeNoteModal.html">
-    <div class="modal-header">
-        <h3 class="modal-title">修改用户</h3>
-    </div>
-    <div class="modal-body">
-        <form class="am-form">
-            <div class="am-form-group">
-                <label>标签</label>
-                <input type="text" ng-model="data.tag">
-            </div>
-            <div class="am-form-group">
-                <label>标题</label>
-                <input type="text" ng-model="data.title">
-            </div>
-            <div class="am-form-group">
-                <label for="doc-ta-1">内容</label>
-                <textarea class="" rows="5" id="doc-ta-1" ng-model="data.content"></textarea>
-            </div>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()">确认修改</button>
-        <button class="btn btn-warning" ng-click="cancel()">取消</button>
-    </div>
-</script>

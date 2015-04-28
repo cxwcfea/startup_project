@@ -39,6 +39,9 @@ angular.module('supportApp').config(['$routeProvider', '$locationProvider', func
         .when('/user_notes/:mobile', { templateUrl: '/support/user_notes',
             controller: 'SupportUserNotesCtrl as vm'
         })
+        .when('/user_page', { templateUrl: '/support/user_page',
+            controller: 'SupportUserCtrl as vm'
+        })
         .otherwise({
             redirectTo: '/users'
         });

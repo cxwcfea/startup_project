@@ -168,7 +168,7 @@ angular.module('supportApp').controller('SupportUserListCtrl', ['$scope', '$http
 
     vm.takeNote = function(user) {
         var modalInstance = $modal.open({
-            templateUrl: 'takeNoteModal.html',
+            templateUrl: 'views/takeNoteModal.html',
             controller: 'TakeNoteModalCtrl',
             //size: size,
             resolve: {}
