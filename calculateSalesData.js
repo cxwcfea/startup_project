@@ -51,7 +51,7 @@ var gatherData = function(salesObj, callback) {
         });
 
         var options = { encoding: 'utf8', flag: 'w' };
-        var fileWriteStream = fs.createWriteStream("Sales-" + salesObj.mobile + '-' + moment('2015-04').toString() + ".txt",  options);
+        var fileWriteStream = fs.createWriteStream("Sales-" + salesObj.mobile + "-2015-04.txt",  options);
         fileWriteStream.on("close", function() {
             console.log("File Closed.");
         });
@@ -60,12 +60,13 @@ var gatherData = function(salesObj, callback) {
         data = salesObj.name + ', ' + loss.toFixed(2) + ', ' + profit.toFixed(2) + '\n';
         fileWriteStream.write(data);
         fileWriteStream.write('接受客户');
-        for (var j = 0; j < userMobiles.length; ++i) {
-            fileWriteStream.write(userMobiles[i] + '\n');
+        var j;
+        for (j = 0; j < userMobiles.length; ++j) {
+            fileWriteStream.write(userMobiles[j] + '\n');
         }
         fileWriteStream.write('转化客户');
-        for (var j = 0; j < payUserMobiles.length; ++i) {
-            fileWriteStream.write(payUserMobiles[i] + '\n');
+        for (j = 0; j < payUserMobiles.length; ++j) {
+            fileWriteStream.write(payUserMobiles[j] + '\n');
         }
         fileWriteStream.end();
 
