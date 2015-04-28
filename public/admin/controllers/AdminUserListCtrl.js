@@ -29,6 +29,14 @@ angular.module('adminApp').controller('AdminUserListCtrl', ['$scope', '$http', '
         vm.showAllUsers();
     });
 
+    $http.get('/admin/api/user_rate_data')
+        .success(function(data, status) {
+            vm.rateData = data;
+        })
+        .error(function(data, status) {
+            console.log('error when get user rate data');
+        });
+
     vm.pageChanged = function() {
         var start = (vm.currentPage - 1) * vm.itemsPerPage;
         var end = start + vm.itemsPerPage;
