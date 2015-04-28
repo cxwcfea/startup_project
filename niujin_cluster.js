@@ -13,8 +13,8 @@ if(cluster.isMaster){
 
     cluster.on('online', function(worker) {
         if (worker.id === 1) {
-            task.scheduleJob();
             task.scheduleAutoPostponeJob();
+            task.scheduleDailyDataJob();
         }
     });
 

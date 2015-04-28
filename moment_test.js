@@ -127,5 +127,5 @@ if (today < yesterday) {
 	console.log('today = yesterday');
 }
 
-var startOfMonth = moment("2015-03-26");
-var endOfMonth = moment("2015-04-25");
+today= moment().format('YYYYMMDD');
+console.log(today);
