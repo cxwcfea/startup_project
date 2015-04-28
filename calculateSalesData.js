@@ -49,6 +49,26 @@ var gatherData = function(salesObj, callback) {
         var userMobiles = users.map(function(user) {
             return user.mobile;
         });
+
+        var options = { encoding: 'utf8', flag: 'w' };
+        var fileWriteStream = fs.createWriteStream("Sales-" + salesObj.mobile + '-' + moment('2015-04').toString() + ".txt",  options);
+        fileWriteStream.on("close", function() {
+            console.log("File Closed.");
+        });
+        var data = '姓名, 坏账, 利润\n';
+        fileWriteStream.write(data);
+        data = salesObj.name + ', ' + loss.toFixed(2) + ', ' + profit.toFixed(2) + '\n';
+        fileWriteStream.write(data);
+        fileWriteStream.write('接受客户');
+        for (var j = 0; j < userMobiles.length; ++i) {
+            fileWriteStream.write(userMobiles[i] + '\n');
+        }
+        fileWriteStream.write('转化客户');
+        for (var j = 0; j < payUserMobiles.length; ++i) {
+            fileWriteStream.write(payUserMobiles[i] + '\n');
+        }
+        fileWriteStream.end();
+
         SalesData.update({$and:[{month:month}, {userMobile:salesObj.mobile}]}, {newCustomers:userMobiles, newPayCustomers:payUserMobiles, profit:profit, loss:loss}, function(err, numberAffected, raw) {
 
         });
