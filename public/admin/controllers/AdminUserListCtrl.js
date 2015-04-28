@@ -11,7 +11,7 @@ angular.module('adminApp').controller('AdminUserListCtrl', ['$scope', '$http', '
     vm.users = UserResource.query(function() {
         vm.users = $filter('orderBy')(vm.users, 'registerAt', true);
         var payUser = vm.users.filter(function(elem) {
-            return elem.history_deposit > 100;
+            return elem.finance.history_deposit > 100;
         });
         vm.num_of_pay_user = payUser.length;
         var freeUser = vm.users.filter(function(elem) {
