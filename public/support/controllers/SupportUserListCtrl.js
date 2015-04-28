@@ -176,7 +176,7 @@ angular.module('supportApp').controller('SupportUserListCtrl', ['$scope', '$http
 
         modalInstance.result.then(function (result) {
             console.log(result);
-            if (result && result.content) {
+            if (result && (result.title || result.tag)) {
                 result.mobile = user.mobile;
                 $http.post('/admin/api/create_user_note', result)
                     .success(function(data, status) {

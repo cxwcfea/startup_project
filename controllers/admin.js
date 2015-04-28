@@ -227,6 +227,17 @@ function fetchUserList(req, res, next) {
     });
 }
 
+function fetchNewUserList(req, res, next) {
+    var today = moment();
+    var yesterday = moment().subtract(2, 'days');
+    User.find({$and:[{registerAt:{$lte:today}}, {registerAt:{$gte:yesterday}}]}, function(err, collection) {
+        if (err) {
+            return res.send({success:false, reason:err.toString()});
+        }
+        res.send(collection);
+    });
+}
+
 function sendSMS(req, res, next) {
     var data = req.body;
     sms.sendSMS(data.user_mobile, '', data.sms_content, function (result) {
@@ -398,6 +409,48 @@ function getUser(req, res) {
             return res.send({reason:err.toString()});
         }
         res.send(user);
+    });
+}
+
+var privateProperties = [
+    '__v',
+    'verifyEmailToken',
+    'registered',
+    'roles',
+    'password',
+    'resetPasswordToken',
+    'resetPasswordExpires'
+];
+
+function getUserViewModel(user){
+    var realUser = user._doc;
+    var vm = _.omit(realUser, privateProperties);
+    return _.extend(vm, {});
+}
+
+function getUserByMobile(req, res) {
+    User.findOne({mobile:req.query.mobile}, function(err, user){
+        if (err) {
+            logger.warn('error when get user by mobile:', err.toString());
+            res.status(500);
+            return res.send({reason:err.toString()});
+        }
+        Note.find({userMobile:user.mobile}, function(err, notes) {
+            if (err) {
+                logger.warn('error when get user by mobile:', err.toString());
+                res.status(500);
+                return res.send({reason:err.toString()});
+            }
+            console.log(notes);
+            var tags = notes.filter(function(elem) {
+                return elem.tag != null && elem.tag != undefined && elem.tag != '';
+            });
+            user = getUserViewModel(user);
+            user.tags = tags.map(function(elem) {
+                return elem.tag;
+            });
+            res.send(user);
+        });
     });
 }
 
@@ -1404,6 +1457,7 @@ function createUserNote(req, res) {
     var data = {
         userMobile: req.body.mobile,
         title: req.body.title,
+        tag: req.body.tag,
         content: req.body.content,
         writer: req.user.mobile
     };
@@ -1645,6 +1699,8 @@ module.exports = {
 
         app.get('/admin/api/users', passportConf.requiresRole('admin|support'), fetchUserList);
 
+        app.get('/admin/api/new_users', passportConf.requiresRole('admin|support'), fetchNewUserList);
+
         app.get('/admin/api/applies/all', passportConf.requiresRole('admin|support'), fetchAllApplies);
 
         app.get('/admin/api/orders/all', passportConf.requiresRole('admin|support'), fetchAllOrders);
@@ -1678,6 +1734,8 @@ module.exports = {
         app.post('/admin/api/users/:id', passportConf.requiresRole('admin|support'), updateUser);
 
         app.get('/admin/api/users/:id', passportConf.requiresRole('admin|support'), getUser);
+
+        app.get('/admin/api/user', passportConf.requiresRole('admin|support'), getUserByMobile);
 
         app.post('/admin/api/apply/assign_account', passportConf.requiresRole('admin'), assignAccoutToApply);
 

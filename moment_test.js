@@ -111,3 +111,7 @@ var getStartDay = function() {
 };
 
 console.log(getStartDay().format('YYYYMMDDHHmmSSS'));
+var today = moment();
+var yesterday = moment().subtract(1, 'days');
+console.log(today.toDate());
+console.log(yesterday.toDate());

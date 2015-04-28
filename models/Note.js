@@ -3,7 +3,8 @@ var mongoose = require('mongoose');
 var noteSchema = mongoose.Schema({
     userMobile: {type:String, required:'{PATH} is required!'},
     title: String,
-    content: {type:String, required:'{PATH} is required!'},
+    tag: String,
+    content: String,
     createdAt: {type:Date, default: Date.now},
     writer: {type:String, required:'{PATH} is required!'}
 });

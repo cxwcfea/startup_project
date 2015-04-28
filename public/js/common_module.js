@@ -439,7 +439,7 @@
         {
             name: 'sell_sms_content',
             value: 6,
-            content: '金额为AMOUNT元的操盘业务已经亏损到达平仓线SELL_AMOUNT元，系统已经将交易账户平仓，请登录牛金网查看相应信息。'
+            content: '账户12345678已经亏损到达平仓线，系统已将其平仓，如需帮助请致电4006921388。'
         },
         {
             name: 'withdraw_content',
