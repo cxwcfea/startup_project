@@ -197,6 +197,29 @@ angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', 
         }, function () {
         });
     }
+
+    vm.postponeOneDay = function(apply) {
+        var modalInstance = $modal.open({
+            templateUrl: 'postponeModal.html',
+            controller: 'PostponeModalCtrl',
+            resolve: {
+                apply: function() {
+                    return apply;
+                }
+            }
+        });
+
+        modalInstance.result.then(function () {
+            $http.post('/admin/api/auto_postpone_apply', {serial_id:apply.serialID})
+                .success(function(data, status, headers, config) {
+                    gbNotifier.notify('延期成功');
+                }).
+                error(function(data, status, headers, config) {
+                    gbNotifier.error('延期失败:' + data.error_msg);
+                });
+        }, function () {
+        });
+    };
 }]);
 
 angular.module('adminApp').controller('AccountModalCtrl', ['$scope', '$modalInstance', 'apply', function ($scope, $modalInstance, apply) {
@@ -266,6 +289,18 @@ angular.module('adminApp').controller('UpdateApplyModalCtrl', ['$scope', '$modal
 
     $scope.ok = function () {
         $modalInstance.close($scope.data);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+}]);
+
+angular.module('adminApp').controller('PostponeModalCtrl', ['$scope', '$modalInstance', 'apply', function ($scope, $modalInstance, apply) {
+    $scope.apply = apply;
+
+    $scope.ok = function () {
+        $modalInstance.close();
     };
 
     $scope.cancel = function () {

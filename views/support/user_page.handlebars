@@ -25,7 +25,7 @@
                     </thead>
                     <tbody>
                     <tr ng-show="vm.user">
-                        <td>\{{vm.user.mobile}}</td>
+                        <td><a href="" ng-click="vm.viewUserNotes()">\{{vm.user.mobile}}</a></td>
                         <td>\{{vm.user.profile.alipay_name || 'N/A'}}</td>
                         <td>\{{vm.user.finance.history_capital | currency:'':2}}</td>
                         <td>\{{vm.user.freeApply ? '是' : '否'}}</td>
