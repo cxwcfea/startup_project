@@ -494,10 +494,11 @@ db.once('open', function callback() {
     startTime = startTime.toDate();
     endTime = endTime.toDate();
 
-    startTime = moment("2015-04-28").toDate();
+    startTime = moment("2015-04-28");
     startTime.hour(15);
     startTime.minute(00);
     startTime.second(00);
+    startTime = startTime.toDate();
 
     /*
     async.waterfall(
