@@ -1,5 +1,5 @@
 'use strict';
-angular.module('mobileApp').controller('MobileSignupCtrl', ['$scope', '$location', '$timeout', '$http', '$interval', function($scope, $location, $timeout, $http, $interval) {
+angular.module('mobileApp').controller('MobileSignupCtrl', ['$scope', '$window', '$timeout', '$http', '$interval', function($scope, $window, $timeout, $http, $interval) {
     var vm = this;
 
     vm.signupError = false;
@@ -104,10 +104,7 @@ angular.module('mobileApp').controller('MobileSignupCtrl', ['$scope', '$location
         }
         $http.post('/finish_signup', {mobile:vm.mobile, verify_code:vm.verify_code})
             .success(function(data, status, headers, config) {
-                vm.signupSuccess = true;
-                $timeout(function() {
-                    $location.path('/');
-                }, 2000);
+                $window.location.replace('/mobile/welcome.html');
             })
             .error(function(data, status, headers, config) {
                 vm.errorMsg = data.error_msg;
