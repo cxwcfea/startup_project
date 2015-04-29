@@ -129,3 +129,8 @@ if (today < yesterday) {
 
 today= moment().format('YYYYMMDD');
 console.log(today);
+today= moment().toDate();
+var beforeOneDay = moment().subtract(15, 'days').startOf('day').toDate();
+var beforeTwoDay = moment().subtract(15, 'days').endOf('day').toDate();
+console.log(beforeOneDay);
+console.log(beforeTwoDay);

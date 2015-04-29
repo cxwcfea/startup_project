@@ -9,36 +9,12 @@
             <li>免费体验<a href="" class="am-text-warning"><br/>\{{userVM.num_of_free_user}}</a>位</li>
             <li>转化用户<a href="" class="am-text-danger"><br/>\{{userVM.num_of_pay_user}}</a>位</li>
         </ul>
-        <ul class="am-avg-sm-1 am-avg-md-5 am-margin am-padding am-text-center admin-content-list ">
+        <ul class="am-avg-sm-1 am-avg-md-2 am-margin am-padding am-text-center admin-content-list ">
             <li>
-                <small><em>1日付费率</em></small>
+                <small><em>15日前注册用户体验率</em></small>
                 <progressbar animate="false" value="userVM.rateData[0].free_rate" type="success"><b>\{{userVM.rateData[0].free_rate}}%</b></progressbar>
-                <small><em>1日转化率</em></small>
+                <small><em>15日前注册用户转化率</em></small>
                 <progressbar animate="false" value="userVM.rateData[0].pay_rate" type="success"><b>\{{userVM.rateData[0].pay_rate}}%</b></progressbar>
-            </li>
-            <li>
-                <small><em>2日付费率</em></small>
-                <progressbar animate="false" value="userVM.rateData[1].free_rate" type="success"><b>\{{userVM.rateData[1].free_rate}}%</b></progressbar>
-                <small><em>2日转化率</em></small>
-                <progressbar animate="false" value="userVM.rateData[1].pay_rate" type="success"><b>\{{userVM.rateData[1].pay_rate}}%</b></progressbar>
-            </li>
-            <li>
-                <small><em>3日付费率</em></small>
-                <progressbar animate="false" value="userVM.rateData[2].free_rate" type="success"><b>\{{userVM.rateData[2].free_rate}}%</b></progressbar>
-                <small><em>3日转化率</em></small>
-                <progressbar animate="false" value="userVM.rateData[2].pay_rate" type="success"><b>\{{userVM.rateData[2].pay_rate}}%</b></progressbar>
-            </li>
-            <li>
-                <small><em>4日付费率</em></small>
-                <progressbar animate="false" value="userVM.rateData[3].free_rate" type="success"><b>\{{userVM.rateData[3].free_rate}}%</b></progressbar>
-                <small><em>4日转化率</em></small>
-                <progressbar animate="false" value="userVM.rateData[3].pay_rate" type="success"><b>\{{userVM.rateData[3].pay_rate}}%</b></progressbar>
-            </li>
-            <li>
-                <small><em>5日付费率</em></small>
-                <progressbar animate="false" value="userVM.rateData[4].free_rate" type="success"><b>\{{userVM.rateData[4].free_rate}}%</b></progressbar>
-                <small><em>5日转化率</em></small>
-                <progressbar animate="false" value="userVM.rateData[4].pay_rate" type="success"><b>\{{userVM.rateData[4].pay_rate}}%</b></progressbar>
             </li>
         </ul>
     </div>

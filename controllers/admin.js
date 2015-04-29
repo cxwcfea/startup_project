@@ -26,6 +26,7 @@ function getStatisticsPage(req, res, next) {
                     data.active_apply_num = dataObj.num;
                     data.active_apply_amount = dataObj.amount.toFixed(2);
                     data.active_deposit_amount = dataObj.deposit.toFixed(2);
+                    data.added_fee = dataObj.total_fee.toFixed(2);
                 }
                 callback(err, data);
             });
@@ -53,14 +54,6 @@ function getStatisticsPage(req, res, next) {
                 if (!err) {
                     data.added_pay_apply_amount = dataObj.amount.toFixed(2);
                     data.added_pay_apply_num = dataObj.num;
-                }
-                callback(err, data);
-            });
-        },
-        function(data, callback) {
-            util.getTodayActiveApplyData(function(err, dataObj) {
-                if (!err) {
-                    data.added_fee = dataObj.total_fee.toFixed(2);
                 }
                 callback(err, data);
             });
@@ -117,15 +110,6 @@ function getStatisticsPage(req, res, next) {
     ], function(err, data) {
         if (err) {
             console.log('error when get statistic ' + err.toString());
-            //data.history_pay_user_count = 0;
-            //data.history_apply_amount = 0;
-            //data.history_deposit_amount = 0;
-            //data.active_pay_user_count = 0;
-            data.active_apply_num = 0;
-            data.active_apply_amount = 0;
-            data.active_deposit_amount = 0;
-            data.current_free_apply_amount = 0;
-            data.total_fee = 0;
         }
         data.total_fee = data.totalServiceFee - data.returnedServiceFee - data.serviceFeeNotGet;
         data.total_fee = data.total_fee.toFixed(0);
@@ -259,48 +243,17 @@ function calculateRate(users) {
     return vm;
 }
 
-function calculateRateInFiveDays(req, res, next) {
-    var today = moment().toDate();
-    var beforeOneDay = moment().subtract(1, 'days').toDate();
-    var beforeTwoDay = moment().subtract(2, 'days').toDate();
-    var beforeThreeDay = moment().subtract(3, 'days').toDate();
-    var beforeFourDay = moment().subtract(4, 'days').toDate();
-    var beforeFiveDay = moment().subtract(5, 'days').toDate();
-    User.find({$and:[{registerAt:{$lte:today}}, {registerAt:{$gte:beforeFiveDay}}]}, function(err, collection) {
+function calculateRateInFiveDays(req, res) {
+    var startTime = moment().subtract(15, 'days').startOf('day').toDate();
+    var endTime = moment().subtract(15, 'days').endOf('day').toDate();
+    User.find({$and:[{registerAt:{$lte:endTime}}, {registerAt:{$gte:startTime}}]}, function(err, collection) {
         if (err) {
             return res.send({success:false, reason:err.toString()});
         }
-        var inOneDayUsers = collection.filter(function(elem) {
-            return elem.registerAt <= today && elem.registerAt >= beforeOneDay;
-        });
-        var oneDayData = calculateRate(inOneDayUsers);
-
-        var inTwoDayUsers = collection.filter(function(elem) {
-            return elem.registerAt <= today && elem.registerAt >= beforeTwoDay;
-        });
-        var twoDayData = calculateRate(inTwoDayUsers);
-
-        var inThreeDayUsers = collection.filter(function(elem) {
-            return elem.registerAt <= today && elem.registerAt >= beforeThreeDay;
-        });
-        var threeDayData = calculateRate(inThreeDayUsers);
-
-        var inFourDayUsers = collection.filter(function(elem) {
-            return elem.registerAt <= today && elem.registerAt >= beforeFourDay;
-        });
-        var fourDayData = calculateRate(inFourDayUsers);
-
-        var inFiveDayUsers = collection.filter(function(elem) {
-            return elem.registerAt <= today && elem.registerAt >= beforeFiveDay;
-        });
-        var fiveDayData = calculateRate(inFiveDayUsers);
+        var data = calculateRate(collection);
 
         var ret = [];
-        ret.push(oneDayData);
-        ret.push(twoDayData);
-        ret.push(threeDayData);
-        ret.push(fourDayData);
-        ret.push(fiveDayData);
+        ret.push(data);
 
         res.send(ret);
     });
