@@ -187,7 +187,7 @@ var dailyFreeApplyData = function(startTime, endTime, callback) {
             return;
         }
         var options = { encoding: 'utf8', flag: 'w' };
-        var fileWriteStream = fs.createWriteStream("dailyFreeApplyData-" + moment().format("YYYY-MM-DD") + ".txt",  options);
+        var fileWriteStream = fs.createWriteStream("dailyFreeApplyData-" + moment().format("YYYY-MM-DD") + ".csv",  options);
         fileWriteStream.on("close", function() {
             console.log("File Closed.");
         });
