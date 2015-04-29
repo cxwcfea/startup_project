@@ -569,13 +569,11 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
-            */
             function(callback){
                 dailyPayApplyDataTillNow(function(err) {
                     callback(err);
                 });
             }
-            /*
             function(callback){
                 dailyAddedPayApplyData(startTime, endTime, function(err) {
                     callback(err);
@@ -586,11 +584,13 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
+            */
             function(callback){
                 dailyFreeApplyData(startTime, endTime, function(err) {
                     callback(err);
                 });
-            },
+            }
+            /*
             function(callback){
                 dailyPayApplyData(startTime, endTime, function(err) {
                     callback(err);
