@@ -134,3 +134,4 @@ var beforeOneDay = moment().subtract(15, 'days').startOf('day').toDate();
 var beforeTwoDay = moment().subtract(15, 'days').endOf('day').toDate();
 console.log(beforeOneDay);
 console.log(beforeTwoDay);
+console.log(moment("2015-04-28").toDate());
