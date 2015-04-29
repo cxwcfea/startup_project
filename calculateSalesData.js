@@ -13,7 +13,7 @@ var mongoose = require('mongoose'),
 
 var startOfMonth = moment().startOf('month').toDate();
 var endOfMonth = moment().endOf('month').toDate();
-var startOfMonth = moment("2015-03-26").toDate();
+var startOfMonth = moment("2015-03-29").toDate();
 var endOfMonth = moment("2015-04-25").toDate();
 var month = moment().startOf('month').format('YYYYMM');
 //console.log(startOfMonth);
@@ -119,7 +119,7 @@ var getApplyServiceFee = function(apply) {
     if (apply.status === 3) {
         fee = fee * apply.amount / 10000 * days;
     } else {
-        fee = fee * apply.amount / 10000 * apply.period;
+        fee = fee * apply.amount / 10000 * util.tradeDaysTillNow(apply.startTime);
     }
     return fee;
 };
