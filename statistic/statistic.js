@@ -27,7 +27,7 @@ var historyFreeApplyData = function(startTime, callback) {
         }
         console.log('免费亏损 ' + amount);
         var options = { encoding: 'utf8', flag: 'w' };
-        var fileWriteStream = fs.createWriteStream("historyFreeApplyDataTill-" + moment().format("YYYY-MM-DD") + ".txt",  options);
+        var fileWriteStream = fs.createWriteStream("historyFreeApplyDataTill-" + moment().format("YYYY-MM-DD") + ".csv",  options);
         fileWriteStream.on("close", function() {
             console.log("File Closed.");
         });
@@ -63,7 +63,7 @@ var historyPayApplyData = function(startTime, callback) {
         }
         console.log('穿仓 ' + amount);
         var options = { encoding: 'utf8', flag: 'w' };
-        var fileWriteStream = fs.createWriteStream("historyPayApplyDataTill-" + moment().format("YYYY-MM-DD") + ".txt",  options);
+        var fileWriteStream = fs.createWriteStream("historyPayApplyDataTill-" + moment().format("YYYY-MM-DD") + ".csv",  options);
         fileWriteStream.on("close", function() {
             console.log("File Closed.");
         });
@@ -124,7 +124,7 @@ var historyCloseApplyFee = function(callback) {
         }
         /*
         var options = { encoding: 'utf8', flag: 'w' };
-        var fileWriteStream = fs.createWriteStream("historyPayApplyDataTill-" + moment().format("YYYY-MM-DD") + ".txt",  options);
+        var fileWriteStream = fs.createWriteStream("historyPayApplyDataTill-" + moment().format("YYYY-MM-DD") + ".csv",  options);
         fileWriteStream.on("close", function() {
             console.log("File Closed.");
         });
@@ -215,7 +215,7 @@ var dailyPayApplyData = function(startTime, endTime, callback) {
             return;
         }
         var options = { encoding: 'utf8', flag: 'w' };
-        var fileWriteStream = fs.createWriteStream("dailyPayApplyData-" + moment().format("YYYY-MM-DD") + ".txt",  options);
+        var fileWriteStream = fs.createWriteStream("dailyPayApplyData-" + moment().format("YYYY-MM-DD") + ".csv",  options);
         fileWriteStream.on("close", function() {
             console.log("File Closed.");
         });
@@ -243,7 +243,7 @@ var dailyAddedPayApplyData = function(startTime, endTime, callback) {
             return;
         }
         var options = { encoding: 'utf8', flag: 'w' };
-        var fileWriteStream = fs.createWriteStream("dailyAddedPayApplyData-" + moment().format("YYYY-MM-DD") + ".txt",  options);
+        var fileWriteStream = fs.createWriteStream("dailyAddedPayApplyData-" + moment().format("YYYY-MM-DD") + ".csv",  options);
         fileWriteStream.on("close", function() {
             console.log("File Closed.");
         });
@@ -271,7 +271,7 @@ var dailyAddedFreeApplyData = function(startTime, endTime, callback) {
             return;
         }
         var options = { encoding: 'utf8', flag: 'w' };
-        var fileWriteStream = fs.createWriteStream("dailyAddedFreeApplyData-" + moment().format("YYYY-MM-DD") + ".txt",  options);
+        var fileWriteStream = fs.createWriteStream("dailyAddedFreeApplyData-" + moment().format("YYYY-MM-DD") + ".csv",  options);
         fileWriteStream.on("close", function() {
             console.log("File Closed.");
         });
@@ -299,7 +299,7 @@ var dailyFreeApplyDataTillNow = function(callback) {
             return;
         }
         var options = { encoding: 'utf8', flag: 'w' };
-        var fileWriteStream = fs.createWriteStream("dailyFreeApplyDataTillNow-" + moment().format("YYYY-MM-DD") + ".txt",  options);
+        var fileWriteStream = fs.createWriteStream("dailyFreeApplyDataTillNow-" + moment().format("YYYY-MM-DD") + ".csv",  options);
         fileWriteStream.on("close", function() {
             console.log("File Closed.");
         });
@@ -494,12 +494,6 @@ db.once('open', function callback() {
     startTime = startTime.toDate();
     endTime = endTime.toDate();
 
-    startTime = moment("2015-04-28");
-    startTime.hour(15);
-    startTime.minute(00);
-    startTime.second(00);
-    startTime = startTime.toDate();
-
     /*
     async.waterfall(
         [
@@ -542,7 +536,7 @@ db.once('open', function callback() {
     */
     async.series(
         [
-    /*
+            /*
             function(callback) {
                 historyFreeApplyData(startTime, function(err) {
                     callback(err);
@@ -568,6 +562,7 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
+             */
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
                     callback(err);
@@ -577,7 +572,7 @@ db.once('open', function callback() {
                 dailyPayApplyDataTillNow(function(err) {
                     callback(err);
                 });
-            }
+            },
             function(callback){
                 dailyAddedPayApplyData(startTime, endTime, function(err) {
                     callback(err);
@@ -588,19 +583,16 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
-            */
             function(callback){
                 dailyFreeApplyData(startTime, endTime, function(err) {
                     callback(err);
                 });
-            }
-            /*
+            },
             function(callback){
                 dailyPayApplyData(startTime, endTime, function(err) {
                     callback(err);
                 });
             }
-            */
         ],
         function(err){
             if (err) {
