@@ -11,6 +11,12 @@
         </ul>
         <ul class="am-avg-sm-1 am-avg-md-2 am-margin am-padding am-text-center admin-content-list ">
             <li>
+                <small><em>近1日前注册用户体验率</em></small>
+                <progressbar animate="false" value="userVM.free_rate" type="success"><b>\{{userVM.free_rate}}%</b></progressbar>
+                <small><em>近1日前注册用户转化率</em></small>
+                <progressbar animate="false" value="userVM.pay_rate" type="success"><b>\{{userVM.pay_rate}}%</b></progressbar>
+            </li>
+            <li>
                 <small><em>15日前注册用户体验率</em></small>
                 <progressbar animate="false" value="userVM.rateData[0].free_rate" type="success"><b>\{{userVM.rateData[0].free_rate}}%</b></progressbar>
                 <small><em>15日前注册用户转化率</em></small>
