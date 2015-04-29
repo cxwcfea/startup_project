@@ -119,7 +119,9 @@ var getApplyServiceFee = function(apply) {
     if (apply.status === 3) {
         fee = fee * apply.amount / 10000 * days;
     } else {
-        fee = fee * apply.amount / 10000 * util.tradeDaysTillNow(apply.startTime);
+        var startT = moment(apply.endTime).dayOfYear();
+        var endT = moment(apply.startTime).dayOfYear();
+        fee = fee * apply.amount / 10000 * (endT - startT);
     }
     return fee;
 };
