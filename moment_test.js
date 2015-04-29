@@ -1,4 +1,5 @@
 var moment = require('moment');
+var util = require('./lib/util');
 
 var holiday = [
     moment("2015-03-14").dayOfYear(),
@@ -135,3 +136,12 @@ var beforeTwoDay = moment().subtract(15, 'days').endOf('day').toDate();
 console.log(beforeOneDay);
 console.log(beforeTwoDay);
 console.log(moment("2015-04-28").toDate());
+
+        var startTime = moment();
+        var endTime = util.getEndDay(startTime, 2);
+        endTime.hour(15);
+        endTime.minute(10);
+        endTime.second(00);
+
+		console.log(startTime.toDate());
+		console.log(endTime.toDate());
