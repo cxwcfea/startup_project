@@ -83,6 +83,7 @@ module.exports = function(config) {
     db.on('error', console.error.bind(console, 'connection error...'));
     db.once('open', function callback() {
         console.log('goldenbull db opened');
+        global.my_test_data = ['abc', 'efg', 'opq'];
     });
 
     createDefaultUsers();

@@ -1849,6 +1849,7 @@ module.exports = {
         app.get('/admin/api/user_rate_data', passportConf.requiresRole('admin'), calculateRateInFiveDays);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
+            console.log(global.my_test_data);
             res.render('admin/' + req.params[0], {layout:null});
         });
         app.get('/support/*', passportConf.requiresRole('admin|support'), function(req, res, next) {
