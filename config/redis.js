@@ -7,5 +7,5 @@ module.exports = function() {
         console.log("redis Error " + err);
     });
 
-    global.redis_client.set("string key", "string val", redis.print);
+    //global.redis_client.set("string key", 8, redis.print);
 };

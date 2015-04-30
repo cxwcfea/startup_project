@@ -59,19 +59,18 @@ module.exports = function(config) {
     db.on('error', console.error.bind(console, 'connection error...'));
     db.once('open', function callback() {
         console.log('goldenbull db opened');
-        global.test_value = 100;
-        if (global.investors) {
-            console.log('investors already loaded');
-        } else {
-            Investor.find({}, function(err, investors) {
-                if (err) {
-                    console.log('err when fetch investors ' + err.toString());
-                    global.investors = [];
-                } else {
-                    global.investors = investors;
-                }
-            });
-        }
+
+        Investor.find({}, function(err, investors) {
+            if (err) {
+                console.log('err when fetch investors ' + err.toString());
+            } else {
+                global.redis_client.get("investors", function(err, reply) {
+                    if (!reply) {
+                        global.redis_client.set("investors", investors, redis.print);
+                    }
+                });
+            }
+        });
     });
 
     createDefaultUsers();

@@ -52,13 +52,13 @@ app.use(function(req, res, next){
 });
 */
 
+require('./config/redis')();
+
 require('./config/express')(app, config);
 
 require('./config/mongoose')(config);
 
 require('./config/passport');
-
-require('./config/redis')();
 
 require('./config/routes')(app);
 
