@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var investorSchema = mongoose.Schema({
     userID: {type:String, required:'{PATH} is required!'},
-    userName: {type:String, required:'{PATH} is required!'},
+    userMobile: {type:String, required:'{PATH} is required!'},
     profitRate: {type:Number, required:'{PATH} is required!'},
     amount: {type:Number, required:'{PATH} is required!'},
     duration: {type:Number, required:'{PATH} is required!'},
