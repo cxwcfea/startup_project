@@ -484,7 +484,7 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error...'));
 db.once('open', function callback() {
     console.log('goldenbull db opened');
-    var endTime = moment('2015-04-28');
+    var endTime = moment();
     endTime.hour(15);
     endTime.minute(00);
     endTime.second(00);
