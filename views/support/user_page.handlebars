@@ -35,11 +35,11 @@
                         <td>
                             <div class="am-btn-toolbar">
                                 <div class="am-btn-group am-btn-group-xs">
-                                    <button class="am-btn am-btn-default am-btn-xs" ng-click="vm.showApplies(user)"><span class="am-icon-bar-chart"></span> 配资</button>
-                                    <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="vm.showOrders(user)"><span class="am-icon-money"></span> 订单</button>
-                                    <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-hide="user.manager" ng-click="vm.takeCustomer(user)"><span class="am-icon-user"></span> 我要接手</button>
-                                    <button class="am-btn am-btn-default am-btn-xs am-text-primary" ng-click="vm.takeNote(user)"><span class="am-icon-pencil"></span> 记录</button>
-                                    <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-show="user.manager" ng-click="vm.releaseCustomer(user)"><span class="am-icon-user"></span> 放弃客户</button>
+                                    <button class="am-btn am-btn-default am-btn-xs" ng-click="vm.showApplies()"><span class="am-icon-bar-chart"></span> 配资</button>
+                                    <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="vm.showOrders()"><span class="am-icon-money"></span> 订单</button>
+                                    <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-hide="vm.user.manager" ng-click="vm.takeCustomer()"><span class="am-icon-user"></span> 我要接手</button>
+                                    <button class="am-btn am-btn-default am-btn-xs am-text-primary" ng-click="vm.takeNote()"><span class="am-icon-pencil"></span> 记录</button>
+                                    <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-show="vm.user.manager" ng-click="vm.releaseCustomer()"><span class="am-icon-user"></span> 放弃客户</button>
                                 </div>
                             </div>
                         </td>

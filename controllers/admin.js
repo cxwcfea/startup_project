@@ -454,15 +454,18 @@ function getUserByMobile(req, res) {
         if (err) {
             logger.warn('error when get user by mobile:', err.toString());
             res.status(500);
-            return res.send({reason:err.toString()});
+            return res.send({error_msg:err.toString()});
+        }
+        if (!user) {
+            res.status(403);
+            return res.send({error_msg:'用户不存在'});
         }
         Note.find({userMobile:user.mobile}, function(err, notes) {
             if (err) {
                 logger.warn('error when get user by mobile:', err.toString());
                 res.status(500);
-                return res.send({reason:err.toString()});
+                return res.send({error_msg:err.toString()});
             }
-            console.log(notes);
             var tags = notes.filter(function(elem) {
                 return elem.tag != null && elem.tag != undefined && elem.tag != '';
             });
