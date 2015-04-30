@@ -1849,6 +1849,10 @@ module.exports = {
         app.get('/admin/api/user_rate_data', passportConf.requiresRole('admin'), calculateRateInFiveDays);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
+            global.redis_client.get("string key", function(err, reply) {
+                // reply is null when the key is missing
+                console.log(reply);
+            });
             --global.test_value;
             console.log(global.test_value);
             res.render('admin/' + req.params[0], {layout:null});

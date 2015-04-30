@@ -58,6 +58,8 @@ require('./config/mongoose')(config);
 
 require('./config/passport');
 
+require('./config/redis')();
+
 require('./config/routes')(app);
 
 // custom 404 page
