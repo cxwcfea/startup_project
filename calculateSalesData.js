@@ -230,6 +230,7 @@ db.once('open', function callback() {
                 callback(err, applyData);
             });
         },
+        /*
         function(applydata, callback) {
             returnFeeOrderData(function(err, orderData) {
                 callback(err, applydata, orderData);
@@ -243,6 +244,7 @@ db.once('open', function callback() {
             }
             callback(null, applydata);
         },
+        */
         function(data, callback) {
             async.mapSeries(data, changeApplyData, function(err, result) {
                 callback(err, result);
