@@ -233,6 +233,9 @@ module.exports.finishSignup = function(req, res, next) {
             return res.send({ error_msg: '该手机号已经注册了' })
         }
         existingUser.registered = true;
+        if (req.session.refer) {
+            existingUser.refer = req.session.refer;
+        }
         existingUser.save(function(err) {
             if (err) {
                 logger.warn('finishSignup err:' + err.toString());

@@ -7,6 +7,9 @@ var User = require('../models/User'),
     logger = log4js.getLogger('home');
 
 function home(req, res, next) {
+    if (req.query.refer && req.query.refer.length < 128) {
+        req.session.refer = req.query.refer;
+    }
     var ua = req.headers['user-agent'];
     if (util.isAndroid(ua) || util.isApple(ua)) {
         res.redirect('/mobile');

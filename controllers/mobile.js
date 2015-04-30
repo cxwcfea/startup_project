@@ -12,6 +12,9 @@ var User = require('../models/User'),
     logger = log4js.getLogger('mobile');
 
 function home(req, res, next) {
+    if (req.query.refer && req.query.refer.length < 128) {
+        req.session.refer = req.query.refer;
+    }
     if (!req.session.statistic || req.session.statistic.expires < Date.now()) {
         User.aggregate([{$match:{registered:true}}, {$group: {_id: null, count: {$sum: 1}, profit: { $sum: '$finance.profit'}, capital: { $sum: '$finance.history_capital' }, current_capital: { $sum: '$finance.total_capital' }}}], function(err, statistic) {
             if (err || !statistic) {
