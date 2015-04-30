@@ -678,7 +678,7 @@ function getAlipayOrders(req, res) {
 }
 
 function confirmAlipayOrder(req, res) {
-    Order.findOne({bankTransID:transID}, function(err, order) {
+    Order.findOne({bankTransID:req.body.trans_id}, function(err, order) {
         if (err) {
             logger.warn('confirmAlipayOrder error:' + err.toString());
             res.status(500);
