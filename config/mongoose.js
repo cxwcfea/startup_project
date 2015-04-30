@@ -3,6 +3,7 @@ var mongoose = require('mongoose'),
     Homas = require('../models/Homas'),
     Order = require('../models/Order'),
     Apply = require('../models/Apply');
+    Investor = require('../models/Investor');
 
 function createDefaultUsers() {
     User.find({}).exec(function (err, collection) {
@@ -29,40 +30,7 @@ function createDefaultUsers() {
             User.create({mobile: 18612921262, password: 'xxxxxx', roles: ['admin']});
             */
 
-            /*
-            User.create({mobile: 11111111111, password: '123456', roles: ['admin']});
-            User.create({mobile: 22222222222, password: '123456', roles: ['admin']});
-            User.create({mobile: 33333333333, password: '123456', roles: ['admin']});
-            User.create({mobile: 44444444444, password: '123456', roles: ['admin']});
-            User.create({mobile: 55555555555, password: '123456', roles: ['admin']});
-            User.create({mobile: 66666666666, password: '123456', roles: ['admin']});
-            User.create({mobile: 77777777777, password: '123456', roles: ['admin']});
-            User.create({mobile: 88888888888, password: '123456', roles: ['admin']});
-            User.create({mobile: 99999999999, password: '123456', roles: ['admin']});
-            */
-
-            /*
-            Homas.create({account: '123450', password: '111111'});
-            Homas.create({account: '123451', password: '111111'});
-            Homas.create({account: '123452', password: '111111'});
-            Homas.create({account: '123453', password: '111111'});
-            Homas.create({account: '123454', password: '111111'});
-            Homas.create({account: '123455', password: '111111'});
-            Homas.create({account: '123456', password: '111111'});
-            Homas.create({account: '123457', password: '111111'});
-            Homas.create({account: '123458', password: '111111'});
-            Homas.create({account: '123459', password: '111111'});
-            Homas.create({account: '123460', password: '111111'});
-            Homas.create({account: '123461', password: '111111'});
-            Homas.create({account: '123462', password: '111111'});
-            Homas.create({account: '123463', password: '111111'});
-            Homas.create({account: '123464', password: '111111'});
-            Homas.create({account: '123465', password: '111111'});
-            Homas.create({account: '123466', password: '111111'});
-            Homas.create({account: '123467', password: '111111'});
-            Homas.create({account: '123468', password: '111111'});
-            Homas.create({account: '123469', password: '111111'});
-            */
+            Investor.create({userID: 18612921262, password: 'xxxxxx', roles: ['admin']});
         }
     });
 }
