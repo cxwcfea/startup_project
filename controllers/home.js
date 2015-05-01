@@ -85,7 +85,6 @@ function home(req, res, next) {
                                 }
                             });
                         }
-                        console.log('daily data ' + statistic[0].dailyAmount + ' ' + statistic[0].current_capital);
                         req.session.statistic = {
                             user_count: statistic[0].count + 7000,
                             total_capital: 300000000 + statistic[0].dailyAmount + statistic[0].current_capital,
@@ -93,7 +92,6 @@ function home(req, res, next) {
                             show_applies: theApplies,
                             expires: Date.now() + 3600000 * 1
                         };
-                        console.log('daily data ' + req.session.statistic.total_capital);
 
                         res.locals.main_menu = true;
                         res.render('home', {
