@@ -85,7 +85,7 @@ function home(req, res, next) {
                                 }
                             });
                         }
-                        console.log('daily data ' + statistic[0]);
+                        console.log('daily data ' + statistic[0].capital + ' ' + statistic[0].dailyAmount + ' ' + statistic[0].current_capital);
                         req.session.statistic = {
                             user_count: statistic[0].count + 7000,
                             total_capital: statistic[0].capital + 200000000 + statistic[0].dailyAmount + statistic[0].current_capital,
