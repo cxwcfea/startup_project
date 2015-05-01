@@ -16,12 +16,12 @@ function home(req, res, next) {
         return;
     }
     if (!req.session.statistic || req.session.statistic.expires < Date.now()) {
-        User.aggregate([{$match:{registered:true}}, {$group: {_id: null, count: {$sum: 1}, profit: { $sum: '$finance.profit'}, capital: { $sum: '$finance.history_capital' }, current_capital: { $sum: '$finance.total_capital' }}}], function(err, statistic) {
+        User.aggregate([{$match:{registered:true}}, {$group: {_id: null, count: {$sum: 1}, profit: { $sum: '$finance.profit'}, current_capital: { $sum: '$finance.total_capital' }}}], function(err, statistic) {
             if (err || !statistic) {
                 logger.warn('error when fetch total user count:' + err.toString());
                 statistic = [{
                     count: 7000,
-                    capital: 200000000,
+                    capital: 300000000,
                     profit: 4000000
                 }];
             }
@@ -85,10 +85,9 @@ function home(req, res, next) {
                                 }
                             });
                         }
-                        console.log('daily data ' + statistic[0].capital + ' ' + statistic[0].dailyAmount + ' ' + statistic[0].current_capital);
                         req.session.statistic = {
                             user_count: statistic[0].count + 7000,
-                            total_capital: statistic[0].capital + 200000000 + statistic[0].dailyAmount + statistic[0].current_capital,
+                            total_capital: 300000000 + statistic[0].dailyAmount + statistic[0].current_capital,
                             total_profit: (statistic[0].profit + 4000000).toFixed(0),
                             show_applies: theApplies,
                             expires: Date.now() + 3600000 * 1
