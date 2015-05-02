@@ -38,7 +38,6 @@ function createDefaultUsers() {
             Investor.create({userID: '5540adb4b19e7c60691d4240', userMobile: '18611724694', profitRate: 11, amount: 80000, duration: 16, enable: true});
             Investor.create({userID: '5540ae16b19e7c60691d4241', userMobile: '18910370016', profitRate: 11, amount: 10000, duration: 12, enable: true});
             Investor.create({userID: '55325e81afe92120a18a29ed', userMobile: '13439695920', profitRate: 18, amount: 100000, duration: 10, enable: true});
-            Investor.create({userID: '010', userMobile: '10000000000', profitRate: 50, amount: 100000000, duration: 999999, enable: true});
         }
     });
 }
@@ -59,18 +58,6 @@ module.exports = function(config) {
     db.on('error', console.error.bind(console, 'connection error...'));
     db.once('open', function callback() {
         console.log('goldenbull db opened');
-
-        Investor.find({}, function(err, investors) {
-            if (err) {
-                console.log('err when fetch investors ' + err.toString());
-            } else {
-                global.redis_client.get("investors", function(err, reply) {
-                    if (!reply) {
-                        global.redis_client.set("investors", investors, redis.print);
-                    }
-                });
-            }
-        });
     });
 
     createDefaultUsers();
