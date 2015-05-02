@@ -12,9 +12,6 @@ var User = require('../models/User'),
     logger = log4js.getLogger('mobile');
 
 function home(req, res, next) {
-    if (req.query.refer && req.query.refer.length < 128) {
-        req.session.refer = req.query.refer;
-    }
     if (!req.session.statistic || req.session.statistic.expires < Date.now()) {
         User.aggregate([{$match:{registered:true}}, {$group: {_id: null, count: {$sum: 1}, profit: { $sum: '$finance.profit'}, current_capital: { $sum: '$finance.total_capital' }}}], function(err, statistic) {
             if (err || !statistic) {
@@ -353,6 +350,9 @@ function getPostponeApply(req, res) {
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/mobile', function(req, res, next) {
+            if (req.query.refer && req.query.refer.length < 128) {
+                req.session.refer = req.query.refer;
+            }
             res.render('mobile/index', {
                 layout:'mobile',
                 bootstrappedUserObject: req.user ? JSON.stringify(util.getUserViewModel(req.user)) : null
