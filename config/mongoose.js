@@ -8,7 +8,7 @@ var mongoose = require('mongoose'),
 function createDefaultUsers() {
     User.find({}).exec(function (err, collection) {
         if (collection && collection.length === 0) {
-            User.create({mobile: 13439695920, password: 'xxxxxx', registered:true, finance: {balance:10000}, profile: {name:'cxwcfea'}, roles: ['admin']}, function (err, user) {
+            User.create({mobile: 13439695920, password: 'xxxxxx', registered:true, finance: {balance:100000}, profile: {name:'cxwcfea'}, roles: ['admin']}, function (err, user) {
                 if (err) console.log('create & find user err:' + err);
                 /*
                 if (user) {
@@ -17,18 +17,12 @@ function createDefaultUsers() {
                 */
             });
 
-            User.create({mobile: 13810655219, registered:true, finance: {balance:1}, password: 'xxxxxx', roles: ['admin']});
+            User.create({mobile: 13810655219, registered:true, finance: {balance:1000}, password: 'xxxxxx', roles: ['admin']});
             User.create({mobile: 13121909306, registered:true, password: 'xxxxxx'});
-
-            /*
-            for (var i = 0; i < 201; ++i) {
-                var id = '11111';
-                Apply.create({userID: '123450', serialID: id + 1, amount:30, deposit:20, period:2, status:2, isTrial:true});
-            }
-            User.create({mobile: 13121909306, password: 'xxxxxx', roles: ['admin']});
-            User.create({mobile: 18911535534, password: 'xxxxxx', roles: ['admin']});
-            User.create({mobile: 18612921262, password: 'xxxxxx', roles: ['admin']});
-            */
+            User.create({mobile: 18611724694, registered:true, password: 'xxxxxx'});
+            User.create({mobile: 18910370016, registered:true, password: 'xxxxxx'});
+            User.create({mobile: 18842602250, registered:true, password: 'xxxxxx'});
+            User.create({mobile: 18842602250, registered:true, password: 'xxxxxx'});
         }
     });
     Investor.find({}).exec(function(err, collection) {
