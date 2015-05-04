@@ -44,7 +44,7 @@
                     <td>\{{user.freeApply ? '是' : '否'}}</td>
                     <td>\{{user.finance.balance | currency:'':2}}</td>
                     <td>\{{user.manager || '还未分配' | displayManager}}</td>
-                    <td>\{{userVM.registerDate(user.registerAt)}}</td>
+                    <td>\{{user.registered ? (user.registerAt | date:"yyyy-MM-dd HH:mm") : '未注册'}}</td>
                     <td>\{{user.refer || '未知'}}</td>
                     <td>
                         <div class="am-btn-toolbar">
