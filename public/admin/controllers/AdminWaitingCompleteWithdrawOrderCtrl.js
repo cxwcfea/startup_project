@@ -79,7 +79,6 @@ angular.module('adminApp').controller('AdminWaitingCompleteWithdrawOrderCtrl', [
             });
     };
 
-    /*
     vm.handleOrder = function(order) {
         currentUser = null;
         gbUser.get({id:order.userID}, function(user) {
@@ -133,5 +132,4 @@ angular.module('adminApp').controller('AdminWaitingCompleteWithdrawOrderCtrl', [
         }, function () {
         });
     };
-    */
 }]);
