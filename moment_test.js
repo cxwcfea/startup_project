@@ -135,3 +135,18 @@ var beforeTwoDay = moment().subtract(15, 'days').endOf('day').toDate();
 console.log(beforeOneDay);
 console.log(beforeTwoDay);
 console.log(moment("2015-04-28").toDate());
+
+var tradeDaysTillNow = function(startDay) {
+    var startDayOfYear = moment(startDay).dayOfYear();
+    var currentDayOfYear = moment().dayOfYear();
+    var ret = 0;
+    while (currentDayOfYear >= startDayOfYear) {
+        if (holiday.indexOf(currentDayOfYear) === -1) {
+            ++ret;
+        }
+        --currentDayOfYear;
+    }
+    return ret;
+};
+
+console.log(tradeDaysTillNow(moment("2015-04-16").toDate()));
