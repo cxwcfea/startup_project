@@ -225,7 +225,7 @@ exports.postApplyPostpone = function(req, res, next) {
                         user.finance.freeze_capital += order.amount;
                         user.save(function(err) {
                             var content = 'user:' + order.userMobile + ' account:' + apply.account + ' period:' + period;
-                            util.sendEmail('op@niujinwang.com', '配资延期', content, function(err) {
+                            util.sendEmail('op@niujinwang.com,intern@niujinwang.com', '配资延期', content, function(err) {
                                 logger.debug('error when send postpone email');
                             });
                             callback(err, order, true);
