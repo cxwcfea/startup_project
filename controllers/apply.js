@@ -102,25 +102,29 @@ exports.getCloseApply = function(req, res, next) {
 exports.postCloseApply = function(req, res) {
     Apply.findOne({serialID:req.params.serial_id}, function(err, apply) {
         if (err) {
+            logger.warn('postCloseApply ' + req.params.serial_id + ' error:' + err.toString());
             res.status(500);
             return res.send({reason:err.toString()});
         }
         if (!apply) {
+            logger.warn('postCloseApply ' + req.params.serial_id + ' error:apply not found');
             res.status(400);
             return res.send({reason:'apply not found'});
         }
         if (req.user._id != apply.userID) {
+            logger.warn('postCloseApply ' + req.params.serial_id + ' error:not the same user');
             res.status(400);
-            logger.warn('postCloseApply error:not the same user');
             return res.send({reason:'not the same user'});
         }
         if (apply.status != 2) {
+            logger.warn('postCloseApply ' + req.params.serial_id + ' error:apply not in correct status');
             res.status(400);
             return res.send({reason:'apply not in correct status'});
         }
         apply.status = 5;
         apply.save(function(err) {
             if (err) {
+                logger.warn('postCloseApply ' + req.params.serial_id + ' error:' + err.toString());
                 res.status(500);
                 return res.send({reason:err.toString()});
             }
