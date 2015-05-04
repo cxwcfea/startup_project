@@ -485,12 +485,12 @@ db.on('error', console.error.bind(console, 'connection error...'));
 db.once('open', function callback() {
     console.log('goldenbull db opened');
     var endTime = moment();
-    endTime.hour(15);
+    endTime.hour(17);
     endTime.minute(00);
     endTime.second(00);
 
     var startTime = endTime.clone();
-    startTime = startTime.subtract(1, 'days');
+    startTime = startTime.subtract(4, 'days');
     startTime = startTime.toDate();
     endTime = endTime.toDate();
 
