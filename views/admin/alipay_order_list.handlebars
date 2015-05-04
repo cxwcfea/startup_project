@@ -51,8 +51,8 @@
     </div>
     <div class="modal-body">
         <p>用户手机号：\{{mobile}}</p>
-        <p>支付宝实名：\{{name}}</p>
-        <p>支付宝账号：\{{account}}</p>
+        <p>支付宝实名：<input type="text" ng-model="name"></p>
+        <p>支付宝账号：<input type="text" ng-model="account"></p>
         <p>转账单号:<input type="text" ng-model="trans_id" required></p>
         <p>金额：\{{amount | currency:'':2}}</p>
     </div>

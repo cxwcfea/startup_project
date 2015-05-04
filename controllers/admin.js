@@ -736,6 +736,11 @@ function confirmAlipayOrder(req, res) {
                     order.approvedBy = req.user.mobile;
                     order.approvedAt = Date.now();
 
+                    if (req.body.account && req.body.name) {
+                        user.profile.alipay_account = req.body.account;
+                        user.profile.alipay_name = req.body.name;
+                    }
+
                     util.orderFinished(user, order, 1, function(err) {
                         if (err) {
                             logger.warn('confirmAlipayOrder error:' + err.toString());
