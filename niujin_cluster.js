@@ -15,6 +15,7 @@ if(cluster.isMaster){
         if (worker.id === 1) {
             task.scheduleAutoPostponeJob();
             task.scheduleDailyDataJob();
+            task.scheduleContractCheckJob();
         }
     });
 
