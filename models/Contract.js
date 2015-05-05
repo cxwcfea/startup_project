@@ -5,6 +5,7 @@ var contractSchema = mongoose.Schema({
     userMobile: {type:String, required:'{PATH} is required!'},
     amount: {type:Number, required:'{PATH} is required!'},
     status: {type:Number, default: 1}, // 0 reserve, 1 processing, 2 finished
+    period: {type:Number, required:'{PATH} is required!'},
     investors: [String],
     startTime: Date,
     endTime: Date

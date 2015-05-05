@@ -150,3 +150,17 @@ var tradeDaysTillNow = function(startDay) {
 };
 
 console.log(tradeDaysTillNow(moment("2015-04-16").toDate()));
+
+            var startDay = moment().startOf('day');
+            if (moment().hour() >= 14) {
+                startDay = moment().endOf('day').add(1, 'ms');
+            }
+            var endDay = startDay.clone();
+            endDay = endDay.add(3, 'days').subtract(1, 'ms');
+
+			console.log(startDay.toDate());
+			console.log(endDay.toDate());
+
+			var day1 = moment("2015-05-01").dayOfYear();
+			var day2 = moment().dayOfYear();
+			console.log(day2 - day1);
