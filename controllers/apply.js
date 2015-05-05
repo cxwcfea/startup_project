@@ -8,7 +8,7 @@ var Apply = require('../models/Apply'),
     logger = log4js.getLogger('apply'),
     _ = require('lodash'),
     async = require('async'),
-    sms = require('./sms'),
+    sms = require('../lib/sms'),
     util = require('../lib/util');
 
 exports.getYYnPage = function(req, res, next) {
