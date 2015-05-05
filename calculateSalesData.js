@@ -200,13 +200,11 @@ var sales = [
     {
         mobile: '18931040286',
         name: '魏昊庚'
-    }
-    /*
+    },
     {
-        mobile: '13439695920',
-        name: '程翔'
+        mobile: '15710035052',
+        name: '张丽霞'
     }
-    */
 ];
 
 var options = {};
