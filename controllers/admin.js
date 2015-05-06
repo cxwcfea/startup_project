@@ -1740,6 +1740,10 @@ function getManagerOfUser(req, res) {
             res.status(500);
             return res.send({error_msg:err.toString()});
         }
+        if (!u) {
+            res.status(403);
+            return res.send({error_msg:'user not found'});
+        }
         res.send(u.manager);
     });
 }
