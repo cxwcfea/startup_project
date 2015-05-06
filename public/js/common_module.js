@@ -356,6 +356,8 @@
                     return "支付宝";
                 case 4:
                     return "银行转账";
+                case 5:
+                    return "贝付移动";
                 default:
                     return "无";
             }
