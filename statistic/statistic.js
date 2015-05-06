@@ -10,6 +10,34 @@ var mongoose = require('mongoose'),
     User = require('../models/User'),
     config = require('../config/config')['production'];
 
+var historyApplyData = function(callback) {
+    console.log('historyApplyData');
+
+    Apply.find({status:3}, function(err, applies) {
+        if (err) {
+            console.log(err.toString());
+            return;
+        }
+        var options = { encoding: 'utf8', flag: 'w' };
+        var fileWriteStream = fs.createWriteStream("historyApplyData.csv",  options);
+        fileWriteStream.on("close", function() {
+            console.log("File Closed.");
+        });
+        var data = 'userID, userMobile, serialID, amount, deposit, period, status, applyAt, closeAt, isTrial, autoPostpone, lever, warnValue, sellValue, startTime, endTime, account, profit, type, interestRate, serviceCharge\n';
+        fileWriteStream.write(data);
+        applies.forEach(function (apply) {
+            data = apply.userID + ', ' + apply.userMobile + ', ' + apply.serialID + ', ' + apply.amount.toFixed(2) + ', ' + apply.deposit.toFixed(2) + ', '
+            + apply.period + ', ' + apply.status + ', ' + apply.applyAt + ', ' + apply.closeAt + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
+            + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + apply.startTime + ', ' + apply.endTime + ', ' + apply.account + ', '
+            + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + '\n';
+            fileWriteStream.write(data);
+        });
+        fileWriteStream.end();
+
+        callback(null);
+    });
+};
+
 var historyFreeApplyData = function(startTime, callback) {
     console.log('historyFreeApplyData');
 
@@ -563,6 +591,7 @@ db.once('open', function callback() {
                 });
             },
              */
+            /*
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
                     callback(err);
@@ -590,6 +619,12 @@ db.once('open', function callback() {
             },
             function(callback){
                 dailyPayApplyData(startTime, endTime, function(err) {
+                    callback(err);
+                });
+            }
+            */
+            function(callback) {
+                historyApplyData(function(err) {
                     callback(err);
                 });
             }
