@@ -1740,7 +1740,7 @@ function getManagerOfUser(req, res) {
             res.status(500);
             return res.send({error_msg:err.toString()});
         }
-        res.send(u);
+        res.send(u.manager);
     });
 }
 
