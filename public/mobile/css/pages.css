@@ -1524,7 +1524,6 @@
 /* =聪明赚 invest
 -------------------------------------------------------------- */
 .invest-feature {
-    border-bottom: 1px dashed #c9c9c9;
 }
 
 .invest-feature li {
@@ -1532,4 +1531,5 @@
     font-size: 18px;
     width: 33%;
     text-align: center;
+    border-bottom: 1px dashed #c9c9c9;
 }
