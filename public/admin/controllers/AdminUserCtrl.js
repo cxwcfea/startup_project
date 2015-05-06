@@ -34,7 +34,7 @@ angular.module('adminApp').controller('AdminUserCtrl', ['$scope', '$http', '$mod
         $location.path('/orders/' + vm.user._id);
     };
 
-    vm.open = function (mobile) {
+    vm.open = function () {
         var modalInstance = $modal.open({
             templateUrl: '/views/smsModal.html',
             controller: 'ModalInstanceCtrl',
@@ -45,7 +45,7 @@ angular.module('adminApp').controller('AdminUserCtrl', ['$scope', '$http', '$mod
         modalInstance.result.then(function (content) {
             vm.sms_content = content;
             var data = {
-                user_mobile: mobile,
+                user_mobile: vm.user.mobile,
                 sms_content: vm.sms_content
             };
             $http.post('/admin/api/send_sms', data)
