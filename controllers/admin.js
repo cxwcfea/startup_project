@@ -1732,6 +1732,20 @@ function getSalesStatisticsData(req, res) {
     });
 }
 
+function getManagerOfUser(req, res) {
+    var users = req.body.users;
+    User.find({mobile:{$in:users}}, function(err, u) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        var ret = u.map(function(elem) {
+            return {user:elem.mobile, manager:elem.manager};
+        });
+        res.send(ret);
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -1867,6 +1881,8 @@ module.exports = {
         app.get('/admin/api/sales_statistics', passportConf.requiresRole('admin'), getSalesStatisticsData);
 
         app.get('/admin/api/user_rate_data', passportConf.requiresRole('admin'), calculateRateInFiveDays);
+
+        app.post('/admin/api/user_manager', passportConf.requiresRole('admin'), getManagerOfUser);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
