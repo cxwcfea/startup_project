@@ -280,7 +280,7 @@ function fetchAppliesForUser(req, res, next) {
 }
 
 function fetchAllApplies(req, res, next) {
-    Apply.find({}, function(err, collection) {
+    Apply.find({$and:[{status:{$ne:1}}, {status:{$ne:9}}]}, function(err, collection) {
         if (err) {
             logger.error(err.toString());
         }
@@ -289,7 +289,7 @@ function fetchAllApplies(req, res, next) {
 }
 
 function fetchAllOrders(req, res, next) {
-    Order.find({}, function(err, collection) {
+    Order.find({status:1}, function(err, collection) {
         if (err) {
             logger.error(err.toString());
         }
