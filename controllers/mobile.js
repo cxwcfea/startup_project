@@ -404,6 +404,12 @@ module.exports = {
             })
         });
 
+        app.get('/mobile/invest', function(req, res, next) {
+            res.render('mobile/invest', {
+                layout: null
+            })
+        });
+
         app.get('/mobile/recharge', function(req, res, next) {
             res.render('mobile/recharge', {
                 layout: null

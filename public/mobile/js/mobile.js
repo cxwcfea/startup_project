@@ -15,6 +15,8 @@ angular.module('mobileApp').config(['$routeProvider', '$httpProvider', function(
         })
         .when('/exp', { templateUrl: '/mobile/exp'
         })
+        .when('/invest', { templateUrl: '/mobile/invest'
+        })
         .when('/recharge', { templateUrl: '/mobile/recharge'
         })
         .when('/download', { templateUrl: '/mobile/download'
