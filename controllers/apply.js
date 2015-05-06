@@ -517,6 +517,18 @@ exports.freeApply = function(req, res, next) {
                                 logger.debug('freeApply error: user not found');
                                 return next();
                             }
+                            if (user.freeApply) {
+                                logger.warn('user:' + user.mobile + ' already tried free apply, refuse it');
+                                res.locals.serial_id = user.freeApply;
+                                if (req.url.search('/mobile') > -1) {
+                                    res.render('mobile/free_apply_refuse', {
+                                        layout: 'mobile'
+                                    });
+                                } else {
+                                    res.render('apply/free_apply_refuse');
+                                }
+                                return;
+                            }
                             user.finance.balance -= 100;
                             user.finance.total_capital += 2000;
                             user.finance.deposit += 100;
