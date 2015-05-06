@@ -7,42 +7,112 @@
     </div>
 </header><!--#E header-->
 
-<div class="slogan-bd exp-slogan">
-    <div class="line"></div>
-    <div class="pic">
-        <img src="/mobile/images/exp-slogan.png" width="168" alt="按天配资,十倍资金,3步配资">
+<div ng-hide="vm.editInvest">
+    <div class="slogan-bd exp-slogan">
+        <div class="line"></div>
+        <div class="pic">
+            <img src="/mobile/images/exp-slogan.png" width="168" alt="按天配资,十倍资金,3步配资">
+        </div>
+    </div>
+
+    <div class="invest-feature">
+        <ul>
+            <li><span>账户资金自动投</span><br>省心省力不操心</li>
+            <li><span>本金无忧高收益</span><br>比余额宝高3倍</li>
+            <li><span>投资周期灵活调</span><br>短期项目汇款快</li>
+        </ul>
+    </div>
+
+    <section class="statistics">
+        <ul>
+            <li>共 12345 位投资人累计投资<br><em>123,456,000</em></li>
+            <li>帮投资人赚取<br><em>3,000,234</em></li>
+        </ul>
+    </section><!--#E statistics-->
+
+    <div class="exp-sign">
+        <p class="exp-notice">投资人平均年化收益率</p>
+        <div class="invest-ave-rate">12.00%</div>
+    </div>
+
+    <div class="recharge-alipay">
+        投资收益你来定：
+        <form name="investForm" class="pay-form" novalidate>
+            <div class="form-item">
+                <input type="number" name="profit-rate" min="1" max="18" required autofocus placeholder="预期年化收益率" ng-model="vm.profit_rate">
+                <span class="unit">%</span>
+            </div>
+            <div class="form-item">
+                <input type="number" name="period" min="1" max="30" required placeholder="项目借款期限" ng-model="vm.period">
+                <span class="unit">天内</span>
+            </div>
+            <!--
+            <div class="form-item">
+                <input type="number" name="amount" min="100" required placeholder="投入的本金" ng-model="vm.amount">
+                <span class="unit">元</span>
+            </div>
+            -->
+        </form>
+        <p>开启即代表同意《牛金网投资协议》</p>
     </div>
 </div>
 
-<div class="invest-feature">
-    <ul>
-        <li>账户资金自动投 <br>很好啊</li>
-        <li>本金无忧高收益</li>
-        <li>投资周期灵活调</li>
-    </ul>
+<div ng-show="vm.editInvest">
+    <div class="form-box">
+        <p>您已开启聪明赚，转入资金即可自动投标高收益项目</p>
+        <button type="submit" class="submit-btn" ng-click="vm.requestChangePassNext()">转入资金</button>
+        <form name="investForm2" class="pay-form" novalidate>
+            <div class="form-item">
+                <input type="text" placeholder="聪明赚已开启" ng-model="vm.password" disabled>
+                <label class="ui-switch">
+                    <input type="checkbox" id="J_forgetSetCheckbox" ng-model="vm.showPass" ng-change="vm.toggleShowPassword()">
+                    <i></i>
+                </label>
+            </div>
+        </form>
+    </div>
+    <div class="recharge-alipay">
+        <form name="investForm" class="pay-form" novalidate>
+            <div class="form-item">
+                <input type="number" name="profit-rate" min="1" max="18" required autofocus placeholder="预期年化收益率" ng-model="vm.profit_rate">
+                <span class="unit">%</span>
+            </div>
+            <div class="form-item">
+                <input type="number" name="period" min="1" max="30" required placeholder="项目借款期限" ng-model="vm.period">
+                <span class="unit">天内</span>
+            </div>
+        </form>
+    </div>
+    <div class="form-box">
+        <form name="investForm2" class="pay-form" novalidate>
+            <div ng-hide="">
+                <div class="verify-ipt">
+                    <a ng-class="{disabled:vm.verifyBtnDisabled}" href="" class="get-verify forget-verify" ng-click="vm.requestVerifyCode()">保存</a>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
-<!--
-<div class="exp-cont">
-    <ul class="exp-item">
-        <li><span>我出<em>2000</em>元</span> 完全免费</li>
-        <li><span>您交<em>100</em>元</span> 体验结束全额返还</li>
-        <li><span>交易<em>2</em>天</span> 第二天收盘前结束交易</li>
-    </ul>
-    <p class="exp-notice">免费体验的交易账户，将会在下一个交易日09:15之前分配好</p>
-</div>
+<div class="ui-tip" ng-show="vm.inputError">\{{vm.errorMsg}}</div>
 
-<div class="exp-sign">
-    <div class="line"></div>
-    <div class="txt">盈利全归您，亏损算我们</div>
+<div class="ui-dialog" ng-show="vm.showConfirmWindow">
+    <div class="ui-dialog-cnt">
+        <div class="ui-dialog-bd">
+            <div>
+                <h4>我要结算</h4>
+                <div class="ttn-warning">
+                    <i></i>结算前请确保您的股票已经全部卖出
+                </div>
+            </div>
+        </div>
+        <div class="ui-dialog-ft ui-btn-group">
+            <button type="button" id="J_ttnSureSettle" ng-click="vm.closeApply()">提交</button>
+        </div>
+    </div>
 </div>
-
-<div class="exp-contact">
-    如有疑问请联系<em>QQ客服</em>客服热线<strong>400-692-1388</strong>
-</div>
--->
 
 <!--#S footer-->
-<footer id="footer">
-    <a href="/mobile/free_apply_confirm" class="ft-btn">立即开启</a>
+<footer id="footer" ng-hide="vm.editInvest">
+    <a href="" class="ft-btn" ng-click="vm.startInvest()">立即开启</a>
 </footer><!--#E wrapper-->

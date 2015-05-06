@@ -1517,6 +1517,26 @@ function beifuPay(req, res) {
     });
 }
 
+function investUpdate(req, res) {
+    if (req.user.enableInvest === null || req.user.enableInvest === undefined) {
+        User.update({mobile:req.user.mobile}, {enableInvest:true}, function(err, numberAffected, raw) {
+            if (numberAffected) {
+                var data = {
+                    userID: req.user._id,
+                    userMobile: req.user.mobile,
+                    profitRate: req.body.profitRate,
+                    amount: 0,
+                    duration: req.body.duration,
+                    enable: true
+                }
+            } else {
+                res.status(500);
+                return res.send({error_msg:'failed to update user enableInvest'});
+            }
+        });
+    }
+}
+
 module.exports.registerRoutes = function(app, passportConf) {
     app.get('/user', passportConf.isAuthenticated, getUserHome);
 
@@ -1531,6 +1551,8 @@ module.exports.registerRoutes = function(app, passportConf) {
     app.post('/user/beifu_get_dyncode', passportConf.isAuthenticated, beifuGetDynCode);
 
     app.post('/user/beifu_pay', passportConf.isAuthenticated, beifuPay);
+
+    app.post('/api/user/invest_update', passportConf.isAuthenticated, investUpdate);
 
     app.get('/user/*', passportConf.isAuthenticated, function(req, res, next) {
         res.locals.callback_domain = config.pay_callback_domain;

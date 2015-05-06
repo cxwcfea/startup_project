@@ -12,6 +12,7 @@ var userSchema = new mongoose.Schema({
     registerAt: {type:Date, default: Date.now},
     freeApply: String,  // apply serialID
     registered: {type:Boolean, default: false},
+    enableInvest: Boolean,
     lastPayBank: Number,
 
 	finance: {

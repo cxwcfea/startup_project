@@ -1523,13 +1523,28 @@
 
 /* =聪明赚 invest
 -------------------------------------------------------------- */
-.invest-feature {
+.invest-feature li span {
+    font-size: 18px;
 }
 
 .invest-feature li {
     float: left;
-    font-size: 18px;
     width: 33%;
     text-align: center;
     border-bottom: 1px dashed #c9c9c9;
 }
+
+.statistics li {
+    float: left;
+    width: 50%;
+    text-align: center;
+    border-bottom: 1px dashed #c9c9c9;
+}
+
+.invest-ave-rate {
+    font-size: 20px;
+    font-weight: 700;
+    color: #a40000;
+    font-family: arial;
+}
+

@@ -15,7 +15,8 @@ angular.module('mobileApp').config(['$routeProvider', '$httpProvider', function(
         })
         .when('/exp', { templateUrl: '/mobile/exp'
         })
-        .when('/invest', { templateUrl: '/mobile/invest'
+        .when('/invest', { templateUrl: '/mobile/invest',
+            controller: 'MobileInvestCtrl as vm'
         })
         .when('/recharge', { templateUrl: '/mobile/recharge'
         })
