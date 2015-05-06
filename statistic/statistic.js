@@ -373,6 +373,68 @@ var dailyPayApplyDataTillNow = function(callback) {
     });
 };
 
+var rechargeOrderData = function(callback) {
+    Order.find({ $and: [{status:1}, {dealType:1}] }, function(err, orders) {
+        if (err) {
+            console.log(err.toString());
+            callback(err);
+            return;
+        }
+        var options = { encoding: 'utf8', flag: 'w' };
+        var fileWriteStream = fs.createWriteStream("RechargeOrderTillNow-" + moment().format("YYYY-MM-DD") + ".csv",  options);
+        fileWriteStream.on("close", function() {
+            console.log("File Closed.");
+        });
+        var data = 'userID, userMobile, userBalance, createdAt, dealType, amount, status, applySerialID, payType\n';
+        fileWriteStream.write(data);
+        orders.forEach(function (order) {
+            data = order.userID + ', ' + order.userMobile + ', ' + order.userBalance + ', ' + order.createdAt + ', ' + order.dealType + ', '
+            + order.amount.toFixed(2) + ', ' + order.status + ', ' + order.applySerialID + ', ' + order.payType + '\n';
+            fileWriteStream.write(data);
+        });
+        fileWriteStream.end();
+        /*
+        var amount = 0;
+        for (var i = 0; i < orders.length; ++i) {
+            amount += orders[i].amount;
+        }
+        console.log('充值总额:' + amount);
+        */
+        callback(null);
+    });
+};
+
+var withdrawOrderData = function(callback) {
+    Order.find({ $and: [{status:1}, {dealType:2}] }, function(err, orders) {
+        if (err) {
+            console.log(err.toString());
+            callback(err);
+            return;
+        }
+        var options = { encoding: 'utf8', flag: 'w' };
+        var fileWriteStream = fs.createWriteStream("WithdrawOrderTillNow-" + moment().format("YYYY-MM-DD") + ".csv",  options);
+        fileWriteStream.on("close", function() {
+            console.log("File Closed.");
+        });
+        var data = 'userID, userMobile, userBalance, createdAt, dealType, amount, status, applySerialID, payType\n';
+        fileWriteStream.write(data);
+        orders.forEach(function (order) {
+            data = order.userID + ', ' + order.userMobile + ', ' + order.userBalance + ', ' + order.createdAt + ', ' + order.dealType + ', '
+            + order.amount.toFixed(2) + ', ' + order.status + ', ' + order.applySerialID + ', ' + order.payType + '\n';
+            fileWriteStream.write(data);
+        });
+        fileWriteStream.end();
+        /*
+        var amount = 0;
+        for (var i = 0; i < orders.length; ++i) {
+            amount += orders[i].amount;
+        }
+        console.log('提现总额:' + amount);
+        */
+        callback(null);
+    });
+};
+
 var incomeOrderData = function(callback) {
     Order.find({ $and: [{status:1}, {dealType:10}] }, function(err, orders) {
         if (err) {
@@ -393,6 +455,13 @@ var incomeOrderData = function(callback) {
             fileWriteStream.write(data);
         });
         fileWriteStream.end();
+        /*
+        var amount = 0;
+        for (var i = 0; i < orders.length; ++i) {
+            amount += orders[i].amount;
+        }
+        console.log('管理费总额:' + amount);
+        */
         callback(null);
     });
 };
@@ -591,7 +660,6 @@ db.once('open', function callback() {
                 });
             },
              */
-            /*
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
                     callback(err);
@@ -621,10 +689,19 @@ db.once('open', function callback() {
                 dailyPayApplyData(startTime, endTime, function(err) {
                     callback(err);
                 });
-            }
-            */
+            },
             function(callback) {
-                historyApplyData(function(err) {
+                rechargeOrderData(function(err) {
+                    callback(err);
+                });
+            },
+            function(callback) {
+                withdrawOrderData(function(err) {
+                    callback(err);
+                });
+            },
+            function(callback) {
+                incomeOrderData(function(err) {
                     callback(err);
                 });
             }
