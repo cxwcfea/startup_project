@@ -1735,7 +1735,7 @@ function getSalesStatisticsData(req, res) {
 function getManagerOfUser(req, res) {
     var user = req.query.user;
     user = Number(user);
-    User.find({mobile:user}, function(err, u) {
+    User.findOne({mobile:user}, function(err, u) {
         if (err) {
             res.status(500);
             return res.send({error_msg:err.toString()});
