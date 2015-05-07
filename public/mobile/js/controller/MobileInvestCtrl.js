@@ -1,5 +1,5 @@
 'use strict';
-angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window', '$timeout', '$http', function($scope, $window, $timeout, $http) {
+angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window', '$timeout', '$http', '$location', function($scope, $window, $timeout, $http, $location) {
     var vm = this;
 
     vm.user = $window.bootstrappedUserObject;
@@ -12,9 +12,42 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
     } else {
         vm.inputError = false;
         vm.editInvest = true;
+        vm.showRateDialog = false;
         if (vm.user.enableInvest === undefined || vm.user.enableInvest === null) {
             vm.editInvest = false;
+        } else {
+            $http.get('/api/user/invest_info')
+                .success(function(data, status) {
+                    vm.profit_rate = data.investor.profitRate;
+                    vm.period = data.investor.duration;
+                })
+                .error(function(data, status) {
+                    vm.investor = {};
+                    console.log(data.error_msg);
+                });
         }
+
+        vm.changeInvest = function() {
+            var data = {
+                profitRate: vm.profit_rate,
+                duration: vm.period,
+                enable: true
+            };
+            $http.post('/api/user/invest_update', data)
+                .success(function(data, status) {
+                    vm.success = true;
+                    $timeout(function() {
+                        vm.success = false;
+                    }, 1500);
+                })
+                .error(function(data, status) {
+                    vm.errorMsg = data.error_msg;
+                    vm.inputError = true;
+                    $timeout(function() {
+                        vm.inputError = false;
+                    }, 1500);
+                });
+        };
 
         vm.startInvest = function() {
             if (!vm.profit_rate) {
@@ -41,10 +74,14 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
             };
             $http.post('/api/user/invest_update', data)
                 .success(function(data, status) {
-
+                    vm.showConfirmDialog = true;
                 })
                 .error(function(data, status) {
-
+                    vm.errorMsg = data.error_msg;
+                    vm.inputError = true;
+                    $timeout(function() {
+                        vm.inputError = false;
+                    }, 1500);
                 });
             /*
             if (!vm.amount) {
@@ -58,6 +95,16 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
             if (vm.user.finance.balance < vm.amount) {
             }
             */
+        };
+
+        vm.closeDialogWindow = function() {
+            vm.showRateDialog = false;
+            vm.showConfirmDialog = false;
+        };
+
+        vm.confirmInvest = function() {
+            vm.editInvest = true;
+            vm.closeDialogWindow();
         }
     }
 }]);

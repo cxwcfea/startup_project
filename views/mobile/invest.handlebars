@@ -7,50 +7,52 @@
     </div>
 </header><!--#E header-->
 
-<div class="zntz-box">
-    <ul class="zntz-intro">
-        <li>
-            <h5>账户资金自动投</h5>
-            <p>省心省力不操心</p>
-        </li>
-        <li>
-            <h5>本金无忧高收益</h5>
-            <p>比余额宝高3倍</p>
-        </li>
-        <li>
-            <h5>投资周期灵活调</h5>
-            <p>短期项目回款快</p>
-        </li>
-    </ul>
-    <ul class="zntz-total">
-        <li>
-            共12345位投资人累计投资
-            <em>134,665,000</em>
-        </li>
-        <li>
-            帮投资人赚取
-            <em>8,000,234</em>
-        </li>
-    </ul>
-    <div class="zntz-roi">
-        投资人平均年化收益率
-        <em>12.00%</em>
-    </div>
-    <div class="zntz-conf">
-        <p>投资收益你来定：</p>
-        <ul class="zntz-conf-items">
+<div ng-hide="vm.editInvest">
+    <div class="zntz-box">
+        <ul class="zntz-intro">
             <li>
-                <label for="">预期年化收益 <i class="icon"></i></label>
-                <input type="number" min="1" max="18" required autofocus name="profit-rate" ng-model="vm.profit_rate"><span class="per">%</span>
+                <h5>账户资金自动投</h5>
+                <p>省心省力不操心</p>
             </li>
             <li>
-                <label for="">投标借款期限 <i class="icon"></i></label>
-                <input type="number" name="period" min="1" max="30" required ng-model="vm.period"><span>天内</span>
+                <h5>本金无忧高收益</h5>
+                <p>比余额宝高3倍</p>
+            </li>
+            <li>
+                <h5>投资周期灵活调</h5>
+                <p>短期项目回款快</p>
             </li>
         </ul>
-    </div>
-    <div class="zntz-agreement">
-        开启即代表同意《<a href="">牛金网投资协议</a>》
+        <ul class="zntz-total">
+            <li>
+                共12345位投资人累计投资
+                <em>134,665,000</em>
+            </li>
+            <li>
+                帮投资人赚取
+                <em>8,000,234</em>
+            </li>
+        </ul>
+        <div class="zntz-roi">
+            投资人平均年化收益率
+            <em>12.00%</em>
+        </div>
+        <div class="zntz-conf">
+            <p>投资收益你来定：</p>
+            <ul class="zntz-conf-items">
+                <li>
+                    <label for="">预期年化收益 <i class="icon" ng-click="vm.showRateDialog = true"></i></label>
+                    <input type="number" min="1" max="18" required autofocus name="profit-rate" ng-model="vm.profit_rate"><span class="per">%</span>
+                </li>
+                <li>
+                    <label for="">投标借款期限 <i class="icon"></i></label>
+                    <input type="number" name="period" min="1" max="30" required ng-model="vm.period"><span>天内</span>
+                </li>
+            </ul>
+        </div>
+        <div class="zntz-agreement">
+            开启即代表同意《<a href="">牛金网投资协议</a>》
+        </div>
     </div>
 </div>
 
@@ -59,7 +61,7 @@
     <a href="" class="ft-btn" ng-click="vm.startInvest()">立即开启</a>
 </footer><!--#E wrapper-->
 
-<div class="ui-dialog hide" id="J_">
+<div class="ui-dialog" ng-show="vm.showRateDialog">
     <div class="ui-dialog-cnt">
         <div class="ui-dialog-bd">
             <div>
@@ -68,7 +70,21 @@
             </div>
         </div>
         <div class="ui-dialog-ft ui-btn-group">
-            <button type="button" id="J_rechargeFail">我知道了</button>
+            <button type="button" ng-click="vm.closeDialogWindow()">我知道了</button>
+        </div>
+    </div>
+</div>
+
+<div class="ui-dialog" ng-show="vm.showConfirmDialog">
+    <div class="ui-dialog-cnt">
+        <div class="ui-dialog-bd">
+            <div>
+                <h4>聪明赚</h4>
+                <div class="zntz-tips">聪明赚已经开启，您需要将余额转入聪明赚，系统自动帮您投资让您收益最大化。</div>
+            </div>
+        </div>
+        <div class="ui-dialog-ft ui-btn-group">
+            <button type="button" ng-click="vm.confirmInvest()">我知道了</button>
         </div>
     </div>
 </div>
@@ -79,9 +95,9 @@
         <button type="submit" class="submit-btn" ng-click="vm.requestChangePassNext()">转入资金</button>
         <form name="investForm2" class="pay-form" novalidate>
             <div class="form-item">
-                <input type="text" placeholder="聪明赚已开启" ng-model="vm.password" disabled>
+                <input type="text" placeholder="聪明赚已开启" disabled>
                 <label class="ui-switch">
-                    <input type="checkbox" id="J_forgetSetCheckbox" ng-model="vm.showPass" ng-change="vm.toggleShowPassword()">
+                    <input type="checkbox" ng-model="vm.user.enableInvest">
                     <i></i>
                 </label>
             </div>
@@ -103,7 +119,7 @@
         <form name="investForm2" class="pay-form" novalidate>
             <div ng-hide="">
                 <div class="verify-ipt">
-                    <a ng-class="{disabled:vm.verifyBtnDisabled}" href="" class="get-verify forget-verify" ng-click="vm.requestVerifyCode()">保存</a>
+                    <a ng-class="{disabled:vm.verifyBtnDisabled}" href="" class="get-verify forget-verify" ng-click="vm.changeInvest()">保存</a>
                 </div>
             </div>
         </form>
@@ -112,18 +128,7 @@
 
 <div class="ui-tip" ng-show="vm.inputError">\{{vm.errorMsg}}</div>
 
-<div class="ui-dialog" ng-show="vm.showConfirmWindow">
-    <div class="ui-dialog-cnt">
-        <div class="ui-dialog-bd">
-            <div>
-                <h4>我要结算</h4>
-                <div class="ttn-warning">
-                    <i></i>结算前请确保您的股票已经全部卖出
-                </div>
-            </div>
-        </div>
-        <div class="ui-dialog-ft ui-btn-group">
-            <button type="button" id="J_ttnSureSettle" ng-click="vm.closeApply()">提交</button>
-        </div>
-    </div>
+<div class="ui-tip-success" ng-show="vm.success">
+    <div class="icon"></div>
+    聪明赚设置保存成功!
 </div>

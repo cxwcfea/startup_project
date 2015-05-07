@@ -1528,13 +1528,40 @@ function investUpdate(req, res) {
                     amount: 0,
                     duration: req.body.duration,
                     enable: true
-                }
+                };
+                Investor.create(data, function(err, investor) {
+                    if (err) {
+                        res.status(500);
+                        return res.send({error_msg:err.toString()});
+                    }
+                    res.send({});
+                });
             } else {
                 res.status(500);
                 return res.send({error_msg:'failed to update user enableInvest'});
             }
         });
+    } else {
+        User.update({mobile:req.user.mobile}, {enableInvest:req.body.enable}, function(err, numberAffected, raw) {
+            Investor.update({userID:req.user._id}, {enableInvest:req.body.enable, profitRate:req.body.profitRate, duration:req.body.duration}, function(err, numberAffected, raw) {
+                res.send({});
+            });
+        });
     }
+}
+
+function getUserInvestInfo(req, res) {
+    Investor.findOne({userID:req.user._id}, function(err, investor) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        if (!investor) {
+            res.status(403);
+            return res.send({error_msg:'investor not found'});
+        }
+        res.send({investor:investor});
+    });
 }
 
 module.exports.registerRoutes = function(app, passportConf) {
@@ -1553,6 +1580,8 @@ module.exports.registerRoutes = function(app, passportConf) {
     app.post('/user/beifu_pay', passportConf.isAuthenticated, beifuPay);
 
     app.post('/api/user/invest_update', passportConf.isAuthenticated, investUpdate);
+
+    app.get('/api/user/invest_info', passportConf.isAuthenticated, getUserInvestInfo);
 
     app.get('/user/*', passportConf.isAuthenticated, function(req, res, next) {
         res.locals.callback_domain = config.pay_callback_domain;
