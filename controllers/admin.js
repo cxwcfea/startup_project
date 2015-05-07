@@ -280,7 +280,7 @@ function fetchAppliesForUser(req, res, next) {
 }
 
 function fetchAllApplies(req, res, next) {
-    Apply.find({$and:[{status:{$ne:1}}, {status:{$ne:9}}]}, function(err, collection) {
+    Apply.find({}, function(err, collection) {
         if (err) {
             logger.error(err.toString());
         }
@@ -339,24 +339,37 @@ function createOrder(req, res) {
         res.status(400);
         return res.send({});
     }
-    logger.info('createOrder operator:' + req.user.mobile);
-    var orderData = {
-        userID: req.body.userID,
-        userMobile: req.body.userMobile,
-        dealType: req.body.order_type,
-        amount: req.body.order_amount,
-        status: 0,
-        payType: 4, // 银行转账
-        description: req.body.order_description ? req.body.order_description : '',
-        bankTransID: req.body.order_bank_trans_id ? req.body.order_bank_trans_id : ''
-    };
-    Order.create(orderData, function(err, order) {
+    var trans_id = req.body.order_bank_trans_id ? req.body.order_bank_trans_id : '';
+    Order.findOne({bankTransID:trans_id}, function(err, order) {
         if (err) {
-            logger.debug('createOrder error:' + err.toString());
+            logger.warn('create order error:' + err.toString());
             res.status(500);
-            return res.send({error_msg:err.toString()});
+            return res.send({error_msg: err.toString()});
         }
-        res.send({});
+        if (order) {
+            logger.warn('create order error: the recharge order already confirmed');
+            res.status(403);
+            return res.send({error_msg:'the recharge order already confirmed'});
+        }
+        logger.info('createOrder operator:' + req.user.mobile);
+        var orderData = {
+            userID: req.body.userID,
+            userMobile: req.body.userMobile,
+            dealType: req.body.order_type,
+            amount: req.body.order_amount,
+            status: 0,
+            payType: 4, // 银行转账
+            description: req.body.order_description ? req.body.order_description : '',
+            bankTransID: req.body.order_bank_trans_id ? req.body.order_bank_trans_id : ''
+        };
+        Order.create(orderData, function(err, order) {
+            if (err) {
+                logger.debug('createOrder error:' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+            res.send({});
+        });
     });
 }
 
@@ -690,7 +703,7 @@ function confirmAlipayOrder(req, res) {
         if (order) {
             logger.warn('confirmAlipayOrder error: the alipay order already confirmed');
             res.status(403);
-            return res.send({error_msg:err.toString()});
+            return res.send({error_msg:'the alipay order already confirmed'});
         }
         Order.findById(req.params.id, function(err, order) {
             if (err) {
