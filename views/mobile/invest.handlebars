@@ -7,53 +7,69 @@
     </div>
 </header><!--#E header-->
 
-<div ng-hide="vm.editInvest">
-    <div class="slogan-bd exp-slogan">
-        <div class="line"></div>
-        <div class="pic">
-            <img src="/mobile/images/exp-slogan.png" width="168" alt="按天配资,十倍资金,3步配资">
+<div class="zntz-box">
+    <ul class="zntz-intro">
+        <li>
+            <h5>账户资金自动投</h5>
+            <p>省心省力不操心</p>
+        </li>
+        <li>
+            <h5>本金无忧高收益</h5>
+            <p>比余额宝高3倍</p>
+        </li>
+        <li>
+            <h5>投资周期灵活调</h5>
+            <p>短期项目回款快</p>
+        </li>
+    </ul>
+    <ul class="zntz-total">
+        <li>
+            共12345位投资人累计投资
+            <em>134,665,000</em>
+        </li>
+        <li>
+            帮投资人赚取
+            <em>8,000,234</em>
+        </li>
+    </ul>
+    <div class="zntz-roi">
+        投资人平均年化收益率
+        <em>12.00%</em>
+    </div>
+    <div class="zntz-conf">
+        <p>投资收益你来定：</p>
+        <ul class="zntz-conf-items">
+            <li>
+                <label for="">预期年化收益 <i class="icon"></i></label>
+                <input type="number" min="1" max="18" required autofocus name="profit-rate" ng-model="vm.profit_rate"><span class="per">%</span>
+            </li>
+            <li>
+                <label for="">投标借款期限 <i class="icon"></i></label>
+                <input type="number" name="period" min="1" max="30" required ng-model="vm.period"><span>天内</span>
+            </li>
+        </ul>
+    </div>
+    <div class="zntz-agreement">
+        开启即代表同意《<a href="">牛金网投资协议</a>》
+    </div>
+</div>
+
+<!--#S footer-->
+<footer id="footer" ng-hide="vm.editInvest">
+    <a href="" class="ft-btn" ng-click="vm.startInvest()">立即开启</a>
+</footer><!--#E wrapper-->
+
+<div class="ui-dialog hide" id="J_">
+    <div class="ui-dialog-cnt">
+        <div class="ui-dialog-bd">
+            <div>
+                <h4>预期年化收益</h4>
+                <div class="zntz-tips">预期年化收益率越高，出借时间越慢，出借成功后下一个工作日开始记利息。</div>
+            </div>
         </div>
-    </div>
-
-    <div class="invest-feature">
-        <ul>
-            <li><span>账户资金自动投</span><br>省心省力不操心</li>
-            <li><span>本金无忧高收益</span><br>比余额宝高3倍</li>
-            <li><span>投资周期灵活调</span><br>短期项目汇款快</li>
-        </ul>
-    </div>
-
-    <section class="statistics">
-        <ul>
-            <li>共 12345 位投资人累计投资<br><em>123,456,000</em></li>
-            <li>帮投资人赚取<br><em>3,000,234</em></li>
-        </ul>
-    </section><!--#E statistics-->
-
-    <div class="exp-sign">
-        <p class="exp-notice">投资人平均年化收益率</p>
-        <div class="invest-ave-rate">12.00%</div>
-    </div>
-
-    <div class="recharge-alipay">
-        投资收益你来定：
-        <form name="investForm" class="pay-form" novalidate>
-            <div class="form-item">
-                <input type="number" name="profit-rate" min="1" max="18" required autofocus placeholder="预期年化收益率" ng-model="vm.profit_rate">
-                <span class="unit">%</span>
-            </div>
-            <div class="form-item">
-                <input type="number" name="period" min="1" max="30" required placeholder="项目借款期限" ng-model="vm.period">
-                <span class="unit">天内</span>
-            </div>
-            <!--
-            <div class="form-item">
-                <input type="number" name="amount" min="100" required placeholder="投入的本金" ng-model="vm.amount">
-                <span class="unit">元</span>
-            </div>
-            -->
-        </form>
-        <p>开启即代表同意《牛金网投资协议》</p>
+        <div class="ui-dialog-ft ui-btn-group">
+            <button type="button" id="J_rechargeFail">我知道了</button>
+        </div>
     </div>
 </div>
 
@@ -111,8 +127,3 @@
         </div>
     </div>
 </div>
-
-<!--#S footer-->
-<footer id="footer" ng-hide="vm.editInvest">
-    <a href="" class="ft-btn" ng-click="vm.startInvest()">立即开启</a>
-</footer><!--#E wrapper-->
