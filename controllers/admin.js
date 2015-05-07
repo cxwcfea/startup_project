@@ -346,7 +346,7 @@ function createOrder(req, res) {
             res.status(500);
             return res.send({error_msg: err.toString()});
         }
-        if (order) {
+        if (order && order.dealType === 1) {
             logger.warn('create order error: the recharge order already confirmed');
             res.status(403);
             return res.send({error_msg:'the recharge order already confirmed'});
@@ -358,10 +358,12 @@ function createOrder(req, res) {
             dealType: req.body.order_type,
             amount: req.body.order_amount,
             status: 0,
-            payType: 4, // 银行转账
             description: req.body.order_description ? req.body.order_description : '',
             bankTransID: req.body.order_bank_trans_id ? req.body.order_bank_trans_id : ''
         };
+        if (req.body.order_type == 1) {
+            orderData.payType = 4; // 银行转账
+        }
         Order.create(orderData, function(err, order) {
             if (err) {
                 logger.debug('createOrder error:' + err.toString());
@@ -828,6 +830,45 @@ function getRechargeOrders(req, res) {
     });
 }
 
+function confirmReturnFeeOrder(req, res) {
+    Order.findById(req.params.id, function(err, order) {
+        if (err) {
+            logger.warn('confirmReturnFeeOrder error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        logger.info('confirmReturnFeeOrder operator:' + req.user.mobile);
+        if (order) {
+            if (order.status != 0) {
+                logger.warn('confirmReturnFeeOrder error: only order in wait confirm status can be approved');
+                res.status(400);
+                return res.send({error_msg:'only order in wait confirm status can be approved'});
+            }
+            order.approvedBy = req.user.mobile;
+            order.approvedAt = Date.now();
+            User.findById(order.userID, function(err, user) {
+                if (err) {
+                    logger.warn('confirmReturnFeeOrder error:' + err.toString());
+                    res.status(500);
+                    return res.send({error_msg: err.toString()});
+                }
+                util.orderFinished(user, order, 1, function(err) {
+                    if (err) {
+                        logger.warn('confirmReturnFeeOrder error:' + err.toString());
+                        res.status(500);
+                        return res.send({error_msg:err.toString()});
+                    }
+                    res.send({});
+                });
+            });
+        } else {
+            logger.warn('confirmReturnFeeOrder error:order not found');
+            res.status(400);
+            return res.send({error_msg:'order not found'});
+        }
+    });
+}
+
 function confirmRechargeOrder(req, res) {
     Order.findById(req.params.id, function(err, order) {
         if (err) {
@@ -989,6 +1030,17 @@ function fetchApply(req, res) {
 function fetchOrdersOfAlipay(req, res) {
     AlipayOrder.find({}, function(err, orders) {
         if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send(orders);
+    });
+}
+
+function fetchReturnFeeOrders(req, res) {
+    Order.find({$and: [{dealType: 8},  {status: 0}]}, function(err, orders) {
+        if (err) {
+            logger.warn('fetchReturnFeeOrders error:' + err.toString());
             res.status(500);
             return res.send({error_msg:err.toString()});
         }
@@ -1831,6 +1883,8 @@ module.exports = {
 
         app.post('/admin/api/confirm_recharge_order/:id', passportConf.requiresRole('admin'), confirmRechargeOrder);
 
+        app.post('/admin/api/confirm_return_fee_order/:id', passportConf.requiresRole('admin'), confirmReturnFeeOrder);
+
         app.post('/admin/api/delete_recharge_order/:id', passportConf.requiresRole('admin'), deleteRechargeOrder);
 
         app.post('/admin/api/delete_withdraw_order/:id', passportConf.requiresRole('admin'), deleteWithdrawOrder);
@@ -1864,6 +1918,8 @@ module.exports = {
         app.post('/admin/api/send_sell_sms', passportConf.requiresRole('admin|support'), sendSellSMS);
 
         app.get('/admin/api/alipay_orders', passportConf.requiresRole('admin'), fetchOrdersOfAlipay);
+
+        app.get('/admin/api/get_return_fee_orders', passportConf.requiresRole('admin'), fetchReturnFeeOrders);
 
         app.post('/admin/api/finish_get_profit', passportConf.requiresRole('admin'), finishGetProfit);
 
