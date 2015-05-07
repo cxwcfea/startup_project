@@ -151,6 +151,10 @@
     font-weight: 700;
     padding: 4px 0;
 }
+.products-list .rec h3,
+.products-list .rec h4 {
+    color: #f60;
+}
 .products-list .txt p {
     font-size: 14px;
     color: #999;
@@ -1521,30 +1525,143 @@
     text-align: right;
 }
 
-/* =聪明赚 invest
+/* =智能投资 zntz.html
 -------------------------------------------------------------- */
-.invest-feature li span {
-    font-size: 18px;
+.zntz-box {
+    padding: 0 10px;
 }
-
-.invest-feature li {
+.zntz-intro,
+.zntz-total {
+    padding: 15px 0;
+    overflow: hidden;
+    border-bottom: 1px dotted #d3d2d0;
+}
+.zntz-intro li {
     float: left;
-    width: 33%;
-    text-align: center;
-    border-bottom: 1px dashed #c9c9c9;
+    width: 33.333%;
 }
-
-.statistics li {
+.zntz-total li {
     float: left;
     width: 50%;
-    text-align: center;
-    border-bottom: 1px dashed #c9c9c9;
+    font-size: 10px;
+    color: #666;
 }
-
-.invest-ave-rate {
-    font-size: 20px;
-    font-weight: 700;
+.zntz-total li:last-child{
+    width: 40%;
+    padding-left: 10%;
+}
+.zntz-total em {
+    display: block;
     color: #a40000;
-    font-family: arial;
+    font-size: 24px;
 }
-
+.zntz-roi {
+    color: #666;
+    padding: 18px 0;
+    text-align: center;
+}
+.zntz-roi em {
+    display: block;
+    color: #a40000;
+    font-size: 40px;
+}
+.zntz-conf p {
+    padding: 0 0 6px;
+}
+.zntz-conf-items li {
+    overflow: hidden;
+    text-align: right;
+    padding: 8px 6px;
+    margin-bottom: 12px;
+    border: 1px solid #c0c0c0;
+    background-color: #fff;
+}
+.zntz-conf-items label {
+    float: left;
+    line-height: 24px;
+}
+.zntz-conf-items .icon {
+    position: relative;
+    top: 3px;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 4px;
+    background: url(../images/point.png) no-repeat 0 0;
+    background-size: 14px 14px;
+}
+.zntz-conf-items input {
+    width: 100px;
+    font-size: 16px;
+    color: #333;
+    font-weight: 800;
+    text-align: right;
+    line-height: 24px;
+    padding: 0 10px 0 0;
+    border: 0;
+}
+.zntz-conf-items .per{
+    display: inline-block;
+    padding-right: 14px;
+}
+.zntz-conf-items span {
+    color: #999;
+}
+.zntz-box .btn {
+    display: block;
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    font-size: 16px;
+    color: #FFF;
+    background-color: #E30A20;
+    text-align: center;
+}
+.zntz-status {
+    font-size: 10px;
+    margin: 30px 10px 30px 30px;
+    border-left: 1px solid #a0a0a0;
+}
+.zntz-status p {
+    font-size: 12px;
+    padding-top: 4px;
+}
+.zntz-status .ing {
+    color: #a40000;
+}
+.zntz-status li {
+    margin-bottom: 32px;
+}
+.zntz-status .icon {
+    position: relative;
+    float: left;
+    margin: 0 10px 0 -20px;
+    display: block;
+    width: 40px;
+    height: 40px;
+    background: url(../images/zntz-step1.jpg) no-repeat;
+    background-size: 40px 40px;
+}
+.zntz-status .step2 .icon {
+    background-image: url(../images/zntz-step2.jpg);
+}
+.zntz-status .step3 .icon {
+    background-image: url(../images/zntz-step3.jpg);
+}
+.zntz-agreement {
+    padding: 0 0 10px;
+}
+.zntz-agreement a {
+    color: #a40000;
+}
+.zntz-tips {
+    font-size: 13px;
+}
+.user-zntz-info-items li {
+    text-align: right;
+    padding: 14px;
+    border-bottom: 1px dotted #d3d2d0;
+}
+.user-zntz-info-items label {
+    float: left;
+}
