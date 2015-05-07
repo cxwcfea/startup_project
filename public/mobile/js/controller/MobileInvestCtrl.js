@@ -105,6 +105,10 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
         vm.confirmInvest = function() {
             vm.editInvest = true;
             vm.closeDialogWindow();
+        };
+
+        vm.rechargeToInvestAccount = function() {
+            console.log('rechargeToInvestAccount');
         }
     }
 }]);
