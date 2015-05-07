@@ -29,6 +29,10 @@ angular.module('mobileApp').controller('MobileLoginCtrl', ['$scope', '$location'
             })
             .error(function(data, status, headers, config) {
                 console.log('login error ' + data.error_msg);
+                vm.loginError = true;
+                $timeout(function() {
+                    vm.loginError = false;
+                }, 1500);
             });
     }
 }]);
