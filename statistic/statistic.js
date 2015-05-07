@@ -662,7 +662,6 @@ db.once('open', function callback() {
                 });
             },
              */
-            /*
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
                     callback(err);
@@ -693,7 +692,7 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
-            */
+            /*
             function(callback) {
                 rechargeOrderData(function(err) {
                     callback(err);
@@ -709,6 +708,7 @@ db.once('open', function callback() {
                     callback(err);
                 });
             }
+             */
         ],
         function(err){
             if (err) {
