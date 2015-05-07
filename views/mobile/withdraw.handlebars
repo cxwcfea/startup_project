@@ -1,0 +1,93 @@
+<!--#S header-->
+<header id="header">
+    <div class="header-box">
+        <h1>提现</h1>
+        <a class="back" href="/mobile/#/user"></a>
+        <!--
+        <a class="f-pr" href="/mobile/#/withdraw_record">提现记录</a>
+        -->
+    </div>
+</header><!--#E header-->
+
+<div class="recharge-box">
+    <div class="recharge-title">
+        <span ng-show="withdrawVM.step === 1">1.填写提交金额</span>
+        <span ng-show="withdrawVM.step === 2">2.确认提现信息</span>
+        <span ng-show="withdrawVM.step === 3">3.提交等待银行处理</span>
+    </div>
+    <div ng-show="withdrawVM.step === 1">
+        <div class="newwit_formBox newwit_formBox2 marTop40">
+            <div class="newwit_Title fl">
+                提现银行卡
+            </div>
+            <div class="newwit_box fl">
+                <img ng-src="\{{withdrawVM.BankNameList[withdrawVM.card.bankID].img}}">
+                <span>\{{withdrawVM.card | displayCard3}}</span>
+            </div>
+
+        </div>
+        <div class="newwit_formBox ">
+            <div class="newwit_Title fl">
+                提现金额
+            </div>
+            <div class="newwit_FomeContent fl">
+                <input type="number" min="0" class="newwit_inputText" ng-model="withdrawVM.withdrawAmount" autofocus required>
+            </div>
+            <div class="fl newwit_formText">
+                &nbsp;元
+            </div>
+            <div class="fl fontSize12 color_999999">
+                &nbsp;余额 <span class="color_a40000">\{{withdrawVM.user.finance.balance | currency:'':2}}</span>元
+            </div>
+        </div>
+        <a href="" class="recBtn01 newcar_btn jq_newcar_btn" ng-click="withdrawVM.withdrawNextStep()">下一步</a>
+    </div>
+    <div ng-show="withdrawVM.step === 2">
+        <div class="newwit_formBox marTop40">
+            <div class="newwit_Title fl">
+                开户名
+            </div>
+            <div class="newwit_FomeContent fl">
+                \{{withdrawVM.card.userName}}
+            </div>
+        </div>
+        <div class="newwit_formBox newwit_formBox2 ">
+            <div class="newwit_Title fl">
+                提现银行卡
+            </div>
+            <div class="newwit_box fl">
+                <img ng-src="\{{withdrawVM.BankNameList[withdrawVM.card.bankID].img}}">
+                <span>\{{withdrawVM.card | displayCard3}}</span>
+            </div>
+
+        </div>
+        <div class="newwit_formBox">
+            <div class="newwit_Title fl">
+                提现金额
+            </div>
+            <div class="newwit_FomeContent fl">
+                <span class="fontSize18 color_a40000">\{{withdrawVM.withdrawAmount | currency:'':2}}</span>&nbsp;元
+            </div>
+        </div>
+        <div class="newwit_formBox">
+            <div class="newwit_Title fl">
+                到账时间
+            </div>
+            <div class="newwit_FomeContent fl">
+                下个工作日&nbsp;<span class="fontSize18">22:00</span>&nbsp;前
+            </div>
+        </div>
+        <a href="" class="recBtn01 newcar_btn jq_newcar_btn" ng-click="withdrawVM.withdrawNextStep()">确认，下一步</a>
+    </div>
+    <div ng-show="withdrawVM.step === 3">
+        <div class="newwit_img fl"></div>
+        <div class="newwit_text fl">
+            <p class="p01">提现申请已提交成功，我们已经交给银行进行处理。</p>
+            <p class="p02">银行处理完成，即转账成功。</p>
+            <p class="p03">银行名称：\{{withdrawVM.BankNameList[withdrawVM.card.bankID].name}}（尾号\{{withdrawVM.card | displayCard2}}）</p>
+            <p class="p03">提现金额：<span class="fontSize18">\{{withdrawVM.withdrawAmount | currency:'':2}}</span> 	元</p>
+            <p class="p03">到账时间：下个工作日 <span class="fontSize18">22:00</span> 前</p>
+        </div>
+    </div>
+<alert ng-show="!withdrawVM.showAlipayWindow && !withdrawVM.showBankTransWindow" ng-repeat="alert in withdrawVM.alerts" type="\{{alert.type}}" close="withdrawVM.closeAlert($index)">\{{alert.msg}}</alert>
+</div>

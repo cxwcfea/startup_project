@@ -17,6 +17,9 @@ angular.module('mobileApp').config(['$routeProvider', '$httpProvider', function(
         })
         .when('/recharge', { templateUrl: '/mobile/recharge'
         })
+        .when('/withdraw', { templateUrl: '/mobile/withdraw', 
+            controller: 'MobileWithdrawCtrl as withdrawVM'
+        })
         .when('/download', { templateUrl: '/mobile/download'
         })
         .when('/recharge_beifu', { templateUrl: '/mobile/recharge_beifu',

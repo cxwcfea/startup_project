@@ -413,6 +413,12 @@ module.exports = {
             })
         });
 
+	app.get('/mobile/withdraw', function(req, res, next) {
+            res.render('mobile/withdraw', {
+                layout: null
+            })
+        });
+
         app.get('/mobile/forget', getForget);
 
         app.get('/mobile/free_apply_confirm', passportConf.isAuthenticated, applies.freeApply);
