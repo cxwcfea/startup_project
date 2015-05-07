@@ -21,6 +21,16 @@ angular.module('mobileApp').controller('MobileInvestRechargeCtrl', ['$scope', '$
                 }, 1500);
                 return;
             }
+            var data = {
+                amount: vm.invest_amount
+            };
+            $http.post('/api/user/invest_recharge', data)
+                .success(function(data, status) {
+
+                })
+                .error(function(data, status) {
+
+                });
         };
     }
 }]);

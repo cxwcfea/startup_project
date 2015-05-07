@@ -1564,6 +1564,15 @@ function getUserInvestInfo(req, res) {
     });
 }
 
+function rechargeToInvest(req, res) {
+    var amount = Number(req.body.amount);
+    if (!amount) {
+        res.status(400);
+        return res.send({error_msg:'无效的金额'});
+    }
+    res.send({});
+}
+
 module.exports.registerRoutes = function(app, passportConf) {
     app.get('/user', passportConf.isAuthenticated, getUserHome);
 
@@ -1582,6 +1591,8 @@ module.exports.registerRoutes = function(app, passportConf) {
     app.post('/api/user/invest_update', passportConf.isAuthenticated, investUpdate);
 
     app.get('/api/user/invest_info', passportConf.isAuthenticated, getUserInvestInfo);
+
+    app.post('/api/user/invest_recharge', passportConf.isAuthenticated, rechargeToInvest);
 
     app.get('/user/*', passportConf.isAuthenticated, function(req, res, next) {
         res.locals.callback_domain = config.pay_callback_domain;
