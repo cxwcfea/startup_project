@@ -385,11 +385,11 @@ var rechargeOrderData = function(callback) {
         fileWriteStream.on("close", function() {
             console.log("File Closed.");
         });
-        var data = 'userID, userMobile, userBalance, createdAt, dealType, amount, status, applySerialID, payType\n';
+        var data = 'userID, userMobile, userBalance, createdAt, dealType, amount, status, applySerialID, payType, bankTransID\n';
         fileWriteStream.write(data);
         orders.forEach(function (order) {
-            data = order.userID + ', ' + order.userMobile + ', ' + order.userBalance + ', ' + order.createdAt + ', ' + order.dealType + ', '
-            + order.amount.toFixed(2) + ', ' + order.status + ', ' + order.applySerialID + ', ' + order.payType + '\n';
+            data = order.userID + ', ' + order.userMobile + ', ' + order.userBalance + ', ' + moment(order.createdAt).format('YYYYMMDD') + ', ' + order.dealType + ', '
+            + order.amount.toFixed(2) + ', ' + order.status + ', ' + order.applySerialID + ', ' + order.payType +  ', ' + order.bankTransID + '\n';
             fileWriteStream.write(data);
         });
         fileWriteStream.end();
@@ -419,8 +419,8 @@ var withdrawOrderData = function(callback) {
         var data = 'userID, userMobile, userBalance, createdAt, dealType, amount, status, applySerialID, payType\n';
         fileWriteStream.write(data);
         orders.forEach(function (order) {
-            data = order.userID + ', ' + order.userMobile + ', ' + order.userBalance + ', ' + order.createdAt + ', ' + order.dealType + ', '
-            + order.amount.toFixed(2) + ', ' + order.status + ', ' + order.applySerialID + ', ' + order.payType + '\n';
+            data = order.userID + ', ' + order.userMobile + ', ' + order.userBalance + ', ' + moment(order.createdAt).format('YYYYMMDD') + ', ' + order.dealType + ', '
+            + order.amount.toFixed(2) + ', ' + order.status + ', ' + order.applySerialID + ', ' + order.payType + ', ' + order.bankTransID + '\n';
             fileWriteStream.write(data);
         });
         fileWriteStream.end();
@@ -450,8 +450,8 @@ var incomeOrderData = function(callback) {
         var data = 'userID, userMobile, userBalance, createdAt, dealType, amount, status, applySerialID, payType\n';
         fileWriteStream.write(data);
         orders.forEach(function (order) {
-            data = order.userID + ', ' + order.userMobile + ', ' + order.userBalance + ', ' + order.createdAt + ', ' + order.dealType + ', '
-            + order.amount.toFixed(2) + ', ' + order.status + ', ' + order.applySerialID + ', ' + order.payType + '\n';
+            data = order.userID + ', ' + order.userMobile + ', ' + order.userBalance + ', ' + moment(order.createdAt).format('YYYYMMDD') + ', ' + order.dealType + ', '
+            + order.amount.toFixed(2) + ', ' + order.status + ', ' + order.applySerialID + ', ' + order.payType + ', ' + order.bankTransID + '\n';
             fileWriteStream.write(data);
         });
         fileWriteStream.end();
@@ -660,6 +660,7 @@ db.once('open', function callback() {
                 });
             },
              */
+            /*
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
                     callback(err);
@@ -690,6 +691,7 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
+            */
             function(callback) {
                 rechargeOrderData(function(err) {
                     callback(err);

@@ -144,4 +144,4 @@ console.log(moment("2015-04-28").toDate());
         endTime.second(00);
 
 		console.log(startTime.toDate());
-		console.log(endTime.toDate());
+		console.log(endTime.format('YYYYMMDD'));
