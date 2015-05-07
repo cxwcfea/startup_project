@@ -24,6 +24,8 @@
         moment("2015-05-17").dayOfYear(),
         moment("2015-05-23").dayOfYear(),
         moment("2015-05-24").dayOfYear(),
+        moment("2015-05-30").dayOfYear(),
+        moment("2015-05-31").dayOfYear(),
         moment("2015-06-06").dayOfYear(),
         moment("2015-06-07").dayOfYear(),
         moment("2015-06-13").dayOfYear(),
