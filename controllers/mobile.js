@@ -416,6 +416,12 @@ module.exports = {
             })
         });
 
+        app.get('/mobile/invest_recharge', function(req, res, next) {
+            res.render('mobile/invest_recharge', {
+                layout: null
+            })
+        });
+
         app.get('/mobile/forget', getForget);
 
         app.get('/mobile/free_apply_confirm', passportConf.isAuthenticated, applies.freeApply);

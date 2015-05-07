@@ -108,7 +108,7 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
         };
 
         vm.rechargeToInvestAccount = function() {
-            console.log('rechargeToInvestAccount');
+            $location.path('/invest_recharge');
         }
     }
 }]);

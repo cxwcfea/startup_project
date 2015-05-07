@@ -79,6 +79,9 @@ angular.module('mobileApp').config(['$routeProvider', '$httpProvider', function(
         .when('/postpone_apply', { templateUrl: '/mobile/postpone_apply',
             controller: 'MobilePostponeCtrl as vm'
         })
+        .when('/invest_recharge', { templateUrl: '/mobile/invest_recharge',
+            controller: 'MobileInvestRechargeCtrl as vm'
+        })
         .otherwise({
             redirectTo: '/home'
         });
