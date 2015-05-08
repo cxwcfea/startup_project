@@ -320,7 +320,8 @@ var dailyAddedFreeApplyData = function(startTime, endTime, callback) {
 var dailyFreeApplyDataTillNow = function(callback) {
     console.log('dailyFreeApplyDataTillNow');
 
-    Apply.find({$and:[{isTrial:true}, {status:2}]}, function(err, applies) {
+    var today = Date.now();
+    Apply.find({$and:[{isTrial:true}, {$or:[{status:2}, {status:5}]}, {startTime:{$lte:today}}]}, function(err, applies) {
         if (err) {
             console.log(err.toString());
             callback(err);
@@ -348,7 +349,8 @@ var dailyFreeApplyDataTillNow = function(callback) {
 var dailyPayApplyDataTillNow = function(callback) {
     console.log('dailyPayApplyDataTillNow');
 
-    Apply.find({$and:[{isTrial:false}, {$or:[{status:2}, {status:5}]}]}, function(err, applies) {
+    var today = Date.now();
+    Apply.find({$and:[{isTrial:false}, {$or:[{status:2}, {status:5}]}, {startTime:{$lte:today}}]}, function(err, applies) {
         if (err) {
             console.log(err.toString());
             callback(err);
