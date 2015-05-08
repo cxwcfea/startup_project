@@ -7,6 +7,7 @@ var users = require('../controllers/user'),
     sms = require('../lib/sms'),
     admin = require('../controllers/admin'),
     util = require('../lib/util'),
+    weixin = require('../lib/weixin'),
     log4js = require('log4js'),
     logger = log4js.getLogger('routes'),
     passportConf = require('./passport');
@@ -206,6 +207,8 @@ module.exports = function(app) {
     app.get('/api/user/:uid/applies', passportConf.isAuthenticated, users.fetchAppliesForUser);
 
     app.get('/api/user/:uid/applies/:serial_id', passportConf.isAuthenticated, users.fetchApplyForUser);
+
+    app.get('/api/weixin/check_signature', weixin.checkSignature);
 
     app.get('/info/*', function(req, res) {
         res.locals.other_menu = true;
