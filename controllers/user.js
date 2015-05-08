@@ -2,6 +2,7 @@ var passport = require('passport'),
     User = require('../models/User'),
     Order = require('../models/Order'),
     Apply = require('../models/Apply'),
+    Investor = require('../models/Investor'),
     Homas = require('../models/Homas'),
     PayInfo = require('../models/PayInfo'),
     nodemailer = require('nodemailer'),
@@ -1570,7 +1571,30 @@ function rechargeToInvest(req, res) {
         res.status(400);
         return res.send({error_msg:'无效的金额'});
     }
-    res.send({});
+    User.update({$and:[{_id:req.user._id}, {'finance.balance':{$gte:amount}}]}, {$inc: {'finance.balance':-amount}}, function(err, numberAffected, raw) {
+        if (err) {
+            logger.warn('rechargeToInvest error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        if (!numberAffected) {
+            res.status(403);
+            return res.send({error_msg:'余额不足'});
+        }
+        Investor.update({userID:req.user._id}, {$inc:{amount:amount}}, function(err, numberAffected, raw) {
+            if (err) {
+                logger.warn('rechargeToInvest error:' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+            if (!numberAffected) {
+                logger.warn('rechargeToInvest error when update Investor');
+                res.status(500);
+                return res.send({error_msg:'can not update Investor'});
+            }
+            res.send({});
+        });
+    });
 }
 
 module.exports.registerRoutes = function(app, passportConf) {

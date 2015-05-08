@@ -1,5 +1,5 @@
 'use strict';
-angular.module('mobileApp').controller('MobileInvestRechargeCtrl', ['$scope', '$window', '$location', '$timeout', function($scope, $window, $location, $timeout) {
+angular.module('mobileApp').controller('MobileInvestRechargeCtrl', ['$scope', '$window', '$location', '$timeout', '$http', function($scope, $window, $location, $timeout, $http) {
     var vm = this;
 
     vm.user = $window.bootstrappedUserObject;
@@ -29,7 +29,11 @@ angular.module('mobileApp').controller('MobileInvestRechargeCtrl', ['$scope', '$
 
                 })
                 .error(function(data, status) {
-
+                    vm.errorMsg = data.error_msg;
+                    vm.inputError = true;
+                    $timeout(function() {
+                        vm.inputError = false;
+                    }, 1500);
                 });
         };
     }
