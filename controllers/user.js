@@ -551,6 +551,10 @@ module.exports.sendVerifyCode = function(req, res, next) {
         res.status(400);
         return res.send({success:false, reason:'no mobile specified'});
     }
+    if (req.query.mobile == 13545682930) {
+        res.status(400);
+        return res.send({error_msg:'block user'});
+    }
     console.log('send verify code ' + req.query.type);
     var code = sms.generateVerifyCode();
     if (!req.query.type) {
