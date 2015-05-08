@@ -134,6 +134,9 @@ angular.module('adminApp').controller('AdminWaitingCompleteWithdrawOrderCtrl', [
     };
 
     vm.orderHistory = function(order) {
+        gbUser.get({id:order.userID}, function(user) {
+            currentUser = user;
+        });
         $http.get('/admin/api/fetch_user_order_history?user_id=' + order.userID)
             .success(function(data, status) {
                 var modalInstance = $modal.open({
@@ -146,6 +149,9 @@ angular.module('adminApp').controller('AdminWaitingCompleteWithdrawOrderCtrl', [
                         },
                         orders: function () {
                             return data;
+                        },
+                        user: function () {
+                            return currentUser;
                         }
                     }
                 });
