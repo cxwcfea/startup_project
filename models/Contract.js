@@ -6,6 +6,8 @@ var contractSchema = mongoose.Schema({
     amount: {type:Number, required:'{PATH} is required!'},
     status: {type:Number, default: 1}, // 0 reserve, 1 processing, 2 finished
     period: {type:Number, required:'{PATH} is required!'},
+    deposit: {type:Number, required:'{PATH} is required!'},
+    sellValue: {type:Number, required:'{PATH} is required!'},
     createdAt: {type:Date, default: Date.now},
     investors: [String],
     startTime: Date,

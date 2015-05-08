@@ -10,7 +10,7 @@
     </div>
     <div class="header-box" ng-show="vm.contractDetail">
         <h1>项目详情</h1>
-        <a class="back" href="" ng-click="vm.contractDetail = false"></a>
+        <a class="back" href="" ng-click="vm.contractDetail = false; vm.investDetail = true"></a>
     </div>
 </header><!--#E header-->
 
@@ -25,7 +25,7 @@
 
 <div class="user-zntz-info" ng-show="vm.investDetail">
     <ul class="user-zntz-info-items">
-        <li>
+        <li ng-click="vm.showContractDetail()">
             <label>投资项目</label>
             \{{vm.currentInvest.borrower | displayMobile}}借款\{{vm.currentInvest.totalAmount}}元
         </li>
@@ -60,7 +60,7 @@
         </li>
         <li>
             <label>借款总额</label>
-            \{{vm.currentInvest.totalAmount}}元
+            \{{vm.currentInvest.totalAmount | currency:'':2}}元
         </li>
         <li>
             <label>借款用途</label>
@@ -80,15 +80,15 @@
         </li>
         <li>
             <label>保证金</label>
-            2万元
+            \{{vm.currentInvest.deposit | currency:'':2}}元
         </li>
         <li>
             <label>股票质押</label>
-            12万元(市值)
+            \{{vm.currentInvest.totalAmount | currency:'':2}}元(市值)
         </li>
         <li>
             <label>风险控制</label>
-            平台提供股票账户<br>实时监控<br>资金亏损讲预警平仓<br>平仓线10.6万元
+            平台提供股票账户<br>实时监控<br>资金亏损讲预警平仓<br>平仓线\{{vm.currentInvest.sellValue | currency:'':2}}元
         </li>
     </ul>
 </div>

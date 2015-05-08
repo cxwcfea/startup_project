@@ -22,6 +22,8 @@ angular.module('mobileApp').controller('MobileInvestListCtrl', ['$scope', '$wind
                             o.totalAmount = data.contracts[i].amount;
                             o.returnTime = data.contracts[i].endTime;
                             o.period = data.contracts[i].period;
+                            o.deposit = data.contracts[i].deposit;
+                            o.sellValue = data.contracts[i].sellValue;
                             break;
                         }
                     }
@@ -39,6 +41,11 @@ angular.module('mobileApp').controller('MobileInvestListCtrl', ['$scope', '$wind
         vm.showInvestDetail = function(invest) {
             vm.currentInvest = invest;
             vm.investDetail = true;
+        };
+
+        vm.showContractDetail = function() {
+            vm.investDetail = false;
+            vm.contractDetail = true;
         };
     }
 }]);
