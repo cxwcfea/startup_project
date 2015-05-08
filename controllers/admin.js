@@ -563,7 +563,7 @@ function _closeApply(serialID, profit, res) {
         },
         function(user, apply, callback) {
             util.applyClosed(user, apply, profit, function(err) {
-                callback(err, apply, user.finance.balance);
+                callback(err, apply, profit+apply.deposit);
             });
         }
     ], function(err, apply, balance) {
