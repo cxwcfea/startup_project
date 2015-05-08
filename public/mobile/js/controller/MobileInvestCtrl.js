@@ -31,7 +31,7 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
             var data = {
                 profitRate: vm.profit_rate,
                 duration: vm.period,
-                enable: true
+                enable: vm.user.enableInvest
             };
             $http.post('/api/user/invest_update', data)
                 .success(function(data, status) {

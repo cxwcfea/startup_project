@@ -4,6 +4,7 @@ var passport = require('passport'),
     Apply = require('../models/Apply'),
     Investor = require('../models/Investor'),
     Homas = require('../models/Homas'),
+    Contract = require('../models/Contract'),
     PayInfo = require('../models/PayInfo'),
     nodemailer = require('nodemailer'),
     crypto = require('crypto'),
@@ -1544,7 +1545,7 @@ function investUpdate(req, res) {
         });
     } else {
         User.update({mobile:req.user.mobile}, {enableInvest:req.body.enable}, function(err, numberAffected, raw) {
-            Investor.update({userID:req.user._id}, {enableInvest:req.body.enable, profitRate:req.body.profitRate, duration:req.body.duration}, function(err, numberAffected, raw) {
+            Investor.update({userID:req.user._id}, {enable:req.body.enable, profitRate:req.body.profitRate, duration:req.body.duration}, function(err, numberAffected, raw) {
                 res.send({});
             });
         });
@@ -1597,6 +1598,27 @@ function rechargeToInvest(req, res) {
     });
 }
 
+function getInvestOrders(req, res) {
+    Order.find({$and:[{dealType:11}, {userID:req.user._id}, {status:2}]}, function(err, orders) {
+        if (err) {
+            logger.warn('getInvestOrders error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        var ids = orders.map(function(elem) {
+            return elem.contractID;
+        });
+        Contract.find({_id:{$in:ids}}, function(err, contracts) {
+            if (err) {
+                logger.warn('getInvestOrders error:' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+            res.send({contracts:contracts, orders:orders});
+        });
+    });
+}
+
 module.exports.registerRoutes = function(app, passportConf) {
     app.get('/user', passportConf.isAuthenticated, getUserHome);
 
@@ -1617,6 +1639,8 @@ module.exports.registerRoutes = function(app, passportConf) {
     app.get('/api/user/invest_info', passportConf.isAuthenticated, getUserInvestInfo);
 
     app.post('/api/user/invest_recharge', passportConf.isAuthenticated, rechargeToInvest);
+
+    app.get('/api/user/invest_orders', passportConf.isAuthenticated, getInvestOrders);
 
     app.get('/user/*', passportConf.isAuthenticated, function(req, res, next) {
         res.locals.callback_domain = config.pay_callback_domain;

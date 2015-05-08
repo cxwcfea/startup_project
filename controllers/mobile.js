@@ -422,6 +422,12 @@ module.exports = {
             })
         });
 
+        app.get('/mobile/invest_list', function(req, res, next) {
+            res.render('mobile/user_invest_orders', {
+                layout: null
+            })
+        });
+
         app.get('/mobile/forget', getForget);
 
         app.get('/mobile/free_apply_confirm', passportConf.isAuthenticated, applies.freeApply);

@@ -11,6 +11,7 @@ angular.module('mobileApp').controller('MobileInvestRechargeCtrl', ['$scope', '$
         $location.path('/login');
     } else {
         vm.inputError = false;
+        vm.rechargeSuccess = false;
 
         vm.payConfirm = function() {
             if (!vm.invest_amount) {
@@ -26,7 +27,8 @@ angular.module('mobileApp').controller('MobileInvestRechargeCtrl', ['$scope', '$
             };
             $http.post('/api/user/invest_recharge', data)
                 .success(function(data, status) {
-
+                    vm.rechargeSuccess = true;
+                    vm.user.finance.balance -= vm.invest_amount;
                 })
                 .error(function(data, status) {
                     vm.errorMsg = data.error_msg;

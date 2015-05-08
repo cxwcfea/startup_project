@@ -1,0 +1,94 @@
+<!--#S header-->
+<header id="header">
+    <div class="header-box" ng-hide="vm.investDetail">
+        <h1>投资明细</h1>
+        <a class="back" href="/mobile/#/user"></a>
+    </div>
+    <div class="header-box" ng-show="vm.investDetail">
+        <h1>投资详情</h1>
+        <a class="back" href="" ng-click="vm.investDetail = false"></a>
+    </div>
+    <div class="header-box" ng-show="vm.contractDetail">
+        <h1>项目详情</h1>
+        <a class="back" href="" ng-click="vm.contractDetail = false"></a>
+    </div>
+</header><!--#E header-->
+
+<div class="recharge-record" ng-hide="vm.investDetail || vm.contractDetail" ng-cloak>
+    <ul class="record-list">
+        <li ng-repeat="invest in vm.investList | orderBy:'createdAt':true" ng-click="vm.showInvestDetail(invest)">
+            <h5>\{{invest.borrower | displayMobile}}借款\{{invest.totalAmount | currency:'':2}}元 <span class="f-fr">\{{invest.amount | currency:'':2}}</span></h5>
+            <p>年息收益\{{invest.profitRate}}% <span class="f-fr state">到期时间\{{invest.returnTime | date:"yyyy-MM-dd"}}</span></p>
+        </li>
+    </ul>
+</div>
+
+<div class="user-zntz-info" ng-show="vm.investDetail">
+    <ul class="user-zntz-info-items">
+        <li>
+            <label>投资项目</label>
+            \{{vm.currentInvest.borrower | displayMobile}}借款\{{vm.currentInvest.totalAmount}}元
+        </li>
+        <li>
+            <label>投资时间</label>
+            \{{vm.currentInvest.createdAt | date:"yyyy-MM-dd HH:mm"}}
+        </li>
+        <li>
+            <label>投资本金</label>
+            \{{vm.currentInvest.amount | currency:'':2}}
+        </li>
+        <li>
+            <label>年息收益率</label>
+            \{{vm.currentInvest.profitRate}}%
+        </li>
+        <li>
+            <label>年息收益</label>
+            \{{vm.currentInvest.investProfit | currency:'':2}}元
+        </li>
+    </ul>
+</div>
+
+<div class="user-zntz-info" ng-show="vm.contractDetail">
+    <ul class="user-zntz-info-items">
+        <li>
+            <label>借款人</label>
+            \{{vm.currentInvest.borrower | displayMobile}}
+        </li>
+        <li>
+            <label>项目编号</label>
+            \{{vm.currentInvest.applySerialID}}
+        </li>
+        <li>
+            <label>借款总额</label>
+            \{{vm.currentInvest.totalAmount}}元
+        </li>
+        <li>
+            <label>借款用途</label>
+            短期股票融资
+        </li>
+        <li>
+            <label>还款方式</label>
+            到期还本付息
+        </li>
+        <li>
+            <label>年息收益率</label>
+            \{{vm.currentInvest.profitRate}}%
+        </li>
+        <li>
+            <label>借款时间</label>
+            \{{vm.currentInvest.period}}天
+        </li>
+        <li>
+            <label>保证金</label>
+            2万元
+        </li>
+        <li>
+            <label>股票质押</label>
+            12万元(市值)
+        </li>
+        <li>
+            <label>风险控制</label>
+            平台提供股票账户<br>实时监控<br>资金亏损讲预警平仓<br>平仓线10.6万元
+        </li>
+    </ul>
+</div>

@@ -6,7 +6,7 @@
     </div>
 </header><!--#E header-->
 
-<div class="recharge-alipay">
+<div class="recharge-alipay" ng-hide="vm.rechargeSuccess">
     <div class="balance">
         账户余额： <em>\{{vm.user.finance.balance | currency:'':2}}</em> 元
     </div>
@@ -30,6 +30,27 @@
         </div>
         <button type="submit" class="submit-btn" ng-click="vm.payConfirm()">确认转入</button>
     </form>
+</div>
+
+<div class="zntz-box" ng-show="vm.rechargeSuccess">
+    <ul class="zntz-status">
+        <li class="step1">
+            <span class="icon"></span>
+            <p class="ing">成功支付 \{{vm.invest_amount | currency:'':2}}元，系统智能匹配中</p>
+            今天
+        </li>
+        <li class="step2">
+            <span class="icon"></span>
+            <p>开始计息</p>
+            14:00点前出借成功当日，14:00后出借成功下一个工作日
+        </li>
+        <li class="step3">
+            <span class="icon"></span>
+            <p>本金回款</p>
+            出借项目到期日
+        </li>
+    </ul>
+    <a href="/mobile/#/user" class="btn">完成</a>
 </div>
 
 <div class="ui-tip" ng-show="vm.inputError">\{{vm.errorMsg}}</div>
