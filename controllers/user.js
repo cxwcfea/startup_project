@@ -57,6 +57,12 @@ module.exports.postLogin = function(req, res, next) {
         req.login(user, function(err) {
             if (err) {return next(err);}
             req.session.lastLogin = moment().format("YYYY-MM-DD HH:mm:ss");
+            user.lastLoginAt = req.session.lastLogin;
+            user.save(function (err){
+                if (err){
+                    logger.error('postLogin error:' + err.toString());
+                }
+            });
             if (req.session.lastLocation) {
                 var location = req.session.lastLocation;
                 req.session.lastLocation = null;
@@ -100,6 +106,12 @@ module.exports.ajaxLogin = function(req, res) {
                 return res.send({error_code:2, error_msg:err.toString()});
             }
             req.session.lastLogin = moment().format("YYYY-MM-DD HH:mm:ss");
+            user.lastLoginAt = req.session.lastLogin;
+            user.save(function (err){
+                if (err) {
+                    logger.error('ajaxLogin error:' + err.toString());
+                }
+            });
             if (req.session.lastLocation) {
                 res.send({location:req.session.lastLocation, user:getUserViewModel(req.user)});
                 req.session.lastLocation = null;

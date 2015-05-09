@@ -10,6 +10,7 @@ var userSchema = new mongoose.Schema({
 	level: { type: Number, default: 0 },
 	score: { type: Number, default: 0 },
     registerAt: {type:Date, default: Date.now},
+    lastLoginAt: {type:Date, default: Date.parse('1990-01-01 00:00:00')},
     freeApply: String,  // apply serialID
     registered: {type:Boolean, default: false},
     lastPayBank: Number,
