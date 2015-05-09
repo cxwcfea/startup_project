@@ -27,6 +27,12 @@ angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$ht
         return moment(date).format("YYYY-MM-DD HH:mm");
     };
 
+    vm.resetSearch = function() {
+        vm.searchKey = '';
+        vm.loginDayRange = '';
+        vm.registerDayRange = '';
+    };
+
     vm.showAllUsers = function() {
         vm.totalItems = vm.users.length;
         vm.currentPage = 1;
@@ -35,15 +41,22 @@ angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$ht
     };
 
     vm.searchUser = function() {
-        if (!vm.searchKey) {
+        if (!vm.searchKey && !vm.loginDayRange && !vm.registerDayRange) {
             return;
         }
         vm.currentUsers = [];
-        for (var key in vm.users) {
-            if (vm.users[key].mobile == vm.searchKey) {
-                vm.currentUsers.push(vm.users[key]);
-                break;
+        if (vm.searchKey){
+            for (var key in vm.users) {
+                if (vm.users[key].mobile == vm.searchKey) {
+                    vm.currentUsers.push(vm.users[key]);
+                    break;
+                }
             }
+        } else if (vm.loginDayRange){
+            vm.filterByDay('lastLoginAt', 1*vm.loginDayRange)
+        } else if (vm.registerDayRange)
+        {
+            vm.filterByDay('registerAt', 1*vm.registerDayRange)
         }
         vm.totalItems = vm.currentUsers.length;
     };
@@ -59,15 +72,25 @@ angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$ht
         vm.totalItems = vm.currentUsers.length;
     };
 
-    vm.showVisitInDays = function(days) {
+    vm.filterByDay = function(attr, days) {
         vm.currentUsers = [];
         var deadline = new Date();
         deadline.setDate(deadline.getDate()-days);
+
         for (var key in vm.users) {
-            if (new Date(vm.users[key].lastLoginAt) > deadline) {
+            if (new Date(vm.users[key][attr]) > deadline) {
                 vm.currentUsers.push(vm.users[key]);
             }
         }
+    }
+
+    vm.showVisitInDays = function(days) {
+        vm.filterByDay('lastLoginAt', days);
+        vm.totalItems = vm.currentUsers.length;
+    }
+
+    vm.showRegisterInDays = function(days) {
+        vm.filterByDay('registerAt', days);
         vm.totalItems = vm.currentUsers.length;
     }
 
