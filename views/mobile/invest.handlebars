@@ -42,7 +42,7 @@
             <ul class="zntz-conf-items">
                 <li>
                     <label for="">预期年化收益 <i class="icon" ng-click="vm.showRateDialog = true"></i></label>
-                    <input type="number" min="1" max="18" required autofocus name="profit-rate" ng-model="vm.profit_rate"><span class="per">%</span>
+                    <input type="text" min="1" max="18" required autofocus name="profit-rate" ng-model="vm.profit_rate"><span class="per">%</span>
                 </li>
                 <li>
                     <label for="">投标借款期限 <i class="icon"></i></label>
@@ -90,6 +90,7 @@
 </div>
 
 <div ng-show="vm.editInvest">
+    <!--
     <div class="form-box">
         <p>您已开启聪明赚，转入资金即可自动投标高收益项目</p>
         <button type="submit" class="submit-btn" ng-click="vm.rechargeToInvestAccount()">转入资金</button>
@@ -123,6 +124,41 @@
                 </div>
             </div>
         </form>
+    </div>
+    -->
+    <div class="zntz-box">
+        <div class="zntz-txt">
+            您已开启聪明赚，转入资金即可自动投标高收益项目
+        </div>
+        <div class="zntz-conf">
+            <a href="" class="recharge-btn" ng-click="vm.rechargeToInvestAccount()">转入资金</a>
+            <ul class="zntz-conf-items">
+                <li>
+                    <label class="fl">\{{vm.user.enableInvest ? '聪明赚已开启' : '聪明赚已关闭'}}</label>
+                    <label class="ui-switch">
+                        <input type="checkbox" ng-model="vm.user.enableInvest"> <i></i>
+                    </label>
+                </li>
+                <li>
+                    <label>预期年化收益 <i class="icon" id="J_zntzIncome"></i></label>
+                    <strong><input type="number" name="profit-rate" min="1" max="18" required autofocus ng-model="vm.profit_rate"></strong>
+                    <!--<strong>12</strong>--><span class="per">%</span>
+                </li>
+                <li>
+                    <label>投标借款期限 <i class="icon" id="J_zntzTerm"></i></label>
+                    <strong>30</strong><span>天内</span>
+                </li>
+                <li>
+                    <label for="">预期年化收益 <i class="icon" ng-click="vm.showRateDialog = true"></i></label>
+                    <input type="text" min="1" max="18" required autofocus name="profit-rate" ng-model="vm.profit_rate"><span class="per">%</span>
+                </li>
+                <li>
+                    <label for="">投标借款期限 <i class="icon"></i></label>
+                    <input type="number" name="period" min="1" max="30" required ng-model="vm.period"><span>天内</span>
+                </li>
+            </ul>
+            <button class="save-btn" id="J_zntzSetSave">保存</button>
+        </div>
     </div>
 </div>
 
