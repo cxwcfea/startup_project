@@ -100,6 +100,7 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
         vm.closeDialogWindow = function() {
             vm.showRateDialog = false;
             vm.showConfirmDialog = false;
+            vm.showPeriodDialog = false;
         };
 
         vm.confirmInvest = function() {
@@ -109,6 +110,18 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
 
         vm.rechargeToInvestAccount = function() {
             $location.path('/invest_recharge');
+        };
+
+        vm.enableChange = function() {
+            console.log(vm.user.enableInvest);
+            if (!vm.user.enableInvest) {
+                vm.confirmDisableInvest = true;
+            }
+        };
+
+        vm.disableInvest = function(flag) {
+            vm.user.enableInvest = !flag;
+            vm.confirmDisableInvest = false;
         }
     }
 }]);

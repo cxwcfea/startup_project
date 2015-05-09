@@ -7,6 +7,7 @@
 </header><!--#E header-->
 
 <div class="recharge-alipay" ng-hide="vm.rechargeSuccess">
+    <!--
     <div class="balance">
         账户余额： <em>\{{vm.user.finance.balance | currency:'':2}}</em> 元
     </div>
@@ -30,6 +31,31 @@
         </div>
         <button type="submit" class="submit-btn" ng-click="vm.payConfirm()">确认转入</button>
     </form>
+    -->
+    <div class="zntz-box">
+        <div class="zntz-amount">
+            <label for="amount">充值金额</label>
+            <input type="number" min="100" step="100" name="amount" ng-model="vm.invest_amount">
+            <span class="unit">元</span>
+        </div>
+        <ul class="zntz-txt-list">
+            <li>
+                <h5>预期收益</h5>
+                <strong>200.00</strong> 元
+            </li>
+            <li>
+                <h5>还款方式</h5>
+                按天还息，到期还本
+            </li>
+            <li>
+                <h5>开始计息</h5>
+                14:00点前出借成功当日，14:00后出借成功下一个工作日
+            </li>
+        </ul>
+        <div class="zntz-agreement">
+            开启即代表同意《<a href="">牛金网投资协议</a>》
+        </div>
+    </div>
 </div>
 
 <div class="zntz-box" ng-show="vm.rechargeSuccess">
@@ -54,3 +80,9 @@
 </div>
 
 <div class="ui-tip" ng-show="vm.inputError">\{{vm.errorMsg}}</div>
+
+<!--#S footer-->
+<footer id="footer" ng-hide="vm.rechargeSuccess">
+    <a href="" class="ft-btn" ng-click="vm.payConfirm()">确认转入</a>
+</footer><!--#E wrapper-->
+

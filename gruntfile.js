@@ -42,7 +42,8 @@ module.exports = function (grunt) {
                     'public/mobile/css/niujinwang-mobile.css': ['public/mobile/css/reset.css',
                         'public/mobile/css/base.css',
                         'public/mobile/css/common.css',
-                        'public/mobile/css/pages.css'
+                        'public/mobile/css/pages.css',
+                        'public/mobile/css/site.css'
                     ]
                 }
             },
