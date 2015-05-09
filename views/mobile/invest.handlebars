@@ -45,7 +45,7 @@
                     <input type="text" min="1" max="18" required autofocus name="profit-rate" ng-model="vm.profit_rate"><span class="per">%</span>
                 </li>
                 <li>
-                    <label for="">投标借款期限 <i class="icon"></i></label>
+                    <label for="">投标借款期限 <i class="icon" ng-click="vm.showPeriodDialog = true"></i></label>
                     <input type="number" name="period" min="1" max="30" required ng-model="vm.period"><span>天内</span>
                 </li>
             </ul>
