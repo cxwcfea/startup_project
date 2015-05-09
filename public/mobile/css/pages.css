@@ -1395,6 +1395,18 @@
     list-style: initial;
 }
 
+/* =提现 withdraw.html
+-------------------------------------------------------------- */
+.withdraw-box {
+    padding: 10px;
+}
+
+.withdraw-box .withdraw-title {
+    margin-bottom: 10px;
+    padding: 10px 0 5px;
+    border-bottom: 1px dotted #c9c9c9;
+}
+
 /* =登录&注册&找回密码 login.html&sign.up&forget.html
 -------------------------------------------------------------- */
 .form-box {

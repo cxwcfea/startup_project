@@ -16,32 +16,26 @@
         <span ng-show="withdrawVM.step === 3">3.提交等待银行处理</span>
     </div>
     <div ng-show="withdrawVM.step === 1">
-        <div class="newwit_formBox newwit_formBox2 marTop40">
-            <div class="newwit_Title fl">
-                提现银行卡
-            </div>
-            <div class="newwit_box fl">
+        <div class='withdraw-card-box'>
+            <div class='withdraw-card'>
                 <img ng-src="\{{withdrawVM.BankNameList[withdrawVM.card.bankID].img}}">
-                <span>\{{withdrawVM.card | displayCard3}}</span>
+                <p id='bank-name'>\{{withdrawVM.card.bankName}}</p>
+                <p class='withdraw-card-num-tip'>尾号<span id='card-num'>\{{withdrawVM.card | displayCard2}}</span></p>
             </div>
-
+            <p class='withdraw-card-tip'>提现银行卡为绑定的提现银行卡</p>
         </div>
-        <div class="newwit_formBox ">
-            <div class="newwit_Title fl">
-                提现金额
+        <div class='withdraw-form'>
+            <p class='withdraw-balance'>可提现余额<span class='withdraw-balance-num'>\{{withdrawVM.user.finance.balance | currency:'':2}}</span>元</p>
+            <div class='withdraw-account-box'>
+                <span>提现金额</span>
+                <input type="number" min="0" class="newwit_inputText" ng-model="withdrawVM.withdrawAmount" autofocus required placeholder='请输入'>
+                <a href='#' id='withdraw-all-out'>全额提现</a>
             </div>
-            <div class="newwit_FomeContent fl">
-                <input type="number" min="0" class="newwit_inputText" ng-model="withdrawVM.withdrawAmount" autofocus required>
-            </div>
-            <div class="fl newwit_formText">
-                &nbsp;元
-            </div>
-            <div class="fl fontSize12 color_999999">
-                &nbsp;余额 <span class="color_a40000">\{{withdrawVM.user.finance.balance | currency:'':2}}</span>元
-            </div>
+            <a href="" class="recBtn01 newcar_btn jq_newcar_btn" ng-click="withdrawVM.withdrawNextStep()">下一步</a>
         </div>
-        <a href="" class="recBtn01 newcar_btn jq_newcar_btn" ng-click="withdrawVM.withdrawNextStep()">下一步</a>
-    </div>
+        <div class='withdraw-tip-box'>
+            <p class='withdraw-tip'>您账户中未使用的充值资金可于15天后申请提现</p>
+        </div>
     <div ng-show="withdrawVM.step === 2">
         <div class="newwit_formBox marTop40">
             <div class="newwit_Title fl">
