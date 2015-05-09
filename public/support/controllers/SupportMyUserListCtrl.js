@@ -31,6 +31,8 @@ angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$ht
         vm.searchKey = '';
         vm.loginDayRange = '';
         vm.registerDayRange = '';
+        vm.profitBegin = '';
+        vm.profitEnd = '';
     };
 
     vm.showAllUsers = function() {
@@ -41,27 +43,35 @@ angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$ht
     };
 
     vm.searchUser = function() {
-        if (!vm.searchKey && !vm.loginDayRange && !vm.registerDayRange) {
-            return;
-        }
-        vm.currentUsers = [];
-        if (vm.searchKey){
+        if (vm.searchKey) {
+            vm.currentUsers = [];
             for (var key in vm.users) {
                 if (vm.users[key].mobile == vm.searchKey) {
                     vm.currentUsers.push(vm.users[key]);
                     break;
                 }
             }
-        } else if (vm.loginDayRange){
-            vm.filterByDay('lastLoginAt', 1*vm.loginDayRange)
-        } else if (vm.registerDayRange)
-        {
-            vm.filterByDay('registerAt', 1*vm.registerDayRange)
+        } else if (vm.loginDayRange) {
+            vm.currentUsers = [];
+            vm.filterByDay('lastLoginAt', 1 * vm.loginDayRange)
+        } else if (vm.registerDayRange) {
+            vm.currentUsers = [];
+            vm.filterByDay('registerAt', 1 * vm.registerDayRange)
+        } else if (vm.profitBegin || vm.profitEnd) {
+            vm.currentUsers = [];
+            var filterstr = 'user.finance.profit>-1';
+            if (vm.profitBegin) {
+                filterstr = 'user.finance.profit>=' + vm.profitBegin;
+            }
+            if (vm.profitEnd) {
+                filterstr += ' && user.finance.profit<=' + vm.profitEnd;
+            }
+            vm.getUserInFilter(filterstr)
         }
         vm.totalItems = vm.currentUsers.length;
     };
 
-    vm.showUserInFilter = function(filter) {
+    vm.getUserInFilter = function(filter) {
         vm.currentUsers = []
         for (var key in vm.users) {
             var user = vm.users[key];
@@ -69,6 +79,10 @@ angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$ht
                 vm.currentUsers.push(user);
             }
         }
+    }
+
+    vm.showUserInFilter = function(filter) {
+        vm.getUserInFilter(filter);
         vm.totalItems = vm.currentUsers.length;
     };
 

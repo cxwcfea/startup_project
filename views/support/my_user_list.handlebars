@@ -7,10 +7,18 @@
         <input type="text" class="am-form-field" placeholder="手机号" ng-model="myUserVM.searchKey">
     </div>
     <div class="am-form-group">
-        <input type="text" class="am-form-field" placeholder="n天内登陆" ng-model="myUserVM.loginDayRange">
+        <input type="text" class="am-form-field" style="width:100px;" placeholder="n天内登陆" ng-model="myUserVM.loginDayRange">
     </div>
     <div class="am-form-group">
-        <input type="text" class="am-form-field" placeholder="n天内登注册" ng-model="myUserVM.registerDayRange">
+        <input type="text" class="am-form-field" style="width:100px;" placeholder="n天内注册" ng-model="myUserVM.registerDayRange">
+    </div>
+    <span>盈利范围:</span>
+    <div class="am-form-group">
+        <input type="text" class="am-form-field" style="width:40px;" ng-model="myUserVM.profitBegin">
+    </div>
+    <span>-</span>
+    <div class="am-form-group">
+        <input type="text" class="am-form-field" style="width:40px;" ng-model="myUserVM.profitEnd">
     </div>
     <button class="am-btn am-btn-primary" type="button" ng-click="myUserVM.searchUser()">搜索</button>
     <button class="am-btn am-btn-default" type="button" ng-click="myUserVM.resetSearch()">重置</button>
@@ -41,7 +49,7 @@
             <table class="am-table am-table-striped am-table-hover table-main">
                 <thead>
                 <tr>
-                    <th class="table-id">手机号</th><th class="table-title">姓名</th><th class="table-id">余额</th><th class="table-date">注册日期</th><th>最后登录</th><th class="table-set">操作</th>
+                    <th class="table-id">手机号</th><th class="table-title">姓名</th><th class="table-id">余额</th><th class="table-id">盈利</th><th class="table-date">注册日期</th><th>最后登录</th><th class="table-set">操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -49,6 +57,7 @@
                     <td>\{{user.mobile}}</td>
                     <td>\{{user.identity.name || 'N/A'}}</td>
                     <td>\{{user.finance.balance.toFixed(2)}}</td>
+                    <td>\{{user.finance.profit.toFixed(2)}}</td>
                     <td>\{{myUserVM.registerDate(user.registerAt)}}</td>
                     <td>\{{myUserVM.registerDate(user.lastLoginAt)}}</td>
                     <td>
