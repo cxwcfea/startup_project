@@ -210,6 +210,8 @@ module.exports = function(app) {
 
     app.get('/api/weixin/check_signature', weixin.checkSignature);
 
+    app.post('/api/weixin/check_signature', weixin.handlePostMessage);
+
     app.get('/info/*', function(req, res) {
         res.locals.other_menu = true;
         res.render('info/' + req.params[0]);
