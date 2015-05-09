@@ -1,6 +1,7 @@
 'use strict';
 angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$http', '$modal', '$location', 'gbUser', 'gbNotifier', '$window', '$filter', function($scope, $http, $modal, $location, gbUser, gbNotifier, $window, $filter) {
     var vm = this;
+    $scope.trader_options = ["全部", "操盘中", "已清算"];
     vm.users = gbUser.query(function() {
         vm.user = $window.bootstrappedUserObject;
         var new_users = [];
@@ -11,7 +12,7 @@ angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$ht
         }
         new_users = $filter('orderBy')(new_users, 'registerAt', true);
         vm.users = new_users;
-        vm.showAllUsers();
+        vm.resetSearch();
     });
 
     vm.pageChanged = function() {
@@ -28,11 +29,30 @@ angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$ht
     };
 
     vm.resetSearch = function() {
-        vm.searchKey = '';
-        vm.loginDayRange = '';
-        vm.registerDayRange = '';
-        vm.profitBegin = '';
-        vm.profitEnd = '';
+        vm.search_mobile = '';
+        vm.trader_status = '全部';
+        vm.profit_begin = '';
+        vm.profit_end = '';
+        vm.login_begin = '';
+        vm.login_end = '';
+        vm.register_begin = '';
+        vm.register_end = '';
+        vm.showAllUsers();
+    };
+
+    vm.setLoginRange = function(begin, end) {
+        vm.login_begin = begin;
+        vm.login_end = end;
+    };
+
+    vm.setRegisterRange = function(begin, end) {
+        vm.register_begin = begin;
+        vm.register_end = end;
+    };
+
+    vm.setProfitRange = function(begin, end) {
+        vm.profit_begin = begin;
+        vm.profit_end = end;
     };
 
     vm.showAllUsers = function() {
@@ -43,36 +63,89 @@ angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$ht
     };
 
     vm.searchUser = function() {
-        if (vm.searchKey) {
-            vm.currentUsers = [];
-            for (var key in vm.users) {
-                if (vm.users[key].mobile == vm.searchKey) {
-                    vm.currentUsers.push(vm.users[key]);
+        var filter_conditions = new Array();
+        if (vm.search_mobile) {
+            filter_conditions.push('user.mobile==='+vm.search_mobile);
+        }
+        if (vm.profit_begin !== '' || vm.profit_end !== '') {
+            var filter_one = 'user.finance.profit >= 0';
+            if (vm.profit_begin) {
+                filter_one = 'user.finance.profit >= ' + vm.profit_begin;
+            }
+            if (vm.profit_end) {
+                filter_one += ' && user.finance.profit <= ' + vm.profit_end;
+            }
+            filter_conditions.push(filter_one);
+        }
+        if (vm.free_apply) {
+            filter_conditions.push('user.freeApply');
+        }
+        if (vm.trader_status) {
+            switch (vm.trader_status) {
+                case "操盘中": // 操盘中
+                    filter_conditions.push('user.finance.total_capital > 0');
                     break;
+                case "已清算": // 已清算
+                    filter_conditions.push('user.finance.total_capital === 0 && user.finance.history_capital > 0');
+                    break;
+            }
+        }
+        var user_ret = [];
+        if (filter_conditions.length > 0) {
+            var filter_string = filter_conditions.join(' && ');
+            // console.log(filter_string);
+            vm.getUserInFilter(filter_string);
+            // console.log('Got ' + vm.currentUsers.length + " users from string filter!");
+            user_ret = vm.currentUsers;
+        } else {
+            user_ret = vm.users;
+        }
+        if (vm.login_begin || vm.login_end) {
+            vm.currentUsers = [];
+            var time_begin = new Date();
+            var time_end = new Date('2000-01-01 00:00:00');
+            if (vm.login_begin) {
+                time_begin.setDate(time_begin.getDate()-1*vm.login_begin);
+            }
+            if (vm.login_end) {
+                var time_end = new Date();
+                time_end.setDate(time_end.getDate()-1*vm.login_end);
+            }
+            for (var key in user_ret) {
+                var user = user_ret[key];
+                var user_date = new Date(user['lastLoginAt']);
+                if (user_date >= time_end && user_date <= time_begin) {
+                    vm.currentUsers.push(user);
                 }
             }
-        } else if (vm.loginDayRange) {
-            vm.currentUsers = [];
-            vm.filterByDay('lastLoginAt', 1 * vm.loginDayRange)
-        } else if (vm.registerDayRange) {
-            vm.currentUsers = [];
-            vm.filterByDay('registerAt', 1 * vm.registerDayRange)
-        } else if (vm.profitBegin || vm.profitEnd) {
-            vm.currentUsers = [];
-            var filterstr = 'user.finance.profit>-1';
-            if (vm.profitBegin) {
-                filterstr = 'user.finance.profit>=' + vm.profitBegin;
-            }
-            if (vm.profitEnd) {
-                filterstr += ' && user.finance.profit<=' + vm.profitEnd;
-            }
-            vm.getUserInFilter(filterstr)
+            user_ret = vm.currentUsers;
         }
+        if (vm.register_begin || vm.register_end) {
+            vm.currentUsers = [];
+            var time_begin = new Date();
+            var time_end = new Date('2000-01-01 00:00:00');
+            if (vm.register_begin) {
+                time_begin.setDate(time_begin.getDate()-1*vm.register_begin);
+            }
+            if (vm.register_end) {
+                var time_end = new Date();
+                time_end.setDate(time_end.getDate()-1*vm.register_end);
+            }
+            for (var key in user_ret) {
+                var user = user_ret[key];
+                var user_date = new Date(user['registerAt']);
+                if (user_date >= time_end && user_date <= time_begin) {
+                    vm.currentUsers.push(user);
+                }
+            }
+            user_ret = vm.currentUsers;
+        }
+        vm.currentUsers = user_ret;
         vm.totalItems = vm.currentUsers.length;
     };
 
     vm.getUserInFilter = function(filter) {
-        vm.currentUsers = []
+        vm.currentUsers = [];
         for (var key in vm.users) {
             var user = vm.users[key];
             if (eval(filter)) {
@@ -85,39 +158,6 @@ angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$ht
         vm.getUserInFilter(filter);
         vm.totalItems = vm.currentUsers.length;
     };
-
-    vm.showUsersInTrader = function() {
-        vm.currentUsers = [];
-        for (var key in vm.users) {
-            if (vm.users[key].finance.total_capital > 0) {
-                vm.currentUsers.push(vm.users[key]);
-                break;
-            }
-        }
-        vm.totalItems = vm.currentUsers.length;
-    };
-
-    vm.filterByDay = function(attr, days) {
-        vm.currentUsers = [];
-        var deadline = new Date();
-        deadline.setDate(deadline.getDate()-days);
-
-        for (var key in vm.users) {
-            if (new Date(vm.users[key][attr]) > deadline) {
-                vm.currentUsers.push(vm.users[key]);
-            }
-        }
-    }
-
-    vm.showVisitInDays = function(days) {
-        vm.filterByDay('lastLoginAt', days);
-        vm.totalItems = vm.currentUsers.length;
-    }
-
-    vm.showRegisterInDays = function(days) {
-        vm.filterByDay('registerAt', days);
-        vm.totalItems = vm.currentUsers.length;
-    }
 
     vm.showApplies = function(user) {
         $scope.data.selectedUser = user;
