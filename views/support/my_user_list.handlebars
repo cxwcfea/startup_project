@@ -24,8 +24,11 @@
                 <button class="am-btn am-btn-default" type="button" ng-click="myUserVM.showUsersInTrader()">操盘中</button>
                 <button class="am-btn am-btn-default" type="button" ng-click="myUserVM.showVisitInDays(3)">3日内来访</button>
                 <button class="am-btn am-btn-default" type="button" ng-click="myUserVM.showVisitInDays(7)">7日内来访</button>
-                <button class="am-btn am-btn-default" type="button" ng-click="myUserVM.showRegisteInDays(3)">3日内注册</button>
-                <button class="am-btn am-btn-default" type="button" ng-click="myUserVM.showRegisteInDays(7)">7日内注册</button>
+                <button class="am-btn am-btn-default" type="button" ng-click="myUserVM.showRegisterInDays(3)">3日内注册</button>
+                <button class="am-btn am-btn-default" type="button" ng-click="myUserVM.showRegisterInDays(7)">7日内注册</button>
+                <button class="am-btn am-btn-default" type="button" ng-click="myUserVM.showUserInFilter('user.finance.profit>0')">盈利用户</button>
+                <button class="am-btn am-btn-default" type="button" ng-click="myUserVM.showUserInFilter('user.finance.profit<=0')">未盈利用户</button>
+                <button class="am-btn am-btn-default" type="button" ng-click="myUserVM.showUserInFilter('user.finance.history_capital>0 && user.finance.total_capital===0')">已清算</button>
             </span>
         </div>
     </div>

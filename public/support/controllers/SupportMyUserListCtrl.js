@@ -61,6 +61,17 @@ angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$ht
         vm.totalItems = vm.currentUsers.length;
     };
 
+    vm.showUserInFilter = function(filter) {
+        vm.currentUsers = []
+        for (var key in vm.users) {
+            var user = vm.users[key];
+            if (eval(filter)) {
+                vm.currentUsers.push(user);
+            }
+        }
+        vm.totalItems = vm.currentUsers.length;
+    };
+
     vm.showUsersInTrader = function() {
         vm.currentUsers = [];
         for (var key in vm.users) {
