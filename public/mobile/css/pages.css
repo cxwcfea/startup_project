@@ -50,6 +50,9 @@
 .nav-box .ttn a {
     background-image: url(../images/icon_ttn.png);
 }
+.nav-box .zntz a {
+    background-image: url(../images/icon_zntz.png);
+}
 .nav-box .exp a {
     background-image: url(../images/icon_exp.png);
 }
@@ -61,6 +64,9 @@
 }
 .nav-box .ttn .current {
     background-image: url(../images/icon_ttn_cur.png);
+}
+.nav-box .zntz .current {
+    background-image: url(../images/icon_zntz_cur.png);
 }
 .nav-box .exp .current {
     background-image: url(../images/icon_exp_cur.png);
@@ -1580,6 +1586,12 @@
     float: left;
     line-height: 24px;
 }
+.zntz-conf-items .ui-switch {
+    float: right;
+}
+.zntz-conf-items .ui-switch i:after {
+    left: 0;
+}
 .zntz-conf-items .icon {
     position: relative;
     top: 3px;
@@ -1590,7 +1602,7 @@
     background: url(../images/point.png) no-repeat 0 0;
     background-size: 14px 14px;
 }
-.zntz-conf-items input {
+.zntz-conf-items input[type=text] {
     width: 100px;
     font-size: 16px;
     color: #333;
@@ -1600,12 +1612,58 @@
     padding: 0 10px 0 0;
     border: 0;
 }
-.zntz-conf-items .per{
+.zntz-conf-items .per {
     display: inline-block;
     padding-right: 14px;
 }
+.zntz-conf-items strong {
+    font-size: 16px;
+    padding-right: 6px;
+}
 .zntz-conf-items span {
     color: #999;
+}
+.zntz-box .zntz-txt {
+    font-size: 13px;
+    margin: 26px 0 10px;
+    text-indent: 6px;
+}
+.zntz-box .zntz-amount {
+    padding: 20px 0 5px;
+}
+.zntz-box .zntz-amount label{
+    display: block;
+    margin-bottom: 4px;
+}
+.zntz-box .zntz-amount input {
+    width: 100%;
+    height: 20px;
+    line-height: 20px;
+    padding: 10px 0;
+    text-indent: 10px;
+    font-size: 18px;
+    font-weight: 800;
+    border: 1px solid #C9C9C9;
+}
+.zntz-box .zntz-amount .unit{
+    position: relative;
+    right: 10px;
+    float: right;
+    font-size: 14px;
+    margin-top: -30px;
+}
+.zntz-box .zntz-txt-list {
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+.zntz-box .zntz-txt-list li {
+    text-align: right;
+    padding: 16px 4px;
+    border-bottom: 1px dotted #d3d2d0;
+}
+.zntz-box .zntz-txt-list h5 {
+    display: inline-block;
+    float: left;
 }
 .zntz-box .btn {
     display: block;
@@ -1655,13 +1713,61 @@
     color: #a40000;
 }
 .zntz-tips {
+    padding: 6px 0;
     font-size: 13px;
+}
+.zntz-tips .icon {
+    position: relative;
+    float: left;
+    top: -3px;
+    margin: 0 10px;
+    display: block;
+    width: 25px;
+    height: 25px;
+    background: url(../images/icon_suc.jpg) no-repeat;
+    background-size: 25px 25px;
 }
 .user-zntz-info-items li {
     text-align: right;
     padding: 14px;
+    line-height: 24px;
     border-bottom: 1px dotted #d3d2d0;
 }
 .user-zntz-info-items label {
     float: left;
+}
+.zntz-box .recharge-btn{
+    display: block;
+    height: 44px;
+    line-height: 44px;
+    margin: 0 0 36px;
+    text-align: center;
+    border-radius: 3px;
+    color: #FFF;
+    font-size: 18px;
+    background-color: #e30a20;
+}
+.zntz-box .save-btn {
+    display: block;
+    width: 100%;
+    height: 43px;
+    line-height: 43px;
+    color: #E30A20;
+    text-align: center;
+    font-size: 18px;
+    border: 1px solid #E30A20;
+    border-radius: 3px;
+    background-color: #FFF;
+}
+#J_zntzTip .link {
+    display: block;
+    text-align: center;
+    height: 42px;
+    line-height: 42px;
+    font-size: 16px;
+    border-right: 1px #C8C7CC solid;
+    width: 100%;
+    border-top: 1px solid #C8C7CC;
+    -webkit-box-flex: 1;
+    color: #a40000;
 }

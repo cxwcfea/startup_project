@@ -388,3 +388,6 @@
     border-bottom-right-radius: 6px;
 }
 
+.ui-dialog .ui-dialog-ft .close-dialog {
+    color: #333;
+}
