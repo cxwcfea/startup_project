@@ -9,6 +9,9 @@
             <span class="am-input-group-btn">
                 <button class="am-btn am-btn-default" type="button" ng-click="myUserVM.searchUser()">搜索</button>
                 <button class="am-btn am-btn-default" type="button" ng-click="myUserVM.showAllUsers()">全部</button>
+                <button class="am-btn am-btn-default" type="button" ng-click="myUserVM.showUsersInTrader()">操盘中</button>
+                <button class="am-btn am-btn-default" type="button" ng-click="myUserVM.showVisitInDays(3)">3Days</button>
+                <button class="am-btn am-btn-default" type="button" ng-click="myUserVM.showVisitInDays(7)">7Days</button>
             </span>
         </div>
     </div>
@@ -21,18 +24,16 @@
             <table class="am-table am-table-striped am-table-hover table-main">
                 <thead>
                 <tr>
-                    <th class="table-id">手机号</th><th class="table-title">姓名</th><th class="table-id">QQ号</th><th class="table-author">邮件</th><th class="table-id">余额</th><th>客服人员</th><th class="table-date">注册日期</th><th class="table-set">操作</th>
+                    <th class="table-id">手机号</th><th class="table-title">姓名</th><th class="table-id">余额</th><th class="table-date">注册日期</th><th>最后登录</th><th class="table-set">操作</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="user in myUserVM.currentUsers">
                     <td>\{{user.mobile}}</td>
                     <td>\{{user.identity.name || 'N/A'}}</td>
-                    <td>\{{user.profile.qq || 'N/A'}}</td>
-                    <td>\{{user.profile.email || 'N/A'}}</td>
                     <td>\{{user.finance.balance.toFixed(2)}}</td>
-                    <td>\{{user.manager || '还未分配' | displayManager}}</td>
                     <td>\{{myUserVM.registerDate(user.registerAt)}}</td>
+                    <td>\{{myUserVM.registerDate(user.lastLoginAt)}}</td>
                     <td>
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs">

@@ -48,6 +48,29 @@ angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$ht
         vm.totalItems = vm.currentUsers.length;
     };
 
+    vm.showUsersInTrader = function() {
+        vm.currentUsers = [];
+        for (var key in vm.users) {
+            if (vm.users[key].finance.total_capital > 0) {
+                vm.currentUsers.push(vm.users[key]);
+                break;
+            }
+        }
+        vm.totalItems = vm.currentUsers.length;
+    };
+
+    vm.showVisitInDays = function(days) {
+        vm.currentUsers = [];
+        var deadline = new Date();
+        deadline.setDate(deadline.getDate()-days);
+        for (var key in vm.users) {
+            if (new Date(vm.users[key].lastLoginAt) > deadline) {
+                vm.currentUsers.push(vm.users[key]);
+            }
+        }
+        vm.totalItems = vm.currentUsers.length;
+    }
+
     vm.showApplies = function(user) {
         $scope.data.selectedUser = user;
         // $location.path('/applies/' + user._id);

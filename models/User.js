@@ -6,7 +6,7 @@ var bcrypt = require('bcrypt-nodejs'),
 var userSchema = new mongoose.Schema({
     mobile: { type: Number, unique: true, required:'{PATH} is required!' },
     password: { type: String, required:'{PATH} is required!' },
-    roles: [String],
+    roles: [String], // admin, support
 	level: { type: Number, default: 0 },
 	score: { type: Number, default: 0 },
     registerAt: {type:Date, default: Date.now},
