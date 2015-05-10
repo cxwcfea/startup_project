@@ -22,6 +22,7 @@ function home(req, res, next) {
                     profit: 4000000
                 }];
             }
+            console.log(statistic.length);
             DailyData.find({}, function(err, dailyData) {
                 if (err) {
                     logger.warn('error when fetch daily data:' + err.toString());
