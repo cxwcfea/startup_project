@@ -71,10 +71,10 @@
                 <tr ng-repeat="user in myUserVM.currentUsers">
                     <td>\{{user.mobile}}</td>
                     <td>\{{user.identity.name || 'N/A'}}</td>
-                    <td>\{{user.finance.balance.toFixed(2)}}</td>
-                    <td>\{{user.finance.profit.toFixed(2)}}</td>
-                    <td>\{{myUserVM.registerDate(user.registerAt)}}</td>
-                    <td>\{{myUserVM.registerDate(user.lastLoginAt)}}</td>
+                    <td>\{{user.finance.balance | currency:'':2}}</td>
+                    <td>\{{user.finance.profit | currency:'':2}}</td>
+                    <td>\{{user.registerAt | date:"yyyy-MM-dd HH:mm"}}</td>
+                    <td>\{{user.lastLoginAt | date:"yyyy-MM-dd HH:mm"}}</td>
                     <td>
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs">
