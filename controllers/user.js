@@ -17,6 +17,7 @@ var passport = require('passport'),
     _ = require('lodash'),
     sparkMD5 = require('spark-md5'),
     moment = require('moment'),
+    ccap = require('ccap')(),
     async = require('async');
 
 module.exports.postLogin = function(req, res, next) {
@@ -166,6 +167,12 @@ module.exports.apiSignup = function(req, res) {
     if (errors) {
         res.status(400);
         return res.send({error_code:1, error_msg:errors[0].msg});
+    }
+
+    console.log(req.body.img_code + ' ' + req.session.img_code);
+    if (req.body.img_code != req.session.img_code) {
+        res.status(403);
+        return res.send({error_msg:'验证码错误'});
     }
 
     var user = new User({
@@ -567,7 +574,11 @@ module.exports.sendVerifyCode = function(req, res, next) {
         res.status(400);
         return res.send({error_msg:'block user'});
     }
-    console.log('send verify code ' + req.query.type);
+    if (req.session.sms_code && req.session.sms_code.protectTime > Date.now()) {
+        logger.warn('sendVerifyCode refuse:too frequency');
+        res.status(400);
+        return res.send({error_msg:'请求短信验证码需至少间隔1分钟'});
+    }
     var code = sms.generateVerifyCode();
     if (!req.query.type) {
         sms.sendSMS(req.query.mobile, code);
@@ -580,7 +591,8 @@ module.exports.sendVerifyCode = function(req, res, next) {
         mobile: req.query.mobile,
         code: code,
         count: 0,
-        expires: Date.now() + 3600000 // 1 hour
+        expires: Date.now() + 3600000, // 1 hour
+        protectTime: Date.now() + 60000
     };
     res.send({success:true});
 };
@@ -1788,4 +1800,13 @@ module.exports.payByBalance = function(req, res, next) {
         }
         res.send({});
     });
+};
+
+module.exports.getVerifyImg = function(req, res) {
+    var ary = ccap.get();
+    var txt = ary[0];
+    var buf = ary[1];
+    req.session.img_code = txt.toLowerCase();
+    res.send(buf);
+    console.log(txt);
 };

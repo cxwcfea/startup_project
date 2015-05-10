@@ -37,6 +37,10 @@
                 addAlert('danger', '两次密码应该保持一致');
                 return;
             }
+            if (!vm.img_code) {
+                addAlert('danger', '请输入6位验证码');
+                return;
+            }
             if (!vm.agree) {
                 addAlert('danger', '您必须同意牛金网用户协议');
                 return;
@@ -44,6 +48,7 @@
             var data = {
                 mobile: vm.mobile,
                 password: vm.password,
+                img_code: vm.img_code,
                 confirm_password: vm.confirm_password
             };
             $http.post('/api/signup', data)
@@ -53,6 +58,8 @@
                 })
                 .error(function(data, status, headers, config) {
                     addAlert('danger', data.error_msg);
+                    var x = Math.random();
+                    $('#img_code')[0].src = '/api/get_verify_img?cacheBuster=' + x;
                 });
         };
 
@@ -81,7 +88,9 @@
                     //addAlert('success', '验证码已发送');
                 })
                 .error(function(data, status, headers, config) {
-                    //addAlert('danger', '验证码发送失败，请稍后重试');
+                    vm.show_verify_window = false;
+                    vm.verifyBtnDisabled = false;
+                    addAlert('danger', data.error_msg);
                 });
         };
 
@@ -195,6 +204,11 @@
             } else if (error_code == 3) {
                 addAlert('danger', '该手机号码还未注册');
             }
+        }
+
+        vm.imgClicked = function(e) {
+            var x = Math.random();
+            e.target.src = '/api/get_verify_img?cacheBuster=' + x;
         }
     }]);
 }());
