@@ -14,7 +14,7 @@ function home(req, res, next) {
     }
     if (!req.session.statistic || req.session.statistic.expires < Date.now()) {
         User.aggregate([{$match:{registered:true}}, {$group: {_id: null, count: {$sum: 1}, profit: { $sum: '$finance.profit'}, capital: { $sum: '$finance.history_capital' }, current_capital: { $sum: '$finance.total_capital' }}}], function(err, statistic) {
-            if (err || !statistic) {
+            if (err || !statistic || statistic.length === 0) {
                 logger.warn('error when fetch total user count:' + err.toString());
                 statistic = [{
                     count: 7000,
@@ -22,7 +22,6 @@ function home(req, res, next) {
                     profit: 4000000
                 }];
             }
-            console.log(statistic.length);
             DailyData.find({}, function(err, dailyData) {
                 if (err) {
                     logger.warn('error when fetch daily data:' + err.toString());
