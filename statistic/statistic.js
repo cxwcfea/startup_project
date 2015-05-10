@@ -638,7 +638,7 @@ db.once('open', function callback() {
     async.series(
         [
             function(callback) {
-                historyApplyData(startTime, function(err) {
+                historyApplyData(function(err) {
                     callback(err);
                 });
             },
