@@ -1,18 +1,61 @@
 <div class="am-cf am-padding">
     <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">我接手的客户</strong> / <small>My Users</small></div>
 </div>
-
-<div class="am-g">
-    <div class="am-u-sm-12 am-u-md-3">
-        <div class="am-input-group am-input-group-sm">
-            <input type="text" class="am-form-field" placeholder="输入用户手机号" ng-model="myUserVM.searchKey">
-            <span class="am-input-group-btn">
-                <button class="am-btn am-btn-default" type="button" ng-click="myUserVM.searchUser()">搜索</button>
-                <button class="am-btn am-btn-default" type="button" ng-click="myUserVM.showAllUsers()">全部</button>
-            </span>
-        </div>
+<ul class="am-list am-list-static am-list-border am-list-striped">
+<li class="am-form-inline am-padding" style="padding-top:3px;padding-bottom:3px;">
+    <div class="am-form-group">
+        <span>手机号码:</span>
+        <input type="text" class="am-form-field am-input-sm" style="width:174px;" placeholder="1388888666" ng-model="myUserVM.search_mobile">
     </div>
-</div>
+    <div class="am-form-group am-form-select">
+        <span for="trader-status">&nbsp;&nbsp;操盘状态:</span>
+        <select id="trader-status" ng-model="myUserVM.trader_status" ng-options="option for option in trader_options">
+        </select>
+        <span class="am-form-caret"></span>
+    </div>
+    <div class="am-form-group">
+        <span>
+            &nbsp;&nbsp;免费体验:&nbsp;&nbsp;<input type="checkbox" ng-model="myUserVM.free_apply">
+        </span>
+    </div>
+</li>
+<li class="am-form-inline am-padding" style="padding-top:3px;padding-bottom:3px;">
+    <div class="am-form-group">
+        <span>登陆区间:</span>
+        <input type="text" class="am-form-field am-input-sm" style="width:80px;" placeholder="起" ng-model="myUserVM.login_begin">
+        <span>-</span>
+        <input type="text" class="am-form-field am-input-sm" style="width:80px;" placeholder="止" ng-model="myUserVM.login_end">
+    </div>
+    <button class="am-btn am-btn-default am-btn-sm" type="button" ng-click="myUserVM.setLoginRange(0, 3)">3日内来访</button>
+    <button class="am-btn am-btn-default am-btn-sm" type="button" ng-click="myUserVM.setLoginRange(0, 7)">7日内来访</button>
+</li>
+
+<li class="am-form-inline am-padding" style="padding-top:3px;padding-bottom:3px;">
+    <div class="am-form-group">
+        <span>注册区间:</span>
+        <input type="text" class="am-form-field am-input-sm" style="width:80px;" placeholder="起" ng-model="myUserVM.register_begin">
+        <span>-</span>
+        <input type="text" class="am-form-field am-input-sm" style="width:80px;" placeholder="止" ng-model="myUserVM.register_end">
+    </div>
+    <button class="am-btn am-btn-default am-btn-sm" type="button" ng-click="myUserVM.setRegisterRange(0, 3)">3日内注册</button>
+    <button class="am-btn am-btn-default am-btn-sm" type="button" ng-click="myUserVM.setRegisterRange(0, 7)">7日内注册</button>
+</li>
+
+<li class="am-form-inline am-padding" style="padding-top:3px;padding-bottom:3px;">
+    <div class="am-form-group">
+        <span>盈利范围:</span>
+        <input type="text" class="am-form-field am-input-sm" style="width:80px;" placeholder="起" ng-model="myUserVM.profit_begin">
+        <span>-</span>
+        <input type="text" class="am-form-field am-input-sm" style="width:80px;" placeholder="止" ng-model="myUserVM.profit_end">
+    </div>
+    <button class="am-btn am-btn-default am-btn-sm" type="button" ng-click="myUserVM.setProfitRange(0.1, '')">盈利用户</button>
+    <button class="am-btn am-btn-default am-btn-sm" type="button" ng-click="myUserVM.setProfitRange(0, 0)">未盈利用户</button>
+</li>
+<li class="am-form-inline am-padding" style="padding-top:3px;padding-bottom:3px;">
+    <button class="am-btn am-btn-primary" type="button" ng-click="myUserVM.searchUser()">搜索</button>
+    <button class="am-btn am-btn-default" type="button" ng-click="myUserVM.resetSearch()">重置</button>
+</li>
+</ul>
 
 <div class="am-g">
     <div class="am-u-sm-12">
@@ -21,18 +64,17 @@
             <table class="am-table am-table-striped am-table-hover table-main">
                 <thead>
                 <tr>
-                    <th class="table-id">手机号</th><th class="table-title">姓名</th><th class="table-id">QQ号</th><th class="table-author">邮件</th><th class="table-id">余额</th><th>客服人员</th><th class="table-date">注册日期</th><th class="table-set">操作</th>
+                    <th class="table-id">手机号</th><th class="table-title">姓名</th><th class="table-id">余额</th><th class="table-id">盈利</th><th class="table-date">注册日期</th><th>最后登录</th><th class="table-set">操作</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="user in myUserVM.currentUsers">
                     <td>\{{user.mobile}}</td>
                     <td>\{{user.identity.name || 'N/A'}}</td>
-                    <td>\{{user.profile.qq || 'N/A'}}</td>
-                    <td>\{{user.profile.email || 'N/A'}}</td>
                     <td>\{{user.finance.balance.toFixed(2)}}</td>
-                    <td>\{{user.manager || '还未分配' | displayManager}}</td>
+                    <td>\{{user.finance.profit.toFixed(2)}}</td>
                     <td>\{{myUserVM.registerDate(user.registerAt)}}</td>
+                    <td>\{{myUserVM.registerDate(user.lastLoginAt)}}</td>
                     <td>
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs">
