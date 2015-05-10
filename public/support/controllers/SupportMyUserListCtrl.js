@@ -37,6 +37,7 @@ angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$ht
         vm.login_end = '';
         vm.register_begin = '';
         vm.register_end = '';
+        vm.free_apply = false;
         vm.showAllUsers();
     };
 
