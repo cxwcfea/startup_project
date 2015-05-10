@@ -27,8 +27,8 @@ var historyApplyData = function(callback) {
         fileWriteStream.write(data);
         applies.forEach(function (apply) {
             data = apply.userID + ', ' + apply.userMobile + ', ' + apply.serialID + ', ' + apply.amount.toFixed(2) + ', ' + apply.deposit.toFixed(2) + ', '
-            + apply.period + ', ' + apply.status + ', ' + apply.applyAt + ', ' + apply.closeAt + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
-            + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + apply.startTime + ', ' + apply.endTime + ', ' + apply.account + ', '
+            + apply.period + ', ' + apply.status + ', ' + moment(apply.applyAt).format('YYYYMMDDHHmmss') + ', ' + moment(apply.closeAt).format('YYYYMMDDHHmmss') + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
+            + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + moment(apply.startTime).format('YYYYMMDDHHmmss') + ', ' + moment(apply.endTime).format('YYYYMMDDHHmmss') + ', ' + apply.account + ', '
             + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + '\n';
             fileWriteStream.write(data);
         });
@@ -637,12 +637,12 @@ db.once('open', function callback() {
     */
     async.series(
         [
-            /*
             function(callback) {
-                historyFreeApplyData(startTime, function(err) {
+                historyApplyData(startTime, function(err) {
                     callback(err);
                 });
             },
+            /*
             function(callback) {
                 historyPayApplyData(startTime, function(err) {
                     callback(err);
@@ -664,6 +664,8 @@ db.once('open', function callback() {
                 });
             },
              */
+
+            /*
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
                     callback(err);
@@ -694,6 +696,8 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
+            */
+
             /*
             function(callback) {
                 rechargeOrderData(function(err) {
