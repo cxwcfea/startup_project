@@ -563,7 +563,7 @@ module.exports.sendVerifyCode = function(req, res, next) {
         res.status(400);
         return res.send({success:false, reason:'no mobile specified'});
     }
-    if (req.query.mobile == 13545682930) {
+    if (req.query.mobile == 13545682930 || req.query.mobile == 18842607315 || req.query.mobile == 18936276302) {
         res.status(400);
         return res.send({error_msg:'block user'});
     }
