@@ -1831,7 +1831,7 @@ function getDailyData(req, res) {
             data.forEach(function(elem) {
                 ret.dates.unshift(elem.date);
                 ret.users.unshift(elem.newUsers);
-                ret.income.unshift(elem.income);
+                ret.income.unshift(elem.income.toFixed(2));
             });
             res.send(ret);
         });

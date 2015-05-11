@@ -22,10 +22,10 @@
         <p>服务费(总额)： <span class="am-text-danger">{{data.total_fee}}</span></p>
         <p>服务费(新增)： <span class="am-text-danger">{{data.added_fee}}</span></p>
         <p>用户余额总值：<span class="am-text-danger">{{data.total_balance}}</span></p>
+        <p>网站7日趋势</p>
+        <canvas id="myChart" width="800" height="400"></canvas>
     </div>
 </div>
-
-<canvas id="myChart" width="800" height="400"></canvas>
 
 <script>
     $.get("/admin/api/daily_data", function() {
