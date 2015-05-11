@@ -231,7 +231,9 @@ exports.postApplyPostpone = function(req, res, next) {
                         user.save(function(err) {
                             var content = 'user:' + order.userMobile + ' account:' + apply.account + ' period:' + period;
                             util.sendEmail('op@niujinwang.com,intern@niujinwang.com', '配资延期', content, function(err) {
-                                logger.debug('error when send postpone email apply:' + apply.serialID + ' account:' + apply.account + ' ' + err.toString());
+                                if (err) {
+                                    logger.debug('error when send postpone email apply:' + apply.serialID + ' account:' + apply.account + ' ' + err.toString());
+                                }
                                 sms.sendSMS('13439695920', '', 'apply postpone ' + content, function (result) {
                                     if (result.error) {
                                         logger.debug('sms also send error when postpone apply:' + apply.serialID);
