@@ -660,12 +660,12 @@ db.once('open', function callback() {
     */
     async.series(
         [
+            /*
             function(callback) {
                 getUserData(function (err) {
                     callback(err);
                 })
             }
-            /*
             function(callback) {
                 historyApplyData(function(err) {
                     callback(err);
@@ -693,7 +693,6 @@ db.once('open', function callback() {
             },
              */
 
-            /*
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
                     callback(err);
@@ -724,7 +723,6 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
-            */
 
             /*
             function(callback) {
