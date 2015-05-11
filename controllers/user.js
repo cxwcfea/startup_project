@@ -1811,5 +1811,4 @@ module.exports.getVerifyImg = function(req, res) {
     var buf = ary[1];
     req.session.img_code = txt.toLowerCase();
     res.send(buf);
-    console.log(txt);
 };
