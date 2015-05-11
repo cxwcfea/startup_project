@@ -579,6 +579,29 @@ var activeApplyFeeTillNow = function(callback) {
     });
 };
 
+var getUserData = function(callback) {
+    User.find({ $and: [{registered:true}] }, function(err, users) {
+        if (err) {
+            logger.debug('err when getUserData ' + err.toString());
+            return callback(err);
+        }
+        var options = { encoding: 'utf8', flag: 'w' };
+        var fileWriteStream = fs.createWriteStream("UserDataTill-" + moment().format("YYYY-MM-DD") + ".csv",  options);
+        fileWriteStream.on("close", function() {
+            console.log("File Closed.");
+        });
+        var data = 'mobile, freeApply, registerAt, history_deposit, profit, refer\n';
+        fileWriteStream.write(data);
+        users.forEach(function (user) {
+            data = user.mobile + ', ' + user.freeApply + ', ' + moment(user.registerAt).format('YYYYMMDDHHmmss') + ', ' + user.finance.history_deposit + ', '
+            + user.finance.profit + ', ' + user.refer + '\n';
+            fileWriteStream.write(data);
+        });
+        fileWriteStream.end();
+        callback(null);
+    });
+};
+
 var options = {};
 mongoose.connect(config.db, options);
 var db = mongoose.connection;
@@ -638,11 +661,16 @@ db.once('open', function callback() {
     async.series(
         [
             function(callback) {
+                getUserData(function (err) {
+                    callback(err);
+                })
+            }
+            /*
+            function(callback) {
                 historyApplyData(function(err) {
                     callback(err);
                 });
             },
-            /*
             function(callback) {
                 historyPayApplyData(startTime, function(err) {
                     callback(err);
