@@ -1,0 +1,44 @@
+<div class="modal-header">
+    <h3 class="modal-title">跟用户做朋友</h3>
+</div>
+<div class="modal-body">
+    <div class="am-u-sm-12">
+        <div class="am-panel am-panel-default">
+            <div class="am-panel-hd am-cf" data-am-collapse="{target: '#collapse-panel-3'}">关于用户{{data.mobile}}的记录<span class="am-icon-chevron-down am-fr" ></span></div>
+            <div class="am-panel-bd am-collapse am-in am-cf" id="collapse-panel-3">
+                <ul class="am-comments-list admin-content-comment">
+                    <li class="am-comment" ng-repeat="note in data.showingItems">
+                        <a href="#"><!--<img src="http://amui.qiniudn.com/bw-2014-06-19.jpg?imageView/1/w/96/h/96" alt="" class="am-comment-avatar" width="48" height="48">--></a>
+                        <div class="am-comment-main">
+                            <header class="am-comment-hd">
+                                <div class="am-comment-meta"><a href="#" class="am-comment-author">{{note.writer | displayManager}}</a> 添加于 <time>{{note.createdAt | displayDate}}</time></div>
+                            </header>
+                            <div class="am-comment-bd">
+                                <p>{{note.content}}</p>
+                                <p><a class="am-badge am-badge-primary">{{note.tag}}</a></p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <form class="am-form">
+        <div class="am-form-group">
+            <label>标签</label>
+            <input type="text" ng-model="data.tag">
+        </div>
+        <div class="am-form-group">
+            <label>标题</label>
+            <input type="text" ng-model="data.title">
+        </div>
+        <div class="am-form-group">
+            <label for="doc-ta-1">内容</label>
+            <textarea class="" rows="5" id="doc-ta-1" ng-model="data.content"></textarea>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">添加记录</button>
+    <button class="btn btn-warning" ng-click="cancel()">放弃添加</button>
+</div>
