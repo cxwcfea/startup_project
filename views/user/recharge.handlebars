@@ -172,7 +172,7 @@
                     </table>
                 </div>
                 <alert ng-show="rechargeVM.showBankTransWindow" ng-repeat="alert in rechargeVM.alerts" type="\{{alert.type}}" close="rechargeVM.closeAlert($index)">\{{alert.msg}}</alert>
-                <p class="newrec_P04">将转账相关信息 <a href="" ng-click="rechargeVM.sendSMSBankInfo()">发送到手机</a><a href="" ng-click="rechargeVM.bankTransNext()">下一步</a></p>
+                <p class="newrec_P04"><!--将转账相关信息 <a href="" ng-click="rechargeVM.sendSMSBankInfo()">发送到手机</a>--><a href="" ng-click="rechargeVM.bankTransNext()">下一步</a></p>
             </div>
         </div>
     </div>
