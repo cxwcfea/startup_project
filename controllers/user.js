@@ -169,10 +169,13 @@ module.exports.apiSignup = function(req, res) {
         return res.send({error_code:1, error_msg:errors[0].msg});
     }
 
+    if (req.body.img_code) {
+        req.body.img_code = req.body.img_code.toLowerCase();
+    }
     console.log(req.body.img_code + ' ' + req.session.img_code);
     if (req.body.img_code != req.session.img_code) {
         res.status(403);
-        return res.send({error_msg:'验证码错误'});
+        return res.send({error_msg:'验证码错误,应为' + req.session.img_code});
     }
 
     var user = new User({
