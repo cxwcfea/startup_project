@@ -176,8 +176,8 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
             newOrder.description = '支付宝转账(移动)';
             newOrder.payType = 3;
             newOrder.status = 2;
-            newOrder.otherInfo = vm.alipay_account;
-            newOrder.transID = vm.alipay_name;
+            newOrder.otherInfo = vm.alipay_account.trim().toLowerCase();
+            newOrder.transID = vm.alipay_name.trim().toLowerCase();
             newOrder.$save(function(o, responseHeaders) {
             }, function(response) {
                 vm.errorMsg = '服务暂时不可用，请稍后再试';

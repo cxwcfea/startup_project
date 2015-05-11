@@ -8,6 +8,7 @@ var Apply = require('../models/Apply'),
     logger = log4js.getLogger('apply'),
     _ = require('lodash'),
     async = require('async'),
+    sms = require('../lib/sms'),
     util = require('../lib/util');
 
 exports.getYYnPage = function(req, res, next) {
@@ -102,25 +103,29 @@ exports.getCloseApply = function(req, res, next) {
 exports.postCloseApply = function(req, res) {
     Apply.findOne({serialID:req.params.serial_id}, function(err, apply) {
         if (err) {
+            logger.warn('postCloseApply ' + req.params.serial_id + ' error:' + err.toString());
             res.status(500);
             return res.send({reason:err.toString()});
         }
         if (!apply) {
+            logger.warn('postCloseApply ' + req.params.serial_id + ' error:apply not found');
             res.status(400);
             return res.send({reason:'apply not found'});
         }
         if (req.user._id != apply.userID) {
+            logger.warn('postCloseApply ' + req.params.serial_id + ' error:not the same user');
             res.status(400);
-            logger.warn('postCloseApply error:not the same user');
             return res.send({reason:'not the same user'});
         }
         if (apply.status != 2) {
+            logger.warn('postCloseApply ' + req.params.serial_id + ' error:apply not in correct status');
             res.status(400);
             return res.send({reason:'apply not in correct status'});
         }
         apply.status = 5;
         apply.save(function(err) {
             if (err) {
+                logger.warn('postCloseApply ' + req.params.serial_id + ' error:' + err.toString());
                 res.status(500);
                 return res.send({reason:err.toString()});
             }
@@ -225,8 +230,15 @@ exports.postApplyPostpone = function(req, res, next) {
                         user.finance.freeze_capital += order.amount;
                         user.save(function(err) {
                             var content = 'user:' + order.userMobile + ' account:' + apply.account + ' period:' + period;
-                            util.sendEmail('op@niujinwang.com', '配资延期', content, function(err) {
-                                logger.debug('error when send postpone email');
+                            util.sendEmail('op@niujinwang.com,intern@niujinwang.com', '配资延期', content, function(err) {
+                                if (err) {
+                                    logger.debug('error when send postpone email apply:' + apply.serialID + ' account:' + apply.account + ' ' + err.toString());
+                                    sms.sendSMS('13439695920', '', 'apply postpone ' + content, function (result) {
+                                        if (result.error) {
+                                            logger.debug('sms also send error when postpone apply:' + apply.serialID);
+                                        }
+                                    });
+                                }
                             });
                             callback(err, order, true);
                         });
@@ -506,6 +518,18 @@ exports.freeApply = function(req, res, next) {
                             if (!user) {
                                 logger.debug('freeApply error: user not found');
                                 return next();
+                            }
+                            if (user.freeApply) {
+                                logger.warn('user:' + user.mobile + ' already tried free apply, refuse it');
+                                res.locals.serial_id = user.freeApply;
+                                if (req.url.search('/mobile') > -1) {
+                                    res.render('mobile/free_apply_refuse', {
+                                        layout: 'mobile'
+                                    });
+                                } else {
+                                    res.render('apply/free_apply_refuse');
+                                }
+                                return;
                             }
                             user.finance.balance -= 100;
                             user.finance.total_capital += 2000;

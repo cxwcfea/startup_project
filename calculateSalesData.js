@@ -13,7 +13,7 @@ var mongoose = require('mongoose'),
 
 var startOfMonth = moment().startOf('month').toDate();
 var endOfMonth = moment().endOf('month').toDate();
-var startOfMonth = moment("2015-03-26").toDate();
+var startOfMonth = moment("2015-03-29").toDate();
 var endOfMonth = moment("2015-04-25").toDate();
 var month = moment().startOf('month').format('YYYYMM');
 //console.log(startOfMonth);
@@ -108,18 +108,14 @@ var getApplyServiceFee = function(apply) {
     }
     var days = apply.period;
     if (apply.closeAt) {
-        var closeDay = moment(apply.closeAt).dayOfYear();
-        var startDay = moment(apply.startTime).dayOfYear();
-
-        days = closeDay - startDay;
-        if (days < 0) {
-            days = 0;
-        }
+        days = util.tradeDaysTillEnd(apply.startTime, apply.closeAt);
+    } else {
+        days = util.tradeDaysTillEnd(apply.startTime, apply.endTime);
     }
     if (apply.status === 3) {
         fee = fee * apply.amount / 10000 * days;
     } else {
-        fee = fee * apply.amount / 10000 * util.tradeDaysTillNow(apply.startTime);
+        fee = fee * apply.amount / 10000 * util.tradeDaysTillEnd(apply.startTime, endOfMonth);
     }
     return fee;
 };
@@ -204,13 +200,11 @@ var sales = [
     {
         mobile: '18931040286',
         name: '魏昊庚'
-    }
-    /*
+    },
     {
-        mobile: '13439695920',
-        name: '程翔'
+        mobile: '15710035052',
+        name: '张丽霞'
     }
-    */
 ];
 
 var options = {};
@@ -234,6 +228,7 @@ db.once('open', function callback() {
                 callback(err, applyData);
             });
         },
+        /*
         function(applydata, callback) {
             returnFeeOrderData(function(err, orderData) {
                 callback(err, applydata, orderData);
@@ -247,6 +242,7 @@ db.once('open', function callback() {
             }
             callback(null, applydata);
         },
+        */
         function(data, callback) {
             async.mapSeries(data, changeApplyData, function(err, result) {
                 callback(err, result);

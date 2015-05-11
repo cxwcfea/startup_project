@@ -4,6 +4,7 @@ angular.module('supportApp').controller('SupportApplyCtrl', ['$scope', '$http', 
     var apply_list = {};
     var currentApplies;
     vm.itemsPerPage = 15;
+    vm.maxSize = 8;
 
     initData();
 
@@ -22,7 +23,7 @@ angular.module('supportApp').controller('SupportApplyCtrl', ['$scope', '$http', 
 
     function initData() {
         $http.get('/admin/api/applies/all').success(function(data) {
-            apply_list = $filter('orderBy')(data, 'createdAt', true);
+            apply_list = $filter('orderBy')(data, 'applyAt', true);
             angular.forEach(apply_list, function(value, key) {
                 formatData(value);
             });

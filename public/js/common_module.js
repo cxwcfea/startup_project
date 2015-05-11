@@ -24,6 +24,8 @@
         moment("2015-05-17").dayOfYear(),
         moment("2015-05-23").dayOfYear(),
         moment("2015-05-24").dayOfYear(),
+        moment("2015-05-30").dayOfYear(),
+        moment("2015-05-31").dayOfYear(),
         moment("2015-06-06").dayOfYear(),
         moment("2015-06-07").dayOfYear(),
         moment("2015-06-13").dayOfYear(),
@@ -196,6 +198,8 @@
                     return '孟雪';
                 case '18931040286':
                     return '魏昊庚';
+                case '15710035052':
+                    return '张丽霞';
                 default:
                     return input;
             }
@@ -354,6 +358,8 @@
                     return "支付宝";
                 case 4:
                     return "银行转账";
+                case 5:
+                    return "贝付移动";
                 default:
                     return "无";
             }

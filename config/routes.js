@@ -7,6 +7,7 @@ var users = require('../controllers/user'),
     sms = require('../lib/sms'),
     admin = require('../controllers/admin'),
     util = require('../lib/util'),
+    weixin = require('../lib/weixin'),
     log4js = require('log4js'),
     logger = log4js.getLogger('routes'),
     passportConf = require('./passport');
@@ -207,6 +208,10 @@ module.exports = function(app) {
 
     app.get('/api/user/:uid/applies/:serial_id', passportConf.isAuthenticated, users.fetchApplyForUser);
 
+    app.get('/api/weixin/check_signature', weixin.checkSignature);
+
+    app.post('/api/weixin/check_signature', weixin.handlePostMessage);
+
     app.get('/info/*', function(req, res) {
         res.locals.other_menu = true;
         res.render('info/' + req.params[0]);
@@ -221,6 +226,8 @@ module.exports = function(app) {
 
     mobile.registerRoutes(app, passportConf);
 
+    app.get('/api/get_verify_img', users.getVerifyImg);
+
     /*
     app.get('/admin_test', passportConf.requiresRole('admin'), function(req, res, next) {
         util.debugInfo(logger, req);
@@ -228,17 +235,13 @@ module.exports = function(app) {
     });
     */
 
-    function getClientIp(req) {
-        return req.headers['x-forwarded-for'] ||
-                req.connection.remoteAddress ||
-                req.socket.remoteAddress ||
-                req.connection.socket.remoteAddress;
-    }
-
-    app.post('/testpay', function(req, res, nest) {
-        console.log(req.body);
-        console.log('client ip:' + req.ip);
-        console.log(getClientIp(req));
-        res.send({});
+    /*
+    app.get('/test', function(req, res, nest) {
+        var ary = ccap.get();
+        var txt = ary[0];
+        var buf = ary[1];
+        res.end(buf);
+        console.log(txt);
     });
+    */
 };

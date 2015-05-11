@@ -163,7 +163,7 @@ angular.module('adminApp').controller('AdminUserListCtrl', ['$scope', '$http', '
                         gbNotifier.notify('订单创建成功！');
                     })
                     .error(function(data, status) {
-                        gbNotifier.notify('订单创建失败:' + data.error_msg);
+                        gbNotifier.error('订单创建失败:' + data.error_msg);
                     });
             }
         }, function () {

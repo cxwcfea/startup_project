@@ -114,6 +114,9 @@ angular.module('adminApp').controller('AdminWithdrawOrderCtrl', ['$scope', '$loc
     };
 
     vm.orderHistory = function(order) {
+        gbUser.get({id:order.userID}, function(user) {
+            currentUser = user;
+        });
         $http.get('/admin/api/fetch_user_order_history?user_id=' + order.userID)
             .success(function(data, status) {
                 var modalInstance = $modal.open({
@@ -126,6 +129,9 @@ angular.module('adminApp').controller('AdminWithdrawOrderCtrl', ['$scope', '$loc
                         },
                         orders: function () {
                             return data;
+                        },
+                        user: function () {
+                            return currentUser;
                         }
                     }
                 });
@@ -210,9 +216,12 @@ angular.module('adminApp').controller('withdrawOrderDeleteModalCtrl', ['$scope',
     };
 }]);
 
-angular.module('adminApp').controller('orderHistoryModalCtrl', ['$scope', '$modalInstance', 'order', 'orders', function ($scope, $modalInstance, order, orders) {
+angular.module('adminApp').controller('orderHistoryModalCtrl', ['$scope', '$modalInstance', 'order', 'orders', 'user', function ($scope, $modalInstance, order, orders, user) {
     $scope.userMobile = order.userMobile;
     $scope.amount = order.amount;
+    if (user) {
+        $scope.deposit = user.finance.deposit;
+    }
     $scope.rechargeOrders = orders.filter(function(elem) {
         return elem.dealType === 1;
     });

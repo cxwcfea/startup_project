@@ -79,7 +79,6 @@ angular.module('adminApp').controller('AdminWaitingCompleteWithdrawOrderCtrl', [
             });
     };
 
-    /*
     vm.handleOrder = function(order) {
         currentUser = null;
         gbUser.get({id:order.userID}, function(user) {
@@ -133,5 +132,35 @@ angular.module('adminApp').controller('AdminWaitingCompleteWithdrawOrderCtrl', [
         }, function () {
         });
     };
-    */
+
+    vm.orderHistory = function(order) {
+        gbUser.get({id:order.userID}, function(user) {
+            currentUser = user;
+        });
+        $http.get('/admin/api/fetch_user_order_history?user_id=' + order.userID)
+            .success(function(data, status) {
+                var modalInstance = $modal.open({
+                    templateUrl: 'orderHistoryModal.html',
+                    controller: 'orderHistoryModalCtrl',
+                    size:'lg',
+                    resolve: {
+                        order: function () {
+                            return order;
+                        },
+                        orders: function () {
+                            return data;
+                        },
+                        user: function () {
+                            return currentUser;
+                        }
+                    }
+                });
+                modalInstance.result.then(function (trans_id) {
+                }, function () {
+                });
+            })
+            .error(function(data, status) {
+                console.log(data);
+            });
+    };
 }]);

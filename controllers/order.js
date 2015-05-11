@@ -46,6 +46,12 @@ exports.getOrderById = function(req, res) {
 exports.addOrderForUser = function(req, res) {
     var orderData = req.body;
 
+    if (orderData.amount <= 0) {
+        logger.warn('addOrderForUser error: invalid amount');
+        res.status('403');
+        return res.send({error_msg:'invalid amount'});
+    }
+
     if (orderData.otherInfo) {
         User.findOne({'profile.alipay_account':orderData.otherInfo}, function(err, user) {
             if (user && user._id != orderData.userID) {

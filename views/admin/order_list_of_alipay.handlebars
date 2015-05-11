@@ -36,7 +36,7 @@
                 <tr ng-repeat="order in vm.showingItems">
                     <td>\{{order.createdAt | displayDate}}</td>
                     <td>\{{order.alipayAccount}}</td>
-                    <td>\{{order.amount}}</td>
+                    <td>\{{order.amount | currency:'':2}}</td>
                     <td>\{{order.name}}</td>
                     <td>\{{order.transID}}</td>
                     <td>

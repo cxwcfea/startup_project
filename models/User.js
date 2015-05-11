@@ -6,10 +6,11 @@ var bcrypt = require('bcrypt-nodejs'),
 var userSchema = new mongoose.Schema({
     mobile: { type: Number, unique: true, required:'{PATH} is required!' },
     password: { type: String, required:'{PATH} is required!' },
-    roles: [String],
+    roles: [String], // admin, support
 	level: { type: Number, default: 0 },
 	score: { type: Number, default: 0 },
     registerAt: {type:Date, default: Date.now},
+    lastLoginAt: {type:Date, default: Date.parse('1990-01-01 00:00:00')},
     freeApply: String,  // apply serialID
     registered: {type:Boolean, default: false},
     enableInvest: Boolean,
@@ -47,6 +48,7 @@ var userSchema = new mongoose.Schema({
         idType: {type: Number, default: 1}
     },
 
+    refer: String,
     manager: String,
     verifyEmailToken: String,
     resetPasswordToken: String,

@@ -40,12 +40,12 @@ angular.module('adminApp').controller('AdminAlipayOrderListCtrl', ['$scope', '$l
                 }
             }
         });
-        modalInstance.result.then(function (trans_id) {
-            if (!trans_id) {
+        modalInstance.result.then(function (result) {
+            if (!result.trans_id) {
                 gbNotifier.error('必须输入支付宝转账单号');
                 return;
             }
-            $http.post('/admin/api/confirm_alipay_order/' + order._id, {trans_id:trans_id})
+            $http.post('/admin/api/confirm_alipay_order/' + order._id, {trans_id:result.trans_id, account:result.account, name:result.name})
                 .success(function(data, status) {
                     gbNotifier.notify('确认成功');
                     _.remove(order_list, function(o) {
@@ -98,7 +98,7 @@ angular.module('adminApp').controller('alipayOrderModalCtrl', ['$scope', '$modal
     $scope.mobile = order.userMobile;
 
     $scope.ok = function () {
-        $modalInstance.close($scope.trans_id);
+        $modalInstance.close({trans_id:$scope.trans_id, account:$scope.account, name:$scope.name});
     };
 
     $scope.cancel = function () {

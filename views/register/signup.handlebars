@@ -31,6 +31,14 @@
                             <i class="tip left"></i>
                         </div>
                     </dd>
+                    <dd>
+                        <div class="left"><label for="img-pwd">验证码</label></div>
+                        <div class="right">
+                            <input type="text" placeholder="输入验证码,不区分大小写" name="img_password" class="left" id="img-pwd" minlength="6" maxlength="6" required ng-model="vm.img_code">
+                            <i class="tip left"></i>
+                            <img id="img_code" style="-webkit-user-select: none; height: 40px; cursor: pointer" src="/api/get_verify_img" ng-click="vm.imgClicked($event)">
+                        </div>
+                    </dd>
                     <dd class="freak">
                         <div class="left">&nbsp;</div>
                         <div class="right">

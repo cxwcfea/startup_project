@@ -1,4 +1,5 @@
 var moment = require('moment');
+var util = require('./lib/util');
 
 var holiday = [
     moment("2015-03-14").dayOfYear(),
@@ -136,31 +137,3 @@ console.log(beforeOneDay);
 console.log(beforeTwoDay);
 console.log(moment("2015-04-28").toDate());
 
-var tradeDaysTillNow = function(startDay) {
-    var startDayOfYear = moment(startDay).dayOfYear();
-    var currentDayOfYear = moment().dayOfYear();
-    var ret = 0;
-    while (currentDayOfYear >= startDayOfYear) {
-        if (holiday.indexOf(currentDayOfYear) === -1) {
-            ++ret;
-        }
-        --currentDayOfYear;
-    }
-    return ret;
-};
-
-console.log(tradeDaysTillNow(moment("2015-04-16").toDate()));
-
-            var startDay = moment().startOf('day');
-            if (moment().hour() >= 14) {
-                startDay = moment().endOf('day').add(1, 'ms');
-            }
-            var endDay = startDay.clone();
-            endDay = endDay.add(3, 'days').subtract(1, 'ms');
-
-			console.log(startDay.toDate());
-			console.log(endDay.toDate());
-
-			var day1 = moment("2015-05-01").dayOfYear();
-			var day2 = moment().dayOfYear();
-			console.log(day2 - day1);

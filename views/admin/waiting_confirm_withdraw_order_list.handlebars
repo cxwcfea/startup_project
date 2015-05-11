@@ -32,7 +32,9 @@
                     <td>
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs">
+                                <button class="am-btn am-btn-default am-btn-xs am-text-primary" ng-click="vm.handleOrder(order)"><span class="am-icon-pencil-square-o"></span> 管理</button>
                                 <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="vm.removeOrder(order)"><span class="am-icon-remove"></span> 驳回</button>
+                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="vm.orderHistory(order)"><span class="am-icon-tasks"></span> 历史订单</button>
                             </div>
                         </div>
                     </td>
@@ -90,3 +92,35 @@
     <input type="hidden" name="default_bank" value="CMB_B2C">
     -->
 </form>
+
+<script type="text/ng-template" id="orderHistoryModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">用户订单历史</h3>
+    </div>
+    <div class="modal-body">
+        <p>手机号：\{{::userMobile}}</p>
+        <p class="am-text-success"><strong>充值订单:</strong></p>
+        <ol>
+            <li ng-repeat="order in rechargeOrders">\{{order.createdAt | date:"yyyy-MM-dd"}} \{{order.payType | payType}}:\{{order.amount | currency:'':2}}</li>
+        </ol>
+        <p class="am-text-primary">充值共计:\{{::rechargeAmount | currency:'':2}}</p>
+        <p class="am-text-success"><strong>股票盈利订单:</strong></p>
+        <ol>
+            <li ng-repeat="order in profitOrders">\{{order.createdAt | date:"yyyy-MM-dd"}} \{{order.amount | currency:'':2}}</li>
+        </ol>
+        <p class="am-text-primary">盈利共计:\{{::profitAmount | currency:'':2}}</p>
+        <p class="am-text-danger"><strong>提现订单:</strong></p>
+        <ol>
+            <li ng-repeat="order in withdrawOrders">\{{order.createdAt | date:"yyyy-MM-dd"}} \{{order.amount | currency:'':2}}</li>
+        </ol>
+        <p class="am-text-primary">提现共计:\{{::withdrawAmount | currency:'':2}}</p>
+        <br>
+        <p>操盘中保证金：\{{::deposit | currency:'':2}}</p>
+        <p>充值+盈利-提现 差额:\{{::delta | currency:'':2}}</p>
+        <p>当前提现金额：\{{::amount}}</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">确认</button>
+        <button class="btn btn-warning" ng-click="cancel()">取消</button>
+    </div>
+</script>
