@@ -22,6 +22,8 @@
         <p>服务费(总额)： <span class="am-text-danger">{{data.total_fee}}</span></p>
         <p>服务费(新增)： <span class="am-text-danger">{{data.added_fee}}</span></p>
         <p>用户余额总值：<span class="am-text-danger">{{data.total_balance}}</span></p>
+        <p>今日用户来源渠道</p>
+        <canvas id="userChart" width="400" height="400"></canvas>
         <p>网站7日趋势</p>
         <canvas id="myChart" width="800" height="400"></canvas>
     </div>
@@ -60,6 +62,32 @@
         var ctx = $("#myChart").get(0).getContext("2d");
         //This will get the first returned node in the jQuery collection.
         var myNewChart = new Chart(ctx).Bar(data,options);
+
+                /*
+        var data2 = [
+            {
+                value: 30,
+                color:"#F38630"
+            },
+            {
+                value : 50,
+                color : "#E0E4CC"
+            },
+            {
+                value : 100,
+                color : "#69D2E7"
+            }
+        ];
+        */
+        var data2 = [];
+        var colors = ["#F38630", "#E0E4CC", "#69D2E7", "#F7464A", "#E2EAE9", "#D4CCC5", "#949FB1", "#4D5360", "#D97041", "#C7604C", "#21323D", "#9D9B7F", "#7D4F6D"];
+        var i = 0;
+        for (var key in res.today_user_source) {
+            data2.push({label:key, value:res.today_user_source[key], color:colors[i++]})
+        }
+        console.log(data2);
+        var ctx2 = $("#userChart").get(0).getContext("2d");
+        var userChart = new Chart(ctx2).Pie(data2,options);
     })
     .fail(function() {
         console.log( "fetch data error" );

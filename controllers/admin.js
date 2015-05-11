@@ -80,6 +80,7 @@ function getStatisticsPage(req, res, next) {
             util.getTodayUserData(function(err, dataObj) {
                 if (!err) {
                     data.today_user_num = dataObj.num;
+                    req.session.today_user_source = dataObj.source;
                 }
                 callback(err, data);
             });
@@ -1835,8 +1836,13 @@ function getDailyData(req, res) {
                 ret.users.unshift(elem.newUsers);
                 ret.income.unshift((elem.income / 100).toFixed(2));
             });
+            ret.today_user_source = req.session.today_user_source;
             res.send(ret);
         });
+}
+
+function getTodayUserSource(req, res) {
+    res.send(req.session.today_user_source);
 }
 
 module.exports = {
@@ -1982,6 +1988,8 @@ module.exports = {
         app.get('/admin/api/user_manager', passportConf.requiresRole('admin'), getManagerOfUser);
 
         app.get('/admin/api/daily_data', passportConf.requiresRole('admin'), getDailyData);
+
+        app.get('/admin/api/today_user_source', passportConf.requiresRole('admin'), getTodayUserSource);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
