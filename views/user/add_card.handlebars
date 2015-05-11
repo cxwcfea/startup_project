@@ -70,6 +70,15 @@
             <input type="text" class="newcar_inputText newcar_inputText2" placeholder="持卡人姓名" ng-model="cardVM.bankUserName" required>
         </div>
     </div>
+    <div class="newcar_formBox">
+        <div class="newCar_left fl">
+            图形验证码
+        </div>
+        <div class="newcar_right fl ">
+            <input type="text" placeholder="不区分大小写" name="img_password" class="newcar_inputText" minlength="6" maxlength="6" required ng-model="cardVM.img_code">
+            <img id="img_code" style="-webkit-user-select: none; height: 30px; cursor: pointer" src="/api/get_verify_img" ng-click="cardVM.imgClicked($event)">
+        </div>
+    </div>
     <alert ng-repeat="alert in cardVM.alerts" type="\{{alert.type}}" close="cardVM.closeAlert($index)">\{{alert.msg}}</alert>
     <p class="color_red">请仔细核对每一项信息，确保无误，方能顺利提现。</p>
     <a href="" class="recBtn01 newcar_btn jq_newcar_btn" ng-click="cardVM.addCard()">保存</a>
