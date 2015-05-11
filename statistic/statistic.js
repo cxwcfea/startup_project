@@ -27,8 +27,8 @@ var historyApplyData = function(callback) {
         fileWriteStream.write(data);
         applies.forEach(function (apply) {
             data = apply.userID + ', ' + apply.userMobile + ', ' + apply.serialID + ', ' + apply.amount.toFixed(2) + ', ' + apply.deposit.toFixed(2) + ', '
-            + apply.period + ', ' + apply.status + ', ' + apply.applyAt + ', ' + apply.closeAt + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
-            + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + apply.startTime + ', ' + apply.endTime + ', ' + apply.account + ', '
+            + apply.period + ', ' + apply.status + ', ' + moment(apply.applyAt).format('YYYYMMDDHHmmss') + ', ' + moment(apply.closeAt).format('YYYYMMDDHHmmss') + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
+            + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + moment(apply.startTime).format('YYYYMMDDHHmmss') + ', ' + moment(apply.endTime).format('YYYYMMDDHHmmss') + ', ' + apply.account + ', '
             + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + '\n';
             fileWriteStream.write(data);
         });
@@ -579,6 +579,29 @@ var activeApplyFeeTillNow = function(callback) {
     });
 };
 
+var getUserData = function(callback) {
+    User.find({ $and: [{registered:true}] }, function(err, users) {
+        if (err) {
+            logger.debug('err when getUserData ' + err.toString());
+            return callback(err);
+        }
+        var options = { encoding: 'utf8', flag: 'w' };
+        var fileWriteStream = fs.createWriteStream("UserDataTill-" + moment().format("YYYY-MM-DD") + ".csv",  options);
+        fileWriteStream.on("close", function() {
+            console.log("File Closed.");
+        });
+        var data = 'mobile, freeApply, registerAt, history_deposit, profit, refer\n';
+        fileWriteStream.write(data);
+        users.forEach(function (user) {
+            data = user.mobile + ', ' + user.freeApply + ', ' + moment(user.registerAt).format('YYYYMMDDHHmmss') + ', ' + user.finance.history_deposit + ', '
+            + user.finance.profit + ', ' + user.refer + '\n';
+            fileWriteStream.write(data);
+        });
+        fileWriteStream.end();
+        callback(null);
+    });
+};
+
 var options = {};
 mongoose.connect(config.db, options);
 var db = mongoose.connection;
@@ -637,9 +660,14 @@ db.once('open', function callback() {
     */
     async.series(
         [
+            function(callback) {
+                getUserData(function (err) {
+                    callback(err);
+                })
+            }
             /*
             function(callback) {
-                historyFreeApplyData(startTime, function(err) {
+                historyApplyData(function(err) {
                     callback(err);
                 });
             },
@@ -664,6 +692,8 @@ db.once('open', function callback() {
                 });
             },
              */
+
+            /*
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
                     callback(err);
@@ -694,6 +724,8 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
+            */
+
             /*
             function(callback) {
                 rechargeOrderData(function(err) {

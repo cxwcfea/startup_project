@@ -4,6 +4,7 @@ var User = require('../models/User'),
     AlipayOrder = require('../models/AlipayOrder'),
     Homas = require('../models/Homas'),
     Note = require('../models/Note'),
+    DailyData = require('../models/DailyData'),
     SalesData = require('../models/SalesData'),
     log4js = require('log4js'),
     logger = log4js.getLogger('admin'),
@@ -1813,6 +1814,29 @@ function getManagerOfUser(req, res) {
     });
 }
 
+function getDailyData(req, res) {
+    DailyData
+        .find()
+        .sort({ _id: -1 })
+        .limit(7)
+        .exec(function(err, data) {
+            if (err) {
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+            var ret = {};
+            ret.dates = [];
+            ret.users = [];
+            ret.income = [];
+            data.forEach(function(elem) {
+                ret.dates.unshift(elem.date);
+                ret.users.unshift(elem.newUsers);
+                ret.income.unshift((elem.income / 100).toFixed(2));
+            });
+            res.send(ret);
+        });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -1954,6 +1978,8 @@ module.exports = {
         app.get('/admin/api/user_rate_data', passportConf.requiresRole('admin'), calculateRateInFiveDays);
 
         app.get('/admin/api/user_manager', passportConf.requiresRole('admin'), getManagerOfUser);
+
+        app.get('/admin/api/daily_data', passportConf.requiresRole('admin'), getDailyData);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

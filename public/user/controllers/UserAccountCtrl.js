@@ -50,6 +50,10 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
             addAlert('danger', '请输入有效的邮箱地址');
             return;
         }
+        if (!vm.img_code) {
+            addAlert('danger', '请输入图形验证码');
+            return;
+        }
         if (!vm.verify_code) {
             addAlert('danger', '请输入短信验证码');
             return;
@@ -71,29 +75,34 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
     };
 
     vm.getVerifyCode = function() {
-        console.log('getVerifyCode ' + verifyBtnDisabled);
         if (verifyBtnDisabled) {
             return;
         }
-        verifyBtnDisabled = true;
-        var count = 0;
-        vm.verifyCodeBtnText = '60秒后重试';
-        var timeId = $interval(function() {
-            ++count;
-            vm.verifyCodeBtnText = 60-count + '秒后重试';
-            if (count === 60) {
-                $interval.cancel(timeId);
-                vm.verifyCodeBtnText = verifyCodeBtnText;
-                verifyBtnDisabled = false;
-            }
-        }, 1000);
 
-        $http.get('/api/send_sms_verify_code?mobile=' + vm.user.mobile)
+        if (!vm.img_code) {
+            addAlert('danger', '请输入图形验证码');
+            return;
+        }
+        $http.get('/api/send_sms_verify_code?mobile=' + vm.user.mobile + '&code=' + vm.img_code)
             .success(function(data, status, headers, config) {
+                verifyBtnDisabled = true;
+                var count = 0;
+                vm.verifyCodeBtnText = '60秒后重试';
+                var timeId = $interval(function() {
+                    ++count;
+                    vm.verifyCodeBtnText = 60-count + '秒后重试';
+                    if (count === 60) {
+                        $interval.cancel(timeId);
+                        vm.verifyCodeBtnText = verifyCodeBtnText;
+                        verifyBtnDisabled = false;
+                    }
+                }, 1000);
                 addAlert('success', '验证码已发送');
             })
             .error(function(data, status, headers, config) {
-                addAlert('danger', '验证码发送失败，请稍后重试');
+                var x = Math.random();
+                $('#img_code')[0].src = '/api/get_verify_img?cacheBuster=' + x;
+                addAlert('danger', data.error_msg);
             });
     };
 
@@ -223,5 +232,10 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
         vm.emailChangeSuccess = false;
         vm.user_email = '';
         vm.verify_code = '';
-    }
+    };
+
+    vm.imgClicked = function(e) {
+        var x = Math.random();
+        e.target.src = '/api/get_verify_img?cacheBuster=' + x;
+    };
 }]);

@@ -39,9 +39,18 @@ angular.module('mobileApp').controller('MobileSignupCtrl', ['$scope', '$window',
             }, 1500);
             return;
         }
+        if (!vm.img_code) {
+            vm.signupError = true;
+            vm.errorMsg = '请输入6位验证码';
+            $timeout(function() {
+                vm.signupError = false;
+            }, 1500);
+            return;
+        }
         var data = {
             mobile: vm.mobile,
             password: vm.password,
+            img_code: vm.img_code,
             confirm_password: vm.confirm_password
         };
         $http.post('/api/signup', data)
@@ -54,7 +63,9 @@ angular.module('mobileApp').controller('MobileSignupCtrl', ['$scope', '$window',
                 vm.signupError = true;
                 $timeout(function() {
                     vm.signupError = false;
-                }, 1500);
+                }, 2500);
+                var x = Math.random();
+                $('#img_code')[0].src = '/api/get_verify_img?cacheBuster=' + x;
             });
     };
 
@@ -76,12 +87,18 @@ angular.module('mobileApp').controller('MobileSignupCtrl', ['$scope', '$window',
         }, 1000);
 
         var type = reset ? 2 : 1;
-        $http.get('/api/send_sms_verify_code?mobile=' + vm.mobile + '&type=' + type)
+        $http.get('/api/send_sms_verify_code?mobile=' + vm.mobile + '&type=' + type + '&code=' + vm.img_code)
             .success(function(data, status, headers, config) {
                 //addAlert('success', '验证码已发送');
             })
             .error(function(data, status, headers, config) {
-                //addAlert('danger', '验证码发送失败，请稍后重试');
+                vm.show_verify_window = false;
+                vm.verifyBtnDisabled = false;
+                vm.errorMsg = data.error_msg;
+                vm.signupError = true;
+                $timeout(function() {
+                    vm.signupError = false;
+                }, 1500);
             });
     };
 
@@ -113,5 +130,10 @@ angular.module('mobileApp').controller('MobileSignupCtrl', ['$scope', '$window',
                     vm.signupError = false;
                 }, 1500);
             });
+    };
+
+    vm.imgClicked = function(e) {
+        var x = Math.random();
+        e.target.src = '/api/get_verify_img?cacheBuster=' + x;
     };
 }]);

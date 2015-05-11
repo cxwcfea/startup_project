@@ -3,8 +3,7 @@
         <div class="fl"><span>重置密码</span></div>
         <div class="clear"></div>
     </div>
-    {{> flash}}
-    <div id="box1">
+    <div id="box1" ng-hide="vm.passwordChangeSuccess">
         <div class="carFormBox marTop25">
             <div class="cartTitle fl">
                 手机号码：
@@ -15,7 +14,7 @@
         </div>
         <div class="carFormBox">
             <div class="cartTitle fl">
-                验证码：
+                短信验证码：
             </div>
             <div class="cartFomeContent fl">
                 <a href="" class="carbtn02" ng-click="vm.requestVerifyCode()">\{{vm.verifyCodeBtnText}}</a>
@@ -36,6 +35,15 @@
             </div>
             <div class="cartFomeContent fl">
                 <input type="password" name="confirm_password" placeholder="保持密码一致" class="inputText" minlength="6" maxlength="20" ng-model="vm.confirm_password" required>
+            </div>
+        </div>
+        <div class="carFormBox">
+            <div class="cartTitle fl">
+                图形验证码：
+            </div>
+            <div class="cartFomeContent fl">
+                <input type="text" name="img_password" placeholder="输入验证码,不区分大小写" class="inputText" minlength="6" maxlength="6" ng-model="vm.img_code" required>
+                <img id="img_code" style="-webkit-user-select: none; height: 40px; cursor: pointer" src="/api/get_verify_img" ng-click="vm.imgClicked($event)">
             </div>
         </div>
         <a href="" class="ideBtn01 RegBtn01" ng-click="vm.requestChangePass()">重置密码</a>
