@@ -573,6 +573,11 @@ module.exports.sendVerifyCode = function(req, res, next) {
         res.status(400);
         return res.send({success:false, reason:'no mobile specified'});
     }
+    if (!req.query.code) {
+        logger.debug('sendVerifyCode error: must have img code');
+        res.status(403);
+        return res.send({error_msg:'must have img code'});
+    }
     if (req.query.code != req.session.img_code) {
         res.status(403);
         return res.send({error_msg:'图形验证码错误'});
