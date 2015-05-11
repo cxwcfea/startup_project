@@ -309,8 +309,11 @@ angular.module('supportApp').controller('ModalContactUserCtrl', ['$scope', '$res
     $scope.data = {};
     var NotesResource = $resource('/admin/api/fetch_user_notes/:mobile', {});
     console.log(mobile);
-    $scope.data.note_list = NotesResource.query({mobile:mobile}, function (note_list) {
-        $scope.data.note_list = note_list;
+    $scope.mobile = mobile;
+    $scope.note_list = [];
+    $scope.note_list = NotesResource.query({mobile:mobile}, function (note_list) {
+        console.log(note_list);
+        $scope.note_list = note_list;
     });
     $scope.ok = function () {
         $modalInstance.close($scope.data);
