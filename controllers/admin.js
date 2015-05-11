@@ -526,6 +526,7 @@ function homsAssignAccount(req, res) {
             var startDay = util.getStartDay();
             apply.startTime = startDay.toDate();
             apply.endTime = util.getEndDay(startDay, apply.period, apply.type).toDate();
+            apply.startAt = Date.now();
             apply.save(function (err) {
                 callback(err, apply);
             });
@@ -1269,6 +1270,7 @@ function autoApproveApply(req, res) {
             var startDay = util.getStartDay();
             apply.startTime = startDay.toDate();
             apply.endTime = util.getEndDay(startDay, apply.period, apply.type).toDate();
+            apply.startAt = Date.now();
             apply.save(function (err) {
                 callback(err, apply);
             });
