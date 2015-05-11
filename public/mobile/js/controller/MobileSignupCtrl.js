@@ -63,7 +63,7 @@ angular.module('mobileApp').controller('MobileSignupCtrl', ['$scope', '$window',
                 vm.signupError = true;
                 $timeout(function() {
                     vm.signupError = false;
-                }, 1500);
+                }, 2500);
                 var x = Math.random();
                 $('#img_code')[0].src = '/api/get_verify_img?cacheBuster=' + x;
             });
@@ -87,7 +87,7 @@ angular.module('mobileApp').controller('MobileSignupCtrl', ['$scope', '$window',
         }, 1000);
 
         var type = reset ? 2 : 1;
-        $http.get('/api/send_sms_verify_code?mobile=' + vm.mobile + '&type=' + type)
+        $http.get('/api/send_sms_verify_code?mobile=' + vm.mobile + '&type=' + type + '&code=' + vm.img_code)
             .success(function(data, status, headers, config) {
                 //addAlert('success', '验证码已发送');
             })

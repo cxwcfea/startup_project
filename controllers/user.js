@@ -573,15 +573,11 @@ module.exports.sendVerifyCode = function(req, res, next) {
         res.status(400);
         return res.send({success:false, reason:'no mobile specified'});
     }
-    if (req.query.mobile == 13545682930 || req.query.mobile == 18842607315 || req.query.mobile == 18936276302) {
-        res.status(400);
-        return res.send({error_msg:'block user'});
+    if (req.query.code != req.session.img_code) {
+        res.status(403);
+        return res.send({error_msg:'图形验证码错误'});
     }
-    if (req.session.sms_code && req.session.sms_code.protectTime > Date.now()) {
-        logger.warn('sendVerifyCode refuse:too frequency');
-        res.status(400);
-        return res.send({error_msg:'请求短信验证码需至少间隔1分钟'});
-    }
+    req.session.img_code = '';
     var code = sms.generateVerifyCode();
     if (!req.query.type) {
         sms.sendSMS(req.query.mobile, code);
@@ -594,8 +590,7 @@ module.exports.sendVerifyCode = function(req, res, next) {
         mobile: req.query.mobile,
         code: code,
         count: 0,
-        expires: Date.now() + 3600000, // 1 hour
-        protectTime: Date.now() + 60000
+        expires: Date.now() + 3600000 // 1 hour
     };
     res.send({success:true});
 };
