@@ -1841,10 +1841,6 @@ function getDailyData(req, res) {
         });
 }
 
-function getTodayUserSource(req, res) {
-    res.send(req.session.today_user_source);
-}
-
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -1988,8 +1984,6 @@ module.exports = {
         app.get('/admin/api/user_manager', passportConf.requiresRole('admin'), getManagerOfUser);
 
         app.get('/admin/api/daily_data', passportConf.requiresRole('admin'), getDailyData);
-
-        app.get('/admin/api/today_user_source', passportConf.requiresRole('admin'), getTodayUserSource);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
