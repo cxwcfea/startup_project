@@ -13,14 +13,14 @@
     <div class="am-u-sm-12">
         <p>用户数： 总数(<span class="am-text-danger">{{data.total_user_num}}</span>)</p>
         <p>用户数： 新增(<span class="am-text-danger">{{data.today_user_num}}</span>)</p>
-        <p>操盘中(付费)： 总额(<span class="am-text-danger">{{data.active_apply_amount}}</span>)  笔数(<span class="am-text-danger">{{data.active_apply_num}}</span>)</p>
-        <p>操盘中(免费)： 总额(<span class="am-text-danger">{{data.current_free_apply_amount}}</span>)  笔数(<span class="am-text-danger">{{data.current_free_apply_num}}</span>)</p>
-        <p>新增配资(免费)： 总额(<span class="am-text-danger">{{data.added_free_apply_amount}}</span>)  笔数(<span class="am-text-danger">{{data.added_free_apply_num}}</span>)</p>
-        <p>新增配资(付费)： 总额(<span class="am-text-danger">{{data.added_pay_apply_amount}}</span>)  笔数(<span class="am-text-danger">{{data.added_pay_apply_num}}</span>)</p>
-        <p>保证金(当前)： 总额(<span class="am-text-danger">{{data.active_deposit_amount}}</span>)</p>
-        <p>保证金(新增)： 总额(<span class="am-text-danger">{{data.added_deposit}}</span>)</p>
+        <p>操盘中(付费)： 总额(<span class="am-text-danger">{{data.todayActiveApplyAmount}}</span>)  笔数(<span class="am-text-danger">{{data.todayActiveApplyNum}}</span>)</p>
+        <p>操盘中(免费)： 总额(<span class="am-text-danger">{{data.todayActiveFreeApplyAmount}}</span>)  笔数(<span class="am-text-danger">{{data.todayActiveFreeApplyNum}}</span>)</p>
+        <p>新增配资(付费)： 总额(<span class="am-text-danger">{{data.todayAddedPayApplyAmount}}</span>)  笔数(<span class="am-text-danger">{{data.todayAddedPayApplyNum}}</span>)</p>
+        <p>新增配资(免费)： 总额(<span class="am-text-danger">{{data.todayAddedFreeApplyAmount}}</span>)  笔数(<span class="am-text-danger">{{data.todayAddedFreeApplyNum}}</span>)</p>
+        <p>保证金(当前)： 总额(<span class="am-text-danger">{{data.todayActiveApplyDeposit}}</span>)</p>
+        <p>保证金(新增)： 总额(<span class="am-text-danger">{{data.todayAddedDeposit}}</span>)</p>
         <p>服务费(总额)： <span class="am-text-danger">{{data.total_fee}}</span></p>
-        <p>服务费(新增)： <span class="am-text-danger">{{data.added_fee}}</span></p>
+        <p>服务费(新增)： <span class="am-text-danger">{{data.todayAddedPayApplyIncome}}</span></p>
         <p>用户余额总值：<span class="am-text-danger">{{data.total_balance}}</span></p>
         <p>今日用户来源渠道</p>
         <canvas id="userChart" width="400" height="400"></canvas>

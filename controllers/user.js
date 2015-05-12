@@ -580,7 +580,7 @@ module.exports.sendVerifyCode = function(req, res, next) {
     }
     if (req.query.code != req.session.img_code) {
         res.status(403);
-        return res.send({error_msg:'图形验证码错误'});
+        return res.send({error_msg:'图形验证码错误,应为' + req.session.img_code});
     }
     req.session.img_code = '';
     var code = sms.generateVerifyCode();

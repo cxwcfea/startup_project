@@ -21,6 +21,7 @@ var User = require('../models/User'),
 function getStatisticsPage(req, res, next) {
     var data = {};
     async.waterfall([
+        /*
         function(callback) {
             util.getTodayActiveApplyData(function(err, dataObj) {
                 if (!err) {
@@ -65,6 +66,12 @@ function getStatisticsPage(req, res, next) {
                     data.added_deposit = dataObj.deposit.toFixed(2);
                 }
                 callback(err, data);
+            });
+        },
+        */
+        function(callback) {
+            util.getApplyData(function(err, dataObj) {
+                callback(err, dataObj);
             });
         },
         function(data, callback) {
