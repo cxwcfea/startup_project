@@ -9,6 +9,21 @@ angular.module('mobileApp').controller('MobileUserCtrl', ['$scope', '$window', '
         }
         $scope.data.lastLocation = '/user';
         $location.path('/login');
+    } else {
+        $http.get('/api/user/invest_detail')
+            .success(function(data, status) {
+                vm.ongoingAmount = 0;
+                vm.ongoingProfit = 0;
+                data.forEach(function(elem) {
+                    vm.ongoingAmount += elem.amount;
+                    vm.ongoingProfit += elem.investProfit;
+                })
+            })
+            .error(function(data, status) {
+                console.log(data.error_msg);
+                vm.ongoingAmount = 0;
+                vm.ongoingProfit = 0;
+            });
     }
 
     vm.menu = 4;
@@ -22,7 +37,7 @@ angular.module('mobileApp').controller('MobileUserCtrl', ['$scope', '$window', '
                 $location.path('/');
             })
             .error(function(data, status) {
-
+                console.log('logout err:' + data.error_msg);
             });
     };
 

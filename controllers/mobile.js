@@ -353,10 +353,19 @@ module.exports = {
             if (req.query.refer && req.query.refer.length < 128) {
                 req.session.refer = req.query.refer;
             }
-            res.render('mobile/index', {
-                layout:'mobile',
-                bootstrappedUserObject: req.user ? JSON.stringify(util.getUserViewModel(req.user)) : null
-            });
+            if (req.user) {
+                util.getUserViewModel(req.user, function(user) {
+                    res.render('mobile/index', {
+                        layout:'mobile',
+                        bootstrappedUserObject: JSON.stringify(user)
+                    });
+                });
+            } else {
+                res.render('mobile/index', {
+                    layout:'mobile',
+                    bootstrappedUserObject: null
+                });
+            }
         });
 
         app.get('/mobile/home', home);

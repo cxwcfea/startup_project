@@ -1,4 +1,4 @@
-<!--#S header-->
+<!--
 <header id="header">
     <div class="header-box" ng-hide="vm.investDetail">
         <h1>投资明细</h1>
@@ -12,7 +12,7 @@
         <h1>项目详情</h1>
         <a class="back" href="" ng-click="vm.contractDetail = false; vm.investDetail = true"></a>
     </div>
-</header><!--#E header-->
+</header>
 
 <div class="recharge-record" ng-hide="vm.investDetail || vm.contractDetail" ng-cloak>
     <ul class="record-list">
@@ -90,5 +90,75 @@
             <label>风险控制</label>
             平台提供股票账户<br>实时监控<br>资金亏损讲预警平仓<br>平仓线\{{vm.currentInvest.sellValue | currency:'':2}}元
         </li>
+    </ul>
+</div>
+-->
+<!--#S header-->
+<header id="header">
+    <div class="header-box">
+        <h1>投资明细</h1>
+        <a class="back" href="/mobile/#/user"></a>
+    </div>
+</header><!--#E header-->
+
+<div class="user-invest-info">
+    <div class="amount-info">
+        <ul>
+            <li>
+                <h5>已收利息(元)</h5>
+                <strong>\{{vm.user.finance.history_invest_profit | currency:'':2}}</strong>
+            </li>
+            <li>
+                <h5>已回本金(元)</h5>
+                <strong>\{{vm.returnedCapital | currency:'':2}}</strong>
+            </li>
+            <li>
+                <h5>平均收益率(元)</h5>
+                <em>\{{vm.ave_profit_rate | currency:'':2}}％</em>
+            </li>
+        </ul>
+    </div>
+    <div class="status-tab">
+        <ul class="ui-tabs">
+            <li ng-class="{current:vm.currentShowing === 1}" ng-click="vm.changeList(1)"><a href="">全部</a></li>
+            <li ng-class="{current:vm.currentShowing === 2}" ng-click="vm.changeList(2)"><a href="">待回款</a></li>
+            <li ng-class="{current:vm.currentShowing === 3}" ng-click="vm.changeList(3)"><a href="">已回款</a></li>
+        </ul>
+    </div>
+    <ul class="invest-list">
+        <li ng-repeat="invest in vm.investList | orderBy:'createdAt':true">
+            <a href="" ng-click="vm.showInvestDetail(invest)">
+                <h5>\{{invest.borrower | displayMobile}}借款\{{invest.totalAmount | currency:'':2}}元</h5>
+                <h6>\{{invest.amount | currency:'':2}}元</h6>
+                <p>年息收益\{{invest.profitRate}}%</p>
+                <p class="state">到期时间 \{{invest.returnTime | date:"yyyy-MM-dd"}}</p>
+            </a>
+        </li>
+        <!--
+        <li>
+            <a href="user_invest_info.html">
+                <h5>138****8888tttt借款10万元</h5>
+                <h6>5000元</h6>
+                <p>年息收益12%</p>
+                <p class="state">到期时间 2015-06-02</p>
+            </a>
+        </li>
+        <li class="done">
+            <a href="user_invest_info.html">
+                <h5>138****8888tttt借款10万元</h5>
+                <h6>5000元</h6>
+                <p>年息收益12%</p>
+                <p class="state">已回款(正常结束）</p>
+            </a>
+        </li>
+        <li class="done">
+            <a href="user_invest_info.html">
+                <h5>138****8888tttt借款10万元</h5>
+                <h6>5000元</h6>
+                <p>年息收益12%</p>
+                <p class="state">已回款(正常结束）</p>
+            </a>
+        </li>
+        -->
     </ul>
 </div>

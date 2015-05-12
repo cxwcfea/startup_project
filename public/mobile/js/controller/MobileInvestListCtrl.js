@@ -24,11 +24,27 @@ angular.module('mobileApp').controller('MobileInvestListCtrl', ['$scope', '$wind
                             o.period = data.contracts[i].period;
                             o.deposit = data.contracts[i].deposit;
                             o.sellValue = data.contracts[i].sellValue;
+                            o.contractStatus = data.contracts[i].status;
                             break;
                         }
                     }
                     return o;
                 });
+                vm.finishedInvestList = vm.investList.filter(function(elem) {
+                    return elem.contractStatus === 2;
+                });
+                vm.ongoingInvestList = vm.investList.filter(function(elem) {
+                    return elem.contractStatus === 1;
+                });
+                vm.returnedCapital = 0;
+                vm.finishedInvestList.forEach(function(elem) {
+                    vm.returnedCapital += elem.amount;
+                });
+                vm.ave_profit_rate = 0;
+                if (vm.returnedCapital > 0 && vm.user.finance.history_invest_profit > 0) {
+                    vm.ave_profit_rate = (vm.user.finance.history_invest_profit / vm.returnedCapital * 100);
+                }
+                vm.changeList(1);
             })
             .error(function(data, status) {
                 vm.errorMsg = data.error_msg;
@@ -47,5 +63,23 @@ angular.module('mobileApp').controller('MobileInvestListCtrl', ['$scope', '$wind
             vm.investDetail = false;
             vm.contractDetail = true;
         };
+
+        vm.changeList = function(num) {
+            vm.currentShowing = num;
+            switch (num) {
+                case 1:
+                    vm.showingItems = vm.investList;
+                    break;
+                case 2:
+                    vm.showingItems = vm.ongoingInvestList;
+                    break;
+                case 3:
+                    vm.showingItems = vm.finishedInvestList;
+                    break;
+                default:
+                    vm.showingItems = vm.investList;
+                    break;
+            }
+        }
     }
 }]);

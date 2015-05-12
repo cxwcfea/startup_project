@@ -1653,6 +1653,16 @@ function getInvestOrders(req, res) {
     });
 }
 
+function getUserInvestDetail(req, res) {
+    Order.find({$and:[{userMobile:req.user.mobile}, {dealType:11}, {status:2}]}, function(err, orders) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send(orders);
+    });
+}
+
 module.exports.registerRoutes = function(app, passportConf) {
     app.get('/user', passportConf.isAuthenticated, getUserHome);
 
@@ -1675,6 +1685,8 @@ module.exports.registerRoutes = function(app, passportConf) {
     app.post('/api/user/invest_recharge', passportConf.isAuthenticated, rechargeToInvest);
 
     app.get('/api/user/invest_orders', passportConf.isAuthenticated, getInvestOrders);
+
+    app.get('/api/user/invest_detail', passportConf.isAuthenticated, getUserInvestDetail);
 
     app.get('/user/*', passportConf.isAuthenticated, function(req, res, next) {
         res.locals.callback_domain = config.pay_callback_domain;
