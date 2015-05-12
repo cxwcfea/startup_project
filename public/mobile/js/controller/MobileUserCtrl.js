@@ -12,6 +12,7 @@ angular.module('mobileApp').controller('MobileUserCtrl', ['$scope', '$window', '
     }
 
     vm.menu = 4;
+    vm.showInvest = false;
 
     vm.logout = function() {
         $http.post('/logout', {})
@@ -24,4 +25,9 @@ angular.module('mobileApp').controller('MobileUserCtrl', ['$scope', '$window', '
 
             });
     };
+
+    vm.viewFile = function () {
+        return vm.showInvest ? "/mobile/user_invest.html" : "/mobile/user.html";
+    };
+
 }]);
