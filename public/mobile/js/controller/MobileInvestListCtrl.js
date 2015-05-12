@@ -56,6 +56,7 @@ angular.module('mobileApp').controller('MobileInvestListCtrl', ['$scope', '$wind
 
         vm.showInvestDetail = function(invest) {
             vm.currentInvest = invest;
+            vm.daysLeft = moment(invest.returnTime).diff(moment(), 'days');
             vm.investDetail = true;
         };
 
