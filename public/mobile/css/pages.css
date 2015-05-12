@@ -661,17 +661,24 @@
     background: url(../images/icon_user.png) no-repeat center 0;
     background-size: 25px 25px;
 }
+.user-money {
+    margin-bottom: 15px;
+}
 .user-money ul {
-    display: -webkit-box;
-    display: -moz-box;
     width: 100%;
-    box-sizing: border-box;
 }
 .user-money .balance {
+    display: -webkit-flex;
+    display: flex;
     padding: 26px 20px 16px;
     background-color: #fff;
+    box-sizing: border-box;
 }
-.user-money .balance li,
+.user-money .asset {
+    display: -webkit-box;
+    display: -moz-box;
+    box-sizing: border-box;
+}
 .user-money .asset li {
     -webkit-box-flex: 1;
     -moz-box-flex: 1;
@@ -679,32 +686,39 @@
     width: 1px;
 }
 .user-money .number {
+    -webkit-flex: 2;
+    flex: 2;
     color: #999;
     font-size: 11px;
 }
 .user-money .number em {
     display: block;
     color: #a40000;
-    font-size: 30px;
+    font-size: 14px;
 }
-.user-money .toRecharge {
-    text-align: center;
+.user-money .btns {
+    -webkit-flex: 6;
+    flex: 6;
+    text-align: right;
     color: #999;
 }
-.user-money .toRecharge p {
+.user-money .btns p {
     font-size: 7px;
 }
-.user-money .recharge-btn {
+.user-money .btns a {
     display: inline-block;
-
-    height: 35px;
-    line-height: 35px;
-    margin-bottom: 10px;
-    padding: 0 35px;
-    font-size: 18px;
+    height: 28px;
+    line-height: 28px;
+    padding: 0 24px;
+    font-size: 13px;
     color: #e0322d;
-    border-radius: 5px;
+    border-radius: 3px;
     border: 1px solid #e0322d;
+}
+.user-money a.withdraw-btn {
+    margin-left: 10px;
+    color: #666;
+    border: 1px solid #aaa;
 }
 .user-money .asset {
     padding: 28px 20px;
@@ -746,6 +760,12 @@
 .user-opts li {
     margin-bottom: 15px;
 }
+.user-opts .tips {
+    float: right;
+    font-size: 14px;
+    color: #999;
+    padding: 0 4px;
+}
 .user-opts a {
     display: block;
     height: 44px;
@@ -755,7 +775,9 @@
     background-color: #fff;
 }
 .user-opts .icon-ttn,
-.user-opts .icon-recharge {
+.user-opts .icon-recharge,
+.user-opts .icon-tz-info,
+.user-opts .icon-zc-info {
     float: left;
     width: 25px;
     height: 25px;
@@ -767,6 +789,72 @@
 
 .user-opts .icon-recharge {
     background-image: url(../images/icon_ttn_cur.png);
+}
+.user-opts .icon-tz-info {
+    background-image: url(../images/icon-list.jpg);
+}
+.user-opts .icon-zc-info {
+    background-image: url(../images/free.jpg);
+}
+
+.user-tab ul {
+    display: -webkit-box;
+    display: -moz-box;
+    width: 100%;
+    box-sizing: border-box;
+    height: 50px;
+    background-color: #eee;
+}
+.user-tab li {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    display: block;
+    width: 1px;
+    height: 25px;
+    margin-top: 10px;
+    text-align: center;
+    border-right: 1px solid #C9C9C9;
+}
+.user-tab li:last-child {
+    border-right: 0;
+}
+.user-tab a {
+  position: relative;
+  top: -10px;
+  display: block;
+  padding: 14px 0;
+  font-size: 14px;
+  border-bottom: 1px solid #C9C9C9;
+}
+.user-tab li.current a {
+    color: #A40000;
+    border-bottom-color: #A40000;
+    border-bottom-width: 2px;
+    padding-bottom: 13px;
+}
+.user-tz ul {
+    overflow: hidden;
+    color: #999;
+    font-size: 10px;
+    padding-bottom: 10px;
+    background-color: #fff;
+    border-bottom: 1px dotted #d3d2d0;
+}
+.user-tz li {
+    float: left;
+    width: 40%;
+    padding: 20px 0 10px 10%;
+}
+.user-tz h5 {
+    font-weight: 100;
+}
+.user-tz strong {
+    color: #666;
+    font-size: 14px;
+}
+.user-tz em {
+    color: #a40000;
+    font-size: 20px;
 }
 
 /* =个人信息 account.html
@@ -1770,4 +1858,180 @@
     border-top: 1px solid #C8C7CC;
     -webkit-box-flex: 1;
     color: #a40000;
+}
+
+/* =我的账户>我的投资>投资明细 user_invest_info.html
+-------------------------------------------------------------- */
+.user-invest-info .amount-info {
+    background-color: #fff;
+    color: #000;
+}
+.user-invest-info .amount-info ul {
+    overflow: hidden;
+}
+.user-invest-info .amount-info li {
+    float: left;
+    width: 30.3333%;
+    padding: 10px 0 10px 3%;
+}
+.user-invest-info .amount-info h5 {
+    font-weight: 100;
+    font-size: 10px;
+}
+.user-invest-info .amount-info strong {
+    font-size: 14px;
+    display: block;
+    line-height: 22px;
+}
+.user-invest-info .amount-info em {
+    display: block;
+    font-size: 16px;
+    line-height: 22px;
+    color: #a40000;
+}
+
+.user-invest-info .invest-list {
+    color: #999;
+    padding: 0 0 30px;
+}
+.user-invest-info .invest-list li {
+    border-bottom: 1px dotted #c9c9c9;
+}
+.user-invest-info .invest-list a {
+    display: block;
+    padding: 15px 10px 10px;
+}
+.user-invest-info .invest-list h5 {
+    color: #333;
+    font-weight: 100;
+}
+.user-invest-info .invest-list h6,
+.user-invest-info .invest-list .state {
+    display: inline-block;
+    float: right;
+    margin-top: -18px;
+}
+.user-invest-info .invest-list h6 {
+    color: #a40000;
+    font-weight: 100;
+}
+.user-invest-info .invest-list p {
+    font-size: 9px;
+}
+.user-invest-info .invest-list .done {
+    background-color: #f6f6f6;
+}
+
+.user-invest-info .status-info {
+    padding: 30px 0;
+    text-align: center;
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+    color: #333;
+}
+.user-invest-info .status-info h3 {
+    font-size: 16px;
+    font-weight: 100;
+    color: #a40000;
+    margin-bottom: 6px;
+}
+
+.user-invest-info .invest-detail li {
+    padding: 15px;
+    border-bottom: 1px dotted #c9c9c9;
+}
+.user-invest-info .invest-detail li.proj {
+    padding: 0;
+}
+.user-invest-info .invest-detail a {
+    display: block;
+    padding: 15px;
+}
+.user-invest-info .invest-detail .fr {
+    float: right;
+}
+.user-invest-info .invest-detail i {
+    float: right;
+    width: 10px;
+    height: 10px;
+    margin-top: 3px;
+    border-top: 1px solid #D2D2D2;
+    border-left: 1px solid #D2D2D2;
+    -webkit-transform: rotate(135deg) skewY(0deg);
+    -moz-transform: rotate(135deg) skewY(0deg);
+}
+.user-invest-info .invest-detail em {
+    color: #a40000;
+}
+
+
+/* =我的账户>我的投资>资产明细 user_invest_finance.html
+-------------------------------------------------------------- */
+.user-invest-finance .finance-amount {
+    background: #fff;
+}
+.user-invest-finance .finance-amount .total {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+.user-invest-finance .finance-amount .total em {
+    float: right;
+    color: #a40000;
+    font-size: 16px;
+    margin-top: -4px;
+}
+.user-invest-finance .amount-list {
+    overflow: hidden;
+    padding: 15px;
+}
+.user-invest-finance .amount-list li {
+    float: left;
+    width: 25%
+}
+.user-invest-finance .amount-list h5 {
+    font-size: 10px;
+    font-weight: 100;
+}
+.user-invest-finance .amount-list p {
+    font-size: 13px;
+}
+.user-invest-finance .amount-list li:before {
+    content: '+';
+    float: right;
+    color: #bfbfbf;
+    margin-top: 10px;
+    padding: 0 4px;
+}
+.user-invest-finance .amount-list li:last-child {
+    text-align: right;
+}
+.user-invest-finance .amount-list li:last-child:before {
+    content: '';
+    padding: 0;
+}
+
+.user-invest-finance .finance-records li {
+    padding: 15px;
+    border-bottom: 1px dotted #c9c9c9;
+    color: #000;
+}
+.user-invest-finance .finance-records h5 {
+    font-weight: 100;
+}
+.user-invest-finance .finance-records .num {
+    float: right;
+    font-size: 16px;
+    margin-top: -20px;
+}
+.user-invest-finance .finance-records em {
+    color: #a40000;
+}
+.user-invest-finance .finance-records p {
+    color: #999;
+    font-size: 9px;
+}
+.user-invest-finance .finance-records .more a {
+    display: block;
+    text-align: center;
+    color: #999;
 }

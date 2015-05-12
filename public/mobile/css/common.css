@@ -24,6 +24,9 @@
     height: 49px;
     line-height: 49px;
 }
+.header-box h1 i {
+
+}
 .header-box .f-pl,
 .header-box .f-pr {
     position: absolute;
@@ -322,6 +325,16 @@
     background: rgba(0, 0, 0, 0.4);
     color: #000;
 }
+.ui-dialog-menu {
+    position: fixed;
+    top: 49px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    background: rgba(0, 0, 0, 0.4);
+    color: #000;
+}
 .ui-dialog.show {
     display: -webkit-box;
     display: box;
@@ -339,7 +352,26 @@
     background-color: rgba(253, 253, 253, 0.95);
     position: relative;
 }
-
+.ui-dialog-menu .ui-dialog-cnt {
+    width: 100%;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    outline: none;
+    pointer-events: auto;
+    background-color: rgba(253, 253, 253, 0.95);
+    position: relative;
+    top: 0;
+}
+.ui-dialog-menu .ui-dialog-cnt li {
+    padding: 15px;
+    border-bottom: 1px dotted #c9c9c9;
+}
+.ui-dialog-menu .ui-dialog-cnt li:last-child {
+    border-bottom: 0;
+}
+.ui-dialog-menu .ui-dialog-cnt .current {
+    color: #a40000;
+}
 .ui-dialog .ui-dialog-bd {
     min-height: 71px;
     border-top-left-radius: 6px;
@@ -390,4 +422,42 @@
 
 .ui-dialog .ui-dialog-ft .close-dialog {
     color: #333;
+}
+
+/* .ui-tabs  */
+
+.ui-tabs {
+    display: -webkit-box;
+    display: -moz-box;
+    width: 100%;
+    box-sizing: border-box;
+    height: 50px;
+    background-color: #eee;
+}
+.ui-tabs li {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    display: block;
+    width: 1px;
+    height: 25px;
+    margin-top: 10px;
+    text-align: center;
+    border-right: 1px solid #C9C9C9;
+}
+.ui-tabs li:last-child {
+    border-right: 0;
+}
+.ui-tabs a {
+  position: relative;
+  top: -10px;
+  display: block;
+  padding: 14px 0;
+  font-size: 14px;
+  border-bottom: 1px solid #C9C9C9;
+}
+.ui-tabs li.current a {
+    color: #A40000;
+    border-bottom-color: #A40000;
+    border-bottom-width: 2px;
+    padding-bottom: 13px;
 }

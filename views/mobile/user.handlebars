@@ -12,13 +12,21 @@
         <span></span>您好，\{{vm.user.mobile | displayMobile}} <i></i>
     </a>
 </div>
+
+<div class="user-tab">
+    <ul>
+        <li class="current"><a href="user.html">我的配资</a></li>
+        <li><a href="user_invest.html">我的投资</a></li>
+    </ul>
+</div>
+
 <div class="user-money">
     <ul class="balance">
         <li class="number">
             可用余额(元)
             <em>\{{vm.user.finance.balance | currency:'':2}}</em>
         </li>
-        <li class="toRecharge">
+        <li class="btns">
             <a href="/mobile/#/recharge" class="recharge-btn">充 值</a>
             <p>提现操作请登录电脑版网站</p>
             <!--
