@@ -310,6 +310,10 @@ angular.module('supportApp').controller('ModalContactUserCtrl', ['$scope', '$res
     var NotesResource = $resource('/admin/api/fetch_user_notes/:mobile', {});
     console.log(mobile);
     $scope.mobile = mobile;
+    $scope.noteWriter = '管理员';
+    $scope.noteCreatedAt = '2015-05-12 00:00:00';
+    $scope.noteTitle = '使用提示';
+    $scope.noteContent = '点击上方标签，显示详细内容';
     $scope.note_list = [];
     $scope.note_list = NotesResource.query({mobile:mobile}, function (note_list) {
         console.log(note_list);
@@ -322,6 +326,12 @@ angular.module('supportApp').controller('ModalContactUserCtrl', ['$scope', '$res
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
+    $scope.showNote = function (writer, ct, title, content) {
+        $scope.noteWriter = writer;
+        $scope.noteCreatedAt = ct;
+        $scope.noteTitle = title;
+        $scope.noteContent = content;
+    }
 }]);
 
 
