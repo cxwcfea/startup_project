@@ -578,7 +578,7 @@ module.exports.sendVerifyCode = function(req, res, next) {
         res.status(403);
         return res.send({error_msg:'must have img code'});
     }
-    if (req.query.code != req.session.img_code) {
+    if (req.query.code.toLowerCase() != req.session.img_code) {
         res.status(403);
         return res.send({error_msg:'图形验证码错误,应为' + req.session.img_code});
     }
