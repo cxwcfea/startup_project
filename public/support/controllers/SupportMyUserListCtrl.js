@@ -16,12 +16,12 @@ angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$ht
     });
 
     vm.pageChanged = function() {
-        var start = (vm.currentPage - 1) * vm.itemsPerPage;
-        var end = start + vm.itemsPerPage;
-        if (end > vm.totalItems) {
-            end = vm.totalItems;
+        vm.startItemIndex = (vm.currentPage - 1) * vm.itemsPerPage;
+        vm.endItemIndex = vm.startItemIndex + vm.itemsPerPage;
+        if (vm.endItemIndex > vm.totalItems) {
+            vm.endItemIndex = vm.totalItems;
         }
-        vm.currentUsers = vm.users.slice(start, end);
+        vm.currentUsers = vm.currentAllUsers.slice(vm.startItemIndex, vm.endItemIndex);
     };
 
     vm.registerDate = function(date) {
@@ -57,9 +57,10 @@ angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$ht
     };
 
     vm.showAllUsers = function() {
-        vm.totalItems = vm.users.length;
+        vm.currentAllUsers = vm.users;
+        vm.totalItems = vm.currentAllUsers.length;
         vm.currentPage = 1;
-        vm.itemsPerPage = 15;
+        vm.itemsPerPage = 5; // TODO: to change
         vm.pageChanged();
     };
 
@@ -97,12 +98,12 @@ angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$ht
             // console.log(filter_string);
             vm.getUserInFilter(filter_string);
             // console.log('Got ' + vm.currentUsers.length + " users from string filter!");
-            user_ret = vm.currentUsers;
+            user_ret = vm.currentAllUsers;
         } else {
             user_ret = vm.users;
         }
         if (vm.login_begin || vm.login_end) {
-            vm.currentUsers = [];
+            vm.currentAllUsers = [];
             var time_begin = new Date();
             var time_end = new Date('2000-01-01 00:00:00');
             if (vm.login_begin) {
@@ -116,13 +117,13 @@ angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$ht
                 var user = user_ret[key];
                 var user_date = new Date(user['lastLoginAt']);
                 if (user_date >= time_end && user_date <= time_begin) {
-                    vm.currentUsers.push(user);
+                    vm.currentAllUsers.push(user);
                 }
             }
-            user_ret = vm.currentUsers;
+            user_ret = vm.currentAllUsers;
         }
         if (vm.register_begin || vm.register_end) {
-            vm.currentUsers = [];
+            vm.currentAllUsers = [];
             var time_begin = new Date();
             var time_end = new Date('2000-01-01 00:00:00');
             if (vm.register_begin) {
@@ -136,28 +137,31 @@ angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$ht
                 var user = user_ret[key];
                 var user_date = new Date(user['registerAt']);
                 if (user_date >= time_end && user_date <= time_begin) {
-                    vm.currentUsers.push(user);
+                    vm.currentAllUsers.push(user);
                 }
             }
-            user_ret = vm.currentUsers;
+            user_ret = vm.currentAllUsers;
         }
-        vm.currentUsers = user_ret;
-        vm.totalItems = vm.currentUsers.length;
+        vm.currentAllUsers = user_ret;
+        vm.totalItems = vm.currentAllUsers.length;
+        vm.pageChanged();
     };
 
     vm.getUserInFilter = function(filter) {
-        vm.currentUsers = [];
+        vm.currentAllUsers = [];
         for (var key in vm.users) {
             var user = vm.users[key];
             if (eval(filter)) {
-                vm.currentUsers.push(user);
+                vm.currentAllUsers.push(user);
             }
         }
     }
 
     vm.showUserInFilter = function(filter) {
         vm.getUserInFilter(filter);
-        vm.totalItems = vm.currentUsers.length;
+        vm.totalItems = vm.currentAllUsers.length;
+        vm.currentPage = 1;
+        vm.pageChanged();
     };
 
     vm.showApplies = function(user) {
@@ -169,6 +173,36 @@ angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$ht
         $scope.data.selectedUser = user;
         // $location.path('/orders/' + user._id);
         $window.open('/support/#/orders/' + user._id);
+    };
+
+    vm.contactUser = function(mobile) {
+        $scope.mobile = mobile;
+        console.log('mobile:' + $scope.mobile);
+        var modalContact = $modal.open({
+            templateUrl: '/views/contactUserModal.html',
+            controller: 'ModalContactUserCtrl',
+            resolve: {
+                mobile: function (){
+                    return mobile;
+                }
+            }
+        });
+
+        modalContact.result.then(function (result) {
+            if (result && (result.title || result.tag)) {
+                result.mobile = mobile;
+                $http.post('/admin/api/create_user_note', result)
+                    .success(function(data, status) {
+                        gbNotifier.notify('记录成功');
+                    })
+                    .error(function(data, status) {
+                        gbNotifier.error('记录失败');
+                    });
+            } else {
+                gbNotifier.error('无效的数据，重新输入！');
+            }
+        }, function () {
+        });
     };
 
     vm.open = function (mobile) {
@@ -270,6 +304,36 @@ angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$ht
             });
     };
 }]);
+
+angular.module('supportApp').controller('ModalContactUserCtrl', ['$scope', '$resource', '$modalInstance', 'mobile', function ($scope, $resource, $modalInstance, mobile) {
+    $scope.data = {};
+    var NotesResource = $resource('/admin/api/fetch_user_notes/:mobile', {});
+    console.log(mobile);
+    $scope.mobile = mobile;
+    $scope.noteWriter = '管理员';
+    $scope.noteCreatedAt = '2015-05-12 00:00:00';
+    $scope.noteTitle = '使用提示';
+    $scope.noteContent = '点击上方标签，显示详细内容';
+    $scope.note_list = [];
+    $scope.note_list = NotesResource.query({mobile:mobile}, function (note_list) {
+        console.log(note_list);
+        $scope.note_list = note_list;
+    });
+    $scope.ok = function () {
+        $modalInstance.close($scope.data);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+    $scope.showNote = function (writer, ct, title, content) {
+        $scope.noteWriter = writer;
+        $scope.noteCreatedAt = ct;
+        $scope.noteTitle = title;
+        $scope.noteContent = content;
+    }
+}]);
+
 
 angular.module('supportApp').controller('ModalInstanceCtrl', ['$scope', '$modalInstance', 'sms_macro', function ($scope, $modalInstance, sms_macro) {
     $scope.sms_content = '您好，我是您在牛金网的专属客服XX。QQ:xxxxxx 微信:xxxxxx 如果您有任何问题都可以24小时随时咨询。牛金网感谢您对我们的支持，祝您股市大赚!';
