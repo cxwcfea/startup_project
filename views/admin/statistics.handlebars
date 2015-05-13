@@ -94,8 +94,14 @@
         var ctx3 = $("#myChart2").get(0).getContext("2d");
         var myNewChart2 = new Chart(ctx3).Bar(data3,{});
 
-        theKeys = _.keys(res.apply_lever_map);
-        theValues = _.values(res.apply_lever_map);
+        //theKeys = _.keys(res.apply_lever_map);
+        //theValues = _.values(res.apply_lever_map);
+        var data4 = [];
+        i = 0;
+        for (var key in res.apply_lever_map) {
+            data4.push({label:key, value:res.apply_lever_map[key], color:colors[i++]})
+        }
+                /*
         var data4 = {
             labels : theKeys,
             datasets : [
@@ -109,8 +115,9 @@
                 }
             ]
         };
+        */
         var ctx4 = $("#myChart3").get(0).getContext("2d");
-        var myNewChart3 = new Chart(ctx4).Bar(data4,{});
+        var myNewChart3 = new Chart(ctx4).Pie(data4,{});
     })
     .fail(function() {
         console.log( "fetch data error" );
