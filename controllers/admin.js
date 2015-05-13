@@ -121,6 +121,7 @@ function getStatisticsPage(req, res, next) {
             console.log('error when get statistic ' + err.toString());
         }
         req.session.numOfApply = data.numOfApply;
+        req.session.applyLeverMap = data.applyLeverMap;
         data.total_fee = data.totalServiceFee - data.returnedServiceFee - data.serviceFeeNotGet;
         data.total_fee = data.total_fee.toFixed(0);
         res.locals.data = data;
@@ -1846,6 +1847,7 @@ function getDailyData(req, res) {
             });
             ret.today_user_source = req.session.today_user_source;
             ret.num_of_apply = req.session.numOfApply;
+            ret.apply_lever_map = req.session.applyLeverMap;
             res.send(ret);
         });
 }
