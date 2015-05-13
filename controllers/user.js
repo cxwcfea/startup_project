@@ -1600,6 +1600,38 @@ function getUserInvestInfo(req, res) {
     });
 }
 
+function InvestToBalance(req, res) {
+    var amount = Number(req.body.amount);
+    if (!amount) {
+        res.status(400);
+        return res.send({error_msg:'无效的金额'});
+    }
+    Investor.update({$and:[{userID:req.user._id}, {amount:{$gte:amount}}]}, {$inc:{amount:-amount}}, function(err, numberAffected, raw) {
+        if (err) {
+            logger.warn('InvestToBalance error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        if (!numberAffected) {
+            logger.warn('InvestToBalance error when update Investor');
+            res.status(403);
+            return res.send({error_msg:'金额不足'});
+        }
+        User.update({_id:req.user._id}, {$inc: {'finance.balance':amount}}, function(err, numberAffected, raw) {
+            if (err) {
+                logger.warn('InvestToBalance error:' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+            if (!numberAffected) {
+                res.status(500);
+                return res.send({error_msg:'can not update User'});
+            }
+            res.send({});
+        });
+    });
+}
+
 function rechargeToInvest(req, res) {
     var amount = Number(req.body.amount);
     if (!amount) {
@@ -1683,6 +1715,8 @@ module.exports.registerRoutes = function(app, passportConf) {
     app.get('/api/user/invest_info', passportConf.isAuthenticated, getUserInvestInfo);
 
     app.post('/api/user/invest_recharge', passportConf.isAuthenticated, rechargeToInvest);
+
+    app.post('/api/user/invest_to_balance', passportConf.isAuthenticated, InvestToBalance);
 
     app.get('/api/user/invest_orders', passportConf.isAuthenticated, getInvestOrders);
 

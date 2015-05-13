@@ -13,3 +13,16 @@
     float: left;
     width: 20%
 }
+
+.zntz-box .trans-btn {
+    display: inline;
+    width: 50%;
+    height: 43px;
+    line-height: 43px;
+    color: #E30A20;
+    text-align: center;
+    font-size: 18px;
+    border: 1px solid #E30A20;
+    border-radius: 3px;
+    background-color: #FFF;
+}

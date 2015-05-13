@@ -15,7 +15,7 @@ angular.module('mobileApp').controller('MobileInvestRechargeCtrl', ['$scope', '$
 
         vm.payConfirm = function() {
             if (!vm.invest_amount) {
-                vm.errorMsg = '请输入预投资金额，100元起';
+                vm.errorMsg = '请输入欲投资金额，100元起';
                 vm.inputError = true;
                 $timeout(function() {
                     vm.inputError = false;

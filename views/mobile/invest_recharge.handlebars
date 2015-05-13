@@ -2,7 +2,7 @@
 <header id="header">
     <div class="header-box">
         <h1>聪明赚</h1>
-        <a class="back" href="/mobile/#/invest"></a>
+        <a class="back" href="" onclick="history.back();  return false;"></a>
     </div>
 </header><!--#E header-->
 
@@ -11,26 +11,6 @@
     <div class="balance">
         账户余额： <em>\{{vm.user.finance.balance | currency:'':2}}</em> 元
     </div>
-    <form name="beiFuForm" class="pay-form" novalidate>
-        <div class="form-item">
-            <label for="">充值金额</label>
-            <input type="number" min="100" step="100" name="amount" ng-model="vm.invest_amount" placeholder="请输入投资金额，100元起">
-            <span class="unit">元</span>
-        </div>
-        <div class="form-item">
-            <label for="">预期收益</label>
-            <span>200.00元</span>
-        </div>
-        <div class="form-item">
-            <label for="">还款方式</label>
-            <span>按天还息，到期还本</span>
-        </div>
-        <div class="form-item">
-            <label for="">开始计息</label>
-            <span>出借成功下一个工作日</span>
-        </div>
-        <button type="submit" class="submit-btn" ng-click="vm.payConfirm()">确认转入</button>
-    </form>
     -->
     <div class="zntz-box">
         <div class="zntz-amount">
