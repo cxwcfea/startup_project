@@ -717,7 +717,7 @@ db.once('open', function callback() {
             },
              */
 
-            function (callbak) {
+            function (callback) {
                 getDailyData(function(err) {
                     callback(err);
                 });
