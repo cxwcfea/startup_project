@@ -92,10 +92,11 @@
 <div ng-show="vm.editInvest">
     <div class="zntz-box">
         <div class="zntz-txt">
-            您已开启聪明赚，转入资金即可自动投标高收益项目
+            <span ng-show="vm.user.enableInvest">您已开启聪明赚，转入资金即可自动投标高收益项目</span>
+            <span ng-hide="vm.user.enableInvest">您已关闭聪明赚，无法获取收益</span>
         </div>
         <div class="zntz-conf">
-            <a href="" class="recharge-btn" ng-click="vm.rechargeToInvestAccount()">转入资金</a>
+            <a href="" class="recharge-btn" ng-show="vm.user.enableInvest" ng-click="vm.rechargeToInvestAccount()">转入资金</a>
             <ul class="zntz-conf-items">
                 <li>
                     <label class="fl">\{{vm.user.enableInvest ? '聪明赚已开启' : '聪明赚已关闭'}}</label>
