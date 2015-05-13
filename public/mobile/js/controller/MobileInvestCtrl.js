@@ -115,6 +115,7 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
         vm.enableChange = function() {
             console.log(vm.user.enableInvest);
             if (!vm.user.enableInvest) {
+                vm.user.enableInvest = true;
                 vm.confirmDisableInvest = true;
             }
         };
