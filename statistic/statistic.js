@@ -8,6 +8,7 @@ var mongoose = require('mongoose'),
     Card = require('../models/Card'),
     Order = require('../models/Order'),
     User = require('../models/User'),
+    DailyData = require('../models/DailyData'),
     config = require('../config/config')['production'];
 
 var historyApplyData = function(callback) {
@@ -602,6 +603,29 @@ var getUserData = function(callback) {
     });
 };
 
+var getDailyData = function(callback) {
+    DailyData.find({}, function(err, datas) {
+        if (err) {
+            logger.debug('err when getDailyData ' + err.toString());
+            return callback(err);
+        }
+        var options = { encoding: 'utf8', flag: 'w' };
+        var fileWriteStream = fs.createWriteStream("DailyDataTill-" + moment().format("YYYY-MM-DD") + ".csv",  options);
+        fileWriteStream.on("close", function() {
+            console.log("File Closed.");
+        });
+        var data = 'applyAmount, applyNum, income, newUsers, date\n';
+        fileWriteStream.write(data);
+        datas.forEach(function (d) {
+            data = d.applyAmount + ', ' + d.applyNum + ', ' + d.income + ', ' + d.newUsers + ', '
+            + d.date + '\n';
+            fileWriteStream.write(data);
+        });
+        fileWriteStream.end();
+        callback(null);
+    });
+};
+
 var options = {};
 mongoose.connect(config.db, options);
 var db = mongoose.connection;
@@ -693,6 +717,11 @@ db.once('open', function callback() {
             },
              */
 
+            function (callbak) {
+                getDailyData(function(err) {
+                    callback(err);
+                });
+            },
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
                     callback(err);
