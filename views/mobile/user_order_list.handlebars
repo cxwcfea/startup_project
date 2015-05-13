@@ -1,7 +1,7 @@
 <!--#S header-->
 <header id="header">
     <div class="header-box">
-        <h1>资金明细 <i></i></h1>
+        <h1 ng-click="vm.toggleSelectList()">资金明细 <i></i></h1>
         <a class="back" href="/mobile/#/user"></a>
     </div>
 </header><!--#E header-->
@@ -10,7 +10,7 @@
     <div class="finance-amount">
         <div class="total">
             账户总资产(元)
-            <em>11000.00</em>
+            <em>\{{vm.total_capital | currency:'':2}}</em>
         </div>
         <ul class="amount-list">
             <li>
@@ -23,11 +23,11 @@
             </li>
             <li>
                 <h5>投资中债权</h5>
-                <p>10000.00</p>
+                <p>\{{vm.ongoingAmount | currency:'':2}}</p>
             </li>
             <li>
-                <h5>可投资债权</h5>
-                <p>10000.00</p>
+                <h5>待投资债权</h5>
+                <p>\{{vm.user.availableInvestAmount | currency:'':2}}</p>
             </li>
             <li>
                 <h5>可用余额(元)</h5>
@@ -37,11 +37,13 @@
     </div>
     <div class="finance-records">
         <ul>
-            <li>
-                <h5>利息收入</h5>
-                <p class="num"><em>+42.49</em></p>
-                <p>2015-04-10 08:08:00</p>
+            <li ng-repeat="order in vm.showingItem">
+                <h5>\{{order.dealType | displayOrderType}}</h5>
+                <p class="num" ng-hide="order.dealType === 2 || order.dealType === 9 || order.dealType === 10"><em>\{{order.amount | displayOrderAmount:order.dealType}}</em></p>
+                <p class="num" ng-show="order.dealType === 2 || order.dealType === 9 || order.dealType === 10">\{{order.amount | displayOrderAmount:order.dealType}}</p>
+                <p>\{{order.createdAt | date:"yyyy-MM-dd HH:mm"}}</p>
             </li>
+            <!--
             <li>
                 <h5>本金返还</h5>
                 <p class="num"><em>+1957.00</em></p>
@@ -85,16 +87,20 @@
             <li class="more">
                 <a href="#">更多</a>
             </li>
+            -->
         </ul>
     </div>
 </div>
 
-<div class="ui-dialog-menu hide">
+<div class="ui-dialog-menu" ng-show="vm.showSelectList">
     <ul class="ui-dialog-cnt">
+        <li ng-repeat="item in vm.queryItems" ng-class="{current: vm.selectedItem === item.value}" ng-click="vm.selectItem(item)">\{{item.name}}</li>
+        <!--
         <li class="current">全部</li>
         <li>保证金明细</li>
         <li>管理费明细</li>
         <li>充值提现</li>
         <li>收益明细</li>
+        -->
     </ul>
 </div>

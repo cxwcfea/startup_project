@@ -8,3 +8,8 @@
     padding: 0 10px 0 0;
     border: 0;
 }
+
+.user-invest-finance .amount-list li {
+    float: left;
+    width: 20%
+}

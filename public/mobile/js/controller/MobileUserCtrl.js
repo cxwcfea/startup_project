@@ -17,7 +17,8 @@ angular.module('mobileApp').controller('MobileUserCtrl', ['$scope', '$window', '
                 data.forEach(function(elem) {
                     vm.ongoingAmount += elem.amount;
                     vm.ongoingProfit += elem.investProfit;
-                })
+                });
+                $scope.data.ongoingAmount = vm.ongoingAmount;
             })
             .error(function(data, status) {
                 console.log(data.error_msg);

@@ -206,8 +206,8 @@
         };
     }).filter("displayOrderAmount", function () {
         return function (input, orderType) {
-            var ret = '';
-            if (orderType === 2 || orderType === 9) {
+            var ret = '+';
+            if (orderType === 2 || orderType === 9 || orderType === 10) {
                 ret = '-';
             }
             return ret + input;
@@ -322,6 +322,10 @@
                     return '保证金支出';
                 case 10:
                     return '管理费支出';
+                case 11:
+                    return '本金返还';
+                case 12:
+                    return '利息收入';
                 default:
                     return '充值';
             }

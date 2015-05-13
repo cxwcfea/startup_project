@@ -327,7 +327,18 @@ function getYYNConfirm(req, res, next) {
 function getRechargeOrderListForCurrentUser(req, res) {
     Order.find({$and: [{$or:[{payType: 3}, {payType:5}]}, {status:1}, {userID: req.user._id}]}, function(err, orders) {
         if (err) {
-            logger.warn('getAlipayOrderListForCurrentUser error:' + err.toString());
+            logger.warn('getRechargeOrderListForCurrentUser error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send(orders);
+    });
+}
+
+function getPayedOrderListForCurrentUser(req, res) {
+    Order.find({$and: [{status:1}, {userID: req.user._id}]}, function(err, orders) {
+        if (err) {
+            logger.warn('getPayedOrderListForCurrentUser error:' + err.toString());
             res.status(500);
             return res.send({error_msg:err.toString()});
         }
@@ -440,10 +451,18 @@ module.exports = {
             })
         });
 
+        app.get('/mobile/user_order_list', function(req, res, next) {
+            res.render('mobile/user_order_list', {
+                layout: null
+            })
+        });
+
         app.get('/mobile/forget', getForget);
 
         app.get('/mobile/free_apply_confirm', passportConf.isAuthenticated, applies.freeApply);
 
         app.get('/api/mobile_recharge/orders', passportConf.isAuthenticated, getRechargeOrderListForCurrentUser);
+
+        app.get('/api/mobile/user_orders', passportConf.isAuthenticated, getPayedOrderListForCurrentUser);
     }
 };
