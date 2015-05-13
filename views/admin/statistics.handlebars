@@ -34,6 +34,7 @@
     })
     .done(function(res) {
         console.log( "fetch data success" );
+        console.log(res.num_of_apply);
         var data = {
             labels : res.dates,
             datasets : [
