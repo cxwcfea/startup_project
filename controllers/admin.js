@@ -583,7 +583,7 @@ function _closeApply(serialID, profit, res) {
             res.send({"error_code":1, "error_msg":err.toString()});
         } else {
             var amount = balance > 0 ? balance : 0;
-            util.sendSMS_3(apply.userMobile, amount, apply.deposit, profit);
+            util.sendSMS_3(apply.userMobile, apply.account, amount, apply.deposit, profit);
             res.send({"error_code":0});
         }
     });
