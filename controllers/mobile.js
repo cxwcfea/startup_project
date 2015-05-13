@@ -358,6 +358,31 @@ function getPostponeApply(req, res) {
     })
 }
 
+function getInvestPage(req, res, next) {
+    User.aggregate([{$match:{enableInvest:true}}, {$group: {_id: null, count: {$sum: 1}, total_invest: { $sum: '$finance.history_invest_amount'}, total_profit: { $sum: '$finance.history_invest_profit' }}}], function(err, statistic) {
+        if (err || !statistic) {
+            logger.warn('error when getInvestPage:' + err.toString());
+            statistic = [{
+                count: 1,
+                total_invest: 0,
+                total_profit: 0
+            }];
+        }
+        var rate = 0;
+        if (statistic[0].total_invest > 0) {
+            rate = statistic[0].total_profit / statistic[0].total_invest;
+            rate = rate * 100;
+        }
+        res.render('mobile/invest', {
+            layout: null,
+            count: statistic[0].count,
+            total_invest: statistic[0].total_invest.toFixed(0),
+            total_profit: statistic[0].total_profit.toFixed(0),
+            rate: rate.toFixed(2)
+        })
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/mobile', function(req, res, next) {
@@ -427,11 +452,7 @@ module.exports = {
             })
         });
 
-        app.get('/mobile/invest', function(req, res, next) {
-            res.render('mobile/invest', {
-                layout: null
-            })
-        });
+        app.get('/mobile/invest', getInvestPage);
 
         app.get('/mobile/recharge', function(req, res, next) {
             res.render('mobile/recharge', {
