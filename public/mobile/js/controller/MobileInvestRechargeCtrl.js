@@ -29,6 +29,7 @@ angular.module('mobileApp').controller('MobileInvestRechargeCtrl', ['$scope', '$
                 .success(function(data, status) {
                     vm.rechargeSuccess = true;
                     vm.user.finance.balance -= vm.invest_amount;
+                    vm.user.availableInvestAmount += vm.invest_amount;
                 })
                 .error(function(data, status) {
                     vm.errorMsg = data.error_msg;
