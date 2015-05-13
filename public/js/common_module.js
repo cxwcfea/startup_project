@@ -425,7 +425,7 @@
         {
             name: 'approve_apply_sms_content',
             value: 2,
-            content: 'AMOUNT元资金已到账，股票账号ACCOUNT，登录密码PASSWORD，请勿向任何人泄露！'
+            content: 'AMOUNT元资金已到账，股票账号ACCOUNT，登录密码PASSWORD，请不要向任何人泄露！'
         },
         {
             name: 'close_apply_sms_content',
