@@ -361,7 +361,9 @@ function getPostponeApply(req, res) {
 function getInvestPage(req, res, next) {
     User.aggregate([{$match:{enableInvest:true}}, {$group: {_id: null, count: {$sum: 1}, total_invest: { $sum: '$finance.history_invest_amount'}, total_profit: { $sum: '$finance.history_invest_profit' }}}], function(err, statistic) {
         if (err || !statistic || !statistic[0]) {
-            logger.warn('error when getInvestPage:' + err.toString());
+            if (err) {
+                logger.warn('error when getInvestPage:' + err.toString());
+            }
             statistic = [{
                 count: 1,
                 total_invest: 0,
