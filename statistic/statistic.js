@@ -155,7 +155,7 @@ var historyPayApplyData = function(startTime, callback) {
         }
         console.log('total fee:' + fee.toFixed(2));
 
-        callback(null);
+        callback(null, applies, fee);
     });
 };
 
@@ -714,8 +714,24 @@ db.once('open', function callback() {
              */
             function(callback) {
                 var startTime = moment('2015-05-01');
-                historyPayApplyData(startTime, function(err) {
-                    callback(err);
+                historyPayApplyData(startTime, function(err, applies, fee) {
+                    var theMap = {};
+                    for (var i = 0; i < applies.length; ++i) {
+                        theMap[applies[i].serialID] = 1;
+                    }
+                    Order.find({$and:[{status:1}, {dealType:8}]}, function(err, orders) {
+                        if (err) {
+                            callback(err);
+                        } else {
+                            for(i = 0; i < orders.length; ++i) {
+                                if (theMap[orders[i].applySerialID]) {
+                                    fee -= orders[i].amount;
+                                }
+                            }
+                            console.log('result: ' + fee);
+                            callback(null);
+                        }
+                    });
                 });
             }
             /*
