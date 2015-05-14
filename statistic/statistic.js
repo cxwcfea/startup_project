@@ -719,16 +719,21 @@ db.once('open', function callback() {
                     for (var i = 0; i < applies.length; ++i) {
                         theMap[applies[i].serialID] = 1;
                     }
-                    Order.find({$and:[{status:1}, {dealType:8}]}, function(err, orders) {
+                    var fee2 = 0;
+                    Order.find({$and:[{status:1}, {dealType:8}, {dealType:10}]}, function(err, orders) {
                         if (err) {
                             callback(err);
                         } else {
                             for(i = 0; i < orders.length; ++i) {
                                 if (theMap[orders[i].applySerialID]) {
-                                    fee -= orders[i].amount;
+                                    if (orders[i].dealType === 8) {
+                                        fee2 -= orders[i].amount;
+                                    } else {
+                                        fee2 += orders[i].amount;
+                                    }
                                 }
                             }
-                            console.log('result: ' + fee);
+                            console.log('result: ' + fee2);
                             callback(null);
                         }
                     });
