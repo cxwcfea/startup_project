@@ -78,7 +78,9 @@ var historyFreeApplyData = function(startTime, callback) {
 var historyPayApplyData = function(startTime, callback) {
     console.log('historyPayApplyData');
 
-    Apply.find({$and:[{$or:[{closeAt:{$lte:startTime}}, {closeAt:{$exists:false}}]}, {isTrial:false}, {status:3}]}, function(err, applies) {
+    var time1 = moment('2015-05-01');
+    var time2 = moment('2015-04-01');
+    Apply.find({$and:[{isTrial:false}, {startTime:{$lte:time1}}, {startTime:{$gte:time2}}, {status:{$ne:1}}, {status:{$ne:9}}]}, function(err, applies) {
         if (err) {
             console.log(err.toString());
             return;
@@ -109,30 +111,36 @@ var historyPayApplyData = function(startTime, callback) {
 
         var fee = 0;
         for (var i = 0; i < applies.length; ++i) {
+            var duration = 0;
+            if (applies[i].closeAt) {
+                duration = moment(applies[i].closeAt).diff(moment(applies[i].startTime), 'days');
+            } else {
+                duration = applies[i].period;
+            }
             if (applies[i].serviceCharge) {
-                fee += applies[i].serviceCharge * applies[i].amount / 10000 * applies[i].period;
+                fee += applies[i].serviceCharge * applies[i].amount / 10000 * duration;
             } else {
                 switch (applies[i].lever) {
                     case 10:
-                        fee += 19.9 * applies[i].amount / 10000 * applies[i].period;
+                        fee += 19.9 * applies[i].amount / 10000 * duration;
                         break;
                     case 9:
-                        fee += 18.9 * applies[i].amount / 10000 * applies[i].period;
+                        fee += 18.9 * applies[i].amount / 10000 * duration;
                         break;
                     case 8:
-                        fee += 17.9 * applies[i].amount / 10000 * applies[i].period;
+                        fee += 17.9 * applies[i].amount / 10000 * duration;
                         break;
                     case 7:
-                        fee += 16.9 * applies[i].amount / 10000 * applies[i].period;
+                        fee += 16.9 * applies[i].amount / 10000 * duration;
                         break;
                     case 6:
-                        fee += 15.9 * applies[i].amount / 10000 * applies[i].period;
+                        fee += 15.9 * applies[i].amount / 10000 * duration;
                         break;
                     case 5:
-                        fee += 10.9 * applies[i].amount / 10000 * applies[i].period;
+                        fee += 10.9 * applies[i].amount / 10000 * duration;
                         break;
                     default :
-                        fee += 19.9 * applies[i].amount / 10000 * applies[i].period;
+                        fee += 19.9 * applies[i].amount / 10000 * duration;
                         break;
                 }
             }
