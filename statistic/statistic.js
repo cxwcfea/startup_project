@@ -726,7 +726,7 @@ db.once('open', function callback() {
                         } else {
                             for(i = 0; i < orders.length; ++i) {
                                 if (theMap[orders[i].applySerialID]) {
-                                    if (orders[i].dealType === 8) {
+                                    if (orders[i].dealType == 8) {
                                         fee2 -= orders[i].amount;
                                     } else {
                                         fee2 += orders[i].amount;
