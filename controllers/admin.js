@@ -122,6 +122,7 @@ function getStatisticsPage(req, res, next) {
         }
         req.session.numOfApply = data.numOfApply;
         req.session.applyLeverMap = data.applyLeverMap;
+        req.session.periodMap = data.periodMap;
         data.total_fee = data.totalServiceFee - data.returnedServiceFee - data.serviceFeeNotGet;
         data.total_fee = data.total_fee.toFixed(0);
         res.locals.data = data;
@@ -1848,6 +1849,7 @@ function getDailyData(req, res) {
             ret.today_user_source = req.session.today_user_source;
             ret.num_of_apply = req.session.numOfApply;
             ret.apply_lever_map = req.session.applyLeverMap;
+            ret.period_map = req.session.periodMap;
             res.send(ret);
         });
 }
