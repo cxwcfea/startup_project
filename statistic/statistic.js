@@ -78,7 +78,9 @@ var historyFreeApplyData = function(startTime, callback) {
 var historyPayApplyData = function(startTime, callback) {
     console.log('historyPayApplyData');
 
-    Apply.find({$and:[{$or:[{closeAt:{$lte:startTime}}, {closeAt:{$exists:false}}]}, {isTrial:false}, {status:3}]}, function(err, applies) {
+    var time1 = moment('2015-05-01');
+    var time2 = moment('2015-04-01');
+    Apply.find({$and:[{isTrial:false}, {startTime:{$lte:time1}}, {startTime:{$gte:time2}}, {status:{$ne:1}}, {status:{$ne:9}}]}, function(err, applies) {
         if (err) {
             console.log(err.toString());
             return;
@@ -109,30 +111,36 @@ var historyPayApplyData = function(startTime, callback) {
 
         var fee = 0;
         for (var i = 0; i < applies.length; ++i) {
+            var duration = 0;
+            if (applies[i].closeAt) {
+                duration = moment(applies[i].closeAt).diff(moment(applies[i].startTime), 'days');
+            } else {
+                duration = applies[i].period;
+            }
             if (applies[i].serviceCharge) {
-                fee += applies[i].serviceCharge * applies[i].amount / 10000 * applies[i].period;
+                fee += applies[i].serviceCharge * applies[i].amount / 10000 * duration;
             } else {
                 switch (applies[i].lever) {
                     case 10:
-                        fee += 19.9 * applies[i].amount / 10000 * applies[i].period;
+                        fee += 19.9 * applies[i].amount / 10000 * duration;
                         break;
                     case 9:
-                        fee += 18.9 * applies[i].amount / 10000 * applies[i].period;
+                        fee += 18.9 * applies[i].amount / 10000 * duration;
                         break;
                     case 8:
-                        fee += 17.9 * applies[i].amount / 10000 * applies[i].period;
+                        fee += 17.9 * applies[i].amount / 10000 * duration;
                         break;
                     case 7:
-                        fee += 16.9 * applies[i].amount / 10000 * applies[i].period;
+                        fee += 16.9 * applies[i].amount / 10000 * duration;
                         break;
                     case 6:
-                        fee += 15.9 * applies[i].amount / 10000 * applies[i].period;
+                        fee += 15.9 * applies[i].amount / 10000 * duration;
                         break;
                     case 5:
-                        fee += 10.9 * applies[i].amount / 10000 * applies[i].period;
+                        fee += 10.9 * applies[i].amount / 10000 * duration;
                         break;
                     default :
-                        fee += 19.9 * applies[i].amount / 10000 * applies[i].period;
+                        fee += 19.9 * applies[i].amount / 10000 * duration;
                         break;
                 }
             }
@@ -152,22 +160,22 @@ var historyCloseApplyFee = function(callback) {
             return;
         }
         /*
-        var options = { encoding: 'utf8', flag: 'w' };
-        var fileWriteStream = fs.createWriteStream("historyPayApplyDataTill-" + moment().format("YYYY-MM-DD") + ".csv",  options);
-        fileWriteStream.on("close", function() {
-            console.log("File Closed.");
-        });
-        var data = 'userID, userMobile, serialID, amount, deposit, period, status, applyAt, closeAt, isTrial, autoPostpone, lever, warnValue, sellValue, startTime, endTime, account, profit, type, interestRate, serviceCharge\n';
-        fileWriteStream.write(data);
-        applies.forEach(function (apply) {
-            data = apply.userID + ', ' + apply.userMobile + ', ' + apply.serialID + ', ' + apply.amount.toFixed(2) + ', ' + apply.deposit.toFixed(2) + ', '
-            + apply.period + ', ' + apply.status + ', ' + apply.applyAt + ', ' + apply.closeAt + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
-            + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + apply.startTime + ', ' + apply.endTime + ', ' + apply.account + ', '
-            + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + '\n';
-            fileWriteStream.write(data);
-        });
-        fileWriteStream.end();
-        */
+         var options = { encoding: 'utf8', flag: 'w' };
+         var fileWriteStream = fs.createWriteStream("historyPayApplyDataTill-" + moment().format("YYYY-MM-DD") + ".csv",  options);
+         fileWriteStream.on("close", function() {
+         console.log("File Closed.");
+         });
+         var data = 'userID, userMobile, serialID, amount, deposit, period, status, applyAt, closeAt, isTrial, autoPostpone, lever, warnValue, sellValue, startTime, endTime, account, profit, type, interestRate, serviceCharge\n';
+         fileWriteStream.write(data);
+         applies.forEach(function (apply) {
+         data = apply.userID + ', ' + apply.userMobile + ', ' + apply.serialID + ', ' + apply.amount.toFixed(2) + ', ' + apply.deposit.toFixed(2) + ', '
+         + apply.period + ', ' + apply.status + ', ' + apply.applyAt + ', ' + apply.closeAt + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
+         + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + apply.startTime + ', ' + apply.endTime + ', ' + apply.account + ', '
+         + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + '\n';
+         fileWriteStream.write(data);
+         });
+         fileWriteStream.end();
+         */
         var data = {};
 
         for (var i = 0; i < applies.length; ++i) {
@@ -224,9 +232,9 @@ var dailyFreeApplyData = function(startTime, endTime, callback) {
         fileWriteStream.write(data);
         applies.forEach(function (apply) {
             data = apply.userID + ', ' + apply.userMobile + ', ' + apply.serialID + ', ' + apply.amount.toFixed(2) + ', ' + apply.deposit.toFixed(2) + ', '
-                + apply.period + ', ' + apply.status + ', ' + moment(apply.applyAt).format('YYYYMMDDHHmmss') + ', ' + moment(apply.closeAt).format('YYYYMMDDHHmmss') + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
-                + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + moment(apply.startTime).format('YYYYMMDDHHmmss') + ', ' + moment(apply.endTime).format('YYYYMMDDHHmmss') + ', ' + apply.account + ', '
-                + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + '\n';
+            + apply.period + ', ' + apply.status + ', ' + moment(apply.applyAt).format('YYYYMMDDHHmmss') + ', ' + moment(apply.closeAt).format('YYYYMMDDHHmmss') + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
+            + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + moment(apply.startTime).format('YYYYMMDDHHmmss') + ', ' + moment(apply.endTime).format('YYYYMMDDHHmmss') + ', ' + apply.account + ', '
+            + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + '\n';
             fileWriteStream.write(data);
         });
         fileWriteStream.end();
@@ -398,12 +406,12 @@ var rechargeOrderData = function(callback) {
         });
         fileWriteStream.end();
         /*
-        var amount = 0;
-        for (var i = 0; i < orders.length; ++i) {
-            amount += orders[i].amount;
-        }
-        console.log('充值总额:' + amount);
-        */
+         var amount = 0;
+         for (var i = 0; i < orders.length; ++i) {
+         amount += orders[i].amount;
+         }
+         console.log('充值总额:' + amount);
+         */
         callback(null);
     });
 };
@@ -430,12 +438,12 @@ var withdrawOrderData = function(callback) {
         });
         fileWriteStream.end();
         /*
-        var amount = 0;
-        for (var i = 0; i < orders.length; ++i) {
-            amount += orders[i].amount;
-        }
-        console.log('提现总额:' + amount);
-        */
+         var amount = 0;
+         for (var i = 0; i < orders.length; ++i) {
+         amount += orders[i].amount;
+         }
+         console.log('提现总额:' + amount);
+         */
         callback(null);
     });
 };
@@ -461,12 +469,12 @@ var incomeOrderData = function(callback) {
         });
         fileWriteStream.end();
         /*
-        var amount = 0;
-        for (var i = 0; i < orders.length; ++i) {
-            amount += orders[i].amount;
-        }
-        console.log('管理费总额:' + amount);
-        */
+         var amount = 0;
+         for (var i = 0; i < orders.length; ++i) {
+         amount += orders[i].amount;
+         }
+         console.log('管理费总额:' + amount);
+         */
         callback(null);
     });
 };
@@ -643,59 +651,59 @@ db.once('open', function callback() {
     endTime = endTime.toDate();
 
     /*
-    async.waterfall(
-        [
-            function(callback) {
-                historyCloseApplyFee(function(err, data) {
-                    callback(err, data);
-                });
-            },
-            function(applydata, callback) {
-                historyReturnFeeOrderData(function(err, data) {
-                    callback(err, applydata, data);
-                })
-            },
-            function(applydata, orderdata, callback) {
-                var amount = 0;
-                var applykeys = _.keys(applydata);
-                for (var i = 0; i < applykeys.length; ++i) {
-                    if (orderdata[applykeys[i]]) {
-                        applydata[applykeys[i]] -= orderdata[applykeys[i]];
-                    }
-                    amount += applydata[applykeys[i]];
-                }
-                console.log('已结算服务费:' + amount.toFixed(2));
-                callback(null, amount);
-            },
-            function(amount, callback) {
-                activeApplyFeeTillNow(function(err, data) {
-                    console.log('应收取服务费:' + data.toFixed(2));
-                    callback(null, amount+data);
-                });
-            }
-        ], function(err, data) {
-            if (err) {
-                console.log(err.toString());
-            } else {
-                console.log('总服务费:' + data.toFixed(2));
-            }
-        }
-    );
-    */
+     async.waterfall(
+     [
+     function(callback) {
+     historyCloseApplyFee(function(err, data) {
+     callback(err, data);
+     });
+     },
+     function(applydata, callback) {
+     historyReturnFeeOrderData(function(err, data) {
+     callback(err, applydata, data);
+     })
+     },
+     function(applydata, orderdata, callback) {
+     var amount = 0;
+     var applykeys = _.keys(applydata);
+     for (var i = 0; i < applykeys.length; ++i) {
+     if (orderdata[applykeys[i]]) {
+     applydata[applykeys[i]] -= orderdata[applykeys[i]];
+     }
+     amount += applydata[applykeys[i]];
+     }
+     console.log('已结算服务费:' + amount.toFixed(2));
+     callback(null, amount);
+     },
+     function(amount, callback) {
+     activeApplyFeeTillNow(function(err, data) {
+     console.log('应收取服务费:' + data.toFixed(2));
+     callback(null, amount+data);
+     });
+     }
+     ], function(err, data) {
+     if (err) {
+     console.log(err.toString());
+     } else {
+     console.log('总服务费:' + data.toFixed(2));
+     }
+     }
+     );
+     */
     async.series(
         [
             /*
-            function(callback) {
-                getUserData(function (err) {
-                    callback(err);
-                })
-            }
-            function(callback) {
-                historyApplyData(function(err) {
-                    callback(err);
-                });
-            },
-            */
+             function(callback) {
+             getUserData(function (err) {
+             callback(err);
+             })
+             }
+             function(callback) {
+             historyApplyData(function(err) {
+             callback(err);
+             });
+             },
+             */
             function(callback) {
                 var startTime = moment('2015-05-01');
                 historyPayApplyData(startTime, function(err) {
@@ -703,76 +711,76 @@ db.once('open', function callback() {
                 });
             }
             /*
-            function(callback){
-                allOrderData(function(err) {
-                    callback(err);
-                });
-            },
-            function(callback){
-                incomeOrderData(function(err) {
-                    callback(err);
-                });
-            },
-            function(callback){
-                outcomeOrderData(function(err) {
-                    callback(err);
-                });
-            },
+             function(callback){
+             allOrderData(function(err) {
+             callback(err);
+             });
+             },
+             function(callback){
+             incomeOrderData(function(err) {
+             callback(err);
+             });
+             },
+             function(callback){
+             outcomeOrderData(function(err) {
+             callback(err);
+             });
+             },
              */
 
             /*
-            function (callback) {
-                getDailyData(function(err) {
-                    callback(err);
-                });
-            },
-            function(callback){
-                dailyFreeApplyDataTillNow(function(err) {
-                    callback(err);
-                });
-            },
-            function(callback){
-                dailyPayApplyDataTillNow(function(err) {
-                    callback(err);
-                });
-            },
-            function(callback){
-                dailyAddedPayApplyData(startTime, endTime, function(err) {
-                    callback(err);
-                });
-            },
-            function(callback){
-                dailyAddedFreeApplyData(startTime, endTime, function(err) {
-                    callback(err);
-                });
-            },
-            function(callback){
-                dailyFreeApplyData(startTime, endTime, function(err) {
-                    callback(err);
-                });
-            },
-            function(callback){
-                dailyPayApplyData(startTime, endTime, function(err) {
-                    callback(err);
-                });
-            },
-*/
+             function (callback) {
+             getDailyData(function(err) {
+             callback(err);
+             });
+             },
+             function(callback){
+             dailyFreeApplyDataTillNow(function(err) {
+             callback(err);
+             });
+             },
+             function(callback){
+             dailyPayApplyDataTillNow(function(err) {
+             callback(err);
+             });
+             },
+             function(callback){
+             dailyAddedPayApplyData(startTime, endTime, function(err) {
+             callback(err);
+             });
+             },
+             function(callback){
+             dailyAddedFreeApplyData(startTime, endTime, function(err) {
+             callback(err);
+             });
+             },
+             function(callback){
+             dailyFreeApplyData(startTime, endTime, function(err) {
+             callback(err);
+             });
+             },
+             function(callback){
+             dailyPayApplyData(startTime, endTime, function(err) {
+             callback(err);
+             });
+             },
+             */
             /*
-            function(callback) {
-                rechargeOrderData(function(err) {
-                    callback(err);
-                });
-            },
-            function(callback) {
-                withdrawOrderData(function(err) {
-                    callback(err);
-                });
-            },
-            function(callback) {
-                incomeOrderData(function(err) {
-                    callback(err);
-                });
-            }
+             function(callback) {
+             rechargeOrderData(function(err) {
+             callback(err);
+             });
+             },
+             function(callback) {
+             withdrawOrderData(function(err) {
+             callback(err);
+             });
+             },
+             function(callback) {
+             incomeOrderData(function(err) {
+             callback(err);
+             });
+             }
              */
         ],
         function(err){
@@ -782,4 +790,3 @@ db.once('open', function callback() {
             db.close();
         });
 });
-
