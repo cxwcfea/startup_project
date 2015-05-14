@@ -414,7 +414,11 @@ module.exports.postWithdraw = function(req, res) {
             }
         },
         function(user, callback) {
-            data.order.status = 0;
+            if (user.level == 999) {
+                data.order.status = 3;
+            } else {
+                data.order.status = 0;
+            }
             data.order.userBalance = user.finance.balance - amount;
             Order.create(data.order, function(err, order) {
                 callback(err, user, order);
@@ -580,9 +584,9 @@ module.exports.sendVerifyCode = function(req, res, next) {
         res.status(403);
         return res.send({error_msg:'must have img code'});
     }
-    if (req.query.code != req.session.img_code) {
+    if (req.query.code.toLowerCase() != req.session.img_code) {
         res.status(403);
-        return res.send({error_msg:'图形验证码错误'});
+        return res.send({error_msg:'图形验证码错误,应为' + req.session.img_code});
     }
     req.session.img_code = '';
     var code = sms.generateVerifyCode();

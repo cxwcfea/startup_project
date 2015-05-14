@@ -78,7 +78,7 @@
                     <td>
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs">
-                                <!-- <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="myUserVM.open(user.mobile)"><span class="am-icon-envelope"></span> 发短信</button> -->
+                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="myUserVM.contactUser(user.mobile)"><span class="am-icon-phone"></span> 联系</button>
                                 <button class="am-btn am-btn-default am-btn-xs" ng-click="myUserVM.showApplies(user)"><span class="am-icon-bar-chart"></span> 配资</button>
                                 <!--
                                 <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="myUserVM.showOrders(user)"><span class="am-icon-money"></span> 订单</button>
@@ -93,7 +93,7 @@
             </table>
             </div>
             <div class="am-cf">
-                共 \{{myUserVM.currentUsers.length}} 条记录
+                共 \{{myUserVM.currentAllUsers.length}} 条记录，当前为第\{{myUserVM.startItemIndex+1}}-\{{myUserVM.endItemIndex}}条记录
                 <div class="am-fr">
                     <pagination previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="myUserVM.itemsPerPage" total-items="myUserVM.totalItems" ng-model="myUserVM.currentPage" ng-change="myUserVM.pageChanged()"></pagination>
                 </div>

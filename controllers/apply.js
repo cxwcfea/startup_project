@@ -233,9 +233,14 @@ exports.postApplyPostpone = function(req, res, next) {
                             util.sendEmail('op@niujinwang.com,intern@niujinwang.com', '配资延期', content, function(err) {
                                 if (err) {
                                     logger.debug('error when send postpone email apply:' + apply.serialID + ' account:' + apply.account + ' ' + err.toString());
-                                    sms.sendSMS('13439695920', '', 'apply postpone ' + content, function (result) {
-                                        if (result.error) {
-                                            logger.debug('sms also send error when postpone apply:' + apply.serialID);
+                                    util.sendEmail('op@niujinwang.com,intern@niujinwang.com', '配资延期', content, function(err) {
+                                        if (err) {
+                                            logger.debug('2nd error when send postpone email apply:' + apply.serialID + ' account:' + apply.account + ' ' + err.toString());
+                                            sms.sendSMS('13439695920', '', 'apply postpone ' + content, function (result) {
+                                                if (result.error) {
+                                                    logger.debug('sms also send error when postpone apply:' + apply.serialID);
+                                                }
+                                            });
                                         }
                                     });
                                 }

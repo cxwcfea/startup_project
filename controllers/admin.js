@@ -21,6 +21,7 @@ var User = require('../models/User'),
 function getStatisticsPage(req, res, next) {
     var data = {};
     async.waterfall([
+        /*
         function(callback) {
             util.getTodayActiveApplyData(function(err, dataObj) {
                 if (!err) {
@@ -67,6 +68,12 @@ function getStatisticsPage(req, res, next) {
                 callback(err, data);
             });
         },
+        */
+        function(callback) {
+            util.getApplyData(function(err, dataObj) {
+                callback(err, dataObj);
+            });
+        },
         function(data, callback) {
             util.getUserData(function(err, dataObj) {
                 if (!err) {
@@ -80,6 +87,7 @@ function getStatisticsPage(req, res, next) {
             util.getTodayUserData(function(err, dataObj) {
                 if (!err) {
                     data.today_user_num = dataObj.num;
+                    req.session.today_user_source = dataObj.source;
                 }
                 callback(err, data);
             });
@@ -112,6 +120,9 @@ function getStatisticsPage(req, res, next) {
         if (err) {
             console.log('error when get statistic ' + err.toString());
         }
+        req.session.numOfApply = data.numOfApply;
+        req.session.applyLeverMap = data.applyLeverMap;
+        req.session.periodMap = data.periodMap;
         data.total_fee = data.totalServiceFee - data.returnedServiceFee - data.serviceFeeNotGet;
         data.total_fee = data.total_fee.toFixed(0);
         res.locals.data = data;
@@ -526,6 +537,7 @@ function homsAssignAccount(req, res) {
             var startDay = util.getStartDay();
             apply.startTime = startDay.toDate();
             apply.endTime = util.getEndDay(startDay, apply.period, apply.type).toDate();
+            apply.startAt = Date.now();
             apply.save(function (err) {
                 callback(err, apply);
             });
@@ -574,7 +586,7 @@ function _closeApply(serialID, profit, res) {
             res.send({"error_code":1, "error_msg":err.toString()});
         } else {
             var amount = balance > 0 ? balance : 0;
-            util.sendSMS_3(apply.userMobile, amount, apply.deposit, profit);
+            util.sendSMS_3(apply.userMobile, apply.account, amount, apply.deposit, profit);
             res.send({"error_code":0});
         }
     });
@@ -1269,6 +1281,7 @@ function autoApproveApply(req, res) {
             var startDay = util.getStartDay();
             apply.startTime = startDay.toDate();
             apply.endTime = util.getEndDay(startDay, apply.period, apply.type).toDate();
+            apply.startAt = Date.now();
             apply.save(function (err) {
                 callback(err, apply);
             });
@@ -1833,6 +1846,10 @@ function getDailyData(req, res) {
                 ret.users.unshift(elem.newUsers);
                 ret.income.unshift((elem.income / 100).toFixed(2));
             });
+            ret.today_user_source = req.session.today_user_source;
+            ret.num_of_apply = req.session.numOfApply;
+            ret.apply_lever_map = req.session.applyLeverMap;
+            ret.period_map = req.session.periodMap;
             res.send(ret);
         });
 }

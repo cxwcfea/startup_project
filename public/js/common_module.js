@@ -429,17 +429,17 @@
         {
             name: 'approve_apply_sms_content',
             value: 2,
-            content: 'AMOUNT元资金已到账，股票账号ACCOUNT，登录密码PASSWORD，请勿向任何人泄露！'
+            content: 'AMOUNT元资金已到账，股票账号ACCOUNT，登录密码PASSWORD，请不要向任何人泄露！'
         },
         {
             name: 'close_apply_sms_content',
             value: 3,
-            content: '业务结算AMOUNT元（保证金DEPOSIT元，收益PROFIT元）已完成，祝您投资愉快。'
+            content: '账户ACCOUNT结算AMOUNT元（保证金DEPOSIT元，收益PROFIT元）已完成，祝您投资愉快。'
         },
         {
             name: 'pay_success_sms_content',
             value: 4,
-            content: '充值AMOUNT元已经到账，祝您投资愉快。'
+            content: '充值AMOUNT元成功，请登录查看详情，祝您投资愉快。'
         },
         {
             name: 'warn_sms_content',
@@ -454,7 +454,7 @@
         {
             name: 'withdraw_content',
             value: 7,
-            content: 'AMOUNT元资金提现已完成，请注意查收，当前牛金可用余额为BALANCE元。'
+            content: '提现AMOUNT元已完成，请注意查收，如有疑问请致电4006921388。'
         }
     ];
 
