@@ -719,11 +719,11 @@ db.once('open', function callback() {
                     for (var i = 0; i < applies.length; ++i) {
                         theMap[applies[i].serialID] = 1;
                     }
-                    var fee2 = 0;
                     Order.find({$and:[{status:1}, {dealType:8}, {dealType:10}]}, function(err, orders) {
                         if (err) {
                             callback(err);
                         } else {
+                            var fee2 = 0;
                             for(i = 0; i < orders.length; ++i) {
                                 if (theMap[orders[i].applySerialID]) {
                                     if (orders[i].dealType == 8) {
