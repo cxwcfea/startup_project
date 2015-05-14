@@ -116,11 +116,7 @@ var historyPayApplyData = function(startTime, callback) {
             if (applies[i].closeAt) {
                 duration = moment(applies[i].closeAt).diff(moment(applies[i].startTime), 'days');
             } else {
-                if (applies[i].status !== 3) {
-                    duration = time1.diff(moment(applies[i].startTime), 'days');
-                } else {
-                    duration = applies[i].period;
-                }
+                duration = applies[i].period;
             }
             if (applies[i].serviceCharge) {
                 fee += applies[i].serviceCharge * applies[i].amount / 10000 * duration;
