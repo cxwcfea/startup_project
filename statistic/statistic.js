@@ -724,7 +724,9 @@ db.once('open', function callback() {
                             callback(err);
                         } else {
                             var fee2 = 0;
+                            var fee3 = 0;
                             for(i = 0; i < orders.length; ++i) {
+                                fee3 += orders[i].amount;
                                 if (theMap[orders[i].applySerialID]) {
                                     if (orders[i].dealType == 8) {
                                         fee2 -= orders[i].amount;
@@ -734,6 +736,7 @@ db.once('open', function callback() {
                                 }
                             }
                             console.log('result: ' + fee2);
+                            console.log('result2: ' + fee3);
                             callback(null);
                         }
                     });
