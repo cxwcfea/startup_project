@@ -112,7 +112,8 @@ var historyPayApplyData = function(startTime, callback) {
         var fee = 0;
         for (var i = 0; i < applies.length; ++i) {
             if (applies[i].type === 2) continue;
-            var duration = 0;
+            var duration = applies[i].period;
+            /*
             if (applies[i].closeAt) {
                 duration = moment(applies[i].closeAt).diff(moment(applies[i].startTime), 'days');
             } else {
@@ -123,6 +124,7 @@ var historyPayApplyData = function(startTime, callback) {
                     duration = applies[i].period;
                 }
             }
+            */
             if (applies[i].serviceCharge) {
                 fee += applies[i].serviceCharge * applies[i].amount / 10000 * duration;
             } else {
