@@ -722,6 +722,13 @@ db.once('open', function callback() {
                         if (err) {
                             callback(err);
                         } else {
+                            var data;
+                            var options = { encoding: 'utf8', flag: 'w' };
+                            var fileWriteStream = fs.createWriteStream("IncomeData.csv",  options);
+                            fileWriteStream.on("close", function() {
+                                console.log("File Closed.");
+                            });
+
                             var fee2 = 0;
                             var fee3 = 0;
                             for(i = 0; i < orders.length; ++i) {
@@ -729,11 +736,16 @@ db.once('open', function callback() {
                                 if (theMap[orders[i].applySerialID]) {
                                     if (orders[i].dealType == 8) {
                                         fee2 -= orders[i].amount;
+                                        data = 'apply:' + orders[i].applySerialID + ' out:' + orders[i].amount + '\n';
+                                        fileWriteStream.write(data);
                                     } else {
                                         fee2 += orders[i].amount;
+                                        data = 'apply:' + orders[i].applySerialID + ' in:' + orders[i].amount + '\n';
+                                        fileWriteStream.write(data);
                                     }
                                 }
                             }
+                            fileWriteStream.end();
                             console.log('result: ' + fee2);
                             console.log('result2: ' + fee3);
                             callback(null);
