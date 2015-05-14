@@ -80,7 +80,7 @@ var historyPayApplyData = function(startTime, callback) {
 
     var time1 = moment('2015-05-01');
     var time2 = moment('2015-04-01');
-    Apply.find({$and:[{isTrial:false}, {startTime:{$lte:time1}}, {startTime:{$gte:time2}}, {status:{$ne:1}}, {status:{$ne:9}}]}, function(err, applies) {
+    Apply.find({$and:[{isTrial:false}, {startTime:{$lte:time1}}, {startTime:{$gte:time2}}, {status:{$ne:1}}, {status:{$ne:9}}, {status:{$ne:4}}]}, function(err, applies) {
         if (err) {
             console.log(err.toString());
             return;
