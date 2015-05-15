@@ -715,9 +715,9 @@ db.once('open', function callback() {
             }
         }
     );
+    /*
     async.series(
         [
-            /*
              function(callback) {
              getUserData(function (err) {
              callback(err);
@@ -800,7 +800,6 @@ db.once('open', function callback() {
              callback(err);
              });
              }
-             */
         ],
         function(err){
             if (err) {
@@ -808,4 +807,5 @@ db.once('open', function callback() {
             }
             db.close();
         });
+             */
 });
