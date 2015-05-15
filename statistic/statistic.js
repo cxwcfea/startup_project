@@ -75,14 +75,14 @@ var historyFreeApplyData = function(startTime, callback) {
     });
 };
 
-var historyPayApplyData = function(startTime, callback) {
+var historyPayApplyData = function(startTime, applyCloseDateMap, callback) {
     console.log('historyPayApplyData');
 
     var time1 = moment('2015-05-01');
     Apply.find({$and:[{isTrial:false}, {startTime:{$lte:time1}}, {status:{$ne:1}}, {status:{$ne:9}}]}, function(err, applies) {
         if (err) {
             console.log(err.toString());
-            return;
+            callback(err);
         }
         var amount = 0;
         for (var i = 0; i < applies.length; ++i) {
@@ -112,18 +112,21 @@ var historyPayApplyData = function(startTime, callback) {
         for (var i = 0; i < applies.length; ++i) {
             if (applies[i].type === 2) continue;
             var duration = applies[i].period;
-            /*
-            if (applies[i].closeAt) {
-                duration = moment(applies[i].closeAt).diff(moment(applies[i].startTime), 'days');
-            } else {
-                var time3 = moment(applies[i].endTime);
-                if (time3 > time1) {
-                    duration = time1.diff(moment(applies[i].startTime), 'days');
-                } else {
-                    duration = applies[i].period;
-                }
+            if (!applies[i].closeAt && applyCloseDateMap[applies[i].serialID]) {
+                applies[i].closeAt = applyCloseDateMap[applies[i].serialID];
             }
-            */
+            if (!applies[i].closeAt) {
+                applies[i].closeAt = applies[i].endTime;
+            }
+            var time2 = moment(applies[i].closeAt);
+            var closeTime;
+            if (time2 > time1) {
+                closeTime = time1;
+            } else {
+                closeTime = time2;
+            }
+            var startTime = moment(applies[i].startTime);
+            duration = closeTime.diff(startTime, 'days');
             if (applies[i].serviceCharge) {
                 fee += applies[i].serviceCharge * applies[i].amount / 10000 * duration;
             } else {
@@ -154,7 +157,7 @@ var historyPayApplyData = function(startTime, callback) {
         }
         console.log('total fee:' + fee.toFixed(2));
 
-        callback(null, applies, fee);
+        callback(null);
     });
 };
 
@@ -712,45 +715,17 @@ db.once('open', function callback() {
              },
              */
             function(callback) {
-                var startTime = moment('2015-05-01');
-                historyPayApplyData(startTime, function(err, applies, fee) {
-                    var theMap = {};
-                    for (var i = 0; i < applies.length; ++i) {
-                        theMap[applies[i].serialID] = 1;
-                    }
-                    Order.find({$and:[{status:1}, {$or:[{dealType:8}, {dealType:10}]}]}, function(err, orders) {
-                        if (err) {
-                            callback(err);
-                        } else {
-                            var data;
-                            var options = { encoding: 'utf8', flag: 'w' };
-                            var fileWriteStream = fs.createWriteStream("IncomeData.csv",  options);
-                            fileWriteStream.on("close", function() {
-                                console.log("File Closed.");
-                            });
-
-                            var fee2 = 0;
-                            var fee3 = 0;
-                            for(i = 0; i < orders.length; ++i) {
-                                fee3 += orders[i].amount;
-                                if (theMap[orders[i].applySerialID]) {
-                                    if (orders[i].dealType == 8) {
-                                        fee2 -= orders[i].amount;
-                                        data = 'apply:' + orders[i].applySerialID + ' out:' + orders[i].amount + '\n';
-                                        fileWriteStream.write(data);
-                                    } else {
-                                        fee2 += orders[i].amount;
-                                        data = 'apply:' + orders[i].applySerialID + ' in:' + orders[i].amount + '\n';
-                                        fileWriteStream.write(data);
-                                    }
-                                }
-                            }
-                            fileWriteStream.end();
-                            console.log('result: ' + fee2);
-                            console.log('result2: ' + fee3);
-                            callback(null);
-                        }
-                    });
+                Order.find({$and:[{dealType:5}, {status:1}]}, function(err, orders) {
+                    callback(err, orders);
+                });
+            },
+            function(depositReturnOrders, callback) {
+                var applyCloseDateMap = {};
+                for (var i = 0; i < depositReturnOrders.length; ++i) {
+                    applyCloseDateMap[depositReturnOrders[i].applySerialID] = depositReturnOrders[i].createdAt;
+                }
+                historyPayApplyData(startTime, applyCloseDateMap, function(err) {
+                    callback(err);
                 });
             }
             /*
