@@ -75,6 +75,7 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
             $http.post('/api/user/invest_update', data)
                 .success(function(data, status) {
                     vm.showConfirmDialog = true;
+                    vm.user.enableInvest = true;
                 })
                 .error(function(data, status) {
                     vm.errorMsg = data.error_msg;
