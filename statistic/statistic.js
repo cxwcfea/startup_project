@@ -88,6 +88,7 @@ var historyPayApplyData = function(startTime, applyCloseDateMap, callback) {
         for (var i = 0; i < applies.length; ++i) {
             var value = applies[i].deposit + applies[i].profit;
             if (value < 0) {
+                console.log(applies[i].userMobile + ' ' + applies[i].serialID);
                 amount += value;
             }
         }
