@@ -116,7 +116,11 @@ var historyPayApplyData = function(startTime, applyCloseDateMap, callback) {
                 applies[i].closeAt = applyCloseDateMap[applies[i].serialID];
             }
             if (!applies[i].closeAt) {
-                applies[i].closeAt = applies[i].endTime;
+                if (applies[i].status == 2) {
+                    applies[i].closeAt = time1.toDate();
+                } else {
+                    applies[i].closeAt = applies[i].endTime;
+                }
             }
             var time2 = moment(applies[i].closeAt);
             var closeTime;
