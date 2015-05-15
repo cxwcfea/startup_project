@@ -716,6 +716,7 @@ db.once('open', function callback() {
              */
             function(callback) {
                 Order.find({$and:[{dealType:5}, {status:1}]}, function(err, orders) {
+                    console.log(orders.length);
                     callback(err, orders);
                 });
             },
