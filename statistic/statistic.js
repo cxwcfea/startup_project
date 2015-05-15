@@ -660,46 +660,61 @@ db.once('open', function callback() {
     startTime = startTime.toDate();
     endTime = endTime.toDate();
 
-    /*
-     async.waterfall(
-     [
-     function(callback) {
-     historyCloseApplyFee(function(err, data) {
-     callback(err, data);
-     });
-     },
-     function(applydata, callback) {
-     historyReturnFeeOrderData(function(err, data) {
-     callback(err, applydata, data);
-     })
-     },
-     function(applydata, orderdata, callback) {
-     var amount = 0;
-     var applykeys = _.keys(applydata);
-     for (var i = 0; i < applykeys.length; ++i) {
-     if (orderdata[applykeys[i]]) {
-     applydata[applykeys[i]] -= orderdata[applykeys[i]];
-     }
-     amount += applydata[applykeys[i]];
-     }
-     console.log('已结算服务费:' + amount.toFixed(2));
-     callback(null, amount);
-     },
-     function(amount, callback) {
-     activeApplyFeeTillNow(function(err, data) {
-     console.log('应收取服务费:' + data.toFixed(2));
-     callback(null, amount+data);
-     });
-     }
-     ], function(err, data) {
-     if (err) {
-     console.log(err.toString());
-     } else {
-     console.log('总服务费:' + data.toFixed(2));
-     }
-     }
-     );
-     */
+    async.waterfall(
+        [
+            function(callback) {
+                Order.find({$and:[{dealType:5}, {status:1}]}, function(err, orders) {
+                    console.log(orders.length);
+                    callback(err, orders);
+                });
+            },
+            function(depositReturnOrders, callback) {
+                var applyCloseDateMap = {};
+                for (var i = 0; i < depositReturnOrders.length; ++i) {
+                    applyCloseDateMap[depositReturnOrders[i].applySerialID] = depositReturnOrders[i].createdAt;
+                }
+                historyPayApplyData(startTime, applyCloseDateMap, function(err) {
+                    callback(err, 0);
+                });
+            }
+            /*
+            function(callback) {
+                historyCloseApplyFee(function(err, data) {
+                    callback(err, data);
+                });
+            },
+            function(applydata, callback) {
+                historyReturnFeeOrderData(function(err, data) {
+                    callback(err, applydata, data);
+                })
+            },
+            function(applydata, orderdata, callback) {
+                var amount = 0;
+                var applykeys = _.keys(applydata);
+                for (var i = 0; i < applykeys.length; ++i) {
+                    if (orderdata[applykeys[i]]) {
+                        applydata[applykeys[i]] -= orderdata[applykeys[i]];
+                    }
+                    amount += applydata[applykeys[i]];
+                }
+                console.log('已结算服务费:' + amount.toFixed(2));
+                callback(null, amount);
+            },
+            function(amount, callback) {
+                activeApplyFeeTillNow(function(err, data) {
+                    console.log('应收取服务费:' + data.toFixed(2));
+                    callback(null, amount+data);
+                });
+            }
+            */
+        ], function(err, data) {
+            if (err) {
+                console.log(err.toString());
+            } else {
+                console.log('总服务费:' + data.toFixed(2));
+            }
+        }
+    );
     async.series(
         [
             /*
@@ -714,21 +729,6 @@ db.once('open', function callback() {
              });
              },
              */
-            function(callback) {
-                Order.find({$and:[{dealType:5}, {status:1}]}, function(err, orders) {
-                    console.log(orders.length);
-                    callback(err, orders);
-                });
-            },
-            function(depositReturnOrders, callback) {
-                var applyCloseDateMap = {};
-                for (var i = 0; i < depositReturnOrders.length; ++i) {
-                    applyCloseDateMap[depositReturnOrders[i].applySerialID] = depositReturnOrders[i].createdAt;
-                }
-                historyPayApplyData(startTime, applyCloseDateMap, function(err) {
-                    callback(err);
-                });
-            }
             /*
              function(callback){
              allOrderData(function(err) {
