@@ -668,6 +668,7 @@ db.once('open', function callback() {
     startTime = startTime.toDate();
     endTime = endTime.toDate();
 
+    /*
     async.waterfall(
         [
             function(callback) {
@@ -685,7 +686,6 @@ db.once('open', function callback() {
                     callback(err, 0);
                 });
             }
-            /*
             function(callback) {
                 historyCloseApplyFee(function(err, data) {
                     callback(err, data);
@@ -714,7 +714,6 @@ db.once('open', function callback() {
                     callback(null, amount+data);
                 });
             }
-            */
         ], function(err, data) {
             if (err) {
                 console.log(err.toString());
@@ -724,75 +723,71 @@ db.once('open', function callback() {
             db.close();
         }
     );
-    /*
+             */
     async.series(
         [
-             function(callback) {
-             getUserData(function (err) {
-             callback(err);
-             })
-             }
-             function(callback) {
-             historyApplyData(function(err) {
-             callback(err);
-             });
-             },
-             */
-            /*
-             function(callback){
-             allOrderData(function(err) {
-             callback(err);
-             });
-             },
-             function(callback){
-             incomeOrderData(function(err) {
-             callback(err);
-             });
-             },
-             function(callback){
-             outcomeOrderData(function(err) {
-             callback(err);
-             });
-             },
-             */
-
-            /*
-             function (callback) {
-             getDailyData(function(err) {
-             callback(err);
-             });
-             },
-             function(callback){
-             dailyFreeApplyDataTillNow(function(err) {
-             callback(err);
-             });
-             },
-             function(callback){
-             dailyPayApplyDataTillNow(function(err) {
-             callback(err);
-             });
-             },
-             function(callback){
-             dailyAddedPayApplyData(startTime, endTime, function(err) {
-             callback(err);
-             });
-             },
-             function(callback){
-             dailyAddedFreeApplyData(startTime, endTime, function(err) {
-             callback(err);
-             });
-             },
-             function(callback){
-             dailyFreeApplyData(startTime, endTime, function(err) {
-             callback(err);
-             });
-             },
-             function(callback){
-             dailyPayApplyData(startTime, endTime, function(err) {
-             callback(err);
-             });
-             },
-             */
+    /*
+            function(callback) {
+                getUserData(function (err) {
+                    callback(err);
+                })
+            }
+            function(callback) {
+                historyApplyData(function(err) {
+                    callback(err);
+                });
+            },
+            function(callback){
+                allOrderData(function(err) {
+                    callback(err);
+                });
+            },
+            function(callback){
+                incomeOrderData(function(err) {
+                    callback(err);
+                });
+            },
+            function(callback){
+                outcomeOrderData(function(err) {
+                    callback(err);
+                });
+            },
+            function (callback) {
+                getDailyData(function(err) {
+                    callback(err);
+                });
+            },
+     */
+            function(callback){
+                dailyFreeApplyDataTillNow(function(err) {
+                    callback(err);
+                });
+            },
+            function(callback){
+                dailyPayApplyDataTillNow(function(err) {
+                    callback(err);
+                });
+            },
+            function(callback){
+                dailyAddedPayApplyData(startTime, endTime, function(err) {
+                    callback(err);
+                });
+            },
+            function(callback){
+                dailyAddedFreeApplyData(startTime, endTime, function(err) {
+                    callback(err);
+                });
+            },
+            function(callback){
+                dailyFreeApplyData(startTime, endTime, function(err) {
+                    callback(err);
+                });
+            },
+            function(callback){
+                dailyPayApplyData(startTime, endTime, function(err) {
+                    callback(err);
+                });
+            }
             /*
              function(callback) {
              rechargeOrderData(function(err) {
@@ -809,6 +804,7 @@ db.once('open', function callback() {
              callback(err);
              });
              }
+             */
         ],
         function(err){
             if (err) {
@@ -816,5 +812,4 @@ db.once('open', function callback() {
             }
             db.close();
         });
-             */
 });
