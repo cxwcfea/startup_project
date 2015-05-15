@@ -93,21 +93,6 @@ var historyPayApplyData = function(startTime, applyCloseDateMap, callback) {
             }
         }
         console.log('穿仓 ' + amount);
-        var options = { encoding: 'utf8', flag: 'w' };
-        var fileWriteStream = fs.createWriteStream("historyPayApplyDataTill-" + moment().format("YYYY-MM-DD") + ".csv",  options);
-        fileWriteStream.on("close", function() {
-            console.log("File Closed.");
-        });
-        var data = 'userID, userMobile, serialID, amount, deposit, period, status, applyAt, closeAt, isTrial, autoPostpone, lever, warnValue, sellValue, startTime, endTime, account, profit, type, interestRate, serviceCharge\n';
-        fileWriteStream.write(data);
-        applies.forEach(function (apply) {
-            data = apply.userID + ', ' + apply.userMobile + ', ' + apply.serialID + ', ' + apply.amount.toFixed(2) + ', ' + apply.deposit.toFixed(2) + ', '
-            + apply.period + ', ' + apply.status + ', ' + moment(apply.applyAt).format('YYYYMMDDHHmmss') + ', ' + moment(apply.closeAt).format('YYYYMMDDHHmmss') + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
-            + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + moment(apply.startTime).format('YYYYMMDDHHmmss') + ', ' + moment(apply.endTime).format('YYYYMMDDHHmmss') + ', ' + apply.account + ', '
-            + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + '\n';
-            fileWriteStream.write(data);
-        });
-        fileWriteStream.end();
 
         var fee = 0;
         for (var i = 0; i < applies.length; ++i) {
@@ -132,35 +117,53 @@ var historyPayApplyData = function(startTime, applyCloseDateMap, callback) {
             }
             var startTime = moment(applies[i].startTime);
             duration = closeTime.diff(startTime, 'days');
+            var theFee = 0;
             if (applies[i].serviceCharge) {
-                fee += applies[i].serviceCharge * applies[i].amount / 10000 * duration;
+                theFee = applies[i].serviceCharge * applies[i].amount / 10000 * duration;
             } else {
                 switch (applies[i].lever) {
                     case 10:
-                        fee += 19.9 * applies[i].amount / 10000 * duration;
+                        theFee = 19.9 * applies[i].amount / 10000 * duration;
                         break;
                     case 9:
-                        fee += 18.9 * applies[i].amount / 10000 * duration;
+                        theFee = 18.9 * applies[i].amount / 10000 * duration;
                         break;
                     case 8:
-                        fee += 17.9 * applies[i].amount / 10000 * duration;
+                        theFee = 17.9 * applies[i].amount / 10000 * duration;
                         break;
                     case 7:
-                        fee += 16.9 * applies[i].amount / 10000 * duration;
+                        theFee = 16.9 * applies[i].amount / 10000 * duration;
                         break;
                     case 6:
-                        fee += 15.9 * applies[i].amount / 10000 * duration;
+                        theFee = 15.9 * applies[i].amount / 10000 * duration;
                         break;
                     case 5:
-                        fee += 10.9 * applies[i].amount / 10000 * duration;
+                        theFee = 10.9 * applies[i].amount / 10000 * duration;
                         break;
                     default :
-                        fee += 19.9 * applies[i].amount / 10000 * duration;
+                        theFee = 19.9 * applies[i].amount / 10000 * duration;
                         break;
                 }
             }
+            applies[i].fee = theFee;
+            fee += theFee;
         }
         console.log('total fee:' + fee.toFixed(2));
+        var options = { encoding: 'utf8', flag: 'w' };
+        var fileWriteStream = fs.createWriteStream("historyPayApplyDataTill-" + moment().format("YYYY-MM-DD") + ".csv",  options);
+        fileWriteStream.on("close", function() {
+            console.log("File Closed.");
+        });
+        var data = 'userID, userMobile, serialID, amount, deposit, period, status, applyAt, closeAt, isTrial, autoPostpone, lever, warnValue, sellValue, startTime, endTime, account, profit, type, interestRate, serviceCharge, fee\n';
+        fileWriteStream.write(data);
+        applies.forEach(function (apply) {
+            data = apply.userID + ', ' + apply.userMobile + ', ' + apply.serialID + ', ' + apply.amount.toFixed(2) + ', ' + apply.deposit.toFixed(2) + ', '
+            + apply.period + ', ' + apply.status + ', ' + moment(apply.applyAt).format('YYYYMMDDHHmmss') + ', ' + moment(apply.closeAt).format('YYYYMMDDHHmmss') + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
+            + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + moment(apply.startTime).format('YYYYMMDDHHmmss') + ', ' + moment(apply.endTime).format('YYYYMMDDHHmmss') + ', ' + apply.account + ', '
+            + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + ', ' + apply.fee + '\n';
+            fileWriteStream.write(data);
+        });
+        fileWriteStream.end();
 
         callback(null);
     });
@@ -718,6 +721,7 @@ db.once('open', function callback() {
             } else {
                 console.log('总服务费:' + data.toFixed(2));
             }
+            db.close();
         }
     );
     /*
