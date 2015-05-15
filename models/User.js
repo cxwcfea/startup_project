@@ -41,7 +41,8 @@ var userSchema = new mongoose.Schema({
         weibo: String,
         picture: {type: String, default: ''},
         alipay_account: String,
-        alipay_name: String
+        alipay_name: String,
+        weixin_id: String
     },
 
     identity: {
