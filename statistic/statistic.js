@@ -720,6 +720,7 @@ db.once('open', function callback() {
                     } else {
                         var userMap = {};
                         users.forEach(function(elem) {
+                            console.log(elem.mobile + ' ' + elem.manager);
                             users[elem.mobile] = elem.manager;
                         });
                     }
