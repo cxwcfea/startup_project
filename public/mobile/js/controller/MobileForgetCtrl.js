@@ -12,26 +12,39 @@ angular.module('mobileApp').controller('MobileForgetCtrl', ['$location', '$timeo
         if (vm.verifyBtnDisabled) {
             return;
         }
-        vm.verifyBtnDisabled = true;
-        var count = 0;
-        vm.verifyCodeBtnText = '60秒后重试';
-        var timeId = $interval(function() {
-            ++count;
-            vm.verifyCodeBtnText = 60-count + '秒后重试';
-            if (count === 60) {
-                $interval.cancel(timeId);
-                vm.verifyCodeBtnText = '获取验证码';
-                vm.verifyBtnDisabled = false;
-            }
-        }, 1000);
+        if (!vm.img_code) {
+            vm.signupError = true;
+            vm.errorMsg = '请输入图形验证码';
+            $timeout(function() {
+                vm.signupError = false;
+            }, 1500);
+            return;
+        }
 
         var type = reset ? 2 : 1;
-        $http.get('/api/send_sms_verify_code?mobile=' + vm.mobile + '&type=' + type)
+        $http.get('/api/send_sms_verify_code?mobile=' + vm.mobile + '&type=' + type + '&code=' + vm.img_code)
             .success(function(data, status, headers, config) {
-                //addAlert('success', '验证码已发送');
+                vm.verifyBtnDisabled = true;
+                var count = 0;
+                vm.verifyCodeBtnText = '60秒后重试';
+                var timeId = $interval(function() {
+                    ++count;
+                    vm.verifyCodeBtnText = 60-count + '秒后重试';
+                    if (count === 60) {
+                        $interval.cancel(timeId);
+                        vm.verifyCodeBtnText = '获取验证码';
+                        vm.verifyBtnDisabled = false;
+                    }
+                }, 1000);
             })
             .error(function(data, status, headers, config) {
-                //addAlert('danger', '验证码发送失败，请稍后重试');
+                var x = Math.random();
+                $('#img_code')[0].src = '/api/get_verify_img?cacheBuster=' + x;
+                vm.errorMsg = data.error_msg;
+                vm.signupError = true;
+                $timeout(function() {
+                    vm.signupError = false;
+                }, 2000);
             });
     };
 
@@ -56,8 +69,16 @@ angular.module('mobileApp').controller('MobileForgetCtrl', ['$location', '$timeo
             }, 1500);
             return;
         }
+        if (!vm.img_code) {
+            vm.signupError = true;
+            vm.errorMsg = '请输入图形验证码';
+            $timeout(function() {
+                vm.signupError = false;
+            }, 1500);
+            return;
+        }
         if (!vm.verify_code) {
-            vm.errorMsg = '请输入验证码';
+            vm.errorMsg = '请输入短信验证码';
             vm.signupError = true;
             $timeout(function() {
                 vm.signupError = false;
@@ -104,6 +125,11 @@ angular.module('mobileApp').controller('MobileForgetCtrl', ['$location', '$timeo
         } else {
             $pwd.attr('type', 'password');
         }
+    };
+
+    vm.imgClicked = function(e) {
+        var x = Math.random();
+        e.target.src = '/api/get_verify_img?cacheBuster=' + x;
     };
 
 }]);

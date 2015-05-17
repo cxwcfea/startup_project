@@ -1,0 +1,48 @@
+<div class="modal-header">
+    <h3 class="modal-title">跟{{mobile}}做朋友</h3>
+</div>
+<div class="modal-body">
+    <div class="am-g">
+        <div class="am-u-sm-6">
+            <div class="am-panel am-panel-default">
+                <div class="am-panel-hd am-cf" data-am-collapse="{target: '#collapse-panel-3'}">历史标签<span class="am-icon-chevron-down am-fr" ></span>
+                </div>
+                <div class="am-panel-bd am-collapse am-in am-cf" id="collapse-panel-3">
+                    <span ng-repeat="note in note_list">
+                        <button class="am-icon-tag am-btn am-btn-primary am-round am-btn-xs" ng-click="showNote(note.writer, note.createdAt, note.title, note.content)" >{{note.tag}}</button>
+                    </span>
+                    <hr />
+                    <div ng-show="note_list.length>0">
+                        <span>同事:{{noteWriter}}</span> <br/>
+                        <span>时间:<time>{{noteCreatedAt|displayDate}}</time></span> <br/>
+                        <span>标题:<time>{{noteTitle}}</time></span> <br/>
+                        <span>内容:{{noteContent}}</span>
+                    </div>
+                    <div ng-show="note_list.length===0">
+                        <p>暂时未对该用户添加任何标签，来添加一个吧<span class="am-icon-arrow-right"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="am-u-sm-6">
+            <form class="am-form">
+                <div class="am-form-group">
+                    <label>标签</label>
+                    <input type="text" ng-model="data.tag">
+                </div>
+                <div class="am-form-group">
+                    <label>标题</label>
+                    <input type="text" ng-model="data.title">
+                </div>
+                <div class="am-form-group">
+                    <label for="doc-ta-1">内容</label>
+                    <textarea class="" rows="5" id="doc-ta-1" ng-model="data.content"></textarea>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">添加记录</button>
+    <button class="btn btn-warning" ng-click="cancel()">放弃添加</button>
+</div>

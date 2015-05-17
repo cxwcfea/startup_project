@@ -58,7 +58,16 @@
                     <span class="color_999999">请输入电子邮箱地址</span>
                 </div>
             </div>
-            <div class=" pass_formBox">
+            <div class="pass_formBox">
+                <div class="fl pass_left">
+                    图形验证码
+                </div>
+                <div class="pass_right fl">
+                    <input type="text" placeholder="输入验证码,不区分大小写" name="img_password" class="newcar_inputText pass_inputText" id="img-pwd" minlength="6" maxlength="6" required ng-model="accountVM.img_code">
+                    <img id="img_code" style="-webkit-user-select: none; height: 30px; width: 130px; cursor: pointer" src="/api/get_verify_img" ng-click="accountVM.imgClicked($event)">
+                </div>
+            </div>
+            <div class="pass_formBox">
                 <div class="fl pass_left">
                     邮箱验证码
                 </div>

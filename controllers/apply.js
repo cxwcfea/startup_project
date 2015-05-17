@@ -231,12 +231,19 @@ exports.postApplyPostpone = function(req, res, next) {
                         user.save(function(err) {
                             var content = 'user:' + order.userMobile + ' account:' + apply.account + ' period:' + period;
                             util.sendEmail('op@niujinwang.com,intern@niujinwang.com', '配资延期', content, function(err) {
-                                logger.debug('error when send postpone email apply:' + apply.serialID + ' account:' + apply.account + ' ' + err.toString());
-                                sms.sendSMS('13439695920', '', 'apply postpone ' + content, function (result) {
-                                    if (result.error) {
-                                        logger.debug('sms also send error when postpone apply:' + apply.serialID);
-                                    }
-                                });
+                                if (err) {
+                                    logger.debug('error when send postpone email apply:' + apply.serialID + ' account:' + apply.account + ' ' + err.toString());
+                                    util.sendEmail('op@niujinwang.com,intern@niujinwang.com', '配资延期', content, function(err) {
+                                        if (err) {
+                                            logger.debug('2nd error when send postpone email apply:' + apply.serialID + ' account:' + apply.account + ' ' + err.toString());
+                                            sms.sendSMS('13439695920', '', 'apply postpone ' + content, function (result) {
+                                                if (result.error) {
+                                                    logger.debug('sms also send error when postpone apply:' + apply.serialID);
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
                             });
                             callback(err, order, true);
                         });
@@ -516,6 +523,18 @@ exports.freeApply = function(req, res, next) {
                             if (!user) {
                                 logger.debug('freeApply error: user not found');
                                 return next();
+                            }
+                            if (user.freeApply) {
+                                logger.warn('user:' + user.mobile + ' already tried free apply, refuse it');
+                                res.locals.serial_id = user.freeApply;
+                                if (req.url.search('/mobile') > -1) {
+                                    res.render('mobile/free_apply_refuse', {
+                                        layout: 'mobile'
+                                    });
+                                } else {
+                                    res.render('apply/free_apply_refuse');
+                                }
+                                return;
                             }
                             user.finance.balance -= 100;
                             user.finance.total_capital += 2000;

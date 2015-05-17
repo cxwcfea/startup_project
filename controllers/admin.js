@@ -4,6 +4,7 @@ var User = require('../models/User'),
     AlipayOrder = require('../models/AlipayOrder'),
     Homas = require('../models/Homas'),
     Note = require('../models/Note'),
+    DailyData = require('../models/DailyData'),
     SalesData = require('../models/SalesData'),
     log4js = require('log4js'),
     logger = log4js.getLogger('admin'),
@@ -20,6 +21,7 @@ var User = require('../models/User'),
 function getStatisticsPage(req, res, next) {
     var data = {};
     async.waterfall([
+        /*
         function(callback) {
             util.getTodayActiveApplyData(function(err, dataObj) {
                 if (!err) {
@@ -66,6 +68,12 @@ function getStatisticsPage(req, res, next) {
                 callback(err, data);
             });
         },
+        */
+        function(callback) {
+            util.getApplyData(function(err, dataObj) {
+                callback(err, dataObj);
+            });
+        },
         function(data, callback) {
             util.getUserData(function(err, dataObj) {
                 if (!err) {
@@ -79,6 +87,7 @@ function getStatisticsPage(req, res, next) {
             util.getTodayUserData(function(err, dataObj) {
                 if (!err) {
                     data.today_user_num = dataObj.num;
+                    req.session.today_user_source = dataObj.source;
                 }
                 callback(err, data);
             });
@@ -111,6 +120,9 @@ function getStatisticsPage(req, res, next) {
         if (err) {
             console.log('error when get statistic ' + err.toString());
         }
+        req.session.numOfApply = data.numOfApply;
+        req.session.applyLeverMap = data.applyLeverMap;
+        req.session.periodMap = data.periodMap;
         data.total_fee = data.totalServiceFee - data.returnedServiceFee - data.serviceFeeNotGet;
         data.total_fee = data.total_fee.toFixed(0);
         res.locals.data = data;
@@ -289,7 +301,7 @@ function fetchAllApplies(req, res, next) {
 }
 
 function fetchAllOrders(req, res, next) {
-    Order.find({}, function(err, collection) {
+    Order.find({status:1}, function(err, collection) {
         if (err) {
             logger.error(err.toString());
         }
@@ -339,24 +351,39 @@ function createOrder(req, res) {
         res.status(400);
         return res.send({});
     }
-    logger.info('createOrder operator:' + req.user.mobile);
-    var orderData = {
-        userID: req.body.userID,
-        userMobile: req.body.userMobile,
-        dealType: req.body.order_type,
-        amount: req.body.order_amount,
-        status: 0,
-        payType: 4, // 银行转账
-        description: req.body.order_description ? req.body.order_description : '',
-        bankTransID: req.body.order_bank_trans_id ? req.body.order_bank_trans_id : ''
-    };
-    Order.create(orderData, function(err, order) {
+    var trans_id = req.body.order_bank_trans_id ? req.body.order_bank_trans_id : '';
+    Order.findOne({bankTransID:trans_id}, function(err, order) {
         if (err) {
-            logger.debug('createOrder error:' + err.toString());
+            logger.warn('create order error:' + err.toString());
             res.status(500);
-            return res.send({error_msg:err.toString()});
+            return res.send({error_msg: err.toString()});
         }
-        res.send({});
+        if (order && order.dealType === 1) {
+            logger.warn('create order error: the recharge order already confirmed');
+            res.status(403);
+            return res.send({error_msg:'the recharge order already confirmed'});
+        }
+        logger.info('createOrder operator:' + req.user.mobile);
+        var orderData = {
+            userID: req.body.userID,
+            userMobile: req.body.userMobile,
+            dealType: req.body.order_type,
+            amount: req.body.order_amount,
+            status: 0,
+            description: req.body.order_description ? req.body.order_description : '',
+            bankTransID: req.body.order_bank_trans_id ? req.body.order_bank_trans_id : ''
+        };
+        if (req.body.order_type == 1) {
+            orderData.payType = 4; // 银行转账
+        }
+        Order.create(orderData, function(err, order) {
+            if (err) {
+                logger.debug('createOrder error:' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+            res.send({});
+        });
     });
 }
 
@@ -510,6 +537,7 @@ function homsAssignAccount(req, res) {
             var startDay = util.getStartDay();
             apply.startTime = startDay.toDate();
             apply.endTime = util.getEndDay(startDay, apply.period, apply.type).toDate();
+            apply.startAt = Date.now();
             apply.save(function (err) {
                 callback(err, apply);
             });
@@ -548,7 +576,7 @@ function _closeApply(serialID, profit, res) {
         },
         function(user, apply, callback) {
             util.applyClosed(user, apply, profit, function(err) {
-                callback(err, apply, user.finance.balance);
+                callback(err, apply, profit+apply.deposit);
             });
         }
     ], function(err, apply, balance) {
@@ -558,7 +586,7 @@ function _closeApply(serialID, profit, res) {
             res.send({"error_code":1, "error_msg":err.toString()});
         } else {
             var amount = balance > 0 ? balance : 0;
-            util.sendSMS_3(apply.userMobile, amount, apply.deposit, profit);
+            util.sendSMS_3(apply.userMobile, apply.account, amount, apply.deposit, profit);
             res.send({"error_code":0});
         }
     });
@@ -690,7 +718,7 @@ function confirmAlipayOrder(req, res) {
         if (order) {
             logger.warn('confirmAlipayOrder error: the alipay order already confirmed');
             res.status(403);
-            return res.send({error_msg:err.toString()});
+            return res.send({error_msg:'the alipay order already confirmed'});
         }
         Order.findById(req.params.id, function(err, order) {
             if (err) {
@@ -812,6 +840,45 @@ function getRechargeOrders(req, res) {
             return res.send({error_msg:err.toString()});
         }
         res.send(orders);
+    });
+}
+
+function confirmReturnFeeOrder(req, res) {
+    Order.findById(req.params.id, function(err, order) {
+        if (err) {
+            logger.warn('confirmReturnFeeOrder error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        logger.info('confirmReturnFeeOrder operator:' + req.user.mobile);
+        if (order) {
+            if (order.status != 0) {
+                logger.warn('confirmReturnFeeOrder error: only order in wait confirm status can be approved');
+                res.status(400);
+                return res.send({error_msg:'only order in wait confirm status can be approved'});
+            }
+            order.approvedBy = req.user.mobile;
+            order.approvedAt = Date.now();
+            User.findById(order.userID, function(err, user) {
+                if (err) {
+                    logger.warn('confirmReturnFeeOrder error:' + err.toString());
+                    res.status(500);
+                    return res.send({error_msg: err.toString()});
+                }
+                util.orderFinished(user, order, 1, function(err) {
+                    if (err) {
+                        logger.warn('confirmReturnFeeOrder error:' + err.toString());
+                        res.status(500);
+                        return res.send({error_msg:err.toString()});
+                    }
+                    res.send({});
+                });
+            });
+        } else {
+            logger.warn('confirmReturnFeeOrder error:order not found');
+            res.status(400);
+            return res.send({error_msg:'order not found'});
+        }
     });
 }
 
@@ -976,6 +1043,17 @@ function fetchApply(req, res) {
 function fetchOrdersOfAlipay(req, res) {
     AlipayOrder.find({}, function(err, orders) {
         if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send(orders);
+    });
+}
+
+function fetchReturnFeeOrders(req, res) {
+    Order.find({$and: [{dealType: 8},  {status: 0}]}, function(err, orders) {
+        if (err) {
+            logger.warn('fetchReturnFeeOrders error:' + err.toString());
             res.status(500);
             return res.send({error_msg:err.toString()});
         }
@@ -1203,6 +1281,7 @@ function autoApproveApply(req, res) {
             var startDay = util.getStartDay();
             apply.startTime = startDay.toDate();
             apply.endTime = util.getEndDay(startDay, apply.period, apply.type).toDate();
+            apply.startAt = Date.now();
             apply.save(function (err) {
                 callback(err, apply);
             });
@@ -1732,6 +1811,49 @@ function getSalesStatisticsData(req, res) {
     });
 }
 
+function getManagerOfUser(req, res) {
+    var user = req.query.user;
+    user = Number(user);
+    User.findOne({mobile:user}, function(err, u) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        if (!u) {
+            res.status(403);
+            return res.send({error_msg:'user not found'});
+        }
+        res.send(u.manager);
+    });
+}
+
+function getDailyData(req, res) {
+    DailyData
+        .find()
+        .sort({ _id: -1 })
+        .limit(7)
+        .exec(function(err, data) {
+            if (err) {
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+            var ret = {};
+            ret.dates = [];
+            ret.users = [];
+            ret.income = [];
+            data.forEach(function(elem) {
+                ret.dates.unshift(elem.date);
+                ret.users.unshift(elem.newUsers);
+                ret.income.unshift((elem.income / 100).toFixed(2));
+            });
+            ret.today_user_source = req.session.today_user_source;
+            ret.num_of_apply = req.session.numOfApply;
+            ret.apply_lever_map = req.session.applyLeverMap;
+            ret.period_map = req.session.periodMap;
+            res.send(ret);
+        });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -1802,6 +1924,8 @@ module.exports = {
 
         app.post('/admin/api/confirm_recharge_order/:id', passportConf.requiresRole('admin'), confirmRechargeOrder);
 
+        app.post('/admin/api/confirm_return_fee_order/:id', passportConf.requiresRole('admin'), confirmReturnFeeOrder);
+
         app.post('/admin/api/delete_recharge_order/:id', passportConf.requiresRole('admin'), deleteRechargeOrder);
 
         app.post('/admin/api/delete_withdraw_order/:id', passportConf.requiresRole('admin'), deleteWithdrawOrder);
@@ -1836,6 +1960,8 @@ module.exports = {
 
         app.get('/admin/api/alipay_orders', passportConf.requiresRole('admin'), fetchOrdersOfAlipay);
 
+        app.get('/admin/api/get_return_fee_orders', passportConf.requiresRole('admin'), fetchReturnFeeOrders);
+
         app.post('/admin/api/finish_get_profit', passportConf.requiresRole('admin'), finishGetProfit);
 
         app.post('/admin/change_apply_to_pending', passportConf.requiresRole('admin|support'), changeApplyToPending);
@@ -1867,6 +1993,10 @@ module.exports = {
         app.get('/admin/api/sales_statistics', passportConf.requiresRole('admin'), getSalesStatisticsData);
 
         app.get('/admin/api/user_rate_data', passportConf.requiresRole('admin'), calculateRateInFiveDays);
+
+        app.get('/admin/api/user_manager', passportConf.requiresRole('admin'), getManagerOfUser);
+
+        app.get('/admin/api/daily_data', passportConf.requiresRole('admin'), getDailyData);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

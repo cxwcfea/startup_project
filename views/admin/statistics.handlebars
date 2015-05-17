@@ -13,15 +13,136 @@
     <div class="am-u-sm-12">
         <p>用户数： 总数(<span class="am-text-danger">{{data.total_user_num}}</span>)</p>
         <p>用户数： 新增(<span class="am-text-danger">{{data.today_user_num}}</span>)</p>
-        <p>操盘中(付费)： 总额(<span class="am-text-danger">{{data.active_apply_amount}}</span>)  笔数(<span class="am-text-danger">{{data.active_apply_num}}</span>)</p>
-        <p>操盘中(免费)： 总额(<span class="am-text-danger">{{data.current_free_apply_amount}}</span>)  笔数(<span class="am-text-danger">{{data.current_free_apply_num}}</span>)</p>
-        <p>新增配资(免费)： 总额(<span class="am-text-danger">{{data.added_free_apply_amount}}</span>)  笔数(<span class="am-text-danger">{{data.added_free_apply_num}}</span>)</p>
-        <p>新增配资(付费)： 总额(<span class="am-text-danger">{{data.added_pay_apply_amount}}</span>)  笔数(<span class="am-text-danger">{{data.added_pay_apply_num}}</span>)</p>
-        <p>保证金(当前)： 总额(<span class="am-text-danger">{{data.active_deposit_amount}}</span>)</p>
-        <p>保证金(新增)： 总额(<span class="am-text-danger">{{data.added_deposit}}</span>)</p>
+        <p>操盘中(付费)： 总额(<span class="am-text-danger">{{data.todayActiveApplyAmount}}</span>)  笔数(<span class="am-text-danger">{{data.todayActiveApplyNum}}</span>)</p>
+        <p>操盘中(免费)： 总额(<span class="am-text-danger">{{data.todayActiveFreeApplyAmount}}</span>)  笔数(<span class="am-text-danger">{{data.todayActiveFreeApplyNum}}</span>)</p>
+        <p>新增配资(付费)： 总额(<span class="am-text-danger">{{data.todayAddedPayApplyAmount}}</span>)  笔数(<span class="am-text-danger">{{data.todayAddedPayApplyNum}}</span>)</p>
+        <p>新增配资(免费)： 总额(<span class="am-text-danger">{{data.todayAddedFreeApplyAmount}}</span>)  笔数(<span class="am-text-danger">{{data.todayAddedFreeApplyNum}}</span>)</p>
+        <p>保证金(当前)： 总额(<span class="am-text-danger">{{data.todayActiveApplyDeposit}}</span>)</p>
+        <p>保证金(新增)： 总额(<span class="am-text-danger">{{data.todayAddedDeposit}}</span>)</p>
         <p>服务费(总额)： <span class="am-text-danger">{{data.total_fee}}</span></p>
-        <p>服务费(新增)： <span class="am-text-danger">{{data.added_fee}}</span></p>
+        <p>服务费(新增)： <span class="am-text-danger">{{data.todayActiveApplyIncome}}</span></p>
         <p>用户余额总值：<span class="am-text-danger">{{data.total_balance}}</span></p>
+        <p>今日用户来源渠道</p>
+        <canvas id="userChart" width="400" height="400"></canvas>
+        <p>网站7日趋势</p>
+        <canvas id="myChart" width="800" height="400"></canvas>
+        <p>用户配资次数分布</p>
+        <canvas id="myChart2" width="800" height="400"></canvas>
+        <p>用户配资杠杆分布</p>
+        <canvas id="myChart3" width="800" height="400"></canvas>
+        <p>配资申请天数分布</p>
+        <canvas id="myChart4" width="800" height="400"></canvas>
     </div>
 </div>
+
+<script>
+    $.get("/admin/api/daily_data", function() {
+    })
+    .done(function(res) {
+        console.log( "fetch data success" );
+        var data = {
+            labels : res.dates,
+            datasets : [
+                {
+                    label: "新增用户",
+                    fillColor : "rgba(151,187,205,0.5)",
+                    strokeColor : "rgba(151,187,205,1)",
+                    pointColor : "rgba(151,187,205,1)",
+                    pointStrokeColor : "#fff",
+                    data : res.users
+                },
+                {
+                    label: "新增管理费(百元)",
+                    fillColor : "rgba(220,220,220,0.5)",
+                    strokeColor : "rgba(220,220,220,1)",
+                    pointColor : "rgba(220,220,220,1)",
+                    pointStrokeColor : "#fff",
+                    data : res.income
+                }
+            ]
+        };
+        var options = {
+            multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>: <%}%><%= value %>"
+        };
+        //Get context with jQuery - using jQuery's .get() method.
+        var ctx = $("#myChart").get(0).getContext("2d");
+        //This will get the first returned node in the jQuery collection.
+        var myNewChart = new Chart(ctx).Bar(data,options);
+
+        var data2 = [];
+        var colors = ["#F38630", "#E0E4CC", "#69D2E7", "#F7464A", "#E2EAE9", "#D4CCC5", "#949FB1", "#4D5360", "#D97041", "#C7604C", "#21323D", "#9D9B7F", "#7D4F6D"];
+        var i = 0;
+        for (var key in res.today_user_source) {
+            data2.push({label:key, value:res.today_user_source[key], color:colors[i++]})
+        }
+        var ctx2 = $("#userChart").get(0).getContext("2d");
+        var userChart = new Chart(ctx2).Pie(data2,options);
+
+        var theKeys = _.keys(res.num_of_apply);
+        var theValues = _.values(res.num_of_apply);
+        var data3 = {
+            labels : theKeys,
+            datasets : [
+                {
+                    label: "用户数",
+                    fillColor : "rgba(151,187,205,0.5)",
+                    strokeColor : "rgba(151,187,205,1)",
+                    pointColor : "rgba(151,187,205,1)",
+                    pointStrokeColor : "#fff",
+                    data : theValues
+                }
+            ]
+        };
+        var ctx3 = $("#myChart2").get(0).getContext("2d");
+        var myNewChart2 = new Chart(ctx3).Bar(data3,{});
+
+        //theKeys = _.keys(res.apply_lever_map);
+        //theValues = _.values(res.apply_lever_map);
+        var data4 = [];
+        i = 0;
+        for (var key in res.apply_lever_map) {
+            data4.push({label:key, value:res.apply_lever_map[key], color:colors[i++]})
+        }
+                /*
+        var data4 = {
+            labels : theKeys,
+            datasets : [
+                {
+                    label: "用户数",
+                    fillColor : "rgba(151,187,205,0.5)",
+                    strokeColor : "rgba(151,187,205,1)",
+                    pointColor : "rgba(151,187,205,1)",
+                    pointStrokeColor : "#fff",
+                    data : theValues
+                }
+            ]
+        };
+        */
+        var ctx4 = $("#myChart3").get(0).getContext("2d");
+        var myNewChart3 = new Chart(ctx4).Pie(data4,{});
+
+        theKeys = _.keys(res.period_map);
+        theValues = _.values(res.period_map);
+        var data5 = {
+            labels : theKeys,
+            datasets : [
+                {
+                    label: "天数",
+                    fillColor : "rgba(151,187,205,0.5)",
+                    strokeColor : "rgba(151,187,205,1)",
+                    pointColor : "rgba(151,187,205,1)",
+                    pointStrokeColor : "#fff",
+                    data : theValues
+                }
+            ]
+        };
+        var ctx5 = $("#myChart4").get(0).getContext("2d");
+        var myNewChart4 = new Chart(ctx5).Bar(data5,{});
+    })
+    .fail(function() {
+        console.log( "fetch data error" );
+    })
+    .always(function() {
+    });
+</script>
 

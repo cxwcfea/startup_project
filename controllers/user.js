@@ -17,6 +17,7 @@ var passport = require('passport'),
     _ = require('lodash'),
     sparkMD5 = require('spark-md5'),
     moment = require('moment'),
+    ccap = require('ccap')(),
     async = require('async');
 
 module.exports.postLogin = function(req, res, next) {
@@ -57,6 +58,12 @@ module.exports.postLogin = function(req, res, next) {
         req.login(user, function(err) {
             if (err) {return next(err);}
             req.session.lastLogin = moment().format("YYYY-MM-DD HH:mm:ss");
+            user.lastLoginAt = req.session.lastLogin;
+            user.save(function (err){
+                if (err){
+                    logger.error('postLogin error:' + err.toString());
+                }
+            });
             if (req.session.lastLocation) {
                 var location = req.session.lastLocation;
                 req.session.lastLocation = null;
@@ -100,6 +107,12 @@ module.exports.ajaxLogin = function(req, res) {
                 return res.send({error_code:2, error_msg:err.toString()});
             }
             req.session.lastLogin = moment().format("YYYY-MM-DD HH:mm:ss");
+            user.lastLoginAt = req.session.lastLogin;
+            user.save(function (err){
+                if (err) {
+                    logger.error('ajaxLogin error:' + err.toString());
+                }
+            });
             if (req.session.lastLocation) {
                 res.send({location:req.session.lastLocation, user:getUserViewModel(req.user)});
                 req.session.lastLocation = null;
@@ -154,6 +167,15 @@ module.exports.apiSignup = function(req, res) {
     if (errors) {
         res.status(400);
         return res.send({error_code:1, error_msg:errors[0].msg});
+    }
+
+    if (req.body.img_code) {
+        req.body.img_code = req.body.img_code.toLowerCase();
+    }
+    console.log(req.body.img_code + ' ' + req.session.img_code);
+    if (req.body.img_code != req.session.img_code) {
+        res.status(403);
+        return res.send({error_msg:'验证码错误,应为' + req.session.img_code});
     }
 
     var user = new User({
@@ -390,7 +412,11 @@ module.exports.postWithdraw = function(req, res) {
             }
         },
         function(user, callback) {
-            data.order.status = 0;
+            if (user.level == 999) {
+                data.order.status = 3;
+            } else {
+                data.order.status = 0;
+            }
             data.order.userBalance = user.finance.balance - amount;
             Order.create(data.order, function(err, order) {
                 callback(err, user, order);
@@ -551,7 +577,16 @@ module.exports.sendVerifyCode = function(req, res, next) {
         res.status(400);
         return res.send({success:false, reason:'no mobile specified'});
     }
-    console.log('send verify code ' + req.query.type);
+    if (!req.query.code) {
+        logger.debug('sendVerifyCode error: must have img code');
+        res.status(403);
+        return res.send({error_msg:'must have img code'});
+    }
+    if (req.query.code.toLowerCase() != req.session.img_code) {
+        res.status(403);
+        return res.send({error_msg:'图形验证码错误,应为' + req.session.img_code});
+    }
+    req.session.img_code = '';
     var code = sms.generateVerifyCode();
     if (!req.query.type) {
         sms.sendSMS(req.query.mobile, code);
@@ -1772,4 +1807,12 @@ module.exports.payByBalance = function(req, res, next) {
         }
         res.send({});
     });
+};
+
+module.exports.getVerifyImg = function(req, res) {
+    var ary = ccap.get();
+    var txt = ary[0];
+    var buf = ary[1];
+    req.session.img_code = txt.toLowerCase();
+    res.send(buf);
 };

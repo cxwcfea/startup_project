@@ -100,6 +100,8 @@ module.exports = function(app, config) {
     app.use(cookieParser(credentials.cookieSecret));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(bodyParser.raw());
+    app.use(bodyParser.text());
     app.use(expressValidator());
     app.use(session({
         cookie: {

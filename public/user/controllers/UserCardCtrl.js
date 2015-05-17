@@ -67,8 +67,11 @@ angular.module('userApp').controller('UserCardCtrl', ['$scope', '$http', '$inter
             addAlert('danger', '请选择开卡城市');
             return;
         }
+        if (!vm.img_code) {
+            addAlert('danger', '请输入图形验证码');
+            return;
+        }
 
-        vm.show_verify_window = true;
         vm.getVerifyCode();
     };
 
@@ -104,25 +107,27 @@ angular.module('userApp').controller('UserCardCtrl', ['$scope', '$http', '$inter
         if (vm.verifyBtnDisabled) {
             return;
         }
-        vm.verifyBtnDisabled = true;
-        var count = 0;
-        vm.verifyCodeBtnText = '60秒后重试';
-        var timeId = $interval(function() {
-            ++count;
-            vm.verifyCodeBtnText = 60-count + '秒后重试';
-            if (count === 60) {
-                $interval.cancel(timeId);
-                vm.verifyCodeBtnText = '获取验证码';
-                vm.verifyBtnDisabled = false;
-            }
-        }, 1000);
 
-        $http.get('/api/send_sms_verify_code?mobile=' + vm.user.mobile)
+        $http.get('/api/send_sms_verify_code?mobile=' + vm.user.mobile + '&code=' + vm.img_code)
             .success(function(data, status, headers, config) {
-                //addAlert('success', '验证码已发送');
+                vm.show_verify_window = true;
+                vm.verifyBtnDisabled = true;
+                var count = 0;
+                vm.verifyCodeBtnText = '60秒后重试';
+                var timeId = $interval(function() {
+                    ++count;
+                    vm.verifyCodeBtnText = 60-count + '秒后重试';
+                    if (count === 60) {
+                        $interval.cancel(timeId);
+                        vm.verifyCodeBtnText = '获取验证码';
+                        vm.verifyBtnDisabled = false;
+                    }
+                }, 1000);
             })
             .error(function(data, status, headers, config) {
-                //addAlert('danger', '验证码发送失败，请稍后重试');
+                var x = Math.random();
+                $('#img_code')[0].src = '/api/get_verify_img?cacheBuster=' + x;
+                addAlert('danger', data.error_msg);
             });
     };
 
@@ -165,5 +170,10 @@ angular.module('userApp').controller('UserCardCtrl', ['$scope', '$http', '$inter
                 vm.verify_error_msg = data.error_msg;
                 vm.verify_code_error = true;
             });
+    };
+
+    vm.imgClicked = function(e) {
+        var x = Math.random();
+        e.target.src = '/api/get_verify_img?cacheBuster=' + x;
     }
 }]);
