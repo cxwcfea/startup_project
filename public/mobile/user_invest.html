@@ -1,4 +1,16 @@
 <div ng-hide="vm.transMoney">
+    <div class="user-money">
+        <ul class="balance">
+            <li class="number">
+                可用投资余额(元)
+                <em>{{vm.user.availableInvestAmount | currency:'':2}}</em>
+            </li>
+            <li class="btns">
+                <a href="/mobile/#/invest_recharge" class="recharge-btn">转入本金</a>
+                <a href="" class="withdraw-btn" ng-click="vm.transToBalance()">转出到余额</a>
+            </li>
+        </ul>
+    </div>
     <div class="user-tz">
         <ul>
             <li>
@@ -16,19 +28,6 @@
             <li>
                 <h5>累计投资(元)</h5>
                 <strong>{{vm.user.finance.history_invest_amount | currency:'':2}}</strong>
-            </li>
-        </ul>
-    </div>
-
-    <div class="user-money">
-        <ul class="balance">
-            <li class="number">
-                可用投资余额(元)
-                <em>{{vm.user.availableInvestAmount | currency:'':2}}</em>
-            </li>
-            <li class="btns">
-                <a href="/mobile/#/invest_recharge" class="recharge-btn">转入本金</a>
-                <a href="" class="withdraw-btn" ng-click="vm.transToBalance()">转出到余额</a>
             </li>
         </ul>
     </div>

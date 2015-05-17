@@ -26,3 +26,15 @@
     border-radius: 3px;
     background-color: #FFF;
 }
+
+.user-money {
+    margin-bottom: 0px;
+}
+
+.user-tz {
+    margin-bottom: 15px;
+}
+
+.user-tz ul {
+    background-color: #eee;
+}
