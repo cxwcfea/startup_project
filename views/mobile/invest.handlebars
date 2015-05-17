@@ -1,7 +1,7 @@
 <!--#S header-->
 <header id="header">
     <div class="header-box">
-        <h1>聪明赚</h1>
+        <h1>天天投</h1>
         <a class="back" href="/mobile/#/"></a>
         <a class="f-pr" href="/mobile/newbie.html">新手说明</a>
     </div>
@@ -79,8 +79,8 @@
     <div class="ui-dialog-cnt">
         <div class="ui-dialog-bd">
             <div>
-                <h4>聪明赚</h4>
-                <div class="zntz-tips">聪明赚已经开启，您需要将余额转入聪明赚，系统自动帮您投资让您收益最大化。</div>
+                <h4>天天投</h4>
+                <div class="zntz-tips">天天投已经开启，您需要将余额转入天天投，系统自动帮您投资让您收益最大化。</div>
             </div>
         </div>
         <div class="ui-dialog-ft ui-btn-group">
@@ -92,14 +92,14 @@
 <div ng-show="vm.editInvest">
     <div class="zntz-box">
         <div class="zntz-txt">
-            <span ng-show="vm.user.enableInvest">您已开启聪明赚，转入资金即可自动投标高收益项目</span>
-            <span ng-hide="vm.user.enableInvest">您已关闭聪明赚，无法获取收益</span>
+            <span ng-show="vm.user.enableInvest">您已开启天天投，转入资金即可自动投标高收益项目</span>
+            <span ng-hide="vm.user.enableInvest">您已关闭天天投，无法获取收益</span>
         </div>
         <div class="zntz-conf">
             <a href="" class="recharge-btn" ng-show="vm.user.enableInvest" ng-click="vm.rechargeToInvestAccount()">转入资金</a>
             <ul class="zntz-conf-items">
                 <li>
-                    <label class="fl">\{{vm.user.enableInvest ? '聪明赚已开启' : '聪明赚已关闭'}}</label>
+                    <label class="fl">\{{vm.user.enableInvest ? '天天投已开启' : '天天投已关闭'}}</label>
                     <label class="ui-switch">
                         <input type="checkbox" ng-model="vm.user.enableInvest" ng-change="vm.enableChange()"> <i></i>
                     </label>
@@ -122,15 +122,15 @@
 
 <div class="ui-tip-success" ng-show="vm.success">
     <div class="icon"></div>
-    聪明赚设置保存成功!
+    天天投设置保存成功!
 </div>
 
 <div class="ui-dialog" ng-show="vm.confirmDisableInvest">
     <div class="ui-dialog-cnt">
         <div class="ui-dialog-bd">
             <div>
-                <h4>聪明赚</h4>
-                <div class="zntz-tips">聪明赚能给您带来更多的收益，确定还要关闭吗？</div>
+                <h4>天天投</h4>
+                <div class="zntz-tips">天天投能给您带来更多的收益，确定还要关闭吗？</div>
             </div>
         </div>
         <div class="ui-dialog-ft ui-btn-group">

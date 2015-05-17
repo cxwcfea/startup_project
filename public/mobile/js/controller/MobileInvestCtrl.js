@@ -114,16 +114,39 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
         };
 
         vm.enableChange = function() {
-            console.log(vm.user.enableInvest);
             if (!vm.user.enableInvest) {
                 vm.user.enableInvest = true;
                 vm.confirmDisableInvest = true;
+            } else {
+                vm.changeInvest();
             }
         };
 
         vm.disableInvest = function(flag) {
+            var backup = vm.user.enableInvest;
             vm.user.enableInvest = !flag;
             vm.confirmDisableInvest = false;
+            if (vm.user.enableInvest != backup) {
+                vm.changeInvest();
+            }
+            /*
+            var data = {
+                profitRate: vm.profit_rate,
+                duration: vm.period,
+                enable: vm.user.enableInvest
+            };
+            $http.post('/api/user/invest_update', data)
+                .success(function(data, status) {
+                    vm.confirmDisableInvest = false;
+                })
+                .error(function(data, status) {
+                    vm.errorMsg = data.error_msg;
+                    vm.inputError = true;
+                    $timeout(function() {
+                        vm.inputError = false;
+                    }, 1500);
+                });
+                */
         }
     }
 }]);
