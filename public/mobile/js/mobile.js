@@ -88,6 +88,9 @@ angular.module('mobileApp').config(['$routeProvider', '$httpProvider', function(
         .when('/order_list', { templateUrl: '/mobile/user_order_list',
             controller: 'MobileUserOrdersCtrl as vm'
         })
+        .when('/user_invest_center', { templateUrl: '/mobile/user_invest_center',
+            controller: 'MobileUserInvestCenterCtrl as vm'
+        })
         .otherwise({
             redirectTo: '/home'
         });

@@ -25,7 +25,23 @@
     line-height: 49px;
 }
 .header-box h1 i {
-
+    position: absolute;
+    top: 23px;
+    left: 50%;
+    margin-left: 50px;
+    display: block;
+    width:0;
+    height:0;
+    border-width:0 6px 6px 6px;
+    border-style:solid;
+    overflow: hidden;
+    border-color:#c1262a #c1262a #fff #c1262a;
+    -moz-transition: -moz-transform .2s ease-in;
+    -o-transition: -o-transform .2s ease-in;
+    transition: transform .2s ease-in;
+}
+.header-box h1.current i {
+    transform: rotate(180deg);
 }
 .header-box .f-pl,
 .header-box .f-pr {

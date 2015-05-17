@@ -480,6 +480,12 @@ module.exports = {
             })
         });
 
+        app.get('/mobile/user_invest_center', function(req, res, next) {
+            res.render('mobile/user_invest_center', {
+                layout: null
+            })
+        });
+
         app.get('/mobile/forget', getForget);
 
         app.get('/mobile/free_apply_confirm', passportConf.isAuthenticated, applies.freeApply);

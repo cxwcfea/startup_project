@@ -43,42 +43,14 @@ angular.module('mobileApp').controller('MobileUserCtrl', ['$scope', '$window', '
     };
 
     vm.viewFile = function () {
-        return vm.showInvest ? "/mobile/user_invest.html" : "/mobile/user.html";
+        return "/mobile/user.html";
     };
 
-    vm.transToBalance = function() {
-        vm.transMoney = true;
-    };
-
-    vm.confirmTransMoney = function() {
-        if (!vm.trans_amount) {
-            vm.errorMsg = '请输入欲转出金额';
-            vm.inputError = true;
-            $timeout(function() {
-                vm.inputError = false;
-            }, 1500);
-            return;
+    vm.gotoInvestCenter = function() {
+        if (!vm.user.enableInvest) {
+            $location.path('/invest')
+        } else {
+            $location.path('/user_invest_center')
         }
-        var data = {
-            amount: vm.trans_amount
-        };
-        $http.post('/api/user/invest_to_balance', data)
-            .success(function(data, status) {
-                vm.transSuccess = true;
-                vm.user.finance.balance += vm.trans_amount;
-                vm.user.availableInvestAmount -= vm.trans_amount;
-            })
-            .error(function(data, status) {
-                vm.errorMsg = data.error_msg;
-                vm.inputError = true;
-                $timeout(function() {
-                    vm.inputError = false;
-                }, 1500);
-            });
-    };
-
-    vm.closeDialogWindow = function() {
-        vm.transSuccess = false;
-        vm.transMoney = false;
     }
 }]);
