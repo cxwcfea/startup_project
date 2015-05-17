@@ -2,18 +2,42 @@
 angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$http', '$modal', '$location', 'gbUser', 'gbNotifier', '$window', '$filter', function($scope, $http, $modal, $location, gbUser, gbNotifier, $window, $filter) {
     var vm = this;
     $scope.trader_options = ["全部", "操盘中", "已清算"];
+    vm.orders = {};
+    vm.showLostAnalysis = 0;
     vm.users = gbUser.query(function() {
         vm.user = $window.bootstrappedUserObject;
         var new_users = [];
         for (var key in vm.users) {
-            if (vm.users[key].manager == vm.user.mobile) {
-              new_users.push(vm.users[key]);
+            var user = vm.users[key];
+            if (user.manager == vm.user.mobile) {
+                new_users.push(user);
+                vm.orders[user.mobile] = {'orders':[], 'lastOrderTime': new Date('1990-01-01 00:00:00')};
             }
         }
         new_users = $filter('orderBy')(new_users, 'registerAt', true);
         vm.users = new_users;
         vm.resetSearch();
+        vm.showLostAnalysis += 1;
+        vm.getAllOrders();
     });
+
+    vm.getAllOrders = function() {
+        $http.get('/admin/api/orders/all_allstatus').success(function(data) {
+            var order_list = data;
+            for (var key in order_list) {
+                var order = order_list[key];
+                console.log(order);
+                if (order.userMobile in vm.orders) {
+                    vm.orders[order.userMobile]['orders'].push(order);
+                    var new_date = new Date(order['createdAt']);
+                    if (new_date > vm.orders[order.userMobile]['lastOrderTime']) {
+                        vm.orders[order.userMobile]['lastOrderTime'] = new_date;
+                    }
+                }
+            }
+            vm.showLostAnalysis += 1;
+        });
+    };
 
     vm.pageChanged = function() {
         vm.startItemIndex = (vm.currentPage - 1) * vm.itemsPerPage;
@@ -38,7 +62,27 @@ angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$ht
         vm.register_begin = '';
         vm.register_end = '';
         vm.free_apply = false;
+        vm.order_begin = '';
+        vm.order_end = '';
+        vm.order_cnt_begin = '';
+        vm.order_cnt_end = '';
         vm.showAllUsers();
+    };
+
+    vm.setLostUser = function(days) {
+        vm.trader_status ='已清算';
+        vm.order_begin = days;
+        vm.order_end = '';
+    }
+
+    vm.setOrderCntRange = function(begin, end) {
+        vm.order_cnt_begin = begin;
+        vm.order_cnt_end = end;
+    };
+
+    vm.setOrderRange = function(begin, end) {
+        vm.order_begin = begin;
+        vm.order_end = end;
     };
 
     vm.setLoginRange = function(begin, end) {
@@ -102,10 +146,11 @@ angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$ht
         } else {
             user_ret = vm.users;
         }
+
         if (vm.login_begin || vm.login_end) {
             vm.currentAllUsers = [];
             var time_begin = new Date();
-            var time_end = new Date('2000-01-01 00:00:00');
+            var time_end = new Date('1970-01-01 00:00:00');
             if (vm.login_begin) {
                 time_begin.setDate(time_begin.getDate()-1*vm.login_begin);
             }
@@ -137,6 +182,44 @@ angular.module('supportApp').controller('SupportMyUserListCtrl', ['$scope', '$ht
                 var user = user_ret[key];
                 var user_date = new Date(user['registerAt']);
                 if (user_date >= time_end && user_date <= time_begin) {
+                    vm.currentAllUsers.push(user);
+                }
+            }
+            user_ret = vm.currentAllUsers;
+        }
+
+        if (vm.order_begin || vm.order_end) {
+            vm.currentAllUsers = [];
+            var time_begin = new Date();
+            var time_end = new Date('2000-01-01 00:00:00');
+            if (vm.order_begin) {
+                time_begin.setDate(time_begin.getDate()-1*vm.order_begin);
+            }
+            if (vm.order_end) {
+                var time_end = new Date();
+                time_end.setDate(time_end.getDate()-1*vm.order_end);
+            }
+            for (var key in user_ret) {
+                var user = user_ret[key];
+                var user_date = new Date(vm.orders[user.mobile]['lastOrderTime']);
+                console.log(user_date);
+                if (user_date <= time_begin && user_date >= time_end) {
+                    vm.currentAllUsers.push(user);
+                }
+            }
+            user_ret = vm.currentAllUsers;
+        }
+
+        if (vm.order_cnt_begin || vm.order_cnt_end) {
+            vm.currentAllUsers = [];
+            var cnt_begin = vm.order_cnt_begin | 0;
+            var cnt_end = vm.order_cnt_end | 99999;
+            cnt_begin = cnt_begin*1;
+            cnt_end = cnt_end*1;
+            for (var key in user_ret) {
+                var user = user_ret[key];
+                var order_cnt = vm.orders[user.mobile]['orders'].length;
+                if (order_cnt >= cnt_begin && order_cnt <= cnt_end) {
                     vm.currentAllUsers.push(user);
                 }
             }
