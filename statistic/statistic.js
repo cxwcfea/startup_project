@@ -652,6 +652,49 @@ var getDailyData = function(callback) {
     });
 };
 
+var getUserApplyData = function(users, callback) {
+    Apply.find({}, function(err, applies) {
+        if (err) {
+            logger.debug('err when getApplyData' + err.toString());
+            return callback(err);
+        }
+        var paidApply = applies.filter(function(elem) {
+            return elem.isTrial === false && elem.status !== 1 && elem.status !== 4 && elem.status !== 9
+        });
+        var userApplyMap = {};
+        for (var i = 0; i < paidApply.length; ++i) {
+            if (userApplyMap[paidApply[i].userMobile] !== null && userApplyMap[paidApply[i].userMobile] !== undefined) {
+                userApplyMap[paidApply[i].userMobile] += 1;
+            } else {
+                userApplyMap[paidApply[i].userMobile] = 1;
+            }
+        }
+        var numOfApply = {};
+        for (var key in userApplyMap) {
+            if (numOfApply[userApplyMap[key]] !== null && numOfApply[userApplyMap[key]] !== undefined) {
+                numOfApply[userApplyMap[key]] += 1;
+            } else {
+                numOfApply[userApplyMap[key]] = 1;
+            }
+        }
+
+        var options = { encoding: 'utf8', flag: 'w' };
+        var fileWriteStream = fs.createWriteStream("UserApplyData-" + moment().format("YYYY-MM-DD") + ".csv",  options);
+        fileWriteStream.on("close", function() {
+            console.log("File Closed.");
+        });
+        var data = 'userMobile, paidApplyNum, manager\n';
+        fileWriteStream.write(data);
+        for (var key in userApplyMap) {
+            data = key + ', ' + userApplyMap[key] + ', ' + users[key] + '\n';
+            fileWriteStream.write(data);
+        }
+        fileWriteStream.end();
+
+        callback(null);
+    });
+};
+
 var options = {};
 mongoose.connect(config.db, options);
 var db = mongoose.connection;
@@ -668,9 +711,27 @@ db.once('open', function callback() {
     startTime = startTime.toDate();
     endTime = endTime.toDate();
 
-    /*
     async.waterfall(
         [
+            function(callback) {
+                User.find({}, function(err, users) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        var userMap = {};
+                        users.forEach(function(elem) {
+                            users[elem.mobile] = elem.manager;
+                        });
+                    }
+                    callback(null, userMap);
+                });
+            },
+            function(userMap, callback) {
+                getUserApplyData(userMap, function(err) {
+                    callback(err);
+                });
+            }
+            /*
             function(callback) {
                 Order.find({$and:[{dealType:5}, {status:1}]}, function(err, orders) {
                     console.log(orders.length);
@@ -714,19 +775,20 @@ db.once('open', function callback() {
                     callback(null, amount+data);
                 });
             }
+            */
         ], function(err, data) {
             if (err) {
                 console.log(err.toString());
             } else {
-                console.log('总服务费:' + data.toFixed(2));
+                //console.log('总服务费:' + data.toFixed(2));
+                console.log('done');
             }
             db.close();
         }
     );
-             */
+    /*
     async.series(
         [
-    /*
             function(callback) {
                 getUserData(function (err) {
                     callback(err);
@@ -757,7 +819,7 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
-     */
+
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
                     callback(err);
@@ -788,7 +850,7 @@ db.once('open', function callback() {
                     callback(err);
                 });
             }
-            /*
+
              function(callback) {
              rechargeOrderData(function(err) {
              callback(err);
@@ -804,7 +866,6 @@ db.once('open', function callback() {
              callback(err);
              });
              }
-             */
         ],
         function(err){
             if (err) {
@@ -812,4 +873,5 @@ db.once('open', function callback() {
             }
             db.close();
         });
+     */
 });
