@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html ng-app="mobileApp">
+<head>
+    <meta charset="utf-8">
+    <title>牛金网 股票赚钱助推器 最高10倍 全网最快的股票配资平台！</title>
+    <meta name="Robots" content="all">
+    <meta name="Keywords" content="股票配资,股票,配资,投资理财,牛金,金牛,牛金网,金牛网,北京小牛,小牛普惠,niujinwang,赚钱,niujin,在线配资,北京小牛普惠科技有限公司">
+    <meta name="Description" content=“牛金网是全网最快、资金最充足的股票配资平台，助你在牛市中实现财富爆发式增长，炒股配资，就上牛金！">
+    <link rel="alternate icon" type="image/png" href="/images/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, minimal-ui" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="牛金网" />
+    <meta name="keywords" content="牛金网"/>
+    <meta http-equiv="cleartype" content="on" />
+
+    <title>牛金网</title>
+    <!-- build:css css/styles.css -->
+    
+    <link rel="stylesheet" href="{{static '/mobile/css/reset.css'}}">
+    <link rel="stylesheet" href="{{static '/mobile/css/base.css'}}">
+    <link rel="stylesheet" href="{{static '/mobile/css/common.css'}}">
+    <link rel="stylesheet" href="{{static '/mobile/css/pages.css'}}">
+    
+    <!-- <link rel="stylesheet" href="{{static '/mobile/css/niujinwang-mobile.min.7be5f9bf.css'}}"> -->
+    <!-- endbuild -->
+    <script src="{{static '/vendor/jquery/dist/jquery.min.js'}}"></script>
+    <script src="{{static '/vendor/angular/angular.min.js'}}"></script>
+    {{#if production}}
+    <script src='http://stat.e.tf.360.cn/search/c.js?u=1456290838' language='JavaScript' ></script>
+    <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?109ba7714282741059fa81a8a7d2bd84";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+    <script type="text/javascript" src="http://ga.istreamsche.com/stat/j_REACH.js"></script>
+    {{/if}}
+</head>
+
+<body ng-controller="MobileIndexCtrl as indexVM">
+
+{{#if bootstrappedUserObject}}
+    <script> window.bootstrappedUserObject = {{{bootstrappedUserObject}}} </script>
+{{/if}}
+{{{body}}}
+
+<!-- build:js js/script.js -->
+<!--
+<script src="{{static '/mobile/js/lib/zepto.min.js'}}"></script>
+-->
+<script src="{{static '/mobile/js/script.js'}}"></script>
+<!-- endbuild -->
+<script src="{{static '/vendor/moment/min/moment.min.js'}}"></script>
+<script src="{{static '/vendor/moment/min/locales.min.js'}}"></script>
+<script src="{{static '/vendor/toastr/toastr.min.js'}}"></script>
+<script src="{{static '/vendor/angular-route/angular-route.min.js'}}"></script>
+<script src="{{static '/vendor/angular-resource/angular-resource.min.js'}}"></script>
+<script src="{{static '/mobile/js/mobile.js'}}"></script>
+<!--
+<script src="{{static '/js/common_module.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobileIndexCtrl.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobileHomeCtrl.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobileLoginCtrl.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobileSignupCtrl.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobileTtnCtrl.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobileTtnConfirmCtrl.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobileForgetCtrl.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobileUserCtrl.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobileRechargeCtrl.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobileRechargeRecordCtrl.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobileApplyListCtrl.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobileApplyDetailCtrl.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobileChangePassCtrl.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobileYynCtrl.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobileYynConfirmCtrl.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobileAddDepositCtrl.js'}}"></script>
+<script src="{{static '/mobile/js/controller/MobilePostponeCtrl.js'}}"></script>
+-->
+<script src="{{static '/mobile/js/controller/MobileWithdrawCtrl.js'}}"></script>
+<script src="{{static '/js.min/niujinwang-mobile.min.4c05ad67.js'}}"></script>
+
+</body>
+</html>
