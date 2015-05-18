@@ -3,7 +3,7 @@ angular.module('mobileApp').controller('MobileTtnCtrl', ['$scope', '$window', '$
     var vm = this;
 
     vm.min_amount = 2000;
-    vm.max_amount = 300000;
+    vm.max_amount = 1000000;
     var startTime = days.startTime();
 
     vm.leverList = [
