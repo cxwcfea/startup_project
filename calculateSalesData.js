@@ -13,8 +13,8 @@ var mongoose = require('mongoose'),
 
 var startOfMonth = moment().startOf('month').toDate();
 var endOfMonth = moment().endOf('month').toDate();
-var startOfMonth = moment("2015-03-29").toDate();
-var endOfMonth = moment("2015-04-25").toDate();
+//var startOfMonth = moment("2015-03-29").toDate();
+//var endOfMonth = moment("2015-04-25").toDate();
 var month = moment().startOf('month').format('YYYYMM');
 //console.log(startOfMonth);
 //console.log(endOfMonth);
