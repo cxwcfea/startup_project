@@ -50,6 +50,7 @@ angular.module('mobileApp').controller('MobileTtnCtrl', ['$scope', '$window', '$
     vm.showOtherAmount = false;
     vm.otherAmount;
     vm.selectedLever = vm.leverList[0];
+    vm.discount = 0.8;
 
     vm.summary = {
         day: 1,
@@ -64,7 +65,7 @@ angular.module('mobileApp').controller('MobileTtnCtrl', ['$scope', '$window', '$
         vm.summary.sellValue = util.getSellValue(vm.summary.amount, vm.summary.deposit);
         vm.summary.serviceCharge = util.getServiceCharge(vm.summary.lever);
         var charge = vm.summary.amount / 10000 * vm.summary.serviceCharge; // * vm.summary.day;
-        vm.summary.charge = charge;
+        vm.summary.charge = charge * vm.discount;
         vm.summary.total = vm.summary.deposit + charge;
         vm.endTime = days.endTime(startTime, vm.summary.day);
     }

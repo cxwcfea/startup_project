@@ -137,3 +137,20 @@ console.log(beforeOneDay);
 console.log(beforeTwoDay);
 console.log(moment("2015-04-28").toDate());
 
+        var startTime = moment();
+        var endTime = util.getEndDay(startTime, 2);
+        endTime.hour(15);
+        endTime.minute(10);
+        endTime.second(00);
+
+		console.log(startTime.toDate());
+		console.log(endTime.format('YYYYMMDD'));
+
+		var aaa = moment("2015-04-30");
+		var bbb = moment("2015-04-29");
+
+		if (aaa > bbb) {
+			console.log('aaa > bbb');
+		} else {
+			console.log('aaa < bbb');
+		}

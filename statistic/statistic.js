@@ -75,77 +75,95 @@ var historyFreeApplyData = function(startTime, callback) {
     });
 };
 
-var historyPayApplyData = function(startTime, callback) {
+var historyPayApplyData = function(startTime, applyCloseDateMap, callback) {
     console.log('historyPayApplyData');
 
     var time1 = moment('2015-05-01');
-    var time2 = moment('2015-04-01');
-    Apply.find({$and:[{isTrial:false}, {startTime:{$lte:time1}}, {startTime:{$gte:time2}}, {status:{$ne:1}}, {status:{$ne:9}}]}, function(err, applies) {
+    Apply.find({$and:[{isTrial:false}, {startTime:{$lte:time1}}, {status:{$ne:1}}, {status:{$ne:9}}]}, function(err, applies) {
         if (err) {
             console.log(err.toString());
-            return;
+            callback(err);
         }
         var amount = 0;
         for (var i = 0; i < applies.length; ++i) {
             var value = applies[i].deposit + applies[i].profit;
             if (value < 0) {
+                console.log(applies[i].userMobile + ' ' + applies[i].serialID);
                 amount += value;
             }
         }
         console.log('穿仓 ' + amount);
+
+        var fee = 0;
+        for (var i = 0; i < applies.length; ++i) {
+            if (applies[i].type === 2) continue;
+            var duration = applies[i].period;
+            if (!applies[i].closeAt && applyCloseDateMap[applies[i].serialID]) {
+                applies[i].closeAt = applyCloseDateMap[applies[i].serialID];
+            }
+            if (!applies[i].closeAt) {
+                if (applies[i].status == 2) {
+                    applies[i].closeAt = time1.toDate();
+                } else {
+                    applies[i].closeAt = applies[i].endTime;
+                }
+            }
+            var time2 = moment(applies[i].closeAt);
+            var closeTime;
+            if (time2 > time1) {
+                closeTime = time1;
+            } else {
+                closeTime = time2;
+            }
+            var startTime = moment(applies[i].startTime);
+            duration = closeTime.diff(startTime, 'days');
+            var theFee = 0;
+            if (applies[i].serviceCharge) {
+                theFee = applies[i].serviceCharge * applies[i].amount / 10000 * duration;
+            } else {
+                switch (applies[i].lever) {
+                    case 10:
+                        theFee = 19.9 * applies[i].amount / 10000 * duration;
+                        break;
+                    case 9:
+                        theFee = 18.9 * applies[i].amount / 10000 * duration;
+                        break;
+                    case 8:
+                        theFee = 17.9 * applies[i].amount / 10000 * duration;
+                        break;
+                    case 7:
+                        theFee = 16.9 * applies[i].amount / 10000 * duration;
+                        break;
+                    case 6:
+                        theFee = 15.9 * applies[i].amount / 10000 * duration;
+                        break;
+                    case 5:
+                        theFee = 10.9 * applies[i].amount / 10000 * duration;
+                        break;
+                    default :
+                        theFee = 19.9 * applies[i].amount / 10000 * duration;
+                        break;
+                }
+            }
+            applies[i].fee = theFee;
+            fee += theFee;
+        }
+        console.log('total fee:' + fee.toFixed(2));
         var options = { encoding: 'utf8', flag: 'w' };
         var fileWriteStream = fs.createWriteStream("historyPayApplyDataTill-" + moment().format("YYYY-MM-DD") + ".csv",  options);
         fileWriteStream.on("close", function() {
             console.log("File Closed.");
         });
-        var data = 'userID, userMobile, serialID, amount, deposit, period, status, applyAt, closeAt, isTrial, autoPostpone, lever, warnValue, sellValue, startTime, endTime, account, profit, type, interestRate, serviceCharge\n';
+        var data = 'userID, userMobile, serialID, amount, deposit, period, status, applyAt, closeAt, isTrial, autoPostpone, lever, warnValue, sellValue, startTime, endTime, account, profit, type, interestRate, serviceCharge, fee\n';
         fileWriteStream.write(data);
         applies.forEach(function (apply) {
             data = apply.userID + ', ' + apply.userMobile + ', ' + apply.serialID + ', ' + apply.amount.toFixed(2) + ', ' + apply.deposit.toFixed(2) + ', '
             + apply.period + ', ' + apply.status + ', ' + moment(apply.applyAt).format('YYYYMMDDHHmmss') + ', ' + moment(apply.closeAt).format('YYYYMMDDHHmmss') + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
             + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + moment(apply.startTime).format('YYYYMMDDHHmmss') + ', ' + moment(apply.endTime).format('YYYYMMDDHHmmss') + ', ' + apply.account + ', '
-            + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + '\n';
+            + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + ', ' + apply.fee + '\n';
             fileWriteStream.write(data);
         });
         fileWriteStream.end();
-
-        var fee = 0;
-        for (var i = 0; i < applies.length; ++i) {
-            var duration = 0;
-            if (applies[i].closeAt) {
-                duration = moment(applies[i].closeAt).diff(moment(applies[i].startTime), 'days');
-            } else {
-                duration = applies[i].period;
-            }
-            if (applies[i].serviceCharge) {
-                fee += applies[i].serviceCharge * applies[i].amount / 10000 * duration;
-            } else {
-                switch (applies[i].lever) {
-                    case 10:
-                        fee += 19.9 * applies[i].amount / 10000 * duration;
-                        break;
-                    case 9:
-                        fee += 18.9 * applies[i].amount / 10000 * duration;
-                        break;
-                    case 8:
-                        fee += 17.9 * applies[i].amount / 10000 * duration;
-                        break;
-                    case 7:
-                        fee += 16.9 * applies[i].amount / 10000 * duration;
-                        break;
-                    case 6:
-                        fee += 15.9 * applies[i].amount / 10000 * duration;
-                        break;
-                    case 5:
-                        fee += 10.9 * applies[i].amount / 10000 * duration;
-                        break;
-                    default :
-                        fee += 19.9 * applies[i].amount / 10000 * duration;
-                        break;
-                }
-            }
-        }
-        console.log('total fee:' + fee.toFixed(2));
 
         callback(null);
     });
@@ -160,22 +178,22 @@ var historyCloseApplyFee = function(callback) {
             return;
         }
         /*
-        var options = { encoding: 'utf8', flag: 'w' };
-        var fileWriteStream = fs.createWriteStream("historyPayApplyDataTill-" + moment().format("YYYY-MM-DD") + ".csv",  options);
-        fileWriteStream.on("close", function() {
-            console.log("File Closed.");
-        });
-        var data = 'userID, userMobile, serialID, amount, deposit, period, status, applyAt, closeAt, isTrial, autoPostpone, lever, warnValue, sellValue, startTime, endTime, account, profit, type, interestRate, serviceCharge\n';
-        fileWriteStream.write(data);
-        applies.forEach(function (apply) {
-            data = apply.userID + ', ' + apply.userMobile + ', ' + apply.serialID + ', ' + apply.amount.toFixed(2) + ', ' + apply.deposit.toFixed(2) + ', '
-            + apply.period + ', ' + apply.status + ', ' + apply.applyAt + ', ' + apply.closeAt + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
-            + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + apply.startTime + ', ' + apply.endTime + ', ' + apply.account + ', '
-            + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + '\n';
-            fileWriteStream.write(data);
-        });
-        fileWriteStream.end();
-        */
+         var options = { encoding: 'utf8', flag: 'w' };
+         var fileWriteStream = fs.createWriteStream("historyPayApplyDataTill-" + moment().format("YYYY-MM-DD") + ".csv",  options);
+         fileWriteStream.on("close", function() {
+         console.log("File Closed.");
+         });
+         var data = 'userID, userMobile, serialID, amount, deposit, period, status, applyAt, closeAt, isTrial, autoPostpone, lever, warnValue, sellValue, startTime, endTime, account, profit, type, interestRate, serviceCharge\n';
+         fileWriteStream.write(data);
+         applies.forEach(function (apply) {
+         data = apply.userID + ', ' + apply.userMobile + ', ' + apply.serialID + ', ' + apply.amount.toFixed(2) + ', ' + apply.deposit.toFixed(2) + ', '
+         + apply.period + ', ' + apply.status + ', ' + apply.applyAt + ', ' + apply.closeAt + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
+         + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + apply.startTime + ', ' + apply.endTime + ', ' + apply.account + ', '
+         + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + '\n';
+         fileWriteStream.write(data);
+         });
+         fileWriteStream.end();
+         */
         var data = {};
 
         for (var i = 0; i < applies.length; ++i) {
@@ -232,9 +250,9 @@ var dailyFreeApplyData = function(startTime, endTime, callback) {
         fileWriteStream.write(data);
         applies.forEach(function (apply) {
             data = apply.userID + ', ' + apply.userMobile + ', ' + apply.serialID + ', ' + apply.amount.toFixed(2) + ', ' + apply.deposit.toFixed(2) + ', '
-                + apply.period + ', ' + apply.status + ', ' + moment(apply.applyAt).format('YYYYMMDDHHmmss') + ', ' + moment(apply.closeAt).format('YYYYMMDDHHmmss') + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
-                + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + moment(apply.startTime).format('YYYYMMDDHHmmss') + ', ' + moment(apply.endTime).format('YYYYMMDDHHmmss') + ', ' + apply.account + ', '
-                + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + '\n';
+            + apply.period + ', ' + apply.status + ', ' + moment(apply.applyAt).format('YYYYMMDDHHmmss') + ', ' + moment(apply.closeAt).format('YYYYMMDDHHmmss') + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
+            + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + moment(apply.startTime).format('YYYYMMDDHHmmss') + ', ' + moment(apply.endTime).format('YYYYMMDDHHmmss') + ', ' + apply.account + ', '
+            + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + '\n';
             fileWriteStream.write(data);
         });
         fileWriteStream.end();
@@ -406,12 +424,12 @@ var rechargeOrderData = function(callback) {
         });
         fileWriteStream.end();
         /*
-        var amount = 0;
-        for (var i = 0; i < orders.length; ++i) {
-            amount += orders[i].amount;
-        }
-        console.log('充值总额:' + amount);
-        */
+         var amount = 0;
+         for (var i = 0; i < orders.length; ++i) {
+         amount += orders[i].amount;
+         }
+         console.log('充值总额:' + amount);
+         */
         callback(null);
     });
 };
@@ -438,12 +456,12 @@ var withdrawOrderData = function(callback) {
         });
         fileWriteStream.end();
         /*
-        var amount = 0;
-        for (var i = 0; i < orders.length; ++i) {
-            amount += orders[i].amount;
-        }
-        console.log('提现总额:' + amount);
-        */
+         var amount = 0;
+         for (var i = 0; i < orders.length; ++i) {
+         amount += orders[i].amount;
+         }
+         console.log('提现总额:' + amount);
+         */
         callback(null);
     });
 };
@@ -469,12 +487,12 @@ var incomeOrderData = function(callback) {
         });
         fileWriteStream.end();
         /*
-        var amount = 0;
-        for (var i = 0; i < orders.length; ++i) {
-            amount += orders[i].amount;
-        }
-        console.log('管理费总额:' + amount);
-        */
+         var amount = 0;
+         for (var i = 0; i < orders.length; ++i) {
+         amount += orders[i].amount;
+         }
+         console.log('管理费总额:' + amount);
+         */
         callback(null);
     });
 };
@@ -634,6 +652,49 @@ var getDailyData = function(callback) {
     });
 };
 
+var getUserApplyData = function(users, callback) {
+    Apply.find({}, function(err, applies) {
+        if (err) {
+            logger.debug('err when getApplyData' + err.toString());
+            return callback(err);
+        }
+        var paidApply = applies.filter(function(elem) {
+            return elem.isTrial === false && elem.status !== 1 && elem.status !== 4 && elem.status !== 9
+        });
+        var userApplyMap = {};
+        for (var i = 0; i < paidApply.length; ++i) {
+            if (userApplyMap[paidApply[i].userMobile] !== null && userApplyMap[paidApply[i].userMobile] !== undefined) {
+                userApplyMap[paidApply[i].userMobile] += 1;
+            } else {
+                userApplyMap[paidApply[i].userMobile] = 1;
+            }
+        }
+        var numOfApply = {};
+        for (var key in userApplyMap) {
+            if (numOfApply[userApplyMap[key]] !== null && numOfApply[userApplyMap[key]] !== undefined) {
+                numOfApply[userApplyMap[key]] += 1;
+            } else {
+                numOfApply[userApplyMap[key]] = 1;
+            }
+        }
+
+        var options = { encoding: 'utf8', flag: 'w' };
+        var fileWriteStream = fs.createWriteStream("UserApplyData-" + moment().format("YYYY-MM-DD") + ".csv",  options);
+        fileWriteStream.on("close", function() {
+            console.log("File Closed.");
+        });
+        var data = 'userMobile, paidApplyNum, manager\n';
+        fileWriteStream.write(data);
+        for (var key in userApplyMap) {
+            data = key + ', ' + userApplyMap[key] + ', ' + users[key] + '\n';
+            fileWriteStream.write(data);
+        }
+        fileWriteStream.end();
+
+        callback(null);
+    });
+};
+
 var options = {};
 mongoose.connect(config.db, options);
 var db = mongoose.connection;
@@ -650,9 +711,42 @@ db.once('open', function callback() {
     startTime = startTime.toDate();
     endTime = endTime.toDate();
 
-    /*
     async.waterfall(
         [
+            function(callback) {
+                User.find({}, function(err, users) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        var userMap = {};
+                        users.forEach(function(elem) {
+                            userMap[elem.mobile] = elem.manager;
+                        });
+                    }
+                    callback(null, userMap);
+                });
+            },
+            function(userMap, callback) {
+                getUserApplyData(userMap, function(err) {
+                    callback(err);
+                });
+            }
+            /*
+            function(callback) {
+                Order.find({$and:[{dealType:5}, {status:1}]}, function(err, orders) {
+                    console.log(orders.length);
+                    callback(err, orders);
+                });
+            },
+            function(depositReturnOrders, callback) {
+                var applyCloseDateMap = {};
+                for (var i = 0; i < depositReturnOrders.length; ++i) {
+                    applyCloseDateMap[depositReturnOrders[i].applySerialID] = depositReturnOrders[i].createdAt;
+                }
+                historyPayApplyData(startTime, applyCloseDateMap, function(err) {
+                    callback(err, 0);
+                });
+            }
             function(callback) {
                 historyCloseApplyFee(function(err, data) {
                     callback(err, data);
@@ -681,18 +775,20 @@ db.once('open', function callback() {
                     callback(null, amount+data);
                 });
             }
+            */
         ], function(err, data) {
             if (err) {
                 console.log(err.toString());
             } else {
-                console.log('总服务费:' + data.toFixed(2));
+                //console.log('总服务费:' + data.toFixed(2));
+                console.log('done');
             }
+            db.close();
         }
     );
-    */
+    /*
     async.series(
         [
-            /*
             function(callback) {
                 getUserData(function (err) {
                     callback(err);
@@ -703,14 +799,6 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
-            */
-            function(callback) {
-                var startTime = moment('2015-05-01');
-                historyPayApplyData(startTime, function(err) {
-                    callback(err);
-                });
-            }
-            /*
             function(callback){
                 allOrderData(function(err) {
                     callback(err);
@@ -726,14 +814,12 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
-             */
-
-            /*
             function (callback) {
                 getDailyData(function(err) {
                     callback(err);
                 });
             },
+
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
                     callback(err);
@@ -763,25 +849,23 @@ db.once('open', function callback() {
                 dailyPayApplyData(startTime, endTime, function(err) {
                     callback(err);
                 });
-            },
-*/
-            /*
-            function(callback) {
-                rechargeOrderData(function(err) {
-                    callback(err);
-                });
-            },
-            function(callback) {
-                withdrawOrderData(function(err) {
-                    callback(err);
-                });
-            },
-            function(callback) {
-                incomeOrderData(function(err) {
-                    callback(err);
-                });
             }
-             */
+
+             function(callback) {
+             rechargeOrderData(function(err) {
+             callback(err);
+             });
+             },
+             function(callback) {
+             withdrawOrderData(function(err) {
+             callback(err);
+             });
+             },
+             function(callback) {
+             incomeOrderData(function(err) {
+             callback(err);
+             });
+             }
         ],
         function(err){
             if (err) {
@@ -789,5 +873,5 @@ db.once('open', function callback() {
             }
             db.close();
         });
+     */
 });
-
