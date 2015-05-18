@@ -177,23 +177,23 @@ var historyCloseApplyFee = function(callback) {
             console.log(err.toString());
             return;
         }
-        /*
-         var options = { encoding: 'utf8', flag: 'w' };
-         var fileWriteStream = fs.createWriteStream("historyPayApplyDataTill-" + moment().format("YYYY-MM-DD") + ".csv",  options);
-         fileWriteStream.on("close", function() {
-         console.log("File Closed.");
-         });
-         var data = 'userID, userMobile, serialID, amount, deposit, period, status, applyAt, closeAt, isTrial, autoPostpone, lever, warnValue, sellValue, startTime, endTime, account, profit, type, interestRate, serviceCharge\n';
-         fileWriteStream.write(data);
-         applies.forEach(function (apply) {
-         data = apply.userID + ', ' + apply.userMobile + ', ' + apply.serialID + ', ' + apply.amount.toFixed(2) + ', ' + apply.deposit.toFixed(2) + ', '
-         + apply.period + ', ' + apply.status + ', ' + apply.applyAt + ', ' + apply.closeAt + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
-         + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + apply.startTime + ', ' + apply.endTime + ', ' + apply.account + ', '
-         + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + '\n';
-         fileWriteStream.write(data);
-         });
-         fileWriteStream.end();
-         */
+
+        var options = { encoding: 'utf8', flag: 'w' };
+        var fileWriteStream = fs.createWriteStream("historyPayApplyDataTill-" + moment().format("YYYY-MM-DD") + ".csv",  options);
+        fileWriteStream.on("close", function() {
+            console.log("File Closed.");
+        });
+        var data = 'userID, userMobile, serialID, amount, deposit, period, status, applyAt, closeAt, isTrial, autoPostpone, lever, warnValue, sellValue, startTime, endTime, account, profit, type, interestRate, serviceCharge, closeAt\n';
+        fileWriteStream.write(data);
+        applies.forEach(function (apply) {
+            data = apply.userID + ', ' + apply.userMobile + ', ' + apply.serialID + ', ' + apply.amount.toFixed(2) + ', ' + apply.deposit.toFixed(2) + ', '
+            + apply.period + ', ' + apply.status + ', ' + moment(apply.applyAt).format('YYYYMMDDHHmmss') + ', ' + moment(apply.closeAt) + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
+            + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + moment(apply.startTime).format('YYYYMMDDHHmmss') + ', ' + moment(apply.endTime).format('YYYYMMDDHHmmss') + ', ' + apply.account + ', '
+            + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + ', ' + moment(apply.startAt).format('YYYYMMDDHHmmss') + '\n';
+            fileWriteStream.write(data);
+        });
+        fileWriteStream.end();
+
         var data = {};
 
         for (var i = 0; i < applies.length; ++i) {
@@ -229,7 +229,7 @@ var historyCloseApplyFee = function(callback) {
         }
         //console.log('total fee:' + fee.toFixed(2));
 
-        callback(null, data);
+        callback(null);
     });
 };
 
@@ -711,6 +711,7 @@ db.once('open', function callback() {
     startTime = startTime.toDate();
     endTime = endTime.toDate();
 
+    /*
     async.waterfall(
         [
             function(callback) {
@@ -731,7 +732,6 @@ db.once('open', function callback() {
                     callback(err);
                 });
             }
-            /*
             function(callback) {
                 Order.find({$and:[{dealType:5}, {status:1}]}, function(err, orders) {
                     console.log(orders.length);
@@ -775,7 +775,6 @@ db.once('open', function callback() {
                     callback(null, amount+data);
                 });
             }
-            */
         ], function(err, data) {
             if (err) {
                 console.log(err.toString());
@@ -786,9 +785,10 @@ db.once('open', function callback() {
             db.close();
         }
     );
-    /*
+     */
     async.series(
         [
+    /*
             function(callback) {
                 getUserData(function (err) {
                     callback(err);
@@ -819,7 +819,13 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
+     */
 
+            function(callback) {
+                historyCloseApplyFee(function(err) {
+                    callback(err);
+                });
+            },
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
                     callback(err);
@@ -851,21 +857,23 @@ db.once('open', function callback() {
                 });
             }
 
-             function(callback) {
-             rechargeOrderData(function(err) {
-             callback(err);
-             });
-             },
-             function(callback) {
-             withdrawOrderData(function(err) {
-             callback(err);
-             });
-             },
-             function(callback) {
-             incomeOrderData(function(err) {
-             callback(err);
-             });
-             }
+            /*
+            function(callback) {
+                rechargeOrderData(function(err) {
+                    callback(err);
+                });
+            },
+            function(callback) {
+                withdrawOrderData(function(err) {
+                    callback(err);
+                });
+            },
+            function(callback) {
+                incomeOrderData(function(err) {
+                    callback(err);
+                });
+            }
+            */
         ],
         function(err){
             if (err) {
@@ -873,5 +881,4 @@ db.once('open', function callback() {
             }
             db.close();
         });
-     */
 });
