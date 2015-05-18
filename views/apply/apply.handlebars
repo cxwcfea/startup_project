@@ -1,6 +1,6 @@
 <div class="wrapper" ng-app="mainApp" ng-controller="MainApplyController as applyVM" ng-cloak>
     <div class="freeTitle">
-        <div class="fl"><span>天天牛</span> &nbsp;&nbsp;短线炒股、最高30万、利润放大10倍</div>
+        <div class="fl"><span>天天牛</span> &nbsp;&nbsp;短线炒股、最高100万、利润放大10倍</div>
         <a href="/info/guide">新手引导>></a>
         <div class="clear"></div>
     </div>
@@ -35,7 +35,7 @@
             <div class="qtmoneyBox" id="jq_qtmoneyBox" ng-show="applyVM.showOtherAmount">
                 <p class="tc p01">请输入您的操盘金额</p>
                 <div class="moneyInputBox">
-                    <input class="moneyinputText" type="text" name="apply_money" placeholder="申请资金须在2000元至30万元之间" min="\{{applyVM.min_amount}}" max="300000" step="1000" ng-model="applyVM.otherAmount" ng-change="applyVM.finishOtherAmount()"/>
+                    <input class="moneyinputText" type="text" name="apply_money" placeholder="申请资金须在2000元至100万元之间" min="\{{applyVM.min_amount}}" max="1000000" step="10000" ng-model="applyVM.otherAmount" ng-change="applyVM.finishOtherAmount()"/>
                     <input type="button" ng-click="applyVM.submitApply()" value="确定" class="moneyBtn" />
                 </div>
                 <p class="tc p02"><a href="" id="return_moneyBox" ng-click="applyVM.toggleOtherAmount()">返回</a></p>
@@ -64,7 +64,7 @@
                 <a href="" class="am-close am-close-spin" data-am-modal-close>&times;</a>
             </div>
             <div class="am-modal-bd">
-                金额必须在2000元到30万元之间
+                金额必须在2000元到100万元之间
             </div>
             <div class="am-modal-footer">
                 <span class="am-modal-btn">确定</span>

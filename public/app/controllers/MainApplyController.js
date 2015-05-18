@@ -16,7 +16,7 @@
         var vm = this;
 
         vm.min_amount = 2000;
-        vm.max_amount = 300000;
+        vm.max_amount = 1000000;
         var startTime = days.startTime();
 
         vm.leverList = [
@@ -68,7 +68,7 @@
 
         vm.summary = {
             day: 1,
-            amount: 2000
+            amount: 5000
         };
         vm.endTime = days.endTime(startTime, vm.summary.day);
 
@@ -91,17 +91,13 @@
 
         vm.amountList = [
             {
-                name: '2000元',
-                value: '2000',
+                name: '5000元',
+                value: "5000",
                 select: true
             },
             {
                 name: '1万',
                 value: "10000"
-            },
-            {
-                name: '2万',
-                value: "20000"
             },
             {
                 name: '3万',
@@ -116,12 +112,16 @@
                 value: "100000"
             },
             {
-                name: '20万',
-                value: "200000"
-            },
-            {
                 name: '30万',
                 value: "300000"
+            },
+            {
+                name: '50万',
+                value: "500000"
+            },
+            {
+                name: '100万',
+                value: "1000000"
             }
         ];
 
@@ -185,7 +185,7 @@
                 alert('您必须同意《牛金操盘协议》');
                 return;
             }
-            if (vm.summary.amount <= 0 || vm.summary.amount > 300000) {
+            if (vm.summary.amount <= 0 || vm.summary.amount > 1000000) {
                 var theModal = $('#invalid-value-modal');
                 theModal.modal('open');
                 return;
@@ -263,7 +263,7 @@
             if (discount <= 0 || discount > 1) {
                 discount = 1;
             }
-            vm.serviceFee = vm.apply.amount / 10000 * util.getServiceCharge(vm.apply.lever) * vm.apply.period * vm.apply.discount;
+            vm.serviceFee = vm.apply.amount / 10000 * util.getServiceCharge(vm.apply.lever) * vm.apply.period * discount;
             vm.totalAmount = vm.apply.deposit + vm.serviceFee;
             vm.shouldPay = vm.totalAmount - vm.apply.userBalance;
             if (vm.shouldPay <= 0) {

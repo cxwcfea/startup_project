@@ -35,7 +35,7 @@
         </ul>
         <div class="other-number" id="J_other" ng-show="vm.showOtherAmount">
             <form class="money-form" id="J_moneyform" name="moneyForm">
-                <input type="number" id="J_custNum" class="ipt-txt" name="apply_money" placeholder="申请资金须在2000元至30万元之间" min="2000" max="300000" step="1000" ng-model="vm.otherAmount" ng-change="vm.finishOtherAmount()" required>
+                <input type="number" id="J_custNum" class="ipt-txt" name="apply_money" placeholder="申请资金须在2000元至100万元之间" min="2000" max="1000000" step="10000" ng-model="vm.otherAmount" ng-change="vm.finishOtherAmount()" required>
                 <button type="submit" ng-disabled="moneyForm.$invalid" id="J_submit" class="submit-btn" ng-click="vm.submitApply()">确定</button>
                 <p class="return">
                     <a href="" id="J_back" ng-click="vm.toggleOtherAmount()">返回</a>
