@@ -63,7 +63,7 @@
         vm.showOtherAmount = false;
         vm.otherAmount;
         vm.showLoginWindow = false;
-        vm.selectedLever = vm.leverList[0];
+        vm.selectedLever = vm.leverList[3];
         vm.discount = 0.8;
 
         vm.summary = {
