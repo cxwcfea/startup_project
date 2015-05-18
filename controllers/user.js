@@ -3,6 +3,7 @@ var passport = require('passport'),
     Order = require('../models/Order'),
     Apply = require('../models/Apply'),
     Homas = require('../models/Homas'),
+    Note = require('../models/Note'),
     PayInfo = require('../models/PayInfo'),
     nodemailer = require('nodemailer'),
     crypto = require('crypto'),
@@ -1815,4 +1816,18 @@ module.exports.getVerifyImg = function(req, res) {
     var buf = ary[1];
     req.session.img_code = txt.toLowerCase();
     res.send(buf);
+};
+
+module.exports.submitComplain = function(req, res) {
+    if (req.body.title && req.body.content) {
+        var data = {
+            userMobile: '00000000001',
+            title: req.body.title,
+            content: req.body.content,
+            writer: req.user.mobile
+        };
+        Note.create(data, function (err, note) {
+            res.redirect('/');
+        });
+    }
 };

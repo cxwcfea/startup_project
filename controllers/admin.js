@@ -1863,6 +1863,16 @@ function getDailyData(req, res) {
         });
 }
 
+function fetchUserComplainList(req, res) {
+    Note.find({userMobile:'00000000001'}, function(err, notes) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send(notes);
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -2008,6 +2018,8 @@ module.exports = {
         app.get('/admin/api/user_manager', passportConf.requiresRole('admin'), getManagerOfUser);
 
         app.get('/admin/api/daily_data', passportConf.requiresRole('admin'), getDailyData);
+
+        app.get('/admin/api/user_complain_list', passportConf.requiresRole('admin'), fetchUserComplainList);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
