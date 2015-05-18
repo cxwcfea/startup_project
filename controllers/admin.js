@@ -309,6 +309,15 @@ function fetchAllOrders(req, res, next) {
     });
 }
 
+function fetchAllOrdersAllStatus(req, res, next) {
+    Order.find({}, function(err, collection) {
+        if (err) {
+            logger.error(err.toString());
+        }
+        res.send(collection);
+    });
+}
+
 function updateApplyForUser(req, res, next) {
     logger.info('updateApplyForUser operator:' + req.user.mobile);
     var data = _.omit(req.body, ['start_date', 'end_date']);
@@ -1867,6 +1876,8 @@ module.exports = {
         app.get('/admin/api/applies/all', passportConf.requiresRole('admin|support'), fetchAllApplies);
 
         app.get('/admin/api/orders/all', passportConf.requiresRole('admin|support'), fetchAllOrders);
+
+        app.get('/admin/api/orders/all_allstatus', passportConf.requiresRole('admin|support'), fetchAllOrdersAllStatus);
 
         app.post('/admin/api/send_sms', passportConf.requiresRole('admin|support'), sendSMS);
 

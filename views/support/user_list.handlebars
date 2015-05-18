@@ -9,9 +9,15 @@
             <span class="am-input-group-btn">
                 <button class="am-btn am-btn-default" type="button" ng-click="userVM.searchUser()">搜索</button>
                 <button class="am-btn am-btn-default" type="button" ng-click="userVM.showAllUsers()">全部</button>
+                <button class="am-btn am-btn-default" type="button" ng-click="userVM.showUsersNotComplete()">未完成注册的</button>
             </span>
         </div>
-        <button class="am-btn am-btn-default" type="button" ng-click="userVM.showUsersNotComplete()">未完成注册的</button>
+        <div class="am-input-group am-input-group-sm" ng-show="userVM.showLostAnalysis === 2">
+            <input type="text" class="am-form-field" placeholder="输入流失时间" ng-model="userVM.loseDays">
+            <span class="am-input-group-btn">
+                <button class="am-btn am-btn-default" type="button" ng-click="userVM.showUsersLost()">流失用户</button>
+            </span>
+        </div>
     </div>
 </div>
 
@@ -22,7 +28,7 @@
             <table class="am-table am-table-striped am-table-hover table-main">
                 <thead>
                 <tr>
-                    <th class="table-id">手机号</th><th class="table-title">姓名</th><th class="table-id">配资额</th><th class="table-author">免费配资</th><th class="table-id">余额</th><th>客服人员</th><th class="table-date">注册日期</th><th>渠道</th><th class="table-set">操作</th>
+                    <th class="table-id">手机号</th><th class="table-title">姓名</th><th class="table-id">配资额</th><th class="table-author">免费配资</th><th class="table-id">余额</th><th class="table-id">总收益</th><th>客服人员</th><th class="table-date">注册日期</th><th>渠道</th><th class="table-set">操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -32,6 +38,7 @@
                     <td>\{{user.finance.history_capital | currency:'':2}}</td>
                     <td>\{{user.freeApply ? '是' : '否'}}</td>
                     <td>\{{user.finance.balance | currency:'':2}}</td>
+                    <td>\{{user.finance.profit | currency:'':2}}</td>
                     <td>\{{user.manager || '还未分配' | displayManager}}</td>
                     <td>\{{user.registered ? (user.registerAt | date:"yyyy-MM-dd HH:mm") : '未注册'}}</td>
                     <td>\{{user.refer || '未知'}}</td>
