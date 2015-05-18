@@ -2,59 +2,84 @@
     <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">我接手的客户</strong> / <small>My Users</small></div>
 </div>
 <ul class="am-list am-list-static am-list-border am-list-striped">
-<li class="am-form-inline am-padding" style="padding-top:3px;padding-bottom:3px;">
-    <div class="am-form-group">
-        <span>手机号码:</span>
-        <input type="text" class="am-form-field am-input-sm" style="width:174px;" placeholder="1388888666" ng-model="myUserVM.search_mobile">
-    </div>
-    <div class="am-form-group am-form-select">
-        <span for="trader-status">&nbsp;&nbsp;操盘状态:</span>
-        <select id="trader-status" ng-model="myUserVM.trader_status" ng-options="option for option in trader_options">
-        </select>
-        <span class="am-form-caret"></span>
-    </div>
-    <div class="am-form-group">
-        <span>
-            &nbsp;&nbsp;免费体验:&nbsp;&nbsp;<input type="checkbox" ng-model="myUserVM.free_apply">
-        </span>
-    </div>
-</li>
-<li class="am-form-inline am-padding" style="padding-top:3px;padding-bottom:3px;">
-    <div class="am-form-group">
-        <span>登陆区间:</span>
-        <input type="text" class="am-form-field am-input-sm" style="width:80px;" placeholder="起" ng-model="myUserVM.login_begin">
-        <span>-</span>
-        <input type="text" class="am-form-field am-input-sm" style="width:80px;" placeholder="止" ng-model="myUserVM.login_end">
-    </div>
-    <button class="am-btn am-btn-default am-btn-sm" type="button" ng-click="myUserVM.setLoginRange(0, 3)">3日内来访</button>
-    <button class="am-btn am-btn-default am-btn-sm" type="button" ng-click="myUserVM.setLoginRange(0, 7)">7日内来访</button>
-</li>
+    <li class="am-form-inline am-padding" style="padding-top:3px;padding-bottom:3px;">
+        <div class="am-form-group">
+            <span>手机号码:</span>
+            <input type="text" class="am-form-field am-input-sm" style="width:174px;" placeholder="1388888666" ng-model="myUserVM.search_mobile">
+        </div>
+        <div class="am-form-group am-form-select">
+            <span for="trader-status">&nbsp;&nbsp;操盘状态:</span>
+            <select id="trader-status" ng-model="myUserVM.trader_status" ng-options="option for option in trader_options">
+            </select>
+            <span class="am-form-caret"></span>
+        </div>
+        <div class="am-form-group">
+            <span>
+                &nbsp;&nbsp;免费体验:&nbsp;&nbsp;<input type="checkbox" ng-model="myUserVM.free_apply">
+            </span>
+        </div>
+    </li>
+    <li class="am-form-inline am-padding" style="padding-top:3px;padding-bottom:3px;">
+        <div class="am-form-group">
+            <span>登陆区间:</span>
+            <input type="text" class="am-form-field am-input-sm" style="width:80px;" placeholder="起" ng-model="myUserVM.login_begin">
+            <span>-</span>
+            <input type="text" class="am-form-field am-input-sm" style="width:80px;" placeholder="止" ng-model="myUserVM.login_end">
+        </div>
+        <button class="am-btn am-btn-default am-btn-sm" type="button" ng-click="myUserVM.setLoginRange(0, 3)">3日内来访</button>
+        <button class="am-btn am-btn-default am-btn-sm" type="button" ng-click="myUserVM.setLoginRange(0, 7)">7日内来访</button>
+    </li>
 
-<li class="am-form-inline am-padding" style="padding-top:3px;padding-bottom:3px;">
-    <div class="am-form-group">
-        <span>注册区间:</span>
-        <input type="text" class="am-form-field am-input-sm" style="width:80px;" placeholder="起" ng-model="myUserVM.register_begin">
-        <span>-</span>
-        <input type="text" class="am-form-field am-input-sm" style="width:80px;" placeholder="止" ng-model="myUserVM.register_end">
-    </div>
-    <button class="am-btn am-btn-default am-btn-sm" type="button" ng-click="myUserVM.setRegisterRange(0, 3)">3日内注册</button>
-    <button class="am-btn am-btn-default am-btn-sm" type="button" ng-click="myUserVM.setRegisterRange(0, 7)">7日内注册</button>
-</li>
+    <li class="am-form-inline am-padding" style="padding-top:3px;padding-bottom:3px;">
+        <div class="am-form-group">
+            <span>注册区间:</span>
+            <input type="text" class="am-form-field am-input-sm" style="width:80px;" placeholder="起" ng-model="myUserVM.register_begin">
+            <span>-</span>
+            <input type="text" class="am-form-field am-input-sm" style="width:80px;" placeholder="止" ng-model="myUserVM.register_end">
+        </div>
+        <button class="am-btn am-btn-default am-btn-sm" type="button" ng-click="myUserVM.setRegisterRange(0, 3)">3日内注册</button>
+        <button class="am-btn am-btn-default am-btn-sm" type="button" ng-click="myUserVM.setRegisterRange(0, 7)">7日内注册</button>
+    </li>
 
-<li class="am-form-inline am-padding" style="padding-top:3px;padding-bottom:3px;">
-    <div class="am-form-group">
-        <span>盈利范围:</span>
-        <input type="text" class="am-form-field am-input-sm" style="width:80px;" placeholder="起" ng-model="myUserVM.profit_begin">
-        <span>-</span>
-        <input type="text" class="am-form-field am-input-sm" style="width:80px;" placeholder="止" ng-model="myUserVM.profit_end">
-    </div>
-    <button class="am-btn am-btn-default am-btn-sm" type="button" ng-click="myUserVM.setProfitRange(0.1, '')">盈利用户</button>
-    <button class="am-btn am-btn-default am-btn-sm" type="button" ng-click="myUserVM.setProfitRange(0, 0)">未盈利用户</button>
-</li>
-<li class="am-form-inline am-padding" style="padding-top:3px;padding-bottom:3px;">
-    <button class="am-btn am-btn-primary" type="button" ng-click="myUserVM.searchUser()">搜索</button>
-    <button class="am-btn am-btn-default" type="button" ng-click="myUserVM.resetSearch()">重置</button>
-</li>
+    <li class="am-form-inline am-padding" style="padding-top:3px;padding-bottom:3px;">
+        <div class="am-form-group">
+            <span>盈利范围:</span>
+            <input type="text" class="am-form-field am-input-sm" style="width:80px;" placeholder="起" ng-model="myUserVM.profit_begin">
+            <span>-</span>
+            <input type="text" class="am-form-field am-input-sm" style="width:80px;" placeholder="止" ng-model="myUserVM.profit_end">
+        </div>
+        <button class="am-btn am-btn-default am-btn-sm" type="button" ng-click="myUserVM.setProfitRange(0.1, '')">盈利用户</button>
+        <button class="am-btn am-btn-default am-btn-sm" type="button" ng-click="myUserVM.setProfitRange(0, 0)">未盈利用户</button>
+    </li>
+    <li class="am-form-inline am-padding" style="padding-top:3px;padding-bottom:3px;" ng-show="myUserVM.showLostAnalysis === 2">
+        <div class="am-form-group">
+            <span>最近配资:</span>
+            <input type="text" class="am-form-field am-input-sm" style="width:80px;" placeholder="起" ng-model="myUserVM.order_begin">
+            <input type="text" class="am-form-field am-input-sm" style="width:80px;" placeholder="起" ng-model="myUserVM.order_end">
+        </div>
+        <button class="am-btn am-btn-default am-btn-sm" type="button" ng-click="myUserVM.setOrderRange(7, '')">1周前用户</button>
+    </li>
+    <li class="am-form-inline am-padding" style="padding-top:3px;padding-bottom:3px;" ng-show="myUserVM.showLostAnalysis === 2">
+        <div class="am-form-group">
+            <span>配资次数:</span>
+            <input type="text" class="am-form-field am-input-sm" style="width:80px;" placeholder="起" ng-model="myUserVM.order_cnt_begin">
+            <input type="text" class="am-form-field am-input-sm" style="width:80px;" placeholder="起" ng-model="myUserVM.order_cnt_end">
+        </div>
+        <button class="am-btn am-btn-default am-btn-sm" type="button" ng-click="myUserVM.setOrderCntRange(1, '')">配资用户</button>
+        <button class="am-btn am-btn-default am-btn-sm" type="button" ng-click="myUserVM.setOrderCntRange(0, 0)">僵尸用户</button>
+    </li>
+    <li class="am-form-inline am-padding" style="padding-top:3px;padding-bottom:3px;" ng-show="myUserVM.showLostAnalysis === 2">
+        <div class="am-form-group">
+            <span>组合指标:</span>
+        </div>
+        <button class="am-btn am-btn-default am-btn-sm" type="button" ng-click="myUserVM.setLostUser(7)">流失1周用户</button>
+        <button class="am-btn am-btn-default am-btn-sm" type="button" ng-click="myUserVM.setLostUser(14)">流失2周用户</button>
+        <button class="am-btn am-btn-default am-btn-sm" type="button" ng-click="myUserVM.setLostUser(30)">流失1月用户</button>
+    </li>
+    <li class="am-form-inline am-padding" style="padding-top:3px;padding-bottom:3px;">
+        <button class="am-btn am-btn-primary" type="button" ng-click="myUserVM.searchUser()">搜索</button>
+        <button class="am-btn am-btn-default" type="button" ng-click="myUserVM.resetSearch()">重置</button>
+    </li>
 </ul>
 
 <div class="am-g">

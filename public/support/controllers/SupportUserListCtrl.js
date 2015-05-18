@@ -8,6 +8,7 @@ angular.module('supportApp').controller('SupportUserListCtrl', ['$scope', '$http
     vm.users = gbUser.query(function() {
         vm.users = $filter('orderBy')(vm.users, 'registerAt', true);
         vm.showAllUsers();
+        vm.showLostAnalysis += 1;
     });
 
     vm.pageChanged = function() {
@@ -54,6 +55,27 @@ angular.module('supportApp').controller('SupportUserListCtrl', ['$scope', '$http
         vm.pageChanged();
         return;
     };
+
+    vm.showUsersLost = function() {
+        if (!vm.loseDays) {
+            return;
+        }
+        $scope.data.loseDays = vm.loseDays;
+        vm.currentUsers = [];
+        var time_begin = new Date();
+        if (vm.loseDays) {
+            time_begin.setDate(time_begin.getDate()-1*vm.loseDays);
+        }
+        for (var key in vm.users) {
+            var user = vm.users[key];
+            var user_date = new Date(user['lastLoginAt']);
+            if (user_date < time_begin && user.finance.history_capital > 0) {
+                vm.currentUsers.push(user);
+            }
+        }
+        vm.totalItems = vm.currentAllUsers.length;
+        vm.pageChanged();
+    }
 
     vm.showApplies = function(user) {
         $scope.data.selectedUser = user;
