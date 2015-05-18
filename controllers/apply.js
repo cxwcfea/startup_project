@@ -618,6 +618,7 @@ exports.placeApply = function(req, res, next) {
         warnValue: Number(Number(req.body.warnValue).toFixed(2)),
         sellValue: Number(Number(req.body.sellValue).toFixed(2)),
         serviceCharge: req.body.serviceCharge,
+        discount: 0.8,
         period: 5
     });
 

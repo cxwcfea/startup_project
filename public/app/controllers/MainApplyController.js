@@ -64,7 +64,7 @@
         vm.otherAmount;
         vm.showLoginWindow = false;
         vm.selectedLever = vm.leverList[0];
-
+        vm.discount = 0.8;
 
         vm.summary = {
             day: 1,
@@ -81,7 +81,7 @@
             vm.summary.sellValue = util.getSellValue(vm.summary.amount, vm.summary.deposit);
             vm.summary.serviceCharge = util.getServiceCharge(vm.summary.lever);
             var charge = vm.summary.amount / 10000 * vm.summary.serviceCharge; // * vm.summary.day;
-            vm.summary.charge = charge;
+            vm.summary.charge = charge * vm.discount;
             vm.summary.total = vm.summary.deposit + charge;
             vm.endTime = days.endTime(startTime, vm.summary.day);
         }
@@ -259,7 +259,11 @@
 
         function calculateAmount() {
             vm.apply.serviceCharge = util.getServiceCharge(vm.apply.lever);
-            vm.serviceFee = vm.apply.amount / 10000 * util.getServiceCharge(vm.apply.lever) * vm.apply.period;
+            var discount = vm.apply.discount ? vm.apply.discount : 1;
+            if (discount <= 0 || discount > 1) {
+                discount = 1;
+            }
+            vm.serviceFee = vm.apply.amount / 10000 * util.getServiceCharge(vm.apply.lever) * vm.apply.period * vm.apply.discount;
             vm.totalAmount = vm.apply.deposit + vm.serviceFee;
             vm.shouldPay = vm.totalAmount - vm.apply.userBalance;
             if (vm.shouldPay <= 0) {

@@ -10,7 +10,11 @@ angular.module('mobileApp').controller('MobileTtnConfirmCtrl', ['$scope', '$wind
     vm.autoPostpone = true;
 
     function calculateAmount() {
-        vm.serviceFee = vm.apply.amount / 10000 * util.getServiceCharge(vm.apply.lever) * vm.apply.period;
+        var discount = vm.apply.discount ? vm.apply.discount : 1;
+        if (discount <= 0 || discount > 1) {
+            discount = 1;
+        }
+        vm.serviceFee = vm.apply.amount / 10000 * util.getServiceCharge(vm.apply.lever) * vm.apply.period * discount;
         vm.totalAmount = vm.apply.deposit + vm.serviceFee;
         vm.shouldPay = vm.totalAmount - vm.apply.userBalance;
         if (vm.shouldPay <= 0) {

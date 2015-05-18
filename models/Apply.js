@@ -25,6 +25,7 @@ var applySchema = mongoose.Schema({
     type: {type:Number, default: 1},  // 1 means ttn, 2 means yyn
     interestRate: Number, // for month
     serviceCharge: Number,  // for day
+    discount: Number,  // for day
     manager: String
 });
 

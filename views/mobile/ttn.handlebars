@@ -67,7 +67,7 @@
 
     <div class="ttn-fee">
         <p><span class="icon"></span>预付保证金 <strong id="J_bond">\{{vm.summary.deposit | currency:'':2}}</strong> 元</p>
-        <p><span class="free">（按天收取，周末节假日免费）</span>账户管理费 <em id="J_fee">\{{vm.summary.charge | currency:'':2}}</em>元/天</p>
+        <p><span class="free">（按天收取，周末节假日免费）</span>账户管理费 <em id="J_fee">\{{vm.summary.charge | currency:'':2}}</em>元/天</p><strong id="J_bond">\{{vm.discount * 10}}折</strong>
     </div>
     <div class="ttn-warn">
         <div class="number">
