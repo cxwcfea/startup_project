@@ -503,57 +503,61 @@ exports.freeApply = function(req, res, next) {
                 }
             } else {
                 if (req.user.finance.balance >= 100) {
-                    var applyData = new Apply({
-                        userID: req.user._id,
-                        userMobile: req.user.mobile,
-                        serialID: util.generateSerialID(),
-                        amount: 2000,
-                        deposit: 100,
-                        isTrial: true,
-                        status: 4,
-                        period: 2
-                    });
-                    Apply.create(applyData, function(err, apply) {
-                        if(err) next();
-                        User.findById(req.user._id, function(err, user) {
-                            if (err) {
-                                logger.debug('freeApply error:' + err.toString());
-                                return next();
+                    User.update({_id:req.user.id}, {$set:{'freeApply':true}}, function(err, numberAffected, raw) {
+                        if (err) {
+                            next();
+                        } else if (!numberAffected) {
+                            logger.warn('user:' + user.mobile + ' already tried free apply, refuse it');
+                            res.locals.serial_id = user.freeApply;
+                            if (req.url.search('/mobile') > -1) {
+                                res.render('mobile/free_apply_refuse', {
+                                    layout: 'mobile'
+                                });
+                            } else {
+                                res.render('apply/free_apply_refuse');
                             }
-                            if (!user) {
-                                logger.debug('freeApply error: user not found');
-                                return next();
-                            }
-                            if (user.freeApply) {
-                                logger.warn('user:' + user.mobile + ' already tried free apply, refuse it');
-                                res.locals.serial_id = user.freeApply;
-                                if (req.url.search('/mobile') > -1) {
-                                    res.render('mobile/free_apply_refuse', {
-                                        layout: 'mobile'
-                                    });
-                                } else {
-                                    res.render('apply/free_apply_refuse');
-                                }
-                                return;
-                            }
-                            user.finance.balance -= 100;
-                            user.finance.total_capital += 2000;
-                            user.finance.deposit += 100;
-                            user.finance.history_capital += 2000;
-                            user.finance.history_deposit += 100;
-                            user.freeApply = apply.serialID;
-                            user.save(function (err, user) {
-                                if (err) {
-                                    logger.debug('freeApply error:' + err.toString());
-                                    return next();
-                                }
-                                if (req.url.search('/mobile') > -1) {
-                                    res.redirect('/mobile/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000 + '&status=' + 4);
-                                } else {
-                                    res.redirect('/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000 + '&status=' + 4);
-                                }
+                        } else {
+                            var applyData = new Apply({
+                                userID: req.user._id,
+                                userMobile: req.user.mobile,
+                                serialID: util.generateSerialID(),
+                                amount: 2000,
+                                deposit: 100,
+                                isTrial: true,
+                                status: 4,
+                                period: 2
                             });
-                        });
+                            Apply.create(applyData, function(err, apply) {
+                                if(err) next();
+                                User.findById(req.user._id, function(err, user) {
+                                    if (err) {
+                                        logger.debug('freeApply error:' + err.toString());
+                                        return next();
+                                    }
+                                    if (!user) {
+                                        logger.debug('freeApply error: user not found');
+                                        return next();
+                                    }
+                                    user.finance.balance -= 100;
+                                    user.finance.total_capital += 2000;
+                                    user.finance.deposit += 100;
+                                    user.finance.history_capital += 2000;
+                                    user.finance.history_deposit += 100;
+                                    user.freeApply = apply.serialID;
+                                    user.save(function (err, user) {
+                                        if (err) {
+                                            logger.debug('freeApply error:' + err.toString());
+                                            return next();
+                                        }
+                                        if (req.url.search('/mobile') > -1) {
+                                            res.redirect('/mobile/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000 + '&status=' + 4);
+                                        } else {
+                                            res.redirect('/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000 + '&status=' + 4);
+                                        }
+                                    });
+                                });
+                            });
+                        }
                     });
                 } else {
                     var orderData = {
