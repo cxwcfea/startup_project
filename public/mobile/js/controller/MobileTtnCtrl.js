@@ -54,7 +54,7 @@ angular.module('mobileApp').controller('MobileTtnCtrl', ['$scope', '$window', '$
 
     vm.summary = {
         day: 1,
-        amount: 2000
+        amount: 5000
     };
     vm.endTime = days.endTime(startTime, vm.summary.day);
 
@@ -75,17 +75,13 @@ angular.module('mobileApp').controller('MobileTtnCtrl', ['$scope', '$window', '$
 
     vm.amountList = [
         {
-            name: '2000元',
-            value: '2000',
+            name: '5000元',
+            value: '5000',
             select: true
         },
         {
             name: '1万',
             value: "10000"
-        },
-        {
-            name: '2万',
-            value: "20000"
         },
         {
             name: '3万',
@@ -100,12 +96,16 @@ angular.module('mobileApp').controller('MobileTtnCtrl', ['$scope', '$window', '$
             value: "100000"
         },
         {
-            name: '20万',
-            value: "200000"
-        },
-        {
             name: '30万',
             value: "300000"
+        },
+        {
+            name: '50万',
+            value: "500000"
+        },
+        {
+            name: '100万',
+            value: "1000000"
         }
     ];
 
@@ -172,8 +172,8 @@ angular.module('mobileApp').controller('MobileTtnCtrl', ['$scope', '$window', '$
             alert('您必须同意《牛金操盘协议》');
             return;
         }
-        if (vm.summary.amount <= 0 || vm.summary.amount > 300000) {
-            alert('金额必须在2000元到30万之间');
+        if (vm.summary.amount <= 0 || vm.summary.amount > 1000000) {
+            alert('金额必须在2000元到100万之间');
             return;
         }
         _submitApply();
