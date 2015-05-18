@@ -187,7 +187,7 @@ var historyCloseApplyFee = function(callback) {
         fileWriteStream.write(data);
         applies.forEach(function (apply) {
             data = apply.userID + ', ' + apply.userMobile + ', ' + apply.serialID + ', ' + apply.amount.toFixed(2) + ', ' + apply.deposit.toFixed(2) + ', '
-            + apply.period + ', ' + apply.status + ', ' + moment(apply.applyAt).format('YYYYMMDDHHmmss') + ', ' + moment(apply.closeAt) + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
+            + apply.period + ', ' + apply.status + ', ' + moment(apply.applyAt).format('YYYYMMDDHHmmss') + ', ' + moment(apply.closeAt).format('YYYYMMDDHHmmss') + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
             + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + moment(apply.startTime).format('YYYYMMDDHHmmss') + ', ' + moment(apply.endTime).format('YYYYMMDDHHmmss') + ', ' + apply.account + ', '
             + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + ', ' + moment(apply.startAt).format('YYYYMMDDHHmmss') + '\n';
             fileWriteStream.write(data);
