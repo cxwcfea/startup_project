@@ -172,7 +172,7 @@ var historyPayApplyData = function(startTime, applyCloseDateMap, callback) {
 var historyCloseApplyFee = function(callback) {
     console.log('historyCloseApplyFee');
 
-    Apply.find({$and:[{isTrial:false}, {status:3}]}, function(err, applies) {
+    Apply.find({$and:[{status:3}]}, function(err, applies) {
         if (err) {
             console.log(err.toString());
             return;
