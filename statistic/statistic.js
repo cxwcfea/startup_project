@@ -715,7 +715,6 @@ db.on('error', console.error.bind(console, 'connection error...'));
 db.once('open', function callback() {
     console.log('goldenbull db opened');
     var endTime = moment();
-    endTime.subtract(1, 'days');
     endTime.hour(17);
     endTime.minute(00);
     endTime.second(00);
