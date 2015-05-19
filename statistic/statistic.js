@@ -275,13 +275,13 @@ var dailyPayApplyData = function(startTime, endTime, callback) {
         fileWriteStream.on("close", function() {
             console.log("File Closed.");
         });
-        var data = 'userID, userMobile, serialID, amount, deposit, period, status, applyAt, closeAt, isTrial, autoPostpone, lever, warnValue, sellValue, startTime, endTime, account, profit, type, interestRate, serviceCharge\n';
+        var data = 'userID, userMobile, serialID, amount, deposit, period, status, applyAt, closeAt, isTrial, autoPostpone, lever, warnValue, sellValue, startTime, endTime, account, profit, type, interestRate, serviceCharge, discount\n';
         fileWriteStream.write(data);
         applies.forEach(function (apply) {
             data = apply.userID + ', ' + apply.userMobile + ', ' + apply.serialID + ', ' + apply.amount.toFixed(2) + ', ' + apply.deposit.toFixed(2) + ', '
             + apply.period + ', ' + apply.status + ', ' + moment(apply.applyAt).format('YYYYMMDDHHmmss') + ', ' + moment(apply.closeAt).format('YYYYMMDDHHmmss') + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
             + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + moment(apply.startTime).format('YYYYMMDDHHmmss') + ', ' + moment(apply.endTime).format('YYYYMMDDHHmmss') + ', ' + apply.account + ', '
-            + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + '\n';
+            + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + ', ' + apply.discount + '\n';
             fileWriteStream.write(data);
         });
         fileWriteStream.end();
@@ -303,13 +303,13 @@ var dailyAddedPayApplyData = function(startTime, endTime, callback) {
         fileWriteStream.on("close", function() {
             console.log("File Closed.");
         });
-        var data = 'userID, userMobile, serialID, amount, deposit, period, status, applyAt, closeAt, isTrial, autoPostpone, lever, warnValue, sellValue, startTime, endTime, account, profit, type, interestRate, serviceCharge\n';
+        var data = 'userID, userMobile, serialID, amount, deposit, period, status, applyAt, closeAt, isTrial, autoPostpone, lever, warnValue, sellValue, startTime, endTime, account, profit, type, interestRate, serviceCharge, discount\n';
         fileWriteStream.write(data);
         applies.forEach(function (apply) {
             data = apply.userID + ', ' + apply.userMobile + ', ' + apply.serialID + ', ' + apply.amount.toFixed(2) + ', ' + apply.deposit.toFixed(2) + ', '
             + apply.period + ', ' + apply.status + ', ' + moment(apply.applyAt).format('YYYYMMDDHHmmss') + ', ' + moment(apply.closeAt).format('YYYYMMDDHHmmss') + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
             + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + moment(apply.startTime).format('YYYYMMDDHHmmss') + ', ' + moment(apply.endTime).format('YYYYMMDDHHmmss') + ', ' + apply.account + ', '
-            + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + '\n';
+            + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + ', ' + apply.discount + '\n';
             fileWriteStream.write(data);
         });
         fileWriteStream.end();
@@ -389,13 +389,13 @@ var dailyPayApplyDataTillNow = function(callback) {
         fileWriteStream.on("close", function() {
             console.log("File Closed.");
         });
-        var data = 'userID, userMobile, serialID, amount, deposit, period, status, applyAt, closeAt, isTrial, autoPostpone, lever, warnValue, sellValue, startTime, endTime, account, profit, type, interestRate, serviceCharge\n';
+        var data = 'userID, userMobile, serialID, amount, deposit, period, status, applyAt, closeAt, isTrial, autoPostpone, lever, warnValue, sellValue, startTime, endTime, account, profit, type, interestRate, serviceCharge, discount\n';
         fileWriteStream.write(data);
         applies.forEach(function (apply) {
             data = apply.userID + ', ' + apply.userMobile + ', ' + apply.serialID + ', ' + apply.amount.toFixed(2) + ', ' + apply.deposit.toFixed(2) + ', '
             + apply.period + ', ' + apply.status + ', ' + moment(apply.applyAt).format('YYYYMMDDHHmmss') + ', ' + moment(apply.closeAt).format('YYYYMMDDHHmmss') + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
             + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + moment(apply.startTime).format('YYYYMMDDHHmmss') + ', ' + moment(apply.endTime).format('YYYYMMDDHHmmss') + ', ' + apply.account + ', '
-            + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + '\n';
+            + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + ', ' + apply.discount + '\n';
             fileWriteStream.write(data);
         });
         fileWriteStream.end();
@@ -703,12 +703,13 @@ db.on('error', console.error.bind(console, 'connection error...'));
 db.once('open', function callback() {
     console.log('goldenbull db opened');
     var endTime = moment();
+    endTime.subtract(1, 'days');
     endTime.hour(17);
     endTime.minute(00);
     endTime.second(00);
 
     var startTime = endTime.clone();
-    startTime = startTime.subtract(3, 'days');
+    startTime = startTime.subtract(1, 'days');
     startTime = startTime.toDate();
     endTime = endTime.toDate();
 
@@ -821,12 +822,13 @@ db.once('open', function callback() {
                 });
             },
      */
-
+            /*
             function(callback) {
                 historyCloseApplyFee(function(err) {
                     callback(err);
                 });
             },
+            */
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
                     callback(err);

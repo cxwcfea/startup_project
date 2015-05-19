@@ -50,7 +50,7 @@ angular.module('mobileApp').controller('MobileTtnCtrl', ['$scope', '$window', '$
     vm.showOtherAmount = false;
     vm.otherAmount;
     vm.selectedLever = vm.leverList[3];
-    vm.discount = 0.8;
+    vm.discount = 1;
 
     vm.summary = {
         day: 1,
