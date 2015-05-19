@@ -18,13 +18,15 @@
 <div class="am-g">
     <div class="am-u-sm-12">
         <article class="am-comment am-margin" ng-repeat="item in vm.showingItems">
-                \{{item.title}}
-
+            <span class="am-badge am-badge-primary">\{{item.title}}</span>
             <div class="am-comment-main">
                 <header class="am-comment-hd">
                     <div class="am-comment-meta">
                         <a href="" class="am-comment-author" ng-click="vm.searchUser(item.writer)">\{{item.writer}}</a>
                         评论于 <time datetime="\{{item.ceatedAt}}" title="">\{{item.createdAt}}</time>
+                    </div>
+                    <div class="am-comment-actions">
+                        <a href="" ng-click="vm.removeItem(item)"><i class="am-icon-close"></i></a>
                     </div>
                 </header>
 

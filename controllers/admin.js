@@ -1873,6 +1873,16 @@ function fetchUserComplainList(req, res) {
     });
 }
 
+function deleteUserComplain(req, res) {
+    Note.findById(req.body.id).remove(function(err, note) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send({});
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -2020,6 +2030,8 @@ module.exports = {
         app.get('/admin/api/daily_data', passportConf.requiresRole('admin'), getDailyData);
 
         app.get('/admin/api/user_complain_list', passportConf.requiresRole('admin'), fetchUserComplainList);
+
+        app.post('/admin/api/delete_user_complain', passportConf.requiresRole('admin'), deleteUserComplain);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

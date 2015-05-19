@@ -611,7 +611,6 @@ module.exports.updateBalance = function (req, res, next) {
     }
     var data = req.body;
     var pay_amount = Number(data.pay_amount);
-    console.log(pay_amount);
     if (pay_amount <= 0) {
         return res.send({success:false, reason:'无效的支付额:'+pay_amount});
     }
@@ -1819,15 +1818,21 @@ module.exports.getVerifyImg = function(req, res) {
 };
 
 module.exports.submitComplain = function(req, res) {
-    if (req.body.title && req.body.content) {
-        var data = {
-            userMobile: '00000000001',
-            title: req.body.title,
-            content: req.body.content,
-            writer: req.user.mobile
-        };
-        Note.create(data, function (err, note) {
-            res.redirect('/');
-        });
+    req.assert('title', '标题不能为空').notEmpty();
+    req.assert('content', '内容不能为空').notEmpty();
+
+    var errors = req.validationErrors();
+    if (errors) {
+        req.flash('errors', errors);
+        return res.redirect('/complain');
     }
+    var data = {
+        userMobile: '00000000001',
+        title: req.body.title,
+        content: req.body.content,
+        writer: req.user.mobile
+    };
+    Note.create(data, function (err, note) {
+        res.redirect('/');
+    });
 };

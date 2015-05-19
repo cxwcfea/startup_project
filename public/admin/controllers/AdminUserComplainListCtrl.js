@@ -1,5 +1,5 @@
 'use strict';
-angular.module('adminApp').controller('AdminUserComplainListCtrl', ['$scope', '$location', '$modal', '$http', 'adminOrder', 'gbNotifier', function($scope, $location, $modal, $http, adminOrder, gbNotifier) {
+angular.module('adminApp').controller('AdminUserComplainListCtrl', ['$scope', '$location', '$modal', '$http', '$filter', 'adminOrder', 'gbNotifier', function($scope, $location, $modal, $http, $filter, adminOrder, gbNotifier) {
     var vm = this;
     var complain_list = {};
     var currentComplains;
@@ -10,8 +10,7 @@ angular.module('adminApp').controller('AdminUserComplainListCtrl', ['$scope', '$
     function initData() {
         $http.get('/admin/api/user_complain_list')
             .success(function(data, status) {
-                console.log(data);
-                complain_list = data;
+                complain_list = $filter('orderBy')(data, 'createdAt', true);
                 currentComplains = complain_list;
                 pageReset();
             })
@@ -38,5 +37,20 @@ angular.module('adminApp').controller('AdminUserComplainListCtrl', ['$scope', '$
     vm.searchUser = function(mobile) {
         $scope.data.searchKey = mobile;
         $location.path('/user_page');
+    };
+
+    vm.removeItem = function(item) {
+        $http.post('/admin/api/delete_user_complain', {id:item._id})
+            .success(function(data, status) {
+                _.remove(complain_list, function(o) {
+                    return o._id === item._id;
+                });
+                currentComplains = complain_list;
+                pageReset();
+                gbNotifier.notify('删除成功');
+            })
+            .error(function(data, status) {
+                gbNotifier.notify('删除失败 ' + data.error_msg);
+            });
     };
 }]);
