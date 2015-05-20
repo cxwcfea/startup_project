@@ -7,7 +7,7 @@ angular.module('mobileApp').controller('MobileWithdrawCtrl', ['$scope', '$http',
     vm.user = $scope.data.currentUser;
     var cards = njCard.query({uid:vm.user._id}, function() {
         if (cards.length === 0) {
-            addAlert('danger', 'Please add the card on the pc!');
+            addAlert('danger', '请先添加银行卡！');
             // $location.path('/add_card');
         } else {
             vm.card = cards.pop();
@@ -31,6 +31,10 @@ angular.module('mobileApp').controller('MobileWithdrawCtrl', ['$scope', '$http',
     vm.selectCard = function(card) {
         vm.selectedCard = card;
     };
+
+    vm.getAll = function() {
+        vm.withdrawAmount = Number(vm.user.finance.balance.toFixed(2));
+    }
 
     vm.withdrawNextStep = function() {
         if (vm.step === 1) {
