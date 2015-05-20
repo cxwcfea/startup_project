@@ -714,11 +714,37 @@ var getUserProfitData = function(callback) {
             logger.debug('err when getApplyData' + err.toString());
             return callback(err);
         }
-        var amount = 0;
+        var free_profit = 0;
+        var free_loss = 0;
+        var pay_profit = 0;
+        var pay_loss = 0;
+        var loss = 0;
         for (var i = 0; i < applies.length; ++i) {
-            amount += applies[i].profit;
+            if (applies[i].isTrial) {
+                if (applies[i].profit >= 0) {
+                    free_profit += applies[i].profit;
+                } else {
+                    free_loss += applies[i].profit;
+                }
+            } else {
+                if (applies[i].profit >= 0) {
+                    pay_profit += applies[i].profit;
+                } else {
+                    pay_loss += applies[i].profit;
+                }
+                if (applies[i].profit + applies[i].deposit < 0) {
+                    loss += applies[i].profit + applies[i].deposit;
+                }
+            }
         }
-        callback(null, amount);
+        var obj = {
+            free_profit: free_profit,
+            free_loss: free_loss,
+            pay_profit: pay_profit,
+            pay_loss: pay_loss,
+            loss: loss
+        }
+        callback(null, obj);
     });
 };
 
@@ -855,8 +881,12 @@ db.once('open', function callback() {
             },
             */
             function(callback){
-                getUserProfitData(function(err, amount) {
-                    console.log('总盈亏：' + amount);
+                getUserProfitData(function(err, obj) {
+                    console.log('免费盈利：' + obj.free_profit);
+                    console.log('免费亏损：' + obj.free_loss);
+                    console.log('付费盈利：' + obj.pay_profit);
+                    console.log('付费亏损：' + obj.pay_loss);
+                    console.log('付费穿仓：' + obj.loss);
                     callback(err);
                 });
             },
