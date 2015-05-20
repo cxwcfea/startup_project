@@ -743,7 +743,7 @@ var getUserProfitData = function(callback) {
             pay_profit: pay_profit,
             pay_loss: pay_loss,
             loss: loss
-        }
+        };
         callback(null, obj);
     });
 };
