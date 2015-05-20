@@ -708,6 +708,20 @@ var getUserApplyData = function(users, callback) {
     });
 };
 
+var getUserProfitData = function(callback) {
+    Apply.find({status:3}, function(err, applies) {
+        if (err) {
+            logger.debug('err when getApplyData' + err.toString());
+            return callback(err);
+        }
+        var amount = 0;
+        for (var i = 0; i < applies.length; ++i) {
+            amount += applies[i].profit;
+        }
+        callback(null, amount);
+    });
+};
+
 var options = {};
 mongoose.connect(config.db, options);
 var db = mongoose.connection;
@@ -840,6 +854,12 @@ db.once('open', function callback() {
                 });
             },
             */
+            function(callback){
+                getUserProfitData(function(err, amount) {
+                    console.log('总盈亏：' + amount);
+                    callback(err);
+                });
+            },
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
                     callback(err);
