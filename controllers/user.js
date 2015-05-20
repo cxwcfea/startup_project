@@ -1555,6 +1555,56 @@ function beifuPay(req, res) {
     });
 }
 
+function transCommission(req, res) {
+    var amount = Number(req.body.amount);
+    amount = Math.floor(amount / 100) * 100;
+    if (amount <= 0) {
+        res.status(403);
+        return res.send({error_msg:'佣金不足100'});
+    } else {
+        User.update({_id: req.user._id}, {$inc: {'finance.balance': amount, 'finance.commission':-amount}}, function (err, numberAffected, raw) {
+            if (err) {
+                logger.debug('transCommission error:' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            } else if (!numberAffected) {
+                logger.debug('transCommission error nothing updated');
+                res.status(400);
+                return res.send({error_msg:'nothing updated'});
+            }
+            var data = {
+                userID: req.user._id,
+                userMobile: req.user.mobile,
+                userBalance: req.user.finance.balance + amount,
+                dealType: 14,
+                amount: amount,
+                status: 1,
+                description: '佣金转入余额',
+                payType: 6
+            };
+            Order.create(data, function (err, order) {
+                if (err) {
+                    logger.debug('transCommission error when create order:' + err.toString());
+                    res.status(500);
+                    return res.send({error_msg:err.toString()});
+                }
+                res.send({});
+            });
+        });
+    }
+}
+
+function fetchReferUserList(req, res) {
+    User.find({refer:req.user.referName}, function(err, users) {
+        if (err) {
+            logger.debug('fetchReferUserList error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send(users);
+    });
+}
+
 module.exports.registerRoutes = function(app, passportConf) {
     app.get('/user', passportConf.isAuthenticated, getUserHome);
 
@@ -1574,6 +1624,10 @@ module.exports.registerRoutes = function(app, passportConf) {
         res.locals.callback_domain = config.pay_callback_domain;
         res.render('user/' + req.params[0], {layout:null});
     });
+
+    app.post('/user/api/transfer_commission', passportConf.isAuthenticated, transCommission);
+
+    app.get('/user/api/refer_user_list', passportConf.isAuthenticated, fetchReferUserList);
 
     app.post('/test_sign', function(req, res, next) {
         var md5key = '9UCKYZ6Q804CO5O43TGHLMDO4YTU10hggixe';
