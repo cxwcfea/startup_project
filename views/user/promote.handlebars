@@ -1,0 +1,146 @@
+<style>
+    .promote-menu {margin-top: 30px;}
+    .promote-share {line-height:40px;padding:30px;border:3px solid #f2e7d6;background-color: #fffdd7;}
+    .promote-share label {color:#666;font-size:14px;font-weight:100;float: left; width: 120px;padding-right: 18px;text-align: right;}
+    .promote-share .link{width: 260px;margin: 0 0 0 138px;padding: 0 10px;color:#333;border: 1px solid #eaeaea;background-color: #fff;}
+    .promote-share .copy{float:right;margin-right:160px;display:inline-block;width:120px;font-size:12px;height: 40px;border: 1px solid #E0322D;color: #fff;background-color:#e30a20;display: block;text-align: center;line-height: 40px;cursor:pointer;}
+    .promote-share .bdsharebuttonbox {position:relative;top: 6px;}
+    .promote-box {padding-bottom: 50px;}
+
+    .promote-box .total {padding-left:10px;border-bottom: 1px solid #e6e6e6;}
+    .promote-box .tb {width: 50%;}
+    .promote-box .tb td {padding: 30px 0;color:#999;}
+    .promote-box .tb strong {display: block;font-size: 30px;margin-top: 10px;color:#333;}
+
+    .promote-total {padding: 10px 20px;border-bottom: 1px solid #e6e6e6;}
+    .promote-total .tb{width: 100%;}
+    .promote-total .tb td {padding: 20px 0;color:#999;}
+    .promote-total .tb em {display: block;font-size: 30px;margin-top: 10px;color:#333;}
+    .promote-total .tb em span{font-size: 20px;}
+    .promote-total .tb strong {font-weight:100;display: block;font-size: 16px;margin-top: 10px;color:#333;}
+    .promote-step {padding: 30px 0;text-align: center;}
+    .promote-intro {line-height: 26px;}
+    .promote-intro h5 {font-size: 14px; margin-bottom: 6px;font-weight: 700;}
+    .promote-intro li {margin-top: 40px;}
+    .promote-intro .count {font-size: 14px;font-weight: 700;}
+    .promote-intro .count em {font-size: 30px;color:#a40000;}
+</style>
+<script>
+    /* bd_share */
+    window._bd_share_config = {
+        common : {
+            bdText : '自定义分享内容',
+            bdDesc : '自定义分享摘要',
+            bdUrl : '自定义分享url地址',
+            bdPic : '自定义分享图片'
+        },
+        share : [{
+            "bdSize" : 16
+        }]
+    }
+    with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+
+    /* copy */
+    $("#J_copy").zclip({
+        path: "/images/ZeroClipboard.swf",
+        copy: function () {
+            return $("#J_link").text();
+        }
+    });
+</script>
+<div class="fl tra_right">
+    <div class="neword_menu promote-menu">
+        <div class="neword_menulist jq_menuList">
+            <ul>
+                <li class="selected">推广详情</li>
+                <li>访问记录</li>
+                <li>我的用户</li>
+            </ul>
+        </div>
+    </div>
+    <!--#推广详情-->
+    <div class="promote-box">
+        <div class="promote-total">
+            <table class="tb">
+                <tr>
+                    <td>
+                        当前佣金
+                        <em>70.<span>00</span></em>
+                    </td>
+                    <td>
+                        推广配资用户
+                        <strong>1</strong>
+                    </td>
+                    <td>
+                        产生管理费
+                        <strong>1000.00</strong>
+                    </td>
+                    <td>
+                        返配资管理费的
+                        <strong>7%</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        已兑佣金
+                        <strong>70</strong>
+                    </td>
+                    <td>
+                        推广注册用户
+                        <strong>1</strong>
+                    </td>
+                    <td>
+                        用户累计配资总额
+                        <strong>100000.00</strong>
+                    </td>
+                    <td>
+                        累计配资笔数
+                        <strong>1</strong>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="promote-step">
+            <img src="/images/promote-step.jpg" width="741" height="21" alt="">
+        </div>
+        <div class="promote-share">
+            <div class="url">
+                <a class="copy" id="J_copy">复制链接</a>
+                <label>您的推广链接</label>
+                <div class="link" id="J_link">http://www.niujinwang.com/?u=770275</div>
+            </div>
+            <div class="btns">
+                <label>分享您的推广链接</label>
+                <div class="bdsharebuttonbox" data-tag="share_1">
+                    <a class="bds_qzone" data-cmd="qzone" href="#"></a>
+                    <a class="bds_tsina" data-cmd="tsina"></a>
+                    <a class="bds_baidu" data-cmd="baidu"></a>
+                    <a class="bds_renren" data-cmd="renren"></a>
+                    <a class="bds_tqq" data-cmd="tqq"></a>
+                    <a class="bds_weixin" data-cmd="weixin"></a>
+                    <a class="bds_more" data-cmd="more"></a>
+                </div>
+            </div>
+
+        </div>
+        <ul class="promote-intro">
+            <li>
+                <h5>如何推广？</h5>
+                <p>牛金网推广是一种按用户配资赚取佣金的模式，您可以通过朋友、QQ、微信、微博、博客、论坛或在自己的网站上进行推广，所有通过您的推广链接访问过来的用户，注册后都将成为您的下线用户，而当这些用户在本站配资时，您就可以最高赚取7%的佣金。</p>
+            </li>
+            <li>
+                <h5>佣金怎么结算？</h5>
+                <p>您的用户在注册后一年内每发生一笔配资，在配资完成后，您即可获得一笔佣金，当您的佣金达到100元的时候，即可兑换取出，也可以在本站进行配资。</p>
+            </li>
+            <li>
+                <h5>推广佣金收入计算</h5>
+                <p>推广获得用户后您的用户开始配资，100个用户人均8倍杠杆配资10万元使用10天；</p>
+            </li>
+            <li class="count">
+                <p>100人×10万元＝1000万元配资</p>
+                <p>100万*10天*19.9元=199000元配资管理费</p>
+                <p>199000元配资管理费×7%＝月最高赚佣金1.4万元 合计年收益<em>16.8</em>万元</p>
+            </li>
+        </ul>
+    </div><!--/推广详情-->
+</div>
