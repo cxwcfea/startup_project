@@ -1595,13 +1595,35 @@ function transCommission(req, res) {
 }
 
 function fetchReferUserList(req, res) {
-    User.find({refer:req.user.referName}, function(err, users) {
+    User.find({$and:[{refer:req.user.referName}, {refer:{$exists:true}}]}, function(err, users) {
         if (err) {
             logger.debug('fetchReferUserList error:' + err.toString());
             res.status(500);
             return res.send({error_msg:err.toString()});
         }
+        console.log(users);
         res.send(users);
+    });
+}
+
+function setReferName(req, res) {
+    if (!req.body.name) {
+        res.status(403);
+        return res.send({error_msg:'无效的数据'});
+    }
+    var name = 'm_' + req.body.name;
+    User.update({$and:[{_id:req.user._id}, {refer:{$not:{$exists:true}}}]}, {referName:name}, function(err, numberAffected, raw) {
+        if (err) {
+            logger.debug('setReferName error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        if (!numberAffected) {
+            logger.debug('setReferName error:already set');
+            res.status(403);
+            return res.send({error_msg:'推荐码已经设置'});
+        }
+        res.send({});
     });
 }
 
@@ -1620,14 +1642,16 @@ module.exports.registerRoutes = function(app, passportConf) {
 
     app.post('/user/beifu_pay', passportConf.isAuthenticated, beifuPay);
 
-    app.get('/user/*', passportConf.isAuthenticated, function(req, res, next) {
-        res.locals.callback_domain = config.pay_callback_domain;
-        res.render('user/' + req.params[0], {layout:null});
-    });
+    app.post('/user/api/set_refer_name', passportConf.isAuthenticated, setReferName);
 
     app.post('/user/api/transfer_commission', passportConf.isAuthenticated, transCommission);
 
     app.get('/user/api/refer_user_list', passportConf.isAuthenticated, fetchReferUserList);
+
+    app.get('/user/*', passportConf.isAuthenticated, function(req, res, next) {
+        res.locals.callback_domain = config.pay_callback_domain;
+        res.render('user/' + req.params[0], {layout:null});
+    });
 
     app.post('/test_sign', function(req, res, next) {
         var md5key = '9UCKYZ6Q804CO5O43TGHLMDO4YTU10hggixe';
