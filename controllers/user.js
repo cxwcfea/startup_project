@@ -1610,7 +1610,13 @@ function setReferName(req, res) {
         res.status(403);
         return res.send({error_msg:'无效的数据'});
     }
-    var name = 'm_' + req.body.name;
+    var prefix;
+    if (util.isSales(req.user.mobile.toString())) {
+        prefix = 's_';
+    } else {
+        prefix = 'm_';
+    }
+    var name = prefix + req.body.name;
     User.findOne({referName:name}, function(err, user) {
         if (err) {
             logger.debug('setReferName error:' + err.toString());
