@@ -880,6 +880,7 @@ db.once('open', function callback() {
                 });
             },
             */
+            /*
             function(callback){
                 getUserProfitData(function(err, obj) {
                     console.log('免费盈利：' + obj.free_profit);
@@ -890,6 +891,7 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
+            */
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
                     callback(err);
