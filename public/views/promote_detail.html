@@ -5,8 +5,8 @@
             <tr>
                 <td>
                     当前佣金
+                    <a href="" class="btn-exchange" ng-click="vm.transMoney()">兑换</a>
                     <em>{{vm.user.finance.commission || 0 | currency:'':2}}</em>
-                    <button type="button" class="am-btn am-btn-warning" ng-click="vm.transMoney()">兑换</button>
                 </td>
                 <td>
                     推广配资用户
