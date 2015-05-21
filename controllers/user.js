@@ -1555,6 +1555,89 @@ function beifuPay(req, res) {
     });
 }
 
+function transCommission(req, res) {
+    var amount = Number(req.body.amount);
+    amount = Math.floor(amount / 100) * 100;
+    if (amount <= 0) {
+        res.status(403);
+        return res.send({error_msg:'佣金不足100'});
+    } else {
+        User.update({_id: req.user._id}, {$inc: {'finance.balance': amount, 'finance.commission':-amount}}, function (err, numberAffected, raw) {
+            if (err) {
+                logger.debug('transCommission error:' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            } else if (!numberAffected) {
+                logger.debug('transCommission error nothing updated');
+                res.status(400);
+                return res.send({error_msg:'nothing updated'});
+            }
+            var data = {
+                userID: req.user._id,
+                userMobile: req.user.mobile,
+                userBalance: req.user.finance.balance + amount,
+                dealType: 14,
+                amount: amount,
+                status: 1,
+                description: '佣金转入余额',
+                payType: 6
+            };
+            Order.create(data, function (err, order) {
+                if (err) {
+                    logger.debug('transCommission error when create order:' + err.toString());
+                    res.status(500);
+                    return res.send({error_msg:err.toString()});
+                }
+                res.send({});
+            });
+        });
+    }
+}
+
+function fetchReferUserList(req, res) {
+    User.find({$and:[{refer:req.user.referName}, {refer:{$exists:true}}]}, function(err, users) {
+        if (err) {
+            logger.debug('fetchReferUserList error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send(users);
+    });
+}
+
+function setReferName(req, res) {
+    if (!req.body.name) {
+        res.status(403);
+        return res.send({error_msg:'无效的数据'});
+    }
+    var name = 'm_' + req.body.name;
+    User.findOne({referName:name}, function(err, user) {
+        if (err) {
+            logger.debug('setReferName error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        if (user) {
+            logger.debug('setReferName error:other people already set it');
+            res.status(403);
+            return res.send({error_msg:'该推荐码已经被使用'});
+        }
+        User.update({$and:[{_id:req.user._id}, {refer:{$not:{$exists:true}}}]}, {referName:name}, function(err, numberAffected, raw) {
+            if (err) {
+                logger.debug('setReferName error:' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+            if (!numberAffected) {
+                logger.debug('setReferName error:already set');
+                res.status(403);
+                return res.send({error_msg:'推荐码已经设置'});
+            }
+            res.send({});
+        });
+    });
+}
+
 module.exports.registerRoutes = function(app, passportConf) {
     app.get('/user', passportConf.isAuthenticated, getUserHome);
 
@@ -1569,6 +1652,12 @@ module.exports.registerRoutes = function(app, passportConf) {
     app.post('/user/beifu_get_dyncode', passportConf.isAuthenticated, beifuGetDynCode);
 
     app.post('/user/beifu_pay', passportConf.isAuthenticated, beifuPay);
+
+    app.post('/user/api/set_refer_name', passportConf.isAuthenticated, setReferName);
+
+    app.post('/user/api/transfer_commission', passportConf.isAuthenticated, transCommission);
+
+    app.get('/user/api/refer_user_list', passportConf.isAuthenticated, fetchReferUserList);
 
     app.get('/user/*', passportConf.isAuthenticated, function(req, res, next) {
         res.locals.callback_domain = config.pay_callback_domain;

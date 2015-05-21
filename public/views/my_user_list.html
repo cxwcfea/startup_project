@@ -1,0 +1,32 @@
+<!--#我的用户-->
+<div class="promote-box">
+    <div class="total">
+        <table class="tb">
+            <tr>
+                <td>
+                    我的推广用户
+                    <strong>{{vm.myUserList.length}}</strong>
+                </td>
+                <td>
+                    配资用户
+                    <strong>{{vm.myPayUsers.length}}</strong>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="neword_tableBox">
+        <table>
+            <tr>
+                <th class="td01" width="185">用户名</th>
+                <th class="td01">配资金额（元）</th>
+                <th class="td01">注册时间</th>
+            </tr>
+            <tr ng-repeat="user in vm.myUserList">
+                <td class="td01">{{user.mobile | displayMobile}}</td>
+                <td class="td01">{{user.finance.history_capital | currency:'':2}}</td>
+                <td class="td01">{{user.registerAt | date:"yyyy-MM-dd HH:mm"}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<!--/我的用户-->

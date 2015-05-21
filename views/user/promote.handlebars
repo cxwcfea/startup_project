@@ -1,0 +1,62 @@
+<style>
+    .promote-menu {margin-top: 30px;}
+    .promote-share {line-height:40px;padding:30px;border:3px solid #f2e7d6;background-color: #fffdd7;}
+    .promote-share label {color:#666;font-size:14px;font-weight:100;float: left; width: 120px;padding-right: 18px;text-align: right;}
+    .promote-share .link{width: 300px;margin: 0 0 0 138px;padding: 0 10px;color:#333;border: 1px solid #eaeaea;background-color: #fff;}
+    .promote-share .copy{float:right;margin-right:120px;display:inline-block;width:120px;font-size:12px;height: 40px;border: 1px solid #E0322D;color: #fff;background-color:#e30a20;display: block;text-align: center;line-height: 40px;cursor:pointer;}
+    .promote-share .bdsharebuttonbox {position:relative;top: 6px;}
+    .promote-box {padding-bottom: 50px;}
+
+    .promote-box .total {padding-left:10px;border-bottom: 1px solid #e6e6e6;}
+    .promote-box .tb {width: 50%;}
+    .promote-box .tb td {padding: 30px 0;color:#999;}
+    .promote-box .tb strong {display: block;font-size: 30px;margin-top: 10px;color:#333;}
+
+    .promote-total {padding: 10px 20px;border-bottom: 1px solid #e6e6e6;}
+    .promote-total .tb{width: 100%;}
+    .promote-total .tb td {padding: 20px 0;color:#999;}
+    .promote-total .tb em {display: block;font-size: 30px;margin-top: 10px;color:#333;}
+    .promote-total .tb em span{font-size: 20px;}
+    .promote-total .tb strong {font-weight:100;display: block;font-size: 16px;margin-top: 10px;color:#333;}
+    .promote-step {padding: 30px 0;text-align: center;}
+    .promote-intro {line-height: 26px;}
+    .promote-intro h5 {font-size: 14px; margin-bottom: 6px;font-weight: 700;}
+    .promote-intro li {margin-top: 40px;}
+    .promote-intro .count {font-size: 14px;font-weight: 700;}
+    .promote-intro .count em {font-size: 30px;color:#a40000;}
+</style>
+<script>
+    /* bd_share */
+    window._bd_share_config = {
+        common : {
+            bdText : '股市这么好，快来牛金网赚钱吧',
+            bdDesc : '股市这么好，快来牛金网赚钱吧',
+            bdUrl : '',
+            bdPic : ''
+        },
+        share : [{
+            "bdSize" : 16
+        }]
+    }
+    with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+
+    /* copy */
+    $("#J_copy").zclip({
+        path: "/images/ZeroClipboard.swf",
+        copy: function () {
+            return $("#J_link").text();
+        }
+    });
+</script>
+<div class="fl tra_right">
+    <div class="neword_menu promote-menu">
+        <div class="neword_menulist jq_menuList">
+            <ul>
+                <li ng-class="{selected: vm.showItem === 1}" ng-click="vm.showItem = 1">推广详情</li>
+                <li ng-class="{selected: vm.showItem === 2}" ng-click="vm.showItem = 2">我的用户</li>
+            </ul>
+        </div>
+    </div>
+    <div ng-include="vm.viewSoure()">
+    </div>
+</div>

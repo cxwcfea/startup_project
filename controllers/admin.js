@@ -19,56 +19,7 @@ var User = require('../models/User'),
     sms = require('../lib/sms');
 
 function getStatisticsPage(req, res, next) {
-    var data = {};
     async.waterfall([
-        /*
-        function(callback) {
-            util.getTodayActiveApplyData(function(err, dataObj) {
-                if (!err) {
-                    data.active_apply_num = dataObj.num;
-                    data.active_apply_amount = dataObj.amount.toFixed(2);
-                    data.active_deposit_amount = dataObj.deposit.toFixed(2);
-                    data.added_fee = dataObj.total_fee.toFixed(2);
-                }
-                callback(err, data);
-            });
-        },
-        function(data, callback) {
-            util.getTodayActiveFreeApplyData(function(err, dataObj) {
-                if (!err) {
-                    data.current_free_apply_amount = dataObj.amount.toFixed(2);
-                    data.current_free_apply_num = dataObj.num;
-                }
-                callback(err, data);
-            });
-        },
-        function(data, callback) {
-            util.getTodayAddedFreeApplyData(function(err, dataObj) {
-                if (!err) {
-                    data.added_free_apply_amount = dataObj.amount.toFixed(2);
-                    data.added_free_apply_num = dataObj.num;
-                }
-                callback(err, data);
-            });
-        },
-        function(data, callback) {
-            util.getTodayAddedPayApplyData(function(err, dataObj) {
-                if (!err) {
-                    data.added_pay_apply_amount = dataObj.amount.toFixed(2);
-                    data.added_pay_apply_num = dataObj.num;
-                }
-                callback(err, data);
-            });
-        },
-        function(data, callback) {
-            util.getTodayAddedDeposit(function(err, dataObj) {
-                if (!err) {
-                    data.added_deposit = dataObj.deposit.toFixed(2);
-                }
-                callback(err, data);
-            });
-        },
-        */
         function(callback) {
             util.getApplyData(function(err, dataObj) {
                 callback(err, dataObj);
