@@ -1633,7 +1633,7 @@ function setReferName(req, res) {
                 res.status(403);
                 return res.send({error_msg:'推荐码已经设置'});
             }
-            res.send({});
+            res.send({referName:name});
         });
     });
 }
