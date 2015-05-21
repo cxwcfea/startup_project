@@ -1611,18 +1611,30 @@ function setReferName(req, res) {
         return res.send({error_msg:'无效的数据'});
     }
     var name = 'm_' + req.body.name;
-    User.update({$and:[{_id:req.user._id}, {refer:{$not:{$exists:true}}}]}, {referName:name}, function(err, numberAffected, raw) {
+    User.findOne({referName:name}, function(err, user) {
         if (err) {
             logger.debug('setReferName error:' + err.toString());
             res.status(500);
             return res.send({error_msg:err.toString()});
         }
-        if (!numberAffected) {
-            logger.debug('setReferName error:already set');
+        if (user) {
+            logger.debug('setReferName error:other people already set it');
             res.status(403);
-            return res.send({error_msg:'推荐码已经设置'});
+            return res.send({error_msg:'该推荐码已经被使用'});
         }
-        res.send({});
+        User.update({$and:[{_id:req.user._id}, {refer:{$not:{$exists:true}}}]}, {referName:name}, function(err, numberAffected, raw) {
+            if (err) {
+                logger.debug('setReferName error:' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+            if (!numberAffected) {
+                logger.debug('setReferName error:already set');
+                res.status(403);
+                return res.send({error_msg:'推荐码已经设置'});
+            }
+            res.send({});
+        });
     });
 }
 
