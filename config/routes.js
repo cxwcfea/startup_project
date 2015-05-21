@@ -10,6 +10,8 @@ var users = require('../controllers/user'),
     weixin = require('../lib/weixin'),
     log4js = require('log4js'),
     logger = log4js.getLogger('routes'),
+    xml = require("xml"),
+    needle = require('needle'),
     passportConf = require('./passport');
 
 module.exports = function(app) {
@@ -241,13 +243,24 @@ module.exports = function(app) {
     });
     */
 
-    /*
-    app.get('/test', function(req, res, nest) {
-        var ary = ccap.get();
-        var txt = ary[0];
-        var buf = ary[1];
-        res.end(buf);
-        console.log(txt);
+    app.get('/test', function(req, res, next) {
+        //var data = xml({stream: [{action:''}, {userName:'XNPH'}, {list: [{ _attr: { name: 'userDataList' }}, {row:[{accountNo:'7111010182600196886'}]}]}]}, { declaration: { version: '1.0', encoding: 'GBK' }});
+
+        var data = xml({stream: [{action:'DLOBKQRY'}, {userName:'XNPH'}]}, { declaration: { version: '1.0', encoding: 'GBK' }});
+
+        //var data = xml({stream: [{action:'DLOUTTRN'}, {userName:'XNPH'}, {clientID:'555d518446da0f0218a99e0f'}, {preFlag:0}, {preDate:''}, {preTime:''}, {payType:05}, {}, {list: [{ _attr: { name: 'userDataList' }}, {row:[{accountNo:'7111010182600196886'}]}]}]}, { declaration: { version: '1.0', encoding: 'GBK' }});
+
+        console.log(data);
+        var url = 'http://10.0.0.4:5128';
+        var options = {
+            json: true,
+            follow_max: 3 // follow up to three redirects
+        };
+        needle.post(url, data, {}, function(err, resp, body) {
+            console.log(err);
+            console.log(body);
+        });
+
+        res.send({data:data});
     });
-    */
 };
