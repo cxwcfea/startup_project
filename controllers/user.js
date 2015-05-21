@@ -1601,7 +1601,6 @@ function fetchReferUserList(req, res) {
             res.status(500);
             return res.send({error_msg:err.toString()});
         }
-        console.log(users);
         res.send(users);
     });
 }

@@ -6,6 +6,7 @@
                 <td>
                     当前佣金
                     <em>{{vm.user.finance.commission || 0 | currency:'':2}}</em>
+                    <button type="button" class="am-btn am-btn-warning" ng-click="vm.transMoney()">兑换</button>
                 </td>
                 <td>
                     推广配资用户
@@ -46,12 +47,12 @@
             <a class="copy" ng-click="vm.setReferName()">设置</a>
             <label>请先设置推广码:</label>
             <input type="text" class="newcar_inputText" placeholder="8位字母数字的组合" minlength="8" maxlength="8" required ng-model="vm.referName">
-            <alert ng-repeat="alert in vm.alerts" type="\{{alert.type}}" close="vm.closeAlert($index)">\{{alert.msg}}</alert>
+            <alert ng-repeat="alert in vm.alerts" type="{{alert.type}}" close="vm.closeAlert($index)">{{alert.msg}}</alert>
         </div>
         <div class="url" ng-show="vm.user.referName">
             <a class="copy" id="J_copy">复制链接</a>
             <label>您的推广链接</label>
-            <div class="link" id="J_link">http://www.niujinwang.com/?refer=\{{vm.user.referName}}</div>
+            <div class="link" id="J_link">http://www.niujinwang.com/?refer={{vm.user.referName}}</div>
         </div>
         <div class="btns" ng-show="vm.user.referName">
             <label>分享您的推广链接</label>
@@ -86,3 +87,49 @@
         </li>
     </ul>
 </div><!--/推广详情-->
+
+<div class="regTcc" ng-show="vm.showTransMoneyWindow">
+    <div class="tmbg"></div>
+    <div class="tar_TccBox">
+        <div class="regColumn">
+            佣金兑换
+            <div class="loginClose" ng-click="vm.closePopupWindow()"></div>
+        </div>
+        <div class="pass_Box" ng-hide="vm.transFail || vm.transSuccess">
+            <div class=" pass_formBox">
+                <div class="fl pass_left">
+                    现有佣金
+                </div>
+                <div class="pass_right fl">
+                    <em>{{vm.user.finance.commission || 0 | currency:'':2}}</em>
+                </div>
+            </div>
+            <div class=" pass_formBox">
+                <div class="fl pass_left">
+                    可兑换佣金
+                </div>
+                <div class="pass_right fl">
+                    {{vm.transAmount || 0 | currency:'':2}}
+                </div>
+            </div>
+            <a class="newrec_btn02 newrec_zfbbtn01" href="" ng-click="vm.completeTransMoney()">确  定</a>
+        </div>
+        <div class="pass_box2 jq_pass_box2" ng-show="vm.transSuccess">
+            <div class="pass_img fl"></div>
+            <div class="pass_text fl">
+                <p class="p01">兑换成功,佣金将转入平台账户余额！</p>
+                <a class="newrec_btn02" href="" ng-click="vm.closePopupWindow()">确   定</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="newRec_TccBox" ng-show="vm.transFail">
+            <div class="newRec_TccImg fl"></div>
+            <div class="newRec_tccText fl">
+                <p class="p01">佣金兑换余额失败:</p>
+                <p class="p02">{{vm.failReason}}</p>
+                <p class="p02">请联系我们的客服</p>
+                <a href="" class="newrec_btn02" ng-click="vm.closePopupWindow()">确  定</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -8,8 +8,10 @@ angular.module('userApp').controller('UserPromoteCtrl', ['$scope', '$window', '$
 
     vm.total_fee = vm.user.finance.history_commission ? vm.user.finance.history_commission / 0.07 : 0;
     vm.paid_fee = vm.user.finance.history_commission ? vm.user.finance.history_commission - vm.user.finance.commission : 0;
+    vm.transAmount = vm.user.finance.commission ? Math.floor(vm.user.finance.commission / 100) * 100 : 0;
 
     vm.showItem = 1;
+    vm.showTransMoneyWindow = false;
 
     $http.get('/user/api/refer_user_list')
         .success(function(data, status) {
@@ -67,4 +69,33 @@ angular.module('userApp').controller('UserPromoteCtrl', ['$scope', '$window', '$
             return '/views/my_user_list.html';
         }
     };
+
+    vm.transMoney = function() {
+        vm.showTransMoneyWindow = true;
+    };
+
+    vm.closePopupWindow = function() {
+        vm.showTransMoneyWindow = false;
+        vm.transFail = false;
+        vm.transSuccess = false;
+    };
+
+    vm.completeTransMoney = function() {
+        if (vm.transAmount <= 0) {
+            vm.failReason = '可兑换金额不足';
+            vm.transFail = true;
+            return;
+        }
+        $http.post('/user/api/transfer_commission', {amount:vm.transAmount})
+            .success(function (data, status) {
+                vm.transSuccess = true;
+                vm.user.finance.balance += vm.transAmount;
+                vm.user.finance.commission -= vm.transAmount;
+                vm.paid_fee += vm.transAmount;
+            })
+            .error(function (data, status) {
+                vm.failReason = data.error_msg;
+                vm.transFail = true;
+            });
+    }
 }]);

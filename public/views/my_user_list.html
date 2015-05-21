@@ -22,9 +22,9 @@
                 <th class="td01">注册时间</th>
             </tr>
             <tr ng-repeat="user in vm.myUserList">
-                <td class="td01">\{{user.mobile | displayMobile}}</td>
-                <td class="td01">\{{user.finance.history_capital | currency:'':2}}</td>
-                <td class="td01">\{{user.registerAt | date:"yyyy-MM-dd HH:mm"}}</td>
+                <td class="td01">{{user.mobile | displayMobile}}</td>
+                <td class="td01">{{user.finance.history_capital | currency:'':2}}</td>
+                <td class="td01">{{user.registerAt | date:"yyyy-MM-dd HH:mm"}}</td>
             </tr>
         </table>
     </div>

@@ -324,6 +324,8 @@
                     return '保证金支出';
                 case 10:
                     return '管理费支出';
+                case 14:
+                    return '佣金兑换余额';
                 default:
                     return '充值';
             }
