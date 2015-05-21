@@ -50,12 +50,12 @@ angular.module('userApp').controller('UserPromoteCtrl', ['$scope', '$window', '$
 
     vm.setReferName = function() {
         if (!vm.referName) {
-            addAlert('danger', '推荐码必须为8位字母或数字的组合');
+            addAlert('danger', '推荐码必须为5到18位字母或数字的组合');
             return;
         }
         var ok = /^[a-zA-Z0-9]*$/.test(vm.referName);
         if (!ok) {
-            addAlert('danger', '推荐码必须为5位到8位字母或数字的组合');
+            addAlert('danger', '推荐码必须为5到18位字母或数字的组合');
             return;
         }
         $http.post('/user/api/set_refer_name', {name:vm.referName})
