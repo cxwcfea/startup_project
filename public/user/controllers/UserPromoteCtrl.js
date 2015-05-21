@@ -105,5 +105,14 @@ angular.module('userApp').controller('UserPromoteCtrl', ['$scope', '$window', '$
                 vm.failReason = data.error_msg;
                 vm.transFail = true;
             });
-    }
+    };
+
+    vm.copyReferLink = function() {
+        $("#J_copy").zclip({
+            path: "/images/ZeroClipboard.swf",
+            copy: function () {
+                return $("#J_link").text();
+            }
+        });
+    };
 }]);
