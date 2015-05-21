@@ -46,7 +46,7 @@
         <div class="url" ng-hide="vm.user.referName">
             <a class="copy" ng-click="vm.setReferName()">设置</a>
             <label>请先设置推广码:</label>
-            <input type="text" class="newcar_inputText" placeholder="8位字母数字的组合" minlength="8" maxlength="8" required ng-model="vm.referName">
+            <input type="text" class="newcar_inputText" placeholder="5~8位字母数字的组合" minlength="5" maxlength="8" required ng-model="vm.referName">
             <alert ng-repeat="alert in vm.alerts" type="{{alert.type}}" close="vm.closeAlert($index)">{{alert.msg}}</alert>
         </div>
         <div class="url" ng-show="vm.user.referName">
