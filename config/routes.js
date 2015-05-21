@@ -246,9 +246,14 @@ module.exports = function(app) {
     app.get('/test', function(req, res, next) {
         //var data = xml({stream: [{action:''}, {userName:'XNPH'}, {list: [{ _attr: { name: 'userDataList' }}, {row:[{accountNo:'7111010182600196886'}]}]}]}, { declaration: { version: '1.0', encoding: 'GBK' }});
 
-        var data = xml({stream: [{action:'DLOBKQRY'}, {userName:'XNPH'}]}, { declaration: { version: '1.0', encoding: 'GBK' }});
+        //var data = xml({stream: [{action:'DLOBKQRY'}, {userName:'XNPH'}]}, { declaration: { version: '1.0', encoding: 'GBK' }});
 
-        //var data = xml({stream: [{action:'DLOUTTRN'}, {userName:'XNPH'}, {clientID:'555d518446da0f0218a99e0f'}, {preFlag:0}, {preDate:''}, {preTime:''}, {payType:05}, {}, {list: [{ _attr: { name: 'userDataList' }}, {row:[{accountNo:'7111010182600196886'}]}]}]}, { declaration: { version: '1.0', encoding: 'GBK' }});
+        /*
+        var data = xml({stream: [{action:'DLOUTTRN'}, {userName:'XNPH'}, {clientID:'555d518446da0f02'}, {preFlg:'0'}, {payType:'05'},
+            {recBankNo:'302100011000'}, {payAccountNo:'7111010182600196886'}, {recAccountNo:'7111010192087007800'},
+            {recAccountName:'对私测试客户'}, {citicbankFlag:'1'}, {cityFlag:'1'}, {tranAmount:1}]}, { declaration: { version: '1.0', encoding: 'GBK' }});
+            */
+        var data = xml({stream: [{action:'DLCIDSTT'}, {userName:'XNPH'}, {clientID:'555d518446da0f02'}]}, { declaration: { version: '1.0', encoding: 'GBK' }});
 
         console.log(data);
         var url = 'http://10.0.0.4:5128';
