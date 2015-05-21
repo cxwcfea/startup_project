@@ -12,6 +12,11 @@ angular.module('userApp').controller('UserPromoteCtrl', ['$scope', '$window', '$
 
     vm.showItem = 1;
     vm.showTransMoneyWindow = false;
+    if (vm.user.referName) {
+        $window._bd_share_config.common.bdText += ' http://www.niujinwang.com/?refer=' + vm.user.referName;
+        $window._bd_share_config.common.bdDesc += ' http://www.niujinwang.com/?refer=' + vm.user.referName;
+        $window._bd_share_config.common.bdUrl = 'http://www.niujinwang.com/?refer=' + vm.user.referName;
+    }
 
     $http.get('/user/api/refer_user_list')
         .success(function(data, status) {
@@ -56,6 +61,9 @@ angular.module('userApp').controller('UserPromoteCtrl', ['$scope', '$window', '$
         $http.post('/user/api/set_refer_name', {name:vm.referName})
             .success(function(data, status) {
                 vm.user.referName = vm.referName;
+                $window._bd_share_config.common.bdText += ' http://www.niujinwang.com/?refer=' + vm.user.referName;
+                $window._bd_share_config.common.bdDesc += ' http://www.niujinwang.com/?refer=' + vm.user.referName;
+                $window._bd_share_config.common.bdUrl = 'http://www.niujinwang.com/?refer=' + vm.user.referName;
             })
             .error(function(data, status) {
                 addAlert('danger', data.error_msg);
