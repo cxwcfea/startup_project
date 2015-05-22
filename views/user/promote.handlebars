@@ -33,21 +33,13 @@
             bdText : '股市这么好，快来牛金网赚钱吧',
             bdDesc : '股市这么好，快来牛金网赚钱吧',
             bdUrl : '',
-            bdPic : ''
+            bdPic : 'http://www.niujinwang.com/images/logo100.jpg'
         },
         share : [{
             "bdSize" : 16
         }]
-    }
-    with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
-
-    /* copy */
-    $("#J_copy").zclip({
-        path: "/images/ZeroClipboard.swf",
-        copy: function () {
-            return $("#J_link").text();
-        }
-    });
+    };
+    with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/js/bd_share.js'];
 </script>
 <div class="fl tra_right">
     <div class="neword_menu promote-menu">
@@ -58,6 +50,6 @@
             </ul>
         </div>
     </div>
-    <div ng-include="vm.viewSoure()">
+    <ng-include src="vm.viewSoure()" onload="vm.viewLoad()"></ng-include>
     </div>
 </div>

@@ -1,5 +1,5 @@
 'use strict';
-angular.module('userApp').controller('UserPromoteCtrl', ['$scope', '$window', '$http', function($scope, $window, $http) {
+angular.module('userApp').controller('UserPromoteCtrl', ['$scope', '$window', '$http', '$timeout', function($scope, $window, $http, $timeout) {
     var vm = this;
 
     $scope.data.menu = 5;
@@ -43,6 +43,20 @@ angular.module('userApp').controller('UserPromoteCtrl', ['$scope', '$window', '$
         }
     };
 
+    vm.viewLoad = function() {
+        $timeout(function() {
+            $("#J_copy").zclip({
+                path: "/images/ZeroClipboard.swf",
+                copy: function () {
+                    return $("#J_link").text();
+                },
+                afterCopy: function() {
+                    alert('您的推广链接已经复制到剪贴板\nhttp://www.niujinwang.com/?refer=' + vm.user.referName);
+                }
+            });
+        }, 500);
+    };
+
     vm.transMoney = function() {
         vm.showTransMoneyWindow = true;
     };
@@ -70,14 +84,5 @@ angular.module('userApp').controller('UserPromoteCtrl', ['$scope', '$window', '$
                 vm.failReason = data.error_msg;
                 vm.transFail = true;
             });
-    };
-
-    vm.copyReferLink = function() {
-        $("#J_copy").zclip({
-            path: "/images/ZeroClipboard.swf",
-            copy: function () {
-                return $("#J_link").text();
-            }
-        });
     };
 }]);
