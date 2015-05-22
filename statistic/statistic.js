@@ -782,9 +782,9 @@ db.once('open', function callback() {
     startTime = startTime.toDate();
     endTime = endTime.toDate();
 
+    /*
     async.waterfall(
         [
-            /*
             function(callback) {
                 User.find({}, function(err, users) {
                     if (err) {
@@ -846,7 +846,6 @@ db.once('open', function callback() {
                     callback(null, amount+data);
                 });
             },
-            */
             function(callback) {
                 User.find({}, function(err, users) {
                     callback(err, users);
@@ -867,10 +866,11 @@ db.once('open', function callback() {
             db.close();
         }
     );
+             */
 
-    /*
     async.series(
         [
+            /*
             function(callback) {
                 getUserData(function (err) {
                     callback(err);
@@ -918,6 +918,7 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
+            */
 
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
@@ -950,6 +951,7 @@ db.once('open', function callback() {
                 });
             }
 
+/*
             function(callback) {
                 rechargeOrderData(function(err) {
                     callback(err);
@@ -965,6 +967,7 @@ db.once('open', function callback() {
                     callback(err);
                 });
             }
+     */
         ],
         function(err){
             if (err) {
@@ -972,5 +975,4 @@ db.once('open', function callback() {
             }
             db.close();
         });
-             */
 });
