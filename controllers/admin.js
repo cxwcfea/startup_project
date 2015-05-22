@@ -16,6 +16,7 @@ var User = require('../models/User'),
     env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
     config = require('../config/config')[env],
     needle = require('needle'),
+    ecitic = require("../lib/ecitic"),
     sms = require('../lib/sms');
 
 function getStatisticsPage(req, res, next) {
@@ -1706,6 +1707,17 @@ function rejectWithdrawOrder(req, res) {
     });
 }
 
+function autoHandleWithdrawOrder2(req, res) {
+    ecitic.requestPay(req.body.otherInfo, req.body.cardInfo.bank, req.body.cardInfo.cardID, req.body.cardInfo.userName, req.body.amount.toFixed(2), function(err) {
+        if (err) {
+            res.status(500);
+            res.send({error_msg:err.toString()});
+        } else {
+            res.send({});
+        }
+    });
+}
+
 function autoHandleWithdrawOrder(req, res) {
     //console.log(req.query);
     var md5key = 'K1JETRBFGCESTMNRUGKGW0KQNCITNWjehvpq';
@@ -1968,7 +1980,7 @@ module.exports = {
 
         app.post('/api/auto_postpone_apply', autoPostponeApply);
 
-        app.post('/admin/api/handle_with_draw_order', passportConf.requiresRole('admin'), autoHandleWithdrawOrder);
+        app.post('/admin/api/handle_with_draw_order', passportConf.requiresRole('admin'), autoHandleWithdrawOrder2);
 
         app.get('/admin/statistics', passportConf.requiresRole('admin'), getStatisticsPage);
 
