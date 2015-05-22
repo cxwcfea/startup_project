@@ -602,13 +602,22 @@ exports.placeApply = function(req, res, next) {
 
     if (!req.body.amount || !req.body.deposit) {
         logger.debug('placeApply error: invalid data');
-        res.status(400);
+        res.status(403);
         return res.send({error_msg:'invalid data'});
     }
 
-    if (req.body.deposit >= req.body.amount) {
+    var amount = Number(Number(req.body.amount).toFixed(2));
+    var deposit = Number(Number(req.body.deposit).toFixed(2));
+    var lever = Math.round(amount / deposit);
+    if (amount <= 0 || deposit <= 0) {
+        logger.debug('placeApply error: invalid data');
+        res.status(403);
+        return res.send({error_msg:'invalid data'});
+    }
+
+    if (deposit >= amount) {
         logger.debug('placeApply error: invalid data amount:' + req.body.amount + ' deposit:' + req.body.deposit);
-        res.status(400);
+        res.status(403);
         return res.send({error_msg:'invalid data'});
     }
 
@@ -616,12 +625,12 @@ exports.placeApply = function(req, res, next) {
         userID: req.user._id,
         userMobile: req.user.mobile,
         serialID: util.generateSerialID(),
-        amount: Number(Number(req.body.amount).toFixed(2)),
-        deposit: Number(Number(req.body.deposit).toFixed(2)),
-        lever: req.body.lever,
-        warnValue: Number(Number(req.body.warnValue).toFixed(2)),
-        sellValue: Number(Number(req.body.sellValue).toFixed(2)),
-        serviceCharge: req.body.serviceCharge,
+        amount: amount,
+        deposit: deposit,
+        lever: lever,
+        warnValue: Number((amount - 0.4 * deposit).toFixed(2)),
+        sellValue: Number((amount - 0.6 * deposit).toFixed(2)),
+        serviceCharge: util.getServiceCharge(lever),
         discount: 1,
         period: 10
     });
