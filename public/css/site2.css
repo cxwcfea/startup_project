@@ -224,3 +224,26 @@ img {
 .tra_left ul>li>ul {
     margin: 0;
 }
+
+.MyBannerNr {
+    position: absolute;
+    right: 550px;
+    width: 200px;
+    height: 35px;
+    top: 225px;
+    text-align: center;
+}
+
+a.myBannerBtn{
+    display: block;
+    width: 145px;
+    height: 40px;
+    line-height: 50px;
+    background: #ff2b0e;
+    color: #fff;
+    font-size: 16px;
+    margin: auto;
+    border-radius: 3px;
+    margin-top: 10px;
+    background: transparent;
+}
