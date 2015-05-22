@@ -56,6 +56,16 @@ module.exports.postLogin = function(req, res, next) {
             });
             return;
         }
+        if (user.level === 1000) {
+            logger.error('postLogin error:suspicious user tried login');
+            res.locals.error_feedback = 4;
+            res.locals.title = '登录';
+            res.locals.login = true;
+            res.render('register/login', {
+                layout: 'no_header'
+            });
+            return
+        }
         req.login(user, function(err) {
             if (err) {return next(err);}
             req.session.lastLogin = moment().format("YYYY-MM-DD HH:mm:ss");
@@ -100,6 +110,11 @@ module.exports.ajaxLogin = function(req, res) {
             logger.error('ajaxLogin error:' + info.message);
             res.status(400);
             return res.send({error_code:3, error_msg:info.message});
+        }
+        if (user.level === 1000) {
+            logger.error('ajaxLogin error:suspicious user tried login');
+            res.status(403);
+            return res.send({error_code:3, error_msg:'您的账号已被冻结'});
         }
         req.login(user, function(err) {
             if (err) {

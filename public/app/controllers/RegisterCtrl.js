@@ -207,6 +207,8 @@
                 addAlert('danger', '登录密码错误，请重新输入');
             } else if (error_code == 3) {
                 addAlert('danger', '该手机号码还未注册');
+            } else if (error_code == 4) {
+                addAlert('danger', '您的账号已被冻结');
             }
         }
 
