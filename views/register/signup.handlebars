@@ -82,7 +82,7 @@
                 </div>
                 <div class="regIputRight fl">
                     <input type="text" ng-model="vm.verify_code" ng-focus="vm.verify_code_error = false" class="inputText regInputText jq_regInputText" required>
-                    <input  type="button" name="" id="verify-code-btn" value="\{{vm.verifyCodeBtnText}}" class="recBtn03" ng-class="{recBtn03_disabled:vm.verifyBtnDisabled}" ng-click="vm.getVerifyCode()">
+                    <input  type="button" name="" value="\{{vm.verifyCodeBtnText}}" class="recBtn03" ng-class="{recBtn03_disabled:vm.verifyBtnDisabled}" ng-click="vm.getVerifyCode()">
                 </div>
             </div>
             <p class="p02"><span class="jq_p02" ng-show="vm.verify_code_error">\{{vm.signup_error_msg}}</span></p>

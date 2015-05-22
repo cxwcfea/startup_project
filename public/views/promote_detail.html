@@ -43,18 +43,12 @@
         <img src="/images/promote-step.jpg" width="741" height="21" alt="">
     </div>
     <div class="promote-share">
-        <div class="url" ng-hide="vm.user.referName">
-            <a class="copy" ng-click="vm.setReferName()">设置</a>
-            <label>请先设置推广码:</label>
-            <input type="text" class="newcar_inputText" placeholder="5~18位字母数字的组合" minlength="5" maxlength="18" required ng-model="vm.referName">
-            <alert ng-repeat="alert in vm.alerts" type="{{alert.type}}" close="vm.closeAlert($index)">{{alert.msg}}</alert>
-        </div>
-        <div class="url" ng-show="vm.user.referName">
+        <div class="url">
             <a class="copy" id="J_copy" ng-click="vm.copyReferLink()">复制链接</a>
             <label>您的推广链接</label>
             <div class="link" id="J_link">http://www.niujinwang.com/?refer={{vm.user.referName}}</div>
         </div>
-        <div class="btns" ng-show="vm.user.referName">
+        <div class="btns">
             <label>分享您的推广链接</label>
             <div class="bdsharebuttonbox" data-tag="share_1">
                 <a class="bds_qzone" data-cmd="qzone" href="#"></a>

@@ -12,11 +12,9 @@ angular.module('userApp').controller('UserPromoteCtrl', ['$scope', '$window', '$
 
     vm.showItem = 1;
     vm.showTransMoneyWindow = false;
-    if (vm.user.referName) {
-        $window._bd_share_config.common.bdText += ' http://www.niujinwang.com/?refer=' + vm.user.referName;
-        $window._bd_share_config.common.bdDesc += ' http://www.niujinwang.com/?refer=' + vm.user.referName;
-        $window._bd_share_config.common.bdUrl = 'http://www.niujinwang.com/?refer=' + vm.user.referName;
-    }
+    $window._bd_share_config.common.bdText += ' http://www.niujinwang.com/?refer=' + vm.user.referName;
+    $window._bd_share_config.common.bdDesc += ' http://www.niujinwang.com/?refer=' + vm.user.referName;
+    $window._bd_share_config.common.bdUrl = 'http://www.niujinwang.com/?refer=' + vm.user.referName;
 
     $http.get('/user/api/refer_user_list')
         .success(function(data, status) {
@@ -36,39 +34,6 @@ angular.module('userApp').controller('UserPromoteCtrl', ['$scope', '$window', '$
         .error(function(data, status) {
             vm.myUserList = [];
         });
-
-    vm.alerts = [];
-
-    var addAlert = function(type, msg) {
-        vm.alerts = [];
-        vm.alerts.push({type:type, msg: msg});
-    };
-
-    vm.closeAlert = function(index) {
-        vm.alerts.splice(index, 1);
-    };
-
-    vm.setReferName = function() {
-        if (!vm.referName) {
-            addAlert('danger', '推荐码必须为5到18位字母或数字的组合');
-            return;
-        }
-        var ok = /^[a-zA-Z0-9]*$/.test(vm.referName);
-        if (!ok) {
-            addAlert('danger', '推荐码必须为5到18位字母或数字的组合');
-            return;
-        }
-        $http.post('/user/api/set_refer_name', {name:vm.referName})
-            .success(function(data, status) {
-                vm.user.referName = data.referName;
-                $window._bd_share_config.common.bdText += ' http://www.niujinwang.com/?refer=' + vm.user.referName;
-                $window._bd_share_config.common.bdDesc += ' http://www.niujinwang.com/?refer=' + vm.user.referName;
-                $window._bd_share_config.common.bdUrl = 'http://www.niujinwang.com/?refer=' + vm.user.referName;
-            })
-            .error(function(data, status) {
-                addAlert('danger', data.error_msg);
-            });
-    };
 
     vm.viewSoure = function() {
         if (vm.showItem === 1) {

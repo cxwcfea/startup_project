@@ -274,7 +274,7 @@ module.exports.finishSignup = function(req, res, next) {
         if (req.session.refer) {
             existingUser.refer = req.session.refer;
         }
-        //existingUser.referName = util.getReferName();
+        existingUser.referName = 'm_' + util.getReferName();
         existingUser.save(function(err) {
             if (err) {
                 logger.warn('finishSignup err:' + err.toString());

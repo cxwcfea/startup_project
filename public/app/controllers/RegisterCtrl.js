@@ -69,6 +69,7 @@
             if (vm.verifyBtnDisabled) {
                 return;
             }
+            console.log('getVerifyCode');
 
             var type = reset ? 2 : 1;
             $http.get('/api/send_sms_verify_code?mobile=' + vm.mobile + '&type=' + type + '&code=' + vm.img_code)
@@ -84,6 +85,9 @@
                             $interval.cancel(timeId);
                             vm.verifyCodeBtnText = '获取验证码';
                             vm.verifyBtnDisabled = false;
+                            var x = Math.random();
+                            $('#img_code')[0].src = '/api/get_verify_img?cacheBuster=' + x;
+                            vm.show_verify_window = false;
                         }
                     }, 1000);
                 })
