@@ -428,7 +428,7 @@ module.exports.postWithdraw = function(req, res) {
             }
         },
         function(user, callback) {
-            if (user.level == 999) {
+            if (user.level >= 999) {
                 data.order.status = 3;
             } else {
                 data.order.status = 0;
