@@ -11,6 +11,24 @@ var mongoose = require('mongoose'),
     DailyData = require('../models/DailyData'),
     config = require('../config/config')['production'];
 
+var referNameMap = {};
+
+function assignReferNameToUser(user, callback) {
+    if (!user.referName) {
+        var name = util.getReferName();
+        while (referNameMap[name]) {
+            name = util.getReferName();
+        }
+        referNameMap[name] = true;
+        user.referName = "m_" + name;
+        user.save(function(err, u) {
+            callback(err);
+        })
+    } else {
+        callback(null);
+    }
+}
+
 var historyApplyData = function(callback) {
     console.log('historyApplyData');
 
@@ -764,9 +782,9 @@ db.once('open', function callback() {
     startTime = startTime.toDate();
     endTime = endTime.toDate();
 
-    /*
     async.waterfall(
         [
+            /*
             function(callback) {
                 User.find({}, function(err, users) {
                     if (err) {
@@ -827,6 +845,17 @@ db.once('open', function callback() {
                     console.log('应收取服务费:' + data.toFixed(2));
                     callback(null, amount+data);
                 });
+            },
+            */
+            function(callback) {
+                User.find({}, function(err, users) {
+                    callback(err, users);
+                });
+            },
+            function(users, callback) {
+                async.mapSeries(users, assignReferNameToUser, function(err, result) {
+                    callback(err);
+                });
             }
         ], function(err, data) {
             if (err) {
@@ -838,10 +867,10 @@ db.once('open', function callback() {
             db.close();
         }
     );
-     */
+
+    /*
     async.series(
         [
-    /*
             function(callback) {
                 getUserData(function (err) {
                     callback(err);
@@ -872,15 +901,13 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
-     */
-            /*
+
             function(callback) {
                 historyCloseApplyFee(function(err) {
                     callback(err);
                 });
             },
-            */
-            /*
+
             function(callback){
                 getUserProfitData(function(err, obj) {
                     console.log('免费盈利：' + obj.free_profit);
@@ -891,7 +918,7 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
-            */
+
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
                     callback(err);
@@ -923,7 +950,6 @@ db.once('open', function callback() {
                 });
             }
 
-            /*
             function(callback) {
                 rechargeOrderData(function(err) {
                     callback(err);
@@ -939,7 +965,6 @@ db.once('open', function callback() {
                     callback(err);
                 });
             }
-            */
         ],
         function(err){
             if (err) {
@@ -947,4 +972,5 @@ db.once('open', function callback() {
             }
             db.close();
         });
+             */
 });

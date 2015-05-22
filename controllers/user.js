@@ -274,6 +274,7 @@ module.exports.finishSignup = function(req, res, next) {
         if (req.session.refer) {
             existingUser.refer = req.session.refer;
         }
+        //existingUser.referName = util.getReferName();
         existingUser.save(function(err) {
             if (err) {
                 logger.warn('finishSignup err:' + err.toString());
@@ -1643,7 +1644,7 @@ function setReferName(req, res) {
             res.status(403);
             return res.send({error_msg:'该推荐码已经被使用'});
         }
-        User.update({$and:[{_id:req.user._id}, {refer:{$not:{$exists:true}}}]}, {referName:name}, function(err, numberAffected, raw) {
+        User.update({$and:[{_id:req.user._id}, {referName:{$not:{$exists:true}}}]}, {referName:name}, function(err, numberAffected, raw) {
             if (err) {
                 logger.debug('setReferName error:' + err.toString());
                 res.status(500);
