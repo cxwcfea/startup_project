@@ -11,10 +11,10 @@ var mongoose = require('mongoose'),
     SalesData = require('./models/SalesData'),
     config = require('./config/config')['production'];
 
-var startOfMonth = moment().startOf('month').toDate();
-var endOfMonth = moment().endOf('month').toDate();
-//var startOfMonth = moment("2015-03-29").toDate();
-//var endOfMonth = moment("2015-04-25").toDate();
+//var startOfMonth = moment().startOf('month').toDate();
+//var endOfMonth = moment().endOf('month').toDate();
+var startOfMonth = moment("2015-04-26").toDate();
+var endOfMonth = moment("2015-05-25").toDate();
 var month = moment().startOf('month').format('YYYYMM');
 //console.log(startOfMonth);
 //console.log(endOfMonth);
@@ -106,6 +106,9 @@ var getApplyServiceFee = function(apply) {
                 break;
         }
     }
+    if (!apply.discount) {
+        apply.discount = 1;
+    }
     var days = apply.period;
     if (apply.closeAt) {
         days = util.tradeDaysTillEnd(apply.startTime, apply.closeAt);
@@ -117,6 +120,7 @@ var getApplyServiceFee = function(apply) {
     } else {
         fee = fee * apply.amount / 10000 * util.tradeDaysTillEnd(apply.startTime, endOfMonth);
     }
+    fee *= apply.discount;
     return fee;
 };
 
