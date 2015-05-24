@@ -76,6 +76,7 @@ module.exports = function(app) {
         } else {
             res.locals.title = '用户注册';
             res.locals.signup = true;
+            res.locals.mgm_code = req.session.refer;
             res.render('register/signup', {
                 layout: 'no_header'
             });

@@ -51,6 +51,11 @@
                 img_code: vm.img_code,
                 confirm_password: vm.confirm_password
             };
+            var mgm_code = $('#mgm-code')[0].value;
+            console.log(mgm_code);
+            if (mgm_code) {
+                data.mgm_code = mgm_code;
+            }
             $http.post('/api/signup', data)
                 .success(function(data, status, headers, config) {
                     vm.show_verify_window = true;

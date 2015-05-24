@@ -214,6 +214,9 @@ module.exports.apiSignup = function(req, res) {
         if (existingUser) {
             user = existingUser;
         }
+        if (req.body.mgm_code) {
+            user.refer = req.body.mgm_code;
+        }
         user.save(function(err) {
             if (err) {
                 logger.warn('apiSignup err:' + err.toString());
@@ -271,7 +274,7 @@ module.exports.finishSignup = function(req, res, next) {
             return res.send({ error_msg: '该手机号已经注册了' })
         }
         existingUser.registered = true;
-        if (req.session.refer) {
+        if (req.session.refer && !existingUser.refer) {
             existingUser.refer = req.session.refer;
         }
         existingUser.referName = 'm_' + util.getReferName();
