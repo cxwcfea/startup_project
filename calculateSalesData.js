@@ -225,7 +225,7 @@ db.once('open', function callback() {
     SalesData.find({month:month}, function(err, collection) {
         if (collection && collection.length === 0) {
             sales.map(function (value) {
-                SalesData.create({userMobile: value.mobile, name: value.name, month: month, baseSalary: 1000});
+                SalesData.create({userMobile: value.mobile, name: value.name, month: month, baseSalary: 3000});
             });
         }
     });
