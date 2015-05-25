@@ -87,5 +87,7 @@
             </div>
         </div>
     </div>
-<alert ng-show="!withdrawVM.showAlipayWindow && !withdrawVM.showBankTransWindow" ng-repeat="alert in withdrawVM.alerts" type="\{{alert.type}}" close="withdrawVM.closeAlert($index)">\{{alert.msg}}</alert>
+    <div class="withdraw-alert" ng-show="withdrawVM.alerts.length > 0">
+        <alert ng-repeat="alert in withdrawVM.alerts" type="\{{alert.type}}" close="withdrawVM.closeAlert($index)">\{{alert.msg}}</alert>
+    </div>
 </div>

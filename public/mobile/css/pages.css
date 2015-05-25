@@ -1689,3 +1689,9 @@
 .withdraw-box .addcard-agreement a {
     color: #000;
 }
+.withdraw-alert alert {
+    font-size: 14px;
+    padding: 0 10px;
+    margin-bottom: 10px;
+    color: #fc6621;
+}

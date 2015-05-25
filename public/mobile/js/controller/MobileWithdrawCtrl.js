@@ -50,7 +50,7 @@ angular.module('mobileApp').controller('MobileWithdrawCtrl', ['$scope', '$http',
             }
             vm.step = 2;
         } else if (vm.step === 2) {
-            console.log(vm.withdrawAmount);
+            vm.alerts = [];
             var order = {
                 userID: vm.user._id,
                 userMobile: vm.user.mobile,
@@ -70,7 +70,6 @@ angular.module('mobileApp').controller('MobileWithdrawCtrl', ['$scope', '$http',
                 order: order
             };
 
-            console.log('Submiting the post!');
             $http.post('/user/withdraw', data)
                 .success(function(data, status, headers, config) {
                     vm.user.finance.freeze_capital += order.amount;
