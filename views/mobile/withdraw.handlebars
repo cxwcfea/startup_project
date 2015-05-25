@@ -10,6 +10,29 @@
 </header><!--#E header-->
 
 <div class="withdraw-box">
+    <div ng-show="withdrawVM.step === 0">
+        <ul class="withdraw-status">
+            <li class="nocard">
+                <span class="icon"></span>
+                <div class="txt">
+                    <h5>请通过电脑访问牛金网</h5>
+                    <p>电脑打开上网浏览器</p>
+                    <p>访问http://www.niujinwang.com</p>
+                </div>
+            </li>
+            <li class="step2">
+                <span class="icon"></span>
+                <div class="txt">
+                    <h5>绑定银行卡</h5>
+                    <p>登录“我的账户”</p>
+                    <p>在“帐号设置”中绑定银行卡</p>
+                </div>
+            </li>
+        </ul>
+        <div class="plr10">
+            <a href="/mobile/#/user" class="btn">好的</a>
+        </div>
+    </div>
     <div ng-show="withdrawVM.step === 1">
         <div class="bank">
             <div class="bank-logo">

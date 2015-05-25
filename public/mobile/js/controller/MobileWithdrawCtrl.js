@@ -3,14 +3,16 @@ angular.module('mobileApp').controller('MobileWithdrawCtrl', ['$scope', '$http',
     var vm = this;
 
     $scope.data.menu = 3;
-    vm.step = 1;
+    vm.step = 0;
     vm.user = $scope.data.currentUser;
     var cards = njCard.query({uid:vm.user._id}, function() {
         if (cards.length === 0) {
-            addAlert('danger', '请先添加银行卡！');
-            // $location.path('/add_card');
+            // addAlert('danger', '请先添加银行卡！');
+            //TODO: Add the card binding support.
+            // $location.path('/mobile/#/user');
         } else {
             vm.card = cards.pop();
+            vm.step = 1;
         }
     });
 
@@ -34,7 +36,7 @@ angular.module('mobileApp').controller('MobileWithdrawCtrl', ['$scope', '$http',
 
     vm.getAll = function() {
         vm.withdrawAmount = Number(vm.user.finance.balance.toFixed(2));
-    }
+    };
 
     vm.withdrawNextStep = function() {
         if (vm.step === 1) {
