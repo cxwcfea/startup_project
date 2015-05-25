@@ -778,7 +778,7 @@ db.once('open', function callback() {
     endTime.second(00);
 
     var startTime = endTime.clone();
-    startTime = startTime.subtract(1, 'days');
+    startTime = startTime.subtract(3, 'days');
     startTime = startTime.toDate();
     endTime = endTime.toDate();
 
