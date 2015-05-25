@@ -117,7 +117,7 @@ function getLogin(req, res, next) {
 
 function getSignup(req, res, next) {
     var refer;
-    if (req.session.refer) {
+    if (req.session.refer && req.session.refer.search('m_') === 0) {
         refer = req.session.refer.toString().substr(2);
     }
     res.locals.mgm_code = refer;
