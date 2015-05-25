@@ -5,31 +5,28 @@ angular.module('mobileApp').controller('MobileWithdrawCtrl', ['$scope', '$http',
     $scope.data.menu = 3;
     vm.step = 0;
     vm.user = $scope.data.currentUser;
-    var cards = njCard.query({uid:vm.user._id}, function() {
-        if (cards.length === 0) {
-            // addAlert('danger', '请先添加银行卡！');
-            //TODO: Add the card binding support.
-            // $location.path('/mobile/#/user');
-        } else {
-            vm.card = cards.pop();
-            vm.card.nameOfTheBank = BankNameList[vm.card.bankID].name;
-            vm.step = 1;
+    if (!vm.user) {
+        if (!$scope.data) {
+            $scope.data = {}
         }
-    });
+        $scope.data.lastLocation = '/user';
+        $location.path('/login');
+    } else {
+        var cards = njCard.query({uid:vm.user._id}, function() {
+            if (cards.length === 0) {
+                // addAlert('danger', '请先添加银行卡！');
+                //TODO: Add the card binding support.
+                // $location.path('/mobile/#/user');
+            } else {
+                vm.card = cards.pop();
+                vm.card.nameOfTheBank = BankNameList[vm.card.bankID].name;
+                vm.step = 1;
+            }
+        });
 
-    vm.BankNameList = BankNameList;
-    vm.bankObj = vm.BankNameList[0];
-
-    vm.alerts = [];
-
-    var addAlert = function(type, msg) {
-        vm.alerts = [];
-        vm.alerts.push({type:type, msg: msg});
-    };
-
-    vm.closeAlert = function(index) {
-        vm.alerts.splice(index, 1);
-    };
+        vm.BankNameList = BankNameList;
+        vm.bankObj = vm.BankNameList[0];
+    }
 
     vm.selectCard = function(card) {
         vm.selectedCard = card;
