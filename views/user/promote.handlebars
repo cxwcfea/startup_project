@@ -40,6 +40,24 @@
         }]
     };
     with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/js/bd_share.js'];
+    $("#J_copy").zclip({
+        path: "/images/ZeroClipboard.swf",
+        copy: function () {
+            return $("#J_link").text();
+        },
+        afterCopy: function() {
+            alert('您的推广码已经复制到剪贴板');
+        }
+    });
+    $("#J_copy2").zclip({
+        path: "/images/ZeroClipboard.swf",
+        copy: function () {
+            return $("#J_link2").text();
+        },
+        afterCopy: function() {
+            alert('您的推广链接已经复制到剪贴板');
+        }
+    });
 </script>
 <div class="fl tra_right">
     <div class="neword_menu promote-menu">
@@ -56,6 +74,11 @@
             <img src="/images/promote-step.jpg" width="741" height="21" alt="">
         </div>
         <div class="promote-share">
+            <div class="url" style="margin-bottom: 10px">
+                <a class="copy" id="J_copy2">复制邀请码</a>
+                <label>您的邀请码</label>
+                <div class="link" id="J_link2">\{{vm.referName}}</div>
+            </div>
             <div class="url">
                 <a class="copy" id="J_copy">复制链接</a>
                 <label>您的推广链接</label>

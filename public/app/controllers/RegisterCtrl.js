@@ -52,9 +52,8 @@
                 confirm_password: vm.confirm_password
             };
             var mgm_code = $('#mgm-code')[0].value;
-            console.log(mgm_code);
             if (mgm_code) {
-                data.mgm_code = mgm_code;
+                data.mgm_code = 'm_' + mgm_code;
             }
             $http.post('/api/signup', data)
                 .success(function(data, status, headers, config) {
@@ -74,7 +73,6 @@
             if (vm.verifyBtnDisabled) {
                 return;
             }
-            console.log('getVerifyCode');
 
             var type = reset ? 2 : 1;
             $http.get('/api/send_sms_verify_code?mobile=' + vm.mobile + '&type=' + type + '&code=' + vm.img_code)
