@@ -116,6 +116,11 @@ function getLogin(req, res, next) {
 }
 
 function getSignup(req, res, next) {
+    var refer;
+    if (req.session.refer) {
+        refer = req.session.refer.toString().substr(2);
+    }
+    res.locals.mgm_code = refer;
     res.render('mobile/signup', {layout:null});
 }
 

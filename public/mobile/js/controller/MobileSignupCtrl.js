@@ -53,6 +53,10 @@ angular.module('mobileApp').controller('MobileSignupCtrl', ['$scope', '$window',
             img_code: vm.img_code,
             confirm_password: vm.confirm_password
         };
+        var mgm_code = $('#mgm-code')[0].value;
+        if (mgm_code) {
+            data.mgm_code = 'm_' + mgm_code;
+        }
         $http.post('/api/signup', data)
             .success(function(data, status, headers, config) {
                 vm.show_verify_window = true;
