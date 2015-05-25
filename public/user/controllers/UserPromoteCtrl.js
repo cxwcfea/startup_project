@@ -10,7 +10,7 @@ angular.module('userApp').controller('UserPromoteCtrl', ['$scope', '$window', '$
     vm.paid_fee = vm.user.finance.history_commission ? vm.user.finance.history_commission - vm.user.finance.commission : 0;
     vm.transAmount = vm.user.finance.commission ? Math.floor(vm.user.finance.commission / 100) * 100 : 0;
 
-    vm.showItem = 1;
+    vm.showFirstPage = true;
     vm.showTransMoneyWindow = false;
     $window._bd_share_config.common.bdText += ' http://www.niujinwang.com/?refer=' + vm.user.referName;
     $window._bd_share_config.common.bdDesc += ' http://www.niujinwang.com/?refer=' + vm.user.referName;
@@ -34,14 +34,6 @@ angular.module('userApp').controller('UserPromoteCtrl', ['$scope', '$window', '$
         .error(function(data, status) {
             vm.myUserList = [];
         });
-
-    vm.viewSoure = function() {
-        if (vm.showItem === 1) {
-            return '/views/promote_detail.html';
-        } else {
-            return '/views/my_user_list.html';
-        }
-    };
 
     vm.viewLoad = function() {
         $timeout(function() {

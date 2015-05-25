@@ -1,0 +1,182 @@
+<script>
+    /* bd_share */
+    window._bd_share_config = {
+        common : {
+            bdText : '来牛金网炒股，开户快，收益高',
+            bdDesc : '来牛金网炒股，开户快，收益高',
+            bdUrl : '',
+            bdPic : 'http://www.niujinwang.com/images/logo100.jpg'
+        },
+        share : [{
+            "bdSize" : 24
+        }]
+    }
+    with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/js/bd_share.js'];
+</script>
+
+<!--#S header-->
+<header id="header">
+    <div class="header-box">
+        <h1>推广赚钱</h1>
+        <a class="back" href="/mobile/#/user"></a>
+    </div>
+</header><!--#E header-->
+
+<div class="user-tab">
+    <ul>
+        <li ng-class="{current: vm.showFirstPage}"><a href="" ng-click="vm.showFirstPage = true">推广详情</a></li>
+        <li ng-class="{current: !vm.showFirstPage}"><a href="" ng-click="vm.showFirstPage = false">我的推广</a></li>
+    </ul>
+</div>
+
+<div class="user-prom" ng-show="vm.showFirstPage">
+    <div class="share">
+        <h5>分享给好友赚取佣金</h5>
+        <p>我正在这里进行股票配资炒股，可以让您的资金放大10倍利润扩大10倍，一个涨停就赚100%，抓住牛市，赶紧来看看吧！ <br />您的推广链接：http://www.niujinwang.com/?refer=\{{vm.user.referName}}</p>
+        <div class="btns">
+            <div class="bdsharebuttonbox" data-tag="share_1">
+                <label class="bdimgshare-lbl">分享到</label>
+                <a class="bds_qzone" data-cmd="qzone" href="#"></a>
+                <a class="bds_tsina" data-cmd="tsina"></a>
+                <a class="bds_baidu" data-cmd="baidu"></a>
+                <a class="bds_renren" data-cmd="renren"></a>
+                <a class="bds_tqq" data-cmd="tqq"></a>
+                <a class="bds_weixin" data-cmd="weixin"></a>
+                <!--
+                <a class="bds_more" data-cmd="more"></a>
+                -->
+            </div>
+        </div>
+    </div>
+    <ul class="intro">
+        <li>
+            <h5>如何赚钱？</h5>
+            <p>所有通过您的推广连接访问过来的用户，注册后都将成为您的下线用户，而当这些用户在本站配资时，您就可以赚取服务费的7%。我们已向所有推广用户发放了几千万佣金。</p>
+            <p class="center"><img src="images/promote-process.jpg" width="300" height="238" alt=""></p>
+        </li>
+        <li>
+            <h5>佣金怎么结算？</h5>
+            <p>您的用户在注册后一年内每发生一笔配资，在配资完成后，您即可获得一笔佣金，当您的佣金达到100元的时候，即可兑换取出，也可以在本站进行配资。</p>
+        </li>
+    </ul>
+</div>
+
+<div class="user-prom" ng-hide="vm.showFirstPage">
+    <div class="money">
+        <div class="now">
+            当前佣金(元)
+            <em>\{{vm.user.finance.commission || 0 | currency:'':2}}</em>
+        </div>
+        <div class="past">
+            <a href="" class="exchange-btn" id="J_exchange" ng-click="vm.transMoney()">兑换</a>
+            <p>已兑佣金<em>\{{vm.paid_fee | currency:'':2}}</em>元</p>
+        </div>
+    </div>
+    <ul class="asset">
+        <li>
+            我的配资用户
+            <em>\{{vm.myPayUsers.length}}</em>
+        </li>
+        <li>
+            我的注册用户
+            <em>\{{vm.myUserList.length}}</em>
+        </li>
+        <li>
+            用户累计管理费
+            <em>\{{vm.total_fee | currency:'':2}}</em>
+        </li>
+        <li>
+            用户累计配资总额
+            <em>\{{vm.totalApplyAmount | currency:'':2}}</em>
+        </li>
+    </ul>
+    <div class="records">
+        <table>
+            <tr>
+                <th>用户名</th>
+                <th>配资金额（元）</th>
+                <th>注册时间</th>
+            </tr>
+            <tr ng-repeat="user in vm.myUserList">
+                <td>\{{user.mobile | displayMobile}}</td>
+                <td>\{{user.finance.history_capital | currency:'':2}}</td>
+                <td>\{{user.registerAt | date:"yyyy-MM-dd HH:mm"}}</td>
+            </tr>
+            <!--
+            <tr>
+                <td>138****8888</td>
+                <td>42000.00</td>
+                <td>2015-04-06 17:49:40</td>
+            </tr>
+            <tr>
+                <td>138****8888</td>
+                <td>42000.00</td>
+                <td>2015-04-06 17:49:40</td>
+            </tr>
+            <tr>
+                <td>138****8888</td>
+                <td>42000.00</td>
+                <td>2015-04-06 17:49:40</td>
+            </tr>
+            -->
+        </table>
+        <div class="tips">已经是尾页</div>
+    </div>
+</div>
+
+<div class="ui-dialog" id="J_promDialog" ng-show="vm.showTransMoneyWindow">
+    <div class="ui-dialog-cnt">
+        <div class="ui-dialog-bd">
+            <div>
+                <h4>佣金兑换</h4>
+                <div class="exchange-num">
+                    <div class="tips">现有佣金额\{{vm.user.finance.commission || 0 | currency:'':2}}元</div>
+                    <div class="tips">可兑换金额\{{vm.transAmount || 0 | currency:'':2}}元</div>
+                    <!--
+                    <div class="ipt">
+                        <input type="number" id="J_exchangeNum" placeholder="请输入兑换金额" /><span>元</span>
+                    </div>
+                    -->
+                </div>
+            </div>
+        </div>
+        <div class="ui-dialog-ft ui-btn-group">
+            <button type="button" class="close-dialog" ng-click="vm.closePopupWindow()">取消</button>
+            <button type="button" id="J_exchangeSure" ng-click="vm.completeTransMoney()">确定</button>
+        </div>
+    </div>
+</div>
+
+<div class="ui-dialog" id="J_promSucDialog" ng-show="vm.transSuccess">
+    <div class="ui-dialog-cnt">
+        <div class="ui-dialog-bd">
+            <div>
+                <h4>佣金兑换</h4>
+                <div class="exchange-suc">
+                    佣金兑换申请成功。
+                </div>
+            </div>
+        </div>
+        <div class="ui-dialog-ft ui-btn-group">
+            <button type="button" class="close-dialog" ng-click="vm.closePopupWindow()">确定</button>
+        </div>
+    </div>
+</div>
+
+<div class="ui-dialog" id="J_promSucDialog" ng-show="vm.transFail">
+    <div class="ui-dialog-cnt">
+        <div class="ui-dialog-bd">
+            <div>
+                <h4>佣金兑换</h4>
+                <div class="exchange-suc">
+                    佣金兑换余额失败。<br>
+                    \{{vm.failReason}} <br>
+                    请联系我们的客服
+                </div>
+            </div>
+        </div>
+        <div class="ui-dialog-ft ui-btn-group">
+            <button type="button" class="close-dialog" ng-click="vm.closePopupWindow()">确定</button>
+        </div>
+    </div>
+</div>
