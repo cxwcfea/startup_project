@@ -4,7 +4,7 @@ angular.module('mobileApp').controller('MobileWithdrawCtrl', ['$scope', '$http',
 
     $scope.data.menu = 3;
     vm.step = 0;
-    vm.user = $scope.data.currentUser;
+    vm.user = $window.bootstrappedUserObject;
     if (!vm.user) {
         if (!$scope.data) {
             $scope.data = {}
