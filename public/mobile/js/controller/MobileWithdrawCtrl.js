@@ -38,7 +38,6 @@ angular.module('mobileApp').controller('MobileWithdrawCtrl', ['$scope', '$http',
 
     vm.withdrawNextStep = function() {
         if (vm.step === 1) {
-            console.log(vm.withdrawAmount);
             if (!vm.withdrawAmount || vm.withdrawAmount <= 0) {
                 addAlert('danger', '请输入提现金额,金额不超过余额且大于0,');
                 return;
@@ -51,6 +50,7 @@ angular.module('mobileApp').controller('MobileWithdrawCtrl', ['$scope', '$http',
             }
             vm.step = 2;
         } else if (vm.step === 2) {
+            console.log(vm.withdrawAmount);
             var order = {
                 userID: vm.user._id,
                 userMobile: vm.user.mobile,
@@ -70,6 +70,7 @@ angular.module('mobileApp').controller('MobileWithdrawCtrl', ['$scope', '$http',
                 order: order
             };
 
+            console.log('Submiting the post!');
             $http.post('/user/withdraw', data)
                 .success(function(data, status, headers, config) {
                     vm.user.finance.freeze_capital += order.amount;
