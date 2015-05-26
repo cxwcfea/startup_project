@@ -3,13 +3,20 @@ angular.module('supportApp').controller('SupportApplyCtrl', ['$scope', '$http', 
     var vm = this;
     var apply_list = {};
     var currentApplies;
+    $scope.apply_options = ["全部","待支付", "操盘中", "已结算", "审核中", "结算中", "排队中"];
     vm.itemsPerPage = 15;
     vm.maxSize = 8;
+    vm.totalApplyAmount = 0.0;
+    vm.apply_status = "全部";
 
     initData();
 
     function pageReset() {
         vm.totalItems = currentApplies.length;
+        vm.totalApplyAmount = 0.0;
+        for(var key in currentApplies) {
+            vm.totalApplyAmount += currentApplies[key].amount;
+        }
         vm.currentPage = 1;
         vm.pageChanged();
     }
@@ -39,16 +46,38 @@ angular.module('supportApp').controller('SupportApplyCtrl', ['$scope', '$http', 
     }
 
     vm.searchApply = function() {
-        if (!vm.searchKey) {
+        if (!vm.searchKey && !vm.apply_status) {
             return;
         }
         currentApplies = [];
-        for (var key in apply_list) {
-            if (apply_list[key].serialID == vm.searchKey) {
-                currentApplies.push(apply_list[key]);
-                break;
+        var apply_candis = apply_list;
+
+        if (vm.searchKey) {
+            for (var key in apply_candis) {
+                if (apply_candis[key].serialID == vm.searchKey) {
+                    currentApplies.push(apply_candis[key]);
+                    break;
+                }
             }
+            apply_candis = currentApplies;
         }
+        if (vm.apply_status) {
+            currentApplies = [];
+            var apply_status_code = $scope.apply_options.indexOf(vm.apply_status);
+            if(6 === apply_status_code) {
+                apply_status_code = 9;
+            }
+            if(apply_status_code > 0) {
+                for (var key in apply_candis) {
+                    if (apply_candis[key].status == apply_status_code) {
+                        currentApplies.push(apply_candis[key]);
+                    }
+                }
+                apply_candis = currentApplies;
+           }
+        }
+        currentApplies = apply_candis;
+
         vm.totalItems = currentApplies.length;
         pageReset();
     };
