@@ -16,7 +16,7 @@ var users = require('../controllers/user'),
     xml2js = require("xml2js"),
     encoding = require("encoding"),
     iconv = require('iconv-lite'),
-    http = require('http'),
+    request = require('request'),
     passportConf = require('./passport');
 
 module.exports = function(app) {
@@ -267,10 +267,10 @@ module.exports = function(app) {
         //var data = xml({stream: [{action:'DLCIDSTT'}, {userName:'XNPH'}, {clientID:'555d518446da0f12'}]}, { declaration: { version: '1.0', encoding: 'GBK' }});
 
         //var data = xml({stream: [{action:'DLOTHCOL'}, {userName:'XNPH'}, {startDate:'20150520'}, {endDate:'20150525'}]}, { declaration: { version: '1.0', encoding: 'GBK' }});
-        //var data = xml({stream: [{action:'DLOTHDET'}, {userName:'XNPH'}, {clientID:'555d518446da0f13'}]}, { declaration: { version: '1.0', encoding: 'GBK' }});
+        //var data = xml({stream: [{action:'DLOTHDET'}, {userName:'XNPH'}, {clientID:'555d518446da0f14'}]}, { declaration: { version: '1.0', encoding: 'GBK' }});
         // 其他代付导入
         /*
-        var data = xml({stream: [{action:'DLOTHSUB'}, {userName:'XNPH'}, {clientID:'555d518446da0f13'}, {totalNumber:1},
+        var data = xml({stream: [{action:'DLOTHSUB'}, {userName:'XNPH'}, {clientID:'555d518446da0f14'}, {totalNumber:1},
             {totalAmount:1}, {payAccountNo:'7111010182600196886'},
             {preFlg:'0'}, {payType:'05'}, {list: [{ _attr: { name: 'userDataList' }}, {row:[
                 {recAccountNo:'7111010192087007800'},
@@ -278,9 +278,11 @@ module.exports = function(app) {
                 {tranAmount:1}
             ]}]}]}, { declaration: { version: '1.0', encoding: 'GBK' }});
             */
-        var resultBuffer = encoding.convert(data, 'GBK');
+        //var resultBuffer = encoding.convert(data, 'GBK');
 
-        var url = 'http://10.0.0.4:5128';
+        //var url = 'http://10.0.0.4:5128';
+        //var url = 'http://127.0.0.1:81';
+        /*
         var options = {
             //json: true,
             //follow_max: 3 // follow up to three redirects
@@ -288,7 +290,7 @@ module.exports = function(app) {
                 'Content-Type': 'text/html; charset=gbk'
             }
         };
-        needle.post(url, resultBuffer.toString(), options, function(err, resp, body) {
+        needle.post(url, data, {}, function(err, resp, body) {
             console.log(err);
             if (!err) {
                 console.log(body);
@@ -301,8 +303,70 @@ module.exports = function(app) {
                 });
             }
         });
+        */
 
-        //var data = ecitic.generatePayCode('abcd', 'bank', 'card', 'name', 8);
+
+        /*
+        var options = {
+            hostname: '10.0.0.4',
+            port: 5128,
+            path:'/',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/xml; charset=gbk',
+                'Content-Length':  Buffer.byteLength(resultBuffer, 'gbk')
+            }
+        };
+
+        var request = http.request(options, function(response) {
+            console.log('STATUS: ' + resonse.statusCode);
+            console.log('HEADERS: ' + JSON.stringify(response.headers));
+            response.setEncoding('utf8');
+            response.on('data', function (chunk) {
+                console.log('BODY: ' + chunk);
+            });
+        });
+
+        request.on('error', function(e) {
+            console.log('problem with request: ' + e.message);
+        });
+
+        // write data to request body
+        request.write(resultBuffer);
+        request.end();
+        */
+
+        /*
+        request({
+            url: "http://10.0.0.4:5128",
+            method: "POST",
+            headers: {
+                "content-type": "application/xml"  // <--Very important!!!
+            },
+            body: resultBuffer
+        }, function (error, response, body){
+            console.log(error);
+            console.log(response);
+            console.log(body);
+        });
+        */
+
+        /*
+        var data = ecitic.requestPay('abcd', 'bank', 'card', 'name', 8, function(err) {
+            if (err) {
+                console.log(err.toString());
+            } else {
+                console.log('success');
+            }
+        });
+         */
+        var data = ecitic.checkOrderStatus('2015052619587807', function(err) {
+            if (err) {
+                console.log(err.toString());
+            } else {
+                console.log('success');
+            }
+        });
         res.send({data:data});
     });
 };
