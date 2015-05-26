@@ -335,6 +335,8 @@ function createOrder(req, res) {
         };
         if (req.body.order_type == 1) {
             orderData.payType = 4; // 银行转账
+        } else if (req.body.order_type == 8) {
+            orderData.payType = 7;
         }
         Order.create(orderData, function(err, order) {
             if (err) {
