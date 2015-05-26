@@ -26,7 +26,8 @@ var applySchema = mongoose.Schema({
     interestRate: Number, // for month
     serviceCharge: Number,  // for day
     discount: Number,  // for day
-    manager: String
+    manager: String,
+    accountType: Number  // 2 means tonghuashun, otherwise means homs
 });
 
 var Apply = mongoose.model('Apply', applySchema);

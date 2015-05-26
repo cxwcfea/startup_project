@@ -494,6 +494,9 @@ function homsAssignAccount(req, res) {
             apply.status = 2;
             apply.account = homas.account;
             apply.password = homas.password;
+            if (req.body.accountType) {
+                apply.accountType = req.body.accountType;
+            }
             var startDay = util.getStartDay();
             apply.startTime = startDay.toDate();
             apply.endTime = util.getEndDay(startDay, apply.period, apply.type).toDate();

@@ -58,7 +58,8 @@ angular.module('adminApp').controller('AdminPendingApplyCtrl', ['$scope', '$http
                 data.homas = {
                     account: content.account,
                     password: content.password
-                }
+                };
+                data.accountType = Number(content.type);
             }
             $http.post('/admin/api/apply/assign_account', data)
                 .success(function(data, status, headers, config) {
