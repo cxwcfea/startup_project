@@ -14,6 +14,9 @@ var users = require('../controllers/user'),
     ecitic = require("../lib/ecitic"),
     xml = require("xml"),
     xml2js = require("xml2js"),
+    encoding = require("encoding"),
+    iconv = require('iconv-lite'),
+    http = require('http'),
     passportConf = require('./passport');
 
 module.exports = function(app) {
@@ -246,36 +249,59 @@ module.exports = function(app) {
     */
 
     app.get('/test', function(req, res, next) {
+        // 余额查询
         //var data = xml({stream: [{action:'DLBALQRY'}, {userName:'XNPH'}, {list: [{ _attr: { name: 'userDataList' }}, {row:[{accountNo:'7111010182600196886'}]}]}]}, { declaration: { version: '1.0', encoding: 'GBK' }});
 
+        // 银行列表查询
         //var data = xml({stream: [{action:'DLOBKQRY'}, {userName:'XNPH'}]}, { declaration: { version: '1.0', encoding: 'GBK' }});
 
+        //console.log(resultBuffer.toString());
+        // 对外支付
         /*
-        var data = xml({stream: [{action:'DLOUTTRN'}, {userName:'XNPH'}, {clientID:'555d518446da0f04'}, {preFlg:'0'}, {payType:'05'},
+        var data = xml({stream: [{action:'DLOUTTRN'}, {userName:'XNPH'}, {clientID:'555d518446da0f11'}, {preFlg:'0'}, {payType:'05'},
             {recBankNo:'302100011000'}, {payAccountNo:'7111010182600196886'}, {recAccountNo:'7111010192087007800'},
-            {recAccountName:'对私测试客户'}, {citicbankFlag:'1'}, {cityFlag:'1'}, {tranAmount:1}]}, { declaration: { version: '1.0', encoding: 'GBK' }});
+            {recAccountName:'对私测试客户'}, {citicbankFlag:'1'}, {cityFlag:'0'}, {tranAmount:1}]}, { declaration: { version: '1.0', encoding: 'GBK' }});
             */
-        //var data = xml({stream: [{action:'DLCIDSTT'}, {userName:'XNPH'}, {clientID:'555d518446da0f03'}]}, { declaration: { version: '1.0', encoding: 'GBK' }});
 
-        var data = xml({stream: [{action:'DLOTHCOL'}, {userName:'XNPH'}, {startDate:'20150520'}, {endDate:'20150525'}]}, { declaration: { version: '1.0', encoding: 'GBK' }});
+        // 交易状态查询
+        //var data = xml({stream: [{action:'DLCIDSTT'}, {userName:'XNPH'}, {clientID:'555d518446da0f12'}]}, { declaration: { version: '1.0', encoding: 'GBK' }});
 
-        console.log(data);
+        //var data = xml({stream: [{action:'DLOTHCOL'}, {userName:'XNPH'}, {startDate:'20150520'}, {endDate:'20150525'}]}, { declaration: { version: '1.0', encoding: 'GBK' }});
+        //var data = xml({stream: [{action:'DLOTHDET'}, {userName:'XNPH'}, {clientID:'555d518446da0f13'}]}, { declaration: { version: '1.0', encoding: 'GBK' }});
+        // 其他代付导入
+        /*
+        var data = xml({stream: [{action:'DLOTHSUB'}, {userName:'XNPH'}, {clientID:'555d518446da0f13'}, {totalNumber:1},
+            {totalAmount:1}, {payAccountNo:'7111010182600196886'},
+            {preFlg:'0'}, {payType:'05'}, {list: [{ _attr: { name: 'userDataList' }}, {row:[
+                {recAccountNo:'7111010192087007800'},
+                {recAccountName:'对私测试客户'},
+                {tranAmount:1}
+            ]}]}]}, { declaration: { version: '1.0', encoding: 'GBK' }});
+            */
+        var resultBuffer = encoding.convert(data, 'GBK');
+
         var url = 'http://10.0.0.4:5128';
         var options = {
-            json: true,
-            follow_max: 3 // follow up to three redirects
+            //json: true,
+            //follow_max: 3 // follow up to three redirects
+            headers: {
+                'Content-Type': 'text/html; charset=gbk'
+            }
         };
-        needle.post(url, data, {}, function(err, resp, body) {
+        needle.post(url, resultBuffer.toString(), options, function(err, resp, body) {
             console.log(err);
-            console.log(body);
-            var parseString = xml2js.parseString;
-            parseString(body, function (err, result) {
-                console.dir(result);
-                if (result.stream.status[0] === 'AAAAAAA') {
-                    console.log('success');
-                }
-            });
+            if (!err) {
+                console.log(body);
+                var parseString = xml2js.parseString;
+                parseString(body, function (err, result) {
+                    console.dir(result);
+                    if (result.stream.status[0] === 'AAAAAAA') {
+                        console.log('success');
+                    }
+                });
+            }
         });
+
         //var data = ecitic.generatePayCode('abcd', 'bank', 'card', 'name', 8);
         res.send({data:data});
     });
