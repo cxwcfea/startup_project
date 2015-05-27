@@ -25,7 +25,11 @@ angular.module('supportApp').controller('SupportApplyCtrl', ['$scope', '$http', 
         vm.totalItems = apply_list.length;
         currentApplies = apply_list;
         vm.currentPage = 1;
-        vm.pageChanged();
+        vm.orderId = '';
+        vm.homsAccount = '';
+        vm.userMobile = '';
+        vm.apply_status = "全部";
+        pageReset();
     };
 
     function initData() {
@@ -46,15 +50,15 @@ angular.module('supportApp').controller('SupportApplyCtrl', ['$scope', '$http', 
     }
 
     vm.searchApply = function() {
-        if (!vm.searchKey && !vm.apply_status) {
+        if (!vm.orderId && !vm.apply_status && !vm.userMobile && vm.homsAccount) {
             return;
         }
         currentApplies = [];
         var apply_candis = apply_list;
 
-        if (vm.searchKey) {
+        if (vm.orderId) {
             for (var key in apply_candis) {
-                if (apply_candis[key].serialID == vm.searchKey) {
+                if (apply_candis[key].serialID === vm.orderId) {
                     currentApplies.push(apply_candis[key]);
                     break;
                 }
@@ -69,12 +73,30 @@ angular.module('supportApp').controller('SupportApplyCtrl', ['$scope', '$http', 
             }
             if(apply_status_code > 0) {
                 for (var key in apply_candis) {
-                    if (apply_candis[key].status == apply_status_code) {
+                    if (apply_candis[key].status === apply_status_code) {
                         currentApplies.push(apply_candis[key]);
                     }
                 }
                 apply_candis = currentApplies;
            }
+        }
+        if (vm.userMobile) {
+            currentApplies = [];
+            for (var key in apply_candis) {
+                if (apply_candis[key].userMobile == vm.userMobile) {
+                    currentApplies.push(apply_candis[key]);
+                }
+            }
+            apply_candis = currentApplies;
+        }
+        if (vm.homsAccount) {
+            currentApplies = [];
+            for (var key in apply_candis) {
+                if (apply_candis[key].account === vm.homsAccount) {
+                    currentApplies.push(apply_candis[key]);
+                }
+            }
+            apply_candis = currentApplies;
         }
         currentApplies = apply_candis;
 
