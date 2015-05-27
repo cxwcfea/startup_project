@@ -228,7 +228,7 @@ module.exports = function(app) {
 
     app.get('/api/get_verify_img', users.getVerifyImg);
 
-    app.get('/api/test_weixin', weixin.sendTemplateMsg);
+    app.get('/api/test_weixin', weixin.testTemplateMsg);
 
     /*
     app.get('/admin_test', passportConf.requiresRole('admin'), function(req, res, next) {
