@@ -1703,16 +1703,19 @@ function finishWeixinBandUser(req, res) {
     if (req.session.openID && req.body.mobile) {
         User.update({mobile:req.body.mobile}, {$set: {'profile.weixin_id':req.session.openID}}, function(err, numberAffected, raw) {
             if (err) {
+                logger.warn('error when update db');
                 res.status(500);
                 return res.send({error_msg:err.toString()});
             }
             if (!numberAffected) {
+                logger.warn('nothing update');
                 res.status(403);
                 return res.send({error_msg:'无法匹配用户'});
             }
             res.send({});
         });
     } else {
+        logger.warn('session not have openID or body not have mobile');
         res.status(403);
         return res.send({error_msg:'无法匹配用户'});
     }
