@@ -419,7 +419,7 @@ module.exports.postWithdraw = function(req, res) {
                 data.order.status = 0;
             }
             data.order.userBalance = user.finance.balance - amount;
-            data.otherInfo = util.generateSerialID();
+            data.order.otherInfo = util.generateSerialID();
             Order.create(data.order, function(err, order) {
                 callback(err, user, order);
             });

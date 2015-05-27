@@ -64,6 +64,19 @@ angular.module('adminApp').controller('AdminWaitingCompleteWithdrawOrderCtrl', [
         }
     };
 
+    vm.startToCheck = function() {
+        while (order_list.length) {
+            var order = order_list.pop();
+            $http.get('/admin/api/check_withdraw_order_status?trans_id=' + order.otherInfo)
+                .success(function(data, status) {
+                    gbNotifier.notify('成功');
+                })
+                .error(function(data, status) {
+                    gbNotifier.error('失败');
+                });
+        }
+    };
+
     vm.removeOrder = function(order) {
         $http.post('/admin/api/reject_withdraw_order/' + order._id, {})
             .success(function(data, status, headers, config) {

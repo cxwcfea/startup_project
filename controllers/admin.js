@@ -1718,6 +1718,56 @@ function autoHandleWithdrawOrder2(req, res) {
     });
 }
 
+function checkWithdrawOrderStatus(req, res) {
+    var transID = req.query.trans_id;
+    ecitic.checkOrderStatus(transID, function(err) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+
+        async.waterfall([
+            function(callback) {
+                Order.findOne({otherInfo:transID}, function(err, order) {
+                    if (!order) {
+                        err = 'order not found';
+                    } else {
+                        if (order.status === 1) {
+                            err = 'order already approved';
+                        }
+                    }
+                    callback(err, order);
+                });
+            },
+            function(order, callback) {
+                Order.update({otherInfo:transID}, {status: 1}, function(err, numberAffected, raw) {
+                    if (numberAffected == 0) {
+                        err = 'nothing to update when update order';
+                    }
+                    callback(err, order);
+                });
+            },
+            function(order, callback) {
+                User.update({_id:order.userID}, {$inc: {'finance.freeze_capital':-order.amount}}, function(err, numberAffected, raw) {
+                    if (numberAffected == 0) {
+                        err = 'nothing to update when update user';
+                    }
+                    callback(err, order);
+                });
+            }
+        ], function(err, order) {
+            if (err) {
+                logger.error('zhongxinWithdrawCheck error when order success for order ' + order._id + ' :' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            } else {
+                logger.info('zhongxinWithdrawCheck success for order ' + order._id);
+                res.send({});
+            }
+        });
+    })
+}
+
 function autoHandleWithdrawOrder(req, res) {
     //console.log(req.query);
     var md5key = 'K1JETRBFGCESTMNRUGKGW0KQNCITNWjehvpq';
@@ -1995,6 +2045,8 @@ module.exports = {
         app.get('/admin/api/user_complain_list', passportConf.requiresRole('admin'), fetchUserComplainList);
 
         app.post('/admin/api/delete_user_complain', passportConf.requiresRole('admin'), deleteUserComplain);
+
+        app.get('/admin/api/check_withdraw_order_status', passportConf.requiresRole('admin'), checkWithdrawOrderStatus);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
