@@ -1745,7 +1745,7 @@ module.exports.registerRoutes = function(app, passportConf) {
 
     app.get('/api/user/invest_detail', passportConf.isAuthenticated, getUserInvestDetail);
 
-    app.get('/api/weixin_band_user', finishWeixinBandUser);
+    app.post('/api/weixin_band_user', finishWeixinBandUser);
 
     app.get('/user/*', passportConf.isAuthenticated, function(req, res, next) {
         res.locals.callback_domain = config.pay_callback_domain;
