@@ -386,6 +386,7 @@ function getInvestPage(req, res, next) {
 }
 
 function getWeixinBandPage(req, res, next) {
+    console.log('openid ' + req.query.w);
     if (req.query.w) {
         req.session.openID = req.query.w;
     }
