@@ -91,6 +91,9 @@ angular.module('mobileApp').config(['$routeProvider', '$httpProvider', function(
         .when('/user_invest_center', { templateUrl: '/mobile/user_invest_center',
             controller: 'MobileUserInvestCenterCtrl as vm'
         })
+        .when('/weixin_band', { templateUrl: function(params) { return params.a ? '/mobile/weixin_band?a=' + params.a : '/mobile/weixin_band'; },
+            controller: 'MobileWeixinBandCtrl as vm'
+        })
         .otherwise({
             redirectTo: '/home'
         });

@@ -1,0 +1,28 @@
+<!--#S header-->
+<header id="header">
+    <div class="header-box">
+        <h1>绑定微信</h1>
+        <!--
+        <a class="back" href="/mobile/#/"></a>
+        -->
+    </div>
+</header><!--#E header-->
+
+<div class="form-box">
+    <form name="signup-form" novalidate>
+        <div class="form-item">
+            <input type="text" autocomplete="off" placeholder="请输入您在牛金网的账号" maxlength="11" pattern="1[3|5|7|8|][0-9]{9}" name="mobile" id="phone" autofocus required ng-model="vm.mobile">
+        </div>
+        <!--
+        <p>我已阅读并同意<a href="/mobile/user_agreement.html">牛金网用户协议</a></p>
+        -->
+        <button type="submit" class="submit-btn" ng-click="vm.band()">绑定</button>
+    </form>
+</div>
+
+<div class="ui-tip" ng-show="vm.signupError">\{{vm.errorMsg}}</div>
+
+<div class="ui-tip-success" ng-show="vm.bandSuccess">
+    <div class="icon"></div>
+    恭喜您，绑定成功！
+</div>
