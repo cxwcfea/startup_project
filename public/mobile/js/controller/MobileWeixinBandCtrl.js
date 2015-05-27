@@ -1,5 +1,5 @@
 'use strict';
-angular.module('mobileApp').controller('MobileWeixinBandCtrl', ['$scope', '$window', '$timeout', '$http', '$interval', function($scope, $window, $timeout, $http, $interval) {
+angular.module('mobileApp').controller('MobileWeixinBandCtrl', ['$scope', '$location', '$http', '$timeout', function($scope, $location, $http, $timeout) {
     var vm = this;
 
     vm.inputError = false;
@@ -16,6 +16,9 @@ angular.module('mobileApp').controller('MobileWeixinBandCtrl', ['$scope', '$wind
         $http.post('/api/weixin_band_user', {mobile:vm.mobile})
             .success(function(data, status, headers, config) {
                 vm.bandSuccess = true;
+                $timeout(function() {
+                    $location.path('/');
+                }, 2000);
             })
             .error(function(data, status, headers, config) {
                 vm.errorMsg = data.error_msg;
