@@ -586,6 +586,18 @@ function fetchWithdrawOrders(req, res) {
     });
 }
 
+function fetchFreezeOrderList(req, res) {
+    logger.debug('fetchFreezeOrderList');
+    Order.find({$and: [{ dealType: 2 }, { status: 3 }]}, function(err, orders) {
+        if (err) {
+            logger.warn(err.toString());
+            res.status(401);
+            return res.send({success:false, reason:err.toString()});
+        }
+        res.send(orders);
+    });
+}
+
 function fetchWaitingCompleteWithdrawOrders(req, res) {
     logger.debug('fetchWaitingCompleteWithdrawOrders');
     Order.find({$and: [{ dealType: 2 }, { status: 2 }]}, function(err, orders) {
@@ -1988,6 +2000,8 @@ module.exports = {
         app.get('/admin/api/user_complain_list', passportConf.requiresRole('admin'), fetchUserComplainList);
 
         app.post('/admin/api/delete_user_complain', passportConf.requiresRole('admin'), deleteUserComplain);
+
+        app.get('/admin/api/orders/freeze_withdraw_order', passportConf.requiresRole('admin'), fetchFreezeOrderList);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
