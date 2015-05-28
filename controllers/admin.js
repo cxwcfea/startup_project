@@ -787,6 +787,7 @@ function confirmAlipayOrder(req, res) {
                             return res.send({error_msg:err.toString()});
                         }
                         util.sendSMS_8(user.mobile, order.amount.toFixed(2));
+                        weixin.sendWeixinTemplateMsg(user.mobile, {t_id:1, mobile:user.mobile, amount:order.amount});
                         if (order.applySerialID) {
                             Apply.findOne({serialID:order.applySerialID}, function(err, apply) {
                                 if (err) {
@@ -932,6 +933,7 @@ function confirmRechargeOrder(req, res) {
                                 return res.send({error_msg:err.toString()});
                             }
                             util.sendSMS_4(user.mobile, order.amount.toFixed(2));
+                            weixin.sendWeixinTemplateMsg(user.mobile, {t_id:1, mobile:user.mobile, amount:order.amount});
                             res.send({});
                         });
                     } else {
@@ -1443,6 +1445,7 @@ function autoConfirmAlipayOrder(req, res) {
                 util.orderFinished(user, order, 1, function(err) {
                     if (!err) {
                         util.sendSMS_8(user.mobile, order.amount.toFixed(2));
+                        weixin.sendWeixinTemplateMsg(user.mobile, {t_id:1, mobile:user.mobile, amount:order.amount});
                     }
                     callback(err, 'success update user for alipay order');
                 });
