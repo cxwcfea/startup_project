@@ -1710,7 +1710,7 @@ function finishWeixinBandUser(req, res) {
             if (!numberAffected) {
                 logger.warn('nothing update');
                 res.status(403);
-                return res.send({error_msg:'无法匹配用户'});
+                return res.send({error_msg:'您还不是牛金网用户'});
             }
             res.send({});
         });
