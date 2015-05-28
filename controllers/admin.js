@@ -16,6 +16,7 @@ var User = require('../models/User'),
     env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
     config = require('../config/config')[env],
     needle = require('needle'),
+    weixin = require('../lib/weixin'),
     sms = require('../lib/sms');
 
 function getStatisticsPage(req, res, next) {
@@ -1302,6 +1303,7 @@ function autoApproveApply(req, res) {
             res.send({"error_code":1, "error_msg":err.toString()});
         } else {
             util.sendSMS_2(apply.userMobile, apply.amount.toFixed(2), apply.account, apply.password);
+            weixin.sendWeixinTemplateMsg(apply.userMobile, 3);
             res.send({"error_code":0});
         }
     });
