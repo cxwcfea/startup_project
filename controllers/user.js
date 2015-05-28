@@ -1710,7 +1710,11 @@ function finishWeixinBandUser(req, res, next) {
             if (!user) {
                 logger.warn('finishWeixinBandUser login error');
                 res.status(403);
-                return res.send({error_msg:'登录名或密码错误'});
+                if (info.error_code === 3) {
+                    return res.send({error_msg:'你还不是牛金网用户'});
+                } else {
+                    return res.send({error_msg:'登录名或密码错误'});
+                }
             }
             User.update({mobile:req.body.mobile}, {$set: {'profile.weixin_id':req.session.openID}}, function(err, numberAffected, raw) {
                 if (err) {
