@@ -1699,23 +1699,36 @@ function getUserInvestDetail(req, res) {
     });
 }
 
-function finishWeixinBandUser(req, res) {
+function finishWeixinBandUser(req, res, next) {
     if (req.session.openID && req.body.mobile) {
-        User.update({mobile:req.body.mobile}, {$set: {'profile.weixin_id':req.session.openID}}, function(err, numberAffected, raw) {
+        var auth = passport.authenticate('local', function(err, user, info) {
             if (err) {
-                logger.warn('error when update db');
+                logger.warn('finishWeixinBandUser error when update db');
                 res.status(500);
                 return res.send({error_msg:err.toString()});
             }
-            if (!numberAffected) {
-                logger.warn('nothing update');
+            if (!user) {
+                logger.warn('finishWeixinBandUser login error');
                 res.status(403);
-                return res.send({error_msg:'您还不是牛金网用户'});
+                return res.send({error_msg:'登录名或密码错误'});
             }
-            res.send({});
+            User.update({mobile:req.body.mobile}, {$set: {'profile.weixin_id':req.session.openID}}, function(err, numberAffected, raw) {
+                if (err) {
+                    logger.warn('finishWeixinBandUser error when update db');
+                    res.status(500);
+                    return res.send({error_msg:err.toString()});
+                }
+                if (!numberAffected) {
+                    logger.warn('finishWeixinBandUser nothing update');
+                    res.status(403);
+                    return res.send({error_msg:'您还不是牛金网用户'});
+                }
+                res.send({});
+            });
         });
+        auth(req, res, next);
     } else {
-        logger.warn('session not have openID or body not have mobile');
+        logger.warn('finishWeixinBandUser session not have openID or body not have mobile');
         res.status(403);
         return res.send({error_msg:'无法匹配用户'});
     }
