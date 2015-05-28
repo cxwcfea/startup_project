@@ -667,6 +667,7 @@ function handleWithdrawOrder(req, res) {
             },
             function(order, callback) {
                 User.update({_id:req.body.uid}, {$inc: {'finance.freeze_capital':-order.amount}}, function(err, numberAffected, raw) {
+                    weixin.sendWeixinTemplateMsg(order.userMobile, {t_id:4, type:'余额提现', amount:order.amount});
                     callback(err, order);
                 });
             }
@@ -1204,6 +1205,7 @@ function sendSellSMS(req, res) {
                 util.sendSMS_10(elem.userMobile);
             } else {
                 util.sendSMS_9(elem.userMobile, elem.amount);
+                weixin.sendWeixinTemplateMsg(elem.userMobile, {t_id:2, account:elem.account, date:elem.endTime});
             }
         });
         res.send({});
