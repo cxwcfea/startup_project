@@ -1303,7 +1303,7 @@ function autoApproveApply(req, res) {
             res.send({"error_code":1, "error_msg":err.toString()});
         } else {
             util.sendSMS_2(apply.userMobile, apply.amount.toFixed(2), apply.account, apply.password);
-            weixin.sendWeixinTemplateMsg(apply.userMobile, 3);
+            weixin.sendWeixinTemplateMsg(apply.userMobile, {t_id:3, type:'Homs', account:apply.account, password:apply.password});
             res.send({"error_code":0});
         }
     });
