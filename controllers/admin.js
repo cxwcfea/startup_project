@@ -558,6 +558,7 @@ function homsAssignAccount(req, res) {
             res.send({reason:err.toString()});
         } else {
             util.sendSMS_2(apply.userMobile, apply.amount.toFixed(2), apply.account, apply.password);
+            weixin.sendWeixinTemplateMsg(apply.userMobile, {t_id:3, type:'Homs', account:apply.account, password:apply.password});
             res.send({success:true, apply:apply});
         }
     });
