@@ -52,7 +52,7 @@ app.use(function(req, res, next){
 });
 */
 
-//require('./config/redis')();
+require('./config/redis')();
 
 require('./config/express')(app, config);
 
