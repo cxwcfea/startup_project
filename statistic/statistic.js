@@ -374,9 +374,7 @@ var dailyAddedFreeApplyData = function(startTime, endTime, callback) {
 var dailyFreeApplyDataTillNow = function(callback) {
     console.log('dailyFreeApplyDataTillNow');
 
-    var today = moment();
-    today = today.subtract(1, 'days');
-    today.set('hour', 17);
+    var today = Date.now();
     Apply.find({$and:[{isTrial:true}, {$or:[{status:2}, {status:5}]}, {startTime:{$lte:today}}]}, function(err, applies) {
         if (err) {
             console.log(err.toString());
@@ -407,9 +405,7 @@ var dailyFreeApplyDataTillNow = function(callback) {
 var dailyPayApplyDataTillNow = function(callback) {
     console.log('dailyPayApplyDataTillNow');
 
-    var today = moment();
-    today = today.subtract(1, 'days');
-    today.set('hour', 17);
+    var today = Date.now();
     Apply.find({$and:[{isTrial:false}, {$or:[{status:2}, {status:5}]}, {startTime:{$lte:today}}]}, function(err, applies) {
         if (err) {
             console.log(err.toString());
@@ -497,6 +493,56 @@ var withdrawOrderData = function(callback) {
          }
          console.log('提现总额:' + amount);
          */
+        callback(null);
+    });
+};
+
+var mgmReturnFeeOrderData = function(startTime, endTime, callback) {
+    Order.find({ $and: [{status:1}, {dealType:13}, {createdAt:{$lte:endTime}}, {createdAt:{$gte:startTime}}] }, function(err, orders) {
+        if (err) {
+            console.log(err.toString());
+            callback(err);
+            return;
+        }
+        var options = { encoding: 'utf8', flag: 'w' };
+        var fileWriteStream = fs.createWriteStream("mgmReturnFeeOrder-" + moment().format("YYYY-MM-DD") + ".csv",  options);
+        fileWriteStream.on("close", function() {
+            console.log("File Closed.");
+        });
+        var data = 'userID, userMobile, userBalance, createdAt, dealType, amount, status, applySerialID, payType, bankTransID, userName, cardID, bank, description\n';
+        fileWriteStream.write(data);
+        orders.forEach(function (order) {
+            data = order.userID + ', ' + order.userMobile + ', ' + order.userBalance + ', ' + moment(order.createdAt).format('YYYYMMDDHHmmss') + ', ' + order.dealType + ', '
+            + order.amount.toFixed(2) + ', ' + order.status + ', ' + order.applySerialID + ', ' + order.payType + ', ' + order.bankTransID + ', '
+            + order.cardInfo.userName + ', ' + order.cardInfo.cardID + ', ' + order.cardInfo.bank + ', ' + order.description + '\n';
+            fileWriteStream.write(data);
+        });
+        fileWriteStream.end();
+        callback(null);
+    });
+};
+
+var manualReturnFeeOrderData = function(startTime, endTime, callback) {
+    Order.find({ $and: [{status:1}, {dealType:8}, {payType:7}, {createdAt:{$lte:endTime}}, {createdAt:{$gte:startTime}}] }, function(err, orders) {
+        if (err) {
+            console.log(err.toString());
+            callback(err);
+            return;
+        }
+        var options = { encoding: 'utf8', flag: 'w' };
+        var fileWriteStream = fs.createWriteStream("manualReturnFeeOrder-" + moment().format("YYYY-MM-DD") + ".csv",  options);
+        fileWriteStream.on("close", function() {
+            console.log("File Closed.");
+        });
+        var data = 'userID, userMobile, userBalance, createdAt, dealType, amount, status, applySerialID, payType, bankTransID, userName, cardID, bank, description\n';
+        fileWriteStream.write(data);
+        orders.forEach(function (order) {
+            data = order.userID + ', ' + order.userMobile + ', ' + order.userBalance + ', ' + moment(order.createdAt).format('YYYYMMDDHHmmss') + ', ' + order.dealType + ', '
+            + order.amount.toFixed(2) + ', ' + order.status + ', ' + order.applySerialID + ', ' + order.payType + ', ' + order.bankTransID + ', '
+            + order.cardInfo.userName + ', ' + order.cardInfo.cardID + ', ' + order.cardInfo.bank + ', ' + order.description + '\n';
+            fileWriteStream.write(data);
+        });
+        fileWriteStream.end();
         callback(null);
     });
 };
@@ -782,7 +828,7 @@ db.once('open', function callback() {
     endTime.second(00);
 
     var startTime = endTime.clone();
-    startTime = startTime.subtract(2, 'days');
+    startTime = startTime.subtract(1, 'days');
     startTime = startTime.toDate();
     endTime = endTime.toDate();
 
@@ -951,6 +997,16 @@ db.once('open', function callback() {
             },
             function(callback){
                 dailyPayApplyData(startTime, endTime, function(err) {
+                    callback(err);
+                });
+            },
+            function(callback) {
+                mgmReturnFeeOrderData(startTime, endTime, function(err) {
+                    callback(err);
+                });
+            },
+            function(callback) {
+                manualReturnFeeOrderData(startTime, endTime, function(err) {
                     callback(err);
                 });
             }
