@@ -374,7 +374,9 @@ var dailyAddedFreeApplyData = function(startTime, endTime, callback) {
 var dailyFreeApplyDataTillNow = function(callback) {
     console.log('dailyFreeApplyDataTillNow');
 
-    var today = Date.now();
+    var today = moment();
+    today = today.subtract(1, 'days');
+    today.set('hour', 17);
     Apply.find({$and:[{isTrial:true}, {$or:[{status:2}, {status:5}]}, {startTime:{$lte:today}}]}, function(err, applies) {
         if (err) {
             console.log(err.toString());
@@ -405,7 +407,9 @@ var dailyFreeApplyDataTillNow = function(callback) {
 var dailyPayApplyDataTillNow = function(callback) {
     console.log('dailyPayApplyDataTillNow');
 
-    var today = Date.now();
+    var today = moment();
+    today = today.subtract(1, 'days');
+    today.set('hour', 17);
     Apply.find({$and:[{isTrial:false}, {$or:[{status:2}, {status:5}]}, {startTime:{$lte:today}}]}, function(err, applies) {
         if (err) {
             console.log(err.toString());
@@ -778,7 +782,7 @@ db.once('open', function callback() {
     endTime.second(00);
 
     var startTime = endTime.clone();
-    startTime = startTime.subtract(1, 'days');
+    startTime = startTime.subtract(2, 'days');
     startTime = startTime.toDate();
     endTime = endTime.toDate();
 
