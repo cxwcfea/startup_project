@@ -74,14 +74,16 @@
                         <li><a href="/admin/#/closing_applies"><span class="am-icon-shopping-cart"></span> 结算中的配资</a></li>
                     </ul>
                 </li>
-                <li class="admin-parent">
-                    <a class="am-cf" data-am-collapse="{target: '#collapse-nav-2'}"><span class="am-icon-file"></span> 充值订单列表<span class="am-icon-angle-right am-fr am-margin-right"></span></a>
-                    <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav-2">
-                        <li><a href="/admin/#/alipay_orders"><span class="am-icon-cart-plus"></span> 支付宝待确认订单</a></li>
-                        <li><a href="/admin/#/recharge_orders"><span class="am-icon-cart-plus"></span> 充值订单</a></li>
-                        <li><a href="/admin/#/orders_of_alipay"><span class="am-icon-cart-plus"></span> 无法确认的支付宝</a></li>
-                    </ul>
-                </li>
+                {{#unless watcher}}
+                    <li class="admin-parent">
+                        <a class="am-cf" data-am-collapse="{target: '#collapse-nav-2'}"><span class="am-icon-file"></span> 充值订单列表<span class="am-icon-angle-right am-fr am-margin-right"></span></a>
+                        <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav-2">
+                            <li><a href="/admin/#/alipay_orders"><span class="am-icon-cart-plus"></span> 支付宝待确认订单</a></li>
+                            <li><a href="/admin/#/recharge_orders"><span class="am-icon-cart-plus"></span> 充值订单</a></li>
+                            <li><a href="/admin/#/orders_of_alipay"><span class="am-icon-cart-plus"></span> 无法确认的支付宝</a></li>
+                        </ul>
+                    </li>
+                {{/unless}}
                 <li class="admin-parent">
                     <a class="am-cf" data-am-collapse="{target: '#collapse-nav-3'}"><span class="am-icon-file"></span> 配资相关订单列表<span class="am-icon-angle-right am-fr am-margin-right"></span></a>
                     <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav-3">
@@ -90,15 +92,17 @@
                         <li><a href="/admin/#/return_fee_orders"><span class="am-icon-money"></span> 退还管理费的订单</a></li>
                     </ul>
                 </li>
-                <li class="admin-parent">
-                    <a class="am-cf" data-am-collapse="{target: '#collapse-nav-4'}"><span class="am-icon-file"></span> 提现相关订单列表<span class="am-icon-angle-right am-fr am-margin-right"></span></a>
-                    <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav-4">
-                        <li><a href="/admin/#/withdraw_orders"><span class="am-icon-money"></span> 提现的订单</a></li>
-                        <li><a href="/admin/#/waiting_confirm_withdraw_order_list"><span class="am-icon-clock-o"></span> 等待完成提现订单</a></li>
-                        <li><a href="/admin/#/orders"><span class="am-icon-cart-plus"></span> 完成提现订单</a></li>
-                        <li><a href="/admin/#/freeze_withdraw"><span class="am-icon-question"></span> 冻结提现的订单</a></li>
-                    </ul>
-                </li>
+                {{#unless watcher}}
+                    <li class="admin-parent">
+                        <a class="am-cf" data-am-collapse="{target: '#collapse-nav-4'}"><span class="am-icon-file"></span> 提现相关订单列表<span class="am-icon-angle-right am-fr am-margin-right"></span></a>
+                        <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav-4">
+                            <li><a href="/admin/#/withdraw_orders"><span class="am-icon-money"></span> 提现的订单</a></li>
+                            <li><a href="/admin/#/waiting_confirm_withdraw_order_list"><span class="am-icon-clock-o"></span> 等待完成提现订单</a></li>
+                            <li><a href="/admin/#/orders"><span class="am-icon-cart-plus"></span> 完成提现订单</a></li>
+                            <li><a href="/admin/#/freeze_withdraw"><span class="am-icon-question"></span> 冻结提现的订单</a></li>
+                        </ul>
+                    </li>
+                {{/unless}}
                 <li class="admin-parent">
                     <a class="am-cf" data-am-collapse="{target: '#collapse-nav-5'}"><span class="am-icon-file"></span> 统计数据<span class="am-icon-angle-right am-fr am-margin-right"></span></a>
                     <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav-5">

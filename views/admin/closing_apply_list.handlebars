@@ -36,7 +36,9 @@
                     <td>
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs">
-                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="closingApplyVM.manageApply(apply)"><span class="am-icon-pencil-square-o"></span> 管理</button>
+                                {{#unless watcher}}
+                                    <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="closingApplyVM.manageApply(apply)"><span class="am-icon-pencil-square-o"></span> 管理</button>
+                                {{/unless}}
                             </div>
                         </div>
                     </td>

@@ -38,11 +38,13 @@
                                     <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="vm.open()"><span class="am-icon-envelope"></span> 发短信</button>
                                     <button class="am-btn am-btn-default am-btn-xs" ng-click="vm.showApplies()"><span class="am-icon-bar-chart"></span> 配资</button>
                                     <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="vm.showOrders()"><span class="am-icon-money"></span> 交易</button>
+                                    {{#unless watcher}}
+                                        <button class="am-btn am-btn-default am-btn-xs am-text-warning" ng-click="vm.createOrder()"><span class="am-icon-pencil"></span> 创建订单</button>
+                                    {{/unless}}
                                     <!--
+                                    <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-click="vm.takeCustomer()"><span class="am-icon-vm"></span> 接手客服</button>
                                     <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="vm.updateBalance(vm)"><span class="am-icon-pencil"></span> 修改余额</button>
                                     -->
-                                    <button class="am-btn am-btn-default am-btn-xs am-text-warning" ng-click="vm.createOrder()"><span class="am-icon-pencil"></span> 创建订单</button>
-                                    <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-click="vm.takeCustomer()"><span class="am-icon-vm"></span> 接手客服</button>
                                 </div>
                             </div>
                         </td>

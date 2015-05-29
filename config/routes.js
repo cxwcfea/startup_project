@@ -10,11 +10,17 @@ var users = require('../controllers/user'),
     weixin = require('../lib/weixin'),
     log4js = require('log4js'),
     logger = log4js.getLogger('routes'),
+    _ = require('lodash'),
     passportConf = require('./passport');
 
 module.exports = function(app) {
     app.use(function(req, res, next) {
-        res.locals.user = req.user;
+        //res.locals.user = req.user;
+        if (req.user) {
+            if (_.includes(req.user.roles, 'watcher')) {
+                res.locals.watcher = true;
+            }
+        }
         res.locals.lastLogin = req.session.lastLogin;
         if (req.session.statistic) {
             res.locals.recentApply = req.session.statistic.show_applies[0];
