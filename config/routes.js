@@ -15,7 +15,7 @@ var users = require('../controllers/user'),
 
 module.exports = function(app) {
     app.use(function(req, res, next) {
-        //res.locals.user = req.user;
+        res.locals.user = req.user; // important for passport login
         if (req.user) {
             if (_.includes(req.user.roles, 'watcher')) {
                 res.locals.watcher = true;
