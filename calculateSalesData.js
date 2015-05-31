@@ -90,16 +90,25 @@ var getApplyServiceFee = function(apply) {
                 fee = 18.9;
                 break;
             case 8:
-                fee = 17.9;
+                fee = 19.9;
                 break;
             case 7:
-                fee = 16.9;
+                fee = 18.9;
                 break;
             case 6:
-                fee = 15.9;
+                fee = 17.9;
                 break;
             case 5:
+                fee = 14.9;
+                break;
+            case 4:
+                fee = 13.9;
+                break;
+            case 3:
                 fee = 10.9;
+                break;
+            case 2:
+                fee = 9.9;
                 break;
             default :
                 fee = 19.9;
@@ -109,13 +118,16 @@ var getApplyServiceFee = function(apply) {
     if (!apply.discount) {
         apply.discount = 1;
     }
-    var days = apply.period;
-    if (apply.closeAt) {
-        days = util.tradeDaysTillEnd(apply.startTime, apply.closeAt);
-    } else {
-        days = util.tradeDaysTillEnd(apply.startTime, apply.endTime);
-    }
     if (apply.status === 3) {
+        var closedTime = apply.closeAt ? apply.closeAt : apply.endTime;
+        closedTime = moment(closedTime);
+        var time;
+        if (closedTime > endOfMonth) {
+            time = endOfMonth;
+        } else {
+            time = closedTime;
+        }
+        var days = util.tradeDaysTillEnd(apply.startTime, time.toDate());
         fee = fee * apply.amount / 10000 * days;
     } else {
         fee = fee * apply.amount / 10000 * util.tradeDaysTillEnd(apply.startTime, endOfMonth);
@@ -208,10 +220,6 @@ var sales = [
     {
         mobile: '15710035052',
         name: '张丽霞'
-    },
-    {
-        mobile: '18911468685',
-        name: '李建甫'
     }
 ];
 
