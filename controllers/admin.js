@@ -16,6 +16,7 @@ var User = require('../models/User'),
     env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
     config = require('../config/config')[env],
     needle = require('needle'),
+    weixin = require('../lib/weixin'),
     sms = require('../lib/sms');
 
 function getStatisticsPage(req, res, next) {
@@ -517,6 +518,7 @@ function homsAssignAccount(req, res) {
             res.send({reason:err.toString()});
         } else {
             util.sendSMS_2(apply.userMobile, apply.amount.toFixed(2), apply.account, apply.password);
+            weixin.sendWeixinTemplateMsg(apply.userMobile, {t_id:3, type:'Homs', account:apply.account, password:apply.password});
             res.send({success:true, apply:apply});
         }
     });
@@ -637,6 +639,7 @@ function handleWithdrawOrder(req, res) {
             },
             function(order, callback) {
                 User.update({_id:req.body.uid}, {$inc: {'finance.freeze_capital':-order.amount}}, function(err, numberAffected, raw) {
+                    weixin.sendWeixinTemplateMsg(order.userMobile, {t_id:4, type:'余额提现', amount:order.amount});
                     callback(err, order);
                 });
             }
@@ -757,6 +760,7 @@ function confirmAlipayOrder(req, res) {
                             return res.send({error_msg:err.toString()});
                         }
                         util.sendSMS_8(user.mobile, order.amount.toFixed(2));
+                        weixin.sendWeixinTemplateMsg(user.mobile, {t_id:1, mobile:user.mobile, amount:order.amount});
                         if (order.applySerialID) {
                             Apply.findOne({serialID:order.applySerialID}, function(err, apply) {
                                 if (err) {
@@ -902,6 +906,7 @@ function confirmRechargeOrder(req, res) {
                                 return res.send({error_msg:err.toString()});
                             }
                             util.sendSMS_4(user.mobile, order.amount.toFixed(2));
+                            weixin.sendWeixinTemplateMsg(user.mobile, {t_id:1, mobile:user.mobile, amount:order.amount});
                             res.send({});
                         });
                     } else {
@@ -1172,6 +1177,7 @@ function sendSellSMS(req, res) {
                 util.sendSMS_10(elem.userMobile);
             } else {
                 util.sendSMS_9(elem.userMobile, elem.amount);
+                weixin.sendWeixinTemplateMsg(elem.userMobile, {t_id:2, account:elem.account, date:elem.endTime});
             }
         });
         res.send({});
@@ -1278,6 +1284,7 @@ function autoApproveApply(req, res) {
             res.send({"error_code":1, "error_msg":err.toString()});
         } else {
             util.sendSMS_2(apply.userMobile, apply.amount.toFixed(2), apply.account, apply.password);
+            weixin.sendWeixinTemplateMsg(apply.userMobile, {t_id:3, type:'Homs', account:apply.account, password:apply.password});
             res.send({"error_code":0});
         }
     });
@@ -1416,6 +1423,7 @@ function autoConfirmAlipayOrder(req, res) {
                 util.orderFinished(user, order, 1, function(err) {
                     if (!err) {
                         util.sendSMS_8(user.mobile, order.amount.toFixed(2));
+                        weixin.sendWeixinTemplateMsg(user.mobile, {t_id:1, mobile:user.mobile, amount:order.amount});
                     }
                     callback(err, 'success update user for alipay order');
                 });

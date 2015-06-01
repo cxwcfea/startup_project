@@ -352,6 +352,15 @@ function getPostponeApply(req, res) {
     })
 }
 
+function getWeixinBandPage(req, res, next) {
+    if (req.query.w) {
+        req.session.openID = req.query.w;
+    }
+    res.render('mobile/weixin_band', {
+        layout: null
+    })
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/mobile', function(req, res, next) {
@@ -429,6 +438,8 @@ module.exports = {
                 layout: null
             })
         });
+
+        app.get('/mobile/weixin_band', getWeixinBandPage);
 
         app.get('/mobile/forget', getForget);
 
