@@ -37,6 +37,7 @@
                     <th class="table-date am-text-center">起止日期</th>
                     <th class="table-title am-text-right">金额</th>
                     <th class="table-title am-text-right">天数</th>
+                    <th class="table-title am-text-right">杠杆</th>
                     <th class="table-title am-text-right">服务费</th>
                     <th class="table-type am-text-right am-hide-sm-only">保证金</th>
                     <th class="table-author am-text-center">状态</th>
@@ -54,8 +55,8 @@
                     <td class="am-text-center">\{{apply.start_date | displayDate}}<br>\{{apply.end_date | displayDate}}</td>
                     <td class="am-text-right"><span class="am-icon-rmb"></span><strong>\{{apply.amount | currency:'':2}}</strong></td>
                     <td class="am-text-right"><strong>\{{apply.period}}</strong></td>
+                    <td class="am-text-right"><strong>\{{apply.lever}}</strong></td>
                     <td class="am-text-right"><span class="am-icon-rmb"></span><strong>\{{apply.fee}}</strong></td>
-
                     <td class="am-text-right am-hide-sm-only"><span class="am-icon-rmb"></span><strong>\{{apply.deposit | currency:'':2}}</strong></td>
                     <td class="am-text-center">\{{apply.status | applyStatus}}</td>
                     <td class="">\{{apply.account || '尚未分配' }}</td>

@@ -28,7 +28,7 @@
             <table class="am-table am-table-striped am-table-hover table-main">
                 <thead>
                 <tr>
-                    <th class="table-id am-hide-sm-only">单号</th><th class="table-id am-hide-sm-only">手机号</th><th class="table-title am-text-right">操盘资金</th><th class="table-type am-text-right am-hide-sm-only">保证金</th><th class="table-author am-text-center">状态</th><th class="table-date am-text-center">实盘起止日期</th><th class="table-author">Homas</th><th class="">结算金额</th><th class="">结算日期</th><th class="table-set">操作</th>
+                    <th class="table-id am-hide-sm-only">单号</th><th class="table-id am-hide-sm-only">手机号</th><th class="table-title am-text-right">操盘资金</th><th class="table-type am-text-right am-hide-sm-only">保证金</th><th>杠杆</th><th class="table-author am-text-center">状态</th><th class="table-date am-text-center">实盘起止日期</th><th class="table-author">Homas</th><th class="">结算金额</th><th class="">结算日期</th><th class="table-set">操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -37,6 +37,7 @@
                     <td class="am-hide-sm-only">\{{apply.userMobile}}</td>
                     <td class="am-text-right"><strong>\{{apply.amount | currency:'':2}}</strong></td>
                     <td class="am-text-right am-hide-sm-only"><strong>\{{apply.deposit | currency:'':2}}</strong></td>
+                    <td class="am-text-center">\{{apply.lever}}</td>
                     <td class="am-text-center">\{{apply.status | applyStatus}}</td>
                     <td class="am-text-center">\{{apply.start_date | displayDate}}<br>\{{apply.end_date | displayDate}}</td>
                     <td class="">\{{apply.account || '尚未分配' }}</td>
