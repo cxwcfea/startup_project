@@ -228,6 +228,7 @@ exports.postApplyPostpone = function(req, res, next) {
                         callback(err);
                     } else {
                         user.finance.freeze_capital += order.amount;
+                        user.finance.prepaid_service_fee += order.amount;
                         user.save(function(err) {
                             var content = 'user:' + order.userMobile + ' account:' + apply.account + ' period:' + period;
                             util.sendEmail('op@niujinwang.com,intern@niujinwang.com', '配资延期', content, function(err) {
@@ -544,11 +545,27 @@ exports.freeApply = function(req, res, next) {
                                             logger.debug('freeApply error:' + err.toString());
                                             return next();
                                         }
-                                        if (req.url.search('/mobile') > -1) {
-                                            res.redirect('/mobile/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000 + '&status=' + 4);
-                                        } else {
-                                            res.redirect('/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000 + '&status=' + 4);
-                                        }
+                                        var orderData = {
+                                            userID: user._id,
+                                            userMobile: user.mobile,
+                                            userBalance: user.finance.balance,
+                                            dealType: 9,
+                                            amount: apply.deposit,
+                                            status: 1,
+                                            description: '免费体验支付保证金',
+                                            applySerialID: apply.serialID
+                                        };
+                                        Order.create(orderData, function(err, payOrder) {
+                                            if (err) {
+                                                logger.debug('freeApply error:' + err.toString());
+                                                return next();
+                                            }
+                                            if (req.url.search('/mobile') > -1) {
+                                                res.redirect('/mobile/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000 + '&status=' + 4);
+                                            } else {
+                                                res.redirect('/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000 + '&status=' + 4);
+                                            }
+                                        });
                                     });
                                 });
                             });

@@ -26,6 +26,7 @@ var userSchema = new mongoose.Schema({
         profit: { type:Number, default: 0 },             //总收益
         history_capital: { type: Number, default: 0 },   // 累计配资资产
         history_deposit: { type: Number, default: 0 },   // 累计支付保证金
+        prepaid_service_fee: { type: Number, default: 0 },  // 预付管理费
         commission: Number,
         history_commission: Number
 	},
