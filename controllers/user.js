@@ -235,6 +235,43 @@ function getClientIp(req) {
         req.connection.socket.remoteAddress;
 }
 
+function autoAssignManager(user) {
+    if (!user.refer) return;
+    var morning = moment();
+    var isHoliday = util.isHoliday(morning.dayOfYear());
+    if (isHoliday) {
+        return;
+    }
+    morning.hour(9);
+    morning.minute(0);
+    morning.seconds(0);
+    var afternoon = moment();
+    afternoon.hour(19);
+    afternoon.minute(0);
+    afternoon.seconds(0);
+    var now = moment();
+    if (now >= morning && now <= afternoon) {
+        if (user.refer.indexOf('m_') === 0) {
+            User.findOne({referName:user.refer}, function(err, u) {
+                if (err) {
+                    logger.warn('autoAssignManager error:' + err.toString());
+                    return;
+                }
+                if (!u || !u.manager) {
+                    return;
+                }
+                user.manager = u.manager;
+                user.save(function(err) {
+                    if (err) {
+                        logger.warn('autoAssignManager error:' + err.toString());
+                        return;
+                    }
+                });
+            });
+        }
+    }
+}
+
 module.exports.finishSignup = function(req, res, next) {
     if (!req.session.sms_code) {
         res.status(400);
@@ -295,6 +332,7 @@ module.exports.finishSignup = function(req, res, next) {
                 logger.info('ip ' + getClientIp(req));
                 logger.info('ip ' + req.ip);
                 res.send({});
+                autoAssignManager(existingUser);
             });
         });
     });
