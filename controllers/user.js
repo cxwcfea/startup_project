@@ -1663,6 +1663,7 @@ function fetchReferUserList(req, res) {
 }
 
 function finishWeixinBandUser(req, res, next) {
+    console.log('weixintest ' + req.session.openID + ' ' + req.body.mobile);
     if (req.session.openID && req.body.mobile) {
         var auth = passport.authenticate('local', function(err, user, info) {
             if (err) {
