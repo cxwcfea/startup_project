@@ -175,3 +175,11 @@ console.log(moment("2015-04-28").toDate());
 	} else {
 		console.log('not in the range');
 	}
+
+var endTime = moment();
+var startTime = endTime.clone();
+startTime.subtract(1, 'days');
+endTime = endTime.toDate();
+startTime = startTime.toDate();
+console.log(endTime);
+console.log(startTime);
