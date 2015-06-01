@@ -1679,12 +1679,16 @@ function finishWeixinBandUser(req, res, next) {
                     return res.send({error_msg:'登录名或密码错误'});
                 }
             }
-            user.profile.weixin_id = req.session.openID;
-            user.save(function(err) {
+            User.update({mobile:req.body.mobile}, {$set: {'profile.weixin_id':req.session.openID}}, function(err, numberAffected, raw) {
                 if (err) {
                     logger.warn('finishWeixinBandUser error when update db');
                     res.status(500);
                     return res.send({error_msg:err.toString()});
+                }
+                if (!numberAffected) {
+                    logger.warn('finishWeixinBandUser nothing update');
+                    res.status(403);
+                    return res.send({error_msg:'绑定失败，请稍后再试'});
                 }
                 res.send({});
             });
