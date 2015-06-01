@@ -493,19 +493,23 @@ function homsAssignAccount(req, res) {
             });
         },
         function (apply, callback) {
-            apply.status = 2;
-            apply.account = homas.account;
-            apply.password = homas.password;
-            if (req.body.accountType) {
-                apply.accountType = req.body.accountType;
+            if (apply.status !== 4) {
+                callback('apply not in pending state');
+            } else {
+                apply.status = 2;
+                apply.account = homas.account;
+                apply.password = homas.password;
+                if (req.body.accountType) {
+                    apply.accountType = req.body.accountType;
+                }
+                var startDay = util.getStartDay();
+                apply.startTime = startDay.toDate();
+                apply.endTime = util.getEndDay(startDay, apply.period, apply.type).toDate();
+                apply.startAt = Date.now();
+                apply.save(function (err) {
+                    callback(err, apply);
+                });
             }
-            var startDay = util.getStartDay();
-            apply.startTime = startDay.toDate();
-            apply.endTime = util.getEndDay(startDay, apply.period, apply.type).toDate();
-            apply.startAt = Date.now();
-            apply.save(function (err) {
-                callback(err, apply);
-            });
         }
     ], function(err, apply) {
         if (err) {
@@ -1252,16 +1256,20 @@ function autoApproveApply(req, res) {
             });
         },
         function (apply, callback) {
-            apply.status = 2;
-            apply.account = account;
-            apply.password = password;
-            var startDay = util.getStartDay();
-            apply.startTime = startDay.toDate();
-            apply.endTime = util.getEndDay(startDay, apply.period, apply.type).toDate();
-            apply.startAt = Date.now();
-            apply.save(function (err) {
-                callback(err, apply);
-            });
+            if (apply.status !== 4) {
+                callback('apply not in pending state');
+            } else {
+                apply.status = 2;
+                apply.account = account;
+                apply.password = password;
+                var startDay = util.getStartDay();
+                apply.startTime = startDay.toDate();
+                apply.endTime = util.getEndDay(startDay, apply.period, apply.type).toDate();
+                apply.startAt = Date.now();
+                apply.save(function (err) {
+                    callback(err, apply);
+                });
+            }
         }
     ], function(err, apply) {
         if (err) {
