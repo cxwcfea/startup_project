@@ -1662,43 +1662,43 @@ function fetchReferUserList(req, res) {
     });
 }
 
-function setReferName(req, res) {
-    if (!req.body.name) {
-        res.status(403);
-        return res.send({error_msg:'无效的数据'});
-    }
-    var prefix;
-    if (util.isSales(req.user.mobile.toString())) {
-        prefix = 's_';
-    } else {
-        prefix = 'm_';
-    }
-    var name = prefix + req.body.name;
-    User.findOne({referName:name}, function(err, user) {
-        if (err) {
-            logger.debug('setReferName error:' + err.toString());
-            res.status(500);
-            return res.send({error_msg:err.toString()});
-        }
-        if (user) {
-            logger.debug('setReferName error:other people already set it');
-            res.status(403);
-            return res.send({error_msg:'该推荐码已经被使用'});
-        }
-        User.update({$and:[{_id:req.user._id}, {referName:{$not:{$exists:true}}}]}, {referName:name}, function(err, numberAffected, raw) {
+function finishWeixinBandUser(req, res, next) {
+    if (req.session.openID && req.body.mobile) {
+        var auth = passport.authenticate('local', function(err, user, info) {
             if (err) {
-                logger.debug('setReferName error:' + err.toString());
+                logger.warn('finishWeixinBandUser error when update db');
                 res.status(500);
                 return res.send({error_msg:err.toString()});
             }
-            if (!numberAffected) {
-                logger.debug('setReferName error:already set');
+            if (!user) {
+                logger.warn('finishWeixinBandUser login error');
                 res.status(403);
-                return res.send({error_msg:'推荐码已经设置'});
+                if (info.error_code === 3) {
+                    return res.send({error_msg:'你还不是牛金网用户'});
+                } else {
+                    return res.send({error_msg:'登录名或密码错误'});
+                }
             }
-            res.send({referName:name});
+            User.update({mobile:req.body.mobile}, {$set: {'profile.weixin_id':req.session.openID}}, function(err, numberAffected, raw) {
+                if (err) {
+                    logger.warn('finishWeixinBandUser error when update db');
+                    res.status(500);
+                    return res.send({error_msg:err.toString()});
+                }
+                if (!numberAffected) {
+                    logger.warn('finishWeixinBandUser nothing update');
+                    res.status(403);
+                    return res.send({error_msg:'您还不是牛金网用户'});
+                }
+                res.send({});
+            });
         });
-    });
+        auth(req, res, next);
+    } else {
+        logger.warn('finishWeixinBandUser session not have openID or body not have mobile');
+        res.status(403);
+        return res.send({error_msg:'无法匹配用户'});
+    }
 }
 
 module.exports.registerRoutes = function(app, passportConf) {
@@ -1716,11 +1716,11 @@ module.exports.registerRoutes = function(app, passportConf) {
 
     app.post('/user/beifu_pay', passportConf.isAuthenticated, beifuPay);
 
-    app.post('/user/api/set_refer_name', passportConf.isAuthenticated, setReferName);
-
     app.post('/user/api/transfer_commission', passportConf.isAuthenticated, transCommission);
 
     app.get('/user/api/refer_user_list', passportConf.isAuthenticated, fetchReferUserList);
+
+    app.post('/api/weixin_band_user', finishWeixinBandUser);
 
     app.get('/user/*', passportConf.isAuthenticated, function(req, res, next) {
         res.locals.callback_domain = config.pay_callback_domain;
