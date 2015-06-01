@@ -1663,7 +1663,6 @@ function fetchReferUserList(req, res) {
 }
 
 function finishWeixinBandUser(req, res, next) {
-    console.log('weixintest ' + req.session.openID + ' ' + req.body.mobile);
     if (req.session.openID && req.body.mobile) {
         var auth = passport.authenticate('local', function(err, user, info) {
             if (err) {
@@ -1680,7 +1679,7 @@ function finishWeixinBandUser(req, res, next) {
                     return res.send({error_msg:'登录名或密码错误'});
                 }
             }
-            User.update({mobile:req.body.mobile}, {$set: {'profile.weixin_id':req.session.openID}}, function(err, numberAffected, raw) {
+            User.update({mobile:req.body.mobile}, {'profile.weixin_id':req.session.openID}, function(err, numberAffected, raw) {
                 if (err) {
                     logger.warn('finishWeixinBandUser error when update db');
                     res.status(500);
@@ -1689,7 +1688,7 @@ function finishWeixinBandUser(req, res, next) {
                 if (!numberAffected) {
                     logger.warn('finishWeixinBandUser nothing update');
                     res.status(403);
-                    return res.send({error_msg:'您还不是牛金网用户'});
+                    return res.send({error_msg:'绑定失败，请稍后再试'});
                 }
                 res.send({});
             });
