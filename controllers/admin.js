@@ -338,6 +338,9 @@ function createOrder(req, res) {
             orderData.payType = 4; // 银行转账
         } else if (req.body.order_type == 8) {
             orderData.payType = 7;
+        } else if (req.body.order_type == 15 && req.body.pay_type == 8) {
+            orderData.payType = 8;
+            orderData.status = 5;
         }
         Order.create(orderData, function(err, order) {
             if (err) {
