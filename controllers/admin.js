@@ -1870,6 +1870,18 @@ function deleteUserComplain(req, res) {
     });
 }
 
+function changeUserRefer(req, res) {
+    var newRefer = req.query.refer;
+    var mobile = req.query.mobile;
+    User.update({mobile:mobile}, {$set:{refer:newRefer}}, function(err, numberAffected, raw) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send({});
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -2021,6 +2033,8 @@ module.exports = {
         app.post('/admin/api/delete_user_complain', passportConf.requiresRole('admin'), deleteUserComplain);
 
         app.get('/admin/api/orders/freeze_withdraw_order', passportConf.requiresRole('admin'), fetchFreezeOrderList);
+
+        app.get('/admin/api/user/change_user_refer', passportConf.requiresRole('admin'), changeUserRefer);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

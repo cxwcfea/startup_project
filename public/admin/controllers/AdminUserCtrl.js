@@ -131,4 +131,39 @@ angular.module('adminApp').controller('AdminUserCtrl', ['$scope', '$http', '$mod
                 gbNotifier.error('更新失败! ' + data.error_msg);
             });
     };
+
+    vm.changeRefer = function() {
+        var modalInstance = $modal.open({
+            templateUrl: 'views/changeReferModal.html',
+            controller: 'UserChangeReferModalCtrl',
+            //size: size,
+            resolve: {}
+        });
+
+        modalInstance.result.then(function (result) {
+            if (!result) {
+                gbNotifier.error('必须输入推荐码！');
+            } else {
+                $http.get('/admin/api/user/change_user_refer?mobile=' + vm.user.mobile + '&refer=' + result)
+                    .success(function(data, status) {
+                        gbNotifier.notify('修改成功！');
+                        vm.user.refer = result;
+                    })
+                    .error(function(data, status) {
+                        gbNotifier.error('修改失败:' + data.error_msg);
+                    });
+            }
+        }, function () {
+        });
+    };
+}]);
+
+angular.module('adminApp').controller('UserChangeReferModalCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+    $scope.ok = function () {
+        $modalInstance.close($scope.refer);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
 }]);
