@@ -236,7 +236,7 @@ function getClientIp(req) {
 }
 
 function autoAssignManager(user) {
-    if (!user.refer) return;
+    /*
     var morning = moment();
     var isHoliday = util.isHoliday(morning.dayOfYear());
     if (isHoliday) {
@@ -250,25 +250,26 @@ function autoAssignManager(user) {
     afternoon.minute(0);
     afternoon.seconds(0);
     var now = moment();
-    if (now >= morning && now <= afternoon) {
-        if (user.refer.indexOf('m_') === 0) {
-            User.findOne({referName:user.refer}, function(err, u) {
+     if (now >= morning && now <= afternoon) {
+     }
+    */
+    if (user.refer && user.refer.indexOf('m_') === 0) {
+        User.findOne({referName:user.refer}, function(err, u) {
+            if (err) {
+                logger.warn('autoAssignManager error:' + err.toString());
+                return;
+            }
+            if (!u || !u.manager) {
+                return;
+            }
+            user.manager = u.manager;
+            user.save(function(err) {
                 if (err) {
-                    logger.warn('autoAssignManager error:' + err.toString());
+                    logger.warn('autoAssignManager error for ' + user.mobile + ' ' + err.toString());
                     return;
                 }
-                if (!u || !u.manager) {
-                    return;
-                }
-                user.manager = u.manager;
-                user.save(function(err) {
-                    if (err) {
-                        logger.warn('autoAssignManager error:' + err.toString());
-                        return;
-                    }
-                });
             });
-        }
+        });
     }
 }
 
