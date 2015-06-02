@@ -356,9 +356,20 @@ function getWeixinBandPage(req, res, next) {
     if (req.query.w) {
         req.session.openID = req.query.w;
     }
-    res.render('mobile/weixin_band', {
-        layout: null
-    })
+    User.findOne({'profile.weixin_id':req.query.w}, function(err, user) {
+        var band = false;
+        var mobile = '';
+        if (user) {
+            logger.warn('getWeixinBandPage user already band mobile:' + user.mobile + ' openID:' + req.query.w);
+            band = true;
+            mobile = user.mobile;
+        }
+        res.render('mobile/weixin_band', {
+            band: band,
+            mobile: mobile,
+            layout: null
+        })
+    });
 }
 
 module.exports = {
