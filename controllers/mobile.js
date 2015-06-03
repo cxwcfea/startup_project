@@ -495,6 +495,12 @@ module.exports = {
             })
         });
 
+        app.get('/mobile/identity', function(req, res, next) {
+            res.render('mobile/identity', {
+                layout: null
+            })
+        });
+
         app.get('/mobile/weixin_band', getWeixinBandPage);
 
         app.get('/mobile/forget', getForget);

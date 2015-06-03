@@ -1738,6 +1738,30 @@ function finishWeixinBandUser(req, res, next) {
     }
 }
 
+function setIdentity(req, res) {
+    var name = req.body.userName;
+    var ID = req.body.userID;
+    if (name && ID) {
+        User.update({mobile:req.user.mobile}, {$set:{'identity.name':name, 'identity.id':ID}}, function(err, numberAffected, raw) {
+            if (err) {
+                logger.error('setIdentity error:' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+            if (!numberAffected) {
+                logger.error('setIdentity nothing to udate');
+                res.status(403);
+                return res.send({error_msg:'nothing to udate'});
+            }
+            res.send({});
+        });
+    } else {
+        logger.error('setIdentity error:invalid input');
+        res.status(400);
+        return res.send({error_msg:'无效的输入'});
+    }
+}
+
 module.exports.registerRoutes = function(app, passportConf) {
     app.get('/user', passportConf.isAuthenticated, getUserHome);
 
@@ -1752,6 +1776,8 @@ module.exports.registerRoutes = function(app, passportConf) {
     app.post('/user/beifu_get_dyncode', passportConf.isAuthenticated, beifuGetDynCode);
 
     app.post('/user/beifu_pay', passportConf.isAuthenticated, beifuPay);
+
+    app.post('/user/set_identity', passportConf.isAuthenticated, setIdentity);
 
     app.post('/api/user/invest_update', passportConf.isAuthenticated, investUpdate);
 

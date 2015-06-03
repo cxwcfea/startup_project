@@ -1,0 +1,22 @@
+<!--#S header-->
+<header id="header">
+    <div class="header-box">
+        <h1>身份认证信息</h1>
+        <a class="back" href="/mobile/#/account"></a>
+    </div>
+</header><!--#E header-->
+
+<div class="form-box">
+    <form name="identityForm" novalidate>
+        <div class="form-item">
+            <input name="user_name" type="text" placeholder="姓名" ng-model="userName" maxlength="16" required autofocus>
+        </div>
+        <div class="form-item">
+            <input name="user_id" type="text" placeholder="身份证号码" ng-model="userID" pattern="^\d{15}$|^\d{18}$|^\d{17}(\d|X|x)$" required>
+        </div>
+        <button type="submit" class="submit-btn" ng-click="verifyUserIdentity()">提交身份信息</button>
+    </form>
+</div>
+
+<div class="ui-tip" ng-show="inputError">\{{errorMsg}}</div>
+<div class="ui-tip" ng-show="success">身份信息已设置</div>

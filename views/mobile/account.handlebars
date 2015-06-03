@@ -18,6 +18,10 @@
         <li>
             <a href="">我的银行卡 <span>未绑定</span></a>
         </li>
+        <li>
+            <a href="/mobile/#/identity" ng-hide="vm.user.identity.id">身份信息 <i></i><span>尚未认证</span></a>
+            <a href="" ng-show="vm.user.identity.id">身份信息 <span>\{{vm.user.identity.name}} (\{{vm.user.identity.id | displayIdentityID}})</span></a>
+        </li>
     </ul>
     <p class="account-tip">绑定银行卡提现请登录电脑版操作，触屏版即将开通！</p>
 
