@@ -4,6 +4,7 @@ angular.module('adminApp').controller('AdminClosingApplyCtrl', ['$scope', '$http
     var apply_list = {};
     var currentApplies;
     vm.itemsPerPage = 15;
+    vm.totalAmount = 0;
 
     initData();
 
@@ -17,6 +18,7 @@ angular.module('adminApp').controller('AdminClosingApplyCtrl', ['$scope', '$http
         $http.get('/admin/api/applies/closing').success(function(data) {
             apply_list = data;
             angular.forEach(apply_list, function(value, key) {
+                vm.totalAmount += value.amount;
                 formatData(value);
             });
             currentApplies = apply_list;
