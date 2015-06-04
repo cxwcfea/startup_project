@@ -14,7 +14,7 @@
     -->
     <div class="zntz-box">
         <div class="zntz-amount">
-            <label for="amount">转入金额</label>
+            <label for="amount">转入金额 (可转入<em style="color: #a40000;">\{{vm.user.finance.balance | currency:'':2}}</em>元)</label>
             <input type="number" min="100" step="100" name="amount" ng-model="vm.invest_amount">
             <span class="unit">元</span>
         </div>
