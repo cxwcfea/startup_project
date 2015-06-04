@@ -17,6 +17,7 @@ var User = require('../models/User'),
     config = require('../config/config')[env],
     needle = require('needle'),
     weixin = require('../lib/weixin'),
+    ecitic = require("../lib/ecitic"),
     sms = require('../lib/sms');
 
 function getStatisticsPage(req, res, next) {
@@ -1748,6 +1749,67 @@ function rejectWithdrawOrder(req, res) {
     });
 }
 
+function autoHandleWithdrawOrder2(req, res) {
+    ecitic.requestPay(req.body.otherInfo, req.body.cardInfo.bank, req.body.cardInfo.cardID, req.body.cardInfo.userName, req.body.amount.toFixed(2), function(err) {
+        if (err) {
+            res.status(500);
+            res.send({error_msg:err.toString()});
+        } else {
+            res.send({});
+        }
+    });
+}
+
+function checkWithdrawOrderStatus(req, res) {
+    var transID = req.query.trans_id;
+    ecitic.checkOrderStatus(transID, function(err) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+
+        async.waterfall([
+            function(callback) {
+                Order.findOne({otherInfo:transID}, function(err, order) {
+                    if (!order) {
+                        err = 'order not found';
+                    } else {
+                        if (order.status === 1) {
+                            err = 'order already approved';
+                        }
+                    }
+                    callback(err, order);
+                });
+            },
+            function(order, callback) {
+                Order.update({otherInfo:transID}, {status: 1}, function(err, numberAffected, raw) {
+                    if (numberAffected == 0) {
+                        err = 'nothing to update when update order';
+                    }
+                    callback(err, order);
+                });
+            },
+            function(order, callback) {
+                User.update({_id:order.userID}, {$inc: {'finance.freeze_capital':-order.amount}}, function(err, numberAffected, raw) {
+                    if (numberAffected == 0) {
+                        err = 'nothing to update when update user';
+                    }
+                    callback(err, order);
+                });
+            }
+        ], function(err, order) {
+            if (err) {
+                logger.error('zhongxinWithdrawCheck error when order success for order ' + order._id + ' :' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            } else {
+                logger.info('zhongxinWithdrawCheck success for order ' + order._id);
+                res.send({});
+            }
+        });
+    })
+}
+
 function autoHandleWithdrawOrder(req, res) {
     //console.log(req.query);
     var md5key = 'K1JETRBFGCESTMNRUGKGW0KQNCITNWjehvpq';
@@ -2022,7 +2084,7 @@ module.exports = {
 
         app.post('/api/auto_postpone_apply', autoPostponeApply);
 
-        app.post('/admin/api/handle_with_draw_order', passportConf.requiresRole('admin'), autoHandleWithdrawOrder);
+        app.post('/admin/api/handle_with_draw_order', passportConf.requiresRole('admin'), autoHandleWithdrawOrder2);
 
         app.get('/admin/statistics', passportConf.requiresRole('admin'), getStatisticsPage);
 
@@ -2041,6 +2103,8 @@ module.exports = {
         app.get('/admin/api/orders/freeze_withdraw_order', passportConf.requiresRole('admin'), fetchFreezeOrderList);
 
         app.get('/admin/api/user/change_user_refer', passportConf.requiresRole('admin'), changeUserRefer);
+
+        app.get('/admin/api/check_withdraw_order_status', passportConf.requiresRole('admin'), checkWithdrawOrderStatus);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

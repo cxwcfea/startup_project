@@ -11,6 +11,7 @@ var users = require('../controllers/user'),
     log4js = require('log4js'),
     logger = log4js.getLogger('routes'),
     _ = require('lodash'),
+    ecitic = require('../lib/ecitic'),
     passportConf = require('./passport');
 
 module.exports = function(app) {
@@ -252,13 +253,5 @@ module.exports = function(app) {
     });
     */
 
-    /*
-    app.get('/test', function(req, res, nest) {
-        var ary = ccap.get();
-        var txt = ary[0];
-        var buf = ary[1];
-        res.end(buf);
-        console.log(txt);
-    });
-    */
+    app.get('/test', ecitic.test);
 };
