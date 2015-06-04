@@ -200,8 +200,6 @@
                     return '魏昊庚';
                 case '15710035052':
                     return '张丽霞';
-                case '18911468685':
-                    return '李建甫';
                 default:
                     return input;
             }
@@ -324,6 +322,8 @@
                     return '保证金支出';
                 case 10:
                     return '管理费支出';
+                case 13:
+                    return '推广佣金';
                 case 14:
                     return '佣金兑换余额';
                 default:
