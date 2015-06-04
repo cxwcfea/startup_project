@@ -1950,6 +1950,97 @@ function changeUserRefer(req, res) {
     });
 }
 
+function cancelPendingApply(req, res) {
+    var serialID = req.body.applySerialID;
+    if (!serialID) {
+        res.status(403);
+        return res.send({error_msg:'no serialID'});
+    }
+    var error_code = 500;
+    async.waterfall([
+        function (callback) {
+            Apply.findOne({serialID:serialID}, function(err, apply) {
+                if (!err && !apply) {
+                    error_code = 400;
+                    err = 'apply not found';
+                }
+                callback(err, apply);
+            });
+        },
+        function (apply, callback) {
+            apply.status = 1;
+            apply.save(function(err) {
+                callback(err, apply);
+            });
+        },
+        function (apply, callback) {
+            var orderData = {
+                userID: apply.userID,
+                userMobile: apply.userMobile,
+                dealType: 5,
+                amount: apply.deposit,
+                status: 2,
+                description: '保证金返还',
+                applySerialID: apply.serialID
+            };
+            Order.create(orderData, function(err, order) {
+                if (!err && !order) {
+                    err = 'can not create deposit return order';
+                }
+                callback(err, order, apply);
+            });
+        },
+        function (depositOrder, apply, callback) {
+            var orderData = {
+                userID: apply.userID,
+                userMobile: apply.userMobile,
+                dealType: 8,
+                amount: util.getServiceFee(apply),
+                status: 2,
+                description: '管理费返还 ' + apply.serialID,
+                applySerialID: apply.serialID
+            };
+            Order.create(orderData, function(err, order) {
+                if (!err && !order) {
+                    err = 'can not create service fee return order';
+                }
+                callback(err, order, depositOrder, apply);
+            });
+        },
+        function (feeOrder, depositOrder, apply, callback) {
+            User.findOne({mobile:apply.userMobile}, function(err, user) {
+                if (!err && !user) {
+                    err = 'user not found';
+                }
+                callback(err, user, feeOrder, depositOrder, apply);
+            });
+        },
+        function (user, feeOrder, depositOrder, apply, callback) {
+            user.finance.freeze_capital -= feeOrder.amount;
+            user.finance.prepaid_service_fee -= feeOrder.amount;
+            util.orderFinished(user, feeOrder, 1, function(err) {
+                callback(err, user, depositOrder, apply);
+            });
+        },
+        function (user, depositOrder, apply, callback) {
+            user.finance.deposit -= depositOrder.amount;
+            user.finance.total_capital -= apply.amount;
+            user.finance.history_deposit -= depositOrder.amount;
+            user.finance.history_capital -= apply.amount;
+            util.orderFinished(user, depositOrder, 1, function(err) {
+                callback(err);
+            });
+        }
+    ], function (err) {
+        if (err) {
+            logger.error('cancelPendingApply error for apply:' + serialID + ' ' + err.toString());
+            res.status(error_code);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send({});
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -2105,6 +2196,8 @@ module.exports = {
         app.get('/admin/api/user/change_user_refer', passportConf.requiresRole('admin'), changeUserRefer);
 
         app.get('/admin/api/check_withdraw_order_status', passportConf.requiresRole('admin'), checkWithdrawOrderStatus);
+
+        app.post('/admin/api/cancel_apply', passportConf.requiresRole('admin'), cancelPendingApply);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
