@@ -50,6 +50,10 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
         };
 
         vm.startInvest = function() {
+            if (!vm.user.identity.id) {
+                vm.showIdentityDialog = true;
+                return;
+            }
             if (!vm.profit_rate) {
                 vm.errorMsg = '请输入期望收益率，0到18之间';
                 vm.inputError = true;
@@ -147,6 +151,10 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
                     }, 1500);
                 });
                 */
-        }
+        };
+
+        vm.redirectToIdentity = function() {
+            $location.path('/account');
+        };
     }
 }]);
