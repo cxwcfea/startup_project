@@ -1258,6 +1258,12 @@ function autoApproveApply(req, res) {
     var account = req.query.account;
     var password = req.query.password;
 
+    if (!account || !password) {
+        logger.warn('account or password can not be empty: serialID ' + serialID);
+        res.status(401);
+        return res.send({"error_msg":'account or password can not be empty'});
+    }
+
     async.waterfall([
         function (callback) {
             Apply.findOne({serialID:serialID}, function(err, apply) {
