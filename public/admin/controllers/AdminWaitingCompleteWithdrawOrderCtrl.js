@@ -32,7 +32,6 @@ angular.module('adminApp').controller('AdminWaitingCompleteWithdrawOrderCtrl', [
     };
 
     vm.startToPay = function() {
-        console.log('startToPay');
         while (order_list.length) {
             var order = order_list.pop();
             /*
@@ -62,6 +61,8 @@ angular.module('adminApp').controller('AdminWaitingCompleteWithdrawOrderCtrl', [
                     gbNotifier.error('失败');
                 });
         }
+        currentOrders = order_list;
+        pageReset();
     };
 
     vm.startToCheck = function() {
@@ -75,6 +76,8 @@ angular.module('adminApp').controller('AdminWaitingCompleteWithdrawOrderCtrl', [
                     gbNotifier.error('失败');
                 });
         }
+        currentOrders = order_list;
+        pageReset();
     };
 
     vm.removeOrder = function(order) {

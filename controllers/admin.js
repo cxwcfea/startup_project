@@ -1804,6 +1804,7 @@ function checkWithdrawOrderStatus(req, res) {
                 return res.send({error_msg:err.toString()});
             } else {
                 logger.info('zhongxinWithdrawCheck success for order ' + order._id);
+                util.sendSMS_7(order.userMobile, order.amount);
                 res.send({});
             }
         });
