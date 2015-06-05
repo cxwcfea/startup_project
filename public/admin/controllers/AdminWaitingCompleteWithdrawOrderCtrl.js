@@ -199,4 +199,15 @@ angular.module('adminApp').controller('AdminWaitingCompleteWithdrawOrderCtrl', [
                 gbNotifier.error('失败');
             });
     };
+
+    vm.reGenerateID = function(order) {
+        $http.get('/admin/api/regenerate_order_pay_id?id=' + order._id)
+            .success(function(data, status) {
+                gbNotifier.notify('成功');
+                order.otherInfo = data.newID;
+            })
+            .error(function(data, status) {
+                gbNotifier.error('失败');
+            });
+    };
 }]);

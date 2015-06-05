@@ -2042,6 +2042,28 @@ function cancelPendingApply(req, res) {
     });
 }
 
+function reGenerateOrderPayID(req, res) {
+    var order_id = req.query.id;
+    Order.findOne({_id:order_id}, function(err, order) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        if (!order) {
+            res.status(400);
+            return res.send({error_msg:'input invalid'});
+        }
+        order.otherInfo = util.generateSerialID();
+        order.save(function(err) {
+            if (err) {
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+            res.send({newID:order.otherInfo});
+        });
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -2199,6 +2221,8 @@ module.exports = {
         app.get('/admin/api/check_withdraw_order_status', passportConf.requiresRole('admin'), checkWithdrawOrderStatus);
 
         app.post('/admin/api/cancel_apply', passportConf.requiresRole('admin'), cancelPendingApply);
+
+        app.get('/admin/api/regenerate_order_pay_id', passportConf.requiresRole('admin'), reGenerateOrderPayID);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
