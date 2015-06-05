@@ -26,7 +26,8 @@ var applySchema = mongoose.Schema({
     interestRate: Number, // for month
     serviceCharge: Number,  // for day
     discount: Number,  // for day
-    manager: String
+    manager: String,
+    investProfit: {type:Number, default: 0}  // how much profit will return to investor
 });
 
 var Apply = mongoose.model('Apply', applySchema);

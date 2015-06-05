@@ -323,9 +323,11 @@
                 case 10:
                     return '管理费支出';
                 case 11:
-                    return '本金返还';
+                    return '投资本金支出';
                 case 12:
                     return '利息收入';
+                case 16:
+                    return '投资本金返还';
                 default:
                     return '充值';
             }

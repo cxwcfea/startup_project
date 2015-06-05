@@ -13,7 +13,7 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
         vm.inputError = false;
         vm.editInvest = true;
         vm.showRateDialog = false;
-        if (vm.user.enableInvest === undefined || vm.user.enableInvest === null) {
+        if (vm.user.invest.enable === undefined || vm.user.invest.enable === null) {
             vm.editInvest = false;
         } else {
             $http.get('/api/user/invest_info')
@@ -29,9 +29,11 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
 
         vm.changeInvest = function() {
             var data = {
-                profitRate: vm.profit_rate,
-                duration: vm.period,
-                enable: vm.user.enableInvest
+                invest: {
+                    profitRate: vm.profit_rate,
+                    duration: vm.period,
+                    enable: vm.user.invest.enable
+                }
             };
             $http.post('/api/user/invest_update', data)
                 .success(function(data, status) {
@@ -72,14 +74,16 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
             }
 
             var data = {
-                profitRate: vm.profit_rate,
-                duration: vm.period,
-                enable: true
+                invest: {
+                    profitRate: vm.profit_rate,
+                    duration: vm.period,
+                    enable: true
+                }
             };
             $http.post('/api/user/invest_update', data)
                 .success(function(data, status) {
                     vm.showConfirmDialog = true;
-                    vm.user.enableInvest = true;
+                    vm.user.invest.enable = true;
                 })
                 .error(function(data, status) {
                     vm.errorMsg = data.error_msg;
@@ -118,8 +122,8 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
         };
 
         vm.enableChange = function() {
-            if (!vm.user.enableInvest) {
-                vm.user.enableInvest = true;
+            if (!vm.user.invest.enable) {
+                vm.user.invest.enable = true;
                 vm.confirmDisableInvest = true;
             } else {
                 vm.changeInvest();
@@ -127,30 +131,12 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
         };
 
         vm.disableInvest = function(flag) {
-            var backup = vm.user.enableInvest;
-            vm.user.enableInvest = !flag;
+            var backup = vm.user.invest.enable;
+            vm.user.invest.enable = !flag;
             vm.confirmDisableInvest = false;
-            if (vm.user.enableInvest != backup) {
+            if (vm.user.invest.enable != backup) {
                 vm.changeInvest();
             }
-            /*
-            var data = {
-                profitRate: vm.profit_rate,
-                duration: vm.period,
-                enable: vm.user.enableInvest
-            };
-            $http.post('/api/user/invest_update', data)
-                .success(function(data, status) {
-                    vm.confirmDisableInvest = false;
-                })
-                .error(function(data, status) {
-                    vm.errorMsg = data.error_msg;
-                    vm.inputError = true;
-                    $timeout(function() {
-                        vm.inputError = false;
-                    }, 1500);
-                });
-                */
         };
 
         vm.redirectToIdentity = function() {

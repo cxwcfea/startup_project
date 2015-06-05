@@ -13,7 +13,6 @@ var userSchema = new mongoose.Schema({
     lastLoginAt: {type:Date, default: Date.parse('1990-01-01 00:00:00')},
     freeApply: String,  // apply serialID
     registered: {type:Boolean, default: false},
-    enableInvest: Boolean,
     lastPayBank: Number,
 
 	finance: {
@@ -30,6 +29,12 @@ var userSchema = new mongoose.Schema({
         history_invest_amount: { type: Number, default: 0 }, // 累计投资金额
         history_invest_profit: { type: Number, default: 0 }  // 累计投资收益
 	},
+
+    invest: {
+        profitRate: Number,
+        duration: Number,
+        enable: Boolean
+    },
 
     profile: {
         email_verified: {type: Boolean, default: false},

@@ -1558,36 +1558,15 @@ function beifuPay(req, res) {
 }
 
 function investUpdate(req, res) {
-    if (req.user.enableInvest === null || req.user.enableInvest === undefined) {
-        User.update({mobile:req.user.mobile}, {enableInvest:true}, function(err, numberAffected, raw) {
-            if (numberAffected) {
-                var data = {
-                    userID: req.user._id,
-                    userMobile: req.user.mobile,
-                    profitRate: req.body.profitRate,
-                    amount: 0,
-                    duration: req.body.duration,
-                    enable: true
-                };
-                Investor.create(data, function(err, investor) {
-                    if (err) {
-                        res.status(500);
-                        return res.send({error_msg:err.toString()});
-                    }
-                    res.send({});
-                });
-            } else {
-                res.status(500);
-                return res.send({error_msg:'failed to update user enableInvest'});
-            }
-        });
-    } else {
-        User.update({mobile:req.user.mobile}, {enableInvest:req.body.enable}, function(err, numberAffected, raw) {
-            Investor.update({userID:req.user._id}, {enable:req.body.enable, profitRate:req.body.profitRate, duration:req.body.duration}, function(err, numberAffected, raw) {
-                res.send({});
-            });
-        });
-    }
+    var invest = req.body.invest;
+    User.update({mobile:req.user.mobile}, {invest:invest}, function(err, numberAffected, raw) {
+        if (numberAffected) {
+            res.send({});
+        } else {
+            res.status(500);
+            return res.send({error_msg:'failed to update user enableInvest'});
+        }
+    });
 }
 
 function getUserInvestInfo(req, res) {
