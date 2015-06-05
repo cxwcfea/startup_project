@@ -47,7 +47,7 @@ angular.module('mobileApp').controller('MobileUserCtrl', ['$scope', '$window', '
     };
 
     vm.gotoInvestCenter = function() {
-        if (!vm.user.enableInvest) {
+        if (!vm.user.invest.enable) {
             $location.path('/invest')
         } else {
             $location.path('/user_invest_center')
