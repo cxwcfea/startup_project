@@ -833,7 +833,7 @@ var fixOldWithdrawOrder = function(callback) {
             callback(err);
         } else {
             console.log(orders.length);
-            async.map(order, fixOldWithdraw, function(err, results) {
+            async.map(orders, fixOldWithdraw, function(err, results) {
                 callback(err);
             });
         }
