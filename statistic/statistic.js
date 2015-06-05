@@ -816,6 +816,7 @@ var getUserProfitData = function(callback) {
     });
 };
 
+/*
 function fixOldWithdraw(order, callback) {
     if (!order.otherInfo) {
         order.otherInfo = util.generateSerialID();
@@ -839,6 +840,7 @@ var fixOldWithdrawOrder = function(callback) {
         }
     });
 };
+*/
 
 var options = {};
 mongoose.connect(config.db, options);
@@ -994,7 +996,6 @@ db.once('open', function callback() {
             },
             */
 
-            /*
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
                     callback(err);
@@ -1035,13 +1036,14 @@ db.once('open', function callback() {
                     callback(err);
                 });
             }
-            */
 
+            /*
             function(callback) {
                 fixOldWithdrawOrder(function(err) {
                     callback(err);
                 });
             }
+            */
 
 /*
             function(callback) {
