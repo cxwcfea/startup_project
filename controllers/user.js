@@ -1669,7 +1669,7 @@ function getInvestOrders(req, res) {
 }
 
 function getUserInvestDetail(req, res) {
-    Order.find({$and:[{userMobile:req.user.mobile}, {dealType:11}, {status:2}]}, function(err, orders) {
+    Order.find({$and:[{userMobile:req.user.mobile}, {dealType:16}, {status:2}]}, function(err, orders) {
         if (err) {
             res.status(500);
             return res.send({error_msg:err.toString()});
