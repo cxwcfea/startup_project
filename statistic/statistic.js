@@ -816,6 +816,30 @@ var getUserProfitData = function(callback) {
     });
 };
 
+function fixOldWithdraw(order, callback) {
+    if (!order.otherInfo) {
+        order.otherInfo = util.generateSerialID();
+        order.save(function(err) {
+            callback(err);
+        });
+    } else {
+        callback(null);
+    }
+}
+
+var fixOldWithdrawOrder = function(callback) {
+    Order.find({$and:[{dealType:2}, {$or:[{status:0}, {status:2}]}]}, function(err, orders) {
+        if (err) {
+            callback(err);
+        } else {
+            console.log(orders.length);
+            async.map(order, fixOldWithdraw, function(err, results) {
+                callback(err);
+            });
+        }
+    });
+};
+
 var options = {};
 mongoose.connect(config.db, options);
 var db = mongoose.connection;
@@ -970,6 +994,7 @@ db.once('open', function callback() {
             },
             */
 
+            /*
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
                     callback(err);
@@ -1007,6 +1032,13 @@ db.once('open', function callback() {
             },
             function(callback) {
                 manualReturnFeeOrderData(startTime, endTime, function(err) {
+                    callback(err);
+                });
+            }
+            */
+
+            function(callback) {
+                fixOldWithdrawOrder(function(err) {
                     callback(err);
                 });
             }
