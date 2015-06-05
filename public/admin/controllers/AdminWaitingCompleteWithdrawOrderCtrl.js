@@ -176,4 +176,24 @@ angular.module('adminApp').controller('AdminWaitingCompleteWithdrawOrderCtrl', [
                 console.log(data);
             });
     };
+
+    vm.zhongxinPay = function(order) {
+        $http.post('/admin/api/handle_with_draw_order', order)
+            .success(function(data, status) {
+                gbNotifier.notify('成功');
+            })
+            .error(function(data, status) {
+                gbNotifier.error('失败');
+            });
+    };
+
+    vm.zhongxinCheck = function(order) {
+        $http.get('/admin/api/check_withdraw_order_status?trans_id=' + order.otherInfo)
+            .success(function(data, status) {
+                gbNotifier.notify('成功');
+            })
+            .error(function(data, status) {
+                gbNotifier.error('失败');
+            });
+    };
 }]);
