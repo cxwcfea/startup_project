@@ -1648,7 +1648,7 @@ function rechargeToInvest(req, res) {
 }
 
 function getInvestOrders(req, res) {
-    Order.find({$and:[{dealType:11}, {userID:req.user._id}, {status:2}]}, function(err, orders) {
+    Order.find({$and:[{dealType:16}, {userID:req.user._id}, {status:2}]}, function(err, orders) {
         if (err) {
             logger.warn('getInvestOrders error:' + err.toString());
             res.status(500);
