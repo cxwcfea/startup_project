@@ -15,6 +15,9 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
         vm.showRateDialog = false;
         if (vm.user.invest.enable === undefined || vm.user.invest.enable === null) {
             vm.editInvest = false;
+            // default value
+            vm.profit_rate = 15;
+            vm.period = 30;
         } else {
             vm.profit_rate = vm.user.invest.profitRate;
             vm.period = vm.user.invest.duration;
@@ -50,7 +53,7 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
                 return;
             }
             if (!vm.profit_rate) {
-                vm.errorMsg = '请输入期望收益率，0到18之间';
+                vm.errorMsg = '请输入期望收益率，1到20之间';
                 vm.inputError = true;
                 $timeout(function() {
                     vm.inputError = false;

@@ -26,11 +26,11 @@
         <ul class="zntz-total">
             <li>
                 共{{count}}位投资人累计投资
-                <em>{{total_invest}}</em>
+                <em>{{total_invest}}元</em>
             </li>
             <li>
                 帮投资人赚取
-                <em>{{total_profit}}</em>
+                <em>{{total_profit}}元</em>
             </li>
         </ul>
         <div class="zntz-roi">
@@ -42,7 +42,7 @@
             <ul class="zntz-conf-items">
                 <li>
                     <label for="">预期年化收益 <i class="icon" ng-click="vm.showRateDialog = true"></i></label>
-                    <input type="text" min="1" max="18" required autofocus name="profit-rate" ng-model="vm.profit_rate"><span class="per">%</span>
+                    <input type="number" min="1" max="20" required autofocus name="profit-rate" ng-model="vm.profit_rate"><span class="per">%</span>
                 </li>
                 <li>
                     <label for="">投标借款期限 <i class="icon" ng-click="vm.showPeriodDialog = true"></i></label>

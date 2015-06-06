@@ -50,10 +50,6 @@ module.exports = function(app) {
         });
     });
 
-    app.get('/complain', passportConf.isAuthenticated, function(req, res, next) {
-        res.render('complain');
-    });
-
     app.post('/complain', passportConf.isAuthenticated, users.submitComplain);
 
     app.get('/apply_detail/:id', passportConf.isAuthenticated, applies.getApplyDetail);
