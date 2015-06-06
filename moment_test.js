@@ -156,3 +156,4 @@ console.log(moment("2015-04-28").toDate());
 		}
 
 console.log(aaa.diff(bbb, 'days'));
+console.log(aaa.format('M月DD日'));
