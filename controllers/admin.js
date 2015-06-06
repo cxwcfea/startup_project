@@ -2064,6 +2064,53 @@ function reGenerateOrderPayID(req, res) {
     });
 }
 
+function compensateLossForUser(req, res) {
+    var userMobile = req.body.userMobile;
+    var uid = req.body.userID;
+    var amount = Number(req.body.order_amount);
+    var applySerialID = req.body.apply_serial_id;
+    var description = req.body.order_description;
+    if (!userMobile || !uid || !amount || !applySerialID) {
+        res.status(403);
+        return res.send({error_msg:'invalid data'});
+    }
+    var orderData = {
+        userID: uid,
+        userMobile: userMobile,
+        dealType: 15,
+        amount: amount,
+        status: 2,
+        description: description,
+        applySerialID: applySerialID,
+        payType: 7,
+        approvedBy: req.user.mobile,
+        approvedAt: Date.now(),
+    };
+    Order.create(orderData, function(err, order) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        User.findById(uid, function(err, user) {
+            if (err) {
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+            if (!user) {
+                res.status(403);
+                return res.send({error_msg:'user not found'});
+            }
+            util.orderFinished(user, order, 2, function(err) {
+                if (err) {
+                    res.status(500);
+                    return res.send({error_msg:err.toString()});
+                }
+                res.send({});
+            })
+        })
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -2223,6 +2270,8 @@ module.exports = {
         app.post('/admin/api/cancel_apply', passportConf.requiresRole('admin'), cancelPendingApply);
 
         app.get('/admin/api/regenerate_order_pay_id', passportConf.requiresRole('admin'), reGenerateOrderPayID);
+
+        app.post('/admin/api/user_compensateLoss', passportConf.requiresRole('admin'), compensateLossForUser);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

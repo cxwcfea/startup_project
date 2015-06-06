@@ -215,7 +215,7 @@
     }).filter("displayIncome", ['$filter', function ($filter) {
         return function (input, orderType) {
             var ret = input;
-            if (orderType == 2 || orderType == 9 || orderType == 10) {
+            if (orderType == 2 || orderType == 9 || orderType == 10 || orderType == 15) {
                 return '';
             }
             return $filter('currency')(ret, '', 2);
@@ -223,7 +223,7 @@
     }]).filter("displayOutcome", ['$filter', function ($filter) {
         return function (input, orderType) {
             var ret = '';
-            if (orderType == 2 || orderType == 9 || orderType == 10) {
+            if (orderType == 2 || orderType == 9 || orderType == 10 || orderType == 15) {
                 ret = $filter('currency')(input, '', 2);
             }
             return ret;
@@ -326,6 +326,8 @@
                     return '推广佣金';
                 case 14:
                     return '佣金兑换余额';
+                case 15:
+                    return '穿仓扣除';
                 default:
                     return '充值';
             }
