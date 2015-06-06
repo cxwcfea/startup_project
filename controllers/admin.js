@@ -1752,6 +1752,7 @@ function rejectWithdrawOrder(req, res) {
 function autoHandleWithdrawOrder2(req, res) {
     ecitic.requestPay(req.body.otherInfo, req.body.cardInfo.bank, req.body.cardInfo.cardID, req.body.cardInfo.userName, req.body.amount.toFixed(2), function(err) {
         if (err) {
+            logger.error('autoHandleWithdrawOrder2 error:' + err.toString());
             res.status(500);
             res.send({error_msg:err.toString()});
         } else {
