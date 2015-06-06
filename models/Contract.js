@@ -5,6 +5,7 @@ var contractSchema = mongoose.Schema({
     userMobile: {type:String, required:'{PATH} is required!'},  // borrower mobile
     createdAt: {type:Date, default: Date.now},
     amount: {type:Number, required:'{PATH} is required!'},
+    platformAmount: {type:Number, default: 0},
     status: {type:Number, default: 1}, // 0 reserve, 1 processing, 2 finished
     period: {type:Number, required:'{PATH} is required!'},
     deposit: {type:Number, required:'{PATH} is required!'},    // the deposit for the related apply

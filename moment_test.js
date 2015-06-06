@@ -147,10 +147,12 @@ console.log(moment("2015-04-28").toDate());
 		console.log(endTime.format('YYYYMMDD'));
 
 		var aaa = moment("2015-04-30");
-		var bbb = moment("2015-04-29");
+		var bbb = moment("2015-05-19");
 
 		if (aaa > bbb) {
 			console.log('aaa > bbb');
 		} else {
 			console.log('aaa < bbb');
 		}
+
+console.log(aaa.diff(bbb, 'days'));

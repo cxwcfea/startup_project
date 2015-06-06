@@ -66,7 +66,7 @@ angular.module('mobileApp').controller('MobileUserInvestCenterCtrl', ['$scope', 
             .success(function(data, status) {
                 vm.transSuccess = true;
                 vm.user.finance.balance += vm.trans_amount;
-                vm.user.availableInvestAmount -= vm.trans_amount;
+                vm.user.invest.availableAmount -= vm.trans_amount;
             })
             .error(function(data, status) {
                 vm.errorMsg = data.error_msg;

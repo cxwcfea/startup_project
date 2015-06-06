@@ -80,7 +80,7 @@
         <div class="ui-dialog-bd">
             <div>
                 <h4>天天投</h4>
-                <div class="zntz-tips">天天投已经开启，只要余额大于100元，系统就会自动帮您投资让您收益最大化。</div>
+                <div class="zntz-tips">天天投已经开启，您将余额转入天天投，系统h会自动帮您投资让您收益最大化。</div>
             </div>
         </div>
         <div class="ui-dialog-ft ui-btn-group">
@@ -106,11 +106,11 @@
 <div ng-show="vm.editInvest">
     <div class="zntz-box">
         <div class="zntz-txt">
-            <span ng-show="vm.user.invest.enable">您已开启天天投，当前可投资金为<em style="color: #a40000;">\{{vm.user.finance.balance > 100 ? vm.user.finance.balance : 0 | currency:'':2}}</em>元</span>
+            <span ng-show="vm.user.invest.enable">您已开启天天投，转入资金即可自动投标高收益项目</span>
             <span ng-hide="vm.user.invest.enable">您已关闭天天投，无法获取收益</span>
         </div>
         <div class="zntz-conf">
-            <a href="/mobile/#/recharge" class="recharge-btn" ng-show="vm.user.invest.enable">增加本金</a>
+            <a href="" class="recharge-btn" ng-show="vm.user.invest.enable" ng-click="vm.rechargeToInvestAccount()">转入资金</a>
             <ul class="zntz-conf-items">
                 <li>
                     <label class="fl">\{{vm.user.invest.enable ? '天天投已开启' : '天天投已关闭'}}</label>

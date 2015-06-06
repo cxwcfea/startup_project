@@ -43,7 +43,7 @@ angular.module('mobileApp').controller('MobileUserOrdersCtrl', ['$scope', '$wind
                         vm.ongoingAmount += elem.amount;
                         vm.ongoingProfit += elem.investProfit;
                     });
-                    vm.total_capital = vm.user.finance.deposit + vm.user.finance.freeze_capital + vm.ongoingAmount + vm.user.availableInvestAmount + vm.user.finance.balance;
+                    vm.total_capital = vm.user.finance.deposit + vm.user.finance.freeze_capital + vm.ongoingAmount + vm.user.invest.availableAmount + vm.user.finance.balance;
                 })
                 .error(function(data, status) {
                     console.log(data.error_msg);
@@ -52,7 +52,7 @@ angular.module('mobileApp').controller('MobileUserOrdersCtrl', ['$scope', '$wind
                 });
         } else {
             vm.ongoingAmount = $scope.data.ongoingAmount;
-            vm.total_capital = vm.user.finance.deposit + vm.user.finance.freeze_capital + vm.ongoingAmount + vm.user.availableInvestAmount + vm.user.finance.balance;
+            vm.total_capital = vm.user.finance.deposit + vm.user.finance.freeze_capital + vm.ongoingAmount + vm.user.invest.availableAmount + vm.user.finance.balance;
         }
         $http.get('/api/mobile/user_orders')
             .success(function(data, status) {

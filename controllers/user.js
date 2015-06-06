@@ -1583,35 +1583,23 @@ function getUserInvestInfo(req, res) {
     });
 }
 
-function InvestToBalance(req, res) {
+function investToBalance(req, res) {
     var amount = Number(req.body.amount);
     if (!amount) {
         res.status(400);
         return res.send({error_msg:'无效的金额'});
     }
-    Investor.update({$and:[{userID:req.user._id}, {amount:{$gte:amount}}]}, {$inc:{amount:-amount}}, function(err, numberAffected, raw) {
+    User.update({_id:req.user._id}, {$inc: {'finance.balance':amount, 'invest.availableAmount':-amount}}, function(err, numberAffected, raw) {
         if (err) {
-            logger.warn('InvestToBalance error:' + err.toString());
+            logger.warn('investToBalance error:' + err.toString());
             res.status(500);
             return res.send({error_msg:err.toString()});
         }
         if (!numberAffected) {
-            logger.warn('InvestToBalance error when update Investor');
-            res.status(403);
-            return res.send({error_msg:'金额不足'});
+            res.status(500);
+            return res.send({error_msg:'can not update User'});
         }
-        User.update({_id:req.user._id}, {$inc: {'finance.balance':amount}}, function(err, numberAffected, raw) {
-            if (err) {
-                logger.warn('InvestToBalance error:' + err.toString());
-                res.status(500);
-                return res.send({error_msg:err.toString()});
-            }
-            if (!numberAffected) {
-                res.status(500);
-                return res.send({error_msg:'can not update User'});
-            }
-            res.send({});
-        });
+        res.send({});
     });
 }
 
@@ -1621,7 +1609,7 @@ function rechargeToInvest(req, res) {
         res.status(400);
         return res.send({error_msg:'无效的金额'});
     }
-    User.update({$and:[{_id:req.user._id}, {'finance.balance':{$gte:amount}}]}, {$inc: {'finance.balance':-amount}}, function(err, numberAffected, raw) {
+    User.update({$and:[{_id:req.user._id}, {'finance.balance':{$gte:amount}}]}, {$inc: {'finance.balance':-amount, 'invest.availableAmount':amount}}, function(err, numberAffected, raw) {
         if (err) {
             logger.warn('rechargeToInvest error:' + err.toString());
             res.status(500);
@@ -1631,19 +1619,7 @@ function rechargeToInvest(req, res) {
             res.status(403);
             return res.send({error_msg:'余额不足'});
         }
-        Investor.update({userID:req.user._id}, {$inc:{amount:amount}}, function(err, numberAffected, raw) {
-            if (err) {
-                logger.warn('rechargeToInvest error:' + err.toString());
-                res.status(500);
-                return res.send({error_msg:err.toString()});
-            }
-            if (!numberAffected) {
-                logger.warn('rechargeToInvest error when update Investor');
-                res.status(500);
-                return res.send({error_msg:'can not update Investor'});
-            }
-            res.send({});
-        });
+        res.send({});
     });
 }
 
@@ -1764,7 +1740,7 @@ module.exports.registerRoutes = function(app, passportConf) {
 
     app.post('/api/user/invest_recharge', passportConf.isAuthenticated, rechargeToInvest);
 
-    app.post('/api/user/invest_to_balance', passportConf.isAuthenticated, InvestToBalance);
+    app.post('/api/user/invest_to_balance', passportConf.isAuthenticated, investToBalance);
 
     app.get('/api/user/invest_orders', passportConf.isAuthenticated, getInvestOrders);
 

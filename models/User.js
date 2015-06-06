@@ -26,13 +26,15 @@ var userSchema = new mongoose.Schema({
         profit: { type:Number, default: 0 },           //总收益
         history_capital: { type: Number, default: 0 },  // 累计配资资产
         history_deposit: { type: Number, default: 0 },  // 累计支付保证金
-        history_invest_amount: { type: Number, default: 0 }, // 累计投资金额
-        history_invest_profit: { type: Number, default: 0 }  // 累计投资收益
 	},
 
     invest: {
         profitRate: Number,
         duration: Number,
+        availableAmount: Number,
+        occupiedAmount: Number,
+        history_invest_amount: { type: Number, default: 0 },  // 累计投资金额
+        history_invest_profit: { type: Number, default: 0 },  // 累计投资收益
         enable: Boolean
     },
 
