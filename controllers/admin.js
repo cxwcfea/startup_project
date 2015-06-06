@@ -1750,13 +1750,32 @@ function rejectWithdrawOrder(req, res) {
 }
 
 function autoHandleWithdrawOrder2(req, res) {
-    ecitic.requestPay(req.body.otherInfo, req.body.cardInfo.bank, req.body.cardInfo.cardID, req.body.cardInfo.userName, req.body.amount.toFixed(2), function(err) {
+    ecitic.requestPay(req.body.otherInfo, req.body.cardInfo.bank, req.body.cardInfo.cardID, req.body.cardInfo.userName, req.body.amount.toFixed(2), function(err, transID) {
         if (err) {
             logger.error('autoHandleWithdrawOrder2 error:' + err.toString());
             res.status(500);
             res.send({error_msg:err.toString()});
         } else {
-            res.send({});
+            Order.findById(req.body._id, function(err, order) {
+                if (err) {
+                    logger.warn('autoHandleWithdrawOrder2 error when update order:' + err.toString());
+                    res.send({});
+                } else if (!order) {
+                    logger.warn('autoHandleWithdrawOrder2 error order not found when update order');
+                    res.send({});
+                } else if (!transID) {
+                    logger.warn('autoHandleWithdrawOrder2 error no transID returned');
+                    res.send({});
+                } else {
+                    order.bankTransID = transID;
+                    order.save(function(err) {
+                        if (err) {
+                            logger.warn('autoHandleWithdrawOrder2 error when update order:' + err.toString());
+                        }
+                        res.send({});
+                    });
+                }
+            });
         }
     });
 }
