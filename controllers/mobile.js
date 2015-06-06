@@ -376,6 +376,7 @@ function getInvestPage(req, res, next) {
                 total_profit: 0
             }];
         }
+        console.log('getInvestPage ' + statistic);
         var rate = 0;
         if (statistic[0].count > 0) {
             rate = statistic[0].total_rate / statistic[0].count;
