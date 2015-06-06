@@ -186,7 +186,7 @@ angular.module('adminApp').controller('AdminWaitingCompleteWithdrawOrderCtrl', [
                 gbNotifier.notify('成功');
             })
             .error(function(data, status) {
-                gbNotifier.error('失败');
+                gbNotifier.error('失败 ' + data.error_msg);
             });
     };
 
