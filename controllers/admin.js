@@ -17,59 +17,11 @@ var User = require('../models/User'),
     config = require('../config/config')[env],
     needle = require('needle'),
     weixin = require('../lib/weixin'),
+    ecitic = require("../lib/ecitic"),
     sms = require('../lib/sms');
 
 function getStatisticsPage(req, res, next) {
-    var data = {};
     async.waterfall([
-        /*
-        function(callback) {
-            util.getTodayActiveApplyData(function(err, dataObj) {
-                if (!err) {
-                    data.active_apply_num = dataObj.num;
-                    data.active_apply_amount = dataObj.amount.toFixed(2);
-                    data.active_deposit_amount = dataObj.deposit.toFixed(2);
-                    data.added_fee = dataObj.total_fee.toFixed(2);
-                }
-                callback(err, data);
-            });
-        },
-        function(data, callback) {
-            util.getTodayActiveFreeApplyData(function(err, dataObj) {
-                if (!err) {
-                    data.current_free_apply_amount = dataObj.amount.toFixed(2);
-                    data.current_free_apply_num = dataObj.num;
-                }
-                callback(err, data);
-            });
-        },
-        function(data, callback) {
-            util.getTodayAddedFreeApplyData(function(err, dataObj) {
-                if (!err) {
-                    data.added_free_apply_amount = dataObj.amount.toFixed(2);
-                    data.added_free_apply_num = dataObj.num;
-                }
-                callback(err, data);
-            });
-        },
-        function(data, callback) {
-            util.getTodayAddedPayApplyData(function(err, dataObj) {
-                if (!err) {
-                    data.added_pay_apply_amount = dataObj.amount.toFixed(2);
-                    data.added_pay_apply_num = dataObj.num;
-                }
-                callback(err, data);
-            });
-        },
-        function(data, callback) {
-            util.getTodayAddedDeposit(function(err, dataObj) {
-                if (!err) {
-                    data.added_deposit = dataObj.deposit.toFixed(2);
-                }
-                callback(err, data);
-            });
-        },
-        */
         function(callback) {
             util.getApplyData(function(err, dataObj) {
                 callback(err, dataObj);
@@ -385,6 +337,11 @@ function createOrder(req, res) {
         };
         if (req.body.order_type == 1) {
             orderData.payType = 4; // 银行转账
+        } else if (req.body.order_type == 8) {
+            orderData.payType = 7;
+        } else if (req.body.order_type == 15 && req.body.pay_type == 8) {
+            orderData.payType = 8;
+            orderData.status = 5;
         }
         Order.create(orderData, function(err, order) {
             if (err) {
@@ -541,16 +498,23 @@ function homsAssignAccount(req, res) {
             });
         },
         function (apply, callback) {
-            apply.status = 2;
-            apply.account = homas.account;
-            apply.password = homas.password;
-            var startDay = util.getStartDay();
-            apply.startTime = startDay.toDate();
-            apply.endTime = util.getEndDay(startDay, apply.period, apply.type).toDate();
-            apply.startAt = Date.now();
-            apply.save(function (err) {
-                callback(err, apply);
-            });
+            if (apply.status !== 4) {
+                callback('apply not in pending state');
+            } else {
+                apply.status = 2;
+                apply.account = homas.account;
+                apply.password = homas.password;
+                if (req.body.accountType) {
+                    apply.accountType = req.body.accountType;
+                }
+                var startDay = util.getStartDay();
+                apply.startTime = startDay.toDate();
+                apply.endTime = util.getEndDay(startDay, apply.period, apply.type).toDate();
+                apply.startAt = Date.now();
+                apply.save(function (err) {
+                    callback(err, apply);
+                });
+            }
         }
     ], function(err, apply) {
         if (err) {
@@ -623,6 +587,18 @@ function fetchGetProfitOrders(req, res) {
 function fetchWithdrawOrders(req, res) {
     logger.debug('fetchWithdrawOrders');
     Order.find({$and: [{ dealType: 2 }, { status: 0 }]}, function(err, orders) {
+        if (err) {
+            logger.warn(err.toString());
+            res.status(401);
+            return res.send({success:false, reason:err.toString()});
+        }
+        res.send(orders);
+    });
+}
+
+function fetchFreezeOrderList(req, res) {
+    logger.debug('fetchFreezeOrderList');
+    Order.find({$and: [{ dealType: 2 }, { status: 3 }]}, function(err, orders) {
         if (err) {
             logger.warn(err.toString());
             res.status(401);
@@ -1283,6 +1259,12 @@ function autoApproveApply(req, res) {
     var account = req.query.account;
     var password = req.query.password;
 
+    if (!account || !password) {
+        logger.warn('account or password can not be empty: serialID ' + serialID);
+        res.status(401);
+        return res.send({"error_msg":'account or password can not be empty'});
+    }
+
     async.waterfall([
         function (callback) {
             Apply.findOne({serialID:serialID}, function(err, apply) {
@@ -1290,16 +1272,20 @@ function autoApproveApply(req, res) {
             });
         },
         function (apply, callback) {
-            apply.status = 2;
-            apply.account = account;
-            apply.password = password;
-            var startDay = util.getStartDay();
-            apply.startTime = startDay.toDate();
-            apply.endTime = util.getEndDay(startDay, apply.period, apply.type).toDate();
-            apply.startAt = Date.now();
-            apply.save(function (err) {
-                callback(err, apply);
-            });
+            if (apply.status !== 4) {
+                callback('apply not in pending state');
+            } else {
+                apply.status = 2;
+                apply.account = account;
+                apply.password = password;
+                var startDay = util.getStartDay();
+                apply.startTime = startDay.toDate();
+                apply.endTime = util.getEndDay(startDay, apply.period, apply.type).toDate();
+                apply.startAt = Date.now();
+                apply.save(function (err) {
+                    callback(err, apply);
+                });
+            }
         }
     ], function(err, apply) {
         if (err) {
@@ -1763,6 +1749,68 @@ function rejectWithdrawOrder(req, res) {
     });
 }
 
+function autoHandleWithdrawOrder2(req, res) {
+    ecitic.requestPay(req.body.otherInfo, req.body.cardInfo.bank, req.body.cardInfo.cardID, req.body.cardInfo.userName, req.body.amount.toFixed(2), function(err) {
+        if (err) {
+            res.status(500);
+            res.send({error_msg:err.toString()});
+        } else {
+            res.send({});
+        }
+    });
+}
+
+function checkWithdrawOrderStatus(req, res) {
+    var transID = req.query.trans_id;
+    ecitic.checkOrderStatus(transID, function(err) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+
+        async.waterfall([
+            function(callback) {
+                Order.findOne({otherInfo:transID}, function(err, order) {
+                    if (!order) {
+                        err = 'order not found';
+                    } else {
+                        if (order.status === 1) {
+                            err = 'order already approved';
+                        }
+                    }
+                    callback(err, order);
+                });
+            },
+            function(order, callback) {
+                Order.update({otherInfo:transID}, {status: 1}, function(err, numberAffected, raw) {
+                    if (numberAffected == 0) {
+                        err = 'nothing to update when update order';
+                    }
+                    callback(err, order);
+                });
+            },
+            function(order, callback) {
+                User.update({_id:order.userID}, {$inc: {'finance.freeze_capital':-order.amount}}, function(err, numberAffected, raw) {
+                    if (numberAffected == 0) {
+                        err = 'nothing to update when update user';
+                    }
+                    callback(err, order);
+                });
+            }
+        ], function(err, order) {
+            if (err) {
+                logger.error('zhongxinWithdrawCheck error when order success for order ' + order._id + ' :' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            } else {
+                logger.info('zhongxinWithdrawCheck success for order ' + order._id);
+                util.sendSMS_7(order.userMobile, order.amount);
+                res.send({});
+            }
+        });
+    })
+}
+
 function autoHandleWithdrawOrder(req, res) {
     //console.log(req.query);
     var md5key = 'K1JETRBFGCESTMNRUGKGW0KQNCITNWjehvpq';
@@ -1869,6 +1917,198 @@ function getDailyData(req, res) {
             ret.period_map = req.session.periodMap;
             res.send(ret);
         });
+}
+
+function fetchUserComplainList(req, res) {
+    Note.find({userMobile:'00000000001'}, function(err, notes) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send(notes);
+    });
+}
+
+function deleteUserComplain(req, res) {
+    Note.findById(req.body.id).remove(function(err, note) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send({});
+    });
+}
+
+function changeUserRefer(req, res) {
+    var newRefer = req.query.refer;
+    var mobile = req.query.mobile;
+    User.update({mobile:mobile}, {$set:{refer:newRefer}}, function(err, numberAffected, raw) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send({});
+    });
+}
+
+function cancelPendingApply(req, res) {
+    var serialID = req.body.applySerialID;
+    if (!serialID) {
+        res.status(403);
+        return res.send({error_msg:'no serialID'});
+    }
+    var error_code = 500;
+    async.waterfall([
+        function (callback) {
+            Apply.findOne({serialID:serialID}, function(err, apply) {
+                if (!err && !apply) {
+                    error_code = 400;
+                    err = 'apply not found';
+                }
+                callback(err, apply);
+            });
+        },
+        function (apply, callback) {
+            apply.status = 1;
+            apply.save(function(err) {
+                callback(err, apply);
+            });
+        },
+        function (apply, callback) {
+            var orderData = {
+                userID: apply.userID,
+                userMobile: apply.userMobile,
+                dealType: 5,
+                amount: apply.deposit,
+                status: 2,
+                description: '保证金返还',
+                applySerialID: apply.serialID
+            };
+            Order.create(orderData, function(err, order) {
+                if (!err && !order) {
+                    err = 'can not create deposit return order';
+                }
+                callback(err, order, apply);
+            });
+        },
+        function (depositOrder, apply, callback) {
+            var orderData = {
+                userID: apply.userID,
+                userMobile: apply.userMobile,
+                dealType: 8,
+                amount: util.getServiceFee(apply),
+                status: 2,
+                description: '管理费返还 ' + apply.serialID,
+                applySerialID: apply.serialID
+            };
+            Order.create(orderData, function(err, order) {
+                if (!err && !order) {
+                    err = 'can not create service fee return order';
+                }
+                callback(err, order, depositOrder, apply);
+            });
+        },
+        function (feeOrder, depositOrder, apply, callback) {
+            User.findOne({mobile:apply.userMobile}, function(err, user) {
+                if (!err && !user) {
+                    err = 'user not found';
+                }
+                callback(err, user, feeOrder, depositOrder, apply);
+            });
+        },
+        function (user, feeOrder, depositOrder, apply, callback) {
+            user.finance.freeze_capital -= feeOrder.amount;
+            user.finance.prepaid_service_fee -= feeOrder.amount;
+            util.orderFinished(user, feeOrder, 1, function(err) {
+                callback(err, user, depositOrder, apply);
+            });
+        },
+        function (user, depositOrder, apply, callback) {
+            user.finance.deposit -= depositOrder.amount;
+            user.finance.total_capital -= apply.amount;
+            user.finance.history_deposit -= depositOrder.amount;
+            user.finance.history_capital -= apply.amount;
+            util.orderFinished(user, depositOrder, 1, function(err) {
+                callback(err);
+            });
+        }
+    ], function (err) {
+        if (err) {
+            logger.error('cancelPendingApply error for apply:' + serialID + ' ' + err.toString());
+            res.status(error_code);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send({});
+    });
+}
+
+function reGenerateOrderPayID(req, res) {
+    var order_id = req.query.id;
+    Order.findOne({_id:order_id}, function(err, order) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        if (!order) {
+            res.status(400);
+            return res.send({error_msg:'input invalid'});
+        }
+        order.otherInfo = util.generateSerialID();
+        order.save(function(err) {
+            if (err) {
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+            res.send({newID:order.otherInfo});
+        });
+    });
+}
+
+function compensateLossForUser(req, res) {
+    var userMobile = req.body.userMobile;
+    var uid = req.body.userID;
+    var amount = Number(req.body.order_amount);
+    var applySerialID = req.body.apply_serial_id;
+    var description = req.body.order_description;
+    if (!userMobile || !uid || !amount || !applySerialID) {
+        res.status(403);
+        return res.send({error_msg:'invalid data'});
+    }
+    var orderData = {
+        userID: uid,
+        userMobile: userMobile,
+        dealType: 15,
+        amount: amount,
+        status: 2,
+        description: description,
+        applySerialID: applySerialID,
+        payType: 7,
+        approvedBy: req.user.mobile,
+        approvedAt: Date.now(),
+    };
+    Order.create(orderData, function(err, order) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        User.findById(uid, function(err, user) {
+            if (err) {
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+            if (!user) {
+                res.status(403);
+                return res.send({error_msg:'user not found'});
+            }
+            util.orderFinished(user, order, 2, function(err) {
+                if (err) {
+                    res.status(500);
+                    return res.send({error_msg:err.toString()});
+                }
+                res.send({});
+            })
+        })
+    });
 }
 
 module.exports = {
@@ -2005,7 +2245,7 @@ module.exports = {
 
         app.post('/api/auto_postpone_apply', autoPostponeApply);
 
-        app.post('/admin/api/handle_with_draw_order', passportConf.requiresRole('admin'), autoHandleWithdrawOrder);
+        app.post('/admin/api/handle_with_draw_order', passportConf.requiresRole('admin'), autoHandleWithdrawOrder2);
 
         app.get('/admin/statistics', passportConf.requiresRole('admin'), getStatisticsPage);
 
@@ -2016,6 +2256,22 @@ module.exports = {
         app.get('/admin/api/user_manager', passportConf.requiresRole('admin'), getManagerOfUser);
 
         app.get('/admin/api/daily_data', passportConf.requiresRole('admin'), getDailyData);
+
+        app.get('/admin/api/user_complain_list', passportConf.requiresRole('admin'), fetchUserComplainList);
+
+        app.post('/admin/api/delete_user_complain', passportConf.requiresRole('admin'), deleteUserComplain);
+
+        app.get('/admin/api/orders/freeze_withdraw_order', passportConf.requiresRole('admin'), fetchFreezeOrderList);
+
+        app.get('/admin/api/user/change_user_refer', passportConf.requiresRole('admin'), changeUserRefer);
+
+        app.get('/admin/api/check_withdraw_order_status', passportConf.requiresRole('admin'), checkWithdrawOrderStatus);
+
+        app.post('/admin/api/cancel_apply', passportConf.requiresRole('admin'), cancelPendingApply);
+
+        app.get('/admin/api/regenerate_order_pay_id', passportConf.requiresRole('admin'), reGenerateOrderPayID);
+
+        app.post('/admin/api/user_compensateLoss', passportConf.requiresRole('admin'), compensateLossForUser);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

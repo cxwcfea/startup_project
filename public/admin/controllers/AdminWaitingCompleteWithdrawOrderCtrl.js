@@ -32,7 +32,6 @@ angular.module('adminApp').controller('AdminWaitingCompleteWithdrawOrderCtrl', [
     };
 
     vm.startToPay = function() {
-        console.log('startToPay');
         while (order_list.length) {
             var order = order_list.pop();
             /*
@@ -62,6 +61,23 @@ angular.module('adminApp').controller('AdminWaitingCompleteWithdrawOrderCtrl', [
                     gbNotifier.error('失败');
                 });
         }
+        currentOrders = order_list;
+        pageReset();
+    };
+
+    vm.startToCheck = function() {
+        while (order_list.length) {
+            var order = order_list.pop();
+            $http.get('/admin/api/check_withdraw_order_status?trans_id=' + order.otherInfo)
+                .success(function(data, status) {
+                    gbNotifier.notify('成功');
+                })
+                .error(function(data, status) {
+                    gbNotifier.error('失败');
+                });
+        }
+        currentOrders = order_list;
+        pageReset();
     };
 
     vm.removeOrder = function(order) {
@@ -161,6 +177,37 @@ angular.module('adminApp').controller('AdminWaitingCompleteWithdrawOrderCtrl', [
             })
             .error(function(data, status) {
                 console.log(data);
+            });
+    };
+
+    vm.zhongxinPay = function(order) {
+        $http.post('/admin/api/handle_with_draw_order', order)
+            .success(function(data, status) {
+                gbNotifier.notify('成功');
+            })
+            .error(function(data, status) {
+                gbNotifier.error('失败');
+            });
+    };
+
+    vm.zhongxinCheck = function(order) {
+        $http.get('/admin/api/check_withdraw_order_status?trans_id=' + order.otherInfo)
+            .success(function(data, status) {
+                gbNotifier.notify('成功');
+            })
+            .error(function(data, status) {
+                gbNotifier.error('失败');
+            });
+    };
+
+    vm.reGenerateID = function(order) {
+        $http.get('/admin/api/regenerate_order_pay_id?id=' + order._id)
+            .success(function(data, status) {
+                gbNotifier.notify('成功');
+                order.otherInfo = data.newID;
+            })
+            .error(function(data, status) {
+                gbNotifier.error('失败');
             });
     };
 }]);

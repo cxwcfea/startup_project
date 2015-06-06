@@ -777,7 +777,8 @@
 .user-opts .icon-ttn,
 .user-opts .icon-recharge,
 .user-opts .icon-tz-info,
-.user-opts .icon-zc-info {
+.user-opts .icon-zc-info,
+.user-opts .icon-prom {
     float: left;
     width: 25px;
     height: 25px;
@@ -795,6 +796,9 @@
 }
 .user-opts .icon-zc-info {
     background-image: url(../images/free.jpg);
+}
+.user-opts .icon-prom {
+    background-image: url(../images/icon-prom.png);
 }
 
 .user-tab ul {
@@ -2208,3 +2212,156 @@
 .withdraw-box .addcard-agreement a {
     color: #000;
 }
+
+/* =我的账户>推广赚钱 user_promote.html
+-------------------------------------------------------------- */
+.user-prom .share {
+    padding: 15px 20px;
+    color: #333;
+    background-color: #fff;
+}
+.user-prom .share .bdimgshare-lbl {
+    padding-right: 5px;
+    cursor: default;
+    float: left;
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 700;
+}
+.user-prom .intro h5,
+.user-prom .share h5 {
+    padding-bottom: 8px;
+    font-size: 14px;
+}
+.user-prom .intro {
+    padding: 15px 0;
+}
+.user-prom .intro li {
+    margin-bottom: 20px;
+}
+.user-prom .intro h5 {
+    padding: 0 20px 8px;
+}
+.user-prom .intro .center {
+    text-align: center;
+    padding: 10px 0 0;
+}
+.user-prom .intro p {
+    padding: 0 20px;
+    font-size: 10px;
+}
+
+.user-prom .records table {
+    width: 100%;
+}
+.user-prom .records th {
+    height: 30px;
+    line-height: 30px;
+    color: #999;
+    padding-left: 12px;
+    color: #999;
+    font-size: 10px;
+    border-bottom: 1px dotted #CBCBCB;
+    border-top: 1px dotted #CBCBCB;
+}
+.user-prom .records td {
+    padding-left: 12px;
+    height: 40px;
+    border-bottom: 1px dotted #D4D4D4;
+    color: #666;
+}
+.user-prom .records .tips {
+    padding: 20px 0;
+    color: #666;
+    text-align: center;
+    font-size: 10px;
+}
+.user-prom .money {
+    padding: 20px;
+    color: #999;
+    background-color: #fff;
+}
+.user-prom .money .now {
+    float: left;
+    width: 50%;
+}
+.user-prom .money .now em {
+    display: block;
+    font-size: 20px;
+    color: #a40000;
+}
+.user-prom .money .past {
+    overflow: hidden;
+    padding: 0 10px;
+}
+.user-prom .money .past p {
+    font-size: 10px;
+}
+.user-prom .money .past em {
+    font-size: 12px;
+    padding: 0 6px;
+}
+.user-prom .money .past .exchange-btn {
+    width: 90%;
+    display: block;
+    height: 32px;
+    line-height: 32px;
+    font-size: 14px;
+    color: #E0322D;
+    border-radius: 3px;
+    text-align: center;
+    margin-bottom: 6px;
+    border: 1px solid #E0322D;
+}
+.user-prom .asset {
+    margin-bottom: 15px;
+    padding: 20px 20px 0;
+    background-color: #eee;
+    color:#999;
+    font-size: 10px;
+    overflow: hidden;
+}
+.user-prom .asset li {
+    float: left;
+    width: 49%;
+    margin: 0 0 20px;
+    border-right: 1px solid #dcdcdc;
+}
+.user-prom .asset li:nth-of-type(2),
+.user-prom .asset li:last-of-type {
+    border-right: 0;
+    text-indent: 20px;
+}
+.user-prom .asset em {
+    display: block;
+    color: #666;
+    font-size: 16px;
+}
+.exchange-suc {
+    text-align: center;
+    font-size: 14px;
+    padding: 10px 0 30px;
+}
+.exchange-num .tips {
+    padding: 6px 0;
+    font-size: 12px;
+}
+.exchange-num .ipt {
+    text-align: right;
+    padding: 4px 0;
+    margin: 0 0 10px;
+    border: 1px solid #b5b5b5;
+    background-color: #fff;
+}
+.exchange-num .ipt input {
+    border: 0;
+    width: 100%;
+    text-indent: 10px;
+}
+.exchange-num .ipt span {
+    position: relative;
+    float: right;
+    margin-top: -24px;
+    padding-right: 10px;
+}
+

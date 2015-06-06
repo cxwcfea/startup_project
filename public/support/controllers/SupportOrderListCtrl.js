@@ -134,6 +134,10 @@ angular.module('supportApp').controller('SupportOrderListCtrl', ['$scope', '$loc
             });
         }
     };
+
+    vm.showDetail = function(order) {
+        alert(order.description);
+    };
 }]);
 
 angular.module('supportApp').controller('WithdrawModalCtrl', ['$scope', '$modalInstance', 'order', 'sms_macro', function ($scope, $modalInstance, order, sms_macro) {

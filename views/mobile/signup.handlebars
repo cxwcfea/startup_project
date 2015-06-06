@@ -21,6 +21,10 @@
         <div class="form-item">
             <input type="text" placeholder="输入验证码,不区分大小写" name="img_code" id="img-pwd" minlength="6" maxlength="6" required ng-model="vm.img_code">
         </div>
+        推荐码（如无推荐人，可不填）：
+        <div class="form-item">
+            <input type="text" placeholder="输入推荐码，如无推荐人，可不填" name="mgm_code" id="mgm-code" minlength="5" maxlength="20" value="{{mgm_code}}">
+        </div>
         <p>我已阅读并同意<a href="/mobile/user_agreement.html">牛金网用户协议</a></p>
         <button type="submit" class="submit-btn" ng-click="vm.signup()">下一步</button>
     </form>

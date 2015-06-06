@@ -131,4 +131,85 @@ angular.module('adminApp').controller('AdminUserCtrl', ['$scope', '$http', '$mod
                 gbNotifier.error('更新失败! ' + data.error_msg);
             });
     };
+
+    vm.changeRefer = function() {
+        var modalInstance = $modal.open({
+            templateUrl: 'views/changeReferModal.html',
+            controller: 'UserChangeReferModalCtrl',
+            //size: size,
+            resolve: {}
+        });
+
+        modalInstance.result.then(function (result) {
+            if (!result) {
+                gbNotifier.error('必须输入推荐码！');
+            } else {
+                $http.get('/admin/api/user/change_user_refer?mobile=' + vm.user.mobile + '&refer=' + result)
+                    .success(function(data, status) {
+                        gbNotifier.notify('修改成功！');
+                        vm.user.refer = result;
+                    })
+                    .error(function(data, status) {
+                        gbNotifier.error('修改失败:' + data.error_msg);
+                    });
+            }
+        }, function () {
+        });
+    };
+
+    vm.compensateLoss = function() {
+        var modalInstance = $modal.open({
+            templateUrl: 'views/compensateLossModal.html',
+            controller: 'UserCompensateLossModalCtrl',
+            //size: size,
+            resolve: {
+                user: function () {
+                    return vm.user;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (result) {
+            if (!result.order_amount || result.order_amount < 0) {
+                gbNotifier.error('请输入有效的金额！');
+            } else if (!result.apply_serial_id) {
+                gbNotifier.error('请输入配资单号！');
+            } else {
+                result.userMobile = vm.user.mobile;
+                result.userID = vm.user._id;
+                $http.post('/admin/api/user_compensateLoss', result)
+                    .success(function(data, status) {
+                        gbNotifier.notify('追回成功！');
+                        vm.user.finance.balance -= result.order_amount;
+                    })
+                    .error(function(data, status) {
+                        gbNotifier.error('追回失败:' + data.error_msg);
+                    });
+            }
+        }, function () {
+        });
+    };
+}]);
+
+angular.module('adminApp').controller('UserChangeReferModalCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+    $scope.ok = function () {
+        $modalInstance.close($scope.refer);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+}]);
+
+angular.module('adminApp').controller('UserCompensateLossModalCtrl', ['$scope', '$modalInstance', 'user', function ($scope, $modalInstance, user) {
+    $scope.data = {};
+    $scope.userMobile = user.mobile;
+
+    $scope.ok = function () {
+        $modalInstance.close($scope.data);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
 }]);

@@ -6,7 +6,8 @@
     <div class="am-u-sm-12 am-u-md-3">
         <div class="am-input-group am-input-group-sm">
           <span class="am-input-group-btn">
-            <button class="am-btn am-btn-default" type="button" ng-click="vm.startToPay()">开始支付</button>
+            <button class="am-btn am-btn-danger" type="button" ng-click="vm.startToPay()">开始支付</button>
+            <button class="am-btn am-btn-success" type="button" ng-click="vm.startToCheck()">开始检查</button>
           </span>
         </div>
     </div>
@@ -35,6 +36,9 @@
                                 <button class="am-btn am-btn-default am-btn-xs am-text-primary" ng-click="vm.handleOrder(order)"><span class="am-icon-pencil-square-o"></span> 管理</button>
                                 <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="vm.removeOrder(order)"><span class="am-icon-remove"></span> 驳回</button>
                                 <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="vm.orderHistory(order)"><span class="am-icon-tasks"></span> 历史订单</button>
+                                <button class="am-btn am-btn-default am-btn-xs am-text-warning" ng-click="vm.zhongxinPay(order)"><span class="am-icon-credit-card"></span> 中信支付</button>
+                                <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-click="vm.zhongxinCheck(order)"><span class="am-icon-check"></span> 检查支付结果</button>
+                                <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-click="vm.reGenerateID(order)"><span class="am-icon-check"></span> 重置ID</button>
                             </div>
                         </div>
                     </td>

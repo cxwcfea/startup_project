@@ -74,30 +74,35 @@
                         <li><a href="/admin/#/closing_applies"><span class="am-icon-shopping-cart"></span> 结算中的配资</a></li>
                     </ul>
                 </li>
-                <li class="admin-parent">
-                    <a class="am-cf" data-am-collapse="{target: '#collapse-nav-2'}"><span class="am-icon-file"></span> 充值订单列表<span class="am-icon-angle-right am-fr am-margin-right"></span></a>
-                    <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav-2">
-                        <li><a href="/admin/#/alipay_orders"><span class="am-icon-cart-plus"></span> 支付宝待确认订单</a></li>
-                        <li><a href="/admin/#/recharge_orders"><span class="am-icon-cart-plus"></span> 充值订单</a></li>
-                        <li><a href="/admin/#/orders_of_alipay"><span class="am-icon-cart-plus"></span> 无法确认的支付宝</a></li>
-                    </ul>
-                </li>
+                {{#unless watcher}}
+                    <li class="admin-parent">
+                        <a class="am-cf" data-am-collapse="{target: '#collapse-nav-2'}"><span class="am-icon-file"></span> 充值订单列表<span class="am-icon-angle-right am-fr am-margin-right"></span></a>
+                        <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav-2">
+                            <li><a href="/admin/#/alipay_orders"><span class="am-icon-cart-plus"></span> 支付宝待确认订单</a></li>
+                            <li><a href="/admin/#/recharge_orders"><span class="am-icon-cart-plus"></span> 充值订单</a></li>
+                            <li><a href="/admin/#/orders_of_alipay"><span class="am-icon-cart-plus"></span> 无法确认的支付宝</a></li>
+                        </ul>
+                    </li>
+                {{/unless}}
                 <li class="admin-parent">
                     <a class="am-cf" data-am-collapse="{target: '#collapse-nav-3'}"><span class="am-icon-file"></span> 配资相关订单列表<span class="am-icon-angle-right am-fr am-margin-right"></span></a>
                     <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav-3">
                         <li><a href="/admin/#/get_profit_orders"><span class="am-icon-money"></span> 盈利提取的订单</a></li>
                         <li><a href="/admin/#/add_deposit_orders"><span class="am-icon-cart-plus"></span> 追加配资保证金的申请</a></li>
-                        <li><a href="/admin/#/return_fee_orders"><span class="am-icon-money"></span> 退还保证金的订单</a></li>
+                        <li><a href="/admin/#/return_fee_orders"><span class="am-icon-money"></span> 退还管理费的订单</a></li>
                     </ul>
                 </li>
-                <li class="admin-parent">
-                    <a class="am-cf" data-am-collapse="{target: '#collapse-nav-4'}"><span class="am-icon-file"></span> 提现相关订单列表<span class="am-icon-angle-right am-fr am-margin-right"></span></a>
-                    <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav-4">
-                        <li><a href="/admin/#/withdraw_orders"><span class="am-icon-money"></span> 提现的订单</a></li>
-                        <li><a href="/admin/#/waiting_confirm_withdraw_order_list"><span class="am-icon-clock-o"></span> 等待完成提现订单</a></li>
-                        <li><a href="/admin/#/orders"><span class="am-icon-cart-plus"></span> 完成提现订单</a></li>
-                    </ul>
-                </li>
+                {{#unless watcher}}
+                    <li class="admin-parent">
+                        <a class="am-cf" data-am-collapse="{target: '#collapse-nav-4'}"><span class="am-icon-file"></span> 提现相关订单列表<span class="am-icon-angle-right am-fr am-margin-right"></span></a>
+                        <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav-4">
+                            <li><a href="/admin/#/withdraw_orders"><span class="am-icon-money"></span> 提现的订单</a></li>
+                            <li><a href="/admin/#/waiting_confirm_withdraw_order_list"><span class="am-icon-clock-o"></span> 等待完成提现订单</a></li>
+                            <li><a href="/admin/#/orders"><span class="am-icon-cart-plus"></span> 完成提现订单</a></li>
+                            <li><a href="/admin/#/freeze_withdraw"><span class="am-icon-question"></span> 冻结提现的订单</a></li>
+                        </ul>
+                    </li>
+                {{/unless}}
                 <li class="admin-parent">
                     <a class="am-cf" data-am-collapse="{target: '#collapse-nav-5'}"><span class="am-icon-file"></span> 统计数据<span class="am-icon-angle-right am-fr am-margin-right"></span></a>
                     <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav-5">
@@ -105,6 +110,7 @@
                         <li><a href="/admin/#/sales_statistics"><span class="am-icon-bar-chart-o"></span> 销售数据</a></li>
                     </ul>
                 </li>
+                <li><a href="/admin/#/user_complain_list"><span class="am-icon-bar-chart-o"></span> 投诉与建议</a></li>
                 <!--<li><a href="/admin/#/my_users"><span class="am-icon-cart-plus"></span> 我接手的客户</a></li>-->
             </ul>
 
@@ -186,11 +192,9 @@
 <script src="{{static '/admin/controllers/AdminSalesStatisticsCtrl.js'}}"></script>
 <script src="{{static '/admin/controllers/AdminUserCtrl.js'}}"></script>
 <script src="{{static '/admin/controllers/AdminReturnFeeOrderListCtrl.js'}}"></script>
+<script src="{{static '/admin/controllers/AdminUserComplainListCtrl.js'}}"></script>
+<script src="{{static '/admin/controllers/AdminFreezeWithdrawOrderListCtrl.js'}}"></script>
 -->
-<<<<<<< HEAD
-<script src="{{static '/js.min/niujinwang-admin.min.2346c3d4.js'}}"></script>
-=======
-<script src="{{static '/js.min/niujinwang-admin.min.2346c3d4.js'}}"></script>
->>>>>>> master
+<script src="{{static '/js.min/niujinwang-admin.min.1ac01981.js'}}"></script>
 <!--<![endif]-->
 </body>

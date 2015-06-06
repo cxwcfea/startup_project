@@ -20,6 +20,9 @@ angular.module('mobileApp').config(['$routeProvider', '$httpProvider', function(
         })
         .when('/recharge', { templateUrl: '/mobile/recharge'
         })
+        .when('/withdraw', { templateUrl: '/mobile/withdraw', 
+            controller: 'MobileWithdrawCtrl as withdrawVM'
+        })
         .when('/download', { templateUrl: '/mobile/download'
         })
         .when('/recharge_beifu', { templateUrl: '/mobile/recharge_beifu',
@@ -90,6 +93,9 @@ angular.module('mobileApp').config(['$routeProvider', '$httpProvider', function(
         })
         .when('/user_invest_center', { templateUrl: '/mobile/user_invest_center',
             controller: 'MobileUserInvestCenterCtrl as vm'
+		})
+        .when('/user_promote', { templateUrl: '/mobile/user_promote',
+            controller: 'MobileUserPromoteCtrl as vm'
         })
         .when('/weixin_band', { templateUrl: function(params) { return params.w ? '/mobile/weixin_band?w=' + params.w : '/mobile/weixin_band'; },
             controller: 'MobileWeixinBandCtrl as vm'

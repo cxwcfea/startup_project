@@ -51,6 +51,10 @@
                 img_code: vm.img_code,
                 confirm_password: vm.confirm_password
             };
+            var mgm_code = $('#mgm-code')[0].value;
+            if (mgm_code) {
+                data.mgm_code = 'm_' + mgm_code;
+            }
             $http.post('/api/signup', data)
                 .success(function(data, status, headers, config) {
                     vm.show_verify_window = true;
@@ -84,6 +88,9 @@
                             $interval.cancel(timeId);
                             vm.verifyCodeBtnText = '获取验证码';
                             vm.verifyBtnDisabled = false;
+                            var x = Math.random();
+                            $('#img_code')[0].src = '/api/get_verify_img?cacheBuster=' + x;
+                            vm.show_verify_window = false;
                         }
                     }, 1000);
                 })
@@ -207,6 +214,8 @@
                 addAlert('danger', '登录密码错误，请重新输入');
             } else if (error_code == 3) {
                 addAlert('danger', '该手机号码还未注册');
+            } else if (error_code == 4) {
+                addAlert('danger', '您的账号已被冻结');
             }
         }
 

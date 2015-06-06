@@ -1,5 +1,5 @@
 <div class="am-cf am-padding">
-    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">退还保证金的订单</strong></div>
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">退还管理费的订单</strong></div>
 </div>
 
 <div class="am-g">
@@ -25,8 +25,10 @@
                     <td>
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs">
-                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="vm.handleOrder(order)"><span class="am-icon-pencil-square-o"></span> 管理</button>
-                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="vm.deleteOrder(order)"><span class="am-icon-pencil-square-o"></span> 删除</button>
+                                {{#unless watcher}}
+                                    <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="vm.handleOrder(order)"><span class="am-icon-pencil-square-o"></span> 管理</button>
+                                    <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="vm.deleteOrder(order)"><span class="am-icon-pencil-square-o"></span> 删除</button>
+                                {{/unless}}
                             </div>
                         </div>
                     </td>

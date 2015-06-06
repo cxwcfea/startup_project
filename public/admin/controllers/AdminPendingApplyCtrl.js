@@ -58,7 +58,8 @@ angular.module('adminApp').controller('AdminPendingApplyCtrl', ['$scope', '$http
                 data.homas = {
                     account: content.account,
                     password: content.password
-                }
+                };
+                data.accountType = Number(content.type);
             }
             $http.post('/admin/api/apply/assign_account', data)
                 .success(function(data, status, headers, config) {
@@ -104,6 +105,34 @@ angular.module('adminApp').controller('AdminPendingApplyCtrl', ['$scope', '$http
         });
     };
 
+    vm.cancelApply = function(apply) {
+        var modalInstance = $modal.open({
+            templateUrl: 'cancelApplyModal.html',
+            controller: 'CancelApplyModalCtrl',
+            resolve: {
+                apply: function () {
+                    return apply;
+                }
+            }
+        });
+
+        modalInstance.result.then(function () {
+            $http.post('/admin/api/cancel_apply', {applySerialID:apply.serialID})
+                .success(function(data, status) {
+                    gbNotifier.notify('取消成功');
+                    _.remove(apply_list, function(o) {
+                        return o._id === apply._id;
+                    });
+                    currentApplies = apply_list;
+                    pageReset();
+                })
+                .error(function(data, status) {
+                    gbNotifier.error('取消失败:' + data.error_msg);
+                });
+        }, function () {
+        });
+    };
+
     vm.showVip = function(vip) {
         if (!vip) {
             currentApplies = apply_list.filter(function (elem) {
@@ -125,6 +154,16 @@ angular.module('adminApp').controller('SMSModalCtrl2', ['$scope', '$modalInstanc
 
     $scope.ok = function () {
         $modalInstance.close($scope.sms_content);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+}]);
+
+angular.module('adminApp').controller('CancelApplyModalCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+    $scope.ok = function () {
+        $modalInstance.close();
     };
 
     $scope.cancel = function () {

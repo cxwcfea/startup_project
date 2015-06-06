@@ -116,6 +116,11 @@ function getLogin(req, res, next) {
 }
 
 function getSignup(req, res, next) {
+    var refer;
+    if (req.session.refer && req.session.refer.search('m_') === 0) {
+        refer = req.session.refer.toString().substr(2);
+    }
+    res.locals.mgm_code = refer;
     res.render('mobile/signup', {layout:null});
 }
 
@@ -389,9 +394,20 @@ function getWeixinBandPage(req, res, next) {
     if (req.query.w) {
         req.session.openID = req.query.w;
     }
-    res.render('mobile/weixin_band', {
-        layout: null
-    })
+    User.findOne({'profile.weixin_id':req.query.w}, function(err, user) {
+        var band = false;
+        var mobile = '';
+        if (user) {
+            logger.warn('getWeixinBandPage user already band mobile:' + user.mobile + ' openID:' + req.query.w);
+            band = true;
+            mobile = user.mobile;
+        }
+        res.render('mobile/weixin_band', {
+            band: band,
+            mobile: mobile,
+            layout: null
+        })
+    });
 }
 
 module.exports = {
@@ -477,6 +493,12 @@ module.exports = {
             })
         });
 
+        app.get('/mobile/user_promote', function(req, res, next) {
+            res.render('mobile/user_promote', {
+                layout: null
+            })
+        });
+
         app.get('/mobile/invest_list', function(req, res, next) {
             res.render('mobile/user_invest_orders', {
                 layout: null
@@ -497,6 +519,11 @@ module.exports = {
 
         app.get('/mobile/identity', function(req, res, next) {
             res.render('mobile/identity', {
+                layout: null
+            })
+        });
+		app.get('/mobile/withdraw', function(req, res, next) {
+            res.render('mobile/withdraw', {
                 layout: null
             })
         });

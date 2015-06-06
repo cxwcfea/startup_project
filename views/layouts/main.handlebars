@@ -62,6 +62,9 @@
         <div class="fr">
             &nbsp;&nbsp;&nbsp;<a href="/info/help">帮助中心</a>&nbsp;&nbsp;&nbsp;
         </div>
+        <div class="fr">
+            &nbsp;&nbsp;&nbsp;<a href="/user/#/promote" style="color: #e0322d;">推广赚钱</a>&nbsp;&nbsp;&nbsp;
+        </div>
         <div class="fr jq_khdBox">
             <a href="/info/download">软件下载</a>
             <!--
@@ -140,8 +143,12 @@
     </div>
 </div>
 
+<!--[if lte IE 8]>
+<p class="browsehappy">你正在使用<strong>过时</strong>的浏览器，牛金网 暂不支持。 请 <a
+        href="http://browsehappy.com/" target="_blank">升级浏览器</a>
+    以获得更好的体验！</p>
+<![endif]-->
 {{{body}}}
-
 
 <div class="serviceBox">
     <a target="_blank" href="http://wpa.b.qq.com/cgi/wpa.php?ln=1&key=XzkzODA3MjI1OV8yNTEwNzVfNDAwNjkyMTM4OF8yXw">客服QQ</a>
@@ -191,8 +198,8 @@
             <p>关于牛金网</p>
             <ul>
                 <li><a href="/info/about">公司介绍</a></li>
-                <li><a href="/info/partners">合作伙伴</a></li>
                 <li><a href="/info/contact">联系方式</a></li>
+                <li><a href="/complain">投诉与建议</a></li>
             </ul>
         </div>
         <div class="fr ewmBox">
@@ -226,7 +233,7 @@
 <script src="{{static '/js/main.js'}}"></script>
 <script src="{{static '/app/controllers/RegisterCtrl.js'}}"></script>
 -->
-<script src="{{static '/js.min/niujinwang-main.min.3d720c8b.js'}}"></script>
+<script src="{{static '/js.min/niujinwang-main.min.1f6bb5e0.js'}}"></script>
 {{#if main_menu}}
         <script src="{{static '/js/index.js'}}"></script>
 {{/if}}
@@ -235,6 +242,7 @@
         <script src="{{static '/vendor/angular-resource/angular-resource.min.js'}}"></script>
         <!--
         <script src="{{static '/js/user.js'}}"></script>
+        <script src="{{static '/js/jquery.zclip.min.js'}}"></script>
         <script src="{{static '/user/user.js'}}"></script>
         <script src="{{static '/user/controllers/UserIndexCtrl.js'}}"></script>
         <script src="{{static '/user/controllers/UserHomeCtrl.js'}}"></script>
@@ -244,8 +252,9 @@
         <script src="{{static '/user/controllers/UserCardCtrl.js'}}"></script>
         <script src="{{static '/user/controllers/UserWithdrawCtrl.js'}}"></script>
         <script src="{{static '/user/controllers/UserOrderListCtrl.js'}}"></script>
+        <script src="{{static '/user/controllers/UserPromoteCtrl.js'}}"></script>
         -->
-        <script src="{{static '/js.min/niujinwang-user.min.ee7ef2b3.js'}}"></script>
+        <script src="{{static '/js.min/niujinwang-user.min.5c1a5f77.js'}}"></script>
 {{/if}}
 {{#if recharge}}
         <script src="{{static '/vendor/angular-route/angular-route.min.js'}}"></script>

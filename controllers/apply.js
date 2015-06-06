@@ -228,19 +228,15 @@ exports.postApplyPostpone = function(req, res, next) {
                         callback(err);
                     } else {
                         user.finance.freeze_capital += order.amount;
+                        user.finance.prepaid_service_fee += order.amount;
                         user.save(function(err) {
                             var content = 'user:' + order.userMobile + ' account:' + apply.account + ' period:' + period;
                             util.sendEmail('op@niujinwang.com,intern@niujinwang.com', '配资延期', content, function(err) {
                                 if (err) {
                                     logger.debug('error when send postpone email apply:' + apply.serialID + ' account:' + apply.account + ' ' + err.toString());
-                                    util.sendEmail('op@niujinwang.com,intern@niujinwang.com', '配资延期', content, function(err) {
-                                        if (err) {
-                                            logger.debug('2nd error when send postpone email apply:' + apply.serialID + ' account:' + apply.account + ' ' + err.toString());
-                                            sms.sendSMS('13439695920', '', 'apply postpone ' + content, function (result) {
-                                                if (result.error) {
-                                                    logger.debug('sms also send error when postpone apply:' + apply.serialID);
-                                                }
-                                            });
+                                    sms.sendSMS('13439695920', '', 'apply postpone ' + content, function (result) {
+                                        if (result.error) {
+                                            logger.debug('sms also send error when postpone apply:' + apply.serialID);
                                         }
                                     });
                                 }
@@ -503,57 +499,77 @@ exports.freeApply = function(req, res, next) {
                 }
             } else {
                 if (req.user.finance.balance >= 100) {
-                    var applyData = new Apply({
-                        userID: req.user._id,
-                        userMobile: req.user.mobile,
-                        serialID: util.generateSerialID(),
-                        amount: 2000,
-                        deposit: 100,
-                        isTrial: true,
-                        status: 4,
-                        period: 2
-                    });
-                    Apply.create(applyData, function(err, apply) {
-                        if(err) next();
-                        User.findById(req.user._id, function(err, user) {
-                            if (err) {
-                                logger.debug('freeApply error:' + err.toString());
-                                return next();
+                    User.update({_id:req.user.id}, {$set:{'freeApply':true}}, function(err, numberAffected, raw) {
+                        if (err) {
+                            next();
+                        } else if (!numberAffected) {
+                            logger.warn('user:' + user.mobile + ' already tried free apply, refuse it');
+                            res.locals.serial_id = user.freeApply;
+                            if (req.url.search('/mobile') > -1) {
+                                res.render('mobile/free_apply_refuse', {
+                                    layout: 'mobile'
+                                });
+                            } else {
+                                res.render('apply/free_apply_refuse');
                             }
-                            if (!user) {
-                                logger.debug('freeApply error: user not found');
-                                return next();
-                            }
-                            if (user.freeApply) {
-                                logger.warn('user:' + user.mobile + ' already tried free apply, refuse it');
-                                res.locals.serial_id = user.freeApply;
-                                if (req.url.search('/mobile') > -1) {
-                                    res.render('mobile/free_apply_refuse', {
-                                        layout: 'mobile'
-                                    });
-                                } else {
-                                    res.render('apply/free_apply_refuse');
-                                }
-                                return;
-                            }
-                            user.finance.balance -= 100;
-                            user.finance.total_capital += 2000;
-                            user.finance.deposit += 100;
-                            user.finance.history_capital += 2000;
-                            user.finance.history_deposit += 100;
-                            user.freeApply = apply.serialID;
-                            user.save(function (err, user) {
-                                if (err) {
-                                    logger.debug('freeApply error:' + err.toString());
-                                    return next();
-                                }
-                                if (req.url.search('/mobile') > -1) {
-                                    res.redirect('/mobile/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000 + '&status=' + 4);
-                                } else {
-                                    res.redirect('/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000 + '&status=' + 4);
-                                }
+                        } else {
+                            var applyData = new Apply({
+                                userID: req.user._id,
+                                userMobile: req.user.mobile,
+                                serialID: util.generateSerialID(),
+                                amount: 2000,
+                                deposit: 100,
+                                isTrial: true,
+                                status: 4,
+                                period: 2
                             });
-                        });
+                            Apply.create(applyData, function(err, apply) {
+                                if(err) next();
+                                User.findById(req.user._id, function(err, user) {
+                                    if (err) {
+                                        logger.debug('freeApply error:' + err.toString());
+                                        return next();
+                                    }
+                                    if (!user) {
+                                        logger.debug('freeApply error: user not found');
+                                        return next();
+                                    }
+                                    user.finance.balance -= 100;
+                                    user.finance.total_capital += 2000;
+                                    user.finance.deposit += 100;
+                                    user.finance.history_capital += 2000;
+                                    user.finance.history_deposit += 100;
+                                    user.freeApply = apply.serialID;
+                                    user.save(function (err, user) {
+                                        if (err) {
+                                            logger.debug('freeApply error:' + err.toString());
+                                            return next();
+                                        }
+                                        var orderData = {
+                                            userID: user._id,
+                                            userMobile: user.mobile,
+                                            userBalance: user.finance.balance,
+                                            dealType: 9,
+                                            amount: apply.deposit,
+                                            status: 1,
+                                            description: '免费体验支付保证金',
+                                            applySerialID: apply.serialID
+                                        };
+                                        Order.create(orderData, function(err, payOrder) {
+                                            if (err) {
+                                                logger.debug('freeApply error:' + err.toString());
+                                                return next();
+                                            }
+                                            if (req.url.search('/mobile') > -1) {
+                                                res.redirect('/mobile/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000 + '&status=' + 4);
+                                            } else {
+                                                res.redirect('/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000 + '&status=' + 4);
+                                            }
+                                        });
+                                    });
+                                });
+                            });
+                        }
                     });
                 } else {
                     var orderData = {
@@ -598,13 +614,22 @@ exports.placeApply = function(req, res, next) {
 
     if (!req.body.amount || !req.body.deposit) {
         logger.debug('placeApply error: invalid data');
-        res.status(400);
+        res.status(403);
         return res.send({error_msg:'invalid data'});
     }
 
-    if (req.body.deposit >= req.body.amount) {
+    var amount = Number(Number(req.body.amount).toFixed(2));
+    var deposit = Number(Number(req.body.deposit).toFixed(2));
+    var lever = Math.round(amount / deposit);
+    if (amount <= 0 || deposit <= 0) {
+        logger.debug('placeApply error: invalid data');
+        res.status(403);
+        return res.send({error_msg:'invalid data'});
+    }
+
+    if (deposit >= amount) {
         logger.debug('placeApply error: invalid data amount:' + req.body.amount + ' deposit:' + req.body.deposit);
-        res.status(400);
+        res.status(403);
         return res.send({error_msg:'invalid data'});
     }
 
@@ -612,14 +637,14 @@ exports.placeApply = function(req, res, next) {
         userID: req.user._id,
         userMobile: req.user.mobile,
         serialID: util.generateSerialID(),
-        amount: Number(Number(req.body.amount).toFixed(2)),
-        deposit: Number(Number(req.body.deposit).toFixed(2)),
-        lever: req.body.lever,
-        warnValue: Number(Number(req.body.warnValue).toFixed(2)),
-        sellValue: Number(Number(req.body.sellValue).toFixed(2)),
-        serviceCharge: req.body.serviceCharge,
-        discount: 0.8,
-        period: 5
+        amount: amount,
+        deposit: deposit,
+        lever: lever,
+        warnValue: Number((amount - 0.4 * deposit).toFixed(2)),
+        sellValue: Number((amount - 0.6 * deposit).toFixed(2)),
+        serviceCharge: util.getServiceCharge(lever),
+        discount: 1,
+        period: 10
     });
 
     if (req.body.type) {

@@ -1,0 +1,45 @@
+<div class="am-cf am-padding">
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">投诉记录</strong></div>
+</div>
+
+<div class="am-g">
+    <!--
+    <div class="am-u-sm-12 am-u-md-3">
+        <div class="am-input-group am-input-group-sm">
+            <input type="text" class="am-form-field">
+          <span class="am-input-group-btn">
+            <button class="am-btn am-btn-default" type="button">搜索</button>
+          </span>
+        </div>
+    </div>
+    -->
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12">
+        <article class="am-comment am-margin" ng-repeat="item in vm.showingItems">
+            <span class="am-badge am-badge-primary">\{{item.title}}</span>
+            <div class="am-comment-main">
+                <header class="am-comment-hd">
+                    <div class="am-comment-meta">
+                        <a href="" class="am-comment-author" ng-click="vm.searchUser(item.writer)">\{{item.writer}}</a>
+                        评论于 <time datetime="\{{item.ceatedAt}}" title="">\{{item.createdAt}}</time>
+                    </div>
+                    <div class="am-comment-actions">
+                        <a href="" ng-click="vm.removeItem(item)"><i class="am-icon-close"></i></a>
+                    </div>
+                </header>
+
+                <div class="am-comment-bd">
+                    \{{item.content}}
+                </div>
+            </div>
+        </article>
+        <div class="am-cf">
+            共 \{{vm.totalItems}} 条记录
+            <div class="am-fr">
+                <pagination previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="vm.itemsPerPage" total-items="vm.totalItems" ng-model="vm.currentPage" ng-change="vm.pageChanged()"></pagination>
+            </div>
+        </div>
+    </div>
+</div>

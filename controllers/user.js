@@ -5,6 +5,7 @@ var passport = require('passport'),
     Investor = require('../models/Investor'),
     Homas = require('../models/Homas'),
     Contract = require('../models/Contract'),
+    Note = require('../models/Note'),
     PayInfo = require('../models/PayInfo'),
     nodemailer = require('nodemailer'),
     crypto = require('crypto'),
@@ -57,6 +58,16 @@ module.exports.postLogin = function(req, res, next) {
             });
             return;
         }
+        if (user.level === 1000) {
+            logger.error('postLogin error:suspicious user tried login');
+            res.locals.error_feedback = 4;
+            res.locals.title = '登录';
+            res.locals.login = true;
+            res.render('register/login', {
+                layout: 'no_header'
+            });
+            return
+        }
         req.login(user, function(err) {
             if (err) {return next(err);}
             req.session.lastLogin = moment().format("YYYY-MM-DD HH:mm:ss");
@@ -101,6 +112,11 @@ module.exports.ajaxLogin = function(req, res) {
             logger.error('ajaxLogin error:' + info.message);
             res.status(400);
             return res.send({error_code:3, error_msg:info.message});
+        }
+        if (user.level === 1000) {
+            logger.error('ajaxLogin error:suspicious user tried login');
+            res.status(403);
+            return res.send({error_code:3, error_msg:'您的账号已被冻结'});
         }
         req.login(user, function(err) {
             if (err) {
@@ -200,6 +216,9 @@ module.exports.apiSignup = function(req, res) {
         if (existingUser) {
             user = existingUser;
         }
+        if (req.body.mgm_code) {
+            user.refer = req.body.mgm_code;
+        }
         user.save(function(err) {
             if (err) {
                 logger.warn('apiSignup err:' + err.toString());
@@ -216,6 +235,44 @@ function getClientIp(req) {
         req.connection.remoteAddress ||
         req.socket.remoteAddress ||
         req.connection.socket.remoteAddress;
+}
+
+function autoAssignManager(user) {
+    /*
+    var morning = moment();
+    var isHoliday = util.isHoliday(morning.dayOfYear());
+    if (isHoliday) {
+        return;
+    }
+    morning.hour(9);
+    morning.minute(0);
+    morning.seconds(0);
+    var afternoon = moment();
+    afternoon.hour(19);
+    afternoon.minute(0);
+    afternoon.seconds(0);
+    var now = moment();
+     if (now >= morning && now <= afternoon) {
+     }
+    */
+    if (user.refer && user.refer.indexOf('m_') === 0) {
+        User.findOne({referName:user.refer}, function(err, u) {
+            if (err) {
+                logger.warn('autoAssignManager error:' + err.toString());
+                return;
+            }
+            if (!u || !u.manager) {
+                return;
+            }
+            user.manager = u.manager;
+            user.save(function(err) {
+                if (err) {
+                    logger.warn('autoAssignManager error for ' + user.mobile + ' ' + err.toString());
+                    return;
+                }
+            });
+        });
+    }
 }
 
 module.exports.finishSignup = function(req, res, next) {
@@ -257,9 +314,10 @@ module.exports.finishSignup = function(req, res, next) {
             return res.send({ error_msg: '该手机号已经注册了' })
         }
         existingUser.registered = true;
-        if (req.session.refer) {
+        if (req.session.refer && !existingUser.refer) {
             existingUser.refer = req.session.refer;
         }
+        existingUser.referName = 'm_' + util.getReferName();
         existingUser.save(function(err) {
             if (err) {
                 logger.warn('finishSignup err:' + err.toString());
@@ -277,6 +335,7 @@ module.exports.finishSignup = function(req, res, next) {
                 logger.info('ip ' + getClientIp(req));
                 logger.info('ip ' + req.ip);
                 res.send({});
+                autoAssignManager(existingUser);
             });
         });
     });
@@ -414,12 +473,13 @@ module.exports.postWithdraw = function(req, res) {
             }
         },
         function(user, callback) {
-            if (user.level == 999) {
+            if (user.level >= 999) {
                 data.order.status = 3;
             } else {
                 data.order.status = 0;
             }
             data.order.userBalance = user.finance.balance - amount;
+            data.order.otherInfo = util.generateSerialID();
             Order.create(data.order, function(err, order) {
                 callback(err, user, order);
             });
@@ -612,7 +672,6 @@ module.exports.updateBalance = function (req, res, next) {
     }
     var data = req.body;
     var pay_amount = Number(data.pay_amount);
-    console.log(pay_amount);
     if (pay_amount <= 0) {
         return res.send({success:false, reason:'无效的支付额:'+pay_amount});
     }
@@ -1637,6 +1696,56 @@ function getUserInvestDetail(req, res) {
             return res.send({error_msg:err.toString()});
         }
         res.send(orders);
+	});
+}
+
+function transCommission(req, res) {
+    var amount = Number(req.body.amount);
+    amount = Math.floor(amount / 100) * 100;
+    if (amount <= 0) {
+        res.status(403);
+        return res.send({error_msg:'佣金不足100'});
+    } else {
+        User.update({_id: req.user._id}, {$inc: {'finance.balance': amount, 'finance.commission':-amount}}, function (err, numberAffected, raw) {
+            if (err) {
+                logger.debug('transCommission error:' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            } else if (!numberAffected) {
+                logger.debug('transCommission error nothing updated');
+                res.status(400);
+                return res.send({error_msg:'nothing updated'});
+            }
+            var data = {
+                userID: req.user._id,
+                userMobile: req.user.mobile,
+                userBalance: req.user.finance.balance + amount,
+                dealType: 14,
+                amount: amount,
+                status: 1,
+                description: '佣金转入余额',
+                payType: 6
+            };
+            Order.create(data, function (err, order) {
+                if (err) {
+                    logger.debug('transCommission error when create order:' + err.toString());
+                    res.status(500);
+                    return res.send({error_msg:err.toString()});
+                }
+                res.send({});
+            });
+        });
+    }
+}
+
+function fetchReferUserList(req, res) {
+    User.find({$and:[{refer:req.user.referName}, {refer:{$exists:true}}]}, function(err, users) {
+        if (err) {
+            logger.debug('fetchReferUserList error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send(users);
     });
 }
 
@@ -1666,7 +1775,7 @@ function finishWeixinBandUser(req, res, next) {
                 if (!numberAffected) {
                     logger.warn('finishWeixinBandUser nothing update');
                     res.status(403);
-                    return res.send({error_msg:'您还不是牛金网用户'});
+                    return res.send({error_msg:'绑定失败，请稍后再试'});
                 }
                 res.send({});
             });
@@ -1729,6 +1838,10 @@ module.exports.registerRoutes = function(app, passportConf) {
     app.get('/api/user/invest_orders', passportConf.isAuthenticated, getInvestOrders);
 
     app.get('/api/user/invest_detail', passportConf.isAuthenticated, getUserInvestDetail);
+
+    app.post('/user/api/transfer_commission', passportConf.isAuthenticated, transCommission);
+
+    app.get('/user/api/refer_user_list', passportConf.isAuthenticated, fetchReferUserList);
 
     app.post('/api/weixin_band_user', finishWeixinBandUser);
 
@@ -1977,4 +2090,24 @@ module.exports.getVerifyImg = function(req, res) {
     var buf = ary[1];
     req.session.img_code = txt.toLowerCase();
     res.send(buf);
+};
+
+module.exports.submitComplain = function(req, res) {
+    req.assert('title', '标题不能为空').notEmpty();
+    req.assert('content', '内容不能为空').notEmpty();
+
+    var errors = req.validationErrors();
+    if (errors) {
+        req.flash('errors', errors);
+        return res.redirect('/complain');
+    }
+    var data = {
+        userMobile: '00000000001',
+        title: req.body.title,
+        content: req.body.content,
+        writer: req.user.mobile
+    };
+    Note.create(data, function (err, note) {
+        res.redirect('/');
+    });
 };

@@ -3,15 +3,27 @@
 </div>
 
 <div class="am-g">
-    <div class="am-u-sm-12 am-u-md-3">
+    <div class="am-u-sm-12 am-u-md-12 am-form-inline">
         <div class="am-input-group am-input-group-sm">
-            <input type="text" class="am-form-field" placeholder="输入订单号" ng-model="applyVM.searchKey">
+            <select style="width: 80px; height: 36px; border: 1px solid #c0c0c0;"  id="apply_status" ng-model="applyVM.apply_status" ng-options="option for option in apply_options"/>
+        </div>
+        <div class="am-input-group am-input-group-sm">
+            <input type="text" class="am-form-field" placeholder="输入订单号" ng-model="applyVM.orderId">
+        </div>
+        <div class="am-input-group am-input-group-sm">
+            <input type="text" class="am-form-field" placeholder="输入用户手机号" ng-model="applyVM.userMobile">
+        </div>
+        <div class="am-input-group am-input-group-sm">
+            <input type="text" class="am-form-field" placeholder="输入HOMS账号" ng-model="applyVM.homsAccount">
+        </div>
+        <div class="am-input-group am-input-group-sm">
             <span class="am-input-group-btn">
                 <button class="am-btn am-btn-default" type="button" ng-click="applyVM.searchApply()">搜索</button>
                 <button class="am-btn am-btn-default" type="button" ng-click="applyVM.showAllApplies()">全部</button>
             </span>
         </div>
     </div>
+    <span style="float:right; margin-right:30px;" class="am-text-success">总配资 \{{applyVM.totalApplyAmount | currency:'':2}}</span>
 </div>
 
 <div class="am-g">
@@ -20,7 +32,20 @@
             <table class="am-table am-table-striped am-table-hover table-main">
                 <thead>
                 <tr>
-                    <th class="table-id am-hide-sm-only">单号</th><th class="table-title am-text-right">用户名</th><th class="table-date am-text-center">起止日期</th><th class="table-title am-text-right">金额</th><th class="table-title am-text-right">天数</th><th class="table-title am-text-right">服务费</th><th class="table-type am-text-right am-hide-sm-only">保证金</th><th class="table-author am-text-center">状态</th><th class="table-author">HOMS</th><th class="table-set">接手客服</th><th class="table-set">操作</th>
+                    <th class="table-id am-hide-sm-only">单号</th>
+                    <th class="table-title am-text-right">用户名</th>
+                    <th class="table-date am-text-center">起止日期</th>
+                    <th class="table-title am-text-right">金额</th>
+                    <th class="table-title am-text-right">天数</th>
+                    <th class="table-title am-text-right">杠杆</th>
+                    <th class="table-title am-text-right">服务费</th>
+                    <th class="table-type am-text-right am-hide-sm-only">保证金</th>
+                    <th class="table-author am-text-center">状态</th>
+                    <th class="table-author">HOMS</th>
+                    <!--
+                    <th class="table-set">接手客服</th>
+                    <th class="table-set">操作</th>
+                    -->
                 </tr>
                 </thead>
                 <tbody>
@@ -30,20 +55,21 @@
                     <td class="am-text-center">\{{apply.start_date | displayDate}}<br>\{{apply.end_date | displayDate}}</td>
                     <td class="am-text-right"><span class="am-icon-rmb"></span><strong>\{{apply.amount | currency:'':2}}</strong></td>
                     <td class="am-text-right"><strong>\{{apply.period}}</strong></td>
+                    <td class="am-text-right"><strong>\{{apply.lever}}</strong></td>
                     <td class="am-text-right"><span class="am-icon-rmb"></span><strong>\{{apply.fee}}</strong></td>
-
                     <td class="am-text-right am-hide-sm-only"><span class="am-icon-rmb"></span><strong>\{{apply.deposit | currency:'':2}}</strong></td>
                     <td class="am-text-center">\{{apply.status | applyStatus}}</td>
                     <td class="">\{{apply.account || '尚未分配' }}</td>
+                    <!--
                     <td class="">\{{apply.manager || '尚未分配' }}</td>
                     <td>
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-xs">
-                                <!-- <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="applyVM.manageApply(apply)"><span class="am-icon-pencil-square-o"></span> 管理</button> -->
                                 <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-hide="apply.manager" ng-click="applyVM.takeApply(apply)"><span class="am-icon-user"></span> 我要接手</button>
                             </div>
                         </div>
                     </td>
+                    -->
                 </tr>
                 </tbody>
             </table>

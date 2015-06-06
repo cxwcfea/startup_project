@@ -1,0 +1,239 @@
+<style>
+    .promote-menu {margin-top: 30px;}
+    .promote-share {line-height:40px;padding:30px;border:3px solid #f2e7d6;background-color: #fffdd7;}
+    .promote-share label {color:#666;font-size:14px;font-weight:100;float: left; width: 120px;padding-right: 18px;text-align: right;}
+    .promote-share .link{width: 350px;margin: 0 0 0 138px;padding: 0 10px;color:#333;border: 1px solid #eaeaea;background-color: #fff;}
+    .promote-share .copy{float:right;margin-right:80px;display:inline-block;width:120px;font-size:12px;height: 40px;border: 1px solid #E0322D;color: #fff;background-color:#e30a20;display: block;text-align: center;line-height: 40px;cursor:pointer;}
+    .promote-share .bdsharebuttonbox {position:relative;top: 6px;}
+    .promote-box {padding-bottom: 50px;}
+
+    .promote-box .total {padding-left:10px;border-bottom: 1px solid #e6e6e6;}
+    .promote-box .tb {width: 50%;}
+    .promote-box .tb td {padding: 30px 0;color:#999;}
+    .promote-box .tb strong {display: block;font-size: 30px;margin-top: 10px;color:#333;}
+
+    .promote-total {padding: 10px 20px;border-bottom: 1px solid #e6e6e6;}
+    .promote-total .btn-exchange {float:right;margin:22px 20px 0 0;display:inline-block;width:70px;height:30px;font-size:12px;font-weight:700;color:#E0322D;border:1px solid #E0322D;display:block;text-align:center;line-height:28px;border-radius:2px;}
+    .promote-total .tb{width: 100%;}
+    .promote-total .tb td {padding: 20px 0;color:#999;}
+    .promote-total .tb em {display: block;font-size: 30px;margin-top: 10px;color:#333;}
+    .promote-total .tb em span{font-size: 20px;}
+    .promote-total .tb strong {font-weight:100;display: block;font-size: 16px;margin-top: 10px;color:#333;}
+    .promote-step {padding: 30px 0;text-align: center;}
+    .promote-intro {line-height: 26px;}
+    .promote-intro h5 {font-size: 14px; margin-bottom: 6px;font-weight: 700;}
+    .promote-intro li {margin-top: 40px;}
+    .promote-intro .count {font-size: 14px;font-weight: 700;}
+    .promote-intro .count em {font-size: 30px;color:#a40000;}
+</style>
+<script>
+    /* bd_share */
+    window._bd_share_config = {
+        common : {
+            bdText : '来牛金网炒股，开户快，收益高',
+            bdDesc : '来牛金网炒股，开户快，收益高',
+            bdUrl : '',
+            bdPic : 'http://www.niujinwang.com/images/logo100.jpg'
+        },
+        share : [{
+            "bdSize" : 16
+        }]
+    };
+    with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/js/bd_share.js'];
+    $("#J_copy").zclip({
+        path: "/images/ZeroClipboard.swf",
+        copy: function () {
+            return $("#J_link").text();
+        },
+        afterCopy: function() {
+            alert('您的推广码已经复制到剪贴板');
+        }
+    });
+    $("#J_copy2").zclip({
+        path: "/images/ZeroClipboard.swf",
+        copy: function () {
+            return $("#J_link2").text();
+        },
+        afterCopy: function() {
+            alert('您的推广链接已经复制到剪贴板');
+        }
+    });
+</script>
+<div class="fl tra_right">
+    <div class="neword_menu promote-menu">
+        <div class="neword_menulist jq_menuList">
+            <ul>
+                <li ng-class="{selected: vm.showFirstPage}" ng-click="vm.showFirstPage = true">推广详情</li>
+                <li ng-class="{selected: !vm.showFirstPage}" ng-click="vm.showFirstPage = false">我的用户</li>
+            </ul>
+        </div>
+    </div>
+    <!--#推广详情-->
+    <div class="promote-box" ng-show="vm.showFirstPage">
+        <div class="promote-step">
+            <img src="/images/promote-step.jpg" width="741" height="21" alt="">
+        </div>
+        <div class="promote-share">
+            <div class="url" style="margin-bottom: 10px">
+                <a class="copy" id="J_copy2">复制邀请码</a>
+                <label>您的邀请码</label>
+                <div class="link" id="J_link2">\{{vm.referName}}</div>
+            </div>
+            <div class="url">
+                <a class="copy" id="J_copy">复制链接</a>
+                <label>您的推广链接</label>
+                <div class="link" id="J_link">http://www.niujinwang.com/?refer=\{{vm.user.referName}}</div>
+            </div>
+            <div class="btns">
+                <label>分享您的推广链接</label>
+                <div class="bdsharebuttonbox" data-tag="share_1">
+                    <a class="bds_qzone" data-cmd="qzone" href="#"></a>
+                    <a class="bds_tsina" data-cmd="tsina"></a>
+                    <a class="bds_baidu" data-cmd="baidu"></a>
+                    <a class="bds_renren" data-cmd="renren"></a>
+                    <a class="bds_tqq" data-cmd="tqq"></a>
+                    <a class="bds_weixin" data-cmd="weixin"></a>
+                    <a class="bds_more" data-cmd="more"></a>
+                </div>
+            </div>
+        </div>
+        <ul class="promote-intro">
+            <li>
+                <h5>如何推广？</h5>
+                <p>牛金网推广是一种按用户配资赚取佣金的模式，您可以通过朋友、QQ、微信、微博、博客、论坛或在自己的网站上进行推广，所有通过您的推广链接访问过来的用户，注册后都将成为您的下线用户，而当这些用户在本站配资时，您就可以最高赚取7%的佣金。</p>
+            </li>
+            <li>
+                <h5>佣金怎么结算？</h5>
+                <p>您的用户在注册后一年内每发生一笔配资，在配资完成后，您即可获得一笔佣金，当您的佣金达到100元的时候，即可兑换取出，也可以在本站进行配资。</p>
+            </li>
+            <li>
+                <h5>推广佣金收入计算</h5>
+                <p>推广获得用户后您的用户开始配资，100个用户人均8倍杠杆配资10万元使用22天(1月)；</p>
+            </li>
+            <li class="count">
+                <p>100人×10万元＝1000万元配资</p>
+                <p>1000万*22天*19.9元=437,800元配资管理费</p>
+                <p>437,800元配资管理费×7%＝月最高赚佣金3万元 合计年收益<em>36</em>万元</p>
+            </li>
+        </ul>
+    </div><!--/推广详情-->
+    <!--#我的用户-->
+    <div class="promote-box" ng-hide="vm.showFirstPage">
+        <div class="promote-total">
+            <table class="tb">
+                <tr>
+                    <td>
+                        当前佣金
+                        <a href="" class="btn-exchange" ng-click="vm.transMoney()">兑换</a>
+                        <em>\{{vm.user.finance.commission || 0 | currency:'':2}}</em>
+                    </td>
+                    <td>
+                        推广配资用户
+                        <strong>\{{vm.myPayUsers.length}}</strong>
+                    </td>
+                    <td>
+                        产生管理费
+                        <strong>\{{vm.total_fee | currency:'':2}}</strong>
+                    </td>
+                    <td>
+                        返配资管理费的
+                        <strong>7%</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        已兑佣金
+                        <strong>\{{vm.paid_fee | currency:'':2}}</strong>
+                    </td>
+                    <td>
+                        推广注册用户
+                        <strong>\{{vm.myUserList.length}}</strong>
+                    </td>
+                    <td>
+                        用户累计配资总额
+                        <strong>\{{vm.totalApplyAmount | currency:'':2}}</strong>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="total">
+            <!--
+        <table class="tb">
+            <tr>
+                <td>
+                    我的推广用户
+                    <strong>\{{vm.myUserList.length}}</strong>
+                </td>
+                <td>
+                    配资用户
+                    <strong>\{{vm.myPayUsers.length}}</strong>
+                </td>
+            </tr>
+        </table>
+        -->
+        </div>
+        <div class="neword_tableBox">
+            <table>
+                <tr>
+                    <th class="td01" width="185">用户名</th>
+                    <th class="td01">配资金额（元）</th>
+                    <th class="td01">注册时间</th>
+                </tr>
+                <tr ng-repeat="user in vm.myUserList">
+                    <td class="td01">\{{user.mobile | displayMobile}}</td>
+                    <td class="td01">\{{user.finance.history_capital | currency:'':2}}</td>
+                    <td class="td01">\{{user.registerAt | date:"yyyy-MM-dd HH:mm"}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <!--/我的用户-->
+
+    <div class="regTcc" ng-show="vm.showTransMoneyWindow">
+        <div class="tmbg"></div>
+        <div class="tar_TccBox">
+            <div class="regColumn">
+                佣金兑换
+                <div class="loginClose" ng-click="vm.closePopupWindow()"></div>
+            </div>
+            <div class="pass_Box" ng-hide="vm.transFail || vm.transSuccess">
+                <div class=" pass_formBox">
+                    <div class="fl pass_left">
+                        现有佣金
+                    </div>
+                    <div class="pass_right fl">
+                        <em>\{{vm.user.finance.commission || 0 | currency:'':2}}</em>
+                    </div>
+                </div>
+                <div class=" pass_formBox">
+                    <div class="fl pass_left">
+                        可兑换佣金
+                    </div>
+                    <div class="pass_right fl">
+                        \{{vm.transAmount || 0 | currency:'':2}}
+                    </div>
+                </div>
+                <a class="newrec_btn02 newrec_zfbbtn01" href="" ng-click="vm.completeTransMoney()">确  定</a>
+            </div>
+            <div class="pass_box2 jq_pass_box2" ng-show="vm.transSuccess">
+                <div class="pass_img fl"></div>
+                <div class="pass_text fl">
+                    <p class="p01">兑换成功,佣金将转入平台账户余额！</p>
+                    <a class="newrec_btn02" href="" ng-click="vm.closePopupWindow()">确   定</a>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="newRec_TccBox" ng-show="vm.transFail">
+                <div class="newRec_TccImg fl"></div>
+                <div class="newRec_tccText fl">
+                    <p class="p01">佣金兑换余额失败:</p>
+                    <p class="p02">\{{vm.failReason}}</p>
+                    <p class="p02">请联系我们的客服</p>
+                    <a href="" class="newrec_btn02" ng-click="vm.closePopupWindow()">确  定</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,7 @@
 <div ng-app="mainApp" ng-controller="MainApplyController as applyVM">
     <div class="Banner" id="imgFocus" ng-cloak>
         <ul class="ImgContent" id="ImgContent">
+            <li style="background-image: url(/images/banner5.jpg);background-color: #b40c4b;"></li>
             <li style="background-image: url(/images/banner.png);background-color: #e41f45;"></li>
             <li style="background-image: url(/images/banner2.png);background-color: #d11441;"></li>
             <li style="background-image: url(/images/banner3.png);background-color: #b40c4b;"></li>
@@ -10,11 +11,15 @@
                 <li class="selectLi"></li>
                 <li></li>
                 <li></li>
+                <li></li>
             </ul>
             <div class="BannerNr">
                 <p class="bannerText01">最高10倍配资额</p>
                 <p class="bannerText02">已有{{user_count}}玩家参与<br />累计操盘金额{{total_capital}}元<br />已赚取{{total_profit}}元</p>
                 <a href="/free_apply" class="bannerBtn">马上领取2000元炒股资金</a>
+            </div>
+            <div class="MyBannerNr">
+                <a href="/user/#/promote" class="myBannerBtn"></a>
             </div>
         </div>
     </div>
@@ -159,7 +164,7 @@
                         </tr>
                         <tr>
                             <td class="infoTableTitle">账户管理费</td>
-                            <td class="infoTableNr"><span class="infoText03">\{{applyVM.summary.charge | currency:'':2}}</span>元/每天  <span class="infoText04">（按天收取，周末节假日免费）</span><span class="infoText02">\{{applyVM.discount * 10}}折</span></td>
+                            <td class="infoTableNr"><span class="infoText03">\{{applyVM.summary.charge | currency:'':2}}</span>元/天  <span class="infoText04">（按天收取，周末节假日免费）</span><span class="infoText02" ng-show="applyVM.discount < 1">\{{applyVM.discount * 10}}折</span></td>
                         </tr>
                         <tr>
                             <td colspan="2" class="infoTabletd">

@@ -12,15 +12,47 @@
         <span></span>您好，\{{vm.user.mobile | displayMobile}} <i></i>
     </a>
 </div>
-
-<div class="user-tab">
-    <ul>
-        <li class="current"><a href="">我的配资</a></li>
-        <li><a href="" ng-click="vm.gotoInvestCenter()">我的投资</a></li>
+<div class="user-money">
+    <ul class="balance">
+        <li class="number">
+            可用余额(元)
+            <em>\{{vm.user.finance.balance | currency:'':2}}</em>
+        </li>
+        <li class="btns">
+            <a href="/mobile/#/recharge" class="recharge-btn">充 值</a>
+            <a href="/mobile/#/withdraw" class="withdraw-btn">提 现</a>
+        </li>
+    </ul>
+    <ul class="asset">
+        <li>
+            账户总资产(元)
+            <em>\{{vm.user.finance.balance + vm.user.finance.freeze_capital + vm.user.finance.deposit | currency:'':2}}</em>
+        </li>
+        <li>
+            保证金(元)<span></span>
+            <em>\{{vm.user.finance.deposit | currency:'':2}}</em>
+        </li>
+        <li>
+            冻结资金(元)<span></span>
+            <em>\{{vm.user.finance.freeze_capital | currency:'':2}}</em>
+        </li>
     </ul>
 </div>
-
-<ng-include src="vm.viewFile()" onload=""></ng-include>
-
+<ul class="user-opts">
+    <li>
+        <a href="/mobile/#/user_ttn"><span class="icon-ttn"></span>我的天天牛 <i></i></a>
+    </li>
+    <!--
+    <li>
+        <a href="/mobile/#/user_yyn"><span class="icon-ttn"></span>我的月月牛 <i></i></a>
+    </li>
+    -->
+    <li>
+        <a href="/mobile/#/recharge_record"><span class="icon-recharge"></span>充值明细 <i></i></a>
+    </li>
+    <li>
+        <a href="/mobile/#/user_promote"><span class="icon-prom"></span>推广赚钱 <i></i></a>
+    </li>
+</ul>
 
 {{> mobile_footer }}

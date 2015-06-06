@@ -12,7 +12,11 @@ function home(req, res, next) {
     }
     var ua = req.headers['user-agent'];
     if (util.isAndroid(ua) || util.isApple(ua)) {
-        res.redirect('/mobile');
+        if (req.query.refer) {
+            res.redirect('/mobile/?refer=' + req.query.refer);
+        } else {
+            res.redirect('/mobile');
+        }
         return;
     }
     if (!req.session.statistic || req.session.statistic.expires < Date.now()) {

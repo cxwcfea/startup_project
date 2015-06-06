@@ -239,6 +239,7 @@ angular.module('adminApp').controller('CreateOrderModalCtrl', ['$scope', '$modal
     $scope.userMobile = user.mobile;
     $scope.data = {};
     $scope.data.order_type = 1;
+    $scope.data.pay_type = 0;
 
     $scope.ok = function () {
         $modalInstance.close($scope.data);

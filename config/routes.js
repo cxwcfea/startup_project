@@ -10,11 +10,18 @@ var users = require('../controllers/user'),
     weixin = require('../lib/weixin'),
     log4js = require('log4js'),
     logger = log4js.getLogger('routes'),
+    _ = require('lodash'),
+    ecitic = require('../lib/ecitic'),
     passportConf = require('./passport');
 
 module.exports = function(app) {
     app.use(function(req, res, next) {
-        res.locals.user = req.user;
+        res.locals.user = req.user; // important for passport login
+        if (req.user) {
+            if (_.includes(req.user.roles, 'watcher')) {
+                res.locals.watcher = true;
+            }
+        }
         res.locals.lastLogin = req.session.lastLogin;
         if (req.session.statistic) {
             res.locals.recentApply = req.session.statistic.show_applies[0];
@@ -43,6 +50,12 @@ module.exports = function(app) {
         });
     });
 
+    app.get('/complain', passportConf.isAuthenticated, function(req, res, next) {
+        res.render('complain');
+    });
+
+    app.post('/complain', passportConf.isAuthenticated, users.submitComplain);
+
     app.get('/apply_detail/:id', passportConf.isAuthenticated, applies.getApplyDetail);
 
     //app.get('/apply/get_profit/:serial_id', passportConf.isAuthenticated, applies.getProfit);
@@ -70,6 +83,11 @@ module.exports = function(app) {
         } else {
             res.locals.title = '用户注册';
             res.locals.signup = true;
+            var refer;
+            if (req.session.refer && req.session.refer.search('m_') === 0) {
+                refer = req.session.refer.toString().substr(2);
+            }
+            res.locals.mgm_code = refer;
             res.render('register/signup', {
                 layout: 'no_header'
             });
@@ -237,13 +255,5 @@ module.exports = function(app) {
     });
     */
 
-    /*
-    app.get('/test', function(req, res, nest) {
-        var ary = ccap.get();
-        var txt = ary[0];
-        var buf = ary[1];
-        res.end(buf);
-        console.log(txt);
-    });
-    */
+    app.get('/test', ecitic.test);
 };

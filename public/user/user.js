@@ -31,6 +31,9 @@ angular.module('userApp').config(['$routeProvider', '$httpProvider', function($r
         .when('/orders', { templateUrl: '/user/order_list',
             controller: 'UserOrderListCtrl as orderVM'
         })
+        .when('/promote', { templateUrl: '/user/promote',
+            controller: 'UserPromoteCtrl as vm'
+        })
         .otherwise({
             redirectTo: '/applies'
         });

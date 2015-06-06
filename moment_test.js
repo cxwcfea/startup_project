@@ -157,3 +157,32 @@ console.log(moment("2015-04-28").toDate());
 
 console.log(aaa.diff(bbb, 'days'));
 console.log(aaa.format('M月DD日'));
+    var morning = moment();
+    morning.hour(9);
+    morning.minute(0);
+    morning.seconds(0);
+	console.log(morning.toDate());
+
+	var afternoon = moment();
+    afternoon.hour(19);
+    afternoon.minute(0);
+    afternoon.seconds(0);
+	console.log(afternoon.toDate());
+
+	var now = moment();
+	now.hour(19);
+	now.minute(1);
+
+	if (now >= morning && now <= afternoon) {
+		console.log('in the range');
+	} else {
+		console.log('not in the range');
+	}
+
+var endTime = moment();
+var startTime = endTime.clone();
+startTime.subtract(1, 'days');
+endTime = endTime.toDate();
+startTime = startTime.toDate();
+console.log(endTime);
+console.log(startTime);

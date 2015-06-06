@@ -225,11 +225,13 @@ angular.module('adminApp').controller('AdminApplyListCtrl', ['$scope', '$http', 
 angular.module('adminApp').controller('AccountModalCtrl', ['$scope', '$modalInstance', 'apply', function ($scope, $modalInstance, apply) {
     $scope.userMobile = apply.userMobile;
     $scope.homs_password = apply.userMobile.toString().substr(5);
+    $scope.account_type = "1";
 
     $scope.ok = function () {
         var result = {
             account: $scope.homs_account,
-            password: $scope.homs_password
+            password: $scope.homs_password,
+            type: $scope.account_type
         };
 
         $modalInstance.close(result);

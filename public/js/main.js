@@ -210,6 +210,7 @@ $(document).ready(function() {
     });
     //补充保证金第二步
     $(".jq_btn02").click(function (e) {
+        e.preventDefault();
         $(".jq_bzbzjbox").hide();
         $(".jq_bzbzjbox3").show();
     });
@@ -255,11 +256,16 @@ $(document).ready(function() {
             $(".jq_yqBox01").hide();
         });
     });
-    //我要延期第二部
+    //我要延期第二步
     $(".jq_yqBtn02").click(function (e) {
         e.preventDefault();
         $(".jq_yqBox02").hide();
         $(".jq_yqBox03").show();
+    });
+    $(".jq_yqFinishRecharge").click(function (e) {
+        $(".jq_yqBox03").hide();
+        $(".jq_yqBox02").hide();
+        //$(".jq_yqBox").hide();
     });
 
     //提取盈利弹出层

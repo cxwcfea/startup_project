@@ -11,10 +11,10 @@ var mongoose = require('mongoose'),
     SalesData = require('./models/SalesData'),
     config = require('./config/config')['production'];
 
-var startOfMonth = moment().startOf('month').toDate();
-var endOfMonth = moment().endOf('month').toDate();
-var startOfMonth = moment("2015-03-29").toDate();
-var endOfMonth = moment("2015-04-25").toDate();
+//var startOfMonth = moment().startOf('month').toDate();
+//var endOfMonth = moment().endOf('month').toDate();
+var startOfMonth = moment("2015-04-26").toDate();
+var endOfMonth = moment("2015-05-25").toDate();
 var month = moment().startOf('month').format('YYYYMM');
 //console.log(startOfMonth);
 //console.log(endOfMonth);
@@ -90,33 +90,49 @@ var getApplyServiceFee = function(apply) {
                 fee = 18.9;
                 break;
             case 8:
-                fee = 17.9;
+                fee = 19.9;
                 break;
             case 7:
-                fee = 16.9;
+                fee = 18.9;
                 break;
             case 6:
-                fee = 15.9;
+                fee = 17.9;
                 break;
             case 5:
+                fee = 14.9;
+                break;
+            case 4:
+                fee = 13.9;
+                break;
+            case 3:
                 fee = 10.9;
+                break;
+            case 2:
+                fee = 9.9;
                 break;
             default :
                 fee = 19.9;
                 break;
         }
     }
-    var days = apply.period;
-    if (apply.closeAt) {
-        days = util.tradeDaysTillEnd(apply.startTime, apply.closeAt);
-    } else {
-        days = util.tradeDaysTillEnd(apply.startTime, apply.endTime);
+    if (!apply.discount) {
+        apply.discount = 1;
     }
     if (apply.status === 3) {
+        var closedTime = apply.closeAt ? apply.closeAt : apply.endTime;
+        closedTime = moment(closedTime);
+        var time;
+        if (closedTime > endOfMonth) {
+            time = endOfMonth;
+        } else {
+            time = closedTime;
+        }
+        var days = util.tradeDaysTillEnd(apply.startTime, time.toDate());
         fee = fee * apply.amount / 10000 * days;
     } else {
         fee = fee * apply.amount / 10000 * util.tradeDaysTillEnd(apply.startTime, endOfMonth);
     }
+    fee *= apply.discount;
     return fee;
 };
 
@@ -217,7 +233,7 @@ db.once('open', function callback() {
     SalesData.find({month:month}, function(err, collection) {
         if (collection && collection.length === 0) {
             sales.map(function (value) {
-                SalesData.create({userMobile: value.mobile, name: value.name, month: month, baseSalary: 1000});
+                SalesData.create({userMobile: value.mobile, name: value.name, month: month, baseSalary: 3000});
             });
         }
     });
