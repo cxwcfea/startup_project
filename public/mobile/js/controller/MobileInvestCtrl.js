@@ -16,15 +16,8 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
         if (vm.user.invest.enable === undefined || vm.user.invest.enable === null) {
             vm.editInvest = false;
         } else {
-            $http.get('/api/user/invest_info')
-                .success(function(data, status) {
-                    vm.profit_rate = data.investor.profitRate;
-                    vm.period = data.investor.duration;
-                })
-                .error(function(data, status) {
-                    vm.investor = {};
-                    console.log(data.error_msg);
-                });
+            vm.profit_rate = vm.user.invest.profitRate;
+            vm.period = vm.user.invest.duration;
         }
 
         vm.changeInvest = function() {

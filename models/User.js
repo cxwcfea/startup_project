@@ -31,8 +31,8 @@ var userSchema = new mongoose.Schema({
     invest: {
         profitRate: Number,
         duration: Number,
-        availableAmount: Number,
-        occupiedAmount: Number,
+        availableAmount: { type: Number, default: 0 },
+        occupiedAmount: { type: Number, default: 0 },
         history_invest_amount: { type: Number, default: 0 },  // 累计投资金额
         history_invest_profit: { type: Number, default: 0 },  // 累计投资收益
         enable: Boolean

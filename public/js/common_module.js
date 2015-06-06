@@ -207,7 +207,7 @@
     }).filter("displayOrderAmount", function () {
         return function (input, orderType) {
             var ret = '+';
-            if (orderType === 2 || orderType === 9 || orderType === 10) {
+            if (orderType === 2 || orderType === 9 || orderType === 10 || orderType === 11) {
                 ret = '-';
             }
             return ret + input;

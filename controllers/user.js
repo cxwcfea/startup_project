@@ -1569,20 +1569,6 @@ function investUpdate(req, res) {
     });
 }
 
-function getUserInvestInfo(req, res) {
-    Investor.findOne({userID:req.user._id}, function(err, investor) {
-        if (err) {
-            res.status(500);
-            return res.send({error_msg:err.toString()});
-        }
-        if (!investor) {
-            res.status(403);
-            return res.send({error_msg:'investor not found'});
-        }
-        res.send({investor:investor});
-    });
-}
-
 function investToBalance(req, res) {
     var amount = Number(req.body.amount);
     if (!amount) {
@@ -1624,7 +1610,7 @@ function rechargeToInvest(req, res) {
 }
 
 function getInvestOrders(req, res) {
-    Order.find({$and:[{dealType:16}, {userID:req.user._id}, {status:2}]}, function(err, orders) {
+    Order.find({$and:[{dealType:16}, {userID:req.user._id}]}, function(err, orders) {
         if (err) {
             logger.warn('getInvestOrders error:' + err.toString());
             res.status(500);
@@ -1735,8 +1721,6 @@ module.exports.registerRoutes = function(app, passportConf) {
     app.post('/user/set_identity', passportConf.isAuthenticated, setIdentity);
 
     app.post('/api/user/invest_update', passportConf.isAuthenticated, investUpdate);
-
-    app.get('/api/user/invest_info', passportConf.isAuthenticated, getUserInvestInfo);
 
     app.post('/api/user/invest_recharge', passportConf.isAuthenticated, rechargeToInvest);
 

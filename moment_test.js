@@ -146,8 +146,8 @@ console.log(moment("2015-04-28").toDate());
 		console.log(startTime.toDate());
 		console.log(endTime.format('YYYYMMDD'));
 
-		var aaa = moment("2015-04-30");
-		var bbb = moment("2015-05-19");
+		var aaa = moment("2015-06-12");
+		var bbb = moment();
 
 		if (aaa > bbb) {
 			console.log('aaa > bbb');

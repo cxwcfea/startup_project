@@ -39,8 +39,8 @@
         <ul>
             <li ng-repeat="order in vm.showingItem">
                 <h5>\{{order.dealType | displayOrderType}}</h5>
-                <p class="num" ng-hide="order.dealType === 2 || order.dealType === 9 || order.dealType === 10"><em>\{{order.amount | displayOrderAmount:order.dealType}}</em></p>
-                <p class="num" ng-show="order.dealType === 2 || order.dealType === 9 || order.dealType === 10">\{{order.amount | displayOrderAmount:order.dealType}}</p>
+                <p class="num" ng-hide="order.dealType === 2 || order.dealType === 9 || order.dealType === 10"><em>\{{order.amount | currency:'':2 | displayOrderAmount:order.dealType}}</em></p>
+                <p class="num" ng-show="order.dealType === 2 || order.dealType === 9 || order.dealType === 10">\{{order.amount | currency:'':2 | displayOrderAmount:order.dealType}}</p>
                 <p>\{{order.createdAt | date:"yyyy-MM-dd HH:mm"}}</p>
             </li>
             <!--

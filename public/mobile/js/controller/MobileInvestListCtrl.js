@@ -1,4 +1,4 @@
-'use strict';
+https://www.jr1.cn/PPBao/wealth/index.shtml'use strict';
 angular.module('mobileApp').controller('MobileInvestListCtrl', ['$scope', '$window', '$location', '$timeout', '$http', function($scope, $window, $location, $timeout, $http) {
     var vm = this;
 
@@ -31,18 +31,20 @@ angular.module('mobileApp').controller('MobileInvestListCtrl', ['$scope', '$wind
                     return o;
                 });
                 vm.finishedInvestList = vm.investList.filter(function(elem) {
-                    return elem.contractStatus === 2;
+                    return elem.status === 1;
                 });
                 vm.ongoingInvestList = vm.investList.filter(function(elem) {
-                    return elem.contractStatus === 1;
+                    return elem.status === 2;
                 });
                 vm.returnedCapital = 0;
+                var profitRate = 0;
                 vm.finishedInvestList.forEach(function(elem) {
+                    profitRate += elem.profitRate;
                     vm.returnedCapital += elem.amount;
                 });
                 vm.ave_profit_rate = 0;
-                if (vm.returnedCapital > 0 && vm.user.finance.history_invest_profit > 0) {
-                    vm.ave_profit_rate = (vm.user.finance.history_invest_profit / vm.returnedCapital * 100);
+                if (vm.finishedInvestList.length > 0) {
+                    vm.ave_profit_rate = profitRate / vm.finishedInvestList.length;
                 }
                 vm.changeList(1);
             })
@@ -56,7 +58,7 @@ angular.module('mobileApp').controller('MobileInvestListCtrl', ['$scope', '$wind
 
         vm.showInvestDetail = function(invest) {
             vm.currentInvest = invest;
-            vm.daysLeft = moment(invest.returnTime).diff(moment(), 'days');
+            vm.daysLeft = moment(invest.returnTime).diff(moment(), 'days') + 1;
             vm.investDetail = true;
         };
 
