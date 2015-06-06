@@ -371,6 +371,7 @@ function getInvestPage(req, res, next) {
             }
             statistic = [{
                 count: 1,
+                statistic: 0,
                 total_invest: 0,
                 total_profit: 0
             }];
