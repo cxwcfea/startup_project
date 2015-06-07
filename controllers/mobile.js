@@ -364,20 +364,20 @@ function getPostponeApply(req, res) {
 }
 
 function getInvestPage(req, res, next) {
-    User.aggregate([{$match:{'invest.enable':true}}, {$group: {_id: null, count: {$sum: 1}, total_invest: { $sum: '$invest.history_invest_amount'}, total_profit: { $sum: '$invest.history_invest_profit' }, total_rate : { $sum: '$invest.profitRate' }}}], function(err, statistic) {
+    User.aggregate([{$match:{'invest.enable':{$exists:true}}}, {$group: {_id: 'x', count: {$sum: 1}, total_invest: { $sum: '$invest.history_invest_amount'}, total_profit: { $sum: '$invest.history_invest_profit' }, total_rate : { $sum: '$invest.profitRate' }}}], function(err, statistic) {
         if (err || !statistic || !statistic[0]) {
             if (err) {
                 logger.warn('error when getInvestPage:' + err.toString());
             }
             statistic = [{
-                count: 1,
+                count: 0,
                 statistic: 0,
                 total_invest: 0,
                 total_profit: 0
             }];
         }
         var rate = 0;
-        if (statistic[0].count > 0) {
+        if (statistic[0].count > 0 && statistic[0].total_rate) {
             rate = statistic[0].total_rate / statistic[0].count;
         }
         res.render('mobile/invest', {

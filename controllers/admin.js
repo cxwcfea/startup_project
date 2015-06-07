@@ -519,7 +519,7 @@ function homsAssignAccount(req, res) {
         },
         function(apply, callback) {
             invest.findInvestorForApply(apply, function(err) {
-                callback(err);
+                callback(err, apply);
             });
         }
     ], function(err, apply) {

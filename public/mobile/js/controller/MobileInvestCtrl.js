@@ -24,6 +24,24 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
         }
 
         vm.changeInvest = function() {
+            console.log(vm.profit_rate);
+            console.log(vm.period);
+            if (!vm.profit_rate || vm.profit_rate > 20 || vm.profit_rate < 1) {
+                vm.errorMsg = '请输入期望收益率，1到20之间';
+                vm.inputError = true;
+                $timeout(function() {
+                    vm.inputError = false;
+                }, 1500);
+                return;
+            }
+            if (!vm.period || vm.period > 30 || vm.period < 1) {
+                vm.errorMsg = '请输入期望项目借款期限，1到30之间';
+                vm.inputError = true;
+                $timeout(function() {
+                    vm.inputError = false;
+                }, 1500);
+                return;
+            }
             var data = {
                 invest: {
                     profitRate: vm.profit_rate,
