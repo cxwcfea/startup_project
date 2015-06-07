@@ -18,6 +18,7 @@ var User = require('../models/User'),
     needle = require('needle'),
     weixin = require('../lib/weixin'),
     ecitic = require("../lib/ecitic"),
+    invest = require('./invest'),
     sms = require('../lib/sms');
 
 function getStatisticsPage(req, res, next) {
@@ -515,6 +516,11 @@ function homsAssignAccount(req, res) {
                     callback(err, apply);
                 });
             }
+        },
+        function(apply, callback) {
+            invest.findInvestorForApply(apply, function(err) {
+                callback(err);
+            });
         }
     ], function(err, apply) {
         if (err) {
@@ -1286,6 +1292,11 @@ function autoApproveApply(req, res) {
                     callback(err, apply);
                 });
             }
+        },
+        function(apply, callback) {
+            invest.findInvestorForApply(apply, function(err) {
+                callback(err);
+            });
         }
     ], function(err, apply) {
         if (err) {
