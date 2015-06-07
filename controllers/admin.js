@@ -1782,7 +1782,7 @@ function checkWithdrawOrderStatus(req, res) {
                 });
             },
             function(order, callback) {
-                Order.update({otherInfo:transID}, {status: 1}, function(err, numberAffected, raw) {
+                Order.update({otherInfo:transID}, {status: 1, approvedAt: Date.now()}, function(err, numberAffected, raw) {
                     if (numberAffected == 0) {
                         err = 'nothing to update when update order';
                     }
