@@ -18,7 +18,7 @@ var User = require('../models/User'),
     needle = require('needle'),
     weixin = require('../lib/weixin'),
     ecitic = require("../lib/ecitic"),
-    invest = require('./invest'),
+    invest = require('../lib/invest'),
     sms = require('../lib/sms');
 
 function getStatisticsPage(req, res, next) {
