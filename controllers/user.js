@@ -2,7 +2,6 @@ var passport = require('passport'),
     User = require('../models/User'),
     Order = require('../models/Order'),
     Apply = require('../models/Apply'),
-    Investor = require('../models/Investor'),
     Homas = require('../models/Homas'),
     Contract = require('../models/Contract'),
     Note = require('../models/Note'),
@@ -1792,24 +1791,54 @@ function setIdentity(req, res) {
     var name = req.body.userName;
     var ID = req.body.userID;
     if (name && ID) {
-        User.update({mobile:req.user.mobile}, {$set:{'identity.name':name, 'identity.id':ID}}, function(err, numberAffected, raw) {
+        beifuIdentityVerify(req.user._id, name, ID, function(err) {
+            /*
             if (err) {
-                logger.error('setIdentity error:' + err.toString());
-                res.status(500);
-                return res.send({error_msg:err.toString()});
-            }
-            if (!numberAffected) {
-                logger.error('setIdentity nothing to udate');
                 res.status(403);
-                return res.send({error_msg:'nothing to udate'});
+                return res.send({error_msg:'认证失败'});
             }
-            res.send({});
+            */
+            User.update({mobile:req.user.mobile}, {$set:{'identity.name':name, 'identity.id':ID}}, function(err, numberAffected, raw) {
+                if (err) {
+                    logger.error('setIdentity error:' + err.toString());
+                    res.status(500);
+                    return res.send({error_msg:err.toString()});
+                }
+                if (!numberAffected) {
+                    logger.error('setIdentity nothing to udate');
+                    res.status(403);
+                    return res.send({error_msg:'nothing to udate'});
+                }
+                res.send({});
+            });
         });
     } else {
         logger.error('setIdentity error:invalid input');
         res.status(400);
         return res.send({error_msg:'无效的输入'});
     }
+}
+
+function beifuIdentityVerify(userID, userName, idNum, cb) {
+    var md5key = 'DH7WNCLKEB7KM897T8YBUB6Y3ETO3Atykisu';
+
+    var queryStr = "cert_id=" + idNum + "&input_charset=UTF-8&out_order_no=" + userID + "&partner=201504141356306494&service=ebatong_identity_auth&sign_type=MD5&user_name=" + userName;
+    var sign1 = sparkMD5.hash(queryStr+md5key);
+    queryStr += '&sign=' + sign1;
+    var url = 'http://www.ebatong.com/auth/identityauth.htm?' + queryStr;
+
+    var options = {
+        follow_max         : 3    // follow up to five redirects
+    };
+    console.log(url);
+    needle.get(url, options, function(err, resp, body) {
+        if (err) {
+            cb(err);
+        } else {
+            console.log(body);
+            cb(body);
+        }
+    });
 }
 
 module.exports.registerRoutes = function(app, passportConf) {

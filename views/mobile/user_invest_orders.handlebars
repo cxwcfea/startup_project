@@ -57,7 +57,7 @@
     </div>
     <div class="status-info" ng-hide="vm.currentInvest.contractStatus == 1">
         <h3>已回款（\{{vm.currentInvest.otherInfo}}）</h3>
-        <p>到期时间：\{{vm.currentInvest.returnTime | date:"yyyy-MM-dd"}} 累计\{{vm.currentInvest.duration}}天</p>
+        <p>还款时间：\{{vm.currentInvest.closeAt | date:"yyyy-MM-dd"}} 累计\{{vm.currentInvest.duration}}天</p>
     </div>
     <div class="invest-detail">
         <ul>
@@ -70,7 +70,7 @@
             </li>
             <li>
                 投资时间
-                <span class="fr">\{{vm.currentInvest.createdAt | date:"yyyy-MM-dd HH:mm"}}</span>
+                <span class="fr">\{{vm.currentInvest.investAt | date:"yyyy-MM-dd HH:mm"}}</span>
             </li>
             <li>
                 投资本金
@@ -117,7 +117,7 @@
         </li>
         <li>
             <label>借款时间</label>
-            \{{vm.currentInvest.period}}天
+            \{{vm.currentInvest.period}}天(可提前还款)
         </li>
         <li>
             <label>保证金</label>
@@ -129,7 +129,7 @@
         </li>
         <li>
             <label>风险控制</label>
-            平台提供股票账户<br>实时监控<br>资金亏损讲预警平仓<br>平仓线\{{vm.currentInvest.sellValue | currency:'':2}}万元
+            平台提供股票账户<br>实时监控<br>资金亏损立即预警平仓<br>平仓线\{{vm.currentInvest.sellValue | currency:'':2}}元
         </li>
     </ul>
 </div>

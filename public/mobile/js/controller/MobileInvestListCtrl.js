@@ -20,11 +20,13 @@ angular.module('mobileApp').controller('MobileInvestListCtrl', ['$scope', '$wind
                         if (o.contractID === data.contracts[i]._id) {
                             o.borrower = data.contracts[i].userMobile;
                             o.totalAmount = data.contracts[i].amount;
-                            o.returnTime = data.contracts[i].endTime;
+                            o.returnTime = moment(data.contracts[i].endTime).add(1, 'days').toDate();
+                            o.closeAt = data.contracts[i].closeAt;
                             o.period = data.contracts[i].period;
                             o.deposit = data.contracts[i].deposit;
                             o.sellValue = data.contracts[i].sellValue;
                             o.contractStatus = data.contracts[i].status;
+                            o.investAt = data.contracts[i].startAt;
                             break;
                         }
                     }
@@ -58,7 +60,7 @@ angular.module('mobileApp').controller('MobileInvestListCtrl', ['$scope', '$wind
 
         vm.showInvestDetail = function(invest) {
             vm.currentInvest = invest;
-            vm.daysLeft = moment(invest.returnTime).diff(moment(), 'days') + 1;
+            vm.daysLeft = moment(invest.returnTime).diff(moment(), 'days');
             vm.investDetail = true;
         };
 
