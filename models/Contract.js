@@ -12,10 +12,10 @@ var contractSchema = mongoose.Schema({
     sellValue: {type:Number, required:'{PATH} is required!'},  // sell value for the realted apply
     investors: [{ uid: String, mobile: String, name: String, id: String, amount: Number, profitRate: Number }],
     totalProfit: Number,    // how much profit this contract generate after it complete
-    startTime: Date,
-    endTime: Date,
-    startAt: Date,
-    closeAt: Date
+    startTime: Date,   // the startTime of related apply
+    endTime: Date,     // the endTime of related apply
+    startAt: Date,     // the time when the contract change to processing
+    closeAt: Date     // the time when the contract change to finished
 });
 
 var Contract = mongoose.model('Contract', contractSchema);
