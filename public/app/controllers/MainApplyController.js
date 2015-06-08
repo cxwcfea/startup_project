@@ -281,8 +281,6 @@
         };
 
         vm.payForApply = function() {
-            vm.showMoneyEndWindow = true;
-            return;
             vm.apply.autoPostpone = vm.autoPostpone;
             vm.apply.shouldPay = vm.shouldPay;
             vm.apply.totalAmount = vm.totalAmount;
