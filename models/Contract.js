@@ -5,13 +5,13 @@ var contractSchema = mongoose.Schema({
     userMobile: {type:String, required:'{PATH} is required!'},  // borrower mobile
     createdAt: {type:Date, default: Date.now},
     amount: {type:Number, required:'{PATH} is required!'},
-    platformAmount: {type:Number, default: 0},
+    platformAmount: {type:Number, default: 0},  // amount which not from investor but from niujin
     status: {type:Number, default: 1}, // 0 reserve, 1 processing, 2 finished
-    period: {type:Number, required:'{PATH} is required!'},
+    period: {type:Number, required:'{PATH} is required!'}, // how long the apply will process, count by natural days
     deposit: {type:Number, required:'{PATH} is required!'},    // the deposit for the related apply
     sellValue: {type:Number, required:'{PATH} is required!'},  // sell value for the realted apply
     investors: [{ uid: String, mobile: String, name: String, id: String, amount: Number, profitRate: Number }],
-    totalProfit: Number,
+    totalProfit: Number,    // how much profit this contract generate after it complete
     startTime: Date,
     endTime: Date,
     startAt: Date,

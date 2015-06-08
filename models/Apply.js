@@ -6,7 +6,7 @@ var applySchema = mongoose.Schema({
     serialID: {type:String, unique: true, required:'{PATH} is required!'},
     amount: {type:Number, required:'{PATH} is required!'},
     deposit: {type:Number, required:'{PATH} is required!'},
-    period: {type:Number, required:'{PATH} is required!'},
+    period: {type:Number, required:'{PATH} is required!'},   // how long the apply will process, only count trade day
     status: {type:Number, required:'{PATH} is required!', default: 1}, // 1 means 待支付, 2 means 操盘, 3 means 已结算, 4 means 审核中, 5 means 结算中, 9 means special
     applyAt: {type:Date, default: Date.now},
     startAt: Date,
