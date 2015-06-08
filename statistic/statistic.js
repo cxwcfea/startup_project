@@ -1036,13 +1036,14 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
+
+            /*
             function (callback) {
                 getDailyData(function(err) {
                     callback(err);
                 });
             },
 
-            /*
             function(callback) {
                 fixOldWithdrawOrder(function(err) {
                     callback(err);
