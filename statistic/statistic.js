@@ -1035,7 +1035,12 @@ db.once('open', function callback() {
                 manualReturnFeeOrderData(startTime, endTime, function(err) {
                     callback(err);
                 });
-            }
+            },
+            function (callback) {
+                getDailyData(function(err) {
+                    callback(err);
+                });
+            },
 
             /*
             function(callback) {
