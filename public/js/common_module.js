@@ -255,6 +255,9 @@
         };
     }).filter("displayDate", function () {
         return function (input) {
+            if (!input) {
+                return 'N/A';
+            }
             return moment(input).format("YYYY-MM-DD HH:mm");
         };
     }).filter("displayShortDate", function () {
@@ -297,6 +300,17 @@
                     return '未支付';
                 default:
                     return '未支付';
+            }
+        };
+    }).filter("contractStatus", function() {
+        return function (input) {
+            switch (input) {
+                case 1:
+                    return '进行中';
+                case 2:
+                    return '已回款';
+                default:
+                    return '未知';
             }
         };
     }).filter("displayOrderType", function() {

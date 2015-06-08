@@ -15,48 +15,88 @@
 
 <div class="am-g">
     <div class="am-u-sm-12">
-        <form class="am-form">
-            <div class="am-scrollable-horizontal">
-                <table class="am-table am-table-striped am-table-hover table-main">
-                    <thead>
-                    <tr>
-                        <th class="table-id">手机号</th><th class="table-title">姓名</th><th class="table-id">配资额</th><th class="table-author">免费配资</th><th class="table-id">余额</th><th>客服人员</th><th>推广码</th><th>渠道</th><th class="table-date">注册日期</th><th class="table-set">操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-show="vm.user">
-                        <td>\{{vm.user.mobile}}</td>
-                        <td>\{{vm.user.profile.alipay_name || 'N/A'}}</td>
-                        <td>\{{vm.user.finance.history_capital | currency:'':2}}</td>
-                        <td>\{{vm.user.freeApply ? '是' : '否'}}</td>
-                        <td>\{{vm.user.finance.balance | currency:'':2}}</td>
-                        <td>\{{vm.user.manager || '还未分配' | displayManager}}</td>
-                        <td>\{{vm.user.referName || '还未分配'}}</td>
-                        <td>\{{vm.user.refer || 'N/A'}}</td>
-                        <td>\{{vm.registerDate(vm.user.registerAt)}}</td>
-                        <td>
-                            <div class="am-btn-toolbar">
-                                <div class="am-btn-group am-btn-group-xs">
-                                    <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="vm.open()"><span class="am-icon-envelope"></span> 发短信</button>
-                                    <button class="am-btn am-btn-default am-btn-xs" ng-click="vm.showApplies()"><span class="am-icon-bar-chart"></span> 配资</button>
-                                    <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="vm.showOrders()"><span class="am-icon-money"></span> 交易</button>
-                                    {{#unless watcher}}
-                                        <button class="am-btn am-btn-default am-btn-xs am-text-warning" ng-click="vm.createOrder()"><span class="am-icon-pencil"></span> 创建订单</button>
-                                        <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="vm.changeRefer()"><span class="am-icon-money"></span> 修改推荐人</button>
-                                        <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="vm.compensateLoss()"><span class="am-icon-money"></span> 追回穿仓</button>
-                                    {{/unless}}
-                                    <!--
-                                    <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-click="vm.takeCustomer()"><span class="am-icon-vm"></span> 接手客服</button>
-                                    <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="vm.updateBalance(vm)"><span class="am-icon-pencil"></span> 修改余额</button>
-                                    -->
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+        <div>
+            <form class="am-form">
+                <div class="am-scrollable-horizontal">
+                    <table class="am-table am-table-striped am-table-hover table-main">
+                        <thead>
+                        <tr>
+                            <th class="">手机号</th><th class="table-title">支付宝实名</th><th class="">配资额</th><th class="table-author">免费配资</th><th class="table-id">余额</th><th>客服人员</th><th>推广码</th><th>渠道</th><th class="table-date">注册日期</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-show="vm.user">
+                            <td>\{{vm.user.mobile}}</td>
+                            <td>\{{vm.user.profile.alipay_name || 'N/A'}}</td>
+                            <td>\{{vm.user.finance.history_capital | currency:'':2}}</td>
+                            <td>\{{vm.user.freeApply ? '是' : '否'}}</td>
+                            <td>\{{vm.user.finance.balance | currency:'':2}}</td>
+                            <td>\{{vm.user.manager || '还未分配' | displayManager}}</td>
+                            <td>\{{vm.user.referName || '还未分配'}}</td>
+                            <td>\{{vm.user.refer || 'N/A'}}</td>
+                            <td>\{{vm.registerDate(vm.user.registerAt)}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+        <div class="am-btn-toolbar" ng-show="vm.user">
+            <div class="am-btn-group am-btn-group-xs">
+                <button class="am-btn am-btn-default am-btn-xs" ng-click="vm.open()"><span class="am-icon-envelope"></span> 发短信</button>
+                <button class="am-btn am-btn-default am-btn-xs" ng-click="vm.showApplies()"><span class="am-icon-bar-chart"></span> 配资</button>
+                <button class="am-btn am-btn-default am-btn-xs" ng-click="vm.showOrders()"><span class="am-icon-money"></span> 交易</button>
+                {{#unless watcher}}
+                    <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-click="vm.createOrder()"><span class="am-icon-pencil"></span> 创建订单</button>
+                    <button class="am-btn am-btn-default am-btn-xs am-text-warning" ng-click="vm.changeRefer()"><span class="am-icon-money"></span> 修改推荐人</button>
+                    <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="vm.compensateLoss()"><span class="am-icon-money"></span> 追回穿仓</button>
+                {{/unless}}
+                <!--
+                <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-click="vm.takeCustomer()"><span class="am-icon-vm"></span> 接手客服</button>
+                <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="vm.updateBalance(vm)"><span class="am-icon-pencil"></span> 修改余额</button>
+                -->
             </div>
-        </form>
+        </div>
+        <div ng-show="vm.user">
+            <p>实名信息:</p>
+            <table class="am-table am-table-striped am-table-hover table-main">
+                <thead>
+                <tr>
+                    <th class="">证件</th><th class="">姓名</th><th class="table-id">证件号</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>身份证</td>
+                    <td>\{{vm.user.identity.name || 'N/A'}}</td>
+                    <td>\{{vm.user.identity.id || 'N/A'}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <hr>
+        </div>
+        <div ng-show="vm.user">
+            <p>投资信息:</p>
+            <table class="am-table am-table-striped am-table-hover table-main">
+                <thead>
+                <tr>
+                    <th class="">开启投资</th><th class="">预期收益率</th><th class="">可投项目时长</th><th>可投资金</th><th>投资中金额</th><th>历史投资额</th><th>历史投资收益</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>\{{vm.user.invest.enable}}</td>
+                    <td>\{{vm.user.invest.profitRate}}%</td>
+                    <td>\{{vm.user.invest.duration}}天</td>
+                    <td>\{{vm.user.invest.availableAmount | currency:'':2}}</td>
+                    <td>\{{vm.user.invest.occupiedAmount | currency:'':2}}</td>
+                    <td>\{{vm.user.invest.history_invest_amount | currency:'':2}}元</td>
+                    <td>\{{vm.user.invest.history_invest_profit | currency:'':2}}元</td>
+                </tr>
+                </tbody>
+            </table>
+            <hr>
+        </div>
         <a class="am-badge am-badge-primary" ng-repeat="tag in vm.user.tags">\{{::tag}}</a>
     </div>
 </div>

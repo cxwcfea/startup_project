@@ -10,7 +10,6 @@ var contractSchema = mongoose.Schema({
     period: {type:Number, required:'{PATH} is required!'},
     deposit: {type:Number, required:'{PATH} is required!'},    // the deposit for the related apply
     sellValue: {type:Number, required:'{PATH} is required!'},  // sell value for the realted apply
-    createdAt: {type:Date, default: Date.now},
     investors: [{ uid: String, mobile: String, name: String, id: String, amount: Number, profitRate: Number }],
     totalProfit: Number,
     startTime: Date,
