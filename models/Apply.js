@@ -28,6 +28,7 @@ var applySchema = mongoose.Schema({
     discount: Number,  // for day
     manager: String,
     contractID: String,
+    actualServiceFee: Number,
     profitForMgm: {type:Number, default: 0},
     profitForInvest: {type:Number, default: 0},  // how much profit will return to investor
     accountType: Number  // 2 means tonghuashun, otherwise means homs
