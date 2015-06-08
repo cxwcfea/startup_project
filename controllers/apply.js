@@ -747,6 +747,9 @@ exports.confirmApply = function(req, res, next) {
 };
 
 exports.postConfirmApply = function(req, res, next) {
+    res.status(400);
+    return res.send({error_msg:"木钱啦"});
+
     var applyData = req.body;
     if (req.user._id != applyData.userID) {
         res.status(403);
