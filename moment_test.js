@@ -146,7 +146,8 @@ endTime.second(00);
 console.log(startTime.toDate());
 console.log(endTime.format('YYYYMMDD'));
 
-var aaa = moment("2015-06-12");
-var bbb = moment("2015-06-08");
+var aaa = moment("2015-06-02").dayOfYear();
+var bbb = moment("2015-06-08").dayOfYear();
 
-console.log(aaa.diff(bbb, 'days'));
+console.log(bbb - aaa);
+//console.log(aaa.diff(bbb, 'days'));

@@ -27,7 +27,7 @@ var orderSchema = mongoose.Schema({
     investProfit: Number,
     profitRate: Number,
     contractID: String,
-    duration: String,
+    duration: Number,
     manager: String
 });
 

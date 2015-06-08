@@ -43,7 +43,7 @@ angular.module('mobileApp').controller('MobileInvestListCtrl', ['$scope', '$wind
                 var investDays = 0;
                 vm.finishedInvestList.forEach(function(elem) {
                     totalProfit += elem.investProfit;
-                    investDays += elem.duration;
+                    investDays += Number(elem.duration);
                     vm.returnedCapital += elem.amount;
                 });
                 vm.ave_profit_rate = 0;
