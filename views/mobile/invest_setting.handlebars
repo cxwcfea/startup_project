@@ -16,7 +16,9 @@
             <span ng-hide="vm.user.invest.enable">您已关闭天天投</span>
         </div>
         <div class="zntz-conf">
+            <!--
             <a href="" class="recharge-btn" ng-show="vm.user.invest.enable" ng-click="vm.rechargeToInvestAccount()">转入资金,赚取收益</a>
+            -->
             <ul class="zntz-conf-items">
                 <li>
                     <label class="fl">\{{vm.user.invest.enable ? '天天投已开启' : '打开天天投获取收益'}}</label>
@@ -70,6 +72,20 @@
         </div>
         <div class="ui-dialog-ft ui-btn-group">
             <button type="button" class="close-dialog" ng-click="vm.closeDialogWindow()">我知道了</button>
+        </div>
+    </div>
+</div>
+
+<div class="ui-dialog" ng-show="vm.showRateDialog">
+    <div class="ui-dialog-cnt">
+        <div class="ui-dialog-bd">
+            <div>
+                <h4>预期年化收益</h4>
+                <div class="zntz-tips">预期年化收益率越高，出借时间越慢，出借成功后下一个工作日开始记利息。</div>
+            </div>
+        </div>
+        <div class="ui-dialog-ft ui-btn-group">
+            <button type="button" ng-click="vm.closeDialogWindow()">我知道了</button>
         </div>
     </div>
 </div>

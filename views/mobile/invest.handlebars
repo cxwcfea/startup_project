@@ -61,6 +61,20 @@
     <a href="" class="ft-btn" ng-click="vm.rechargeToInvestAccount()">开始投资</a>
 </footer><!--#E wrapper-->
 
+<div class="ui-dialog" ng-show="vm.showPeriodDialog">
+    <div class="ui-dialog-cnt">
+        <div class="ui-dialog-bd">
+            <div>
+                <h4>投标借款期限</h4>
+                <div class="zntz-tips">在借款期限截止当日，系统会将本金全部收回，放回系统账户中，此日期可以随时修改。</div>
+            </div>
+        </div>
+        <div class="ui-dialog-ft ui-btn-group">
+            <button type="button" class="close-dialog" ng-click="vm.closeDialogWindow()">我知道了</button>
+        </div>
+    </div>
+</div>
+
 <div class="ui-dialog" ng-show="vm.showRateDialog">
     <div class="ui-dialog-cnt">
         <div class="ui-dialog-bd">
