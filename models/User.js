@@ -33,9 +33,9 @@ var userSchema = new mongoose.Schema({
 
     invest: {
         profitRate: Number,
-        duration: Number,
-        availableAmount: { type: Number, default: 0 },
-        occupiedAmount: { type: Number, default: 0 },
+        duration: Number,                                     // 只投资于周期不大于此值的项目
+        availableAmount: { type: Number, default: 0 },        // 可投资的余额
+        occupiedAmount: { type: Number, default: 0 },         // 投资中的金额
         history_invest_amount: { type: Number, default: 0 },  // 累计投资金额
         history_invest_profit: { type: Number, default: 0 },  // 累计投资收益
         total_invest_days: { type: Number, default: 0 },      // 总投资天数（已结束投资)
