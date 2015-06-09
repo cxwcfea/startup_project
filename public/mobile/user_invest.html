@@ -1,3 +1,8 @@
+<style>
+    .user-money .number {
+        flex: 5;
+    }
+</style>
 <div ng-hide="vm.transMoney">
     <div class="user-money">
         <ul class="balance">
@@ -5,9 +10,14 @@
                 可用投资余额(元)
                 <em>{{vm.user.invest.availableAmount | currency:'':2}}</em>
             </li>
+            <li class="number">
+                <p>预期年化收益 {{vm.user.invest.profitRate}}%</p>
+                <p>投资项目期限 {{vm.user.invest.duration}}天</p>
+                <a href="/mobile/#/invest_setting" style="color:#2baa3f;" class="recharge-btn">投资设置</a>
+            </li>
             <li class="btns">
                 <a href="/mobile/#/invest_recharge" class="recharge-btn">转入本金</a>
-                <a href="" class="withdraw-btn" ng-click="vm.transToBalance()">转出到余额</a>
+                <a href="" class="withdraw-btn" ng-click="vm.transToBalance()">转回余额</a>
             </li>
         </ul>
     </div>
