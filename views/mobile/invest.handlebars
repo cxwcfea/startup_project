@@ -7,7 +7,7 @@
     </div>
 </header><!--#E header-->
 
-<div ng-hide="vm.editInvest">
+<div>
     <div class="zntz-box">
         <ul class="zntz-intro">
             <li>
@@ -42,11 +42,11 @@
             <ul class="zntz-conf-items">
                 <li>
                     <label for="">预期年化收益 <i class="icon" ng-click="vm.showRateDialog = true"></i></label>
-                    <input type="number" min="1" max="20" required autofocus name="profit-rate" ng-model="vm.profit_rate"><span class="per">%</span>
+                    <input type="number" min="1" max="20" required autofocus name="profit-rate" ng-model="vm.profit_rate" disabled><span class="per">%</span>
                 </li>
                 <li>
                     <label for="">投标借款期限 <i class="icon" ng-click="vm.showPeriodDialog = true"></i></label>
-                    <input type="number" name="period" min="1" max="30" required ng-model="vm.period"><span>天内</span>
+                    <input type="number" name="period" min="1" max="30" required ng-model="vm.period" disabled><span>天内</span>
                 </li>
             </ul>
         </div>
@@ -57,8 +57,8 @@
 </div>
 
 <!--#S footer-->
-<footer id="footer" ng-hide="vm.editInvest">
-    <a href="" class="ft-btn" ng-click="vm.startInvest()">立即开启</a>
+<footer id="footer">
+    <a href="" class="ft-btn" ng-click="vm.rechargeToInvestAccount()">开始投资</a>
 </footer><!--#E wrapper-->
 
 <div class="ui-dialog" ng-show="vm.showRateDialog">
@@ -103,6 +103,7 @@
     </div>
 </div>
 
+<!--
 <div ng-show="vm.editInvest">
     <div class="zntz-box">
         <div class="zntz-txt">
@@ -167,3 +168,4 @@
         </div>
     </div>
 </div>
+-->

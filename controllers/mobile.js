@@ -530,6 +530,12 @@ module.exports = {
             })
         });
 
+        app.get('/mobile/invest_setting', function(req, res, next) {
+            res.render('mobile/invest_setting', {
+                layout: null
+            })
+        });
+
         app.get('/mobile/weixin_band', getWeixinBandPage);
 
         app.get('/mobile/forget', getForget);

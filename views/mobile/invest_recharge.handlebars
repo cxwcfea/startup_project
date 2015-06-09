@@ -7,11 +7,9 @@
 </header><!--#E header-->
 
 <div class="recharge-alipay" ng-hide="vm.rechargeSuccess">
-    <!--
     <div class="balance">
-        账户余额： <em>\{{vm.user.finance.balance | currency:'':2}}</em> 元
+        预期年化收益率：\{{vm.user.invest.profitRate}}%  可投资项目周期：\{{vm.user.invest.duration}}天
     </div>
-    -->
     <div class="zntz-box">
         <div class="zntz-amount">
             <label for="amount">转入金额 (可转入<em style="color: #a40000;">\{{vm.user.finance.balance | currency:'':2}}</em>元)</label>

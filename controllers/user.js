@@ -1669,7 +1669,7 @@ function rechargeToInvest(req, res) {
         res.status(400);
         return res.send({error_msg:'无效的金额'});
     }
-    User.update({$and:[{_id:req.user._id}, {'finance.balance':{$gte:amount}}]}, {$inc: {'finance.balance':-amount, 'invest.availableAmount':amount}}, function(err, numberAffected, raw) {
+    User.update({$and:[{_id:req.user._id}, {'finance.balance':{$gte:amount}}]}, {$inc: {'finance.balance':-amount, 'invest.availableAmount':amount}, $set: {'invest.enable':true}}, function(err, numberAffected, raw) {
         if (err) {
             logger.warn('rechargeToInvest error:' + err.toString());
             res.status(500);

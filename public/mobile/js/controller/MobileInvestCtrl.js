@@ -24,8 +24,6 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
         }
 
         vm.changeInvest = function() {
-            console.log(vm.profit_rate);
-            console.log(vm.period);
             if (!vm.profit_rate || vm.profit_rate > 20 || vm.profit_rate < 1) {
                 vm.errorMsg = '请输入期望收益率，1到20之间';
                 vm.inputError = true;
@@ -66,10 +64,6 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
         };
 
         vm.startInvest = function() {
-            if (!vm.user.identity.id) {
-                vm.showIdentityDialog = true;
-                return;
-            }
             if (!vm.profit_rate) {
                 vm.errorMsg = '请输入期望收益率，1到20之间';
                 vm.inputError = true;
@@ -132,7 +126,34 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
         };
 
         vm.rechargeToInvestAccount = function() {
-            $location.path('/invest_recharge');
+            if (!vm.user.identity.id) {
+                vm.showIdentityDialog = true;
+                return;
+            }
+            if (!vm.user.invest.enable) {
+                var data = {
+                    invest: {
+                        profitRate: vm.profit_rate,
+                        duration: vm.period,
+                        enable: true
+                    }
+                };
+                $http.post('/api/user/invest_update', data)
+                    .success(function(data, status) {
+                        //vm.showConfirmDialog = true;
+                        vm.user.invest.enable = true;
+                        $location.path('/invest_recharge');
+                    })
+                    .error(function(data, status) {
+                        vm.errorMsg = data.error_msg;
+                        vm.inputError = true;
+                        $timeout(function() {
+                            vm.inputError = false;
+                        }, 1500);
+                    });
+            } else {
+                $location.path('/invest_recharge');
+            }
         };
 
         vm.enableChange = function() {
