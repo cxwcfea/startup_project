@@ -32,6 +32,14 @@
             <span class="span01">邮箱 \{{(accountVM.user.profile.email | displayEmail)}} </span>
             <a href="" class="color_2489f0" ng-click="accountVM.showVerifyEmailWindow = true">\{{accountVM.user.profile.email_verified ? '修改' : '绑定'}}</a>
         </div>
+        <div class="fl set_lstLeft set_lstRight" ng-show="accountVM.user.identity.id">
+            <span class="">身份信息 \{{accountVM.user.identity.name}}（\{{accountVM.user.identity.id | displayIdentityID}})</span>
+            <span class="color_999999 fontSize12">已认证</span>
+        </div>
+        <div class="fl set_lstLeft set_lstRight" ng-hide="accountVM.user.identity.id">
+            <span class="">身份信息 尚未认证</span>
+            <a href="" class="color_2489f0" ng-click="accountVM.showIdentityDialog = true">进行认证</a>
+        </div>
         <!--
         <div class="fl set_lstLeft set_lstRight">
             <span class="span01">微信（138****8888)</span>
@@ -131,6 +139,45 @@
             <div class="pass_text fl">
                 <p class="p01">登陆密码修改成功！</p>
                 <a class="newrec_btn02 " href="" ng-click="accountVM.closePassWindow()">确   定</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+
+<div class="regTcc" ng-show="accountVM.showIdentityDialog">
+    <div class="tmbg"></div>
+    <div class="tar_TccBox">
+        <div class="regColumn">
+            身份信息认证
+            <div class="loginClose" ng-click="accountVM.closeIdentityWindow()"></div>
+        </div>
+        <div class="pass_Box jq_pass_Box" ng-hide="accountVM.identitySetSuccess">
+            <div class=" pass_formBox">
+                <div class="fl pass_left">
+                    姓名
+                </div>
+                <div class="pass_right fl">
+                    <input type="text" class="newcar_inputText pass_inputText" ng-model="accountVM.userName" maxlength="16" required>
+                    <span class="color_999999">请输入真实姓名</span>
+                </div>
+            </div>
+            <div class=" pass_formBox">
+                <div class="fl pass_left">
+                    身份证号码
+                </div>
+                <div class="pass_right fl">
+                    <input type="text" class="newcar_inputText pass_inputText" ng-model="accountVM.userID" pattern="^\d{15}$|^\d{18}$|^\d{17}(\d|X|x)$" required>
+                </div>
+            </div>
+            <alert ng-repeat="alert in accountVM.alerts" type="\{{alert.type}}" close="accountVM.closeAlert($index)">\{{alert.msg}}</alert>
+            <a class="newrec_btn02 newrec_zfbbtn01 jq_Btn01" href="" ng-click="accountVM.verifyUserIdentity()">\{{accountVM.identityBtnText}}</a>
+        </div>
+        <div class="pass_box2 jq_pass_box2" ng-show="accountVM.identitySetSuccess">
+            <div class="pass_img fl"></div>
+            <div class="pass_text fl">
+                <p class="p01">身份认证成功！</p>
+                <a class="newrec_btn02" href="" ng-click="accountVM.closeIdentityWindow()">确   定</a>
             </div>
             <div class="clear"></div>
         </div>
