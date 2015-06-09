@@ -1274,6 +1274,9 @@ function autoApproveApply(req, res) {
     async.waterfall([
         function (callback) {
             Apply.findOne({serialID:serialID}, function(err, apply) {
+                if (!apply) {
+                    err = 'apply not found:' + serialID;
+                }
                 callback(err, apply);
             });
         },
@@ -1295,7 +1298,7 @@ function autoApproveApply(req, res) {
         },
         function(apply, callback) {
             invest.findInvestorForApply(apply, function(err) {
-                callback(err);
+                callback(err, apply);
             });
         }
     ], function(err, apply) {
