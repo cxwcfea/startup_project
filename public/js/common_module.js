@@ -207,7 +207,7 @@
     }).filter("displayOrderAmount", function () {
         return function (input, orderType) {
             var ret = '+';
-            if (orderType === 2 || orderType === 9 || orderType === 10 || orderType === 11) {
+            if (orderType === 2 || orderType === 9 || orderType === 10 || orderType === 11 || orderType === 17 || orderType === 15) {
                 ret = '-';
             }
             return ret + input;
@@ -215,7 +215,7 @@
     }).filter("displayIncome", ['$filter', function ($filter) {
         return function (input, orderType) {
             var ret = input;
-            if (orderType == 2 || orderType == 9 || orderType == 10 || orderType == 15) {
+            if (orderType == 2 || orderType == 9 || orderType == 10 || orderType === 11 || orderType === 17 || orderType == 15) {
                 return '';
             }
             return $filter('currency')(ret, '', 2);
@@ -223,7 +223,7 @@
     }]).filter("displayOutcome", ['$filter', function ($filter) {
         return function (input, orderType) {
             var ret = '';
-            if (orderType == 2 || orderType == 9 || orderType == 10 || orderType == 15) {
+            if (orderType == 2 || orderType == 9 || orderType == 10 || orderType === 11 || orderType === 17 || orderType == 15) {
                 ret = $filter('currency')(input, '', 2);
             }
             return ret;
@@ -340,14 +340,18 @@
                     return '投资本金支出';
                 case 12:
                     return '利息收入';
-                case 16:
-                    return '投资本金返还';
                 case 13:
                     return '推广佣金';
                 case 14:
                     return '佣金兑换余额';
                 case 15:
                     return '穿仓扣除';
+                case 16:
+                    return '投资本金返还';
+                case 17:
+                    return '余额转入投资本金';
+                case 18:
+                    return '投资本金转入余额';
                 default:
                     return '充值';
             }

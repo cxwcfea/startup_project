@@ -1643,7 +1643,23 @@ function investToBalance(req, res) {
             res.status(500);
             return res.send({error_msg:'can not update User'});
         }
-        res.send({});
+        var orderData = {
+            userID: req.user._id,
+            userMobile: req.user.mobile,
+            dealType: 18,
+            amount: Number(amount.toFixed(2)),
+            status: 1,
+            description: '投资本金转回余额',
+            userBalance: req.user.finance.balance + amount
+        };
+        Order.create(orderData, function(err, order) {
+            if (err) {
+                logger.warn('investToBalance error:' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+            res.send({});
+        });
     });
 }
 
@@ -1663,7 +1679,23 @@ function rechargeToInvest(req, res) {
             res.status(403);
             return res.send({error_msg:'余额不足'});
         }
-        res.send({});
+        var orderData = {
+            userID: req.user._id,
+            userMobile: req.user.mobile,
+            dealType: 17,
+            amount: Number(amount.toFixed(2)),
+            status: 1,
+            description: '余额转入投资本金',
+            userBalance: req.user.finance.balance - amount
+        };
+        Order.create(orderData, function(err, order) {
+            if (err) {
+                logger.warn('rechargeToInvest error:' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+            res.send({});
+        });
     });
 }
 
