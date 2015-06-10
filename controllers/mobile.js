@@ -450,6 +450,12 @@ module.exports = {
             })
         });
 
+        app.get('/mobile/add_card', function(req, res, next) {
+            res.render('mobile/add_card', {
+                layout: null
+            })
+        });
+
         app.get('/mobile/weixin_band', getWeixinBandPage);
 
         app.get('/mobile/forget', getForget);

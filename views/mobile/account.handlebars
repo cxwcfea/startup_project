@@ -15,11 +15,18 @@
         <li>
             <a href="/mobile/#/change_pass">登录密码 <i></i><span>修改</span></a>
         </li>
-        <li>
-            <a href="">我的银行卡 <span>未绑定</span></a>
+        <li ng-show="vm.withdrawCard">
+            <a href="" ng-click="vm.addCard()">我的银行卡 <i></i><span>\{{vm.withdrawCardName}} 尾号<strong>\{{vm.withdrawCard | displayCard2}}</strong></span></a>
+        </li>
+        <li ng-hide="vm.withdrawCard">
+            <a href="/mobile/#/add_card">我的银行卡 <i></i><span>未绑定</span></a>
         </li>
     </ul>
+    <!--
     <p class="account-tip">绑定银行卡提现请登录电脑版操作，触屏版即将开通！</p>
+    -->
 
     <a href="" class="logout-btn" ng-click="vm.logout()">退出登录</a>
 </div>
+
+<div class="ui-tip" ng-show="vm.inputError">\{{vm.errorMsg}}</div>

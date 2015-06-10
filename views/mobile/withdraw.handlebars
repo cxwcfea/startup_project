@@ -12,40 +12,33 @@
 <div class="withdraw-box">
     <div ng-show="withdrawVM.step === 0">
         <ul class="withdraw-status">
-            <li class="nocard">
-                <span class="icon"></span>
-                <div class="txt">
-                    <h5>请通过电脑访问牛金网</h5>
-                    <p>电脑打开上网浏览器</p>
-                    <p>访问http://www.niujinwang.com</p>
-                </div>
-            </li>
             <li class="step2">
-                <span class="icon"></span>
                 <div class="txt">
-                    <h5>绑定银行卡</h5>
+                    <h5>请先绑定提现银行卡</h5>
+                    <!--
                     <p>登录“我的账户”</p>
                     <p>在“帐号设置”中绑定银行卡</p>
+                    -->
                 </div>
             </li>
         </ul>
         <div class="plr10">
-            <a href="/mobile/#/user" class="btn">好的</a>
+            <a href="/mobile/#/add_card" class="btn">去绑卡</a>
         </div>
     </div>
     <div ng-show="withdrawVM.step === 1">
         <div class="bank">
-            <!--
             <div class="bank-logo">
-                <img  ng-src="\{{withdrawVM.BankNameList[withdrawVM.card.bankID].img}}" width="40" height="40" alt="\{{withdrawVM.card.bankName}}" />
+                <img  ng-src="\{{withdrawVM.BankNameList[withdrawVM.card.bankID].logo}}" width="40" height="40" alt="\{{withdrawVM.card.bankName}}" />
             </div>
-            -->
             <div class="bank-intro">
                 <h5>\{{withdrawVM.card.nameOfTheBank}}</h5>
+                <!--
                 <h5>\{{withdrawVM.card.bankName}}</h5>
+                -->
                 <p class="bank-num">尾号<strong>\{{withdrawVM.card | displayCard2}}</strong></p>
             </div>
-            <div class="bank-tips">提现银行卡为绑定的提现银行卡</div>
+            <div class="bank-tips">\{{withdrawVM.tips}}</div>
         </div>
         <div class="withdraw-amount">可提现余额<em>\{{withdrawVM.user.finance.balance | currency:'':2}}</em>元</div>
         <form class="withdraw-form" novalidate>
@@ -73,7 +66,7 @@
                     <h5>\{{withdrawVM.card.bankName}}</h5>
                     <p class="bank-num">尾号<strong>\{{withdrawVM.card | displayCard2}}</strong></p>
                 </div>
-                <div class="bank-tips">提现银行卡为绑定的提现银行卡</div>
+                <div class="bank-tips">\{{withdrawVM.tips}}</div>
             </div>
             <div class="withdraw-amount">可提现余额<em>\{{withdrawVM.user.finance.balance | currency:'':2}}</em>元</div>
             <form class="withdraw-form">

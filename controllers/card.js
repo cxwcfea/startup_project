@@ -1,11 +1,27 @@
-var Card = require('../models/Card');
+var Card = require('../models/Card'),
+    PayInfo = require('../models/PayInfo'),
+    util = require('../lib/util');
 
 exports.getCardsForUser = function(req, res, next) {
-    Card.find({userID:req.params.uid}, function(err, collection) {
-        if (err) {
-            return res.send({success:false, reason:err.toString()});
+    PayInfo.findOne({userID:req.params.uid}, function(err, payInfo) {
+        if (err || !payInfo) {
+            Card.find({userID:req.params.uid}, function(err, collection) {
+                if (err) {
+                    return res.send({success:false, reason:err.toString()});
+                }
+                res.send(collection);
+            });
+        } else {
+            var card = {
+                userID: payInfo.userID,
+                bankID: util.getBankCodeFromBeifuBankCode(payInfo.bankCode),
+                bankName: 'beifu pay',
+                cardID: payInfo.cardID,
+                userName: payInfo.userName,
+                type: 2
+            };
+            res.send([card]);
         }
-        res.send(collection);
     });
 };
 

@@ -1,0 +1,48 @@
+<!--#S header-->
+<header id="header">
+    <div class="header-box">
+        <h1>绑定银行卡</h1>
+        <a class="back" href="/mobile/#/account"></a>
+    </div>
+</header><!--#E header-->
+
+<div class="recharge-alipay">
+    <div class="balance">
+        绑定提现银行卡
+    </div>
+    <form name="beiFuForm" class="pay-form" novalidate>
+        <div class="form-item yyn-month">
+            <label for="">开户银行</label>
+            <div class="sel-box">
+                <span class="icon"></span>
+                <select class="ui-sel" ng-options="bank.name for bank in vm.bankList" ng-model="vm.userBank" ng-change="vm.selectBank()"></select>
+            </div>
+        </div>
+        <div class="form-item">
+            <label for="">银行卡号</label>
+            <input type="text" name="card_no" ng-model="vm.bankCardID" minlength="16" maxlength="19" pattern="^(\d{16}|\d{17}|\d{18}|\d{19})$" required placeholder="请输入银行卡号">
+        </div>
+        <div class="form-item">
+            <label for="">持卡人姓名</label>
+            <input type="text" name="real_name" ng-model="vm.userName" maxlength="16" required placeholder="请输入姓名">
+        </div>
+        <div class="form-item">
+            <span>图形验证码</span>
+            <img id="img_code" style="-webkit-user-select: none; height: 40px; cursor: pointer;" src="/api/get_verify_img" ng-click="vm.imgClicked($event)">
+            <input type="text" name="imgcode" minlength="6" maxlength="6" class="ipt-txt" ng-model="vm.img_code" placeholder="请输入图形验证码" required>
+        </div>
+        <div class="form-box">
+            <div class="verify-ipt">
+                <label for="">短信验证码</label>
+                <input type="text" name="verify" class="ipt-txt" ng-model="vm.verify_code" placeholder="请输入短信验证码" required>
+                <a ng-class="{disabled:vm.verifyBtnDisabled}" href="" class="get-verify forget-verify" ng-click="vm.getVerifyCode()">\{{vm.verifyCodeBtnText}}</a>
+            </div>
+        </div>
+        <button type="submit" class="submit-btn" ng-click="vm.addWithdrawCard()">下一步</button>
+    </form>
+</div>
+<div class="ui-tip" ng-show="vm.inputError">\{{vm.errorMsg}}</div>
+<div class="ui-tip-success" ng-show="vm.success">
+    <div class="icon"></div>
+    提现银行卡绑定成功！
+</div>

@@ -476,6 +476,7 @@
         {
             name: '工商银行',
             img: '/images/yh/icbc.jpg',
+            logo: '/mobile/images/yh/icbc_logo.jpg',
             instCode: 'ICBC',
             credit: true,
             value: 0
@@ -483,6 +484,7 @@
         {
             name: '建设银行',
             img: '/images/yh/cbc.jpg',
+            logo: '/mobile/images/yh/cbc_logo.jpg',
             instCode: 'CCB',
             credit: true,
             value: 1
@@ -490,6 +492,7 @@
         {
             name: '农业银行',
             img: '/images/yh/abc.jpg',
+            logo: '/mobile/images/yh/abc_logo.jpg',
             instCode: 'ABC',
             credit: true,
             value: 2
@@ -497,6 +500,7 @@
         {
             name: '中国银行',
             img: '/images/yh/boc.png',
+            logo: '/mobile/images/yh/boc_logo.jpg',
             instCode: 'BOC',
             credit: true,
             value: 3
@@ -504,6 +508,7 @@
         {
             name: '招商银行',
             img: '/images/yh/cmb.jpg',
+            logo: '/mobile/images/yh/cmb_logo.jpg',
             instCode: 'CMB',
             credit: true,
             value: 4
@@ -511,6 +516,7 @@
         {
             name: '交通银行',
             img: '/images/yh/bcs.png',
+            logo: '/mobile/images/yh/bcs_logo.jpg',
             instCode: 'COMM',
             credit: true,
             value: 5
@@ -518,6 +524,7 @@
         {
             name: '邮政储蓄银行',
             img: '/images/yh/psbc.png',
+            logo: '/mobile/images/yh/psbc_logo.jpg',
             instCode: 'PSBC',
             credit: false,
             value: 6
@@ -525,6 +532,7 @@
         {
             name: '广发银行',
             img: '/images/yh/cgb.png',
+            logo: '/mobile/images/yh/cgb_logo.jpg',
             instCode: 'GDB',
             credit: true,
             value: 7
@@ -532,6 +540,7 @@
         {
             name: '光大银行',
             img: '/images/yh/ceb.png',
+            logo: '/mobile/images/yh/ceb_logo.jpg',
             instCode: 'CEB',
             credit: true,
             value: 8
@@ -539,6 +548,7 @@
         {
             name: '兴业银行',
             img: '/images/yh/cib.png',
+            logo: '/mobile/images/yh/cib_logo.jpg',
             instCode: 'CIB',
             credit: true,
             value: 9
@@ -546,6 +556,7 @@
         {
             name: '北京银行',
             img: '/images/yh/bob.png',
+            logo: '/mobile/images/yh/bob_logo.jpg',
             instCode: 'BCCB',
             credit: false,
             value: 10
@@ -553,6 +564,7 @@
         {
             name: '浦发银行',
             img: '/images/yh/spdb.png',
+            logo: '/mobile/images/yh/spdb_logo.jpg',
             instCode: 'SPDB',
             credit: true,
             value: 11
@@ -560,6 +572,7 @@
         {
             name: '民生银行',
             img: '/images/yh/cmbc.png',
+            logo: '/mobile/images/yh/cmbc_logo.jpg',
             instCode: 'CMBC',
             credit: true,
             value: 12
@@ -567,6 +580,7 @@
         {
             name: '中信银行',
             img: '/images/yh/ecitic.png',
+            logo: '/mobile/images/yh/ecitic_logo.jpg',
             instCode: 'CITIC',
             credit: true,
             value: 13
@@ -574,6 +588,7 @@
         {
             name: '华夏银行',
             img: '/images/yh/hx-2.png',
+            logo: '/mobile/images/yh/hx_logo.jpg',
             instCode: 'HXB',
             credit: false,
             value: 14
@@ -581,6 +596,7 @@
         {
             name: '平安银行',
             img: '/images/yh/pa.png',
+            logo: '/mobile/images/yh/pa_logo.jpg',
             instCode: 'SZPAB',
             credit: true,
             value: 15
@@ -588,6 +604,7 @@
         {
             name: '宁波银行',
             img: '/images/yh/nbcb.png',
+            logo: '/mobile/images/yh/nbcb_logo.jpg',
             instCode: 'NBCB',
             credit: false,
             value: 16
@@ -595,6 +612,7 @@
         {
             name: '上海银行',
             img: '/images/yh/bos.png',
+            logo: '/mobile/images/yh/bos_logo.jpg',
             instCode: 'BOS',
             credit: true,
             value: 17

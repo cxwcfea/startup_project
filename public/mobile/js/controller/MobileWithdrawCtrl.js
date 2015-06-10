@@ -2,7 +2,6 @@
 angular.module('mobileApp').controller('MobileWithdrawCtrl', ['$scope', '$http', '$window', '$location', '$routeParams', '$filter', 'njOrder', 'njCard', 'BankNameList', '$timeout', function($scope, $http, $window, $location, $routeParams, $filter, njOrder, njCard, BankNameList, $timeout) {
     var vm = this;
 
-    $scope.data.menu = 3;
     vm.step = 0;
     vm.user = $window.bootstrappedUserObject;
     if (!vm.user) {
@@ -13,14 +12,14 @@ angular.module('mobileApp').controller('MobileWithdrawCtrl', ['$scope', '$http',
         $location.path('/login');
     } else {
         var cards = njCard.query({uid:vm.user._id}, function() {
-            if (cards.length === 0) {
-                // addAlert('danger', '请先添加银行卡！');
-                //TODO: Add the card binding support.
-                // $location.path('/mobile/#/user');
-            } else {
+            vm.tips = '提现银行卡为您绑定的提现银行卡';
+            if (cards.length > 0) {
                 vm.card = cards.pop();
                 vm.card.nameOfTheBank = BankNameList[vm.card.bankID].name;
                 vm.step = 1;
+                if (vm.card.type === 2) {
+                    vm.tips = '提现银行卡绑定为您支付时使用的银行卡';
+                }
             }
         });
 
