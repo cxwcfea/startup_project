@@ -20,6 +20,7 @@ var passport = require('passport'),
     sparkMD5 = require('spark-md5'),
     moment = require('moment'),
     ccap = require('ccap')(),
+    xml2js = require("xml2js"),
     async = require('async');
 
 module.exports.postLogin = function(req, res, next) {
@@ -1824,12 +1825,10 @@ function setIdentity(req, res) {
     var ID = req.body.userID;
     if (name && ID) {
         beifuIdentityVerify(req.user._id, name, ID, function(err) {
-            /*
             if (err) {
                 res.status(403);
-                return res.send({error_msg:'认证失败'});
+                return res.send({error_msg:'认证失败 ' + err.toString()});
             }
-            */
             User.update({mobile:req.user.mobile}, {$set:{'identity.name':name, 'identity.id':ID}}, function(err, numberAffected, raw) {
                 if (err) {
                     logger.error('setIdentity error:' + err.toString());
@@ -1857,18 +1856,28 @@ function beifuIdentityVerify(userID, userName, idNum, cb) {
     var queryStr = "cert_id=" + idNum + "&input_charset=UTF-8&out_order_no=" + userID + "&partner=201504141356306494&service=ebatong_identity_auth&sign_type=MD5&user_name=" + userName;
     var sign1 = sparkMD5.hash(queryStr+md5key);
     queryStr += '&sign=' + sign1;
-    var url = 'http://www.ebatong.com/auth/identityauth.htm?' + queryStr;
+    var url = 'https://www.ebatong.com/auth/identityauth.htm?' + queryStr;
 
     var options = {
         follow_max         : 3    // follow up to five redirects
     };
-    console.log(url);
-    needle.get(url, options, function(err, resp, body) {
+    needle.get(encodeURI(url), options, function(err, resp, body) {
         if (err) {
             cb(err);
         } else {
-            console.log(body);
-            cb(body);
+            var parseString = xml2js.parseString;
+            parseString(body, function (error, result) {
+                if (error) {
+                    cb(error);
+                } else {
+                    console.log(result.beifu.order[0]);
+                    if (result.beifu.order[0].status[0] !== '0') {
+                        cb(result.beifu.order[0].desc[0]);
+                    } else {
+                        cb(null);
+                    }
+                }
+            });
         }
     });
 }
@@ -2101,7 +2110,7 @@ function getRecharge(req, res, next) {
             bootstrappedOrderObject: JSON.stringify(order)
         });
     });
-};
+}
 
 module.exports.payByBalance = function(req, res, next) {
     if (!req.user) {
