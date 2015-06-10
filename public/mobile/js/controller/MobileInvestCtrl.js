@@ -175,7 +175,7 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
         };
 
         vm.redirectToIdentity = function() {
-            $location.path('/account');
+            $location.path('/identity');
         };
     }
 }]);
