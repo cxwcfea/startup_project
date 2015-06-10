@@ -66,17 +66,20 @@
         <a href="/apply">返回修改</a>
         <p>14:00后申请的交易账户最迟会在下一个交易日09:15之前分配好</p>
     </div>
-</div>
-<div class="undis" id="tckBox">
-    <div class="tmbg"></div>
-    <div class="PopupBox">
-        <p class="p01"><span class="icon07"></span>&nbsp;请在新打开的银行页面中完成网上付款</p>
-        <p class="p02">1、付款过程中请不要关闭这个窗口；</p>
-        <p class="p02">2、完成付款后请执行相应操作。</p>
-        <div class="applyBtnBox2">
-            <a href="success.html" class="applyBtn02 marRight20">已完成付款</a>
-            <a href="#" class="applyBtn03">修改付款方式</a>
+
+    <div class="" id="tckBox" ng-show="vm.showIdentityDialog">
+        <div class="tmbg"></div>
+        <div class="PopupBox">
+            <p class="p01"><span class="icon07"></span>&nbsp;需要身份信息</p>
+            <p class="p02">为了保证资金安全，参与天天投需要先认证身份信息；</p>
+            <p class="p02">请先完成牛金网身份认证。</p>
+            <div class="applyBtnBox2">
+                <a href="" class="applyBtn02 marRight20" ng-click="vm.redirectToIdentity()">去身份认证</a>
+                <a href="" class="applyBtn03" ng-click="vm.showIdentityDialog = false">以后再说</a>
+            </div>
+            <!--
+            <p class="p03"><a href="#" class="color_c82217">付款遇到问题？</a></p>
+            -->
         </div>
-        <p class="p03"><a href="#" class="color_c82217">付款遇到问题？</a></p>
     </div>
 </div>

@@ -753,6 +753,11 @@ exports.postConfirmApply = function(req, res, next) {
         logger.warn('postConfirmApply error:apply is not belongs to the user');
         return res.send({reason:'apply is not belongs to the user'});
     }
+    if (!req.user.identity.id) {
+        res.status(403);
+        logger.warn('postConfirmApply error:user must verify identity before apply:' + req.user.mobile);
+        return res.send({error_code:1, error_msg:'user must verify identity before apply'});
+    }
     Apply.count({ $and: [{isTrial: false}, {status: 2}, {userMobile:req.user.mobile}] }, function (err, count) {
         if (err) {
             logger.warn('postConfirmApply error when get apply count:' + err.toString());
@@ -761,7 +766,7 @@ exports.postConfirmApply = function(req, res, next) {
         if (count >= 5) {
             res.status(403);
             logger.warn('postConfirmApply error:the same user have too much active apply');
-            return res.send({reason:'the same user have too much active apply'});
+            return res.send({error_code:2, reason:'the same user have too much active apply'});
         } else {
             var orderData = {
                 userID: applyData.userID,
