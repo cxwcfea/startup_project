@@ -38,3 +38,31 @@
 .user-tz ul {
     background-color: #eee;
 }
+
+.zntz-overlay {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    width: 95%;
+    background-color: #d3d3d3;
+    filter:alpha(opacity=50);
+    -moz-opacity:0.5;
+    -khtml-opacity: 0.5;
+    opacity: 0.5;
+}
+
+.zntz-total li.first {
+    padding-left: 10%;
+    float: left;
+}
+
+.zntz-total li {
+    float: right;
+    width: 40%;
+    font-size: 12px;
+    color: #666;
+}
+
+.zntz-total em {
+    color: #a45c00;
+}
