@@ -1616,21 +1616,34 @@ function beifuPay(req, res) {
     });
 }
 
+var investPrivateProperties = [
+    'availableAmount',
+    'occupiedAmount',
+    'history_invest_amount',
+    'history_invest_profit',
+    'total_invest_days'
+];
+
 function investUpdate(req, res) {
     var invest = req.body.invest;
+    if (!invest || !invest.profitRate || !invest.duration || invest.profitRate > 20 || invest.profitRate < 1 || invest.duration > 30 || invest.duration < 1) {
+        res.status(403);
+        return res.send({error_msg:'invalid input'});
+    }
+    invest = _.omit(invest, investPrivateProperties);
     User.update({mobile:req.user.mobile}, {invest:invest}, function(err, numberAffected, raw) {
         if (numberAffected) {
             res.send({});
         } else {
             res.status(500);
-            return res.send({error_msg:'failed to update user enableInvest'});
+            res.send({error_msg:'failed to update user enableInvest'});
         }
     });
 }
 
 function investToBalance(req, res) {
     var amount = Number(req.body.amount);
-    if (!amount) {
+    if (!amount || amount <= 0) {
         res.status(400);
         return res.send({error_msg:'无效的金额'});
     }
@@ -1666,7 +1679,7 @@ function investToBalance(req, res) {
 
 function rechargeToInvest(req, res) {
     var amount = Number(req.body.amount);
-    if (!amount) {
+    if (!amount || amount <= 0) {
         res.status(400);
         return res.send({error_msg:'无效的金额'});
     }
