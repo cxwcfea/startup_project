@@ -37,11 +37,6 @@
         <div class="zntz-conf">
             <ul class="zntz-conf-items">
                 <li>
-                    <label for="">当前投资规则</label>
-                    <span class="info">自定义设置</span>
-                    <input type="button" value="设置" ng-click="vm.redirectToInvestSetting()">
-                </li>
-                <li>
                     <label for="">预期年化收益 <i class="icon" ng-click="vm.showRateDialog = true"></i></label>
                     <input type="number" min="1" max="20" required autofocus name="profit-rate" ng-model="vm.profit_rate" disabled><span class="per">%</span>
                 </li>
@@ -50,6 +45,10 @@
                     <input type="number" name="period" min="1" max="30" required ng-model="vm.period" disabled><span>天内</span>
                 </li>
             </ul>
+            <div class="zntz-conf-items">
+                <span class="info">自定义设置</span>
+                <input type="button" value="设置" ng-click="vm.redirectToInvestSetting()">
+            </div>
         </div>
     </div>
     <!--
@@ -131,20 +130,6 @@
         </div>
         <div class="ui-dialog-ft ui-btn-group">
             <button type="button" ng-click="vm.closeDialogWindow()">我知道了</button>
-        </div>
-    </div>
-</div>
-
-<div class="ui-dialog" ng-show="vm.showConfirmDialog">
-    <div class="ui-dialog-cnt">
-        <div class="ui-dialog-bd">
-            <div>
-                <h4>天天投</h4>
-                <div class="zntz-tips">天天投已经开启，您将余额转入天天投，系统h会自动帮您投资让您收益最大化。</div>
-            </div>
-        </div>
-        <div class="ui-dialog-ft ui-btn-group">
-            <button type="button" ng-click="vm.confirmInvest()">我知道了</button>
         </div>
     </div>
 </div>

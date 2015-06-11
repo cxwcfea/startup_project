@@ -104,7 +104,7 @@ angular.module('mobileApp').config(['$routeProvider', '$httpProvider', function(
             controller: 'MobileIdentityCtrl'
         })
         .when('/invest_setting', { templateUrl: '/mobile/invest_setting',
-            controller: 'MobileInvestCtrl as vm'
+            controller: 'MobileInvestSettingCtrl as vm'
         })
         .otherwise({
             redirectTo: '/home'
