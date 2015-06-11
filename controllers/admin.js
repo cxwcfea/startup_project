@@ -1962,22 +1962,12 @@ function deleteUserComplain(req, res) {
 function changeUserRefer(req, res) {
     var newRefer = req.query.refer;
     var mobile = req.query.mobile;
-    User.findOne({referName:newRefer}, function(err, user) {
+    User.update({mobile:mobile}, {$set:{refer:newRefer}}, function(err, numberAffected, raw) {
         if (err) {
             res.status(500);
             return res.send({error_msg:err.toString()});
         }
-        if (user) {
-            res.status(403);
-            return res.send({error_msg:'该推荐码已被占用'})
-        }
-        User.update({mobile:mobile}, {$set:{refer:newRefer}}, function(err, numberAffected, raw) {
-            if (err) {
-                res.status(500);
-                return res.send({error_msg:err.toString()});
-            }
-            res.send({});
-        });
+        res.send({});
     });
 }
 
