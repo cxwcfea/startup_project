@@ -1678,7 +1678,7 @@ function rechargeToInvest(req, res) {
         }
         if (!numberAffected) {
             res.status(403);
-            return res.send({error_msg:'余额不足'});
+            return res.send({error_code:1, error_msg:'余额不足'});
         }
         var orderData = {
             userID: req.user._id,

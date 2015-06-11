@@ -32,12 +32,20 @@ angular.module('mobileApp').controller('MobileInvestRechargeCtrl', ['$scope', '$
                     vm.user.invest.availableAmount += vm.invest_amount;
                 })
                 .error(function(data, status) {
-                    vm.errorMsg = data.error_msg;
-                    vm.inputError = true;
-                    $timeout(function() {
-                        vm.inputError = false;
-                    }, 1500);
+                    if (status === 403 && data.error_code === 1) {
+                        vm.notEnoughMoney = true;
+                    } else {
+                        vm.errorMsg = data.error_msg;
+                        vm.inputError = true;
+                        $timeout(function() {
+                            vm.inputError = false;
+                        }, 2000);
+                    }
                 });
         };
+
+        vm.redirectToRecharge = function() {
+            $location.path('/recharge');
+        }
     }
 }]);

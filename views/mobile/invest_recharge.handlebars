@@ -58,6 +58,20 @@
 
 <div class="ui-tip" ng-show="vm.inputError">\{{vm.errorMsg}}</div>
 
+<div class="ui-dialog" ng-show="vm.notEnoughMoney">
+    <div class="ui-dialog-cnt">
+        <div class="ui-dialog-bd">
+            <div>
+                <h4>请先充值</h4>
+                <div class="zntz-tips">您的账户余额不足，需先充值到账户余额</div>
+            </div>
+        </div>
+        <div class="ui-dialog-ft ui-btn-group">
+            <button type="button" ng-click="vm.redirectToRecharge()">去充值</button>
+        </div>
+    </div>
+</div>
+
 <!--#S footer-->
 <footer id="footer" ng-hide="vm.rechargeSuccess">
     <a href="" class="ft-btn" ng-click="vm.payConfirm()">确认转入</a>

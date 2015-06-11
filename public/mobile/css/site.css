@@ -41,9 +41,9 @@
 
 .zntz-overlay {
     position: absolute;
-    top: 50px;
+    top: 48px;
     width: 100%;
-    background-color: #ffffff;
+    background-color: #e4e3e2;
     filter:alpha(opacity=40);
     -moz-opacity:0.4;
     -khtml-opacity: 0.4;
@@ -51,7 +51,7 @@
 }
 
 .zntz-total em {
-    color: #fda900;
+    color: #fbc860;
 }
 
 .zntz-total li.first {
