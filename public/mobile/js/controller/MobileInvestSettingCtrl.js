@@ -48,6 +48,8 @@ angular.module('mobileApp').controller('MobileInvestSettingCtrl', ['$scope', '$w
             $http.post('/api/user/invest_update', data)
                 .success(function(data, status) {
                     vm.success = true;
+                    vm.user.invest.duration = vm.period;
+                    vm.user.invest.profitRate = vm.profit_rate;
                     $timeout(function() {
                         vm.success = false;
                     }, 1500);

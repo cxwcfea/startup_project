@@ -41,11 +41,17 @@
             <ul class="zntz-conf-items">
                 <li>
                     <label for="">预期年化收益 <i class="icon" ng-click="vm.showRateDialog = true"></i></label>
-                    <input type="number" min="1" max="20" required autofocus name="profit-rate" ng-model="vm.profit_rate" disabled><span class="per">%</span>
+                    <!--
+                    <input type="number" min="1" max="20" required autofocus name="profit-rate" ng-model="" disabled><span class="per">%</span>
+                    -->
+                    <label class="info">\{{vm.profit_rate}}%</label>
                 </li>
                 <li>
                     <label for="">投标项目周期 <i class="icon" ng-click="vm.showPeriodDialog = true"></i></label>
+                    <!--
                     <input type="number" name="period" min="1" max="30" required ng-model="vm.period" disabled><span>天内</span>
+                    -->
+                    <label class="info">\{{vm.period}}天内</label>
                 </li>
             </ul>
             <div class="zntz-conf-items">

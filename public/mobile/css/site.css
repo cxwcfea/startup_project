@@ -9,6 +9,17 @@
     border: 0;
 }
 
+.zntz-conf-items label.info {
+    width: 100px;
+    font-size: 16px;
+    color: #333;
+    font-weight: 800;
+    text-align: right;
+    line-height: 24px;
+    border: 0;
+    float: right;
+}
+
 .user-invest-finance .amount-list li {
     float: left;
     width: 20%
@@ -28,7 +39,7 @@
 }
 
 .user-money {
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 .user-tz {
@@ -69,6 +80,12 @@
 .zntz-total li.first {
     padding-left: 10%;
     float: left;
+}
+
+.zntz-total li:last-child {
+    width: 30%;
+    padding-right: 10%;
+    text-align: right;
 }
 
 .zntz-total li {
