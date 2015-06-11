@@ -42,13 +42,16 @@
 .zntz-overlay {
     position: absolute;
     top: 50px;
-    left: 10px;
     width: 100%;
-    background-color: #d3d3d3;
+    background-color: #ffffff;
     filter:alpha(opacity=40);
     -moz-opacity:0.4;
     -khtml-opacity: 0.4;
     opacity: 0.4;
+}
+
+.zntz-total em {
+    color: #fda900;
 }
 
 .zntz-total li.first {
@@ -63,6 +66,37 @@
     color: #666;
 }
 
-.zntz-total em {
-    color: #fda900;
+.zntz-intro li {
+    float: left;
+    width: 40%;
+}
+
+.zntz-intro li:last-child {
+    float: right;
+    width: 40%;
+}
+
+ul.zntz-intro {
+    padding-left: 30px;
+}
+
+.zntz-conf {
+    margin-top: 10px;
+}
+
+.zntz-conf-items input[type=button] {
+    width: 50px;
+    font-size: 16px;
+    color: blue;
+    font-weight: 800;
+    text-align: right;
+    line-height: 24px;
+    padding: 0 10px 0 0;
+    border: 0;
+}
+
+span.info {
+    line-height: 24px;
+    font-size: 12px;
+    font-weight: 200;
 }
