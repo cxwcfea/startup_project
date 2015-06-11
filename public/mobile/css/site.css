@@ -137,3 +137,11 @@ span.info {
     border-radius: 6px;
     background-color: #fff;
 }
+
+.user-money .btns a {
+    margin-bottom: 5px;
+}
+
+.user-money .asset em {
+    font-size: 14px;
+}
