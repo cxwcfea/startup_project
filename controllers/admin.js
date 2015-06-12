@@ -33,6 +33,8 @@ function getStatisticsPage(req, res, next) {
                 if (!err) {
                     data.total_user_num = dataObj.num;
                     data.total_balance = dataObj.amount.toFixed(2);
+                    data.total_avail_invest = dataObj.availableInvestAmount.toFixed(2);
+                    data.total_occupied_invest = dataObj.occupiedInvestAmount.toFixed(2);
                 }
                 callback(err, data);
             });
