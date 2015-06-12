@@ -675,7 +675,7 @@ function getApply(req, res) {
 
 function fetchAddDepositOrders(req, res) {
     var date = moment().startOf('day').toDate();
-    Order.find({$and: [{ dealType: 6 },  {createdAt: {$gte:date}}]}, function(err, orders) {
+    Order.find({$and: [{ dealType: 6 }]}, function(err, orders) {
         if (err) {
             logger.warn(err.toString());
             res.status(401);

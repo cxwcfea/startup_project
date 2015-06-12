@@ -413,6 +413,7 @@ exports.addDeposit = function(req, res, next) {
     });
 };
 
+// old approach
 exports.postAddDeposit = function(req, res, next) {
     console.log(req.body);
     req.assert('deposit_amount', '金额必须是正数').isInt();
