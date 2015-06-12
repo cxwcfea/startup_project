@@ -32,11 +32,11 @@
             <span class="span01">邮箱 \{{(accountVM.user.profile.email | displayEmail)}} </span>
             <a href="" class="color_2489f0" ng-click="accountVM.showVerifyEmailWindow = true">\{{accountVM.user.profile.email_verified ? '修改' : '绑定'}}</a>
         </div>
-        <div class="fl set_lstLeft set_lstRight" ng-show="accountVM.user.identity.id">
+        <div class="identitySpan fl set_lstLeft set_lstRight" ng-show="accountVM.user.identity.id">
             <span class="">身份信息 \{{accountVM.user.identity.name}}（\{{accountVM.user.identity.id | displayIdentityID}})</span>
             <span class="color_999999 fontSize12">已认证</span>
         </div>
-        <div class="fl set_lstLeft set_lstRight" ng-hide="accountVM.user.identity.id">
+        <div class="identitySpan fl set_lstLeft set_lstRight" ng-hide="accountVM.user.identity.id">
             <span class="">身份信息 尚未认证</span>
             <a href="" class="color_2489f0" ng-click="accountVM.showIdentityDialog = true">进行认证</a>
         </div>

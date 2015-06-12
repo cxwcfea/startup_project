@@ -246,3 +246,7 @@ a.myBannerBtn{
     margin-top: 10px;
     background: transparent;
 }
+
+.identitySpan {
+    background: url(../images/identity.jpg) left center no-repeat;
+}
