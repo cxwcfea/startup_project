@@ -250,3 +250,12 @@ a.myBannerBtn{
 .identitySpan {
     background: url(../images/identity.jpg) left center no-repeat;
 }
+
+.neword_text {
+    background: url(../images/img52.jpg) no-repeat 120px 40px;
+    width: 150px;
+}
+
+.neword_textbgnone {
+    background: no-repeat;
+}

@@ -5,7 +5,7 @@
     <div class="neword_box">
         <div class="fl neword_Left">
             <p class="p01">总资产(元)</p>
-            <p class="p02"><span>\{{orderVM.user.finance.deposit+orderVM.user.finance.freeze_capital+orderVM.user.finance.balance | currency:'':2 | integerNum}}</span>\{{orderVM.user.finance.deposit+orderVM.user.finance.freeze_capital+orderVM.user.finance.balance | currency:'':2 | numTrunc}}</p>
+            <p class="p02"><span>\{{orderVM.user.finance.deposit+orderVM.user.finance.freeze_capital+orderVM.user.finance.balance+orderVM.user.invest.availableAmount+orderVM.user.invest.occupiedAmount | currency:'':2 | integerNum}}</span>\{{orderVM.user.finance.deposit+orderVM.user.finance.freeze_capital+orderVM.user.finance.balance | currency:'':2 | numTrunc}}</p>
         </div>
         <div class="fr neword_right">
             <a href="/user/#/recharge" class="acc_btn01">充&nbsp;值</a>
@@ -21,6 +21,14 @@
         <div class="neword_text fl">
             <p class="p01">冻结资金(元)</p>
             <p class="p02">\{{orderVM.user.finance.freeze_capital | currency:'':2}}</p>
+        </div>
+        <div class="neword_text fl">
+            <p class="p01">投资中金额(元)</p>
+            <p class="p02">\{{orderVM.user.invest.availableAmount | currency:'':2}}</p>
+        </div>
+        <div class="neword_text fl">
+            <p class="p01">待投资金额(元)</p>
+            <p class="p02">\{{orderVM.user.invest.occupiedAmount | currency:'':2}}</p>
         </div>
         <div class="neword_text fl neword_textbgnone">
             <p class="p01">可用余额(元)</p>

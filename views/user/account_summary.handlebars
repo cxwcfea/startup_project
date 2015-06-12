@@ -26,7 +26,7 @@
             <tr>
                 <td valign="top" width="270">
                     <p class="p01">账户总资产</p>
-                    <p class="p02"><span>\{{homeVM.user.finance.balance + homeVM.user.finance.freeze_capital + homeVM.user.finance.deposit | currency:'':2 | integerNum}}</span>\{{homeVM.user.finance.balance + homeVM.user.finance.freeze_capital + homeVM.user.finance.deposit | currency:'':2 | numTrunc}}</p>
+                    <p class="p02"><span>\{{homeVM.user.finance.balance + homeVM.user.finance.freeze_capital + homeVM.user.finance.deposit + homeVM.user.invest.availableAmount+homeVM.user.invest.occupiedAmount | currency:'':2 | integerNum}}</span>\{{homeVM.user.finance.balance + homeVM.user.finance.freeze_capital + homeVM.user.finance.deposit | currency:'':2 | numTrunc}}</p>
                     <!--
                     <a href="#" class="a01">查看》</a>
                     -->
