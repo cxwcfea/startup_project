@@ -80,7 +80,7 @@ angular.module('mobileApp').controller('MobileUserOrdersCtrl', ['$scope', '$wind
                     case 3:
                         return elem.dealType === 1 || elem.dealType === 2;
                     case 4:
-                        return elem.dealType === 12;
+                        return elem.dealType === 12 || elem.dealType === 4;
                     default :
                         return true;
                 }
