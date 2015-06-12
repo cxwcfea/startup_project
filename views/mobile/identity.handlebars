@@ -6,7 +6,13 @@
     </div>
 </header><!--#E header-->
 
-<div class="form-box">
+<div class="form-box" ng-show="user.identity.id">
+    <p>您已完成身份信息设置：</p>
+    <p>实名：\{{user.identity.name}}</p>
+    <p>身份证：\{{user.identity.id}}</p>
+</div>
+
+<div class="form-box" ng-hide="user.identity.id">
     <form name="identityForm" novalidate>
         <div class="form-item">
             <input name="user_name" type="text" placeholder="姓名" ng-model="userName" maxlength="16" required autofocus>
@@ -19,4 +25,3 @@
 </div>
 
 <div class="ui-tip" ng-show="inputError">\{{errorMsg}}</div>
-<div class="ui-tip" ng-show="success">身份信息已设置</div>

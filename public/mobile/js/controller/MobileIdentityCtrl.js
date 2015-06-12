@@ -1,7 +1,7 @@
 'use strict';
 angular.module('mobileApp').controller('MobileIdentityCtrl', ['$scope', '$window', '$timeout', '$http', '$location', function($scope, $window, $timeout, $http, $location) {
-    var user = $window.bootstrappedUserObject;
-    if (!user) {
+    $scope.user = $window.bootstrappedUserObject;
+    if (!$scope.user) {
         if (!$scope.data) {
             $scope.data = {};
         }
@@ -19,12 +19,9 @@ angular.module('mobileApp').controller('MobileIdentityCtrl', ['$scope', '$window
             }
             $http.post('/user/set_identity', {userName:$scope.userName, userID:$scope.userID})
                 .success(function(data, status) {
-                    user.identity.name = $scope.userName;
-                    user.identity.id = $scope.userID;
+                    $scope.user.identity.name = $scope.userName;
+                    $scope.user.identity.id = $scope.userID;
                     $scope.success = true;
-                    $timeout(function() {
-                        $location.path('/account');
-                    }, 1500);
                 })
                 .error(function(data, status) {
                     $scope.errorMsg = data.error_msg;

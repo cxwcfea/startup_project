@@ -1839,6 +1839,7 @@ function setIdentity(req, res) {
     if (name && ID) {
         beifuIdentityVerify(req.user._id, name, ID, function(err) {
             if (err) {
+                logger.error('setIdentity error:' + err.toString());
                 res.status(403);
                 return res.send({error_msg:'认证失败 ' + err.toString()});
             }
@@ -1881,7 +1882,7 @@ function beifuIdentityVerify(userID, userName, idNum, cb) {
             var parseString = xml2js.parseString;
             parseString(body, function (error, result) {
                 if (error) {
-                    cb(error);
+                    cb(body);
                 } else {
                     console.log(result.beifu.order[0]);
                     if (result.beifu.order[0].status[0] !== '0') {
