@@ -1,5 +1,5 @@
 'use strict';
-angular.module('mobileApp').controller('MobileUserOrdersCtrl', ['$scope', '$window', '$http', function($scope, $window, $http) {
+angular.module('mobileApp').controller('MobileUserOrdersCtrl', ['$scope', '$window', '$http', '$filter', function($scope, $window, $http, $filter) {
     var vm = this;
 
     vm.user = $window.bootstrappedUserObject;

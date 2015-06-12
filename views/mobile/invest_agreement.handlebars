@@ -39,9 +39,9 @@
         </tr>
 {{#each contractObj.investors}}
         <tr>
-            <td>{{mobile}}</td>
+            <td>{{displayMobile mobile}}</td>
             <td>{{name}}</td>
-            <td>{{id}}</td>
+            <td>{{displayIdentity id}}</td>
             <td>￥{{amount}}</td>
             <td>{{../contractObj.period}}日,{{../startTime}}起，至{{../endTime}}止</td>
             <td>{{profitRate}}%</td>
@@ -54,8 +54,8 @@
 
     <p><strong>乙方(借款人)：</strong> </p>
     <p>真实姓名: {{contractObj.userName}}</p>
-    <p>身份证号: {{contractObj.userIdentity}}</p>
-    <p>牛金网用户名: {{contractObj.userMobile}}</p>
+    <p>身份证号: {{displayIdentity contractObj.userIdentity}}</p>
+    <p>牛金网用户名: {{displayMobile contractObj.userMobile}}</p>
 
     <p><strong>丙方：北京小牛普惠科技有限公司 </strong> </p>
     <p>联系方式：北京市海淀区北四环西路9号银谷大厦1615</p>

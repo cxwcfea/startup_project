@@ -59,6 +59,20 @@ module.exports = function(app, config) {
                     default:
                         return eval("" + v1 + operator + v2) ? options.fn(this) : options.inverse(this);
                 }
+            },
+            displayMobile: function (input) {
+                if (input) {
+                    input = input.toString();
+                    return input.substr(0, 3) + "****" + input.substr(-4);
+                }
+                return '';
+            },
+            displayIdentity: function (input) {
+                if (input) {
+                    return input.substr(0, 4) + "**********" + input.substr(-4);
+                } else {
+                    return '';
+                }
             }
         }
     });
