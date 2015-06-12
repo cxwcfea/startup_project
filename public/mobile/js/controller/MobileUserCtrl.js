@@ -16,9 +16,25 @@ angular.module('mobileApp').controller('MobileUserCtrl', ['$scope', '$window', '
                 vm.withdrawCardName = BankNameList[vm.withdrawCard.bankID].name;
             }
         });
+        $http.get('/api/user/invest_detail')
+            .success(function(data, status) {
+                vm.ongoingAmount = 0;
+                vm.ongoingProfit = 0;
+                data.forEach(function(elem) {
+                    vm.ongoingAmount += elem.amount;
+                    vm.ongoingProfit += elem.investProfit;
+                });
+                $scope.data.ongoingAmount = vm.ongoingAmount;
+            })
+            .error(function(data, status) {
+                console.log(data.error_msg);
+                vm.ongoingAmount = 0;
+                vm.ongoingProfit = 0;
+            });
     }
 
     vm.menu = 4;
+    vm.showInvest = false;
 
     vm.logout = function() {
         $http.post('/logout', {})
@@ -28,7 +44,7 @@ angular.module('mobileApp').controller('MobileUserCtrl', ['$scope', '$window', '
                 $location.path('/');
             })
             .error(function(data, status) {
-
+                console.log('logout err:' + data.error_msg);
             });
     };
 
@@ -43,4 +59,16 @@ angular.module('mobileApp').controller('MobileUserCtrl', ['$scope', '$window', '
         }
         $location.path('/add_card');
     };
+
+    vm.viewFile = function () {
+        return "/mobile/user.html";
+    };
+
+    vm.gotoInvestCenter = function() {
+        if (!vm.user.invest.enable) {
+            $location.path('/invest')
+        } else {
+            $location.path('/user_invest_center')
+        }
+    }
 }]);

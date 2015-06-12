@@ -1,0 +1,106 @@
+<!--#S header-->
+<header id="header">
+    <div class="header-box">
+        <h1 ng-click="vm.toggleSelectList()" ng-class="{current: vm.showSelectList}">资金明细 <i></i></h1>
+        <a class="back" href="/mobile/#/user_invest_center"></a>
+    </div>
+</header><!--#E header-->
+
+<div class="user-invest-finance">
+    <div class="finance-amount">
+        <div class="total">
+            账户总资产(元)
+            <em>\{{vm.total_capital | currency:'':2}}</em>
+        </div>
+        <ul class="amount-list">
+            <li>
+                <h5>保证金(元)</h5>
+                <p>\{{vm.user.finance.deposit | currency:'':2}}</p>
+            </li>
+            <li>
+                <h5>冻结资金(元)</h5>
+                <p>\{{vm.user.finance.freeze_capital | currency:'':2}}</p>
+            </li>
+            <li>
+                <h5>投资中债权</h5>
+                <p>\{{vm.ongoingAmount | currency:'':2}}</p>
+            </li>
+            <li>
+                <h5>待投资债权</h5>
+                <p>\{{vm.user.invest.availableAmount | currency:'':2}}</p>
+            </li>
+            <li>
+                <h5>可用余额(元)</h5>
+                <p>\{{vm.user.finance.balance | currency:'':2}}</p>
+            </li>
+        </ul>
+    </div>
+    <div class="finance-records">
+        <ul>
+            <li ng-repeat="order in vm.showingItem">
+                <h5>\{{order.dealType | displayOrderType}}</h5>
+                <p class="num" ng-hide="order.dealType === 2 || order.dealType === 9 || order.dealType === 10"><em>\{{order.amount | currency:'':2 | displayOrderAmount:order.dealType}}</em></p>
+                <p class="num" ng-show="order.dealType === 2 || order.dealType === 9 || order.dealType === 10">\{{order.amount | currency:'':2 | displayOrderAmount:order.dealType}}</p>
+                <p>\{{order.createdAt | date:"yyyy-MM-dd HH:mm"}}</p>
+            </li>
+            <!--
+            <li>
+                <h5>本金返还</h5>
+                <p class="num"><em>+1957.00</em></p>
+                <p>2015-04-10 08:08:00</p>
+            </li>
+            <li>
+                <h5>提现支出</h5>
+                <p class="num">-2042.49</p>
+                <p>2015-04-10 08:08:00</p>
+            </li>
+            <li>
+                <h5>利息收入</h5>
+                <p class="num"><em>+42.49</em></p>
+                <p>2015-04-10 08:08:00</p>
+            </li>
+            <li>
+                <h5>保证金返还</h5>
+                <p class="num"><em>+1957.00</em></p>
+                <p>2015-04-10 08:08:00</p>
+            </li>
+            <li>
+                <h5>管理费支出</h5>
+                <p class="num">-15.00</p>
+                <p>2015-04-10 08:08:00</p>
+            </li>
+            <li>
+                <h5>充值存入</h5>
+                <p class="num"><em>+100.00</em></p>
+                <p>2015-04-10 08:08:00</p>
+            </li>
+            <li>
+                <h5>补充保证金</h5>
+                <p class="num">-1000.00</p>
+                <p>2015-04-10 08:08:00</p>
+            </li>
+            <li>
+                <h5>充值存入</h5>
+                <p class="num"><em>+1000.00</em></p>
+                <p>2015-04-10 08:08:00</p>
+            </li>
+            <li class="more">
+                <a href="#">更多</a>
+            </li>
+            -->
+        </ul>
+    </div>
+</div>
+
+<div class="ui-dialog-menu" ng-show="vm.showSelectList">
+    <ul class="ui-dialog-cnt">
+        <li ng-repeat="item in vm.queryItems" ng-class="{current: vm.selectedItem === item.value}" ng-click="vm.selectItem(item)">\{{item.name}}</li>
+        <!--
+        <li class="current">全部</li>
+        <li>保证金明细</li>
+        <li>管理费明细</li>
+        <li>充值提现</li>
+        <li>收益明细</li>
+        -->
+    </ul>
+</div>

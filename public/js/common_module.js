@@ -206,8 +206,8 @@
         };
     }).filter("displayOrderAmount", function () {
         return function (input, orderType) {
-            var ret = '';
-            if (orderType === 2 || orderType === 9) {
+            var ret = '+';
+            if (orderType === 2 || orderType === 9 || orderType === 10 || orderType === 11 || orderType === 17 || orderType === 15) {
                 ret = '-';
             }
             return ret + input;
@@ -215,7 +215,7 @@
     }).filter("displayIncome", ['$filter', function ($filter) {
         return function (input, orderType) {
             var ret = input;
-            if (orderType == 2 || orderType == 9 || orderType == 10 || orderType == 15) {
+            if (orderType == 2 || orderType == 9 || orderType == 10 || orderType === 11 || orderType === 17 || orderType == 15) {
                 return '';
             }
             return $filter('currency')(ret, '', 2);
@@ -223,7 +223,7 @@
     }]).filter("displayOutcome", ['$filter', function ($filter) {
         return function (input, orderType) {
             var ret = '';
-            if (orderType == 2 || orderType == 9 || orderType == 10 || orderType == 15) {
+            if (orderType == 2 || orderType == 9 || orderType == 10 || orderType === 11 || orderType === 17 || orderType == 15) {
                 ret = $filter('currency')(input, '', 2);
             }
             return ret;
@@ -255,6 +255,9 @@
         };
     }).filter("displayDate", function () {
         return function (input) {
+            if (!input) {
+                return 'N/A';
+            }
             return moment(input).format("YYYY-MM-DD HH:mm");
         };
     }).filter("displayShortDate", function () {
@@ -299,6 +302,17 @@
                     return '未支付';
             }
         };
+    }).filter("contractStatus", function() {
+        return function (input) {
+            switch (input) {
+                case 1:
+                    return '进行中';
+                case 2:
+                    return '已回款';
+                default:
+                    return '未知';
+            }
+        };
     }).filter("displayOrderType", function() {
         return function (input) {
             switch (input) {
@@ -322,12 +336,22 @@
                     return '保证金支出';
                 case 10:
                     return '管理费支出';
+                case 11:
+                    return '投资本金支出';
+                case 12:
+                    return '利息收入';
                 case 13:
                     return '推广佣金';
                 case 14:
                     return '佣金兑换余额';
                 case 15:
                     return '穿仓扣除';
+                case 16:
+                    return '投资本金返还';
+                case 17:
+                    return '余额转入投资本金';
+                case 18:
+                    return '投资本金转入余额';
                 default:
                     return '充值';
             }

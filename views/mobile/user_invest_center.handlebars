@@ -1,0 +1,26 @@
+<!--#S header-->
+<header id="header">
+    <div class="header-box">
+        <h1>我的账户</h1>
+        <a class="f-pl" href="/mobile/contact.html">服务热线</a>
+        <a class="f-pr" href="/mobile/newbie.html">新手指引</a>
+    </div>
+</header><!--#E header-->
+
+<div class="user-wel">
+    <a href="/mobile/#/account">
+        <span></span>您好，\{{vm.user.mobile | displayMobile}} <i></i>
+    </a>
+</div>
+
+<div class="user-tab">
+    <ul>
+        <li><a href="/mobile/#/user">我的配资</a></li>
+        <li class="current"><a href="">我的投资</a></li>
+    </ul>
+</div>
+
+<ng-include src="vm.viewFile()" onload=""></ng-include>
+
+
+{{> mobile_footer }}

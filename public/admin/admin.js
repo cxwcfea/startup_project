@@ -73,6 +73,9 @@ angular.module('adminApp').config(['$routeProvider', '$locationProvider', '$http
         .when('/freeze_withdraw', { templateUrl: '/admin/freeze_withdraw_order_list',
             controller: 'AdminFreezeWithdrawOrderListCtrl as vm'
         })
+        .when('/contract_list', { templateUrl: '/admin/contract_list',
+            controller: 'AdminContractListCtrl'
+        })
         .otherwise({
             redirectTo: '/users'
         });

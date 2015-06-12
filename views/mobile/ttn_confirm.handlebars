@@ -65,3 +65,17 @@
         </div>
     </div>
 </footer><!--#E wrapper-->
+
+<div class="ui-dialog" ng-show="vm.showIdentityDialog">
+    <div class="ui-dialog-cnt">
+        <div class="ui-dialog-bd">
+            <div>
+                <h4>需要身份信息</h4>
+                <div class="zntz-tips">为了保证资金安全，参与天天投需要先认证身份信息，请先完成牛金网身份认证</div>
+            </div>
+        </div>
+        <div class="ui-dialog-ft ui-btn-group">
+            <button type="button" ng-click="vm.redirectToIdentity()">去身份认证</button>
+        </div>
+    </div>
+</div>

@@ -3,6 +3,7 @@ var passport = require('passport'),
     Order = require('../models/Order'),
     Apply = require('../models/Apply'),
     Homas = require('../models/Homas'),
+    Contract = require('../models/Contract'),
     Note = require('../models/Note'),
     PayInfo = require('../models/PayInfo'),
     nodemailer = require('nodemailer'),
@@ -19,6 +20,7 @@ var passport = require('passport'),
     sparkMD5 = require('spark-md5'),
     moment = require('moment'),
     ccap = require('ccap')(),
+    xml2js = require("xml2js"),
     async = require('async');
 
 module.exports.postLogin = function(req, res, next) {
@@ -1614,6 +1616,134 @@ function beifuPay(req, res) {
     });
 }
 
+var investPrivateProperties = [
+    'availableAmount',
+    'occupiedAmount',
+    'history_invest_amount',
+    'history_invest_profit',
+    'total_invest_days'
+];
+
+function investUpdate(req, res) {
+    var invest = req.body.invest;
+    if (!invest || !invest.profitRate || !invest.duration || invest.profitRate > 20 || invest.profitRate < 1 || invest.duration > 30 || invest.duration < 1) {
+        res.status(403);
+        return res.send({error_msg:'invalid input'});
+    }
+    invest = _.omit(invest, investPrivateProperties);
+    User.update({mobile:req.user.mobile}, {invest:invest}, function(err, numberAffected, raw) {
+        if (numberAffected) {
+            res.send({});
+        } else {
+            res.status(500);
+            res.send({error_msg:'failed to update user enableInvest'});
+        }
+    });
+}
+
+function investToBalance(req, res) {
+    var amount = Number(req.body.amount);
+    if (!amount || amount <= 0) {
+        res.status(400);
+        return res.send({error_msg:'无效的金额'});
+    }
+    User.update({_id:req.user._id}, {$inc: {'finance.balance':amount, 'invest.availableAmount':-amount}}, function(err, numberAffected, raw) {
+        if (err) {
+            logger.warn('investToBalance error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        if (!numberAffected) {
+            res.status(500);
+            return res.send({error_msg:'can not update User'});
+        }
+        var orderData = {
+            userID: req.user._id,
+            userMobile: req.user.mobile,
+            dealType: 18,
+            amount: Number(amount.toFixed(2)),
+            status: 1,
+            description: '投资本金转回余额',
+            userBalance: req.user.finance.balance + amount
+        };
+        Order.create(orderData, function(err, order) {
+            if (err) {
+                logger.warn('investToBalance error:' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+            res.send({});
+        });
+    });
+}
+
+function rechargeToInvest(req, res) {
+    var amount = Number(req.body.amount);
+    if (!amount || amount <= 0) {
+        res.status(400);
+        return res.send({error_msg:'无效的金额'});
+    }
+    User.update({$and:[{_id:req.user._id}, {'finance.balance':{$gte:amount}}]}, {$inc: {'finance.balance':-amount, 'invest.availableAmount':amount}, $set: {'invest.enable':true}}, function(err, numberAffected, raw) {
+        if (err) {
+            logger.warn('rechargeToInvest error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        if (!numberAffected) {
+            res.status(403);
+            return res.send({error_code:1, error_msg:'余额不足'});
+        }
+        var orderData = {
+            userID: req.user._id,
+            userMobile: req.user.mobile,
+            dealType: 17,
+            amount: Number(amount.toFixed(2)),
+            status: 1,
+            description: '余额转入投资本金',
+            userBalance: req.user.finance.balance - amount
+        };
+        Order.create(orderData, function(err, order) {
+            if (err) {
+                logger.warn('rechargeToInvest error:' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+            res.send({});
+        });
+    });
+}
+
+function getInvestOrders(req, res) {
+    Order.find({$and:[{dealType:16}, {userID:req.user._id}]}, function(err, orders) {
+        if (err) {
+            logger.warn('getInvestOrders error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        var ids = orders.map(function(elem) {
+            return elem.contractID;
+        });
+        Contract.find({_id:{$in:ids}}, function(err, contracts) {
+            if (err) {
+                logger.warn('getInvestOrders error:' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+            res.send({contracts:contracts, orders:orders});
+        });
+    });
+}
+
+function getUserInvestDetail(req, res) {
+    Order.find({$and:[{userMobile:req.user.mobile}, {dealType:16}, {status:2}]}, function(err, orders) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send(orders);
+	});
+}
+
 function transCommission(req, res) {
     var amount = Number(req.body.amount);
     amount = Math.floor(amount / 100) * 100;
@@ -1703,6 +1833,93 @@ function finishWeixinBandUser(req, res, next) {
     }
 }
 
+function setIdentity(req, res) {
+    var name = req.body.userName;
+    var ID = req.body.userID;
+    if (name && ID) {
+        beifuIdentityVerify(req.user._id, name, ID, function(err) {
+            if (err) {
+                res.status(403);
+                return res.send({error_msg:'认证失败 ' + err.toString()});
+            }
+            User.update({mobile:req.user.mobile}, {$set:{'identity.name':name, 'identity.id':ID}}, function(err, numberAffected, raw) {
+                if (err) {
+                    logger.error('setIdentity error:' + err.toString());
+                    res.status(500);
+                    return res.send({error_msg:err.toString()});
+                }
+                if (!numberAffected) {
+                    logger.error('setIdentity nothing to udate');
+                    res.status(403);
+                    return res.send({error_msg:'nothing to udate'});
+                }
+                res.send({});
+            });
+        });
+    } else {
+        logger.error('setIdentity error:invalid input');
+        res.status(400);
+        return res.send({error_msg:'无效的输入'});
+    }
+}
+
+function beifuIdentityVerify(userID, userName, idNum, cb) {
+    var md5key = 'DH7WNCLKEB7KM897T8YBUB6Y3ETO3Atykisu';
+
+    var queryStr = "cert_id=" + idNum + "&input_charset=UTF-8&out_order_no=" + userID + "&partner=201504141356306494&service=ebatong_identity_auth&sign_type=MD5&user_name=" + userName;
+    var sign1 = sparkMD5.hash(queryStr+md5key);
+    queryStr += '&sign=' + sign1;
+    var url = 'https://www.ebatong.com/auth/identityauth.htm?' + queryStr;
+
+    var options = {
+        follow_max         : 3    // follow up to five redirects
+    };
+    needle.get(encodeURI(url), options, function(err, resp, body) {
+        if (err) {
+            cb(err);
+        } else {
+            var parseString = xml2js.parseString;
+            parseString(body, function (error, result) {
+                if (error) {
+                    cb(error);
+                } else {
+                    console.log(result.beifu.order[0]);
+                    if (result.beifu.order[0].status[0] !== '0') {
+                        cb(result.beifu.order[0].desc[0]);
+                    } else {
+                        cb(null);
+                    }
+                }
+            });
+        }
+    });
+}
+
+function getInvestContract(req, res, next) {
+    var sid = req.params.serial_id;
+    if (!sid) {
+        return next();
+    }
+    Contract.findOne(sid, function(err, contract) {
+        if (err) {
+            logger.warn('getInvestContract err:' + err.toString());
+            return next();
+        }
+        if (!contract) {
+            logger.warn('getInvestContract err contract not found:' + cid);
+            return next();
+        }
+        res.render('mobile/invest_agreement', {
+            layout: 'mobile',
+            contractObj: contract,
+            createdAt: moment(contract.createAt).format('YYYY年MM月DD日'),
+            startTime: moment(contract.startTime).format('YYYY年MM月DD日'),
+            endTime: moment(contract.endTime).format('YYYY年MM月DD日'),
+            serviceFee: util.getServiceCharge(Math.floor(contract.amount/contract.deposit))
+        });
+    })
+}
+
 module.exports.registerRoutes = function(app, passportConf) {
     app.get('/user', passportConf.isAuthenticated, getUserHome);
 
@@ -1718,11 +1935,25 @@ module.exports.registerRoutes = function(app, passportConf) {
 
     app.post('/user/beifu_pay', passportConf.isAuthenticated, beifuPay);
 
+    app.post('/user/set_identity', passportConf.isAuthenticated, setIdentity);
+
+    app.post('/api/user/invest_update', passportConf.isAuthenticated, investUpdate);
+
+    app.post('/api/user/invest_recharge', passportConf.isAuthenticated, rechargeToInvest);
+
+    app.post('/api/user/invest_to_balance', passportConf.isAuthenticated, investToBalance);
+
+    app.get('/api/user/invest_orders', passportConf.isAuthenticated, getInvestOrders);
+
+    app.get('/api/user/invest_detail', passportConf.isAuthenticated, getUserInvestDetail);
+
     app.post('/user/api/transfer_commission', passportConf.isAuthenticated, transCommission);
 
     app.get('/user/api/refer_user_list', passportConf.isAuthenticated, fetchReferUserList);
 
     app.post('/api/weixin_band_user', finishWeixinBandUser);
+
+    app.get('/contract/:serial_id', passportConf.isAuthenticated, getInvestContract);
 
     app.get('/user/*', passportConf.isAuthenticated, function(req, res, next) {
         res.locals.callback_domain = config.pay_callback_domain;
@@ -1919,7 +2150,7 @@ function getRecharge(req, res, next) {
             bootstrappedOrderObject: JSON.stringify(order)
         });
     });
-};
+}
 
 module.exports.payByBalance = function(req, res, next) {
     if (!req.user) {

@@ -2,10 +2,10 @@ var User = require('../models/User'),
     Apply = require('../models/Apply'),
     Order = require('../models/Order'),
     AlipayOrder = require('../models/AlipayOrder'),
-    Homas = require('../models/Homas'),
     Note = require('../models/Note'),
     DailyData = require('../models/DailyData'),
     SalesData = require('../models/SalesData'),
+    Contract = require('../models/Contract'),
     log4js = require('log4js'),
     logger = log4js.getLogger('admin'),
     util = require('../lib/util'),
@@ -18,6 +18,7 @@ var User = require('../models/User'),
     needle = require('needle'),
     weixin = require('../lib/weixin'),
     ecitic = require("../lib/ecitic"),
+    invest = require('../lib/invest'),
     sms = require('../lib/sms');
 
 function getStatisticsPage(req, res, next) {
@@ -515,6 +516,11 @@ function homsAssignAccount(req, res) {
                     callback(err, apply);
                 });
             }
+        },
+        function(apply, callback) {
+            invest.findInvestorForApply(apply, function(err) {
+                callback(err, apply);
+            });
         }
     ], function(err, apply) {
         if (err) {
@@ -1268,6 +1274,9 @@ function autoApproveApply(req, res) {
     async.waterfall([
         function (callback) {
             Apply.findOne({serialID:serialID}, function(err, apply) {
+                if (!apply) {
+                    err = 'apply not found:' + serialID;
+                }
                 callback(err, apply);
             });
         },
@@ -1286,6 +1295,11 @@ function autoApproveApply(req, res) {
                     callback(err, apply);
                 });
             }
+        },
+        function(apply, callback) {
+            invest.findInvestorForApply(apply, function(err) {
+                callback(err, apply);
+            });
         }
     ], function(err, apply) {
         if (err) {
@@ -2131,6 +2145,16 @@ function compensateLossForUser(req, res) {
     });
 }
 
+function fetchContractList(req, res) {
+    Contract.find({}, function(err, contracts) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send(contracts);
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -2292,6 +2316,8 @@ module.exports = {
         app.get('/admin/api/regenerate_order_pay_id', passportConf.requiresRole('admin'), reGenerateOrderPayID);
 
         app.post('/admin/api/user_compensateLoss', passportConf.requiresRole('admin'), compensateLossForUser);
+
+        app.get('/admin/api/contract_list', passportConf.requiresRole('admin'), fetchContractList);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

@@ -9,7 +9,11 @@ angular.module('userApp').controller('UserPromoteCtrl', ['$scope', '$window', '$
     vm.total_fee = vm.user.finance.history_commission ? vm.user.finance.history_commission / 0.07 : 0;
     vm.paid_fee = vm.user.finance.history_commission ? vm.user.finance.history_commission - vm.user.finance.commission : 0;
     vm.transAmount = vm.user.finance.commission ? Math.floor(vm.user.finance.commission / 100) * 100 : 0;
-    vm.referName = vm.user.referName.substr(2);
+    if (vm.user.referName) {
+        vm.referName = vm.user.referName.substr(2);
+    } else {
+        vm.referName = 'undefined';
+    }
 
     vm.showFirstPage = true;
     vm.showTransMoneyWindow = false;

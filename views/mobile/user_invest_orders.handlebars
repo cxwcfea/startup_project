@@ -1,0 +1,139 @@
+<!--#S header-->
+<header id="header">
+    <div class="header-box" ng-hide="vm.investDetail">
+        <h1>投资明细</h1>
+        <a class="back" href="/mobile/#/user_invest_center"></a>
+    </div>
+    <div class="header-box" ng-show="vm.investDetail">
+        <h1>投资详情</h1>
+        <a class="back" href="" ng-click="vm.investDetail = false"></a>
+    </div>
+    <div class="header-box" ng-show="vm.contractDetail">
+        <h1>项目详情</h1>
+        <a class="back" href="" ng-click="vm.contractDetail = false; vm.investDetail = true"></a>
+    </div>
+</header><!--#E header-->
+
+<div class="user-invest-info" ng-hide="vm.investDetail || vm.contractDetail">
+    <div class="amount-info">
+        <ul>
+            <li>
+                <h5>已收利息(元)</h5>
+                <strong>\{{vm.user.invest.history_invest_profit | currency:'':2}}</strong>
+            </li>
+            <li>
+                <h5>已回本金(元)</h5>
+                <strong>\{{vm.returnedCapital | currency:'':2}}</strong>
+            </li>
+            <li>
+                <h5>平均收益率(年化)</h5>
+                <em>\{{vm.ave_profit_rate | currency:'':2}}％</em>
+            </li>
+        </ul>
+    </div>
+    <div class="status-tab">
+        <ul class="ui-tabs">
+            <li ng-class="{current:vm.currentShowing === 1}" ng-click="vm.changeList(1)"><a href="">全部</a></li>
+            <li ng-class="{current:vm.currentShowing === 2}" ng-click="vm.changeList(2)"><a href="">待回款</a></li>
+            <li ng-class="{current:vm.currentShowing === 3}" ng-click="vm.changeList(3)"><a href="">已回款</a></li>
+        </ul>
+    </div>
+    <ul class="invest-list">
+        <li ng-repeat="invest in vm.showingItems | orderBy:'createdAt':true" ng-class="{done: invest.contractStatus === 2}">
+            <a href="" ng-click="vm.showInvestDetail(invest)">
+                <h5>\{{invest.borrower | displayMobile}}借款\{{invest.totalAmount | currency:'':2}}元</h5>
+                <h6>\{{invest.amount | currency:'':2}}元</h6>
+                <p>年息收益\{{invest.profitRate}}%</p>
+                <p class="state">到期时间 \{{invest.returnTime | date:"yyyy-MM-dd"}}</p>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="user-invest-info" ng-show="vm.investDetail">
+    <div class="status-info" ng-show="vm.currentInvest.contractStatus == 1">
+        <h3>回款中</h3>
+        <p>到期时间：\{{vm.currentInvest.returnTime | date:"yyyy-MM-dd"}} 剩余\{{vm.daysLeft}}天</p>
+    </div>
+    <div class="status-info" ng-hide="vm.currentInvest.contractStatus == 1">
+        <h3>已回款（\{{vm.currentInvest.otherInfo}}）</h3>
+        <p>还款时间：\{{vm.currentInvest.closeAt | date:"yyyy-MM-dd"}} 累计\{{vm.currentInvest.duration}}天</p>
+    </div>
+    <div class="invest-detail">
+        <ul>
+            <li class="proj">
+                <a href="" ng-click="vm.showContractDetail()">
+                    投资项目
+                    <i></i>
+                    <span class="fr">\{{vm.currentInvest.borrower | displayMobile}}借款\{{vm.currentInvest.totalAmount}}元</span>
+                </a>
+            </li>
+            <li>
+                投资时间
+                <span class="fr">\{{vm.currentInvest.investAt | date:"yyyy-MM-dd HH:mm"}}</span>
+            </li>
+            <li>
+                投资本金
+                <em class="fr">\{{vm.currentInvest.amount | currency:'':2}}元</em>
+            </li>
+            <li>
+                年息收益率
+                <em class="fr">\{{vm.currentInvest.profitRate}}%</em>
+
+            </li>
+            <li>
+                到期收益
+                <em class="fr">\{{vm.currentInvest.investProfit | currency:'':2}}元</em>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="user-zntz-info" ng-show="vm.contractDetail">
+    <ul class="user-zntz-info-items">
+        <li>
+            <label>借款人</label>
+            \{{vm.currentInvest.borrower | displayMobile}}
+        </li>
+        <li>
+            <label>项目编号</label>
+            \{{vm.currentInvest.applySerialID}}
+        </li>
+        <li>
+            <label>合同编号</label>
+            <a href="/contract/\{{vm.currentInvest.contractSerialID}}">\{{vm.currentInvest.contractSerialID}}</a>
+        </li>
+        <li>
+            <label>借款总额</label>
+            \{{vm.currentInvest.totalAmount | currency:'':2}}元
+        </li>
+        <li>
+            <label>借款用途</label>
+            短期股票融资
+        </li>
+        <li>
+            <label>还款方式</label>
+            到期还本付息
+        </li>
+        <li>
+            <label>年息收益率</label>
+            \{{vm.currentInvest.profitRate}}%
+        </li>
+        <li>
+            <label>借款时间</label>
+            \{{vm.currentInvest.period}}天(可提前还款)
+        </li>
+        <li>
+            <label>保证金</label>
+            \{{vm.currentInvest.deposit | currency:'':2}}元
+        </li>
+        <li>
+            <label>股票质押</label>
+            \{{vm.currentInvest.totalAmount | currency:'':2}}元(市值)
+        </li>
+        <li>
+            <label>风险控制</label>
+            平台提供股票账户<br>实时监控<br>资金亏损立即预警平仓<br>平仓线\{{vm.currentInvest.sellValue | currency:'':2}}元
+        </li>
+    </ul>
+</div>

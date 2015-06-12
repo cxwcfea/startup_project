@@ -1,0 +1,89 @@
+<style>
+    .user-money .number {
+        flex: 5;
+    }
+</style>
+<div ng-hide="vm.transMoney">
+    <div class="user-money">
+        <ul class="balance">
+            <li class="number">
+                可用投资余额(元)
+                <em>{{vm.user.invest.availableAmount | currency:'':2}}</em>
+            </li>
+            <li class="number">
+                <p>预期年化收益 {{vm.user.invest.profitRate}}%</p>
+                <p>投资项目期限 {{vm.user.invest.duration}}天</p>
+                <a href="/mobile/#/invest_setting" style="color:#2baa3f;" class="recharge-btn">投资设置</a>
+            </li>
+            <li class="btns">
+                <a href="/mobile/#/invest_recharge" class="recharge-btn">转入本金</a>
+                <a href="" class="withdraw-btn" ng-click="vm.transToBalance()">转回余额</a>
+            </li>
+        </ul>
+    </div>
+    <div class="user-tz">
+        <ul>
+            <li>
+                <h5>累计收益(元)</h5>
+                <em>{{vm.user.invest.history_invest_profit | currency:'':2}}</em>
+            </li>
+            <li>
+                <h5>待收本金(元)</h5>
+                <em>{{vm.ongoingAmount | currency:'':2}}</em>
+            </li>
+            <li>
+                <h5>待收利息(元)</h5>
+                <strong>{{vm.ongoingProfit | currency:'':2}}</strong>
+            </li>
+            <li>
+                <h5>累计投资(元)</h5>
+                <strong>{{vm.user.invest.history_invest_amount | currency:'':2}}</strong>
+            </li>
+        </ul>
+    </div>
+    <ul class="user-opts">
+        <li>
+            <a href="/mobile/#/invest_list"><span class="icon-tz-info"></span>投资明细 <i></i><!--<span class="tips">10</span>--></a>
+        </li>
+        <li>
+            <a href="/mobile/#/order_list"><span class="icon-zc-info"></span>资金明细 <i></i></a>
+        </li>
+    </ul>
+</div>
+
+<div class="recharge-alipay" ng-show="vm.transMoney">
+    <div class="zntz-box">
+        <ul class="zntz-txt-list">
+            <li>
+                <h5>可转金额</h5>
+                <strong>{{vm.user.invest.availableAmount | currency:'':2}}</strong> 元
+            </li>
+            <li>
+                <h5>当前余额</h5>
+                <strong>{{vm.user.finance.balance | currency:'':2}}</strong> 元
+            </li>
+        </ul>
+        <div class="zntz-amount">
+            <label>欲转出金额</label>
+            <input type="number" min="0.01" name="amount" ng-model="vm.trans_amount" required>
+            <span class="unit">元</span>
+        </div>
+        <button class="trans-btn" ng-click="vm.confirmTransMoney()">确定</button><button class="trans-btn" ng-click="vm.transMoney = false">返回</button>
+    </div>
+</div>
+
+<div class="ui-tip" ng-show="vm.inputError">{{vm.errorMsg}}</div>
+
+<div class="ui-dialog" ng-show="vm.transSuccess">
+    <div class="ui-dialog-cnt">
+        <div class="ui-dialog-bd">
+            <div>
+                <h4>转账结果</h4>
+                <div class="zntz-tips">{{vm.trans_amount | currency:'':2}}元投资本金已转出到余额</div>
+            </div>
+        </div>
+        <div class="ui-dialog-ft ui-btn-group">
+            <button type="button" class="close-dialog" ng-click="vm.closeDialogWindow()">确定</button>
+        </div>
+    </div>
+</div>

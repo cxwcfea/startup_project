@@ -332,7 +332,18 @@ function getYYNConfirm(req, res, next) {
 function getRechargeOrderListForCurrentUser(req, res) {
     Order.find({$and: [{$or:[{payType: 3}, {payType:5}]}, {status:1}, {userID: req.user._id}]}, function(err, orders) {
         if (err) {
-            logger.warn('getAlipayOrderListForCurrentUser error:' + err.toString());
+            logger.warn('getRechargeOrderListForCurrentUser error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send(orders);
+    });
+}
+
+function getPayedOrderListForCurrentUser(req, res) {
+    Order.find({$and: [{status:1}, {userID: req.user._id}]}, function(err, orders) {
+        if (err) {
+            logger.warn('getPayedOrderListForCurrentUser error:' + err.toString());
             res.status(500);
             return res.send({error_msg:err.toString()});
         }
@@ -350,6 +361,34 @@ function getPostponeApply(req, res) {
     res.render('mobile/postpone_apply', {
         layout:null
     })
+}
+
+function getInvestPage(req, res, next) {
+    User.aggregate([{$match:{'invest.enable':{$exists:true}}}, {$group: {_id: 'x', count: {$sum: 1}, total_invest: { $sum: '$invest.history_invest_amount'}, total_profit: { $sum: '$invest.history_invest_profit' }, total_rate : { $sum: '$invest.profitRate' }}}], function(err, statistic) {
+        if (err || !statistic || !statistic[0]) {
+            if (err) {
+                logger.warn('error when getInvestPage:' + err.toString());
+            }
+            statistic = [{
+                count: 0,
+                statistic: 0,
+                total_rate: 0,
+                total_invest: 0,
+                total_profit: 0
+            }];
+        }
+        var rate = 0;
+        if (statistic[0].count > 0 && statistic[0].total_rate) {
+            rate = statistic[0].total_rate / statistic[0].count;
+        }
+        res.render('mobile/invest', {
+            layout: null,
+            count: statistic[0].count,
+            total_invest: statistic[0].total_invest.toFixed(0),
+            total_profit: statistic[0].total_profit.toFixed(0),
+            rate: rate.toFixed(2)
+        })
+    });
 }
 
 function getWeixinBandPage(req, res, next) {
@@ -378,10 +417,19 @@ module.exports = {
             if (req.query.refer && req.query.refer.length < 128) {
                 req.session.refer = req.query.refer;
             }
-            res.render('mobile/index', {
-                layout:'mobile',
-                bootstrappedUserObject: req.user ? JSON.stringify(util.getUserViewModel(req.user)) : null
-            });
+            if (req.user) {
+                util.getUserViewModel(req.user, function(user) {
+                    res.render('mobile/index', {
+                        layout:'mobile',
+                        bootstrappedUserObject: JSON.stringify(user)
+                    });
+                });
+            } else {
+                res.render('mobile/index', {
+                    layout:'mobile',
+                    bootstrappedUserObject: null
+                });
+            }
         });
 
         app.get('/mobile/home', home);
@@ -432,8 +480,16 @@ module.exports = {
             })
         });
 
+        app.get('/mobile/invest', getInvestPage);
+
         app.get('/mobile/recharge', function(req, res, next) {
             res.render('mobile/recharge', {
+                layout: null
+            })
+        });
+
+        app.get('/mobile/invest_recharge', function(req, res, next) {
+            res.render('mobile/invest_recharge', {
                 layout: null
             })
         });
@@ -444,7 +500,31 @@ module.exports = {
             })
         });
 
-		app.get('/mobile/withdraw', function(req, res, next) {
+        app.get('/mobile/invest_list', function(req, res, next) {
+            res.render('mobile/user_invest_orders', {
+                layout: null
+            })
+        });
+
+        app.get('/mobile/user_order_list', function(req, res, next) {
+            res.render('mobile/user_order_list', {
+                layout: null
+            })
+        });
+
+        app.get('/mobile/user_invest_center', function(req, res, next) {
+            res.render('mobile/user_invest_center', {
+                layout: null
+            })
+        });
+
+        app.get('/mobile/identity', function(req, res, next) {
+            res.render('mobile/identity', {
+                layout: null
+            })
+        });
+
+        app.get('/mobile/withdraw', function(req, res, next) {
             res.render('mobile/withdraw', {
                 layout: null
             })
@@ -456,6 +536,12 @@ module.exports = {
             })
         });
 
+        app.get('/mobile/invest_setting', function(req, res, next) {
+            res.render('mobile/invest_setting', {
+                layout: null
+            })
+        });
+
         app.get('/mobile/weixin_band', getWeixinBandPage);
 
         app.get('/mobile/forget', getForget);
@@ -463,5 +549,7 @@ module.exports = {
         app.get('/mobile/free_apply_confirm', passportConf.isAuthenticated, applies.freeApply);
 
         app.get('/api/mobile_recharge/orders', passportConf.isAuthenticated, getRechargeOrderListForCurrentUser);
+
+        app.get('/api/mobile/user_orders', passportConf.isAuthenticated, getPayedOrderListForCurrentUser);
     }
 };

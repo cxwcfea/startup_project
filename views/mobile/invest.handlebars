@@ -1,0 +1,227 @@
+<!--#S header-->
+<header id="header">
+    <div class="header-box">
+        <h1>天天投</h1>
+        <a class="back" href="/mobile/#/"></a>
+        <a class="f-pr" href="/mobile/invest_intro.html">投资说明</a>
+    </div>
+</header><!--#E header-->
+
+<div>
+    <div class="">
+        <ul>
+            <li><img src="images/ttt1.jpg" width="100%" height="100%"></li>
+        </ul>
+        <div class="zntz-overlay-background">
+
+        </div>
+        <div class="zntz-overlay">
+            <ul class="zntz-total">
+                <li class="first">
+                    <strong>{{count}}</strong>用户累计投入
+                    <em>{{total_invest}}元</em>
+                </li>
+                <li>
+                    赚取收益
+                    <em>{{total_profit}}元</em>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="zntz-box">
+        <ul class="zntz-intro">
+            <li>
+                <img src="images/icon_zntz_cur.png" />
+                <h5>账户资金自动投</h5>
+            </li>
+            <li>
+                <img src="images/icon_ttn_cur.png" />
+                <h5>3倍余额宝收益</h5>
+            </li>
+        </ul>
+        <div class="zntz-conf">
+            <ul class="zntz-conf-items">
+                <li>
+                    <label for="">预期年化收益 <i class="icon" ng-click="vm.showRateDialog = true"></i></label>
+                    <!--
+                    <input type="number" min="1" max="20" required autofocus name="profit-rate" ng-model="" disabled><span class="per">%</span>
+                    -->
+                    <label class="info">\{{vm.profit_rate}}%</label>
+                </li>
+                <li>
+                    <label for="">最大投资时长 <i class="icon" ng-click="vm.showPeriodDialog = true"></i></label>
+                    <!--
+                    <input type="number" name="period" min="1" max="30" required ng-model="vm.period" disabled><span>天内</span>
+                    -->
+                    <label class="info">\{{vm.period}}天内</label>
+                </li>
+            </ul>
+            <div class="zntz-conf-items">
+                <span class="info">自定义设置</span>
+                <input type="button" value="设置" ng-click="vm.redirectToInvestSetting()">
+            </div>
+        </div>
+    </div>
+    <!--
+    <div class="zntz-box">
+        <ul class="zntz-intro">
+            <li>
+                <h5>账户资金自动投</h5>
+                <p>省心省力不操心</p>
+            </li>
+            <li>
+                <h5>本金无忧高收益</h5>
+                <p>比余额宝高3倍</p>
+            </li>
+            <li>
+                <h5>投资周期灵活调</h5>
+                <p>短期项目回款快</p>
+            </li>
+        </ul>
+        <ul class="zntz-total">
+            <li>
+                共{{count}}位投资人累计投资
+                <em>{{total_invest}}元</em>
+            </li>
+            <li>
+                帮投资人赚取
+                <em>{{total_profit}}元</em>
+            </li>
+        </ul>
+        <div class="zntz-roi">
+            投资人平均年化收益率
+            <em>{{rate}}%</em>
+        </div>
+        <div class="zntz-conf">
+            <p>投资收益你来定：</p>
+            <ul class="zntz-conf-items">
+                <li>
+                    <label for="">预期年化收益 <i class="icon" ng-click="vm.showRateDialog = true"></i></label>
+                    <input type="number" min="1" max="20" required autofocus name="profit-rate" ng-model="vm.profit_rate" disabled><span class="per">%</span>
+                </li>
+                <li>
+                    <label for="">投标借款期限 <i class="icon" ng-click="vm.showPeriodDialog = true"></i></label>
+                    <input type="number" name="period" min="1" max="30" required ng-model="vm.period" disabled><span>天内</span>
+                </li>
+            </ul>
+        </div>
+        <div class="zntz-agreement">
+            开启即代表同意《<a href="">牛金网投资协议</a>》
+        </div>
+    </div>
+    -->
+</div>
+
+<!--#S footer-->
+<footer id="footer">
+    <a href="" class="ft-btn" ng-click="vm.rechargeToInvestAccount()">开始投资</a>
+</footer><!--#E wrapper-->
+
+<div class="ui-dialog" ng-show="vm.showPeriodDialog">
+    <div class="ui-dialog-cnt">
+        <div class="ui-dialog-bd">
+            <div>
+                <h4>投标借款期限</h4>
+                <div class="zntz-tips">在借款期限截止当日，系统会将本金全部收回，放回系统账户中，此日期可以随时修改。</div>
+            </div>
+        </div>
+        <div class="ui-dialog-ft ui-btn-group">
+            <button type="button" class="close-dialog" ng-click="vm.closeDialogWindow()">我知道了</button>
+        </div>
+    </div>
+</div>
+
+<div class="ui-dialog" ng-show="vm.showRateDialog">
+    <div class="ui-dialog-cnt">
+        <div class="ui-dialog-bd">
+            <div>
+                <h4>预期年化收益</h4>
+                <div class="zntz-tips">预期年化收益率越高，出借时间越慢，出借成功后下一个工作日开始记利息。</div>
+            </div>
+        </div>
+        <div class="ui-dialog-ft ui-btn-group">
+            <button type="button" ng-click="vm.closeDialogWindow()">我知道了</button>
+        </div>
+    </div>
+</div>
+
+<div class="ui-dialog" ng-show="vm.showIdentityDialog">
+    <div class="ui-dialog-cnt">
+        <div class="ui-dialog-bd">
+            <div>
+                <h4>需要身份信息</h4>
+                <div class="zntz-tips">为了保证资金安全，参与天天投需要先认证身份信息，请先完成牛金网身份认证</div>
+            </div>
+        </div>
+        <div class="ui-dialog-ft ui-btn-group">
+            <button type="button" ng-click="vm.redirectToIdentity()">去身份认证</button>
+        </div>
+    </div>
+</div>
+
+<!--
+<div ng-show="vm.editInvest">
+    <div class="zntz-box">
+        <div class="zntz-txt">
+            <span ng-show="vm.user.invest.enable">您已开启天天投</span>
+            <span ng-hide="vm.user.invest.enable">您已关闭天天投</span>
+        </div>
+        <div class="zntz-conf">
+            <a href="" class="recharge-btn" ng-show="vm.user.invest.enable" ng-click="vm.rechargeToInvestAccount()">转入资金,赚取收益</a>
+            <ul class="zntz-conf-items">
+                <li>
+                    <label class="fl">\{{vm.user.invest.enable ? '天天投已开启' : '打开天天投获取收益'}}</label>
+                    <label class="ui-switch">
+                        <input type="checkbox" ng-model="vm.user.invest.enable" ng-change="vm.enableChange()"> <i></i>
+                    </label>
+                </li>
+                <li>
+                    <label for="">预期年化收益 <i class="icon" ng-click="vm.showRateDialog = true"></i></label>
+                    <input type="number" min="1" max="20" required autofocus name="profit-rate" ng-model="vm.profit_rate"><span class="per">%</span>
+                </li>
+                <li>
+                    <label for="">投标借款期限 <i class="icon" ng-click="vm.showPeriodDialog = true"></i></label>
+                    <input type="number" name="period" min="1" max="30" required ng-model="vm.period"><span>天内</span>
+                </li>
+            </ul>
+            <button class="save-btn" ng-click="vm.changeInvest()">保存</button>
+        </div>
+    </div>
+</div>
+
+<div class="ui-tip" ng-show="vm.inputError">\{{vm.errorMsg}}</div>
+
+<div class="ui-tip-success" ng-show="vm.success">
+    <div class="icon"></div>
+    天天投设置保存成功!
+</div>
+
+<div class="ui-dialog" ng-show="vm.confirmDisableInvest">
+    <div class="ui-dialog-cnt">
+        <div class="ui-dialog-bd">
+            <div>
+                <h4>天天投</h4>
+                <div class="zntz-tips">天天投能给您带来更多的收益，确定还要关闭吗？</div>
+            </div>
+        </div>
+        <div class="ui-dialog-ft ui-btn-group">
+            <button type="button" class="close-dialog" ng-click="vm.disableInvest(false)">取消</button>
+            <button type="button" ng-click="vm.disableInvest(true)">确定</button>
+        </div>
+    </div>
+</div>
+
+<div class="ui-dialog" ng-show="vm.showPeriodDialog">
+    <div class="ui-dialog-cnt">
+        <div class="ui-dialog-bd">
+            <div>
+                <h4>投标借款期限</h4>
+                <div class="zntz-tips">在借款期限截止当日，系统会将本金全部收回，放回系统账户中，此日期可以随时修改。</div>
+            </div>
+        </div>
+        <div class="ui-dialog-ft ui-btn-group">
+            <button type="button" class="close-dialog" ng-click="vm.closeDialogWindow()">我知道了</button>
+        </div>
+    </div>
+</div>
+-->

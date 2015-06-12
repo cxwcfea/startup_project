@@ -1,0 +1,79 @@
+<div class="am-cf am-padding">
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">投资合同</strong></div>
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12 am-u-md-6">
+        <div class="am-btn-toolbar">
+            <div class="am-btn-group am-btn-group-xs">
+                <button ng-repeat="item in queryItems" type="button" class="am-btn am-btn-default" ng-click="queryItem(item)"> \{{item.name}}</button>
+            </div>
+        </div>
+    </div>
+    <!--
+    <div class="am-u-sm-12 am-u-md-3">
+        <div class="am-input-group am-input-group-sm">
+            <input type="text" class="am-form-field">
+            <span class="am-input-group-btn">
+                <button class="am-btn am-btn-default" type="button">搜索</button>
+            </span>
+        </div>
+    </div>
+    -->
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12">
+        <div class="am-scrollable-horizontal">
+            <table class="am-table am-table-striped am-table-hover table-main">
+                <thead>
+                <tr>
+                    <th class="table-id">相关配资</th><th class="table-id">借款人</th><th class="table-title am-text-right">总资金</th><th class="table-type am-text-right">周期</th><th class="table-author am-text-center">状态</th><th class="table-date am-text-center">合同预计起止日期</th><th class="table-date am-text-center">合同实际起止日期</th><th class="">占用平台资金</th><th class="">共获取利润</th><th class="table-set">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="contract in showingItems">
+                    <td class="">\{{contract.applySerialID}}</td>
+                    <td class=""><a href="" ng-click="showBorrowerDetail(contract.userMobile)">\{{contract.userMobile}}</a></td>
+                    <td class="am-text-right"><strong>\{{contract.amount | currency:'':2}}</strong></td>
+                    <td class="am-text-right"><strong>\{{contract.period}}天</strong></td>
+                    <td class="am-text-center">\{{contract.status | contractStatus}}</td>
+                    <td class="am-text-center">\{{contract.startTime | displayDate}}<br>\{{contract.endTime | displayDate}}</td>
+                    <td class="am-text-center">\{{contract.startAt | displayDate}}<br>\{{contract.closeAt | displayDate}}</td>
+                    <td class="">\{{contract.platformAmount | currency:'':2}}</td>
+                    <td class="">\{{contract.totalProfit | currency:'':2}}</td>
+                    <td>
+                        <div class="am-btn-toolbar">
+                            <div class="am-btn-group am-btn-group-xs">
+                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary" ng-click="showInvestors(contract)"><span class="am-icon-users"></span> 投资者</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="am-cf">
+                共 \{{totalItems}} 条记录
+                <div class="am-fr">
+                    <pagination previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="itemsPerPage" total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></pagination>
+                </div>
+            </div>
+            <hr />
+        </div>
+        <table class="am-table am-table-striped am-table-hover table-main" ng-show="displayInvestors">
+            <thead>
+            <tr>
+                <th class="">手机号</th><th class="">实名</th><th class="">投资额</th><th class="">年化收益率</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="investor in investorsForCurrentContract">
+                <td class=""><a href="" ng-click="showBorrowerDetail(investor.mobile)">\{{investor.mobile}}</a></td>
+                <td class="">\{{investor.name}}</td>
+                <td class=""><strong>\{{investor.amount | currency:'':2}}</strong></td>
+                <td class=""><strong>\{{investor.profitRate}}%</strong></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -15,6 +15,9 @@ angular.module('mobileApp').config(['$routeProvider', '$httpProvider', function(
         })
         .when('/exp', { templateUrl: '/mobile/exp'
         })
+        .when('/invest', { templateUrl: '/mobile/invest',
+            controller: 'MobileInvestCtrl as vm'
+        })
         .when('/recharge', { templateUrl: '/mobile/recharge'
         })
         .when('/withdraw', { templateUrl: '/mobile/withdraw', 
@@ -79,6 +82,18 @@ angular.module('mobileApp').config(['$routeProvider', '$httpProvider', function(
         .when('/postpone_apply', { templateUrl: '/mobile/postpone_apply',
             controller: 'MobilePostponeCtrl as vm'
         })
+        .when('/invest_recharge', { templateUrl: '/mobile/invest_recharge',
+            controller: 'MobileInvestRechargeCtrl as vm'
+        })
+        .when('/invest_list', { templateUrl: '/mobile/invest_list',
+            controller: 'MobileInvestListCtrl as vm'
+        })
+        .when('/order_list', { templateUrl: '/mobile/user_order_list',
+            controller: 'MobileUserOrdersCtrl as vm'
+        })
+        .when('/user_invest_center', { templateUrl: '/mobile/user_invest_center',
+            controller: 'MobileUserInvestCenterCtrl as vm'
+		})
         .when('/user_promote', { templateUrl: '/mobile/user_promote',
             controller: 'MobileUserPromoteCtrl as vm'
         })
@@ -87,6 +102,12 @@ angular.module('mobileApp').config(['$routeProvider', '$httpProvider', function(
         })
         .when('/add_card', { templateUrl: '/mobile/add_card',
             controller: 'MobileAddCardCtrl as vm'
+		})
+        .when('/identity', { templateUrl: '/mobile/identity',
+            controller: 'MobileIdentityCtrl'
+        })
+        .when('/invest_setting', { templateUrl: '/mobile/invest_setting',
+            controller: 'MobileInvestSettingCtrl as vm'
         })
         .otherwise({
             redirectTo: '/home'

@@ -1,5 +1,5 @@
 'use strict';
-angular.module('mobileApp').controller('MobileYynConfirmCtrl', ['$scope', '$window', '$http', function($scope, $window, $http) {
+angular.module('mobileApp').controller('MobileYynConfirmCtrl', ['$scope', '$window', '$http', '$location', function($scope, $window, $http, $location) {
     var vm = this;
     vm.apply = {};
     if (!!$window.bootstrappedApplyObject) {
@@ -39,9 +39,17 @@ angular.module('mobileApp').controller('MobileYynConfirmCtrl', ['$scope', '$wind
             })
             .error(function(data, status, headers, config) {
                 if (status === 403) {
-                    alert('对不起，同一用户最多只能有5笔操盘中的配资。暂不能再申请新的配资。');
+                    if (data.error_code === 2) {
+                        alert('对不起，同一用户最多只能有5笔操盘中的配资。暂不能再申请新的配资。');
+                    } else if (data.error_code === 1) {
+                        vm.showIdentityDialog = true;
+                    }
                 }
                 console.log('error:' + data.reason);
             });
+    };
+
+    vm.redirectToIdentity = function() {
+        $location.path('/account');
     };
 }]);

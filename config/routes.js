@@ -50,10 +50,6 @@ module.exports = function(app) {
         });
     });
 
-    app.get('/complain', passportConf.isAuthenticated, function(req, res, next) {
-        res.render('complain');
-    });
-
     app.post('/complain', passportConf.isAuthenticated, users.submitComplain);
 
     app.get('/apply_detail/:id', passportConf.isAuthenticated, applies.getApplyDetail);
@@ -245,6 +241,8 @@ module.exports = function(app) {
     mobile.registerRoutes(app, passportConf);
 
     app.get('/api/get_verify_img', users.getVerifyImg);
+
+    app.get('/api/test_weixin', weixin.testTemplateMsg);
 
     /*
     app.get('/admin_test', passportConf.requiresRole('admin'), function(req, res, next) {

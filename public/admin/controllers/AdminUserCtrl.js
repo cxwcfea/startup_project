@@ -3,8 +3,14 @@ angular.module('adminApp').controller('AdminUserCtrl', ['$scope', '$http', '$mod
     var vm = this;
     if ($scope.data.searchKey) {
         vm.searchKey = $scope.data.searchKey;
+        $http.get('/admin/api/user?mobile=' + vm.searchKey)
+            .success(function(data, status) {
+                vm.user = data;
+            })
+            .error(function(data, status) {
+                gbNotifier.error('失败:' + data.error_msg);
+            });
     }
-
 
     vm.registerDate = function(date) {
         return moment(date).format("YYYY-MM-DD HH:mm");

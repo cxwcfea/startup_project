@@ -93,7 +93,6 @@ angular.module('adminApp').controller('AdminPendingApplyCtrl', ['$scope', '$http
                 user_mobile: apply.userMobile,
                 sms_content: vm.sms_content
             };
-            console.log(vm.sms_content);
             $http.post('/admin/api/send_sms', data)
                 .then(function(response) {
                     if (response.data.success) {

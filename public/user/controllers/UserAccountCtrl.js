@@ -18,6 +18,7 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
     vm.BankNameList = BankNameList;
 
     vm.alerts = [];
+    vm.identityBtnText = '提 交';
 
     var addAlert = function(type, msg) {
         vm.alerts = [];
@@ -217,6 +218,16 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
             });
     };
 
+    vm.closeIdentityWindow = function() {
+        vm.alerts = [];
+        vm.showIdentityDialog = false;
+        vm.identitySetSuccess = false;
+        /*
+        vm.userName = '';
+        vm.userID = '';
+        */
+    };
+
     vm.closePassWindow = function() {
         vm.alerts = [];
         vm.showResetPasswordWindow = false;
@@ -237,5 +248,24 @@ angular.module('userApp').controller('UserAccountCtrl', ['$scope', '$filter', '$
     vm.imgClicked = function(e) {
         var x = Math.random();
         e.target.src = '/api/get_verify_img?cacheBuster=' + x;
+    };
+
+    vm.verifyUserIdentity = function() {
+        if (!vm.userName || !vm.userID) {
+            addAlert('danger', '请输入有效的姓名及身份证号');
+            return;
+        }
+        vm.identityBtnText = '认证中...';
+        $http.post('/user/set_identity', {userName:vm.userName, userID:vm.userID})
+            .success(function(data, status) {
+                vm.user.identity.name = vm.userName;
+                vm.user.identity.id = vm.userID;
+                vm.identitySetSuccess = true;
+                vm.identityBtnText = '提 交';
+            })
+            .error(function(data, status) {
+                addAlert('danger', '认证失败 ' + data.error_msg);
+                vm.identityBtnText = '提 交';
+            });
     };
 }]);
