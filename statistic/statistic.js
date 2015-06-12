@@ -916,8 +916,13 @@ function createReturnOrder(apply, callback) {
         status: 0,
         description: "6月12日早上完成前天结算，返还多扣一天管理费",
         applySerialID: apply.serialID
-    }
-
+    };
+    Order.create(orderData, function(err, order) {
+        if (err) {
+            console.log(apply.serialID);
+        }
+        callback(null);
+    })
 }
 
 var options = {};
@@ -1017,7 +1022,9 @@ db.once('open', function callback() {
                 });
             },
             function(applies, callback) {
-                callback(null);
+                async.map(applies, createReturnOrder, function(err, result) {
+                    callback(err);
+                });
             }
         ], function(err, data) {
             if (err) {
