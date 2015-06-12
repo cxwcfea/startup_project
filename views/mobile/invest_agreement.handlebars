@@ -29,6 +29,8 @@
         <tbody>
         <tr>
             <td>牛金网用户名</td>
+            <td>真实姓名</td>
+            <td>身份证号</td>
             <td>出借金额</td>
             <td>借款期限</td>
             <td>年化利息</td>
@@ -38,6 +40,8 @@
 {{#each contractObj.investors}}
         <tr>
             <td>{{mobile}}</td>
+            <td>{{name}}</td>
+            <td>{{id}}</td>
             <td>￥{{amount}}</td>
             <td>{{../contractObj.period}}日,{{../startTime}}起，至{{../endTime}}止</td>
             <td>{{profitRate}}%</td>

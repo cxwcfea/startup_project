@@ -56,7 +56,7 @@ angular.module('mobileApp').controller('MobileUserOrdersCtrl', ['$scope', '$wind
         }
         $http.get('/api/mobile/user_orders')
             .success(function(data, status) {
-                vm.orders = data;
+                vm.orders = $filter('orderBy')(data, 'createdAt', true);
                 vm.selectItem(vm.queryItems[0]);
             })
             .error(function(data, status) {
