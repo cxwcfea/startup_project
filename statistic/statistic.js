@@ -822,8 +822,12 @@ var getMoreFeeApply = function(callback) {
     time.minute(00);
     time.second(00);
     var time2 = moment().startOf('day');
+    var time3 = moment('2015-06-11');
+    time3.hour(14);
+    time3.minute(00);
+    time3.second(00);
 
-    Apply.find({$and:[{closeAt:{$exists:true}}, {closeAt:{$lt:time}}, {closeAt:{$gt:time2}}, {endTime:{$gt:time2}}]}, function(err, applies) {
+    Apply.find({$and:[{closeAt:{$exists:true}}, {closeAt:{$lt:time}}, {closeAt:{$gt:time2}}, {endTime:{$gt:time2}}, {startTime:{$lte:time3}}]}, function(err, applies) {
         if (err) {
             console.log(err.toString());
             return callback(err);
@@ -845,6 +849,7 @@ var getMoreFeeApply = function(callback) {
             + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + ', ' + apply.discount + ', ' + startAt + '\n';
             fileWriteStream.write(data);
         });
+        callback(null, applies);
     });
 };
 
@@ -874,6 +879,47 @@ var fixOldWithdrawOrder = function(callback) {
 };
 */
 
+function createReturnOrder(apply, callback) {
+    var amount = 0;
+    if (apply.serviceCharge) {
+        amount = apply.serviceCharge * apply.amount / 10000;
+    } else {
+        switch (applies[i].lever) {
+            case 10:
+                amount += 19.9 * apply.amount / 10000;
+                break;
+            case 9:
+                amount += 18.9 * apply.amount / 10000;
+                break;
+            case 8:
+                amount += 17.9 * apply.amount / 10000;
+                break;
+            case 7:
+                amount += 16.9 * apply.amount / 10000;
+                break;
+            case 6:
+                amount += 15.9 * apply.amount / 10000;
+                break;
+            case 5:
+                amount += 10.9 * apply.amount / 10000;
+                break;
+            default :
+                amount += 19.9 * apply.amount / 10000;
+                break;
+        }
+    }
+    var orderData = {
+        userID: apply.userID,
+        userMobile: apply.userMobile,
+        dealType: 8,
+        amount: amount,
+        status: 0,
+        description: "6月12日早上完成前天结算，返还多扣一天管理费",
+        applySerialID: apply.serialID
+    }
+
+}
+
 var options = {};
 mongoose.connect(config.db, options);
 var db = mongoose.connection;
@@ -890,9 +936,9 @@ db.once('open', function callback() {
     startTime = startTime.toDate();
     endTime = endTime.toDate();
 
-    /*
     async.waterfall(
         [
+            /*
             function(callback) {
                 User.find({}, function(err, users) {
                     if (err) {
@@ -963,6 +1009,15 @@ db.once('open', function callback() {
                 async.mapSeries(users, assignReferNameToUser, function(err, result) {
                     callback(err);
                 });
+            },
+            */
+            function(callback) {
+                getMoreFeeApply(function(err, applies) {
+                    callback(err, applies);
+                });
+            },
+            function(applies, callback) {
+                callback(null);
             }
         ], function(err, data) {
             if (err) {
@@ -974,11 +1029,10 @@ db.once('open', function callback() {
             db.close();
         }
     );
-             */
 
+    /*
     async.series(
         [
-            /*
             function(callback) {
                 getUserData(function (err) {
                     callback(err);
@@ -1028,6 +1082,7 @@ db.once('open', function callback() {
             },
             */
 
+            /*
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
                     callback(err);
@@ -1068,11 +1123,7 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
-            function(callback) {
-                getMoreFeeApply(function(err) {
-                    callback(err);
-                });
-            }
+            */
 
             /*
             function (callback) {
@@ -1104,7 +1155,6 @@ db.once('open', function callback() {
                     callback(err);
                 });
             }
-     */
         ],
         function(err){
             if (err) {
@@ -1112,4 +1162,5 @@ db.once('open', function callback() {
             }
             db.close();
         });
+ */
 });
