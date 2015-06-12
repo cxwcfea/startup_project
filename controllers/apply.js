@@ -516,6 +516,8 @@ exports.freeApply = function(req, res, next) {
                             var applyData = new Apply({
                                 userID: req.user._id,
                                 userMobile: req.user.mobile,
+                                userName: req.user.identity.name,
+                                userIdentity: req.user.identity.id,
                                 serialID: util.generateSerialID(),
                                 amount: 2000,
                                 deposit: 100,
@@ -636,6 +638,8 @@ exports.placeApply = function(req, res, next) {
     var applyData = new Apply({
         userID: req.user._id,
         userMobile: req.user.mobile,
+        userName: req.user.identity.name,
+        userIdentity: req.user.identity.id,
         serialID: util.generateSerialID(),
         amount: amount,
         deposit: deposit,

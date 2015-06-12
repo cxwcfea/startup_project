@@ -27,6 +27,7 @@ angular.module('mobileApp').controller('MobileInvestListCtrl', ['$scope', '$wind
                             o.sellValue = data.contracts[i].sellValue;
                             o.contractStatus = data.contracts[i].status;
                             o.investAt = data.contracts[i].startAt;
+                            o.contractSerialID = data.contracts[i].serialID;
                             break;
                         }
                     }

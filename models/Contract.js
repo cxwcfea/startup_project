@@ -1,8 +1,11 @@
 var mongoose = require('mongoose');
 
 var contractSchema = mongoose.Schema({
+    serialID: {type:String, unique: true, required:'{PATH} is required!'},
     applySerialID: {type:String, required:'{PATH} is required!'},
     userMobile: {type:String, required:'{PATH} is required!'},  // borrower mobile
+    userName: {type:String, required:'{PATH} is required!'},
+    userIdentity: {type:String, required:'{PATH} is required!'},
     createdAt: {type:Date, default: Date.now},
     amount: {type:Number, required:'{PATH} is required!'},
     platformAmount: {type:Number, default: 0},  // amount which not from investor but from niujin

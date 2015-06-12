@@ -1895,6 +1895,31 @@ function beifuIdentityVerify(userID, userName, idNum, cb) {
     });
 }
 
+function getInvestContract(req, res, next) {
+    var sid = req.params.serial_id;
+    if (!sid) {
+        return next();
+    }
+    Contract.findOne(sid, function(err, contract) {
+        if (err) {
+            logger.warn('getInvestContract err:' + err.toString());
+            return next();
+        }
+        if (!contract) {
+            logger.warn('getInvestContract err contract not found:' + cid);
+            return next();
+        }
+        res.render('mobile/invest_agreement', {
+            layout: 'mobile',
+            contractObj: contract,
+            createdAt: moment(contract.createAt).format('YYYY年MM月DD日'),
+            startTime: moment(contract.startTime).format('YYYY年MM月DD日'),
+            endTime: moment(contract.endTime).format('YYYY年MM月DD日'),
+            serviceFee: util.getServiceCharge(Math.floor(contract.amount/contract.deposit))
+        });
+    })
+}
+
 module.exports.registerRoutes = function(app, passportConf) {
     app.get('/user', passportConf.isAuthenticated, getUserHome);
 
@@ -1927,6 +1952,8 @@ module.exports.registerRoutes = function(app, passportConf) {
     app.get('/user/api/refer_user_list', passportConf.isAuthenticated, fetchReferUserList);
 
     app.post('/api/weixin_band_user', finishWeixinBandUser);
+
+    app.get('/contract/:serial_id', passportConf.isAuthenticated, getInvestContract);
 
     app.get('/user/*', passportConf.isAuthenticated, function(req, res, next) {
         res.locals.callback_domain = config.pay_callback_domain;
