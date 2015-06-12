@@ -884,7 +884,7 @@ function createReturnOrder(apply, callback) {
     if (apply.serviceCharge) {
         amount = apply.serviceCharge * apply.amount / 10000;
     } else {
-        switch (applies[i].lever) {
+        switch (apply.lever) {
             case 10:
                 amount += 19.9 * apply.amount / 10000;
                 break;
