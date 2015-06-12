@@ -137,7 +137,7 @@ var getApplyServiceFee = function(apply) {
 };
 
 var gatherApplyData = function(cb) {
-    Apply.find({$and:[{closeAt:{$gte:startOfMonth}}, {status:{$ne:1}}, {status:{$ne:9}}, {status:{$ne:4}}, {isTrial:false}]}, function(err, applies) {
+    Apply.find({$and:[{startTime:{$lte:endOfMonth}, endTime:{$gte:startOfMonth}}, {status:{$ne:1}}, {status:{$ne:9}}, {status:{$ne:4}}, {isTrial:false}]}, function(err, applies) {
         if (err) {
             logger.debug('err when gatherApplyData' + err.toString());
             return cb(err);
