@@ -816,6 +816,38 @@ var getUserProfitData = function(callback) {
     });
 };
 
+var getMoreFeeApply = function(callback) {
+    var time = moment();
+    time.hour(10);
+    time.minute(00);
+    time.second(00);
+    var time2 = moment().startOf('day');
+
+    Apply.find({$and:[{closeAt:{$exists:true}}, {closeAt:{$lt:time}}, {closeAt:{$gt:time2}}, {endTime:{$gt:time2}}]}, function(err, applies) {
+        if (err) {
+            console.log(err.toString());
+            return callback(err);
+        }
+
+        var options = { encoding: 'utf8', flag: 'w' };
+        var fileWriteStream = fs.createWriteStream("todayApply" + ".csv",  options);
+        fileWriteStream.on("close", function() {
+            console.log("File Closed.");
+        });
+        var data = 'userID, userMobile, serialID, amount, deposit, period, status, applyAt, closeAt, isTrial, autoPostpone, lever, warnValue, sellValue, startTime, endTime, account, profit, type, interestRate, serviceCharge, discount, startAt\n';
+        fileWriteStream.write(data);
+        applies.forEach(function (apply) {
+            var closeAt = (apply.closeAt ? moment(apply.closeAt).format('YYYYMMDDHHmmss') : apply.closeAt);
+            var startAt = (apply.startAt ? moment(apply.startAt).format('YYYYMMDDHHmmss') : apply.startAt);
+            data = apply.userID + ', ' + apply.userMobile + ', ' + apply.serialID + ', ' + apply.amount.toFixed(2) + ', ' + apply.deposit.toFixed(2) + ', '
+            + apply.period + ', ' + apply.status + ', ' + moment(apply.applyAt).format('YYYYMMDDHHmmss') + ', ' + closeAt + ', ' + apply.isTrial + ', ' + apply.autoPostpone + ', '
+            + apply.lever + ', ' + apply.warnValue + ', ' + apply.sellValue + ', ' + moment(apply.startTime).format('YYYYMMDDHHmmss') + ', ' + moment(apply.endTime).format('YYYYMMDDHHmmss') + ', ' + apply.account + ', '
+            + apply.profit + ', ' + apply.type + ', ' + apply.interestRate + ', ' + apply.serviceCharge + ', ' + apply.discount + ', ' + startAt + '\n';
+            fileWriteStream.write(data);
+        });
+    });
+};
+
 /*
 function fixOldWithdraw(order, callback) {
     if (!order.otherInfo) {
@@ -1036,6 +1068,11 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
+            function(callback) {
+                getMoreFeeApply(function(err) {
+                    callback(err);
+                });
+            }
 
             /*
             function (callback) {
