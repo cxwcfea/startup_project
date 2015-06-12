@@ -1631,13 +1631,25 @@ function investUpdate(req, res) {
         return res.send({error_msg:'invalid input'});
     }
     invest = _.omit(invest, investPrivateProperties);
-    User.update({mobile:req.user.mobile}, {invest:invest}, function(err, numberAffected, raw) {
-        if (numberAffected) {
-            res.send({});
-        } else {
+    User.findOne({mobile:req.user.mobile}, function(err, user) {
+        if (err) {
             res.status(500);
-            res.send({error_msg:'failed to update user enableInvest'});
+            return res.send({error_msg:err.toString()});
         }
+        if (!user) {
+            res.status(500);
+            return res.send({error_msg:'user not found:' + req.user.mobile});
+        }
+        user.invest.enable = invest.enable;
+        user.invest.duration = invest.duration;
+        user.invest.profitRate = invest.profitRate;
+        user.save(function(err) {
+            if (err) {
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+            res.send({});
+        });
     });
 }
 
