@@ -123,6 +123,7 @@ exports.postCloseApply = function(req, res) {
             return res.send({reason:'apply not in correct status'});
         }
         apply.status = 5;
+        apply.userCloseAt = Date.now();
         apply.save(function(err) {
             if (err) {
                 logger.warn('postCloseApply ' + req.params.serial_id + ' error:' + err.toString());

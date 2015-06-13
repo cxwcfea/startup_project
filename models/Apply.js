@@ -33,7 +33,8 @@ var applySchema = mongoose.Schema({
     actualServiceFee: Number,
     profitForMgm: {type:Number, default: 0},
     profitForInvest: {type:Number, default: 0},  // how much profit will return to investor
-    accountType: Number  // 2 means tonghuashun, otherwise means homs
+    accountType: Number,  // 2 means tonghuashun, otherwise means homs
+    userCloseAt: Date
 });
 
 var Apply = mongoose.model('Apply', applySchema);
