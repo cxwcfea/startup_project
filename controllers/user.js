@@ -1626,11 +1626,11 @@ var investPrivateProperties = [
 
 function investUpdate(req, res) {
     var invest = req.body.invest;
-    if (!invest || !invest.profitRate || !invest.duration || invest.profitRate > 20 || invest.profitRate < 1 || invest.duration > 30 || invest.duration < 1) {
+    if (!invest || !invest.profitRate || !invest.duration || invest.profitRate > 20 || invest.profitRate < 1 || invest.duration > 30 || invest.duration < 5) {
         res.status(403);
         return res.send({error_msg:'invalid input'});
     }
-    invest = _.omit(invest, investPrivateProperties);
+    //invest = _.omit(invest, investPrivateProperties);
     User.findOne({mobile:req.user.mobile}, function(err, user) {
         if (err) {
             res.status(500);

@@ -30,8 +30,8 @@ angular.module('mobileApp').controller('MobileInvestSettingCtrl', ['$scope', '$w
                 }, 1500);
                 return;
             }
-            if (!vm.period || vm.period > 30 || vm.period < 1) {
-                vm.errorMsg = '请输入期望项目借款期限，1到30之间';
+            if (!vm.period || vm.period > 30 || vm.period < 5) {
+                vm.errorMsg = '请输入期望项目借款期限，5到30之间';
                 vm.inputError = true;
                 $timeout(function() {
                     vm.inputError = false;
