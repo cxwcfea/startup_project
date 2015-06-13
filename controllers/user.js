@@ -1879,7 +1879,7 @@ function setIdentity(req, res) {
 function beifuIdentityVerify(userID, userName, idNum, cb) {
     var md5key = 'DH7WNCLKEB7KM897T8YBUB6Y3ETO3Atykisu';
 
-    var queryStr = "cert_id=" + idNum + "&input_charset=UTF-8&out_order_no=" + userID + "&partner=201504141356306494&service=ebatong_identity_auth&sign_type=MD5&user_name=" + userName;
+    var queryStr = "cert_id=" + idNum + "&input_charset=UTF-8&out_order_no=" + util.generateSerialID() + "&partner=201504141356306494&service=ebatong_identity_auth&sign_type=MD5&user_name=" + userName;
     var sign1 = sparkMD5.hash(queryStr+md5key);
     queryStr += '&sign=' + sign1;
     var url = 'https://www.ebatong.com/auth/identityauth.htm?' + queryStr;
