@@ -442,61 +442,54 @@ exports.finishVerifyEmail = function(req, res) {
 };
 
 module.exports.postWithdraw = function(req, res) {
-    var data = req.body;
-    var amount = Number(data.order.amount);
-
     util.debugInfo(logger, req);
+
+    var data = req.body;
+    var amount = Number(data.amount);
+    if (amount <= 0) {
+        res.status(403);
+        return res.send({error_msg:'invalid input'});
+    }
+
     async.waterfall([
         function(callback) {
-            User.findById(req.user.id, function(err, user) {
-                if (!err && !user) {
-                    err = 'user not found';
+            User.update({$and:[{_id:req.user._id}, {'finance.balance':{$gte:amount}}]}, {$inc: {'finance.balance':-amount, 'finance.freeze_capital':amount}}, function(err, numberAffected, raw) {
+                if (!err && !numberAffected) {
+                    err = '余额不足';
+                }
+                callback(err);
+            });
+        },
+        function(callback) {
+            User.findById(req.user._id, function(err, user) {
+                if (!user) {
+                    err = '用户不存在';
                 }
                 callback(err, user);
             });
         },
         function(user, callback) {
-            user.finance.balance = Number(user.finance.balance.toFixed(2));
-            if (user.finance.balance < amount) {
-                callback('余额不足');
-            } else {
-                if (data.password) {
-                    user.compareFinancePassword(data.password, function (err, isMatch) {
-                        if (!err && !isMatch) {
-                            err = '提现密码错误!'
-                        }
-                        callback(err, user);
-                    });
-                } else {
-                    callback(null, user);
-                }
-            }
-        },
-        function(user, callback) {
             if (user.level >= 999) {
-                data.order.status = 3;
+                data.status = 3;
             } else {
-                data.order.status = 0;
+                data.status = 0;
             }
-            data.order.userBalance = user.finance.balance - amount;
-            data.order.otherInfo = util.generateSerialID();
-            Order.create(data.order, function(err, order) {
-                callback(err, user, order);
-            });
-        },
-        function(user, order, callback) {
-            user.finance.balance -= amount;
-            user.finance.freeze_capital += amount;
-            user.save(function(err) {
-                callback(err, user, order);
+            data.userID = req.user._id;
+            data.userMobile = req.user.mobile;
+            data.userBalance = user.finance.balance;
+            data.dealType = 2;
+            data.otherInfo = util.generateSerialID();
+            Order.create(data, function(err, order) {
+                callback(err);
             });
         }
-    ], function(err, user, order) {
+    ], function(err) {
         if (err) {
-            res.status(401);
-            res.send({reason:err.toString()});
+            logger.error('postWithdraw error mobile:' + req.user.mobile + ' reason:' + err.toString());
+            res.status(500);
+            res.send({error_msg:err.toString()});
         } else {
-            res.send({success:true, order:order});
+            res.send({});
         }
     });
 };

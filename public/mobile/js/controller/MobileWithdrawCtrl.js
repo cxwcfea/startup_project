@@ -57,11 +57,7 @@ angular.module('mobileApp').controller('MobileWithdrawCtrl', ['$scope', '$http',
             }
             vm.step = 2;
         } else if (vm.step === 2) {
-            vm.alerts = [];
-            var order = {
-                userID: vm.user._id,
-                userMobile: vm.user.mobile,
-                dealType: 2,
+            var orderData= {
                 amount: vm.withdrawAmount,
                 description: '余额提现',
                 cardInfo: {
@@ -73,18 +69,19 @@ angular.module('mobileApp').controller('MobileWithdrawCtrl', ['$scope', '$http',
                     userName: vm.card.userName
                 }
             };
-            var data = {
-                order: order
-            };
 
-            $http.post('/user/withdraw', data)
+            $http.post('/user/withdraw', orderData)
                 .success(function(data, status, headers, config) {
-                    vm.user.finance.freeze_capital += order.amount;
-                    vm.user.finance.balance -= order.amount;
+                    vm.user.finance.freeze_capital += orderData.amount;
+                    vm.user.finance.balance -= orderData.amount;
                     vm.step = 3;
                 })
                 .error(function(data, status, headers, config) {
-                    addAlert('danger', '提现申请提交失败,请联系客服!');
+                    vm.errorMsg = '提现申请提交失败,请联系客服! ' + data.error_msg;
+                    vm.inputError = true;
+                    $timeout(function() {
+                        vm.inputError = false;
+                    }, 2500);
                 });
         }
     };

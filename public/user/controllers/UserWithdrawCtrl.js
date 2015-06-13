@@ -45,7 +45,6 @@ angular.module('userApp').controller('UserWithdrawCtrl', ['$scope', '$http', '$w
 
     vm.withdrawNextStep = function() {
         if (vm.step === 1) {
-            console.log(vm.withdrawAmount);
             if (!vm.withdrawAmount || vm.withdrawAmount <= 0) {
                 addAlert('danger', '请输入提现金额,金额不超过余额且大于0,');
                 return;
@@ -58,10 +57,7 @@ angular.module('userApp').controller('UserWithdrawCtrl', ['$scope', '$http', '$w
             }
             vm.step = 2;
         } else if (vm.step === 2) {
-            var order = {
-                userID: vm.user._id,
-                userMobile: vm.user.mobile,
-                dealType: 2,
+            var orderData = {
                 amount: vm.withdrawAmount,
                 description: '余额提现',
                 cardInfo: {
@@ -73,18 +69,15 @@ angular.module('userApp').controller('UserWithdrawCtrl', ['$scope', '$http', '$w
                     userName: vm.card.userName
                 }
             };
-            var data = {
-                order: order
-            };
 
-            $http.post('/user/withdraw', data)
+            $http.post('/user/withdraw', orderData)
                 .success(function(data, status, headers, config) {
-                    vm.user.finance.freeze_capital += order.amount;
-                    vm.user.finance.balance -= order.amount;
+                    vm.user.finance.freeze_capital += orderData.amount;
+                    vm.user.finance.balance -= orderData.amount;
                     vm.step = 3;
                 })
                 .error(function(data, status, headers, config) {
-                    addAlert('danger', '提现申请提交失败,请联系客服!');
+                    addAlert('danger', '提现申请提交失败,请联系客服! ' + data.error_msg);
                 });
         }
     };
