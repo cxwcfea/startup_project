@@ -207,7 +207,7 @@
     }).filter("displayOrderAmount", function () {
         return function (input, orderType) {
             var ret = '+';
-            if (orderType === 2 || orderType === 9 || orderType === 10 || orderType === 11 || orderType === 17 || orderType === 15) {
+            if (orderType === 2 || orderType === 9 || orderType === 10 || orderType === 11 || orderType === 17 || orderType === 15 || orderType === 19) {
                 ret = '-';
             }
             return ret + input;
@@ -215,7 +215,7 @@
     }).filter("displayIncome", ['$filter', function ($filter) {
         return function (input, orderType) {
             var ret = input;
-            if (orderType == 2 || orderType == 9 || orderType == 10 || orderType === 11 || orderType === 17 || orderType == 15) {
+            if (orderType == 2 || orderType == 9 || orderType == 10 || orderType === 11 || orderType === 17 || orderType == 15 || orderType == 19) {
                 return '';
             }
             return $filter('currency')(ret, '', 2);
@@ -223,7 +223,7 @@
     }]).filter("displayOutcome", ['$filter', function ($filter) {
         return function (input, orderType) {
             var ret = '';
-            if (orderType == 2 || orderType == 9 || orderType == 10 || orderType === 11 || orderType === 17 || orderType == 15) {
+            if (orderType == 2 || orderType == 9 || orderType == 10 || orderType === 11 || orderType === 17 || orderType == 15 || orderType == 19) {
                 ret = $filter('currency')(input, '', 2);
             }
             return ret;
@@ -352,6 +352,8 @@
                     return '余额转入投资本金';
                 case 18:
                     return '投资本金转入余额';
+                case 19:
+                    return '配资加配';
                 default:
                     return '充值';
             }
