@@ -65,6 +65,10 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
     };
 
     vm.redirectToInvestSetting = function() {
+        if (!vm.user.identity.id) {
+            vm.showIdentityDialog = true;
+            return;
+        }
         $location.path('/invest_setting');
     }
 }]);
