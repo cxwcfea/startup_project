@@ -937,13 +937,13 @@ db.once('open', function callback() {
     endTime.second(00);
 
     var startTime = endTime.clone();
-    startTime = startTime.subtract(1, 'days');
+    startTime = startTime.subtract(3, 'days');
     startTime = startTime.toDate();
     endTime = endTime.toDate();
 
+    /*
     async.waterfall(
         [
-            /*
             function(callback) {
                 User.find({}, function(err, users) {
                     if (err) {
@@ -1015,7 +1015,6 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
-            */
             function(callback) {
                 getMoreFeeApply(function(err, applies) {
                     callback(err, applies);
@@ -1036,10 +1035,11 @@ db.once('open', function callback() {
             db.close();
         }
     );
+*/
 
-    /*
     async.series(
         [
+    /*
             function(callback) {
                 getUserData(function (err) {
                     callback(err);
@@ -1089,7 +1089,6 @@ db.once('open', function callback() {
             },
             */
 
-            /*
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
                     callback(err);
@@ -1130,7 +1129,6 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
-            */
 
             /*
             function (callback) {
@@ -1162,6 +1160,7 @@ db.once('open', function callback() {
                     callback(err);
                 });
             }
+ */
         ],
         function(err){
             if (err) {
@@ -1169,5 +1168,4 @@ db.once('open', function callback() {
             }
             db.close();
         });
- */
 });
