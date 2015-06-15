@@ -1906,7 +1906,7 @@ function getInvestContract(req, res, next) {
     if (!sid) {
         return next();
     }
-    Contract.findOne(sid, function(err, contract) {
+    Contract.findOne({serialID:sid}, function(err, contract) {
         if (err) {
             logger.warn('getInvestContract err:' + err.toString());
             return next();
