@@ -64,6 +64,14 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
     };
 
     vm.redirectToInvestSetting = function() {
+        if (!vm.user) {
+            if (!$scope.data) {
+                $scope.data = {};
+            }
+            $scope.data.lastLocation = '/invest';
+            $location.path('/login');
+            return;
+        }
         if (!vm.user.identity.id) {
             vm.showIdentityDialog = true;
             return;
