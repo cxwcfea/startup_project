@@ -93,11 +93,10 @@ var historyFreeApplyData = function(startTime, callback) {
     });
 };
 
-var historyPayApplyData = function(startTime, applyCloseDateMap, callback) {
+var historyPayApplyData = function(callback) {
     console.log('historyPayApplyData');
 
-    var time1 = moment('2015-05-01');
-    Apply.find({$and:[{isTrial:false}, {startTime:{$lte:time1}}, {status:{$ne:1}}, {status:{$ne:9}}]}, function(err, applies) {
+    Apply.find({$and:[{isTrial:false}, {status:3}]}, function(err, applies) {
         if (err) {
             console.log(err.toString());
             callback(err);
@@ -106,12 +105,13 @@ var historyPayApplyData = function(startTime, applyCloseDateMap, callback) {
         for (var i = 0; i < applies.length; ++i) {
             var value = applies[i].deposit + applies[i].profit;
             if (value < 0) {
-                console.log(applies[i].userMobile + ' ' + applies[i].serialID);
+                console.log(applies[i].userMobile + ' ' + applies[i].serialID + ' ' + value);
                 amount += value;
             }
         }
         console.log('穿仓 ' + amount);
 
+        /*
         var fee = 0;
         for (var i = 0; i < applies.length; ++i) {
             if (applies[i].type === 2) continue;
@@ -182,6 +182,7 @@ var historyPayApplyData = function(startTime, applyCloseDateMap, callback) {
             fileWriteStream.write(data);
         });
         fileWriteStream.end();
+        */
 
         callback(null);
     });
@@ -1089,6 +1090,7 @@ db.once('open', function callback() {
             },
             */
 
+            /*
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
                     callback(err);
@@ -1129,6 +1131,12 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
+            */
+            function(callback) {
+                historyPayApplyData(function(err) {
+                    callback(err);
+                });
+            }
 
             /*
             function (callback) {
