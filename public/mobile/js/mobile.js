@@ -31,6 +31,9 @@ angular.module('mobileApp').config(['$routeProvider', '$httpProvider', function(
         .when('/login', { templateUrl: '/mobile/login',
             controller: 'MobileLoginCtrl as vm'
         })
+        .when('/login_longterm', { templateUrl: '/mobile/login_longterm',
+            controller: 'MobileLoginLongtermCtrl as vm'
+        })
         .when('/signup', { templateUrl: '/mobile/signup',
             controller: 'MobileSignupCtrl as vm'
         })

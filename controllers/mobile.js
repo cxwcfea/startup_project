@@ -114,6 +114,9 @@ function home(req, res, next) {
 function getLogin(req, res, next) {
     res.render('mobile/login', {layout:null});
 }
+function getLoginLongterm(req, res, next) {
+    res.render('mobile/login_longterm', {layout:null});
+}
 
 function getSignup(req, res, next) {
     var refer;
@@ -435,6 +438,8 @@ module.exports = {
         app.get('/mobile/home', home);
 
         app.get('/mobile/login', getLogin);
+
+        app.get('/mobile/login_longterm', getLoginLongterm);
 
         app.get('/mobile/signup', getSignup);
 
