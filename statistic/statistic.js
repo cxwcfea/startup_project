@@ -938,7 +938,7 @@ db.once('open', function callback() {
     endTime.second(00);
 
     var startTime = endTime.clone();
-    startTime = startTime.subtract(3, 'days');
+    startTime = startTime.subtract(1, 'days');
     startTime = startTime.toDate();
     endTime = endTime.toDate();
 
@@ -1090,7 +1090,6 @@ db.once('open', function callback() {
             },
             */
 
-            /*
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
                     callback(err);
@@ -1131,12 +1130,13 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
-            */
+            /*
             function(callback) {
                 historyPayApplyData(function(err) {
                     callback(err);
                 });
             }
+             */
 
             /*
             function (callback) {
