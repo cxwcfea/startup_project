@@ -7,7 +7,7 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
     vm.showRateDialog = false;
     if (!vm.user || vm.user.invest.enable === undefined || vm.user.invest.enable === null) {
         // default value
-        vm.profit_rate = 15;
+        vm.profit_rate = 7;
         vm.period = 30;
     } else {
         vm.profit_rate = vm.user.invest.profitRate;
@@ -44,7 +44,6 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
             };
             $http.post('/api/user/invest_update', data)
                 .success(function(data, status) {
-                    //vm.showConfirmDialog = true;
                     vm.user.invest.enable = true;
                     $location.path('/invest_recharge');
                 })
