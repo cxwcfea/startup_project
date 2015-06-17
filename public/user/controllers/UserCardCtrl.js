@@ -50,7 +50,7 @@ angular.module('userApp').controller('UserCardCtrl', ['$scope', '$http', '$inter
             console.log(vm.alerts);
             return;
         }
-        var regex = /^(\d{16}|\d{17}|\d{18}|\d{19})$/;
+        var regex = /^(\d{12}|\d{16}|\d{17}|\d{18}|\d{19})$/;
         if (!regex.test(vm.cardID)) {
             addAlert('danger', '银行卡号格式不正确');
             return;
