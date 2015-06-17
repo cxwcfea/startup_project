@@ -5,6 +5,7 @@ module.exports = {
     development: {
         rootPath: rootPath,
         db: 'mongodb://goldenbull:JDYWNeDM64G9d1aPJ4TeXxOlOK7cbZbjrbNgkyGwwtg@localhost/goldenbull',
+        // db: 'mongodb://localhost/goldenbull',
         port: process.env.PORT || 3000,
         pay_callback_domain: 'http://test.niujinwang.com',
         serviceCharge: 19.9,

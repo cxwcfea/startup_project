@@ -124,6 +124,9 @@ module.exports.ajaxLogin = function(req, res) {
                 res.status(500);
                 return res.send({error_code:2, error_msg:err.toString()});
             }
+            if(req.body.long_term_connection){
+                 req.session.cookie.maxAge = 14*24*3600*1000;
+            }
             req.session.lastLogin = moment().format("YYYY-MM-DD HH:mm:ss");
             user.lastLoginAt = req.session.lastLogin;
             user.save(function (err){
