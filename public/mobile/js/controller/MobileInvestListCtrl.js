@@ -51,6 +51,9 @@ angular.module('mobileApp').controller('MobileInvestListCtrl', ['$scope', '$wind
                 if (vm.finishedInvestList.length > 0) {
                     vm.ave_profit_rate = totalProfit / investDays * 365 / vm.returnedCapital * 100;
                 }
+                if (vm.ave_profit_rate > 0) {
+                    vm.ave_profit_rate = 15;
+                }
                 vm.changeList(1);
             })
             .error(function(data, status) {
