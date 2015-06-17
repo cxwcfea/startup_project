@@ -1619,7 +1619,7 @@ var investPrivateProperties = [
 
 function investUpdate(req, res) {
     var invest = req.body.invest;
-    if (!invest || !invest.profitRate || !invest.duration || invest.profitRate > 20 || invest.profitRate < 1 || invest.duration > 30 || invest.duration < 5) {
+    if (!invest || !invest.profitRate || !invest.duration || invest.profitRate > 15 || invest.profitRate < 12 || invest.duration > 30 || invest.duration < 5) {
         res.status(403);
         return res.send({error_msg:'invalid input'});
     }

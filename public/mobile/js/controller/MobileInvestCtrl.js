@@ -7,7 +7,7 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
     vm.showRateDialog = false;
     if (!vm.user || vm.user.invest.enable === undefined || vm.user.invest.enable === null) {
         // default value
-        vm.profit_rate = 7;
+        vm.profit_rate = 12;
         vm.period = 30;
     } else {
         vm.profit_rate = vm.user.invest.profitRate;
