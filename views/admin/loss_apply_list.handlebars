@@ -3,22 +3,19 @@
 </div>
 
 <div class="am-g">
-    <!--
     <div class="am-u-sm-12 am-u-md-3">
         <div class="am-input-group am-input-group-sm">
-            <input type="text" class="am-form-field">
-            <span class="am-input-group-btn">
-                <button class="am-btn am-btn-default" type="button">搜索</button>
-            </span>
+            <p>共穿仓 <span class="am-badge am-badge-success am-text-lg">\{{vm.totalLoss | number:2}}</span></p>
         </div>
     </div>
-    -->
+    <!--
     <div class="am-u-sm-12 am-u-md-6">
         <div class="am-btn-toolbar">
             <div class="am-btn-group am-btn-group-xs">
             </div>
         </div>
     </div>
+    -->
 </div>
 
 <div class="am-g">
@@ -33,7 +30,7 @@
                 <tbody>
                 <tr ng-repeat="apply in vm.showingItems">
                     <td class="am-hide-sm-only">\{{apply.serialID}}</td>
-                    <td class="am-text-right"><span class="am-icon-rmb"></span><strong>\{{apply.amount}}</strong></td>
+                    <td class="am-text-right"><span class="am-icon-rmb"></span><strong>\{{apply.amount | number:2}}</strong></td>
                     <td class="am-text-right am-hide-sm-only"><span class="am-icon-rmb"></span><strong>\{{apply.deposit}}</strong></td>
                     <td class="am-text-center">\{{apply.userMobile}}</td>
                     <td class="am-text-center">\{{apply.start_date | displayDate}}<br>\{{apply.end_date | displayDate}}</td>
