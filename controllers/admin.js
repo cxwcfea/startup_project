@@ -1492,9 +1492,10 @@ function autoConfirmAddDepositOrder(req, res) {
 }
 
 function sendGroupSMS(req, res) {
-    console.log(req.body);
-    return res.send({});
-    var data = JSON.parse(req.body);
+    //console.log(req.body);
+    //return res.send({});
+    //var data = JSON.parse(req.body);
+    var data = req.body;
     var content = data.content;
     var users = data.users;
     if (!content || !users || users.length <= 0) {
