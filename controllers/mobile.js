@@ -387,8 +387,8 @@ function getInvestPage(req, res, next) {
         res.render('mobile/invest', {
             layout: null,
             count: statistic[0].count,
-            total_invest: statistic[0].total_invest.toFixed(0) + 10000000,
-            total_profit: statistic[0].total_profit.toFixed(0) + 220000,
+            total_invest: (statistic[0].total_invest + 10000000).toFixed(0),
+            total_profit: (statistic[0].total_profit + 220000).toFixed(0),
             rate: rate.toFixed(2)
         })
     });
