@@ -1492,14 +1492,18 @@ function autoConfirmAddDepositOrder(req, res) {
 }
 
 function sendGroupSMS(req, res) {
-    var content = req.body.content;
-    var users = req.body.users;
-    if (users.length <= 0) {
+    var data = JSON.parse(req.body);
+    var content = data.content;
+    var users = data.users;
+    if (!content || !users || users.length <= 0) {
         res.status(403);
         return res.send({error_msg:'invalid data'});
     }
     users.map(function(mobile) {
-        sms.chuanglanSMS(mobile, '', content, function(){
+        sms.chuanglanSMS(mobile, '', content, function(err){
+            if (err) {
+                logger.error('sendGroupSMS fail ' + err.toString());
+            }
         });
     });
     res.send({});
