@@ -1348,7 +1348,7 @@ function beifuGetDynCode(req, res, next) {
                     cert_no: req.body.cert_no,
                     cert_type: '01',
                     out_trade_no: order_id,
-                    amount: Number(Number(req.body.total_fee).toFixed(2)),
+                    amount: Number(Number(req.body.amount).toFixed(2)),
                     bank_code: req.body.bank_code,
                     card_bind_mobile_phone_no: req.body.card_bind_mobile_phone_no
                 };
@@ -1360,7 +1360,7 @@ function beifuGetDynCode(req, res, next) {
                     sign_type: 'MD5',
                     customer_id: req.user._id,
                     out_trade_no: order_id,
-                    amount: Number(Number(req.body.total_fee).toFixed(2))
+                    amount: Number(Number(req.body.amount).toFixed(2))
                 };
             }
             var md5key = 'DH7WNCLKEB7KM897T8YBUB6Y3ETO3Atykisu';
@@ -1428,7 +1428,7 @@ function beifuPay(req, res) {
             out_trade_no: req.body.out_trade_no,
             card_bind_mobile_phone_no: req.body.card_bind_mobile_phone_no,
             subject: 'margin trade',
-            total_fee: Number(Number(req.body.total_fee).toFixed(2)),
+            total_fee: Number(Number(req.body.amount).toFixed(2)),
             default_bank: req.body.bank_code,
             exter_invoke_ip: req.body.exter_invoke_ip
         };

@@ -90,11 +90,14 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
 
     function calculatePayAmount() {
         if (vm.pay_amount) {
+            /*
             vm.fee = vm.pay_amount * 0.0035;
             if (vm.fee < 2.0) {
                 vm.fee = 2.0;
             }
             vm.fee = Number(vm.fee.toFixed(2));
+            */
+            vm.fee = 0;
             vm.total_fee = vm.fee + vm.pay_amount;
             vm.total_fee = Number(vm.total_fee.toFixed(2));
         } else {
@@ -194,7 +197,7 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
             return;
         }
         if (!vm.pay_amount || vm.pay_amount < 0) {
-            vm.errorMsg = '请输入有效的充值金额,2至100元';
+            vm.errorMsg = '请输入有效的充值金额,不超过100元';
             vm.inputError = true;
             $timeout(function() {
                 vm.inputError = false;
@@ -225,9 +228,9 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
             }, 1500);
             return;
         }
-        var regex = /^(\d{16}|\d{17}|\d{18}|\d{19})$/;
+        var regex = /^(\d{12}|\d{16}|\d{17}|\d{18}|\d{19})$/;
         if (!regex.test(vm.user_bank_card_id)) {
-            vm.errorMsg = '请输入银行卡号,16到19位数字';
+            vm.errorMsg = '请输入银行卡号';
             vm.inputError = true;
             $timeout(function() {
                 vm.inputError = false;
@@ -244,7 +247,7 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
         }
         var data = {
             amount: vm.pay_amount,
-            total_fee: vm.total_fee,
+            //total_fee: vm.total_fee,
             real_name: vm.user_name,
             cert_no: vm.user_id,
             bank_code: vm.user_bank.code,
@@ -278,7 +281,7 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
             return;
         }
         if (!vm.pay_amount || vm.pay_amount < 0) {
-            vm.errorMsg = '请输入有效的充值金额,0.01至98元';
+            vm.errorMsg = '请输入有效的充值金额';
             vm.inputError = true;
             $timeout(function() {
                 vm.inputError = false;
@@ -287,7 +290,7 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
         }
         var data = {
             amount: vm.pay_amount,
-            total_fee: vm.total_fee,
+            //total_fee: vm.total_fee,
             firstPay: false
         };
         if (vm.pay_order) {
