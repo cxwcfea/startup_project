@@ -11,3 +11,35 @@
     <a href="/free_apply_confirm" class="freeBtn01"><span>立即免费体验</span>（仅支付100元保证金，结束后返还）</a>
     <div class="freeText">本活动的最终解释权归牛金网所有<br />如有疑问或需要帮助，请联系在线客服，或拨打客服热线：400-692-1388<br />收盘后申请的交易账户最迟会在下一个交易日09:15之前分配好</div>
 </div>
+
+{{#if needIdentify}}
+    <div class="" id="tckBox">
+        <div class="tmbg"></div>
+        <div class="PopupBox">
+            <p class="p01"><span class="icon07"></span>&nbsp;需要身份信息</p>
+            <p class="p02">为了保证资金安全，参与天天投需要先认证身份信息；</p>
+            <p class="p02">请先完成牛金网身份认证。</p>
+            <div class="applyBtnBox2">
+                <a href="/user/#/settings" class="applyBtn02 marRight20">去身份认证</a>
+                <a href="/" class="applyBtn03">以后再说</a>
+            </div>
+            <!--
+            <p class="p03"><a href="#" class="color_c82217">付款遇到问题？</a></p>
+            -->
+        </div>
+    </div>
+{{/if}}
+
+{{#if notValidForFreeApply}}
+    <div class="" id="tckBox">
+        <div class="tmbg"></div>
+        <div class="PopupBox">
+            <p class="p01"><span class="icon07"></span>&nbsp;每个身份证号只能申请一次</p>
+            <p class="p02">您已经申请过一次免费体验了；</p>
+            <p class="p02">申请身份证号:{{userIdentityID}}</p>
+            <div class="applyBtnBox2">
+                <a href="/apply" class="applyBtn02 marRight20">去配资</a>
+            </div>
+        </div>
+    </div>
+{{/if}}

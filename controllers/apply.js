@@ -486,127 +486,159 @@ exports.postAddDeposit = function(req, res, next) {
 };
 
 exports.freeApply = function(req, res, next) {
-    if (!req.user.freeApply) {
-        var startTime = moment().startOf('day');
-        Apply.count({ $and: [{isTrial: true}, {applyAt: {$gte: startTime.toDate()}}] }, function (err, count) {
-            if (err) {
-                logger.warn('freeApply error when count apply num ' + err.toString());
-                count = 201;
+    if (!req.user.identity.id) {
+        res.locals.needIdentify = true;
+        if (req.url.search('/mobile') > -1) {
+            res.render('mobile/exp', {
+                layout: 'mobile'
+            });
+        } else {
+            res.render('apply/free_apply');
+        }
+        return;
+    }
+    User.find({'identity.id':req.user.identity.id}, function(err, users) {
+        var valid = true;
+        for (var i = 0; i < users.length; ++i) {
+            if (users[i].freeApply) {
+                valid = false;
+                break;
             }
-            if (count >= 150) {
-                if (req.url.search('/mobile') > -1) {
-                    res.redirect('/mobile/apply/pay_success?status=' + 9);
-                } else {
-                    res.redirect('/apply/pay_success?status=' + 9);
-                }
+        }
+        if (!valid) {
+            res.locals.notValidForFreeApply = true;
+            res.locals.userIdentityID = req.user.identity.id;
+            if (req.url.search('/mobile') > -1) {
+                res.render('mobile/exp', {
+                    layout: 'mobile'
+                });
             } else {
-                if (req.user.finance.balance >= 100) {
-                    User.update({_id:req.user.id}, {$set:{'freeApply':true}}, function(err, numberAffected, raw) {
-                        if (err) {
-                            next();
-                        } else if (!numberAffected) {
-                            logger.warn('user:' + user.mobile + ' already tried free apply, refuse it');
-                            res.locals.serial_id = user.freeApply;
-                            if (req.url.search('/mobile') > -1) {
-                                res.render('mobile/free_apply_refuse', {
-                                    layout: 'mobile'
-                                });
+                res.render('apply/free_apply');
+            }
+            return;
+        }
+        if (!req.user.freeApply) {
+            var startTime = moment().startOf('day');
+            Apply.count({ $and: [{isTrial: true}, {applyAt: {$gte: startTime.toDate()}}] }, function (err, count) {
+                if (err) {
+                    logger.warn('freeApply error when count apply num ' + err.toString());
+                    count = 201;
+                }
+                if (count >= 150) {
+                    if (req.url.search('/mobile') > -1) {
+                        res.redirect('/mobile/apply/pay_success?status=' + 9);
+                    } else {
+                        res.redirect('/apply/pay_success?status=' + 9);
+                    }
+                } else {
+                    if (req.user.finance.balance >= 100) {
+                        User.update({_id:req.user.id}, {$set:{'freeApply':true}}, function(err, numberAffected, raw) {
+                            if (err) {
+                                next();
+                            } else if (!numberAffected) {
+                                logger.warn('user:' + user.mobile + ' already tried free apply, refuse it');
+                                res.locals.serial_id = user.freeApply;
+                                if (req.url.search('/mobile') > -1) {
+                                    res.render('mobile/free_apply_refuse', {
+                                        layout: 'mobile'
+                                    });
+                                } else {
+                                    res.render('apply/free_apply_refuse');
+                                }
                             } else {
-                                res.render('apply/free_apply_refuse');
-                            }
-                        } else {
-                            var applyData = new Apply({
-                                userID: req.user._id,
-                                userMobile: req.user.mobile,
-                                userName: req.user.identity.name,
-                                userIdentity: req.user.identity.id,
-                                serialID: util.generateSerialID(),
-                                amount: 2000,
-                                deposit: 100,
-                                isTrial: true,
-                                status: 4,
-                                period: 2
-                            });
-                            Apply.create(applyData, function(err, apply) {
-                                if(err) next();
-                                User.findById(req.user._id, function(err, user) {
-                                    if (err) {
-                                        logger.debug('freeApply error:' + err.toString());
-                                        return next();
-                                    }
-                                    if (!user) {
-                                        logger.debug('freeApply error: user not found');
-                                        return next();
-                                    }
-                                    user.finance.balance -= 100;
-                                    user.finance.total_capital += 2000;
-                                    user.finance.deposit += 100;
-                                    user.finance.history_capital += 2000;
-                                    user.finance.history_deposit += 100;
-                                    user.freeApply = apply.serialID;
-                                    user.save(function (err, user) {
+                                var applyData = new Apply({
+                                    userID: req.user._id,
+                                    userMobile: req.user.mobile,
+                                    userName: req.user.identity.name,
+                                    userIdentity: req.user.identity.id,
+                                    serialID: util.generateSerialID(),
+                                    amount: 2000,
+                                    deposit: 100,
+                                    isTrial: true,
+                                    status: 4,
+                                    period: 2
+                                });
+                                Apply.create(applyData, function(err, apply) {
+                                    if(err) next();
+                                    User.findById(req.user._id, function(err, user) {
                                         if (err) {
                                             logger.debug('freeApply error:' + err.toString());
                                             return next();
                                         }
-                                        var orderData = {
-                                            userID: user._id,
-                                            userMobile: user.mobile,
-                                            userBalance: user.finance.balance,
-                                            dealType: 9,
-                                            amount: apply.deposit,
-                                            status: 1,
-                                            description: '免费体验支付保证金',
-                                            applySerialID: apply.serialID
-                                        };
-                                        Order.create(orderData, function(err, payOrder) {
+                                        if (!user) {
+                                            logger.debug('freeApply error: user not found');
+                                            return next();
+                                        }
+                                        user.finance.balance -= 100;
+                                        user.finance.total_capital += 2000;
+                                        user.finance.deposit += 100;
+                                        user.finance.history_capital += 2000;
+                                        user.finance.history_deposit += 100;
+                                        user.freeApply = apply.serialID;
+                                        user.save(function (err, user) {
                                             if (err) {
                                                 logger.debug('freeApply error:' + err.toString());
                                                 return next();
                                             }
-                                            if (req.url.search('/mobile') > -1) {
-                                                res.redirect('/mobile/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000 + '&status=' + 4);
-                                            } else {
-                                                res.redirect('/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000 + '&status=' + 4);
-                                            }
+                                            var orderData = {
+                                                userID: user._id,
+                                                userMobile: user.mobile,
+                                                userBalance: user.finance.balance,
+                                                dealType: 9,
+                                                amount: apply.deposit,
+                                                status: 1,
+                                                description: '免费体验支付保证金',
+                                                applySerialID: apply.serialID
+                                            };
+                                            Order.create(orderData, function(err, payOrder) {
+                                                if (err) {
+                                                    logger.debug('freeApply error:' + err.toString());
+                                                    return next();
+                                                }
+                                                if (req.url.search('/mobile') > -1) {
+                                                    res.redirect('/mobile/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000 + '&status=' + 4);
+                                                } else {
+                                                    res.redirect('/apply/pay_success?serial_id=' + apply.serialID + '&amount=' + 2000 + '&status=' + 4);
+                                                }
+                                            });
                                         });
                                     });
                                 });
-                            });
-                        }
-                    });
-                } else {
-                    var orderData = {
-                        userID: req.user._id,
-                        userMobile: req.user.mobile,
-                        dealType: 1,
-                        amount: 100,
-                        status: 2,
-                        description: '免费配资体验充值'
-                    };
-                    Order.create(orderData, function(err, order) {
-                        if (err) next();
-                        //res.locals.addtional_pay_info = '您的余额不足1元，请先充值1元再申请免费体验';
-                        if (req.url.search('/mobile') > -1) {
-                            res.redirect('/mobile/#/recharge_alipay?order_id=' + order._id);
-                        } else {
-                            res.redirect('/recharge?order_id=' + order._id);
-                        }
-                    });
+                            }
+                        });
+                    } else {
+                        var orderData = {
+                            userID: req.user._id,
+                            userMobile: req.user.mobile,
+                            dealType: 1,
+                            amount: 100,
+                            status: 2,
+                            description: '免费配资体验充值'
+                        };
+                        Order.create(orderData, function(err, order) {
+                            if (err) next();
+                            //res.locals.addtional_pay_info = '您的余额不足1元，请先充值1元再申请免费体验';
+                            if (req.url.search('/mobile') > -1) {
+                                res.redirect('/mobile/#/recharge_alipay?order_id=' + order._id);
+                            } else {
+                                res.redirect('/recharge?order_id=' + order._id);
+                            }
+                        });
+                    }
                 }
-            }
-        });
-    } else {
-        logger.warn('user:' + req.user.mobile + ' already tried free apply, refuse it');
-        res.locals.serial_id = req.user.freeApply;
-        if (req.url.search('/mobile') > -1) {
-            res.render('mobile/free_apply_refuse', {
-                layout: 'mobile'
             });
         } else {
-            res.render('apply/free_apply_refuse');
+            logger.warn('user:' + req.user.mobile + ' already tried free apply, refuse it');
+            res.locals.serial_id = req.user.freeApply;
+            if (req.url.search('/mobile') > -1) {
+                res.render('mobile/free_apply_refuse', {
+                    layout: 'mobile'
+                });
+            } else {
+                res.render('apply/free_apply_refuse');
+            }
         }
-    }
+    });
 };
 
 exports.placeApply = function(req, res, next) {

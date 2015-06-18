@@ -35,3 +35,36 @@
 <footer id="footer">
     <a href="/mobile/free_apply_confirm" class="ft-btn">立即体验</a>
 </footer><!--#E wrapper-->
+
+{{#if needIdentify}}
+<div class="ui-dialog">
+    <div class="ui-dialog-cnt">
+        <div class="ui-dialog-bd">
+            <div>
+                <h4>需要身份信息</h4>
+                <div class="zntz-tips">为了保证资金安全，参与天天投需要先认证身份信息，请先完成牛金网身份认证</div>
+            </div>
+        </div>
+        <div class="ui-dialog-ft ui-btn-group">
+            <button type="button"><a href="/mobile/#/identity">去身份认证</a></button>
+        </div>
+    </div>
+</div>
+{{/if}}
+
+{{#if notValidForFreeApply}}
+    <div class="ui-dialog">
+        <div class="ui-dialog-cnt">
+            <div class="ui-dialog-bd">
+                <div>
+                    <h4>每个身份证号只能申请一次</h4>
+                    <div class="zntz-tips">您已经申请过一次免费体验了；</div>
+                    <div class="zntz-tips">申请身份证号:{{userIdentityID}}</div>
+                </div>
+            </div>
+            <div class="ui-dialog-ft ui-btn-group">
+                <button type="button"><a href="/mobile/#/ttn">去配资</a></button>
+            </div>
+        </div>
+    </div>
+{{/if}}
