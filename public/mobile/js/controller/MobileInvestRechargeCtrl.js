@@ -34,6 +34,7 @@ angular.module('mobileApp').controller('MobileInvestRechargeCtrl', ['$scope', '$
                 .error(function(data, status) {
                     if (status === 403 && data.error_code === 1) {
                         vm.notEnoughMoney = true;
+                        $scope.data.intendedRechargeAmount = vm.invest_amount;
                     } else {
                         vm.errorMsg = data.error_msg;
                         vm.inputError = true;

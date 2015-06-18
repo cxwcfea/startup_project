@@ -86,6 +86,10 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
             vm.alipay_account = vm.user.profile.alipay_account;
             vm.alipay_name = vm.user.profile.alipay_name;
         }
+
+        if ($scope.data.intendedRechargeAmount) {
+            vm.pay_amount = $scope.data.intendedRechargeAmount;
+        }
     }
 
     function calculatePayAmount() {
