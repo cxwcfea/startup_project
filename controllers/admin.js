@@ -2167,6 +2167,16 @@ function fetchContractList(req, res) {
     });
 }
 
+function isTodayHoliday(req, res) {
+    var today = moment().dayOfYear();
+    var ret = util.isHoliday(today);
+    if (ret) {
+        res.send({holiday:true});
+    } else {
+        res.send({holiday:false});
+    }
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -2281,7 +2291,7 @@ module.exports = {
 
         app.post('/admin/change_apply_to_pending', passportConf.requiresRole('admin|support'), changeApplyToPending);
 
-        app.get('/admin/api/group_sms', passportConf.requiresRole('admin'), sendGroupSMS);
+        app.post('/admin/api/group_sms', passportConf.requiresRole('admin'), sendGroupSMS);
 
         app.get('/admin/api/fetch_user_order_history', passportConf.requiresRole('admin'), fetchUserOrderHistory);
 
@@ -2330,6 +2340,8 @@ module.exports = {
         app.post('/admin/api/user_compensateLoss', passportConf.requiresRole('admin'), compensateLossForUser);
 
         app.get('/admin/api/contract_list', passportConf.requiresRole('admin'), fetchContractList);
+
+        app.get('/admin/api/isHoliday', passportConf.requiresRole('admin'), isTodayHoliday);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
