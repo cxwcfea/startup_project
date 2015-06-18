@@ -569,7 +569,8 @@ function _closeApply(serialID, profit, res) {
             res.send({"error_code":1, "error_msg":err.toString()});
         } else {
             var amount = balance > 0 ? balance : 0;
-            util.sendSMS_3(apply.userMobile, apply.account, amount, apply.deposit, profit);
+            var content = util.sendSMS_3(apply.userMobile, apply.account, amount, apply.deposit, profit);
+	    weixin.sendWeixinTemplateMsg(apply.userMobile, {t_id:5, content:content});
             res.send({"error_code":0});
         }
     });
@@ -969,6 +970,7 @@ function deleteGetProfitOrder(req, res) {
             var content = '您的' + order.amount + '元盈利提取申请,由于操盘账户(' + account + ')中可提取金额(' + amount + ')不足，已经取消。';
             console.log(order.userMobile);
             sms.sendSMS(order.userMobile, '', content, function () {
+	    weixin.sendWeixinTemplateMsg(order.userMobile, {t_id:5, content:content});
             })
         }
         res.send({});
@@ -1186,7 +1188,8 @@ function sendSellSMS(req, res) {
         });
         results.map(function(elem) {
             if (elem.isTrial) {
-                util.sendSMS_10(elem.userMobile);
+                var content = util.sendSMS_10(elem.userMobile);
+                weixin.sendWeixinTemplateMsg(elem.userMobile, {t_id:5, content:content});
             } else {
                 util.sendSMS_9(elem.userMobile, elem.amount);
                 weixin.sendWeixinTemplateMsg(elem.userMobile, {t_id:2, account:elem.account, date:elem.endTime});
@@ -1231,7 +1234,8 @@ function finishGetProfit(req, res) {
                     res.status(500);
                     return res.send({error_msg:'finishGetProfit error' + err.toString()});
                 }
-                util.sendSMS_11(user.mobile, order.amount);
+                var content = util.sendSMS_11(user.mobile, order.amount);
+                weixin.sendWeixinTemplateMsg(user.mobile, {t_id:5, content:content});
                 res.send({});
             });
         });
@@ -1475,7 +1479,8 @@ function autoConfirmAddDepositOrder(req, res) {
         Order.update({_id:order_id}, {dealType:9}, function(err, numberAffected, raw) {
             if (numberAffected) {
                 Order.findById(order_id, function(err, order) {
-                    util.sendSMS_12(order.userMobile, order.amount);
+                    var content = util.sendSMS_12(order.userMobile, order.amount);
+                    weixin.sendWeixinTemplateMsg(order.userMobile, {t_id:5, content:content});
                 });
                 res.send({error_code:0});
             } else {
@@ -1840,7 +1845,8 @@ function checkWithdrawOrderStatus(req, res) {
                 return res.send({error_msg:err.toString()});
             } else {
                 logger.info('zhongxinWithdrawCheck success for order ' + order._id);
-                util.sendSMS_7(order.userMobile, order.amount);
+                var content = util.sendSMS_7(order.userMobile, order.amount);
+                weixin.sendWeixinTemplateMsg(order.userMobile, {t_id:5, content:content});
                 res.send({});
             }
         });
