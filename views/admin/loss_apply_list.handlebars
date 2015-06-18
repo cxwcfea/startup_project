@@ -1,0 +1,93 @@
+<div class="am-cf am-padding">
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">穿仓的配资记录</strong></div>
+</div>
+
+<div class="am-g">
+    <!--
+    <div class="am-u-sm-12 am-u-md-3">
+        <div class="am-input-group am-input-group-sm">
+            <input type="text" class="am-form-field">
+            <span class="am-input-group-btn">
+                <button class="am-btn am-btn-default" type="button">搜索</button>
+            </span>
+        </div>
+    </div>
+    -->
+    <div class="am-u-sm-12 am-u-md-6">
+        <div class="am-btn-toolbar">
+            <div class="am-btn-group am-btn-group-xs">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12">
+        <div class="am-scrollable-horizontal">
+            <table class="am-table am-table-striped am-table-hover table-main">
+                <thead>
+                <tr>
+                    <th class="table-id am-hide-sm-only">单号</th><th class="table-title am-text-right">操盘资金</th><th class="table-type am-text-right am-hide-sm-only">保证金</th><th class="table-author am-text-center">手机号</th><th class="table-date am-text-center">实盘起止日期</th><th class="table-author">Homs</th><th>穿仓额</th><th class="table-set">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="apply in vm.showingItems">
+                    <td class="am-hide-sm-only">\{{apply.serialID}}</td>
+                    <td class="am-text-right"><span class="am-icon-rmb"></span><strong>\{{apply.amount}}</strong></td>
+                    <td class="am-text-right am-hide-sm-only"><span class="am-icon-rmb"></span><strong>\{{apply.deposit}}</strong></td>
+                    <td class="am-text-center">\{{apply.userMobile}}</td>
+                    <td class="am-text-center">\{{apply.start_date | displayDate}}<br>\{{apply.end_date | displayDate}}</td>
+                    <td class="">\{{apply.account || '尚未分配' }}</td>
+                    <td class="">\{{apply.loss}}</td>
+                    <td>
+                        <div class="am-btn-toolbar">
+                            <div class="am-btn-group am-btn-group-xs">
+                                {{#unless watcher}}
+                                    <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="vm.compensateLoss(apply)"><span class="am-icon-money"></span> 追回穿仓</button>
+                                    <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="vm.showRelatedList(apply)"><span class="am-icon-money"></span> 追回穿仓的订单</button>
+                                {{/unless}}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="am-cf">
+                共 \{{vm.showingItems.length}} 条记录
+                <div class="am-fr">
+                    <pagination previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="vm.itemsPerPage" total-items="vm.totalItems" ng-model="vm.currentPage" ng-change="vm.pageChanged()"></pagination>
+                </div>
+            </div>
+            <hr />
+        </div>
+        <table class="am-table am-table-striped am-table-hover table-main" ng-show="vm.relatedOrders">
+            <thead>
+            <tr>
+                <th>日期</th><th>金额</th><th>操作员</th><th>配资单号</th><th>备注</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="order in vm.relatedOrders">
+                <td>\{{order.createdAt | date:'yyyy-MM-dd HH:mm'}}</td>
+                <td><strong>\{{order.amount}}</strong></td>
+                <td>\{{order.approvedBy}}</td>
+                <td>\{{order.applySerialID}}</td>
+                <td>\{{order.description}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/ng-template" id="cancelApplyModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">取消配资!</h3>
+    </div>
+    <div class="modal-body">
+        <p>你确定要取消吗?</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">是的</button>
+        <button class="btn btn-warning" ng-click="cancel()">让我再想想</button>
+    </div>
+</script>

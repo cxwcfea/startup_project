@@ -76,6 +76,9 @@ angular.module('adminApp').config(['$routeProvider', '$locationProvider', '$http
         .when('/contract_list', { templateUrl: '/admin/contract_list',
             controller: 'AdminContractListCtrl'
         })
+        .when('/loss_apply_list', { templateUrl: '/admin/loss_apply_list',
+            controller: 'AdminLossApplyListCtrl as vm'
+        })
         .otherwise({
             redirectTo: '/users'
         });

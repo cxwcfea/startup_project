@@ -2128,7 +2128,7 @@ function compensateLossForUser(req, res) {
         status: 2,
         description: description,
         applySerialID: applySerialID,
-        payType: 7,
+        payType: 8,
         approvedBy: req.user.mobile,
         approvedAt: Date.now(),
     };
@@ -2175,6 +2175,33 @@ function isTodayHoliday(req, res) {
     } else {
         res.send({holiday:false});
     }
+}
+
+function fetchLossApplies(req, res) {
+    Apply.find({$and:[{isTrial:false}, {status:3}]}, function(err, applies) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        var ret = applies.filter(function(elem) {
+            return (elem.deposit + elem.profit) < 0;
+        });
+        res.send(ret);
+    });
+}
+
+function fetchBackLossOrdersForApply(req, res) {
+    var serial_id = req.query.serial_id;
+    var query = Order.find();
+    console.log(serial_id);
+    query.where('status', 1).where('payType', 8).where('applySerialID', serial_id).where('dealType', 15);
+    query.exec(function(err, orders) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        res.send(orders);
+    });
 }
 
 module.exports = {
@@ -2342,6 +2369,10 @@ module.exports = {
         app.get('/admin/api/contract_list', passportConf.requiresRole('admin'), fetchContractList);
 
         app.get('/admin/api/isHoliday', passportConf.requiresRole('admin'), isTodayHoliday);
+
+        app.get('/admin/api/apply/loss_list', passportConf.requiresRole('admin'), fetchLossApplies);
+
+        app.get('/admin/api/order/apply_loss', passportConf.requiresRole('admin'), fetchBackLossOrdersForApply);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
