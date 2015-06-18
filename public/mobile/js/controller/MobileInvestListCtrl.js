@@ -40,16 +40,14 @@ angular.module('mobileApp').controller('MobileInvestListCtrl', ['$scope', '$wind
                     return elem.status === 2;
                 });
                 vm.returnedCapital = 0;
-                var totalProfit = 0;
-                var investDays = 0;
+                var singleProfitRate = 0;
                 vm.finishedInvestList.forEach(function(elem) {
-                    totalProfit += elem.investProfit;
-                    investDays += Number(elem.duration);
+                    singleProfitRate += elem.profitRate;
                     vm.returnedCapital += elem.amount;
                 });
                 vm.ave_profit_rate = 0;
                 if (vm.finishedInvestList.length > 0) {
-                    vm.ave_profit_rate = totalProfit / investDays * 365 / vm.returnedCapital * 100;
+                    vm.ave_profit_rate = singleProfitRate / vm.finishedInvestList.length;
                 }
                 if (vm.ave_profit_rate > 0) {
                     vm.ave_profit_rate = 15;
