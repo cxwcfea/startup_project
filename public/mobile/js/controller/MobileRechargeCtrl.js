@@ -196,8 +196,8 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
         if (vm.processing) {
             return;
         }
-        if (!vm.pay_amount || vm.pay_amount < 0) {
-            vm.errorMsg = '请输入有效的充值金额,不超过100元';
+        if (!vm.pay_amount || vm.pay_amount <= 2) {
+            vm.errorMsg = '请输入有效的充值金额,2.01元~100元';
             vm.inputError = true;
             $timeout(function() {
                 vm.inputError = false;
@@ -280,12 +280,12 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
         if (vm.processing) {
             return;
         }
-        if (!vm.pay_amount || vm.pay_amount < 0) {
-            vm.errorMsg = '请输入有效的充值金额';
+        if (!vm.pay_amount || vm.pay_amount <= 2) {
+            vm.errorMsg = '请输入有效的充值金额，高于2元';
             vm.inputError = true;
             $timeout(function() {
                 vm.inputError = false;
-            }, 1500);
+            }, 2500);
             return;
         }
         var data = {
