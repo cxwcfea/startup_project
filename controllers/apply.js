@@ -232,7 +232,7 @@ exports.postApplyPostpone = function(req, res, next) {
                         user.finance.prepaid_service_fee += order.amount;
                         user.save(function(err) {
                             var content = 'user:' + order.userMobile + ' account:' + apply.account + ' period:' + period;
-                            util.sendEmail('op@niujinwang.com,intern@niujinwang.com', '配资延期', content, function(err) {
+                            util.sendEmail('op@niujinwang.com', '配资延期', content, function(err) {
                                 if (err) {
                                     logger.debug('error when send postpone email apply:' + apply.serialID + ' account:' + apply.account + ' ' + err.toString());
                                     sms.sendSMS('13439695920', '', 'apply postpone ' + content, function (result) {
