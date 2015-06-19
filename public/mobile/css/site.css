@@ -156,7 +156,11 @@ span.info {
 .ttt-wrapper {
     height: 13.5em;
     background-image: url(/mobile/images/ttt2.png);
-    background-repeat: no-repeat;
+    background-repeat: repeat;
+}
+
+.ttt-intro li {
+    text-align: center;
 }
 
 .ttt-wrapper .zntz-overlay {
@@ -172,10 +176,8 @@ span.info {
 }
 
 .ttt-wrapper .profit-num {
-    margin-right: 3em;
     color: #fff;
-    position: absolute;
-    left: 15em;
+    text-align: center;
 }
 
 .ttt-wrapper .profit-num em {
@@ -185,7 +187,7 @@ span.info {
 
 .ttt-wrapper .zntz-overlay .invest-summary {
     margin-left: 20px;
-    top: 4em;
+    top: 1em;
     font-size: 1.3em;
     color: #f3b1b1;
     position: relative;
@@ -284,10 +286,12 @@ span.info {
 
 .ttt-intro-wrapper .ttt-invest-btn {
     margin-top: 30px;
+    margin-bottom: 20px;
 }
 
 .ttt-recharge {
     background-color: #ffffff;
+    height: 680px;
 }
 
 .ttt-recharge img {
@@ -296,4 +300,53 @@ span.info {
 
 .ttt-recharge .picc-logo {
     padding: 10px;
+}
+
+.ttt-recharge .zntz-box .zntz-amount {
+    margin-top: 40px;
+}
+
+.ttt-recharge .zntz-box .zntz-amount label {
+    font-size: 12px;
+    font-weight: 100;
+}
+
+.ttt-recharge .zntz-box .zntz-amount label.hint {
+    opacity: 0.6;
+}
+
+.ttt-recharge .zntz-box .zntz-amount input {
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 100;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.ttt-recharge .tips {
+    margin-top: 45px;
+    padding-top: 5px;
+    padding-left: 5px;
+    background-color: #ebebf5;
+    border-radius: 5px;
+    position: relative;
+    height: 180px;
+}
+
+.ttt-recharge .tips2 {
+    top: 60px;
+    position: relative;
+}
+
+.ttt-recharge .tips .ttt-btn {
+    font-size: 20px;
+    color: #fff;
+    height: 36px;
+    line-height: 40px;
+    background-color: #cc3333;
+    text-align: center;
+    width: 90%;
+    position: absolute;
+    left: 5%;
+    border-radius: 6px;
 }

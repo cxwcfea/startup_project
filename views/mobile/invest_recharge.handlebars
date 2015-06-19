@@ -12,29 +12,21 @@
     </div>
     <div class="zntz-box">
         <div class="zntz-amount">
-            <label for="amount">投资金额 (可转入<em style="color: #a40000;">\{{vm.user.finance.balance | currency:'':2}}</em>元)</label>
+            <label for="amount">转入投资资金 (可转入<em style="color: #a40000;">\{{vm.user.finance.balance | currency:'':2}}</em>元)</label>
             <input type="number" min="100" step="100" name="amount" ng-model="vm.invest_amount" placeholder="输入投资金额">
             <span class="unit">元</span>
+            <label class="hint">转入资金，系统自动寻找投资，成功投资后将发送短信通知</label>
         </div>
-        <ul class="zntz-txt-list">
-            <!--
-            <li>
-                <h5>预期收益</h5>
-                <strong>200.00</strong> 元
-            </li>
-            -->
-            <li>
-                <h5>回款方式</h5>
-                按天计息，到期归还本息
-            </li>
-            <li>
-                <h5>计息时间</h5>
-                <p>14:00点前出借成功当日</p>
-                <p>14:00后出借成功下一个工作日</p>
-            </li>
-        </ul>
-        <div class="zntz-agreement">
-            转入即代表同意《<a href="/mobile/invest_agreement.html">牛金网投资协议</a>》
+        <div class="tips">
+            <div class="zntz-agreement">
+                转入即代表同意《<a href="/mobile/invest_agreement.html">牛金网投资协议</a>》
+            </div>
+            <a href="" class="ttt-btn" ng-click="vm.payConfirm()">转入资金</a>
+            <div class="tips2">
+                <h3>温馨提示：</h3>
+                <p>1.还款方式按天计息，到期还清本息</p>
+                <p>2.在14：00点之前投资成功，当日开始计息；14：00点之后投资成功，次日开始计息</p>
+            </div>
         </div>
     </div>
 </div>
@@ -76,8 +68,8 @@
     </div>
 </div>
 
-<!--#S footer-->
+<!--
 <footer id="footer" ng-hide="vm.rechargeSuccess">
     <a href="" class="ft-btn" ng-click="vm.payConfirm()">确认转入</a>
-</footer><!--#E wrapper-->
-
+</footer>
+-->
