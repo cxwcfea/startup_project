@@ -570,7 +570,7 @@ function _closeApply(serialID, profit, res) {
         } else {
             var amount = balance > 0 ? balance : 0;
             var content = util.sendSMS_3(apply.userMobile, apply.account, amount, apply.deposit, profit);
-	    weixin.sendWeixinTemplateMsg(apply.userMobile, {t_id:5, content:content});
+	    weixin.sendWeixinTemplateMsg(apply.userMobile, {t_id:6, account:apply.account, amount:amount, deposit:apply.deposit});
             res.send({"error_code":0});
         }
     });
@@ -1856,7 +1856,7 @@ function checkWithdrawOrderStatus(req, res) {
             } else {
                 logger.info('zhongxinWithdrawCheck success for order ' + order._id);
                 var content = util.sendSMS_7(order.userMobile, order.amount);
-                weixin.sendWeixinTemplateMsg(order.userMobile, {t_id:5, content:content});
+                weixin.sendWeixinTemplateMsg(order.userMobile, {t_id:4, type:'提现成功', amount:order.amount});
                 res.send({});
             }
         });
