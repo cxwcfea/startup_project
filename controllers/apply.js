@@ -303,7 +303,7 @@ exports.postGetProfit = function(req, res, next) {
                 return res.send('failed create order when get profit for apply:' + serial_id);
             }
             var content = 'user:' + order.userMobile + ' account:' + apply.account + ' amount:' + order.amount;
-            util.sendEmail('op@niujinwang.com', '盈利提取', content, function(err) {
+            util.sendEmail2('op@niujinwang.com', '盈利提取', content, function(err) {
                 logger.debug('get profit send email success');
             });
             res.send({});
@@ -396,7 +396,7 @@ exports.addDeposit = function(req, res, next) {
         function(order, apply, paid, callback) {
             if (paid) {
                 var content = 'user:' + order.userMobile + ' account:' + apply.account + ' amount:' + order.amount;
-                util.sendEmail('op@niujinwang.com', '追加配资保证金', content, function(err) {
+                util.sendEmail2('op@niujinwang.com', '追加配资保证金', content, function(err) {
                     logger.debug('add deposit send email success');
                 });
                 callback(null, order, paid);
