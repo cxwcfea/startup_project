@@ -183,8 +183,8 @@ $(document).ready(function() {
         }
         var apply_serial_id = $('#apply_serial_id')[0].innerText;
         var amount = Number($("#add_deposit_input")[0].value);
-        if (amount <= 0 || amount > 30000) {
-            alert('请输入有效的金额，金额大于0元小于3万元');
+        if (amount <= 0 || amount > 300000) {
+            alert('请输入有效的金额，金额大于0元小于30万元');
             return;
         }
         window.niujin_adding_deposit = true;

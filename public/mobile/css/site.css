@@ -75,13 +75,6 @@
     opacity: 0.4;
 }
 
-.zntz-overlay {
-    position: absolute;
-    top: 48px;
-    width: 100%;
-    background: transparent;
-}
-
 .zntz-total em {
     color: #fbc860;
 }
@@ -160,3 +153,147 @@ span.info {
     margin-top: 5px;
 }
 
+.ttt-wrapper {
+    height: 13.5em;
+    background-image: url(/mobile/images/ttt2.png);
+    background-repeat: no-repeat;
+}
+
+.ttt-wrapper .zntz-overlay {
+    position: relative;
+    top: 30px;
+    width: 100%;
+}
+
+.ttt-wrapper .zntz-overlay .profit-title {
+    margin-left: 20px;
+    font-size: 1.3em;
+    color: #f3b1b1;
+}
+
+.ttt-wrapper .profit-num {
+    margin-right: 3em;
+    color: #fff;
+    position: absolute;
+    left: 15em;
+}
+
+.ttt-wrapper .profit-num em {
+    font-size: 3em;
+    color: #ffffff;
+}
+
+.ttt-wrapper .zntz-overlay .invest-summary {
+    margin-left: 20px;
+    top: 4em;
+    font-size: 1.3em;
+    color: #f3b1b1;
+    position: relative;
+}
+
+.zntz-box {
+    background-color: #fff;
+    height: 280px;
+}
+
+.zntz-box .ttt-intro li {
+    list-style: none;
+    float: left;
+    height: 140px;
+    width: 50%;
+}
+
+.zntz-box .ttt-intro li p {
+    font-size: 1.2em;
+    text-align: center;
+    color: #666679;
+}
+
+.ttt-settings {
+    margin-top: 0.8em;
+    margin-left: 1.25em;
+    opacity: 0.6;
+}
+
+.ttt-settings a {
+    color: #2D2DDB;
+    font-size: 1.2em;
+}
+
+.ttt-invest-btn {
+    font-size: 20px;
+    color: #fff;
+    height: 50px;
+    line-height: 50px;
+    background-color: #cc3333;
+    text-align: center;
+    width: 80%;
+    position: absolute;
+    left: 10%;
+    margin-top: 50px;
+    border-radius: 10px;
+}
+
+.ttt-intro-wrapper {
+    background-color: #ffffff;
+    height: 700px;
+}
+
+.ttt-intro-wrapper div.intro1,
+.ttt-intro-wrapper div.intro2,
+.ttt-intro-wrapper div.intro3 {
+    margin-top: 30px;
+}
+
+.ttt-intro-wrapper div.intro1 h3,
+.ttt-intro-wrapper div.intro1 p,
+.ttt-intro-wrapper div.intro3 p,
+.ttt-intro-wrapper div.intro3 h4 {
+    margin-left: 30px;
+}
+
+.ttt-intro-wrapper div.intro1 p {
+    font-size: 1.2em;
+}
+
+.ttt-intro-wrapper div.intro1 p em {
+    color: red;
+    font-weight: bold;
+    font-size: 1.4em;
+}
+
+.ttt-intro-wrapper div p {
+    font-size: 0.9em;
+}
+
+.ttt-intro-wrapper div p span {
+    color: red;
+}
+
+.ttt-intro-wrapper div.intro1 p.last {
+    margin-left: 50px;
+}
+
+.ttt-intro-wrapper .thumbnail {
+    border: 0;
+}
+
+.header-box h1 {
+    margin: 0px;
+}
+
+.ttt-intro-wrapper .ttt-invest-btn {
+    margin-top: 30px;
+}
+
+.ttt-recharge {
+    background-color: #ffffff;
+}
+
+.ttt-recharge img {
+    width: 100%;
+}
+
+.ttt-recharge .picc-logo {
+    padding: 10px;
+}
