@@ -7,7 +7,7 @@ var orderSchema = mongoose.Schema({
     createdAt: {type:Date, default: Date.now},
     dealType: {type:Number, required:'{PATH} is required!'}, // 1 充值， 2 提现， 3 盈提, 4 股票盈利, 5 保证金返还, 6 追加配资保证金, 7 追加管理费(延期), 8 管理费返还, 9 保证金支出, 10 管理费支出, 11 投资本金支出, 12 投资收益返还, 13 mgm 利润分成, 14 佣金兑换余额, 15 补穿仓, 16 投资本金返还, 17 余额转投资本金, 18 投资本金转余额, 19 加配
     amount: {type:Number, required:'{PATH} is required!'},
-    status: {type:Number, default: 2}, // 0 wait for confirm, 1 pay success, 2 not pay, 3 otherwise, 5 special
+    status: {type:Number, default: 2}, // 0 wait for confirm, 1 pay success, 2 not pay, 3 freeze, 5 special
     description: {type:String, required:'{PATH} is required!'},
     transID: String,
     cardInfo: {
