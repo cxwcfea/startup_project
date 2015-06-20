@@ -657,7 +657,7 @@ exports.placeApply = function(req, res, next) {
     var amount = Number(Number(req.body.amount).toFixed(2));
     var deposit = Number(Number(req.body.deposit).toFixed(2));
     var lever = Math.round(amount / deposit);
-    if (amount <= 0 || deposit <= 0) {
+    if (amount <= 0 || deposit <= 0 || lever > 6) {
         logger.debug('placeApply error: invalid data');
         res.status(403);
         return res.send({error_msg:'invalid data'});

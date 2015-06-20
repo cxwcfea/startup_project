@@ -6,7 +6,7 @@ angular.module('userApp').controller('UserApplyListCtrl', ['$scope', '$location'
 
     var apply_list = {};
     var currentApplies;
-    vm.itemsPerPage = 3;
+    vm.itemsPerPage = 5;
     vm.selected = 0;
     vm.showApplyAccount = null;
     vm.user_total_capital = vm.user.finance.balance + vm.user.finance.freeze_capital;

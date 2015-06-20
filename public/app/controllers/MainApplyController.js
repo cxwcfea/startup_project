@@ -29,7 +29,6 @@
                 name: '9倍',
                 value: 9
             },
-            */
             {
                 name: '8倍',
                 value: 8
@@ -42,6 +41,7 @@
                 name: '6倍',
                 value: 6
             },
+             */
             {
                 name: '5倍',
                 value: 5
