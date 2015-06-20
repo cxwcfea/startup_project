@@ -20,6 +20,7 @@ var User = require('../models/User'),
     ecitic = require("../lib/ecitic"),
     invest = require('../lib/invest'),
     sms = require('../lib/sms');
+    wechat = require('../lib/weixin');
 
 function getStatisticsPage(req, res, next) {
     async.waterfall([
@@ -2172,6 +2173,13 @@ function fetchContractList(req, res) {
         res.send(contracts);
     });
 }
+function sendWechatMsg(req, res){
+	console.log(req.body);
+	console.log(req.body.mobile);
+	console.log(req.body.content);
+    wechat.sendWeixinTemplateMsg(req.body.mobile, {t_id:5, content:req.body.content});
+    res.send({error_code:0});
+}
 
 function isTodayHoliday(req, res) {
     var today = moment().dayOfYear();
@@ -2346,6 +2354,8 @@ module.exports = {
         app.post('/admin/api/user_compensateLoss', passportConf.requiresRole('admin'), compensateLossForUser);
 
         app.get('/admin/api/contract_list', passportConf.requiresRole('admin'), fetchContractList);
+        
+	app.post('/admin/api/send_wechat_msg', passportConf.requiresRole('admin'), sendWechatMsg);
 
         app.get('/admin/api/isHoliday', passportConf.requiresRole('admin'), isTodayHoliday);
 
