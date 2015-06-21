@@ -512,5 +512,9 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
                     vm.inputError = false;
                 }, 2000);
             });
-    }
+    };
+
+    vm.startPay = function() {
+        $window.location.reload();
+    };
 }]);
