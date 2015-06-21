@@ -334,7 +334,7 @@ function getYYNConfirm(req, res, next) {
 }
 
 function getRechargeOrderListForCurrentUser(req, res) {
-    Order.find({$and: [{$or:[{payType: 3}, {payType:5}]}, {status:1}, {userID: req.user._id}]}, function(err, orders) {
+    Order.find({$and: [{dealType:1}, {status:1}, {userID: req.user._id}]}, function(err, orders) {
         if (err) {
             logger.warn('getRechargeOrderListForCurrentUser error:' + err.toString());
             res.status(500);
