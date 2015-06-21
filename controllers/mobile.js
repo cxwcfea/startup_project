@@ -414,6 +414,72 @@ function getWeixinBandPage(req, res, next) {
     });
 }
 
+function getRechargeYeepay(req, res, next) {
+    var order_id = req.query.order_id;
+    res.locals.firstPay = true;
+    if (!order_id) {
+        res.render('mobile/recharge_yeepay', {
+            layout:null
+        });
+    } else {
+        Order.findById(order_id, function(err, order) {
+            if (err || !order) {
+                logger.warn('mobile getRechargeYeepay err:' + err.toString());
+            }
+            res.render('mobile/recharge_yeepay', {
+                layout:null,
+                bootstrappedOrderObject: JSON.stringify(order)
+            });
+        });
+    }
+    /*
+    async.waterfall([
+        function(callback) {
+            if (req.user) {
+                PayInfo.findOne({userID:req.user._id}, function(err, payInfo) {
+                    callback(err, payInfo);
+                });
+            } else {
+                callback(null, null);
+            }
+        },
+        function (payInfo, callback) {
+            if (payInfo) {
+                res.locals.firstPay = false;
+                var cardNo = '尾号' + payInfo.cardID.substr(-4);
+                res.locals.cardNo = cardNo;
+                res.locals.mobile = payInfo.mobile;
+                res.locals.bankName = util.getBeifuBankName(payInfo.bankCode);
+            } else {
+                res.locals.firstPay = true;
+            }
+            callback(null);
+        }
+    ], function(err) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        var order_id = req.query.order_id;
+        if (!order_id) {
+            res.render('mobile/recharge_beifu', {
+                layout:null
+            });
+        } else {
+            Order.findById(order_id, function(err, order) {
+                if (err || !order) {
+                    logger.warn('mobile getRecharge err:' + err.toString());
+                }
+                res.render('mobile/recharge_beifu', {
+                    layout:null,
+                    bootstrappedOrderObject: JSON.stringify(order)
+                });
+            });
+        }
+    });
+    */
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/mobile', function(req, res, next) {
@@ -460,6 +526,8 @@ module.exports = {
         app.get('/mobile/recharge_alipay', getRechargeAlipay);
 
         app.get('/mobile/recharge_beifu', getRechargeBeiFu);
+
+        app.get('/mobile/recharge_yeepay', getRechargeYeepay);
 
         app.get('/mobile/recharge_record', getRechargeRecord);
 
