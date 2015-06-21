@@ -323,7 +323,7 @@ exports.getAddDeposit = function(req, res, next) {
 
 exports.addDeposit = function(req, res, next) {
     var amount = Number(req.body.deposit_amount);
-    if (Number.isNaN(amount) || amount <= 0 || amount > 30000) {
+    if (Number.isNaN(amount) || amount <= 0 || amount > 100000) {
         res.status(400);
         return res.send({error_msg:'deposit amount invalid:' + amount});
     }
