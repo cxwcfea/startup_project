@@ -374,6 +374,7 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
         calculatePayAmount();
     };
 
+    var yeepayBindRequestID = '';
     vm.yeepayBindCard = function() {
         if (vm.processing) {
             return;
@@ -431,6 +432,8 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
         $http.post('/api/yeepay_bind_card', dataObj)
             .success(function(data, status) {
                 vm.processing = false;
+                vm.showVerifyCodeWindow = true;
+                yeepayBindRequestID = data.requestID;
             })
             .error(function(data, status) {
                 vm.processing = false;
@@ -441,4 +444,73 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
                 }, 2000);
             });
     };
+
+    vm.yeepayConfirmBindCard = function() {
+        if (!vm.verify_code) {
+            vm.errorMsg = '请输入验证码';
+            vm.inputError = true;
+            $timeout(function() {
+                vm.inputError = false;
+            }, 2000);
+            return;
+        }
+        vm.processing = true;
+        $http.post('/api/yeepay_confirm_bind_card', {verifyCode: vm.verify_code, requestID: yeepayBindRequestID})
+            .success(function(data, status) {
+                vm.processing = false;
+                vm.showVerifyCodeWindow = false;
+                vm.yeepayBindCardSuccess = true;
+            })
+            .error(function(data, status) {
+                vm.processing = false;
+                vm.errorMsg = data.error_msg;
+                vm.inputError = true;
+                $timeout(function() {
+                    vm.inputError = false;
+                }, 2000);
+            });
+    };
+
+    vm.yeepayRequest = function() {
+        if (vm.processing) {
+            return;
+        }
+        if (!vm.pay_amount || vm.pay_amount < 0.01) {
+            vm.errorMsg = '请输入有效的充值金额';
+            vm.inputError = true;
+            $timeout(function() {
+                vm.inputError = false;
+            }, 2000);
+            return;
+        }
+        var cardLast = $('#card-last')[0].value;
+        var cardTop = $('#card-top')[0].value;
+        var dataObj = {
+            amount: vm.pay_amount,
+            cardLast: cardLast,
+            cardTop: cardTop,
+            user_ip: $window.returnCitySN["cip"]
+        };
+        if (vm.pay_order) {
+            dataObj.out_trade_no = vm.pay_order._id;
+        }
+        vm.processing = true;
+        $http.post('/api/yeepay_request', dataObj)
+            .success(function(data, status) {
+                vm.processing = false;
+                if (data.needSMSCode) {
+                    vm.showVerifyCodeWindow = true;
+                } else {
+                    vm.finishOnlinePayWindow =  true;
+                }
+            })
+            .error(function(data, status) {
+                vm.processing = false;
+                vm.errorMsg = data.error_msg;
+                vm.inputError = true;
+                $timeout(function() {
+                    vm.inputError = false;
+                }, 2000);
+            });
+    }
 }]);

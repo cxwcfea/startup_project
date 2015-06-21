@@ -4,6 +4,7 @@ var User = require('../models/User'),
     PayInfo = require('../models/PayInfo'),
     DailyData = require('../models/DailyData'),
     applies = require('../controllers/apply'),
+    yeepay = require('../lib/yeepay'),
     util = require('../lib/util'),
     useragent = require('useragent'),
     _ = require('lodash'),
@@ -191,7 +192,7 @@ function getRechargeBeiFu(req, res, next) {
     async.waterfall([
         function(callback) {
             if (req.user) {
-                PayInfo.findOne({userID:req.user._id}, function(err, payInfo) {
+                PayInfo.findOne({$and:[{userID:req.user._id}, {$or:[{infoType:1}, {infoType:{$exists:false}}]}]}, function(err, payInfo) {
                     callback(err, payInfo);
                 });
             } else {
@@ -415,6 +416,7 @@ function getWeixinBandPage(req, res, next) {
 }
 
 function getRechargeYeepay(req, res, next) {
+    /*
     var order_id = req.query.order_id;
     res.locals.firstPay = true;
     if (!order_id) {
@@ -432,11 +434,12 @@ function getRechargeYeepay(req, res, next) {
             });
         });
     }
-    /*
+    */
+
     async.waterfall([
         function(callback) {
             if (req.user) {
-                PayInfo.findOne({userID:req.user._id}, function(err, payInfo) {
+                PayInfo.findOne({$and:[{userID:req.user._id}, {infoType:2}]}, function(err, payInfo) {
                     callback(err, payInfo);
                 });
             } else {
@@ -446,10 +449,10 @@ function getRechargeYeepay(req, res, next) {
         function (payInfo, callback) {
             if (payInfo) {
                 res.locals.firstPay = false;
-                var cardNo = '尾号' + payInfo.cardID.substr(-4);
-                res.locals.cardNo = cardNo;
-                res.locals.mobile = payInfo.mobile;
-                res.locals.bankName = util.getBeifuBankName(payInfo.bankCode);
+                res.locals.cardNo = payInfo.cardID;
+                res.locals.bankName = yeepay.getBankName(payInfo.bankCode);
+                res.locals.cardLast = payInfo.cardLast;
+                res.locals.cardTop = payInfo.cardTop;
             } else {
                 res.locals.firstPay = true;
             }
@@ -462,22 +465,21 @@ function getRechargeYeepay(req, res, next) {
         }
         var order_id = req.query.order_id;
         if (!order_id) {
-            res.render('mobile/recharge_beifu', {
+            res.render('mobile/recharge_yeepay', {
                 layout:null
             });
         } else {
             Order.findById(order_id, function(err, order) {
                 if (err || !order) {
-                    logger.warn('mobile getRecharge err:' + err.toString());
+                    logger.warn('mobile getRechargeYeepay err:' + err.toString());
                 }
-                res.render('mobile/recharge_beifu', {
+                res.render('mobile/recharge_yeepay', {
                     layout:null,
                     bootstrappedOrderObject: JSON.stringify(order)
                 });
             });
         }
     });
-    */
 }
 
 module.exports = {

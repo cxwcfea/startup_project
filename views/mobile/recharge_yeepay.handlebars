@@ -5,13 +5,13 @@
 <!--#S header-->
 <header id="header">
     <div class="header-box">
-        <h1>网银支付(易宝)</h1>
+        <h1>网银快捷支付</h1>
         <a class="back" href="/mobile/#/recharge"></a>
     </div>
 </header><!--#E header-->
 
 {{#if firstPay}}
-    <div class="recharge-alipay" ng-hide="vm.showVerifyCodeWindow || vm.finishOnlinePayWindow">
+    <div class="recharge-alipay" ng-hide="vm.showVerifyCodeWindow || vm.yeepayBindCardSuccess">
         <p>
             为了您的资金安全，需要先录入您的身份信息和您名下的一张银行卡信息，信息录入后将不能修改，以后提现也会使用您的这张银行卡。
         </p>
@@ -27,6 +27,7 @@
             <div class="balance">
                 请绑定一张储蓄卡用于支付
             </div>
+            <!--
             <div class="form-item yyn-month">
                 <label for="">银行</label>
                 <div class="sel-box">
@@ -34,6 +35,7 @@
                     <select class="ui-sel" ng-options="bank.name for bank in vm.bankList" ng-model="vm.user_bank" ng-change="vm.selectBank()"></select>
                 </div>
             </div>
+            -->
             <div class="form-item">
                 <label for="">卡号</label>
                 <input type="text" name="card_no" ng-model="vm.user_bank_card_id" required placeholder="请输入银行卡号">
@@ -43,6 +45,7 @@
                 <input type="tel" name="card_bind_mobile_phone_no" ng-model="vm.user_mobile" maxlength="11" pattern="1[3|5|7|8|][0-9]{9}" required placeholder="请输入银行预留手机号">
             </div>
             <div class="arrive-time">
+                <p>由 易宝支付 提供支付支持</p>
                 <!--
                 <span class="f-fl">充值小贴士</span>
                 <p>1. 首次充值金额不能大于100元</p>
@@ -59,14 +62,16 @@
             账户余额： <em>\{{vm.user.finance.balance | currency:'':2}}</em> 元
         </div>
         <div class="balance">
-            将使用您绑定的{{bankName}}储蓄卡({{cardNo}})支付
+            将使用您绑定的 {{bankName}} 储蓄卡({{cardNo}})支付
         </div>
         <form name="beiFuForm" class="pay-form" novalidate>
             <div class="form-item">
                 <label for="">充值金额</label>
-                <input type="number" min="2.01" step="10" name="amount" ng-model="vm.pay_amount" ng-disabled="vm.pay_order" ng-change="vm.inputPayAmount()" placeholder="请输入充值金额">
+                <input type="number" min="0.01" step="10" name="amount" ng-model="vm.pay_amount" ng-disabled="vm.pay_order" placeholder="请输入充值金额">
                 <span class="unit">元</span>
             </div>
+            <input type="hidden" name="cardTop" id="card-top" value="{{cardTop}}">
+            <input type="hidden" name="cardLast" id="card-last" value="{{cardLast}}">
             <!--
             <div class="form-item">
                 <label for="">手续费</label>
@@ -80,13 +85,15 @@
             </div>
             -->
             <div class="arrive-time">
+                <p>由 易宝支付 提供支付支持</p>
+                <!--
                 <span class="f-fl">充值小贴士</span>
                 <p>1. 只支持储蓄卡充值</p>
-                <!--
+                <p>2. 由 易宝支付 提供支付支持</p>
                 <p>2. 每笔会收取千分之3.5的手续费，最低2元，手续费由贝付收取</p>
                 -->
             </div>
-            <button type="submit" class="submit-btn" ng-click="vm.onlinePayStepOne()">下一步</button>
+            <button type="submit" class="submit-btn" ng-click="vm.yeepayRequest()">下一步</button>
         </form>
     </div>
 {{/if}}
@@ -104,16 +111,25 @@
             <label for="">验证码</label>
             <input type="text" name="amount" ng-model="vm.verify_code" required placeholder="请输入短信验证码">
         </div>
-        <button type="submit" class="submit-btn" ng-click="vm.onlinePayStepTwo()">确 定</button>
+        <button type="submit" class="submit-btn" ng-click="vm.yeepayConfirmBindCard()">确 定</button>
     </form>
 </div>
 
 <div class="recharge-alipay" ng-show="vm.finishOnlinePayWindow">
     <div class="balance">
-        \{{vm.pay_amount | currency:'':2}}元，充值成功!
+        您已完成充值\{{vm.pay_amount | currency:'':2}}元!
     </div>
     <form name="beiFuForm3" class="pay-form" novalidate>
         <button type="submit" class="submit-btn" ng-click="vm.gotoApply()">去配资</button>
+    </form>
+</div>
+
+<div class="recharge-alipay" ng-show="vm.yeepayBindCardSuccess">
+    <div class="balance">
+        绑卡成功!
+    </div>
+    <form name="beiFuForm3" class="pay-form" novalidate>
+        <button type="submit" class="submit-btn"><a href="/mobile/#/recharge_yeepay">开始支付</a></button>
     </form>
 </div>
 
