@@ -18,7 +18,8 @@ angular.module('mobileApp').config(['$routeProvider', '$httpProvider', function(
         .when('/invest', { templateUrl: '/mobile/invest',
             controller: 'MobileInvestCtrl as vm'
         })
-        .when('/recharge', { templateUrl: '/mobile/recharge'
+        .when('/recharge', { templateUrl: '/mobile/recharge',
+            controller: 'MobileRechargeListCtrl'
         })
         .when('/withdraw', { templateUrl: '/mobile/withdraw', 
             controller: 'MobileWithdrawCtrl as withdrawVM'
