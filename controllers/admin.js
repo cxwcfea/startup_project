@@ -570,8 +570,8 @@ function _closeApply(serialID, profit, res) {
             res.send({"error_code":1, "error_msg":err.toString()});
         } else {
             var amount = balance > 0 ? balance : 0;
-            var content = util.sendSMS_3(apply.userMobile, apply.account, amount, apply.deposit, profit);
-	    weixin.sendWeixinTemplateMsg(apply.userMobile, {t_id:6, account:apply.account, amount:amount, deposit:apply.deposit});
+            util.sendSMS_3(apply.userMobile, apply.account, amount, apply.deposit, profit);
+            weixin.sendWeixinTemplateMsg(apply.userMobile, {t_id:6, account:apply.account, amount:amount, deposit:apply.deposit});
             res.send({"error_code":0});
         }
     });
@@ -969,10 +969,8 @@ function deleteGetProfitOrder(req, res) {
         }
         if (amount >= 0 && account && order) {
             var content = '您的' + order.amount + '元盈利提取申请,由于操盘账户(' + account + ')中可提取金额(' + amount + ')不足，已经取消。';
-            console.log(order.userMobile);
-            sms.sendSMS(order.userMobile, '', content, function () {
-	    weixin.sendWeixinTemplateMsg(order.userMobile, {t_id:5, content:content});
-            })
+            sms.sendSMS(order.userMobile, '', content);
+            weixin.sendWeixinTemplateMsg(order.userMobile, {t_id:5, content:content});
         }
         res.send({});
     });
@@ -1863,7 +1861,7 @@ function checkWithdrawOrderStatus(req, res) {
                 return res.send({error_msg:err.toString()});
             } else {
                 logger.info('zhongxinWithdrawCheck success for order ' + order._id);
-                var content = util.sendSMS_7(order.userMobile, order.amount);
+                util.sendSMS_7(order.userMobile, order.amount);
                 weixin.sendWeixinTemplateMsg(order.userMobile, {t_id:4, type:'提现成功', amount:order.amount});
                 res.send({});
             }
@@ -2181,9 +2179,6 @@ function fetchContractList(req, res) {
     });
 }
 function sendWechatMsg(req, res){
-	console.log(req.body);
-	console.log(req.body.mobile);
-	console.log(req.body.content);
     wechat.sendWeixinTemplateMsg(req.body.mobile, {t_id:5, content:req.body.content});
     res.send({error_code:0});
 }
@@ -2389,7 +2384,7 @@ module.exports = {
 
         app.get('/admin/api/contract_list', passportConf.requiresRole('admin'), fetchContractList);
         
-	app.post('/admin/api/send_wechat_msg', passportConf.requiresRole('admin'), sendWechatMsg);
+        app.post('/admin/api/send_wechat_msg', passportConf.requiresRole('admin'), sendWechatMsg);
 
         app.get('/admin/api/isHoliday', passportConf.requiresRole('admin'), isTodayHoliday);
 
