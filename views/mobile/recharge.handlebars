@@ -13,23 +13,35 @@
     </div>
     <ul class="recharge-cate">
         <li>
+            <a href="/mobile/#/recharge_yeepay">
+                网银快捷支付<i>(推荐)</i>
+            </a>
+        </li>
+        <li ng-hide="showOtherChoice">
+            <a href="" ng-click="otherChoice()">
+                其他支付方式
+            </a>
+        </li>
+        <li ng-show="showOtherChoice">
             <a href="/mobile/#/recharge_alipay">
                 支付宝<i>（免手续费）</i>
                 <span><img src="images/alipay.jpg" width="63" alt=""></span>
             </a>
         </li>
+        <li ng-show="showOtherChoice">
+            <a href="/mobile/#/recharge_bank">
+                银行转账
+                <span>网银  柜台</span>
+            </a>
+        </li>
+        <!--
         <li>
             <a href="/mobile/#/recharge_beifu">
                 网上银行
                 <span>贝付支付</span>
             </a>
         </li>
-        <li>
-            <a href="/mobile/#/recharge_bank">
-                银行转账
-                <span>网银  柜台</span>
-            </a>
-        </li>
+        -->
     </ul>
     <p class="f-fs1 f-tac">更多付款方式，请电脑登陆 www.niujinwang.com</p>
 </div>

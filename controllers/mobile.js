@@ -4,6 +4,7 @@ var User = require('../models/User'),
     PayInfo = require('../models/PayInfo'),
     DailyData = require('../models/DailyData'),
     applies = require('../controllers/apply'),
+    yeepay = require('../lib/yeepay'),
     util = require('../lib/util'),
     useragent = require('useragent'),
     _ = require('lodash'),
@@ -191,7 +192,7 @@ function getRechargeBeiFu(req, res, next) {
     async.waterfall([
         function(callback) {
             if (req.user) {
-                PayInfo.findOne({userID:req.user._id}, function(err, payInfo) {
+                PayInfo.findOne({$and:[{userID:req.user._id}, {$or:[{infoType:1}, {infoType:{$exists:false}}]}]}, function(err, payInfo) {
                     callback(err, payInfo);
                 });
             } else {
@@ -333,7 +334,7 @@ function getYYNConfirm(req, res, next) {
 }
 
 function getRechargeOrderListForCurrentUser(req, res) {
-    Order.find({$and: [{$or:[{payType: 3}, {payType:5}]}, {status:1}, {userID: req.user._id}]}, function(err, orders) {
+    Order.find({$and: [{dealType:1}, {status:1}, {userID: req.user._id}]}, function(err, orders) {
         if (err) {
             logger.warn('getRechargeOrderListForCurrentUser error:' + err.toString());
             res.status(500);
@@ -414,6 +415,53 @@ function getWeixinBandPage(req, res, next) {
     });
 }
 
+function getRechargeYeepay(req, res, next) {
+    async.waterfall([
+        function(callback) {
+            if (req.user) {
+                PayInfo.findOne({$and:[{userID:req.user._id}, {infoType:2}]}, function(err, payInfo) {
+                    callback(err, payInfo);
+                });
+            } else {
+                callback(null, null);
+            }
+        },
+        function (payInfo, callback) {
+            if (payInfo) {
+                res.locals.firstPay = false;
+                res.locals.cardNo = payInfo.cardID;
+                res.locals.bankName = yeepay.getBankName(payInfo.bankCode);
+                res.locals.cardLast = payInfo.cardLast;
+                res.locals.cardTop = payInfo.cardTop;
+            } else {
+                res.locals.firstPay = true;
+            }
+            callback(null);
+        }
+    ], function(err) {
+        if (err) {
+            res.status(500);
+            return res.send({error_msg:err.toString()});
+        }
+        var order_id = req.query.order_id;
+        if (!order_id) {
+            res.render('mobile/recharge_yeepay', {
+                layout:null
+            });
+        } else {
+            Order.findById(order_id, function(err, order) {
+                if (err || !order) {
+                    logger.warn('mobile getRechargeYeepay err:' + err.toString());
+                }
+                res.render('mobile/recharge_yeepay', {
+                    layout:null,
+                    bootstrappedOrderObject: JSON.stringify(order)
+                });
+            });
+        }
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/mobile', function(req, res, next) {
@@ -460,6 +508,8 @@ module.exports = {
         app.get('/mobile/recharge_alipay', getRechargeAlipay);
 
         app.get('/mobile/recharge_beifu', getRechargeBeiFu);
+
+        app.get('/mobile/recharge_yeepay', getRechargeYeepay);
 
         app.get('/mobile/recharge_record', getRechargeRecord);
 

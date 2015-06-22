@@ -21,7 +21,7 @@ var orderSchema = mongoose.Schema({
     applySerialID: String,
     bankTransID: String, // only for dealType == 2,
     otherInfo: String,
-    payType: Number,  // 0: iapppay, 1: shengpay, 2: apply, 3: alipay, 4: bank, 5: beifu, 6: commission, 7: niujin, 8: chuancang, undefine: withdraw
+    payType: Number,  // 0: iapppay, 1: shengpay, 2: apply, 3: alipay, 4: bank, 5: beifu, 6: commission, 7: niujin, 8: chuancang, 9: yeepay, undefine: withdraw
     approvedBy: String,
     approvedAt: Date,
     investProfit: Number,

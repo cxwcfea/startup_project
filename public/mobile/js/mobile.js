@@ -18,7 +18,8 @@ angular.module('mobileApp').config(['$routeProvider', '$httpProvider', function(
         .when('/invest', { templateUrl: '/mobile/invest',
             controller: 'MobileInvestCtrl as vm'
         })
-        .when('/recharge', { templateUrl: '/mobile/recharge'
+        .when('/recharge', { templateUrl: '/mobile/recharge',
+            controller: 'MobileRechargeListCtrl'
         })
         .when('/withdraw', { templateUrl: '/mobile/withdraw', 
             controller: 'MobileWithdrawCtrl as withdrawVM'
@@ -111,6 +112,9 @@ angular.module('mobileApp').config(['$routeProvider', '$httpProvider', function(
         })
         .when('/invest_setting', { templateUrl: '/mobile/invest_setting',
             controller: 'MobileInvestSettingCtrl as vm'
+        })
+        .when('/recharge_yeepay', { templateUrl: '/mobile/recharge_yeepay',
+            controller: 'MobileRechargeCtrl as vm'
         })
         .otherwise({
             redirectTo: '/home'

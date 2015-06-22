@@ -7,6 +7,7 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
         {
             name: '中国工商银行',
             code: 'ICBC_D_B2C',
+            yeepayCode: 'ICBC',
             value: 0
         },
         {
@@ -17,6 +18,7 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
         {
             name: '中国建设银行',
             code: 'CCB_D_B2C',
+            yeepayCode: 'CCB',
             value: 2
         },
         {
@@ -27,6 +29,7 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
         {
             name: '中国银行',
             code: 'BOCSH_D_B2C',
+            yeepayCode: 'BOC',
             value: 4
         },
         {
@@ -369,5 +372,165 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
 
     vm.inputPayAmount = function() {
         calculatePayAmount();
-    }
+    };
+
+    var yeepayBindRequestID = '';
+    vm.yeepayBindCard = function() {
+        if (vm.processing) {
+            return;
+        }
+        if (!vm.user_name) {
+            vm.errorMsg = '请输入姓名';
+            vm.inputError = true;
+            $timeout(function() {
+                vm.inputError = false;
+            }, 1500);
+            return;
+        }
+        if (!vm.user_id) {
+            vm.errorMsg = '请输入身份证号';
+            vm.inputError = true;
+            $timeout(function() {
+                vm.inputError = false;
+            }, 1500);
+            return;
+        }
+        if (!vm.user_bank) {
+            vm.errorMsg = '请选择银行';
+            vm.inputError = true;
+            $timeout(function() {
+                vm.inputError = false;
+            }, 1500);
+            return;
+        }
+        var regex = /^(\d{12}|\d{16}|\d{17}|\d{18}|\d{19})$/;
+        if (!regex.test(vm.user_bank_card_id)) {
+            vm.errorMsg = '请输入银行卡号';
+            vm.inputError = true;
+            $timeout(function() {
+                vm.inputError = false;
+            }, 1500);
+            return;
+        }
+        if (!vm.user_mobile) {
+            vm.errorMsg = '请输入银行预留手机号';
+            vm.inputError = true;
+            $timeout(function() {
+                vm.inputError = false;
+            }, 1500);
+            return;
+        }
+        var dataObj = {
+            real_name: vm.user_name,
+            cert_no: vm.user_id,
+            card_no: vm.user_bank_card_id,
+            card_bind_mobile_phone_no: vm.user_mobile,
+            user_ip: $window.returnCitySN["cip"]
+        };
+        vm.processing = true;
+        $http.post('/api/yeepay_bind_card', dataObj)
+            .success(function(data, status) {
+                vm.processing = false;
+                vm.showVerifyCodeWindow = true;
+                yeepayBindRequestID = data.requestID;
+            })
+            .error(function(data, status) {
+                vm.processing = false;
+                vm.errorMsg = data.error_msg;
+                vm.inputError = true;
+                $timeout(function() {
+                    vm.inputError = false;
+                }, 2000);
+            });
+    };
+
+    vm.yeepayConfirmBindCard = function() {
+        if (!vm.verify_code) {
+            vm.errorMsg = '请输入验证码';
+            vm.inputError = true;
+            $timeout(function() {
+                vm.inputError = false;
+            }, 2000);
+            return;
+        }
+        vm.processing = true;
+        var dataObj = {
+            verifyCode: vm.verify_code,
+            requestID: yeepayBindRequestID,
+            userName: vm.user_name,
+            userMobile: vm.user_mobile,
+            cardID: vm.user_bank_card_id,
+            userIdentityID: vm.user_id
+        };
+        $http.post('/api/yeepay_confirm_bind_card', dataObj)
+            .success(function(data, status) {
+                vm.processing = false;
+                vm.showVerifyCodeWindow = false;
+                vm.yeepayBindCardSuccess = true;
+            })
+            .error(function(data, status) {
+                vm.processing = false;
+                vm.errorMsg = data.error_msg;
+                vm.inputError = true;
+                $timeout(function() {
+                    vm.inputError = false;
+                }, 2000);
+            });
+    };
+
+    vm.yeepayRequest = function() {
+        if (vm.processing) {
+            return;
+        }
+        if (!vm.pay_amount || vm.pay_amount < 0.01) {
+            vm.errorMsg = '请输入有效的充值金额';
+            vm.inputError = true;
+            $timeout(function() {
+                vm.inputError = false;
+            }, 2000);
+            return;
+        }
+        if (!vm.password) {
+            vm.errorMsg = '请输入您的登录密码';
+            vm.inputError = true;
+            $timeout(function() {
+                vm.inputError = false;
+            }, 2000);
+            return;
+        }
+        var cardLast = $('#card-last')[0].value;
+        var cardTop = $('#card-top')[0].value;
+        var dataObj = {
+            password: vm.password,
+            amount: vm.pay_amount,
+            cardLast: cardLast,
+            cardTop: cardTop,
+            user_ip: $window.returnCitySN["cip"]
+        };
+        if (vm.pay_order) {
+            dataObj.out_trade_no = vm.pay_order._id;
+        }
+        vm.processing = true;
+        $http.post('/api/yeepay_request', dataObj)
+            .success(function(data, status) {
+                vm.processing = false;
+                if (data.needSMSCode) {
+                    vm.showVerifyCodeWindow = true;
+                } else {
+                    vm.finishOnlinePayWindow =  true;
+                }
+            })
+            .error(function(data, status) {
+                vm.processing = false;
+                vm.errorMsg = data.error_msg;
+                vm.inputError = true;
+                $timeout(function() {
+                    vm.inputError = false;
+                }, 2000);
+            });
+    };
+
+    vm.startPay = function() {
+        $window.location.reload();
+    };
 }]);

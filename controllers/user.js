@@ -1572,7 +1572,7 @@ function beifuPay(req, res) {
             }
         },
         function(callback) {
-            PayInfo.findOne({userID:req.user._id}, function (err, payInfo) {
+            PayInfo.findOne({$and:[{userID:req.user._id}, {$or:[{infoType:1}, {infoType:{$exists:false}}]}]}, function (err, payInfo) {
                 callback(err, payInfo);
             });
         },

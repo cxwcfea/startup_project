@@ -6,7 +6,10 @@ var payInfoSchema = mongoose.Schema({
     certNo: {type:String, required:'{PATH} is required!'},
     bankCode: {type:String, required:'{PATH} is required!'},
     cardID: {type:String, required:'{PATH} is required!'},
-    userName: {type:String, required:'{PATH} is required!'}
+    userName: {type:String, required:'{PATH} is required!'},
+    cardLast: String, // for yeepay
+    cardTop: String,  // for yeepay
+    infoType: {type:Number, default:1}  // 1 means beifu info, 2 means yeepay info
 });
 
 var PayInfo = mongoose.model('PayInfo', payInfoSchema);

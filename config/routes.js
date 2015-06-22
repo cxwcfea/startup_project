@@ -8,6 +8,7 @@ var users = require('../controllers/user'),
     admin = require('../controllers/admin'),
     util = require('../lib/util'),
     weixin = require('../lib/weixin'),
+    yeepay = require('../lib/yeepay'),
     log4js = require('log4js'),
     logger = log4js.getLogger('routes'),
     _ = require('lodash'),
@@ -247,6 +248,8 @@ module.exports = function(app) {
     app.get('/api/get_verify_img', users.getVerifyImg);
 
     app.get('/api/test_weixin', weixin.testTemplateMsg);
+
+    yeepay.registerRoutes(app, passportConf);
 
     /*
     app.get('/admin_test', passportConf.requiresRole('admin'), function(req, res, next) {

@@ -392,6 +392,14 @@
                     return "银行转账";
                 case 5:
                     return "贝付移动";
+                case 6:
+                    return "佣金";
+                case 7:
+                    return "牛金";
+                case 8:
+                    return "穿仓";
+                case 9:
+                    return "易宝";
                 default:
                     return "无";
             }
