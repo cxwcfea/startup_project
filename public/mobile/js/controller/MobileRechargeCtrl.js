@@ -455,7 +455,13 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
             return;
         }
         vm.processing = true;
-        $http.post('/api/yeepay_confirm_bind_card', {verifyCode: vm.verify_code, requestID: yeepayBindRequestID})
+        var dataObj = {
+            verifyCode: vm.verify_code,
+            requestID: yeepayBindRequestID,
+            userName: vm.user_name,
+            userIdentityID: vm.user_id
+        };
+        $http.post('/api/yeepay_confirm_bind_card', dataObj)
             .success(function(data, status) {
                 vm.processing = false;
                 vm.showVerifyCodeWindow = false;

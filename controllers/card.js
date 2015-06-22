@@ -1,9 +1,10 @@
 var Card = require('../models/Card'),
     PayInfo = require('../models/PayInfo'),
+    yeepay = require('../lib/yeepay'),
     util = require('../lib/util');
 
 exports.getCardsForUser = function(req, res, next) {
-    PayInfo.findOne({userID:req.params.uid}, function(err, payInfo) {
+    PayInfo.findOne({$and:[{userID:req.params.uid}, {infoType:2}]}, function(err, payInfo) {
         if (err || !payInfo) {
             Card.find({userID:req.params.uid}, function(err, collection) {
                 if (err) {
@@ -14,8 +15,8 @@ exports.getCardsForUser = function(req, res, next) {
         } else {
             var card = {
                 userID: payInfo.userID,
-                bankID: util.getBankCodeFromBeifuBankCode(payInfo.bankCode),
-                bankName: 'beifu pay',
+                bankID: yeepay.getBankName(payInfo.bankCode),
+                bankName: 'yeepay',
                 cardID: payInfo.cardID,
                 userName: payInfo.userName,
                 type: 2

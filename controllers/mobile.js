@@ -416,26 +416,6 @@ function getWeixinBandPage(req, res, next) {
 }
 
 function getRechargeYeepay(req, res, next) {
-    /*
-    var order_id = req.query.order_id;
-    res.locals.firstPay = true;
-    if (!order_id) {
-        res.render('mobile/recharge_yeepay', {
-            layout:null
-        });
-    } else {
-        Order.findById(order_id, function(err, order) {
-            if (err || !order) {
-                logger.warn('mobile getRechargeYeepay err:' + err.toString());
-            }
-            res.render('mobile/recharge_yeepay', {
-                layout:null,
-                bootstrappedOrderObject: JSON.stringify(order)
-            });
-        });
-    }
-    */
-
     async.waterfall([
         function(callback) {
             if (req.user) {
