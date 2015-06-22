@@ -423,7 +423,6 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
         var dataObj = {
             real_name: vm.user_name,
             cert_no: vm.user_id,
-            bank_code: vm.user_bank.code,
             card_no: vm.user_bank_card_id,
             card_bind_mobile_phone_no: vm.user_mobile,
             user_ip: $window.returnCitySN["cip"]
@@ -459,6 +458,8 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
             verifyCode: vm.verify_code,
             requestID: yeepayBindRequestID,
             userName: vm.user_name,
+            userMobile: vm.user_mobile,
+            cardID: vm.user_bank_card_id,
             userIdentityID: vm.user_id
         };
         $http.post('/api/yeepay_confirm_bind_card', dataObj)

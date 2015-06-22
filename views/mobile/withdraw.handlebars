@@ -57,13 +57,11 @@
     <div ng-show="withdrawVM.step === 2">
         <div class="withdraw-box">
             <div class="bank">
-                <!--
                 <div class="bank-logo">
-                    <img ng-src="\{{withdrawVM.BankNameList[withdrawVM.card.bankID].img}}" width="40" height="40" alt="\{{withdrawVM.card.bankName}}" />
+                    <img ng-src="\{{withdrawVM.BankNameList[withdrawVM.card.bankID].logo}}" width="40" height="40" alt="\{{withdrawVM.card.bankName}}" />
                 </div>
-                -->
                 <div class="bank-intro">
-                    <h5>\{{withdrawVM.card.bankName}}</h5>
+                    <h5>\{{withdrawVM.card.nameOfTheBank}}</h5>
                     <p class="bank-num">尾号<strong>\{{withdrawVM.card | displayCard2}}</strong></p>
                 </div>
                 <div class="bank-tips">\{{withdrawVM.tips}}</div>

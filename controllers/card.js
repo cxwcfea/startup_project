@@ -15,7 +15,7 @@ exports.getCardsForUser = function(req, res, next) {
         } else {
             var card = {
                 userID: payInfo.userID,
-                bankID: yeepay.getBankName(payInfo.bankCode),
+                bankID: yeepay.getNiujinBankCode(payInfo.bankCode),
                 bankName: 'yeepay',
                 cardID: payInfo.cardID,
                 userName: payInfo.userName,
