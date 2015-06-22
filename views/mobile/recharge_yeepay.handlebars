@@ -67,8 +67,12 @@
         <form name="beiFuForm" class="pay-form" novalidate>
             <div class="form-item">
                 <label for="">充值金额</label>
-                <input type="number" min="0.01" step="10" name="amount" ng-model="vm.pay_amount" ng-disabled="vm.pay_order" placeholder="请输入充值金额">
+                <input type="number" min="0.01" step="10" name="amount" ng-model="vm.pay_amount" ng-disabled="vm.pay_order" placeholder="请输入充值金额" required>
                 <span class="unit">元</span>
+            </div>
+            <div class="form-item">
+                <label for="password">输入登录密码，确保资金安全</label>
+                <input type="password" maxlength="20" minlength="6" name="password" ng-model="vm.password" placeholder="请输入您在牛金网的登录密码" required>
             </div>
             <input type="hidden" name="cardTop" id="card-top" value="{{cardTop}}">
             <input type="hidden" name="cardLast" id="card-last" value="{{cardLast}}">
@@ -93,7 +97,7 @@
                 <p>2. 每笔会收取千分之3.5的手续费，最低2元，手续费由贝付收取</p>
                 -->
             </div>
-            <button type="submit" class="submit-btn" ng-click="vm.yeepayRequest()">下一步</button>
+            <button type="submit" class="submit-btn" ng-click="vm.yeepayRequest()">确认支付</button>
         </form>
     </div>
 {{/if}}

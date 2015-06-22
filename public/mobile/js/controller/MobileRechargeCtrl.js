@@ -490,9 +490,18 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
             }, 2000);
             return;
         }
+        if (!vm.password) {
+            vm.errorMsg = '请输入您的登录密码';
+            vm.inputError = true;
+            $timeout(function() {
+                vm.inputError = false;
+            }, 2000);
+            return;
+        }
         var cardLast = $('#card-last')[0].value;
         var cardTop = $('#card-top')[0].value;
         var dataObj = {
+            password: vm.password,
             amount: vm.pay_amount,
             cardLast: cardLast,
             cardTop: cardTop,
