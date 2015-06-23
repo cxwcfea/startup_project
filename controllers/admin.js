@@ -2174,10 +2174,7 @@ function fetchContractList(req, res) {
     });
 }
 function sendWechatMsg(req, res){
-	console.log(req.body);
-	console.log(req.body.mobile);
-	console.log(req.body.content);
-    wechat.sendWeixinTemplateMsg(req.body.mobile, {t_id:5, content:req.body.content});
+    wechat.sendWeixinTemplateMsg(req.body["mobile"], {t_id:5, content:req.body["content"]});
     res.send({error_code:0});
 }
 
