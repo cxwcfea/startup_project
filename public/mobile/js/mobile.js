@@ -113,7 +113,7 @@ angular.module('mobileApp').config(['$routeProvider', '$httpProvider', function(
         .when('/invest_setting', { templateUrl: '/mobile/invest_setting',
             controller: 'MobileInvestSettingCtrl as vm'
         })
-        .when('/recharge_yeepay', { templateUrl: '/mobile/recharge_yeepay',
+        .when('/recharge_yeepay', { templateUrl: function(params) { return params.order_id ? '/mobile/recharge_yeepay?order_id=' + params.order_id : '/mobile/recharge_yeepay'; },
             controller: 'MobileRechargeCtrl as vm'
         })
         .otherwise({
