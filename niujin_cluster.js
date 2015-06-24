@@ -16,6 +16,7 @@ if(cluster.isMaster){
             task.scheduleAutoPostponeJob();
             task.scheduleDailyDataJob();
             task.scheduleContractCheckJob();
+            task.scheduleOperationDataCollectJob();
         }
     });
 

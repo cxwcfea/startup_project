@@ -8,6 +8,7 @@ var mongoose = require('mongoose'),
     Card = require('../models/Card'),
     Order = require('../models/Order'),
     User = require('../models/User'),
+    Contract = require('../models/Contract'),
     DailyData = require('../models/DailyData'),
     config = require('../config/config')['production'];
 
@@ -1130,12 +1131,14 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
+
+            /*
             function(callback) {
                 historyCloseApplyFee(function (err) {
                     callback(err);
                 })
-            }
-            /*
+            },
+
             function(callback) {
                 historyPayApplyData(function(err) {
                     callback(err);
