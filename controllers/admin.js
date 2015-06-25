@@ -6,6 +6,7 @@ var User = require('../models/User'),
     DailyData = require('../models/DailyData'),
     SalesData = require('../models/SalesData'),
     Contract = require('../models/Contract'),
+    OperationData = require('../models/OperationData'),
     log4js = require('log4js'),
     logger = log4js.getLogger('admin'),
     util = require('../lib/util'),
@@ -2209,7 +2210,6 @@ function fetchLossApplies(req, res) {
 function fetchBackLossOrdersForApply(req, res) {
     var serial_id = req.query.serial_id;
     var query = Order.find();
-    console.log(serial_id);
     query.where('status', 1).where('payType', 8).where('applySerialID', serial_id).where('dealType', 15);
     query.exec(function(err, orders) {
         if (err) {
@@ -2218,6 +2218,26 @@ function fetchBackLossOrdersForApply(req, res) {
         }
         res.send(orders);
     });
+}
+
+function fetchOperationData(req, res) {
+    if (req.params.date) {
+        var date = moment(req.params.date);
+        var date2 = date.clone().add(1, 'day');
+        OperationData.find({$and:[{createdAt:{$lte:date2}}, {createdAt:{$gte:date}}]}, function(err, data) {
+            if (err) {
+                return res.status(500).send({error_msg:err.toString()});
+            }
+            res.send(data);
+        });
+    } else {
+        OperationData.find(function(err, data) {
+            if (err) {
+                return res.status(500).send({error_msg:err.toString()});
+            }
+            res.send(data);
+        });
+    }
 }
 
 module.exports = {
@@ -2391,6 +2411,10 @@ module.exports = {
         app.get('/admin/api/apply/loss_list', passportConf.requiresRole('admin'), fetchLossApplies);
 
         app.get('/admin/api/order/apply_loss', passportConf.requiresRole('admin'), fetchBackLossOrdersForApply);
+
+        app.get('/admin/api/operation_data', passportConf.requiresRole('admin'), fetchOperationData);
+
+        app.get('/admin/api/operation_data/:date', passportConf.requiresRole('admin'), fetchOperationData);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
