@@ -124,7 +124,11 @@
         您已完成充值\{{vm.pay_amount | currency:'':2}}元!
     </div>
     <form name="beiFuForm3" class="pay-form" novalidate>
-        <button type="submit" class="submit-btn" ng-click="vm.gotoApply()">去配资</button>
+        <button type="submit" class="submit-btn" ng-click="vm.getMoney(1)">我要炒股赚钱</button>
+        <br>
+        <br>
+        <br>
+        <button type="submit" class="submit-btn" ng-click="vm.getMoney(2)">我要投资赚钱</button>
     </form>
 </div>
 

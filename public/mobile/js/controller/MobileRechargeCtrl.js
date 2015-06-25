@@ -533,4 +533,12 @@ angular.module('mobileApp').controller('MobileRechargeCtrl', ['$scope', '$window
     vm.startPay = function() {
         $window.location.reload();
     };
+
+    vm.getMoney = function(type) {
+        if (type === 1) {
+            $location.path('/ttn');
+        } else {
+            $location.path('/invest');
+        }
+    };
 }]);
