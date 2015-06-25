@@ -349,7 +349,6 @@ exports.addDeposit = function(req, res, next) {
                 amount: Number(amount.toFixed(2)),
                 status: 2,
                 description: '追加配资保证金 ' + apply.serialID
-                //applySerialID: apply.serialID
             };
             Order.create(orderData, function(err, order) {
                 if (!err && !order) {
