@@ -849,6 +849,7 @@ exports.paySuccess = function(req, res, next) {
     res.locals.apply_menu = true;
     res.locals.serial_id = req.query.serial_id;
     res.locals.amount = req.query.amount;
+    res.locals.type = req.query.type;
     var status = req.query.status;
     if (status == 9) {
         res.locals.pending = true;

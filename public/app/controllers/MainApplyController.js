@@ -520,6 +520,7 @@
                     }
                 })
                 .error(function(data, status, headers, config) {
+                    console.log(data);
                     if (status === 403) {
                         if (data.error_code === 2) {
                             alert('对不起，同一用户最多只能有5笔操盘中的配资。暂不能再申请新的配资。');
@@ -527,7 +528,7 @@
                             $scope.showIdentityDialog = true;
                         }
                     }
-                    console.log('error:' + data.reason);
+                    console.log('error:' + data.error_msg);
                 });
         };
 

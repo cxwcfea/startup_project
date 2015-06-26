@@ -1,7 +1,11 @@
 <!--#S header-->
 <header id="header">
     <div class="header-box">
+    {{#ifCond type "==" 1}}
         <h1>天天牛</h1>
+    {{else}}
+        <h1>月月牛</h1>
+    {{/ifCond}}
         <a class="back" href="/mobile/#/"></a>
     </div>
 </header><!--#E header-->
@@ -21,6 +25,10 @@
         <p>您的操盘申请正在审核中</p>
         <p>我们会尽快为您分配操盘账户</p>
     </div>
-    <p class="to">您可以到<a href="/mobile/#/user">我的账户</a>&gt;<a href="/mobile/#/user_ttn">我的操盘</a>中查看你的操盘账户信息。</p>
+{{#ifCond type "==" 1}}
+    <p class="to">您可以到<a href="/mobile/#/user">我的账户</a>&gt;<a href="/mobile/#/user_ttn">我的天天牛</a>中查看你的操盘账户信息。</p>
+{{else}}
+    <p class="to">您可以到<a href="/mobile/#/user">我的账户</a>&gt;<a href="/mobile/#/user_yyn">我的月月牛</a>中查看你的操盘账户信息。</p>
+{{/ifCond}}
 {{/if}}
 </div>

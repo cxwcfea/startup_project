@@ -102,7 +102,7 @@
         <ul>
             <li>
                 <div class="col">开始交易时间</div>
-                <div class="col">\{{vm.apply.startDate | displayDate}}</div>
+                <div class="col">\{{vm.apply.start_date | displayDate}}</div>
             </li>
             <li ng-show="vm.apply.status === 2">
                 <div class="col">累计交易天数</div>
@@ -114,7 +114,7 @@
             </li>
             <li>
                 <div class="col">仓位限制</div>
-                <div class="col">不限制</div>
+                <div class="col">有限制，详见操盘协议</div>
             </li>
         </ul>
     </div>
@@ -129,7 +129,7 @@
 <!--#S footer-->
 <footer id="footer">
     <div class="ui-btn-group ttn-btn-group" ng-show="vm.apply.status === 2">
-        <div ng-show="!vm.apply.isTrial">
+        <div ng-show="!vm.apply.isTrial && vm.apply.type !== 2">
             <button ng-click="vm.postponeApply()">申请延期</button>
             <button ng-click="vm.addDeposit()">补充保证金</button>
         </div>

@@ -58,6 +58,18 @@
         <a href="/yyn">返回修改</a>
         <p>14点后申请的交易账户最迟会在下一个交易日09:15之前分配好</p>
     </div>
+    <div class="" id="tckBox" ng-show="showIdentityDialog">
+        <div class="tmbg"></div>
+        <div class="PopupBox">
+            <p class="p01"><span class="icon07"></span>&nbsp;需要身份信息</p>
+            <p class="p02">为了保证资金安全，参与天天投需要先认证身份信息；</p>
+            <p class="p02">请先完成牛金网身份认证。</p>
+            <div class="applyBtnBox2">
+                <a href="" class="applyBtn02 marRight20" ng-click="redirectToIdentity()">去身份认证</a>
+                <a href="" class="applyBtn03" ng-click="showIdentityDialog = false">以后再说</a>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="undis" id="tckBox">
     <div class="tmbg"></div>
