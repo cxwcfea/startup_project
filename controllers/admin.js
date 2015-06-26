@@ -1476,7 +1476,7 @@ function autoConfirmAlipayOrder(req, res) {
 function autoConfirmAddDepositOrder(req, res) {
     var order_id = req.query.id;
     if (order_id) {
-        Order.update({_id:order_id}, {dealType:9}, function(err, numberAffected, raw) {
+        Order.update({_id:order_id}, {$set:{dealType:9, payType:7}}, function(err, numberAffected, raw) {
             if (numberAffected) {
                 Order.findById(order_id, function(err, order) {
                     var content = util.sendSMS_12(order.userMobile, order.amount);

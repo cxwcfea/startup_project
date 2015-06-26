@@ -46,6 +46,7 @@ angular.module('adminApp').controller('AdminAddDepositOrderListCtrl', ['$scope',
             });
             modalInstance.result.then(function () {
                 order.dealType = 9;
+                order.payType = 7;
                 $http.post('/admin/api/orders/' + order._id, order)
                     .success(function(data, status) {
                         gbNotifier.notify('订单更新成功');
