@@ -1645,13 +1645,6 @@ function fetchUserNotes(req, res) {
 }
 
 function autoPostponeApply(req, res) {
-    /*
-    var period = Number(req.body.period);
-    if (period <= 0 || period > 22) {
-        res.status(400);
-        return res.send({error_msg:'period invalid:' + period});
-    }
-    */
     var period = 1;
     var serial_id = req.body.serial_id;
 
@@ -1667,39 +1660,14 @@ function autoPostponeApply(req, res) {
             });
         },
         function(apply, callback) {
-            var todayEndTime = moment();
-            todayEndTime.hour(15);
-            todayEndTime.minute(00);
-            todayEndTime.second(00);
-            todayEndTime = todayEndTime.toDate();
-
-            /*
-            var deadline = moment();
-            deadline.hour(13);
-            deadline.minute(00);
-            deadline.second(00);
-            */
-
-            callback(null, apply);
-            /*
-            var currentTime = moment();
-            if (apply.endTime < todayEndTime && currentTime > deadline) {
-                err = '1';
-                callback(err);
-            } else {
-            }
-            */
-        },
-        function(apply, callback) {
             var amount = util.getServiceFee(apply, period);
             var orderData = {
                 userID: apply.userID,
                 userMobile: apply.userMobile,
-                dealType: 10,
+                dealType: 7,
                 amount: Number(amount.toFixed(2)),
                 status: 2,
-                description: '配资延期 ' + apply.serialID
-                //applySerialID: apply.serialID   do not add serial id, so the pay order will only add balance for user
+                description: '配资延期 ' + period + ' 天 ' + apply.serialID
             };
             Order.create(orderData, function(err, order) {
                 if (!err && !order) {
@@ -1712,6 +1680,7 @@ function autoPostponeApply(req, res) {
             User.findById(order.userID, function(err, user) {
                 user.finance.balance = Number(user.finance.balance.toFixed(2));
                 if (user.finance.balance >= order.amount) {
+                    order.applySerialID = apply.serialID
                     util.orderFinished(user, order, 2, function(err) {
                         callback(err, user, order, apply);
                     });

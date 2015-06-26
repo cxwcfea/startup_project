@@ -1157,7 +1157,7 @@ module.exports.shengpayFeedback = function(req, res) {
                 } else {
                     callback(null, 'done');
                 }
-            },
+            }
         ], function(err, result) {
             if (err) {
                 logger.warn('shengpayFeedback error:' + err.toString());

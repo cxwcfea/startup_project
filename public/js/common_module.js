@@ -327,9 +327,9 @@
                 case 5:
                     return '保证金返还';
                 case 6:
-                    return '追加配资保证金';
+                    return '保证金支出';
                 case 7:
-                    return '配资延期';
+                    return '管理费支出';
                 case 8:
                     return '管理费返还';
                 case 9:

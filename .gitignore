@@ -7,3 +7,4 @@ data
 log
 test.js
 moment_test.js
+*.swp
