@@ -10,34 +10,36 @@ angular.module('mobileApp').controller('MobileYynCtrl', ['$scope', '$window', '$
     vm.parameterList = [
         {
             name: '2倍',
-            interest: 1.2,
-            value: 2,
-            i_value: 0.012
-        },
-        {
-            name: '3倍',
-            interest: 1.3,
-            value: 3,
-            i_value: 0.013
-        },
-        {
-            name: '4倍',
             interest: 1.6,
-            value: 4,
+            value: 2,
             i_value: 0.016
         },
         {
-            name: '5倍',
+            name: '3倍',
             interest: 1.7,
-            value: 5,
+            value: 3,
             i_value: 0.017
         },
+        {
+            name: '4倍',
+            interest: 1.8,
+            value: 4,
+            i_value: 0.018
+        },
+        {
+            name: '5倍',
+            interest: 1.9,
+            value: 5,
+            i_value: 0.019
+        }
+        /*
         {
             name: '6倍',
             interest: 1.8,
             value: 6,
             i_value: 0.018
         }
+        */
     ];
 
     vm.periodList = [];
