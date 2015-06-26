@@ -35,6 +35,8 @@ angular.module('mobileApp').controller('MobileInvestRechargeCtrl', ['$scope', '$
                     if (status === 403 && data.error_code === 1) {
                         vm.notEnoughMoney = true;
                         $scope.data.intendedRechargeAmount = vm.invest_amount;
+                    } else if (status === 412) {
+                        vm.showIdentityDialog = true;
                     } else {
                         vm.errorMsg = data.error_msg;
                         vm.inputError = true;
@@ -47,6 +49,10 @@ angular.module('mobileApp').controller('MobileInvestRechargeCtrl', ['$scope', '$
 
         vm.redirectToRecharge = function() {
             $location.path('/recharge');
-        }
+        };
+
+        vm.redirectToIdentity = function() {
+            $location.path('/identity');
+        };
     }
 }]);

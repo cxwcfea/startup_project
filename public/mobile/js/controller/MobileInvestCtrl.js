@@ -30,10 +30,12 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
             return;
         }
 
+        /*
         if (!vm.user.identity.id) {
             vm.showIdentityDialog = true;
             return;
         }
+        */
         if (!vm.user.invest.enable) {
             var data = {
                 invest: {
@@ -72,10 +74,12 @@ angular.module('mobileApp').controller('MobileInvestCtrl', ['$scope', '$window',
             $location.path('/login');
             return;
         }
+        /*
         if (!vm.user.identity.id) {
             vm.showIdentityDialog = true;
             return;
         }
+        */
         $location.path('/invest_setting');
     }
 }]);

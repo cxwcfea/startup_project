@@ -1691,6 +1691,9 @@ function rechargeToInvest(req, res) {
         res.status(400);
         return res.send({error_msg:'无效的金额'});
     }
+    if (req.user.finance.balance >= amount && !req.user.identity.id) {
+        return res.status(412).send({error_msg:'need verify identity'});
+    }
     User.update({$and:[{_id:req.user._id}, {'finance.balance':{$gte:amount}}]}, {$inc: {'finance.balance':-amount, 'invest.availableAmount':amount}, $set: {'invest.enable':true}}, function(err, numberAffected, raw) {
         if (err) {
             logger.warn('rechargeToInvest error:' + err.toString());
