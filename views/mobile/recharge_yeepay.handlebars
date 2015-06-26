@@ -121,7 +121,7 @@
 
 <div class="recharge-alipay" ng-show="vm.finishOnlinePayWindow">
     <div class="balance">
-        您已完成充值\{{vm.pay_amount | currency:'':2}}元!
+        您充值\{{vm.pay_amount | currency:'':2}}元，到账结果以支付公司通知为准，充值成功后资金会进入您余额!
     </div>
     <form name="beiFuForm3" class="pay-form" novalidate>
         <button type="submit" class="submit-btn" ng-click="vm.getMoney(1)">我要炒股赚钱</button>
