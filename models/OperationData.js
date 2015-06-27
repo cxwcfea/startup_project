@@ -14,6 +14,7 @@ var operationDataSchema = mongoose.Schema({
     commission: { type:Number, default:0 },
     commissionToBalace: { type:Number, default:0 },
     platformInvest: { type:Number, default:0 },
+    freezeWithdraw: { type:Number, default:0 },
     createdAt: {type:Date, default: Date.now}
 });
 

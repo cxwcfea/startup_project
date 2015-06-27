@@ -2197,14 +2197,26 @@ function fetchOperationData(req, res) {
             if (err) {
                 return res.status(500).send({error_msg:err.toString()});
             }
-            res.send(data);
+            var csvData = '用户余额, 保证金, 待投资额, 投资中金额, 未得服务费, 余额到投资, 投资到余额, 投资收益, 充值, 提现, 佣金, 佣金转余额, 平台投资, 提现中, 时间<br>\n';
+            csvData += obj.balance + ', ' + obj.deposit + ', ' + obj.availableInvest + ', ' + obj.occupiedInvest + ', '
+                + obj.serviceFeeNotGet + ', ' + obj.rechargeToInvest + ', ' + obj.investToBalance + ', '
+                + obj.investProfit + ', ' + obj.recharge + ', ' + obj.withdraw + ', ' + obj.commission + ', '
+                + obj.commissionToBalace + ', ' + obj.platformInvest + ', ' + obj.freezeWithdraw + ', ' + obj.createdAt + '<br>\n';
+            res.send(csvData);
         });
     } else {
         OperationData.find(function(err, data) {
             if (err) {
                 return res.status(500).send({error_msg:err.toString()});
             }
-            res.send(data);
+            var csvData = '用户余额, 保证金, 待投资额, 投资中金额, 未得服务费, 余额到投资, 投资到余额, 投资收益, 充值, 提现, 佣金, 佣金转余额, 平台投资, 提现中, 时间<br>\n';
+            data.forEach(function (obj) {
+                csvData += obj.balance + ', ' + obj.deposit + ', ' + obj.availableInvest + ', ' + obj.occupiedInvest + ', '
+                + obj.serviceFeeNotGet + ', ' + obj.rechargeToInvest + ', ' + obj.investToBalance + ', '
+                + obj.investProfit + ', ' + obj.recharge + ', ' + obj.withdraw + ', ' + obj.commission + ', '
+                + obj.commissionToBalace + ', ' + obj.platformInvest + ', ' + obj.freezeWithdraw + ', ' + obj.createdAt + '<br>\n';
+            });
+            res.send(csvData);
         });
     }
 }
