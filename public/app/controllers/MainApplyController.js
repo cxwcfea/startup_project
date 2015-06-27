@@ -386,7 +386,7 @@
         };
 
         $scope.calculateValue = function() {
-            if ($scope.summary.amount >= 500000 && $scope.summary.amount <= 3000000) {
+            if ($scope.summary.amount >= 300000 && $scope.summary.amount <= 1000000) {
                 $scope.summary.lever = $scope.selectedValue.value;
                 $scope.summary.deposit = $scope.summary.amount / $scope.selectedValue.value;
                 $scope.summary.warnValue = util.getWarnValue($scope.summary.amount, $scope.summary.deposit);

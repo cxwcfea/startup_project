@@ -1131,14 +1131,13 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
-
-            /*
             function(callback) {
                 historyCloseApplyFee(function (err) {
                     callback(err);
                 })
             },
 
+            /*
             function(callback) {
                 historyPayApplyData(function(err) {
                     callback(err);

@@ -435,13 +435,17 @@
             }
         };
         this.getServiceFee = function(apply, period) {
+            var discount = apply.discount ? apply.discount : 1;
+            if (discount <= 0 || discount > 1) {
+                discount = 1;
+            }
             if (apply.type && apply.type === 2) {
-                return Number(((apply.amount - (apply.amount / apply.lever)) * apply.interestRate).toFixed(2));
+                return Number(((apply.amount - (apply.amount / apply.lever)) * apply.interestRate * discount).toFixed(2));
             }
             if (!period) {
                 period = apply.period;
             }
-            return Number((apply.amount / 10000 * (apply.serviceCharge ? apply.serviceCharge : this.getServiceCharge(apply.lever)) * period).toFixed(2));
+            return Number((apply.amount / 10000 * (apply.serviceCharge ? apply.serviceCharge : this.getServiceCharge(apply.lever)) * period * discount).toFixed(2));
         };
         this.getWarnValue = function(amount, deposit) {
             return Number((amount - warn_factor * deposit).toFixed(2));
