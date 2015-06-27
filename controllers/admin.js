@@ -2198,10 +2198,10 @@ function fetchOperationData(req, res) {
                 return res.status(500).send({error_msg:err.toString()});
             }
             var csvData = '用户余额, 保证金, 待投资额, 投资中金额, 未得服务费, 余额到投资, 投资到余额, 投资收益, 充值, 提现, 佣金, 佣金转余额, 平台投资, 提现中, 时间<br>\n';
-            csvData += data.balance + ', ' + data.deposit + ', ' + data.availableInvest + ', ' + data.occupiedInvest + ', '
-                + data.serviceFeeNotGet + ', ' + data.rechargeToInvest + ', ' + data.investToBalance + ', '
-                + data.investProfit + ', ' + data.recharge + ', ' + data.withdraw + ', ' + data.commission + ', '
-                + data.commissionToBalace + ', ' + data.platformInvest + ', ' + data.freezeWithdraw + ', ' + data.createdAt + '<br>\n';
+            csvData += data[0].balance + ', ' + data[0].deposit + ', ' + data[0].availableInvest + ', ' + data[0].occupiedInvest + ', '
+                + data[0].serviceFeeNotGet + ', ' + data[0].rechargeToInvest + ', ' + data[0].investToBalance + ', '
+                + data[0].investProfit + ', ' + data[0].recharge + ', ' + data[0].withdraw + ', ' + data[0].commission + ', '
+                + data[0].commissionToBalace + ', ' + data[0].platformInvest + ', ' + data[0].freezeWithdraw + ', ' + data[0].createdAt + '<br>\n';
             res.send(csvData);
         });
     } else {
