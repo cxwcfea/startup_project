@@ -62,7 +62,7 @@ angular.module('mobileApp').controller('MobileYynCtrl', ['$scope', '$window', '$
     };
 
     vm.calculateValue = function() {
-        if (vm.summary.amount >= 500000 && vm.summary.amount <= 3000000) {
+        if (vm.summary.amount >= 300000 && vm.summary.amount <= 1000000) {
             vm.summary.lever = vm.selectedValue.value;
             vm.summary.deposit = vm.summary.amount / vm.selectedValue.value;
             vm.summary.warnValue = util.getWarnValue(vm.summary.amount, vm.summary.deposit);
@@ -84,7 +84,7 @@ angular.module('mobileApp').controller('MobileYynCtrl', ['$scope', '$window', '$
 
     vm.submitApply = function() {
         if (vm.summary.deposit <= 0) {
-            alert('请输入有效资金,最低50万,最高300万');
+            alert('请输入有效资金,最低30万,最高100万');
             return;
         }
         vm.summary.type = 2;
