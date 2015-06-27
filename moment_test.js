@@ -151,3 +151,9 @@ var bbb = moment("2015-06-08").dayOfYear();
 
 console.log(bbb - aaa);
 //console.log(aaa.diff(bbb, 'days'));
+//
+var startTime = moment();
+startTime.hour(15);
+startTime.minute(00);
+startTime.second(00);
+console.log(startTime.toDate());
