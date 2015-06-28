@@ -617,7 +617,7 @@ exports.freeApply = function(req, res, next) {
                             if (err) next();
                             //res.locals.addtional_pay_info = '您的余额不足1元，请先充值1元再申请免费体验';
                             if (req.url.search('/mobile') > -1) {
-                                res.redirect('/mobile/#/recharge_alipay?order_id=' + order._id);
+                                res.redirect('/mobile/#/recharge_yeepay?order_id=' + order._id);
                             } else {
                                 res.redirect('/recharge?order_id=' + order._id);
                             }

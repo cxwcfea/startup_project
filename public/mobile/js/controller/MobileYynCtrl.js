@@ -8,14 +8,12 @@ angular.module('mobileApp').controller('MobileYynCtrl', ['$scope', '$window', '$
     vm.summary.warnValue = 0;
     vm.summary.sellValue = 0;
     vm.parameterList = [
-        /*
         {
             name: '2倍',
-            interest: 1.6,
+            interest: 1.7,
             value: 2,
-            i_value: 0.016
+            i_value: 0.017
         },
-        */
         {
             name: '3倍',
             interest: 1.8,
