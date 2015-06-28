@@ -686,7 +686,7 @@ exports.placeApply = function(req, res, next) {
     if (req.body.type) {
         applyData.type = req.body.type;
         if (applyData.type === 2) {
-            applyData.period = req.body.month;
+            applyData.period = 1;//req.body.month;
             applyData.interestRate = req.body.interestRate;
         }
     }
