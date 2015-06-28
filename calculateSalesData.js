@@ -128,9 +128,9 @@ var getApplyServiceFee = function(apply) {
         if (closedTime > endOfMonth) {
             time = endOfMonth;
         } else {
-            time = closedTime;
+            time = closedTime.toDate();
         }
-        var days = util.tradeDaysTillEnd(startOfMonth, time.toDate());
+        var days = util.tradeDaysTillEnd(startOfMonth, time);
         fee = fee * apply.amount / 10000 * days;
     } else {
         fee = fee * apply.amount / 10000 * util.tradeDaysTillEnd(apply.startTime, endOfMonth);
