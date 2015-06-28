@@ -65,10 +65,13 @@ angular.module('mobileApp').controller('MobileUserCtrl', ['$scope', '$window', '
     };
 
     vm.gotoInvestCenter = function() {
+        $location.path('/user_invest_center')
+        /*
         if (!vm.user.invest.enable) {
             $location.path('/invest')
         } else {
             $location.path('/user_invest_center')
         }
+        */
     }
 }]);

@@ -62,7 +62,7 @@
     <div class="fl moneyListBox">
         <div class="conlumn2">您需要的金额 <em class="infoText05">最低30万，最高100万元</em></div>
         <div class="ipt-box">
-            <input type="number" min="300000" max="1000000" step="10000" placeholder="最少30万，最多100万" ng-model="summary.amount" ng-change="calculateValue()" required autofocus>元
+            <input type="number" min="50000" max="1000000" step="10000" placeholder="最少5万，最多100万" ng-model="summary.amount" ng-change="calculateValue()" required autofocus>元
         </div>
         <div class="conlumn2">选择配资比例</div>
         <div class="moneyList">
@@ -96,7 +96,7 @@
                 <a href="" class="am-close am-close-spin" data-am-modal-close>&times;</a>
             </div>
             <div class="am-modal-bd">
-                请输入有效资金,最低30万,最高100万
+                请输入有效资金,最低5万,最高100万
             </div>
             <div class="am-modal-footer">
                 <span class="am-modal-btn">确定</span>
@@ -136,7 +136,7 @@
                 </tr>
                 <tr>
                     <td class="infoTableTitle">开始时间</td>
-                    <td class="infoTableNr">下个交易日9:15之前</td>
+                    <td class="infoTableNr">14:00之后下个交易日，之前当日</td>
                 </tr>
             </table>
         </div>

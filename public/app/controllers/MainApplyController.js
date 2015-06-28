@@ -331,29 +331,31 @@
         $scope.summary.warnValue = 0;
         $scope.summary.sellValue = 0;
         $scope.parameterList = [
+            /*
             {
                 name: '2倍',
                 interest: 1.6,
                 value: 2,
                 i_value: 0.016
             },
+            */
             {
                 name: '3倍',
-                interest: 1.7,
-                value: 3,
-                i_value: 0.017
-            },
-            {
-                name: '4倍',
                 interest: 1.8,
-                value: 4,
+                value: 3,
                 i_value: 0.018
             },
             {
-                name: '5倍',
+                name: '4倍',
                 interest: 1.9,
-                value: 5,
+                value: 4,
                 i_value: 0.019
+            },
+            {
+                name: '5倍',
+                interest: 2.0,
+                value: 5,
+                i_value: 0.020
             }
             /*
             {
@@ -386,7 +388,7 @@
         };
 
         $scope.calculateValue = function() {
-            if ($scope.summary.amount >= 300000 && $scope.summary.amount <= 1000000) {
+            if ($scope.summary.amount >= 50000 && $scope.summary.amount <= 1000000) {
                 $scope.summary.lever = $scope.selectedValue.value;
                 $scope.summary.deposit = $scope.summary.amount / $scope.selectedValue.value;
                 $scope.summary.warnValue = util.getWarnValue($scope.summary.amount, $scope.summary.deposit);
