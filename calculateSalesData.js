@@ -13,8 +13,8 @@ var mongoose = require('mongoose'),
 
 //var startOfMonth = moment().startOf('month').toDate();
 //var endOfMonth = moment().endOf('month').toDate();
-var startOfMonth = moment("2015-04-26").toDate();
-var endOfMonth = moment("2015-05-25").toDate();
+var startOfMonth = moment("2015-05-26").toDate();
+var endOfMonth = moment("2015-06-25").toDate();
 var month = moment().startOf('month').format('YYYYMM');
 //console.log(startOfMonth);
 //console.log(endOfMonth);
@@ -36,7 +36,7 @@ var gatherData = function(salesObj, callback) {
             if (applyData[i].manager == salesObj.mobile) {
                 if (applyData[i].profitForMgm) {
                     applyData[i].amount -= applyData[i].profitForMgm;
-                } else if (applyData[i].refer) {
+                } else if (applyData[i].refer && applyData[i].refer.indexOf('m_') === 0) {
                     applyData[i].amount *= 0.93;
                 }
                 profit += applyData[i].amount;
@@ -54,7 +54,7 @@ var gatherData = function(salesObj, callback) {
         });
 
         var options = { encoding: 'utf8', flag: 'w' };
-        var fileWriteStream = fs.createWriteStream("Sales-" + salesObj.mobile + "-2015-04.txt",  options);
+        var fileWriteStream = fs.createWriteStream("Sales-" + salesObj.mobile + "-2015-06.txt",  options);
         fileWriteStream.on("close", function() {
             console.log("File Closed.");
         });
@@ -121,19 +121,19 @@ var getApplyServiceFee = function(apply) {
     if (!apply.discount) {
         apply.discount = 1;
     }
+    var startTime = apply.startTime > startOfMonth ? apply.startTime : startOfMonth;
     if (apply.status === 3) {
         var closedTime = apply.closeAt ? apply.closeAt : apply.endTime;
-        closedTime = moment(closedTime);
         var time;
         if (closedTime > endOfMonth) {
             time = endOfMonth;
         } else {
-            time = closedTime.toDate();
+            time = closedTime;
         }
-        var days = util.tradeDaysTillEnd(startOfMonth, time);
+        var days = util.tradeDaysTillEnd(startTime, time);
         fee = fee * apply.amount / 10000 * days;
     } else {
-        fee = fee * apply.amount / 10000 * util.tradeDaysTillEnd(apply.startTime, endOfMonth);
+        fee = fee * apply.amount / 10000 * util.tradeDaysTillEnd(startTime, endOfMonth);
     }
     fee *= apply.discount;
     if (apply.profitForInvest) {
@@ -143,7 +143,7 @@ var getApplyServiceFee = function(apply) {
 };
 
 var gatherApplyData = function(cb) {
-    Apply.find({$and:[{startTime:{$lte:endOfMonth}, endTime:{$gte:startOfMonth}}, {status:{$ne:1}}, {status:{$ne:9}}, {status:{$ne:4}}, {isTrial:false}]}, function(err, applies) {
+    Apply.find({$and:[{startTime:{$lte:endOfMonth}, endTime:{$gte:startOfMonth}}, {type:{$ne:2}}, {status:{$ne:1}}, {status:{$ne:9}}, {status:{$ne:4}}, {isTrial:false}]}, function(err, applies) {
         if (err) {
             logger.debug('err when gatherApplyData' + err.toString());
             return cb(err);
@@ -173,6 +173,7 @@ var changeApplyData = function(applyObj, callback) {
         }
         if (!user || !user.manager) {
             applyObj.manager = '';
+            applyObj.refer = '';
         } else {
             applyObj.manager = user.manager;
             applyObj.refer = user.refer;
