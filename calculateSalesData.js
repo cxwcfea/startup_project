@@ -23,7 +23,6 @@ var applyData = {};
 
 var gatherData = function(salesObj, callback) {
     console.log('gatherData');
-    //console.log(applyData);
 
     User.find({$and:[{manager:salesObj.mobile}, {registered:true}, {registerAt:{$gte:startOfMonth}}, {registerAt:{$lte:endOfMonth}}]}, function(err, users) {
         if (err) {
@@ -35,11 +34,15 @@ var gatherData = function(salesObj, callback) {
         var loss = 0;
         for (var i = 0; i < applyData.length; ++i) {
             if (applyData[i].manager == salesObj.mobile) {
+                if (applyData[i].profitForMgm) {
+                    applyData[i].amount -= applyData[i].profitForMgm;
+                } else if (applyData[i].refer) {
+                    applyData[i].amount *= 0.93;
+                }
                 profit += applyData[i].amount;
                 loss += applyData[i].loss;
             }
         }
-        //console.log(profit);
         var payUsers = users.filter(function(user) {
             return user.finance.history_deposit > 100;
         });
@@ -133,6 +136,9 @@ var getApplyServiceFee = function(apply) {
         fee = fee * apply.amount / 10000 * util.tradeDaysTillEnd(apply.startTime, endOfMonth);
     }
     fee *= apply.discount;
+    if (apply.profitForInvest) {
+        fee -= apply.profitForInvest;
+    }
     return fee;
 };
 
@@ -149,6 +155,7 @@ var gatherApplyData = function(cb) {
             var obj = {
                 applySerialID: applies[i].serialID,
                 mobile: applies[i].userMobile,
+                profitForMgm: applies[i].profitForMgm,
                 amount: fee,
                 loss: loss < 0 ? loss : 0
             };
@@ -168,6 +175,7 @@ var changeApplyData = function(applyObj, callback) {
             applyObj.manager = '';
         } else {
             applyObj.manager = user.manager;
+            applyObj.refer = user.refer;
         }
         callback(null, applyObj);
     })
