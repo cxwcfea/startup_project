@@ -34,7 +34,7 @@ angular.module('mobileApp').controller('MobileYynConfirmCtrl', ['$scope', '$wind
                             console.log('error:' + res.error_msg);
                         });
                 } else {
-                    $window.location.assign('/mobile/#/recharge_alipay?order_id=' + data.order._id);
+                    $window.location.assign('/mobile/#/recharge_yeepay?order_id=' + data.order._id);
                 }
             })
             .error(function(data, status, headers, config) {
