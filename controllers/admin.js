@@ -1660,6 +1660,9 @@ function autoPostponeApply(req, res) {
             });
         },
         function(apply, callback) {
+            if (!apply.accountType || apply.accountType === 1) {
+                return callback('can not postpone due to accountType');
+            }
             var amount = util.getServiceFee(apply, period);
             var orderData = {
                 userID: apply.userID,
@@ -2221,7 +2224,7 @@ function fetchOperationData(req, res) {
     }
 }
 
-function fetchLossApplies(req, res) {
+function getLossApplies(req, res) {
     Apply.find({status:3}, function(err, applies) {
         if (err) {
             return res.status(500).send(err.toString());
@@ -2424,7 +2427,7 @@ module.exports = {
 
         app.get('/admin/api/operation_data/:date', passportConf.requiresRole('admin'), fetchOperationData);
 
-        app.get('/admin/api/apply_loss', passportConf.requiresRole('admin'), fetchLossApplies);
+        app.get('/admin/api/apply_loss', passportConf.requiresRole('admin'), getLossApplies);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

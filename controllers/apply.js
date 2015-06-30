@@ -161,6 +161,8 @@ exports.postApplyPostpone = function(req, res, next) {
                     err = 'failed to find apply when postpone for apply:' + serial_id;
                 } else if (apply.status !== 2) {
                     err = 'apply not in the valid state';
+                } else if (!apply.accountType || apply.accountType === 1) {
+                    err = 'apply can not postpone due to accountType';
                 }
                 callback(err, apply);
             });
