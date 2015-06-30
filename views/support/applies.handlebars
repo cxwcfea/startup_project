@@ -41,7 +41,8 @@
                     <th class="table-title am-text-right">服务费</th>
                     <th class="table-type am-text-right am-hide-sm-only">保证金</th>
                     <th class="table-author am-text-center">状态</th>
-                    <th class="table-author">HOMS</th>
+                    <th class="table-author">账号</th>
+                    <th class="">账号类型</th>
                     <!--
                     <th class="table-set">接手客服</th>
                     <th class="table-set">操作</th>
@@ -60,6 +61,7 @@
                     <td class="am-text-right am-hide-sm-only"><span class="am-icon-rmb"></span><strong>\{{apply.deposit | currency:'':2}}</strong></td>
                     <td class="am-text-center">\{{apply.status | applyStatus}}</td>
                     <td class="">\{{apply.account || '尚未分配' }}</td>
+                    <td class="">\{{apply.accountType | displayAccountType}}</td>
                     <!--
                     <td class="">\{{apply.manager || '尚未分配' }}</td>
                     <td>
