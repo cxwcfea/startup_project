@@ -2221,6 +2221,33 @@ function fetchOperationData(req, res) {
     }
 }
 
+function fetchLossApplies(req, res) {
+    Apply.find({status:3}, function(err, applies) {
+        if (err) {
+            return res.status(500).send(err.toString());
+        }
+        var lossApplies = applies.filter(function(elem) {
+            if (elem.isTrial) {
+                if (elem.profit < 0) {
+                    return true;
+                }
+            } else {
+                if (elem.profit + elem.deposit < 0) {
+                    return true;
+                }
+            }
+            return false;
+        });
+        var csvData = '配资单号, 手机号, 配资金额, 保证金, 盈亏, 付费, 亏损, 结束日期<br>\n';
+        lossApplies.forEach(function (obj) {
+            csvData += obj.serialID + ', ' + obj.userMobile + ', ' + obj.amount + ', '
+            + obj.deposit + ', ' + obj.profit + ', ' + obj.isTrial + ', '
+            + (obj.isTrial ? obj.profit : (obj.deposit + obj.profit)) + ', ' + moment(obj.endTime).format('YYYYMMDDHHmmss') + '<br>\n';
+        });
+        res.send(csvData);
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -2396,6 +2423,8 @@ module.exports = {
         app.get('/admin/api/operation_data', passportConf.requiresRole('admin'), fetchOperationData);
 
         app.get('/admin/api/operation_data/:date', passportConf.requiresRole('admin'), fetchOperationData);
+
+        app.get('/admin/api/apply_loss', passportConf.requiresRole('admin'), fetchLossApplies);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
