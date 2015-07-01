@@ -932,9 +932,9 @@ function getPayUser(callback) {
         if (err) {
             return callback('getPayUser ' + err.toString());
         }
-        var csvData = '手机号\n';
+        var csvData = '手机号\r\n';
         users.forEach(function (obj) {
-            csvData += obj.mobile + '\n';
+            csvData += obj.mobile + '\r\n';
         });
         console.log(csvData);
         callback(null);
