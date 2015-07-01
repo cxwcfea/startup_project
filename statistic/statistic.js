@@ -927,6 +927,20 @@ function createReturnOrder(apply, callback) {
     })
 }
 
+function getPayUser(callback) {
+    User.find({$and:[{registered:true}, {$or:[{'finance.history_capital':{$gt:0}}, {'invest.history_invest_amount':{$gt:0}}]}]}, function (err, users) {
+        if (err) {
+            return callback('getPayUser ' + err.toString());
+        }
+        var csvData = '手机号\n';
+        users.forEach(function (obj) {
+            csvData += obj.mobile + '\n';
+        });
+        console.log(csvData);
+        callback(null);
+    });
+}
+
 var options = {};
 mongoose.connect(config.db, options);
 var db = mongoose.connection;
@@ -1091,6 +1105,7 @@ db.once('open', function callback() {
             },
             */
 
+            /*
             function(callback){
                 dailyFreeApplyDataTillNow(function(err) {
                     callback(err);
@@ -1136,6 +1151,12 @@ db.once('open', function callback() {
                     callback(err);
                 })
             },
+            */
+            function(callback) {
+                getPayUser(function(err) {
+                    callback(err);
+                });
+            }
 
             /*
             function(callback) {

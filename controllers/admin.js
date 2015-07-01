@@ -2253,6 +2253,19 @@ function getLossApplies(req, res) {
     });
 }
 
+function getPayUser(req, res) {
+    User.find({$and:[{registered:true}, {$or:[{'finance.history_capital':{$gt:0}}, {'invest.history_invest_amount':{$gt:0}}]}]}, function (err, users) {
+        if (err) {
+            return res.status(500).send(err.toString());
+        }
+        var csvData = '手机号<br>\n';
+        users.forEach(function (obj) {
+            csvData += obj.mobile + ' <br>\n';
+        });
+        res.send(csvData);
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -2430,6 +2443,8 @@ module.exports = {
         app.get('/admin/api/operation_data/:date', passportConf.requiresRole('admin'), fetchOperationData);
 
         app.get('/admin/api/apply_loss', passportConf.requiresRole('admin'), getLossApplies);
+
+        app.get('/admin/api/get_pay_user', passportConf.requiresRole('admin'), getPayUser);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
