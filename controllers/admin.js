@@ -2272,6 +2272,9 @@ function manualFinishContract(req, res) {
         if (err) {
             return res.status(500).send(err.toString());
         }
+        if (!contract) {
+            return res.status(400).send({error_msg:'contract not found ' + contractID});
+        }
         invest.returnProfitToInvestor(contract, function(err) {
             if (err) {
                 return res.status(500).send(err.toString());
