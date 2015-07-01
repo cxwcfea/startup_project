@@ -1660,9 +1660,11 @@ function autoPostponeApply(req, res) {
             });
         },
         function(apply, callback) {
+            /*
             if (!apply.accountType || apply.accountType === 1) {
                 return callback('can not postpone due to accountType');
             }
+            */
             var amount = util.getServiceFee(apply, period);
             var orderData = {
                 userID: apply.userID,
