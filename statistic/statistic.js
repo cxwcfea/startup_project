@@ -941,6 +941,32 @@ function getPayUser(callback) {
     });
 }
 
+function getProfitGiveOrder(callback) {
+    Order.find({status:1}, function(err, orders) {
+        if (err) {
+            console.log(err.toString());
+            callback(err)
+        } else {
+            var mgm = 0;
+            var invest = 0;
+            var investProfit = 0;
+            for (var i = 0; i < orders.length; ++i) {
+                if (orders[i].dealType === 11) {
+                    invest += orders[i].amount;
+                } else if (orders[i].dealType === 12) {
+                    investProfit += orders[i].amount;
+                } else if (orders[i].dealType === 13) {
+                    mgm += orders[i].amount;
+                }
+            }
+            console.log('投资本金支出：' + invest);
+            console.log('投资利润: ' + investProfit);
+            console.log('mgm佣金: ' + mgm);
+            callback(null);
+        }
+    });
+}
+
 var options = {};
 mongoose.connect(config.db, options);
 var db = mongoose.connection;
@@ -1151,9 +1177,14 @@ db.once('open', function callback() {
                     callback(err);
                 })
             },
-            */
             function(callback) {
                 getUserData(function(err) {
+                    callback(err);
+                });
+            },
+             */
+            function(callback) {
+                getProfitGiveOrder(function(err) {
                     callback(err);
                 });
             }
