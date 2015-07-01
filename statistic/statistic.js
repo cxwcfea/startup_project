@@ -700,11 +700,11 @@ var getUserData = function(callback) {
         fileWriteStream.on("close", function() {
             console.log("File Closed.");
         });
-        var data = 'mobile, freeApply, registerAt, history_deposit, profit, refer\n';
+        var data = '手机号, 免费配资, 注册日, 历史配资额, 历史投资额, 当前配资额, 当前投资额\r\n';
         fileWriteStream.write(data);
         users.forEach(function (user) {
-            data = user.mobile + ', ' + user.freeApply + ', ' + moment(user.registerAt).format('YYYYMMDDHHmmss') + ', ' + user.finance.history_deposit + ', '
-            + user.finance.profit + ', ' + user.refer + '\n';
+            data = user.mobile + ', ' + (user.freeApply ? '是' : '否') + ', ' + moment(user.registerAt).format('YYYYMMDDHHmmss') + ', ' + user.finance.history_capital + ', '
+            + user.invest.history_invest_amount + ', ' + user.finance.total_capital + ', ' + user.invest.occupiedAmount + '\r\n';
             fileWriteStream.write(data);
         });
         fileWriteStream.end();
@@ -1153,7 +1153,7 @@ db.once('open', function callback() {
             },
             */
             function(callback) {
-                getPayUser(function(err) {
+                getUserData(function(err) {
                     callback(err);
                 });
             }
