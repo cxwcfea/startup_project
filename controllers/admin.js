@@ -2266,6 +2266,21 @@ function getPayUser(req, res) {
     });
 }
 
+function manualFinishContract(req, res) {
+    var contractID = req.params.id;
+    Contract.findById(contractID, function(err, contract) {
+        if (err) {
+            return res.status(500).send(err.toString());
+        }
+        invest.returnProfitToInvestor(contract, function(err) {
+            if (err) {
+                return res.status(500).send(err.toString());
+            }
+            res.send({error_code:0});
+        });
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -2445,6 +2460,8 @@ module.exports = {
         app.get('/admin/api/apply_loss', passportConf.requiresRole('admin'), getLossApplies);
 
         app.get('/admin/api/get_pay_user', passportConf.requiresRole('admin'), getPayUser);
+
+        app.get('/admin/api/manual_finish_contract/:id', passportConf.requiresRole('admin'), manualFinishContract);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
