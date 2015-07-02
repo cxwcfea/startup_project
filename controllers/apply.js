@@ -101,6 +101,7 @@ exports.getCloseApply = function(req, res, next) {
 };
 
 exports.postCloseApply = function(req, res) {
+    return res.status(403).send({error_msg:'temporal disable add close'});
     Apply.findOne({serialID:req.params.serial_id}, function(err, apply) {
         if (err) {
             logger.warn('postCloseApply ' + req.params.serial_id + ' error:' + err.toString());
