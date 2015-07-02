@@ -2050,8 +2050,10 @@ function cancelPendingApply(req, res) {
             });
         },
         function (user, feeOrder, depositOrder, apply, callback) {
-            user.finance.freeze_capital -= feeOrder.amount;
-            user.finance.prepaid_service_fee -= feeOrder.amount;
+            if (apply.type !== 2) {
+                user.finance.freeze_capital -= feeOrder.amount;
+                user.finance.prepaid_service_fee -= feeOrder.amount;
+            }
             util.orderFinished(user, feeOrder, 1, function(err) {
                 callback(err, user, depositOrder, apply);
             });
