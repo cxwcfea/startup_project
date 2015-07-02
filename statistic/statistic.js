@@ -993,7 +993,7 @@ function accountMove(data, cb) {
                 return res.status(500).send({error_msg:err.toString()});
             }
             var content = '您的原Homs交易账号(' + homs + ')已经迁移到同花顺,账号为:' + tonghuashun + ',密码为:' + apply.password +
-                ',给您带来的不便深表歉意!';
+                ',给您带来的不便深表歉意!提示:同花顺账号在非交易时间可能无法登陆';
             sms.sendSMS(apply.userMobile, '', content, function(){});
             cb(null);
         });
@@ -1004,11 +1004,11 @@ function moveHomsToTonghuashun(callback) {
     var lineReader = require('line-reader');
     var datas = [];
     lineReader.eachLine('homs_tonghuashun.txt', function(line, last) {
-        var elems = line.split(' ');
+        var elems = line.split(',');
         var obj = {
-            serialID: elems[0],
-            homs: elems[1],
-            tonghuashun: elems[2]
+            serialID: elems[1],
+            homs: elems[2],
+            tonghuashun: elems[0]
         };
         datas.push(obj);
         if(last){
