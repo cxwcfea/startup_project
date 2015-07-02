@@ -131,7 +131,9 @@
     <div class="ui-btn-group ttn-btn-group" ng-show="vm.apply.status === 2">
         <div ng-show="!vm.apply.isTrial && vm.apply.type !== 2">
             <button ng-click="vm.postponeApply()">申请延期</button>
+            <!--
             <button ng-click="vm.addDeposit()">补充保证金</button>
+            -->
         </div>
         <button ng-click="vm.requestClose()">我要结算</button>
     </div>

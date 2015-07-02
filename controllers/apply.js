@@ -322,7 +322,6 @@ exports.getAddDeposit = function(req, res, next) {
 };
 
 exports.addDeposit = function(req, res, next) {
-    return res.status(403).send({error_msg:'temporal disable add deposit'});
     var amount = Number(req.body.deposit_amount);
     if (Number.isNaN(amount) || amount <= 0) {
         res.status(400);
