@@ -681,6 +681,7 @@ exports.placeApply = function(req, res, next) {
         sellValue: Number((amount - 0.6 * deposit).toFixed(2)),
         serviceCharge: util.getServiceCharge(lever),
         discount: 1,
+        accountType: 2,
         period: 10
     });
 

@@ -404,6 +404,17 @@
                     return "无";
             }
         };
+    }).filter("displayAccountType", function() {
+        return function(input) {
+            switch (input) {
+                case 2:
+                    return "同花顺";
+                case 3:
+                    return "牛金操盘";
+                default:
+                    return "Homs";
+            }
+        };
     }).service("days", function () {
         this.startTime = getStartDay;
         this.endTime = getEndDay;
