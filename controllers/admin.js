@@ -2286,6 +2286,34 @@ function manualFinishContract(req, res) {
     });
 }
 
+function moveHomsToTonghuashun(req, res) {
+    var serialID = req.body.serial_id;
+    var homs = req.body.homs;
+    var tonghuashun = req.body.tonghuashun;
+    if (!serialID || !homs || !tonghuashun) {
+        return res.status(403).send({error_msg:'invalid params'});
+    }
+    Apply.findOne({serialID:serialID}, function(err, apply) {
+        if (err) {
+            return res.status(500).send({error_msg:err.toString()});
+        }
+        if (apply.status != 2) {
+            return res.status(403).send({error_msg:'apply not in correct status'});
+        }
+        apply.account = tonghuashun;
+        apply.accountType = 2;
+        apply.save(function(err) {
+            if (err) {
+                return res.status(500).send({error_msg:err.toString()});
+            }
+            var content = '您的原Homs交易账号(' + homs + ')已经迁移到同花顺,账号为:' + tonghuashun + ',密码为:' + apply.password +
+                    ',给您带来的不便深表歉意!';
+            sms.sendSMS(apply.userMobile, '', content, function(){});
+            res.send({error_code:0});
+        });
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -2467,6 +2495,8 @@ module.exports = {
         app.get('/admin/api/get_pay_user', passportConf.requiresRole('admin'), getPayUser);
 
         app.get('/admin/api/manual_finish_contract/:id', passportConf.requiresRole('admin'), manualFinishContract);
+
+        app.post('/admin/api/move_homs_tonghuashun', passportConf.requiresRole('admin'), moveHomsToTonghuashun);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

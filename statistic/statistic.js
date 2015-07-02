@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
     _ = require('lodash'),
     async = require('async'),
     util = require('../lib/util'),
+    sms = require('../lib/sms'),
     Apply = require('../models/Apply'),
     Card = require('../models/Card'),
     Order = require('../models/Order'),
@@ -967,6 +968,63 @@ function getProfitGiveOrder(callback) {
     });
 }
 
+function accountMove(data, cb) {
+    console.log('processing serialID ' + data.serialID + ' homs ' + data.homs + ' tonghuashun ' + data.tonghuashun);
+    var serialID = data.serialID;
+    var homs = data.homs;
+    var tonghuashun = data.tonghuashun;
+    if (!serialID || !homs || !tonghuashun) {
+        console.log('accountMove param invalid error:' + serialID + ' ' + ' homs:' + homs + ' tonghuashun:' + tonghuashun);
+        return cb(null);
+    }
+    Apply.findOne({serialID:serialID}, function(err, apply) {
+        if (err) {
+            console.log('accountMove ' + err.toString() + ' error:' + serialID + ' ' + ' homs:' + homs + ' tonghuashun:' + tonghuashun);
+            return cb(null);
+        }
+        if (apply.status != 2) {
+            console.log('accountMove apply not in correct status error:' + serialID + ' ' + ' homs:' + homs + ' tonghuashun:' + tonghuashun);
+            return cb(null);
+        }
+        apply.account = tonghuashun;
+        apply.accountType = 2;
+        apply.save(function(err) {
+            if (err) {
+                return res.status(500).send({error_msg:err.toString()});
+            }
+            var content = '您的原Homs交易账号(' + homs + ')已经迁移到同花顺,账号为:' + tonghuashun + ',密码为:' + apply.password +
+                ',给您带来的不便深表歉意!';
+            sms.sendSMS(apply.userMobile, '', content, function(){});
+            cb(null);
+        });
+    });
+}
+
+function moveHomsToTonghuashun(callback) {
+    var lineReader = require('line-reader');
+    var datas = [];
+    lineReader.eachLine('homs_tonghuashun.txt', function(line, last) {
+        var elems = line.split(' ');
+        var obj = {
+            serialID: elems[0],
+            homs: elems[1],
+            tonghuashun: elems[2]
+        };
+        datas.push(obj);
+        if(last){
+            async.map(datas, accountMove, function(err, results) {
+                if (err) {
+                    console.log('moveHomsToTonghuashun error:' + err.toString());
+                } else {
+                    console.log('moveHomsToTonghuashun done');
+                }
+                console.log('done');
+                callback(null);
+            });
+        }
+    });
+}
+
 var options = {};
 mongoose.connect(config.db, options);
 var db = mongoose.connection;
@@ -1182,9 +1240,14 @@ db.once('open', function callback() {
                     callback(err);
                 });
             },
-             */
             function(callback) {
                 getProfitGiveOrder(function(err) {
+                    callback(err);
+                });
+            }
+             */
+            function(callback) {
+                moveHomsToTonghuashun(function(err) {
                     callback(err);
                 });
             }
