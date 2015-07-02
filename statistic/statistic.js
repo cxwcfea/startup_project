@@ -982,7 +982,7 @@ function accountMove(data, cb) {
             console.log('accountMove ' + err.toString() + ' error:' + serialID + ' ' + ' homs:' + homs + ' tonghuashun:' + tonghuashun);
             return cb(null);
         }
-        if (apply.status != 2) {
+        if (apply.status != 5) {
             console.log('accountMove apply not in correct status error:' + serialID + ' ' + ' homs:' + homs + ' tonghuashun:' + tonghuashun);
             return cb(null);
         }
@@ -1006,9 +1006,9 @@ function moveHomsToTonghuashun(callback) {
     lineReader.eachLine('homs_tonghuashun.txt', function(line, last) {
         var elems = line.split(',');
         var obj = {
-            serialID: elems[1],
-            homs: elems[2],
-            tonghuashun: elems[0]
+            serialID: elems[0],
+            homs: elems[1],
+            tonghuashun: elems[2]
         };
         datas.push(obj);
         if(last){
