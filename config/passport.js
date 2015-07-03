@@ -2,6 +2,7 @@ var mongoose = require("mongoose"),
     passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
     wechatStrategy = require('passport-wechat'),
+    util = require('../lib/util'),
     env = process.env.NODE_ENV,
     config = require('../config/config')[env],
     User = mongoose.model('User');
@@ -29,7 +30,7 @@ passport.use(new wechatStrategy({
     scope: 'snsapi_login',
     state: true
 }, function (openid, profile, token, done) {
-    console.log('wechat openid:' + openid + ' profile:' + profile + ' token:' + token);
+    console.log('wechat openid:' + openid + ' profile:' + util.printObject(profile) + ' token:' + util.printObject(token));
     return done(null, openid, profile);
 }));
 
