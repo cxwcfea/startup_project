@@ -360,7 +360,6 @@ function createOrder(req, res) {
 }
 
 function fetchOrdersForUser(req, res) {
-    logger.debug(req.params.uid);
     Order.find({userID:req.params.uid}, function(err, order) {
         if (err) {
             logger.error(err.toString());
