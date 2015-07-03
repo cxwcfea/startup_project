@@ -29,6 +29,7 @@ passport.use(new wechatStrategy({
     scope: 'snsapi_login',
     state: true
 }, function (openid, profile, token, done) {
+    console.log('wechat openid:' + openid + ' profile:' + profile + ' token:' + token);
     return done(null, openid, profile);
 }));
 
