@@ -13,6 +13,7 @@ var users = require('../controllers/user'),
     logger = log4js.getLogger('routes'),
     _ = require('lodash'),
     ecitic = require('../lib/ecitic'),
+    passport = require('passport'),
     passportConf = require('./passport');
 
 module.exports = function(app) {
@@ -250,6 +251,13 @@ module.exports = function(app) {
     app.get('/api/test_weixin', weixin.testTemplateMsg);
 
     yeepay.registerRoutes(app, passportConf);
+
+    app.get('/auth/wechat', passport.authenticate('wechat'));
+    app.get('/auth/wechat/callback', passport.authenticate('wechat', {
+        failureRedirect: '/auth/wechat/err',
+        successRedirect: '/auth/wechat/success'}));
+    app.get('/auth/wechat/err', weixin.authFail);
+    app.get('/auth/wechat/success', weixin.authSuccess);
 
     /*
     app.get('/admin_test', passportConf.requiresRole('admin'), function(req, res, next) {

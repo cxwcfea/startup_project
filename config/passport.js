@@ -1,6 +1,7 @@
 var mongoose = require("mongoose"),
     passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
+    wechatStrategy = require('passport-wechat'),
     User = mongoose.model('User');
 
 passport.use(new LocalStrategy({ usernameField: 'mobile' },
@@ -18,6 +19,16 @@ passport.use(new LocalStrategy({ usernameField: 'mobile' },
         });
     }
 ));
+
+passport.use(new wechatStrategy({
+    appid: 'wx33d7e57b1d15b1d3',
+    appsecret: '87fb0f8440e3f1d071d383abc3a6507a',
+    callbackURL: '/auth/wechat/callback',
+    scope: 'snsapi_base',
+    state: true
+}, function (openid, profile, token, done) {
+    return done(null, openid, profile);
+}));
 
 passport.serializeUser(function(user, done) {
     if (user) {
