@@ -249,11 +249,13 @@
 
     angular.module('mainApp').controller('MainApplyConfirmController', ['$http', '$location', '$window', 'days', 'util', function($http, $location, $window, days, util) {
         var vm = this;
+        vm.freeDays = 1;
         vm.autoPostpone = true;
         vm.apply = {};
         if (!!$window.bootstrappedApplyObject) {
             angular.extend(vm.apply, $window.bootstrappedApplyObject);
         }
+        vm.rebate = vm.freeDays * vm.apply.serviceCharge * vm.apply.amount / 10000;
 
         vm.validDays = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 
@@ -264,7 +266,7 @@
                 discount = 1;
             }
             vm.serviceFee = vm.apply.amount / 10000 * util.getServiceCharge(vm.apply.lever) * vm.apply.period * discount;
-            vm.totalAmount = vm.apply.deposit + vm.serviceFee;
+            vm.totalAmount = vm.apply.deposit + vm.serviceFee - vm.rebate;
             vm.shouldPay = vm.totalAmount - vm.apply.userBalance;
             if (vm.shouldPay <= 0) {
                 vm.shouldPay = 0;

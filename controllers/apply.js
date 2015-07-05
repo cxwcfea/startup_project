@@ -790,6 +790,12 @@ exports.postConfirmApply = function(req, res, next) {
         logger.warn('postConfirmApply error:apply is not belongs to the user');
         return res.send({reason:'apply is not belongs to the user'});
     }
+    applyData.period = Number(applyData.period);
+    if (applyData.period <= 0 || applyData.period > 22) {
+        res.status(403);
+        logger.warn('postConfirmApply error:apply period not valid');
+        return res.send({reason:'apply period not valid'});
+    }
     if (!req.user.identity.id) {
         res.status(403);
         logger.warn('postConfirmApply error:user must verify identity before apply:' + req.user.mobile);
@@ -805,29 +811,43 @@ exports.postConfirmApply = function(req, res, next) {
             logger.warn('postConfirmApply error:the same user have too much active apply');
             return res.send({error_code:2, reason:'the same user have too much active apply'});
         } else {
-            var orderData = {
-                userID: applyData.userID,
-                userMobile: applyData.userMobile,
-                dealType: applyData.shouldPay ? 1 : 9,
-                amount: applyData.shouldPay ? Number(applyData.totalAmount.toFixed(2)) : Number(applyData.deposit.toFixed(2)),
-                status: 2,
-                description: '股票配资',
-                applySerialID: applyData.serialID
-            };
-            Order.create(orderData, function(err, order) {
+            Apply.findById(applyData._id, function(err, apply) {
                 if (err) {
                     res.status(503);
                     logger.warn('postConfirmApply error:' + err.toString());
-                    return res.send({reason:err.toString()});
+                    return res.send({error_msg:'postConfirmApply error:' + err.toString()});
                 }
-                Apply.findById(applyData._id, function(err, apply) {
+                var freeDays = 1;
+                var rebate = freeDays * apply.serviceCharge * apply.amount / 10000;
+                if (apply.type === 2) {
+                    rebate = 0;
+                }
+
+                var applyServiceFee = util.getServiceFee(apply, applyData.period);
+                var applyTotalAmount = apply.deposit + applyServiceFee - rebate;
+                var applyShouldPay = applyTotalAmount - req.user.finance.balance;
+
+                if (freeDays > 0) {
+                    apply.discount = 1 - rebate / applyServiceFee;
+                }
+
+                var orderData = {
+                    userID: apply.userID,
+                    userMobile: apply.userMobile,
+                    dealType: applyShouldPay ? 1 : 9,
+                    amount: applyShouldPay ? Number(applyTotalAmount.toFixed(2)) : Number(apply.deposit.toFixed(2)),
+                    status: 2,
+                    description: '股票配资',
+                    applySerialID: apply.serialID
+                };
+                Order.create(orderData, function(err, order) {
                     if (err) {
                         res.status(503);
                         logger.warn('postConfirmApply error:' + err.toString());
-                        return res.send({error_msg:'postConfirmApply error:' + err.toString()});
+                        return res.send({reason:err.toString()});
                     }
                     apply.orderID = order._id;
-                    apply.period = Number(applyData.period);
+                    apply.period = applyData.period;
                     var startDay = util.getStartDay();
                     apply.startTime = startDay.toDate();
                     apply.endTime = util.getEndDay(startDay, apply.period, apply.type).toDate();
