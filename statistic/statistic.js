@@ -1025,6 +1025,26 @@ function moveHomsToTonghuashun(callback) {
     });
 }
 
+function getApplyUserData(callback) {
+    User.find({$and:[{registered:true}, {$or:[{'finance.history_capital':{$gt:0}}]}]}, function (err, users) {
+        if (err) {
+            return callback(err.toString());
+        }
+        var options = { encoding: 'utf8', flag: 'w' };
+        var fileWriteStream = fs.createWriteStream("applyUserData.csv",  options);
+        fileWriteStream.on("close", function() {
+            console.log("File Closed.");
+        });
+        var csvData = '手机号,免费配资,配资额,客服电话,客服姓名,注册日期\r\n';
+        fileWriteStream.write(csvData);
+        users.forEach(function (obj) {
+            csvData = obj.mobile + ',' + (obj.freeApply ? '是' : '否') + ',' + obj.finance.history_capital + ',' + obj.manager + ',' + moment(obj.registerAt).format('YYYYMMDDHHmmss') + '\r\n';
+            fileWriteStream.write(csvData);
+        });
+        callback(null);
+    });
+}
+
 var options = {};
 mongoose.connect(config.db, options);
 var db = mongoose.connection;
@@ -1244,10 +1264,15 @@ db.once('open', function callback() {
                 getProfitGiveOrder(function(err) {
                     callback(err);
                 });
+            },
+            function(callback) {
+                moveHomsToTonghuashun(function(err) {
+                    callback(err);
+                });
             }
              */
             function(callback) {
-                moveHomsToTonghuashun(function(err) {
+                getApplyUserData(function(err) {
                     callback(err);
                 });
             }
