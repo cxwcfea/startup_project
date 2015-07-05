@@ -290,7 +290,7 @@
                         };
                         $http.post('/api/users/pay_by_balance', dataObj)
                             .success(function(res) {
-                                $window.location.assign('/apply/pay_success?serial_id=' + data.apply.serialID + '&amount=' + data.apply.amount);
+                                $window.location.assign('/apply/pay_success?serial_id=' + data.apply.serialID + '&amount=' + data.apply.amount + '&type=' + 1);
                             })
                             .error(function(res, status) {
                                 console.log('error:' + res.error_msg);

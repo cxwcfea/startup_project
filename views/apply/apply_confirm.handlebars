@@ -37,7 +37,7 @@
             <div class="fl">
                 <span class="span01">\{{vm.serviceFee | currency:'':2}}</span> 元&nbsp;&nbsp;&nbsp;&nbsp;
                 <select ng-model="vm.apply.period" ng-change="vm.selectDay()">
-                    <option ng-repeat="day in vm.validDays" ng-selected="day == 10" value="\{{day}}">\{{day}}</option>
+                    <option ng-repeat="day in vm.validDays" ng-selected="day == 15" value="\{{day}}">\{{day}}</option>
                 </select>
                 天&nbsp;&nbsp;
             </div>
@@ -50,7 +50,7 @@
         </div>
         <div class="applyContent fl">
             <div class="fl">
-                <span class="span01" style="color: green">\{{vm.rebate | currency:'':2}}</span> 元&nbsp;&nbsp;&nbsp;&nbsp;
+                - <span class="span01" style="color: green">\{{vm.rebate | currency:'':2}}</span> 元&nbsp;&nbsp;&nbsp;&nbsp;
                 <strong class="text-danger">\{{vm.freeDays}}</strong>天&nbsp;&nbsp;
             </div>
             <!--

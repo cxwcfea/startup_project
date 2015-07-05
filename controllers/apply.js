@@ -681,7 +681,7 @@ exports.placeApply = function(req, res, next) {
         serviceCharge: util.getServiceCharge(lever),
         discount: 1,
         accountType: 2,
-        period: 10
+        period: 15
     });
 
     if (req.body.type) {
