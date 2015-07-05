@@ -1035,7 +1035,7 @@ function getApplyUserData(callback) {
         fileWriteStream.on("close", function() {
             console.log("File Closed.");
         });
-        var csvData = '手机号,免费配资,配资额,客服电话,客服姓名,注册日期\r\n';
+        var csvData = '手机号,免费配资,配资额,客服电话,注册日期\r\n';
         fileWriteStream.write(csvData);
         users.forEach(function (obj) {
             csvData = obj.mobile + ',' + (obj.freeApply ? '是' : '否') + ',' + obj.finance.history_capital + ',' + obj.manager + ',' + moment(obj.registerAt).format('YYYYMMDDHHmmss') + '\r\n';
