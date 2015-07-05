@@ -817,19 +817,14 @@ exports.postConfirmApply = function(req, res, next) {
                     logger.warn('postConfirmApply error:' + err.toString());
                     return res.send({error_msg:'postConfirmApply error:' + err.toString()});
                 }
-                var freeDays = 1;
-                var rebate = freeDays * apply.serviceCharge * apply.amount / 10000;
-                if (apply.type === 2) {
-                    rebate = 0;
+                if (apply.type !== 2) {
+                    var freeDays = 1;
+                    apply.freeDays = freeDays;
                 }
 
                 var applyServiceFee = util.getServiceFee(apply, applyData.period);
-                var applyTotalAmount = apply.deposit + applyServiceFee - rebate;
+                var applyTotalAmount = apply.deposit + applyServiceFee;
                 var applyShouldPay = applyTotalAmount - req.user.finance.balance;
-
-                if (freeDays > 0) {
-                    apply.discount = 1 - rebate / applyServiceFee;
-                }
 
                 var orderData = {
                     userID: apply.userID,

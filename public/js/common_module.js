@@ -456,6 +456,11 @@
             if (!period) {
                 period = apply.period;
             }
+            var freeDays = (apply.freeDays > 0) ? apply.freeDays : 0;
+            period -= freeDays;
+            if (period < 0) {
+                period = 0;
+            }
             return Number((apply.amount / 10000 * (apply.serviceCharge ? apply.serviceCharge : this.getServiceCharge(apply.lever)) * period * discount).toFixed(2));
         };
         this.getWarnValue = function(amount, deposit) {
