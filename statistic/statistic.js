@@ -1045,6 +1045,42 @@ function getApplyUserData(callback) {
     });
 }
 
+var sales = [
+    '13520978346',
+    '13488867185',
+    '17709810065',
+    '18511565878',
+    '15101183931',
+    '18931040286'
+];
+
+function checkManager(user, callback) {
+    if (user.manager == '15710035052' || user.manager == '18911347741') {
+        var index = util.getRandomInt(0, 5);
+        console.log('user ' + user.mobile + ' manager change from ' + user.manager + ' to ' + sales[index]);
+        user.manager = sales[index];
+        user.save(function(err) {
+            callback(err);
+        });
+    } else {
+        callback(null);
+    }
+}
+
+function changeManager(callback) {
+    User.find({registered:true}, function(err, users) {
+        if (err) {
+            callback(err);
+        }
+        async.map(users, checkManager, function(err, result) {
+            if (err) {
+                console.log('changeManager err:' + err.toString());
+            }
+            callback(null);
+        });
+    });
+}
+
 var options = {};
 mongoose.connect(config.db, options);
 var db = mongoose.connection;
@@ -1272,7 +1308,7 @@ db.once('open', function callback() {
             }
              */
             function(callback) {
-                getApplyUserData(function(err) {
+                changeManager(function(err) {
                     callback(err);
                 });
             }
