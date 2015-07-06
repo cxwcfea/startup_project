@@ -1,3 +1,28 @@
+<style>
+    .index-box .opt-box .profit {
+        margin-bottom: 2em;
+    }
+    .index-box .opt-box .profit p {
+        text-align: center;
+        font-size: 2em;
+    }
+    .index-box .opt-box .profit p>em {
+        color: red;
+        font-weight: bold;
+        font-size: 1.5em;
+    }
+    .index-box .opt-box .info-box {
+        font-size: 3em;
+        text-align: center;
+    }
+    .index-box .money-status span {
+        font-size: 2em;
+    }
+
+    .xx-dialog .modal-dialog {
+        top: 50%;
+    }
+</style>
 <!--#S header-->
 <header id="header">
     <div class="header-box">
@@ -9,12 +34,19 @@
 
 <div class="index-box">
     <div class="chart-box">
-        <h5>今日股指走势图</h5>
+        <h5>今日股指走势图 <span class="pull-right">虚拟盘</span></h5>
         <div class="chart">
             <canvas id="J_chart" width="300" height="160"></canvas>
         </div>
+        <div class="container">
+            <div class="row">
+                <span class="col-xs-6">卖价 <em class="text-success">4138.90</em> 2手</span>
+                <span class="col-xs-6">买价 <em class="text-danger">4136.50</em> 21手</span>
+            </div>
+        </div>
     </div>
     <div class="opt-box">
+        <!--
         <ul class="times">
             <li>
                 <h5>买涨</h5>
@@ -25,21 +57,31 @@
                 <em>7</em><span>手</span>
             </li>
         </ul>
+        -->
+        <div class="profit">
+            <p>收益 <em>6,778,374.00</em> 元</p>
+        </div>
         <div class="opt-btns">
             <div class="btns three" id="J_btns">
-                <button class="circle-btn p">全平</button>
+                <button class="circle-btn p">平</button>
                 <button class="circle-btn z">涨</button>
                 <button class="circle-btn pz">平涨</button>
                 <button class="circle-btn d">跌</button>
                 <button class="circle-btn pd">平跌</button>
             </div>
+            <!--
             <div class="switch-btns" id="J_switchBtn">
                 <span class="cur"><em>3</em>键</span>
                 <span><em>5</em>键</span>
             </div>
+            -->
+        </div>
+        <div class="info-box">
+            买涨1手
         </div>
     </div>
-    <div class="money-status">
+    <div class="money-status container">
+        <!--
         <ul class="money">
             <li>
                 <h5>余额</h5>
@@ -51,5 +93,10 @@
             </li>
         </ul>
         <a href="#" class="ui-btn disabled">充值</a>
+        -->
+        <div class="row">
+            <span class="col-xs-8">保证金:6000.00元</span>
+            <button class="col-xs-4 btn btn-danger">收益换红包 >></button>
+        </div>
     </div>
 </div>
