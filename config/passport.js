@@ -7,6 +7,15 @@ var mongoose = require("mongoose"),
     config = require('../config/config')[env],
     User = mongoose.model('User');
 
+function generateRandomMobile(len) {
+    var ret = util.getRandomInt(1, 9);
+    for (var i = 1; i < len; ++i) {
+        ret *= 10;
+        ret += util.getRandomInt(0, 9);
+    }
+    return ret;
+}
+
 passport.use(new LocalStrategy({ usernameField: 'mobile' },
     function(mobile, password, done) {
         User.findOne({ mobile: mobile }, function(err, user) {
@@ -31,19 +40,27 @@ passport.use(new wechatStrategy({
     state: true
 }, function (openid, profile, token, done) {
     console.log('wechat openid:' + openid + ' profile:' + util.printObject(profile) + ' token:' + util.printObject(token));
-    var userObj = {
-        mobile: 11111111111,
-        password: 'xxxxxx',
-        profile: {
-            weixin_id: openid,
-            wechat_uuid: profile.unionid
-        }
-    };
-    User.create(userObj, function(err, user) {
+    User.findOne({'profile.wechat_uuid':profile.unionid}, function(err, user) {
         if (err) {
             done(err);
+        } else if (!user) {
+            var userObj = {
+                mobile: generateRandomMobile(10),
+                password: 'xxxxxx',
+                profile: {
+                    weixin_id: openid,
+                    wechat_uuid: profile.unionid
+                }
+            };
+            User.create(userObj, function(err, user) {
+                if (err) {
+                    done(err);
+                } else {
+                    done(null, user, profile);
+                }
+            });
         } else {
-            return done(null, user, profile);
+            done(null, user, profile);
         }
     });
 }));
