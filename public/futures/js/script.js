@@ -72,26 +72,28 @@ $(function () {
     //$('input[type="range"]').range();
 
     // chart
-    if (document.getElementById("J_chart")) {
-        var ctx = document.getElementById("J_chart").getContext("2d");
-        var data = {
-            labels: ["06/26", "06/29", "06/30", "07/01", "07/02", "07/03"],
-            datasets: [
-                {
-                    label: "",
-                    fillColor: "rgba(151,187,205,0.2)",
-                    strokeColor: "rgba(151,187,205,1)",
-                    pointColor: "rgba(151,187,205,1)",
-                    pointStrokeColor: "#fff",
-                    pointHighlightFill: "#fff",
-                    pointHighlightStroke: "rgba(151,187,205,1)",
-                    data: [4188.57, 4040.48, 4053.70, 4182.93, 4023.93, 3872.15]
-                }
-            ]
-        };
-        new Chart(ctx).Line(data, {
-            responsive: true
-        });
-    }
+    window.njDrawChart = function() {
+        if (document.getElementById("J_chart")) {
+            var ctx = document.getElementById("J_chart").getContext("2d");
+            var data = {
+                labels: ["06/26", "06/29", "06/30", "07/01", "07/02", "07/03"],
+                datasets: [
+                    {
+                        label: "",
+                        fillColor: "rgba(151,187,205,0.2)",
+                        strokeColor: "rgba(151,187,205,1)",
+                        pointColor: "rgba(151,187,205,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(151,187,205,1)",
+                        data: [4188.57, 4040.48, 4053.70, 4182.93, 4023.93, 3872.15]
+                    }
+                ]
+            };
+            new Chart(ctx).Line(data, {
+                responsive: true
+            });
+        }
+    };
 
 });
