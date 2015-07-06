@@ -42,8 +42,10 @@ passport.use(new wechatStrategy({
     console.log('wechat openid:' + openid + ' profile:' + util.printObject(profile) + ' token:' + util.printObject(token));
     User.findOne({'profile.wechat_uuid':profile.unionid}, function(err, user) {
         if (err) {
+            console.log('wechat login find user err:' + err.toString());
             done(err);
         } else if (!user) {
+            console.log('wechat login not found user with unionid:' + profile.unionid);
             var userObj = {
                 mobile: generateRandomMobile(10),
                 password: 'xxxxxx',
@@ -60,6 +62,7 @@ passport.use(new wechatStrategy({
                 }
             });
         } else {
+            console.log('wechat login found user with unionid:' + profile.unionid);
             done(null, user, profile);
         }
     });
