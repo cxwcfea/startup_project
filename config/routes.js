@@ -4,6 +4,7 @@ var users = require('../controllers/user'),
     applies = require('../controllers/apply'),
     home = require('../controllers/home'),
     mobile = require('../controllers/mobile'),
+    futures = require('../controllers/futures'),
     sms = require('../lib/sms'),
     admin = require('../controllers/admin'),
     util = require('../lib/util'),
@@ -256,6 +257,8 @@ module.exports = function(app) {
     app.get('/auth/wechat/callback', weixin.logInfo, weixin.login);
     app.get('/auth/wechat/err', weixin.authFail);
     app.get('/auth/wechat/success', weixin.authSuccess);
+
+    futures.registerRoutes(app, passportConf);
 
     /*
     app.get('/admin_test', passportConf.requiresRole('admin'), function(req, res, next) {

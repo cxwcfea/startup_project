@@ -1,0 +1,294 @@
+/**
+ * pages.css
+ * 页面模块样式文件
+ */
+
+/* =首页 index.html
+-------------------------------------------------------------- */
+.index-box {
+    padding: 10px;
+    background: #f2f2f2;
+}
+
+.chart-box {
+    padding: 10px 8px 0;
+    background: #fff;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.chart-box h5 {
+    font-size: 10px;
+}
+.opt-box {
+    margin: 0 0 10px;
+    padding: 10px 18px;
+    background: #fff;
+    border-radius: 4px;
+}
+.opt-box .times {
+    margin-bottom: 10px;
+    overflow: hidden;
+    *zoom: 1;
+}
+.opt-box .times em {
+    font-size: 28px;
+    padding: 0 4px 0 0;
+    display: inline-block;
+    width: 60%;
+    text-align: center;
+    color: #fc4349;
+}
+.opt-box .times li {
+    float: left;
+    width: 50%;
+    line-height: 32px;
+}
+.opt-box .times li:last-child{
+    width: 45%;
+    padding-left: 5%;
+}
+.opt-box .times li:last-child em {
+    color: #35cc63;
+}
+.opt-box .times h5 {
+    float: left;
+    width: 16px;
+    margin-right:10px;
+    font-size: 15px;
+    line-height: 16px;
+    font-weight: 100;
+}
+.opt-box .times span {
+    font-size: 15px;
+    color:#6a7475;
+}
+.opt-btns .btns {
+    position: relative;
+
+}
+.opt-btns .btns.five {
+    height: 180px;
+}
+.opt-btns .btns.three {
+    height: 120px;
+}
+.opt-btns .circle-btn {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    border: 5px solid #dce5e0;
+    border-radius: 50% 50%;
+    font-size: 20px;
+    color: #fff;
+}
+.opt-btns .btns.three .p {
+    top: 10px;
+    left: 50%;
+    margin: 0 0 0 -35px;
+}
+.opt-btns .btns.three .d {
+    top: 10px;
+    right: 0;
+}
+.opt-btns .btns.three .z {
+    top: 10px;
+    left: 0;
+}
+.opt-btns .btns.three .pd,
+.opt-btns .btns.three .pz {
+    display: none;
+}
+.opt-btns .btns.five .p{
+    top: 50%;
+    left: 50%;
+    margin: -35px 0 0 -35px;
+}
+.opt-btns .btns.five .pd{
+    right: 0;
+    bottom: 0;
+}
+.opt-btns .btns.five .d{
+    right: 0;
+    top: 0;
+}
+.opt-btns .btns.five .pz{
+    left: 0;
+    bottom: 0;
+}
+.opt-btns .btns.five .z{
+    left: 0;
+    top: 0;
+}
+.opt-btns .circle-btn.p{
+    background: #fa9d01;
+}
+.opt-btns .circle-btn.d{
+    background: #34cc67;
+    font-size: 28px;
+}
+.opt-btns .circle-btn.pd{
+    background: #34cc67;
+}
+.opt-btns .circle-btn.z{
+    background: #ff414b;
+    font-size: 28px;
+}
+.opt-btns .circle-btn.pz{
+    background: #ff414b;
+}
+.opt-btns .switch-btns {
+    position: relative;
+    margin-top: -30px;
+    text-align: center;
+    font-size: 13px;
+    color: #c5c6c8;
+}
+.opt-btns .switch-btns span {
+    padding: 0 10px;
+    cursor: pointer;
+}
+.opt-btns .switch-btns em {
+    font-size: 20px;
+}
+.opt-btns .switch-btns .cur {
+    color:#242c2d;
+}
+
+/* money-status */
+.money-status {
+    padding: 10px 18px;
+    background: #fff;
+    border-radius: 4px;
+}
+.money-status .money {
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+.money-status .money em {
+    font-size: 20px;
+    padding: 0 4px 0 0;
+}
+.money-status .money li {
+    float: left;
+    width: 50%;
+    line-height: 32px;
+}
+.money-status .money li:last-child{
+    width: 45%;
+    padding-left: 5%;
+}
+.money-status .money li:last-child em {
+    color: #ff414b;
+}
+.money-status .money h5 {
+    float: left;
+    width: 13px;
+    margin-right:10px;
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 100;
+}
+.money-status .money span {
+    color:#6a7475;
+}
+.money-status .disabled {
+    background: #d6dadb;
+    color:#373f48;
+}
+
+/* =交易记录 trading_records.html
+-------------------------------------------------------------- */
+.records-table {
+    width: 100%;
+    background: #fff;
+}
+.records-table thead {
+    color: #fff;
+    background: #6dbcdb;
+}
+.records-table td {
+    padding: 16px 10px;
+}
+.records-table th {
+    padding: 5px 10px;
+}
+.records-table p {
+    font-size: 10px;
+    color: #9d9d98;
+}
+.records-table strong {
+    color: #2d3e50;
+    font-size: 16px;
+    font-weight: 100;
+}
+.records-table tbody tr {
+    border-bottom: 1px solid #d9d9d9;
+}
+
+/* =充值 recharge.html
+-------------------------------------------------------------- */
+.recharge-from {
+    padding: 20px 10px 0;
+}
+.recharge-range {
+    margin: 20px 10px 0;
+    padding: 8px 10px;
+    background: #fff;
+    border-radius: 4px;
+}
+.recharge-range .title {
+    margin-bottom: 10px;
+}
+.recharge-range .title h5 {
+    font-size: 15px;
+}
+.recharge-range .title span {
+    float: right;
+    color: #d6dadb;
+}
+.recharge-from .form-row {
+    margin-bottom: 10px;
+    border: 1px solid #c3c3c3;
+    border-radius: 4px;
+    padding: 8px 10px;
+    font-size: 14px;
+    line-height: 16px;
+    background: #fff;
+}
+.recharge-from .form-row label {
+    padding: 0 10px;
+    margin-right: 10px;
+    border-right: 1px solid #d2d2d2;
+}
+.recharge-from .form-row input {
+    font-size: 18px;
+    color: #ff3f4b;
+    height: 16px;
+    line-height: 16px;
+    border: none;
+}
+.recharge-from .form-row .icon-q {
+    float: right;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background: url(../images/q.png) no-repeat;
+    background-size: 18px 18px;
+}
+.recharge-from .form-row .w20 {
+    width: 20px;
+}
+.recharge-from .form-row .w80 {
+    width: 80px;
+}
+.recharge-from .form-row .w50 {
+    width: 50px;
+}
+.recharge-from .form-row span {
+    color:#d2d2d2;
+}
+.recharge-from .agreement {
+    font-size: 10px;
+    padding: 4px 0;
+}
