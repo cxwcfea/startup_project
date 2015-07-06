@@ -818,7 +818,7 @@ exports.postConfirmApply = function(req, res, next) {
                     return res.send({error_msg:'postConfirmApply error:' + err.toString()});
                 }
                 if (apply.type !== 2) {
-                    var freeDays = 1;
+                    var freeDays = 0;
                     apply.freeDays = freeDays;
                 }
 
