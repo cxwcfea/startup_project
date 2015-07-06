@@ -31,7 +31,6 @@ passport.use(new wechatStrategy({
     state: true
 }, function (openid, profile, token, done) {
     console.log('wechat openid:' + openid + ' profile:' + util.printObject(profile) + ' token:' + util.printObject(token));
-
     var userObj = {
         mobile: 11111111111,
         password: 'xxxxxx',
@@ -44,10 +43,9 @@ passport.use(new wechatStrategy({
         if (err) {
             done(err);
         } else {
-            return done(null, openid, profile);
+            return done(null, user, profile);
         }
     });
-
 }));
 
 passport.serializeUser(function(user, done) {
