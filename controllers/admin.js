@@ -1664,7 +1664,7 @@ function autoPostponeApply(req, res) {
                 return callback('can not postpone due to accountType');
             }
             */
-            var amount = util.getServiceFee(apply, period);
+            var amount = util.getServiceFee(apply, period, true);
             var orderData = {
                 userID: apply.userID,
                 userMobile: apply.userMobile,

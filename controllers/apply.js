@@ -185,7 +185,7 @@ exports.postApplyPostpone = function(req, res, next) {
             }
         },
         function(apply, callback) {
-            var amount = util.getServiceFee(apply, period);
+            var amount = util.getServiceFee(apply, period, true);
             var orderData = {
                 userID: apply.userID,
                 userMobile: apply.userMobile,
@@ -554,6 +554,7 @@ exports.freeApply = function(req, res, next) {
                                     deposit: 100,
                                     isTrial: true,
                                     status: 4,
+                                    accountType: 2,
                                     period: 2
                                 });
                                 Apply.create(applyData, function(err, apply) {

@@ -445,7 +445,7 @@
                     return 19.9;
             }
         };
-        this.getServiceFee = function(apply, period) {
+        this.getServiceFee = function(apply, period, notCountFreeDays) {
             var discount = apply.discount ? apply.discount : 1;
             if (discount <= 0 || discount > 1) {
                 discount = 1;
@@ -456,10 +456,13 @@
             if (!period) {
                 period = apply.period;
             }
-            var freeDays = (apply.freeDays > 0) ? apply.freeDays : 0;
-            period -= freeDays;
-            if (period < 0) {
-                period = 0;
+            var freeDays = 0;
+            if (!notCountFreeDays) {
+                freeDays = (apply.freeDays > 0) ? apply.freeDays : 0;
+                period -= freeDays;
+                if (period < 0) {
+                    period = 0;
+                }
             }
             return Number((apply.amount / 10000 * (apply.serviceCharge ? apply.serviceCharge : this.getServiceCharge(apply.lever)) * period * discount).toFixed(2));
         };
