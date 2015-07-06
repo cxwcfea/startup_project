@@ -255,7 +255,12 @@ module.exports = function(app) {
     app.get('/auth/wechat', weixin.logInfo, passport.authenticate('wechat'));
     app.get('/auth/wechat/callback', weixin.logInfo, passport.authenticate('wechat', {
         failureRedirect: '/auth/wechat/err',
-        successRedirect: '/auth/wechat/success'}));
+        successRedirect: '/auth/wechat/success'}, function(err, user, other) {
+        console.log('in callback');
+        console.log(err);
+        console.log(user);
+        console.log(other);
+    }));
     app.get('/auth/wechat/err', weixin.authFail);
     app.get('/auth/wechat/success', weixin.authSuccess);
 

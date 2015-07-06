@@ -41,10 +41,13 @@ passport.use(new wechatStrategy({
         }
     };
     User.create(userObj, function(err, user) {
-        //if ()
+        if (err) {
+            done(err);
+        } else {
+            return done(null, openid, profile);
+        }
     });
 
-    return done(null, openid, profile);
 }));
 
 passport.serializeUser(function(user, done) {
