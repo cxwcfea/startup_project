@@ -15,7 +15,7 @@ var User = require('../models/User'),
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/futures', function(req, res, next) {
-            res.render('futures/index', {layout:null});
+            res.render('futures/index', {layout:'futures'});
         });
 
         app.get('/futures/*', function(req, res, next) {
