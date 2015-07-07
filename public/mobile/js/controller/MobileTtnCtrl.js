@@ -28,11 +28,11 @@ angular.module('mobileApp').controller('MobileTtnCtrl', ['$scope', '$window', '$
             name: '6倍',
             value: 6
         },
-         */
         {
             name: '5倍',
             value: 5
         },
+         */
         {
             name: '4倍',
             value: 4
@@ -49,7 +49,7 @@ angular.module('mobileApp').controller('MobileTtnCtrl', ['$scope', '$window', '$
     vm.agree = true;
     vm.showOtherAmount = false;
     vm.otherAmount;
-    vm.selectedLever = vm.leverList[3];
+    vm.selectedLever = vm.leverList[0];
     vm.discount = 1;
 
     vm.summary = {

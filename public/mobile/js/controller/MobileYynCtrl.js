@@ -25,14 +25,14 @@ angular.module('mobileApp').controller('MobileYynCtrl', ['$scope', '$window', '$
             interest: 1.9,
             value: 4,
             i_value: 0.019
-        },
+        }
+        /*
         {
             name: '5倍',
             interest: 2.0,
             value: 5,
             i_value: 0.020
         }
-        /*
         {
             name: '6倍',
             interest: 1.8,

@@ -41,11 +41,11 @@
                 name: '6倍',
                 value: 6
             },
-             */
             {
                 name: '5倍',
                 value: 5
             },
+             */
             {
                 name: '4倍',
                 value: 4
@@ -63,7 +63,7 @@
         vm.showOtherAmount = false;
         vm.otherAmount;
         vm.showLoginWindow = false;
-        vm.selectedLever = vm.leverList[3];
+        vm.selectedLever = vm.leverList[0];
         vm.discount = 1;
 
         vm.summary = {
@@ -345,14 +345,14 @@
                 interest: 1.9,
                 value: 4,
                 i_value: 0.019
-            },
+            }
+            /*
             {
                 name: '5倍',
                 interest: 2.0,
                 value: 5,
                 i_value: 0.020
             }
-            /*
             {
                 name: '6倍',
                 interest: 1.8,
