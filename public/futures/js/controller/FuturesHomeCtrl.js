@@ -2,49 +2,92 @@
 angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window', '$modal', function($scope, $window, $modal) {
     $window.njDrawChart();
 
-    $scope.items = ['item1', 'item2', 'item3'];
-
-    $scope.animationsEnabled = true;
-
-    $scope.open = function (size) {
-
+    $scope.showShareHint = false;
+    $scope.openIntroPopup = function (size) {
         var modalInstance = $modal.open({
-            animation: $scope.animationsEnabled,
+            animation: true,
             backdrop: 'static',
             windowClass: 'xx-dialog',
             templateUrl: 'views/intro_popup.html',
             controller: 'IntroModalCtrl',
             size: size,
-            resolve: {
-                items: function () {
-                    return $scope.items;
-                }
-            }
+            resolve: {}
         });
 
-        modalInstance.result.then(function (selectedItem) {
-            $scope.selected = selectedItem;
+        modalInstance.result.then(function () {
+            console.log('Modal dismissed at: ' + new Date());
         }, function () {
             console.log('Modal dismissed at: ' + new Date());
         });
     };
 
-    $scope.toggleAnimation = function () {
-        $scope.animationsEnabled = !$scope.animationsEnabled;
+    $scope.openGainPopup = function (size) {
+        var modalInstance = $modal.open({
+            animation: true,
+            backdrop: 'static',
+            windowClass: 'xx-dialog',
+            templateUrl: 'views/gain_popup.html',
+            controller: 'GainModalCtrl',
+            size: size,
+            resolve: {}
+        });
+
+        modalInstance.result.then(function () {
+            $scope.showShareHint = true;
+        }, function () {
+            console.log('Modal dismissed at: ' + new Date());
+        });
     };
 
-    $scope.open('sm');
+    $scope.openRiskPopup = function (size) {
+        var modalInstance = $modal.open({
+            animation: true,
+            backdrop: 'static',
+            windowClass: 'xx-dialog',
+            templateUrl: 'views/risk_popup.html',
+            controller: 'RiskModalCtrl',
+            size: size,
+            resolve: {}
+        });
+
+        modalInstance.result.then(function () {
+            console.log('Modal dismissed at: ' + new Date());
+        }, function () {
+            console.log('Modal dismissed at: ' + new Date());
+        });
+    };
+
+    $scope.openIntroPopup('sm');
+
+    $scope.btnClick = function() {
+        $scope.openGainPopup('sm');
+    };
 
 }]);
 
-angular.module('futuresApp').controller('IntroModalCtrl', function ($scope, $modalInstance, items) {
-    $scope.items = items;
-    $scope.selected = {
-        item: $scope.items[0]
+angular.module('futuresApp').controller('IntroModalCtrl', function ($scope, $modalInstance) {
+    $scope.ok = function () {
+        $modalInstance.close();
     };
 
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+angular.module('futuresApp').controller('GainModalCtrl', function ($scope, $modalInstance) {
     $scope.ok = function () {
-        $modalInstance.close($scope.selected.item);
+        $modalInstance.close();
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+angular.module('futuresApp').controller('RiskModalCtrl', function ($scope, $modalInstance) {
+    $scope.ok = function () {
+        $modalInstance.close();
     };
 
     $scope.cancel = function () {

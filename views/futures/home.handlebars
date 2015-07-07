@@ -25,13 +25,27 @@
     .opt-box .opt-btns .circle-btn-disable {
         background: #b5b5b5;
     }
+    .share-mask {
+        position: absolute;
+        z-index: 10000;
+        opacity: 0.8;
+        top: 0px;
+    }
+    .share-mask img {
+        width: 100%;
+    }
+    .header-box h1 {
+        text-align: center;
+    }
 </style>
 <!--#S header-->
 <header id="header">
     <div class="header-box">
-        <h1><span>拍拍机</span></h1>
+        <h1>拍拍机</h1>
+        <!--
         <a class="back" href="index.html"></a>
-        <a class="f-pr" href="trading_records.html">交易记录</a>
+        -->
+        <a class="f-pr" href="/futures/#/orders">交易记录</a>
     </div>
 </header><!--#E header-->
 
@@ -66,7 +80,7 @@
         </div>
         <div class="opt-btns">
             <div class="btns three" id="J_btns">
-                <button class="circle-btn p">平</button>
+                <button class="circle-btn p" ng-click="btnClick()">平</button>
                 <button class="circle-btn z">涨</button>
                 <!--
                 <button class="circle-btn pz">平涨</button>
@@ -105,5 +119,10 @@
             <span class="col-xs-8">保证金:6000.00元</span>
             <button class="col-xs-4 btn btn-danger">收益换红包 >></button>
         </div>
+    </div>
+</div>
+<div class="share-mask container" ng-show="showShareHint">
+    <div class="row">
+        <img src="/futures/images/share.png" alt="" ng-click="showShareHint = false" />
     </div>
 </div>

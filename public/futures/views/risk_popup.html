@@ -1,0 +1,33 @@
+<style>
+    .modal-header {
+        background-color: #4b90f7;
+        color: white;
+    }
+    .modal-header .modal-title {
+        font-size: 1.8em;
+    }
+    .modal-footer .container .btn-primary {
+        background-color: #4b90f7;
+    }
+    .modal-footer .container button {
+        width: 100%;
+        font-size: 1.5em;
+        height: 2em;
+    }
+    .modal-body p {
+        font-size: 1.5em;
+    }
+</style>
+<div class="modal-header">
+    <h3 class="modal-title">风险提示</h3>
+</div>
+<div class="modal-body">
+    <div>
+        <p>当账户中，虚拟保证金为6000元，亏损额超过保证金90%时，系统将自动平仓卖出，交易中您应当及时止损和止盈，尽量持续交易和盈利。</p>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="container">
+        <button class="btn btn-primary" ng-click="ok()">我已经了解风控</button>
+    </div>
+</div>

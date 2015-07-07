@@ -1,0 +1,38 @@
+<style>
+    .modal-header {
+        background-color: #4b90f7;
+        color: white;
+    }
+    .modal-header .modal-title {
+        font-size: 1.2em;
+    }
+    .modal-footer .container .btn-primary {
+        background-color: #4b90f7;
+    }
+    .modal-footer .container .top-btn {
+        margin-bottom: 1em;
+    }
+    .modal-footer .container .bottom-btn {
+        margin-left: 0;
+    }
+    .modal-footer .container button {
+        width: 100%;
+    }
+    .modal-body p {
+        font-size: 2em;
+    }
+</style>
+<div class="modal-header">
+    <h3 class="modal-title">盈利小报</h3>
+</div>
+<div class="modal-body">
+    <div>
+        <p>您赚取了虚拟币128元，1000虚拟币可兑换现金1元</p>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="container">
+        <button class="btn btn-primary top-btn" ng-click="ok()">分享赚取盈利</button>
+        <button class="btn btn-primary bottom-btn" ng-click="cancel()">继续交易</button>
+    </div>
+</div>

@@ -13,6 +13,9 @@ angular.module('futuresApp').config(['$routeProvider', '$httpProvider', function
         .when('/home', { templateUrl: '/futures/home',
             controller: 'FuturesHomeCtrl'
         })
+        .when('/orders', { templateUrl: '/futures/orders',
+            controller: 'FuturesOrdersCtrl'
+        })
         .otherwise({
             redirectTo: '/home'
         });
