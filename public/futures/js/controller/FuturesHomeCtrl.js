@@ -10,6 +10,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
 
         var modalInstance = $modal.open({
             animation: $scope.animationsEnabled,
+            backdrop: 'static',
             windowClass: 'xx-dialog',
             templateUrl: 'views/intro_popup.html',
             controller: 'IntroModalCtrl',
