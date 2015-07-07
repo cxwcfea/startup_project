@@ -21,16 +21,29 @@ angular.module('futuresApp').config(['$routeProvider', '$httpProvider', function
         });
 }]);
 
-/*
-angular.module("futuresApp", [])
+angular.module("futuresApp")
     .directive("futuresChart", function () {
         return function (scope, element, attrs) {
-            var data = scope[attrs["unorderedList"]];
-            if (angular.isArray(data)) {
-                for (var i = 0; i < data.length; i++) {
-                    console.log("Item: " + data[i].name);
-                }
-            }
+            var chartLabels = scope[attrs['futuresChart']];
+            var chartData = scope[attrs['chartData']];
+            var ctx = element[0].getContext("2d");
+            var data = {
+                labels: chartLabels,
+                datasets: [
+                    {
+                        label: "",
+                        fillColor: "rgba(151,187,205,0.2)",
+                        strokeColor: "rgba(151,187,205,1)",
+                        pointColor: "rgba(151,187,205,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(151,187,205,1)",
+                        data: chartData
+                    }
+                ]
+            };
+            new Chart(ctx).Line(data, {
+                responsive: true
+            });
         }
     });
-    */
