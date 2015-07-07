@@ -57,10 +57,10 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         });
     };
 
-    $scope.openIntroPopup('sm');
+    $scope.openIntroPopup('lg');
 
     $scope.btnClick = function() {
-        $scope.openGainPopup('sm');
+        $scope.openGainPopup('lg');
     };
 
 }]);

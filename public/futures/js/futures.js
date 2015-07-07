@@ -20,3 +20,17 @@ angular.module('futuresApp').config(['$routeProvider', '$httpProvider', function
             redirectTo: '/home'
         });
 }]);
+
+/*
+angular.module("futuresApp", [])
+    .directive("futuresChart", function () {
+        return function (scope, element, attrs) {
+            var data = scope[attrs["unorderedList"]];
+            if (angular.isArray(data)) {
+                for (var i = 0; i < data.length; i++) {
+                    console.log("Item: " + data[i].name);
+                }
+            }
+        }
+    });
+    */
