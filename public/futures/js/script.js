@@ -96,4 +96,10 @@ $(function () {
         }
     };
 
+    Highcharts.setOptions({
+        global : {
+            useUTC : false
+        }
+    });
+
 });
