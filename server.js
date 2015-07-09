@@ -78,11 +78,11 @@ app.use(function(err, req, res, next){
 	res.render('server_error');
 });
 
-function startServer() {
+function startServer(master) {
     var server = http.createServer(app);
-    if (!global.io) {
-        global.io = require('socket.io')(server);
-        require('./config/socket.io')(global.io);
+    if (master) {
+        var io = require('socket.io')(server);
+        require('./config/socket.io')(io);
     }
     server.listen(app.get('port'), function(){
         logger.info('Express started on ' + app.get('port') + '; press Ctrl-C to terminate.');
@@ -91,7 +91,7 @@ function startServer() {
 
 if(require.main === module){
     // application run directly; start app server
-    startServer();
+    startServer(true);
 } else {
     // application imported as a module via "require": export function to create server
     module.exports = startServer;
