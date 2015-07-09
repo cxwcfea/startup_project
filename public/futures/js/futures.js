@@ -16,6 +16,15 @@ angular.module('futuresApp').config(['$routeProvider', '$httpProvider', function
         .when('/orders', { templateUrl: '/futures/orders',
             controller: 'FuturesOrdersCtrl'
         })
+        .when('/profit_exchange', { templateUrl: '/futures/profit_exchange',
+            controller: 'FuturesExchangeCtrl'
+        })
+        .when('/add_wechat', { templateUrl: '/futures/add_wechat',
+            controller: 'FuturesWechatCtrl'
+        })
+        .when('/user_rank', { templateUrl: '/futures/user_rank',
+            controller: 'FuturesUserRankCtrl'
+        })
         .otherwise({
             redirectTo: '/home'
         });
