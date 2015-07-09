@@ -47,77 +47,94 @@ angular.module("futuresApp")
                 responsive: true
             });
             */
-            element.highcharts('StockChart', {
-                chart : {
-                    events : {
-                        load : function () {
-                            // set up the updating of the chart each second
-                            var series = this.series[0];
-                            setInterval(function () {
-                                var x = (new Date()).getTime(), // current time
-                                    y = Math.round(Math.random() * 100);
-                                series.addPoint([x, y], true, true);
-                            }, 1000);
-                        }
-                    }
-                },
 
-                rangeSelector: {
-                    buttons: [{
-                        count: 1,
-                        type: 'minute',
-                        text: '1M'
-                    }, {
-                        count: 5,
-                        type: 'minute',
-                        text: '5M'
-                    }, {
-                        type: 'all',
-                        text: 'All'
-                    }],
-                    inputEnabled: false,
-                    selected: 0
-                },
+            var socket = io.connect();
+            socket.on('connect', function () {
+                console.log('socket connect');
+                var series;
+                // send a join event with your name
+                socket.emit('join', 'user');
+                socket.on('new_data', function(newData) {
+                    console.log('new data ' + newData);
+                    series.addPoint(newData, true, true);
+                });
+                socket.on('history_data', function(historyData) {
+                    element.highcharts('StockChart', {
+                        chart : {
+                            events : {
+                                load : function () {
+                                    // set up the updating of the chart each second
+                                    series = this.series[0];
+                                    /*
+                                    setInterval(function () {
+                                        var x = (new Date()).getTime(), // current time
+                                            y = Math.round(Math.random() * 100);
+                                        series.addPoint([x, y], true, true);
+                                    }, 1000);
+                                    */
+                                }
+                            }
+                        },
 
-                /*
-                title : {
-                    text : 'Live random data'
-                },
-                */
+                        rangeSelector: {
+                            buttons: [{
+                                count: 30,
+                                type: 'minute',
+                                text: '30M'
+                            }, {
+                                count: 60,
+                                type: 'minute',
+                                text: '60M'
+                            }],
+                            inputEnabled: false,
+                            selected: 0
+                        },
 
-                exporting: {
-                    enabled: false
-                },
-                credits: {
-                    enabled: false
-                },
-                scrollbar: {
-                    enabled: false
-                },
-                /*
-                navigator: {
-                    enabled: false
-                },
-                rangeSelector: {
-                    enabled: false
-                },
-                 */
+                        /*
+                         title : {
+                         text : 'Live random data'
+                         },
+                         */
 
-                series : [{
-                    name : 'Random data',
-                    data : (function () {
-                        // generate an array of random data
-                        var data = [], time = (new Date()).getTime(), i;
+                        exporting: {
+                            enabled: false
+                        },
+                        credits: {
+                            enabled: false
+                        },
+                        scrollbar: {
+                            enabled: false
+                        },
+                        /*
+                         rangeSelector: {
+                         enabled: false
+                         },
+                         navigator: {
+                         enabled: false
+                         },
+                         */
 
-                        for (i = -999; i <= 0; i += 1) {
-                            data.push([
-                                time + i * 1000,
-                                Math.round(Math.random() * 100)
-                            ]);
-                        }
-                        return data;
-                    }())
-                }]
+                        series : [{
+                            name : '股指',
+                            /*
+                            data : (function () {
+                                // generate an array of random data
+                                var data = [], time = (new Date()).getTime(), i;
+
+                                for (i = -999; i <= 0; i += 1) {
+                                    data.push([
+                                        time + i * 1000,
+                                        Math.round(Math.random() * 100)
+                                    ]);
+                                }
+                                return data;
+                            }())
+                            */
+                            data: historyData
+                        }]
+                    });
+                });
             });
+
         }
     });

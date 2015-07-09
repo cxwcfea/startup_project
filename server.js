@@ -1,5 +1,6 @@
 var express = require('express'),
     app = express(),
+    http = require('http'),
     env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
     log4js = require('log4js'),
     logger = log4js.getLogger(),
@@ -78,7 +79,10 @@ app.use(function(err, req, res, next){
 });
 
 function startServer() {
-    app.listen(app.get('port'), function(){
+    var server = http.createServer(app);
+    var io = require('socket.io')(server);
+    require('./config/socket.io')(io);
+    server.listen(app.get('port'), function(){
         logger.info('Express started on ' + app.get('port') + '; press Ctrl-C to terminate.');
     });
 }
