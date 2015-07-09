@@ -80,8 +80,10 @@ app.use(function(err, req, res, next){
 
 function startServer() {
     var server = http.createServer(app);
-    var io = require('socket.io')(server);
-    require('./config/socket.io')(io);
+    if (!global.io) {
+        global.io = require('socket.io')(server);
+        require('./config/socket.io')(global.io);
+    }
     server.listen(app.get('port'), function(){
         logger.info('Express started on ' + app.get('port') + '; press Ctrl-C to terminate.');
     });
