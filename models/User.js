@@ -53,8 +53,13 @@ var userSchema = new mongoose.Schema({
         picture: {type: String, default: ''},
         alipay_account: String,
         alipay_name: String,
-        weixin_id: String,
-        wechat_uuid: String
+        weixin_id: String
+    },
+
+    wechat: {
+        wechat_uuid: String,
+        wechat_name: String,
+        wechat_img: String
     },
 
     identity: {

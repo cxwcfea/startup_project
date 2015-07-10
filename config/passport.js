@@ -50,9 +50,10 @@ passport.use(new wechatStrategy({
                 mobile: generateRandomMobile(10),
                 password: 'xxxxxx',
                 roles: ['wechat'],
-                profile: {
-                    weixin_id: openid,
-                    wechat_uuid: profile.unionid
+                wechat: {
+                    wechat_uuid: String,
+                    wechat_name: String,
+                    wechat_img: String
                 }
             };
             User.create(userObj, function(err, user) {
