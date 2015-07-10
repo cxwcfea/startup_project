@@ -26,6 +26,9 @@
 
 <body ng-controller="FuturesIndexCtrl">
 
+{{#if bootstrappedUserObject}}
+    <script> window.bootstrappedUserObject = {{{bootstrappedUserObject}}} </script>
+{{/if}}
 <div ng-view></div>
 
 <!-- build:js js/script.js -->
