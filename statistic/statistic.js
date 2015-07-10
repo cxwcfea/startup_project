@@ -1308,7 +1308,7 @@ db.once('open', function callback() {
             }
              */
             function(callback) {
-                changeManager(function(err) {
+                getApplyUserData(function(err) {
                     callback(err);
                 });
             }
