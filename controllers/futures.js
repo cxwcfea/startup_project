@@ -15,7 +15,12 @@ var User = require('../models/User'),
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/futures', function(req, res, next) {
-            res.render('futures/index', {layout:null});
+            util.getUserViewModel(req.user, function(user) {
+                res.render('futures/index', {
+                    layout:null,
+                    bootstrappedUserObject: JSON.stringify(user)
+                });
+            });
         });
 
         app.get('/futures/*', function(req, res, next) {
