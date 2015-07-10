@@ -207,7 +207,7 @@
     }).filter("displayOrderAmount", function () {
         return function (input, orderType) {
             var ret = '+';
-            if (orderType === 2 || orderType === 9 || orderType === 10 || orderType === 11 || orderType === 17 || orderType === 15 || orderType === 19) {
+            if (orderType === 2 || orderType === 9 || orderType === 10 || orderType === 11 || orderType === 17 || orderType === 15 || orderType === 19 || orderType === 7) {
                 ret = '-';
             }
             return ret + input;
@@ -215,7 +215,7 @@
     }).filter("displayIncome", ['$filter', function ($filter) {
         return function (input, orderType) {
             var ret = input;
-            if (orderType == 2 || orderType == 9 || orderType == 10 || orderType === 11 || orderType === 17 || orderType == 15 || orderType == 19) {
+            if (orderType == 2 || orderType == 9 || orderType == 10 || orderType === 11 || orderType === 17 || orderType == 15 || orderType == 19 || orderType === 7) {
                 return '';
             }
             return $filter('currency')(ret, '', 2);
@@ -223,7 +223,7 @@
     }]).filter("displayOutcome", ['$filter', function ($filter) {
         return function (input, orderType) {
             var ret = '';
-            if (orderType == 2 || orderType == 9 || orderType == 10 || orderType === 11 || orderType === 17 || orderType == 15 || orderType == 19) {
+            if (orderType == 2 || orderType == 9 || orderType == 10 || orderType === 11 || orderType === 17 || orderType == 15 || orderType == 19 || orderType === 7) {
                 ret = $filter('currency')(input, '', 2);
             }
             return ret;
