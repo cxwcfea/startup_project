@@ -16,6 +16,7 @@ module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/futures', function(req, res, next) {
             util.getUserViewModel(req.user, function(user) {
+                console.log(user);
                 res.render('futures/index', {
                     layout:null,
                     bootstrappedUserObject: JSON.stringify(user)
