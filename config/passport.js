@@ -40,7 +40,7 @@ passport.use(new wechatStrategy({
     state: true
 }, function (openid, profile, token, done) {
     console.log('wechat openid:' + openid + ' profile:' + util.printObject(profile) + ' token:' + util.printObject(token));
-    User.findOne({'profile.wechat_uuid':profile.unionid}, function(err, user) {
+    User.findOne({'wechat.wechat_uuid':profile.unionid}, function(err, user) {
         if (err) {
             console.log('wechat login find user err:' + err.toString());
             done(err);
@@ -51,9 +51,9 @@ passport.use(new wechatStrategy({
                 password: 'xxxxxx',
                 roles: ['wechat'],
                 wechat: {
-                    wechat_uuid: String,
-                    wechat_name: String,
-                    wechat_img: String
+                    wechat_uuid: profile.unionid,
+                    wechat_name: profile.nickname,
+                    wechat_img: profile.headimgurl
                 }
             };
             User.create(userObj, function(err, user) {
