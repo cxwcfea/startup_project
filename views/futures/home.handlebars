@@ -105,9 +105,9 @@
         <div class="profit">
             <p>盈利 <em>6,778,374.00</em> 元</p>
         </div>
-        {{#if tradeTime}}
+        {{#unless tradeTime}}
             <p class="trader-time-hint text-danger" ng-click="showTradeTime()">现在是非交易时间，点击查看交易时间</p>
-        {{/if}}
+        {{/unless}}
         <div class="opt-btns">
             <div class="btns three" id="J_btns">
                 <button class="circle-btn p {{#unless tradeTime}}circle-btn-disable{{/unless}}" ng-click="btnClick()">平</button>
