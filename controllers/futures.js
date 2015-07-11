@@ -32,6 +32,7 @@ function home(req, res, next) {
     } else if (now < startTime || now > endTime) {
         res.locals.tradeTime = false;
     }
+    console.log(res.locals.tradeTime);
 
     util.getUserViewModel(req.user, function(user) {
         delete req.user.wechat.wechat_uuid;
