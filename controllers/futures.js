@@ -26,20 +26,21 @@ function home(req, res, next) {
 
     var now = moment('2015-07-10 10:20:00');
 
-    res.locals.tradeTime = true;
+    var tradeTime = true;
     if (util.isHoliday(now.dayOfYear())) {
-        res.locals.tradeTime = false;
+        tradeTime = false;
     } else if (now < startTime || now > endTime) {
-        res.locals.tradeTime = false;
+        tradeTime = false;
     }
-    console.log(res.locals.tradeTime);
+    console.log(tradeTime);
 
     util.getUserViewModel(req.user, function(user) {
         delete req.user.wechat.wechat_uuid;
         console.log(user);
         res.render('futures/index', {
             layout:null,
-            bootstrappedUserObject: JSON.stringify(user)
+            bootstrappedUserObject: JSON.stringify(user),
+            tradeTime: tradeTime
         });
     });
 }
