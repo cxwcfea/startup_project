@@ -68,6 +68,8 @@ passport.use(new wechatStrategy({
                 user.save(function(err) {
                     done(err, user, profile);
                 });
+            } else {
+                done(null, user, profile);
             }
         }
     });
