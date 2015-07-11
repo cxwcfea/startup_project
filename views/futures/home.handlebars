@@ -1,4 +1,7 @@
 <style>
+    .header-box h1 {
+        text-align: center;
+    }
     .index-box .opt-box .profit {
         margin-bottom: 2em;
         border-bottom: 1px solid #999;
@@ -16,8 +19,11 @@
         font-size: 3em;
         text-align: center;
     }
+    .index-box .opt-box .trader-time-hint {
+        text-align: center;
+    }
     .index-box .money-status span {
-        font-size: 2em;
+        font-size: 0.9em;
     }
     .xx-dialog .modal-dialog {
         top: 15em;
@@ -34,8 +40,32 @@
     .share-mask img {
         width: 100%;
     }
-    .header-box h1 {
+    .columnRightText {
+        overflow: hidden;
+        height: 30px;
+    }
+    .money-status .scroll-area {
+        height: 30px;
+        /*
+        background-color: gray;
+        color: white;
+        */
+    }
+    .money-status .scroll-area #demo1,
+    .money-status .scroll-area #demo2 {
         text-align: center;
+    }
+    .opt-btns .container .row .mid {
+        margin-left: 3em;
+    }
+    .opt-btns .container .row .left {
+        text-align: left;
+    }
+    .opt-btns .container .row .right {
+        text-align: right;
+    }
+    .opt-btns .btns.three {
+        height: 100px;
     }
 </style>
 <!--#S header-->
@@ -79,8 +109,9 @@
         </ul>
         -->
         <div class="profit">
-            <p>收益 <em>6,778,374.00</em> 元</p>
+            <p>盈利 <em>6,778,374.00</em> 元</p>
         </div>
+        <p class="trader-time-hint text-danger" ng-click="showTradeTime()">现在是非交易时间，点击查看交易时间</p>
         <div class="opt-btns">
             <div class="btns three" id="J_btns">
                 <button class="circle-btn p" ng-click="btnClick()">平</button>
@@ -99,9 +130,13 @@
                 <span><em>5</em>键</span>
             </div>
             -->
-        </div>
-        <div class="info-box">
-            买涨1手
+            <div class="container">
+                <div class="row">
+                    <button class="col-xs-3 btn left pull-left" disabled>1手</button>
+                    <button class="col-xs-3 btn mid pull-left" disabled>2手</button>
+                    <button class="col-xs-3 btn right pull-right" disabled>3手</button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="money-status container">
@@ -119,8 +154,20 @@
         <a href="#" class="ui-btn disabled">充值</a>
         -->
         <div class="row">
-            <span class="col-xs-8">保证金:6000.00元</span>
-            <button class="col-xs-4 btn btn-danger">收益换红包 >></button>
+            <button class="col-xs-3 btn btn-danger pull-left">看排名</button>
+            <div class="scroll-area col-xs-6">
+                <div class="columnRightText fl" id="demo">
+                    <div id="demo1">
+                        <div><span class="">永远的山河兑换现金1000</span>元</div>
+                        <div><span class="">美国的日落兑换现金200</span>元</div>
+                        <div><span class="">飞翔的毛驴兑换现金300</span>元</div>
+                        <div><span class="">吃货的烦恼兑换现金400</span>元</div>
+                        <div><span class="">没文化的人兑换现金500</span>元</div>
+                    </div>
+                    <div id="demo2"></div>
+                </div>
+            </div>
+            <button class="col-xs-3 btn btn-danger pull-right" ng-click="withdraw()">提现</button>
         </div>
     </div>
 </div>
@@ -129,3 +176,22 @@
         <img src="/futures/images/share.png" alt="" ng-click="showShareHint = false" />
     </div>
 </div>
+
+<script>
+    var speed=180; //数字越大速度越慢
+    var tab=document.getElementById("demo");
+    var tab1=document.getElementById("demo1");
+    var tab2=document.getElementById("demo2");
+    tab2.innerHTML=tab1.innerHTML; //克隆demo1为demo2
+    function Marquee(){
+        if(tab2.offsetTop-tab.scrollTop<=0){//当滚动至demo1与demo2交界时
+            tab.scrollTop-=tab1.offsetHeight; //demo跳到最顶端
+        }
+        else{
+            tab.scrollTop++;
+        }
+    }
+    var MyMar=setInterval(Marquee,speed);
+    tab.onmouseover=function() {clearInterval(MyMar)};//鼠标移上时清除定时器达到滚动停止的目的
+    tab.onmouseout=function() {MyMar=setInterval(Marquee,speed)};//鼠标移开时重设定时器
+</script>

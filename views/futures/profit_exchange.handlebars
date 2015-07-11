@@ -1,19 +1,77 @@
 <style>
+    .header-box h1 {
+        text-align: center;
+    }
+    .profit-wrapper .info {
+        background-color: #4b90f7;
+        color: white;
+        font-size: 2.2em;
+        padding: 0.5em;
+    }
+    .profit-wrapper {
+        background-color: white;
+    }
+    .profit-wrapper .formula {
+        padding: 1em;
+    }
+    .profit-wrapper .formula .title {
+        font-size: 1.5em;
+        border-bottom: 1px solid gray;
+        opacity: 0.5;
+    }
+    .profit-wrapper .formula .body {
+        margin: 2em 0.5em 2em 0.5em;
+    }
+    .profit-wrapper .formula .num {
+        font-size: 1.6em;
+        font-weight: bold;
+    }
+    .profit-wrapper .formula .sign {
+        text-align: center;
+        padding-top: 0.3em;
+    }
+    .profit-wrapper .formula .desc {
+        text-align: center;
+        opacity: 0.5;
+        font-size: 1.1em;
+    }
+    .profit-wrapper .formula .footer {
+        margin: 2em 0.5em 1em 0.5em;
+    }
+    .profit-wrapper .formula .footer .point-box {
+        height: 6em;
+        border: 1px solid gray;
+        padding: 0.8em;
+        text-align: center;
+    }
+    .profit-wrapper .formula .footer .point-box .percent {
+        font-weight: bold;
+    }
+    .profit-wrapper .formula .footer .point-box span {
+        font-size: 1.1em;
+    }
+    .selected {
+        background-color: #4b90f7;
+        color: white;
+    }
+    .profit-wrapper .how {
+        color: #4b90f7;
+        margin-bottom: 1.5em;
+    }
     .columnRightText {
         overflow: hidden;
         height: 30px;
+        background-color: #d3d3d3;
+        color: #f35858;
+        margin-bottom: 1.5em;
     }
-    .exchange-wrapper .scroll-area {
-        position: fixed;
-        bottom: 50px;
-        height: 30px;
-        background-color: gray;
-        color: white;
-        width: 100%;
-    }
-    .exchange-wrapper .scroll-area #demo1,
-    .exchange-wrapper .scroll-area #demo2 {
+    .columnRightText #demo1,
+    .columnRightText #demo2 {
         text-align: center;
+    }
+    .profit-wrapper .exchange {
+        margin-left: 1em;
+        margin-bottom: 1.5em;
     }
 </style>
 <!--#S header-->
@@ -23,18 +81,51 @@
         <a class="back" href="/futures"></a>
     </div>
 </header><!--#E header-->
-
-<div class="exchange-wrapper">
-    <div class="scroll-area">
-        <div class="columnRightText fl" id="demo">
-            <div id="demo1">
-                <div>13439695920 成功兑换现金<span class="">100</span>元</div>
-                <div>13439695910 成功兑换现金<span class="">200</span>元</div>
-                <div>13439695930 成功兑换现金<span class="">300</span>元</div>
-                <div>13439695940 成功兑换现金<span class="">400</span>元</div>
-                <div>13439695950 成功兑换现金<span class="">500</span>元</div>
+<div class="profit-wrapper">
+    <div class="container">
+        <div class="row">
+            <p class="info">您盈利21356.98元，可以兑换23.12元现金。</p>
+        </div>
+        <div class="formula">
+            <div class="row">
+                <p class="title">提现金额计算</p>
+                <div class="body">
+                    <span class="col-xs-3 num">31255.98</span><span class="col-xs-1 sign">x</span><span class="col-xs-3 num text-danger">0.2%</span><span class="col-xs-1 sign">=</span><span class="col-xs-3 num text-danger">31255.98</span>
+                    <span class="col-xs-3 desc">盈利</span><span class="col-xs-1"></span><span class="col-xs-3 desc">提现比</span><span class="col-xs-1"></span><span class="col-xs-3 desc">提现金额</span>
+                </div>
             </div>
-            <div id="demo2"></div>
+            <div class="footer">
+                <div class="row">
+                    <span class="col-xs-3 point-box"><span class="percent">0.1%</span><br><span>1-99点</span></span>
+                    <span class="col-xs-3 point-box selected"><span class="percent">0.2%</span><br><span>100-399点</span></span>
+                    <span class="col-xs-3 point-box"><span class="percent">0.3%</span><br><span>400-999点</span></span>
+                    <span class="col-xs-3 point-box"><span class="percent">0.4%</span><br><span>1000+点</span></span>
+                </div>
+            </div>
+        </div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                <span class="">263点</span>
+            </div>
+            <span class="pull-right">当前积分</span>
+        </div>
+        <div class="how">
+            <span>如何获得积分</span>
+        </div>
+        <div class="scroll-area">
+            <div class="columnRightText fl" id="demo">
+                <div id="demo1">
+                    <div><span class="">永远的山河兑换现金1000</span>元</div>
+                    <div><span class="">美国的日落兑换现金200</span>元</div>
+                    <div><span class="">飞翔的毛驴兑换现金300</span>元</div>
+                    <div><span class="">吃货的烦恼兑换现金400</span>元</div>
+                    <div><span class="">没文化的人兑换现金500</span>元</div>
+                </div>
+                <div id="demo2"></div>
+            </div>
+        </div>
+        <div class="row exchange">
+            <button class="btn btn-primary">立即兑换现金</button>
         </div>
     </div>
 </div>
@@ -57,3 +148,5 @@
     tab.onmouseover=function() {clearInterval(MyMar)};//鼠标移上时清除定时器达到滚动停止的目的
     tab.onmouseout=function() {MyMar=setInterval(Marquee,speed)};//鼠标移开时重设定时器
 </script>
+
+

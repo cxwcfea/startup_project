@@ -1,5 +1,5 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window', '$modal', function($scope, $window, $modal) {
+angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window', '$location', '$modal', function($scope, $window, $location, $modal) {
     $scope.chartLabels = ["9:15", "10:15", "11:15", "13:45", "14:45", "15:15"];
     $scope.chartData = [4188.57, 4040.48, 4053.70, 4182.93, 4023.93, 3872.15, 4188.57, 4040.48, 4053.70, 4182.93, 4023.93, 3872.15, 4053.70, 4182.93, 4023.93, 3872.15, 4188.57, 4040.48];
 
@@ -58,10 +58,36 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         });
     };
 
+    $scope.openTimeHintPopup = function (size) {
+        var modalInstance = $modal.open({
+            animation: true,
+            backdrop: 'static',
+            windowClass: 'xx-dialog',
+            templateUrl: 'views/time_hint_popup.html',
+            controller: 'RiskModalCtrl',
+            size: size,
+            resolve: {}
+        });
+
+        modalInstance.result.then(function () {
+            console.log('Modal dismissed at: ' + new Date());
+        }, function () {
+            console.log('Modal dismissed at: ' + new Date());
+        });
+    };
+
     $scope.openIntroPopup('lg');
 
     $scope.btnClick = function() {
         $scope.openGainPopup('lg');
+    };
+
+    $scope.showTradeTime = function() {
+        $scope.openTimeHintPopup('lg');
+    };
+
+    $scope.withdraw = function() {
+        $location.path('/profit_exchange');
     };
 
 }]);
