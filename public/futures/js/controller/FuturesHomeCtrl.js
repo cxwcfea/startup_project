@@ -46,7 +46,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             backdrop: 'static',
             windowClass: 'xx-dialog',
             templateUrl: 'views/risk_popup.html',
-            controller: 'RiskModalCtrl',
+            controller: 'InfoModalCtrl',
             size: size,
             resolve: {}
         });
@@ -64,7 +64,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             backdrop: 'static',
             windowClass: 'xx-dialog',
             templateUrl: 'views/time_hint_popup.html',
-            controller: 'RiskModalCtrl',
+            controller: 'InfoModalCtrl',
             size: size,
             resolve: {}
         });
@@ -95,32 +95,3 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     };
 }]);
 
-angular.module('futuresApp').controller('IntroModalCtrl', function ($scope, $modalInstance) {
-    $scope.ok = function () {
-        $modalInstance.close();
-    };
-
-    $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
-    };
-});
-
-angular.module('futuresApp').controller('GainModalCtrl', function ($scope, $modalInstance) {
-    $scope.ok = function () {
-        $modalInstance.close();
-    };
-
-    $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
-    };
-});
-
-angular.module('futuresApp').controller('RiskModalCtrl', function ($scope, $modalInstance) {
-    $scope.ok = function () {
-        $modalInstance.close();
-    };
-
-    $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
-    };
-});

@@ -30,6 +30,36 @@ angular.module('futuresApp').config(['$routeProvider', '$httpProvider', function
         });
 }]);
 
+angular.module('futuresApp').controller('IntroModalCtrl', function ($scope, $modalInstance) {
+    $scope.ok = function () {
+        $modalInstance.close();
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+angular.module('futuresApp').controller('GainModalCtrl', function ($scope, $modalInstance) {
+    $scope.ok = function () {
+        $modalInstance.close();
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+angular.module('futuresApp').controller('InfoModalCtrl', function ($scope, $modalInstance) {
+    $scope.ok = function () {
+        $modalInstance.close();
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
 angular.module("futuresApp")
     .directive("futuresChart", function () {
         return function (scope, element, attrs) {

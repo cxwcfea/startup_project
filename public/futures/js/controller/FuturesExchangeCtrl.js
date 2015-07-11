@@ -6,7 +6,7 @@ angular.module('futuresApp').controller('FuturesExchangeCtrl', ['$scope', '$wind
             backdrop: 'static',
             windowClass: 'xx-dialog',
             templateUrl: 'views/score_hint_popup.html',
-            controller: 'RiskModalCtrl',
+            controller: 'InfoModalCtrl',
             size: size,
             resolve: {}
         });
