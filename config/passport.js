@@ -128,18 +128,10 @@ module.exports.requiresRole = function(role) {
     }
 };
 
-/*
 module.exports.isWechatAuthenticated = function(req, res, next) {
-    if (req.isAuthenticated() && !req.user.registered) return next();
-    if (req.url.search('/mobile') > -1) {
-        res.redirect('/mobile/#/login');
+    if (!req.isAuthenticated() || !req.user.wechat.wechat_uuid) {
+        res.redirect('/auth/wechat');
     } else {
-        req.session.lastLocation = req.url;
-        if (req.url.search('free_apply_confirm') > -1) {
-            res.redirect('/signup');
-        } else {
-            res.redirect('/login');
-        }
+        next();
     }
 };
-*/
