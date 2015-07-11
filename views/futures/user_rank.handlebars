@@ -7,37 +7,46 @@
     }
     .top1 {
         position: absolute;
-        top: -80px;
+        top: -90px;
         width: 23%;
         left: 38%;
-        height: 80px;
+        height: 90px;
         background-color: hotpink;
+        color: white;
+        text-align: center;
+        font-size: 1.2em;
     }
     .top2 {
         position: absolute;
-        top: -70px;
+        top: -80px;
         width: 23%;
         left: 5%;
-        height: 70px;
+        height: 80px;
         background-color: hotpink;
+        color: white;
+        text-align: center;
+        font-size: 1.2em;
     }
     .top3 {
         position: absolute;
-        top: -60px;
+        top: -70px;
         width: 23%;
         left: 71%;
-        height: 60px;
+        height: 70px;
         background-color: hotpink;
+        color: white;
+        text-align: center;
+        font-size: 1.2em;
     }
     .top1-head {
         position: absolute;
         top: -185px;
-        left: 35%;
+        left: 37%;
     }
     .top2-head {
         position: absolute;
         top: -175px;
-        left: 3%;
+        left: 4%;
     }
     .top3-head {
         position: absolute;
@@ -47,7 +56,7 @@
     .crown-top1 {
         position: absolute;
         top: -230px;
-        left: 38%;
+        left: 40%;
     }
     .crown-top2 {
         position: absolute;
@@ -61,7 +70,26 @@
     }
     .user-badge {
         position: absolute;
-        top: -505px;
+        top: -105px;
+        left: 32%
+    }
+    .user-rank-wrapper .users {
+        padding-top: 2em;
+        padding-bottom: 2em;
+        padding-left: 1.5em;
+        padding-right: 2em;
+        border-bottom: 0.1em solid #d3d3d3;
+    }
+    .user-rank-wrapper .users .badge {
+        margin-left: 1.2em;
+        margin-top: 1em;
+    }
+    .user-rank-wrapper .current {
+        background-color: white;
+    }
+    .user-rank-wrapper .users .info {
+        font-size: 1.5em;
+        vertical-align: middle;
     }
 </style>
 
@@ -78,17 +106,55 @@
         <div class="row">
             <img src="/futures/images/user_rank_background.png" width="100%" alt=""/>
         </div>
+        <div class="top-users">
+            <span class="top2"><br>小太阳<br>1234567</span>
+            <span class="top1"><br>mang神<br>1234567</span>
+            <span class="top3"><br>屌丝中得土豪<br>1234567</span>
+            <img class="top2-head img-circle" src="http://wx.qlogo.cn/mmopen/uchmtWQh7iarnsx58BbzlB1GAOzjI3S8elKicd6t8CiahGE3JSDmkVnTNzicQA44DdRliaLOsI1wLI9o79kynDUIchg/0" width="25%" />
+            <img class="top1-head img-circle" src="http://wx.qlogo.cn/mmopen/uchmtWQh7iarnsx58BbzlB1GAOzjI3S8elKicd6t8CiahGE3JSDmkVnTNzicQA44DdRliaLOsI1wLI9o79kynDUIchg/0" width="25%" />
+            <img class="top3-head img-circle" src="http://wx.qlogo.cn/mmopen/uchmtWQh7iarnsx58BbzlB1GAOzjI3S8elKicd6t8CiahGE3JSDmkVnTNzicQA44DdRliaLOsI1wLI9o79kynDUIchg/0" width="25%" />
+            <img class="crown-top2" src="/futures/images/top2.png" width="20%" />
+            <img class="crown-top1" src="/futures/images/top1.png" width="20%" />
+            <img class="crown-top3" src="/futures/images/top3.png" width="20%" />
+            <img class="user-badge" src="/futures/images/badge.png" width="35%" />
+        </div>
     </div>
-    <div class="top-users">
-        <span class="top2"></span>
-        <span class="top1"></span>
-        <span class="top3"></span>
-        <img class="top2-head img-circle" src="http://wx.qlogo.cn/mmopen/uchmtWQh7iarnsx58BbzlB1GAOzjI3S8elKicd6t8CiahGE3JSDmkVnTNzicQA44DdRliaLOsI1wLI9o79kynDUIchg/0" width="28%" />
-        <img class="top1-head img-circle" src="http://wx.qlogo.cn/mmopen/uchmtWQh7iarnsx58BbzlB1GAOzjI3S8elKicd6t8CiahGE3JSDmkVnTNzicQA44DdRliaLOsI1wLI9o79kynDUIchg/0" width="28%" />
-        <img class="top3-head img-circle" src="http://wx.qlogo.cn/mmopen/uchmtWQh7iarnsx58BbzlB1GAOzjI3S8elKicd6t8CiahGE3JSDmkVnTNzicQA44DdRliaLOsI1wLI9o79kynDUIchg/0" width="28%" />
-        <img class="crown-top2" src="/futures/images/top2.png" width="20%" />
-        <img class="crown-top1" src="/futures/images/top1.png" width="20%" />
-        <img class="crown-top3" src="/futures/images/top3.png" width="20%" />
-        <img class="user-badge" src="/futures/images/badge.png" width="100%" />
+    <div class="row users current">
+        <span class="col-xs-1 badge">42</span>
+        <img class="img-circle col-xs-2" src="http://wx.qlogo.cn/mmopen/uchmtWQh7iarnsx58BbzlB1GAOzjI3S8elKicd6t8CiahGE3JSDmkVnTNzicQA44DdRliaLOsI1wLI9o79kynDUIchg/0" width="10%" />
+        <span class="col-xs-5">您没有上榜，啥也不说了，快去交易吧</span>
+        <button class="btn btn-danger pull-right col-xs-3" ng-click="trade()">立即交易</button>
+    </div>
+    <div class="row users">
+        <span class="col-xs-1 badge">4</span>
+        <img class="img-circle col-xs-2" src="http://wx.qlogo.cn/mmopen/uchmtWQh7iarnsx58BbzlB1GAOzjI3S8elKicd6t8CiahGE3JSDmkVnTNzicQA44DdRliaLOsI1wLI9o79kynDUIchg/0" width="10%" />
+        <span class="info">
+            <span class="col-xs-5">程翔</span>
+            <span class="pull-right col-xs-3 text-danger">1380</span>
+        </span>
+    </div>
+    <div class="row users">
+        <span class="col-xs-1 badge">5</span>
+        <img class="img-circle col-xs-2" src="http://wx.qlogo.cn/mmopen/uchmtWQh7iarnsx58BbzlB1GAOzjI3S8elKicd6t8CiahGE3JSDmkVnTNzicQA44DdRliaLOsI1wLI9o79kynDUIchg/0" width="10%" />
+        <span class="info">
+            <span class="col-xs-5">程翔</span>
+            <span class="pull-right col-xs-3 text-danger">1380</span>
+        </span>
+    </div>
+    <div class="row users">
+        <span class="col-xs-1 badge">6</span>
+        <img class="img-circle col-xs-2" src="http://wx.qlogo.cn/mmopen/uchmtWQh7iarnsx58BbzlB1GAOzjI3S8elKicd6t8CiahGE3JSDmkVnTNzicQA44DdRliaLOsI1wLI9o79kynDUIchg/0" width="10%" />
+        <span class="info">
+            <span class="col-xs-5">程翔</span>
+            <span class="pull-right col-xs-3 text-danger">1380</span>
+        </span>
+    </div>
+    <div class="row users">
+        <span class="col-xs-1 badge">7</span>
+        <img class="img-circle col-xs-2" src="http://wx.qlogo.cn/mmopen/uchmtWQh7iarnsx58BbzlB1GAOzjI3S8elKicd6t8CiahGE3JSDmkVnTNzicQA44DdRliaLOsI1wLI9o79kynDUIchg/0" width="10%" />
+        <span class="info">
+            <span class="col-xs-5">程翔</span>
+            <span class="pull-right col-xs-3 text-danger">1380</span>
+        </span>
     </div>
 </div>

@@ -90,6 +90,9 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         $location.path('/profit_exchange');
     };
 
+    $scope.showRank = function() {
+        $location.path('/user_rank');
+    };
 }]);
 
 angular.module('futuresApp').controller('IntroModalCtrl', function ($scope, $modalInstance) {
