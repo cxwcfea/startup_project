@@ -24,7 +24,7 @@ function home(req, res, next) {
     endTime.minute(15);
     endTime.second(00);
 
-    var now = moment();
+    var now = moment('2015-07-10 10:20:00');
 
     res.locals.tradeTime = true;
     if (util.isHoliday(now.dayOfYear())) {
