@@ -59,7 +59,8 @@ var userSchema = new mongoose.Schema({
     wechat: {
         wechat_uuid: String,
         wechat_name: String,
-        wechat_img: String
+        wechat_img: String,
+        logged: { type: Boolean, default: true }
     },
 
     identity: {

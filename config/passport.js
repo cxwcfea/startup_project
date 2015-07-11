@@ -49,6 +49,7 @@ passport.use(new wechatStrategy({
             var userObj = {
                 mobile: generateRandomMobile(10),
                 password: 'xxxxxx',
+                score: 5,
                 roles: ['wechat'],
                 wechat: {
                     wechat_uuid: profile.unionid,
@@ -57,15 +58,17 @@ passport.use(new wechatStrategy({
                 }
             };
             User.create(userObj, function(err, user) {
-                if (err) {
-                    done(err);
-                } else {
-                    done(null, user, profile);
-                }
+                done(err, user, profile);
             });
         } else {
             console.log('wechat login found user with unionid:' + profile.unionid);
-            done(null, user, profile);
+            if (!user.wechat.logged) {
+                user.wechat.logged = true;
+                user.score += 5;
+                user.save(function(err) {
+                    done(err, user, profile);
+                });
+            }
         }
     });
 }));
