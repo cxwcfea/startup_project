@@ -14,12 +14,12 @@ var User = require('../models/User'),
     logger = log4js.getLogger('mobile');
 
 function home(req, res, next) {
-    var startTime = moment();
+    var startTime = moment('2015-07-10');
     startTime.hour(09);
     startTime.minute(15);
     startTime.second(00);
 
-    var endTime = moment();
+    var endTime = moment('2015-07-10');
     endTime.hour(15);
     endTime.minute(15);
     endTime.second(00);

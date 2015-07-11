@@ -164,3 +164,6 @@ endTime.second(00);
 
 console.log(startTime.toDate());
 console.log(endTime.toDate());
+
+var now = moment('2015-07-10 10:20:00');
+console.log(now.toDate());
