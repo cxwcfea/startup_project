@@ -848,6 +848,7 @@ exports.postConfirmApply = function(req, res, next) {
                     apply.startTime = startDay.toDate();
                     apply.endTime = util.getEndDay(startDay, apply.period, apply.type).toDate();
                     apply.autoPostpone = applyData.autoPostpone;
+                    apply.serviceFeeCountDeposit = true;
                     apply.save(function(err) {
                         if (err) {
                             res.status(500);

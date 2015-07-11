@@ -67,7 +67,7 @@ angular.module('mobileApp').controller('MobileYynCtrl', ['$scope', '$window', '$
             vm.summary.deposit = vm.summary.amount / vm.selectedValue.value;
             vm.summary.warnValue = util.getWarnValue(vm.summary.amount, vm.summary.deposit);
             vm.summary.sellValue = util.getSellValue(vm.summary.amount, vm.summary.deposit);
-            var charge = (vm.summary.amount - vm.summary.deposit) * vm.selectedValue.i_value;
+            var charge = vm.summary.amount * vm.selectedValue.i_value;
             vm.summary.charge = charge;
         } else {
             vm.summary.deposit = 0;

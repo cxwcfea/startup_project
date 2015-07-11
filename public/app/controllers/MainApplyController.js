@@ -388,7 +388,7 @@
                 $scope.summary.deposit = $scope.summary.amount / $scope.selectedValue.value;
                 $scope.summary.warnValue = util.getWarnValue($scope.summary.amount, $scope.summary.deposit);
                 $scope.summary.sellValue = util.getSellValue($scope.summary.amount, $scope.summary.deposit);
-                $scope.charge = ($scope.summary.amount - $scope.summary.deposit) * $scope.selectedValue.i_value;
+                $scope.charge = $scope.summary.amount * $scope.selectedValue.i_value;
                 $scope.summary.charge = $scope.charge * $scope.summary.month;
             } else {
                 $scope.summary.deposit = 0;
@@ -481,13 +481,13 @@
         };
     }]);
 
-    angular.module('mainApp').controller('MainYYnConfirmCtrl', ['$scope', '$http', '$location', '$window', 'days', function($scope, $http, $location, $window, days) {
+    angular.module('mainApp').controller('MainYYnConfirmCtrl', ['$scope', '$http', '$location', '$window', 'days', 'util', function($scope, $http, $location, $window, days, util) {
         $scope.apply = {};
         if (!!$window.bootstrappedApplyObject) {
             angular.extend($scope.apply, $window.bootstrappedApplyObject);
         }
 
-        $scope.interest = ($scope.apply.amount - $scope.apply.deposit) * $scope.apply.interestRate;
+        $scope.interest = util.getServiceFee($scope.apply);
         $scope.totalAmount = $scope.apply.deposit + $scope.interest;
         $scope.shouldPay = $scope.totalAmount - $scope.apply.userBalance;
         if ($scope.shouldPay <= 0) {

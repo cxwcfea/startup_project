@@ -35,6 +35,7 @@ var applySchema = mongoose.Schema({
     profitForInvest: {type:Number, default: 0},  // how much profit will return to investor
     accountType: Number,  // 2 means tonghuashun, otherwise means homs
     userCloseAt: Date,
+    serviceFeeCountDeposit: Boolean,
     freeDays: Number
 });
 

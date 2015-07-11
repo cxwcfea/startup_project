@@ -451,7 +451,7 @@
                 discount = 1;
             }
             if (apply.type && apply.type === 2) {
-                return Number(((apply.amount - (apply.amount / apply.lever)) * apply.interestRate * discount).toFixed(2));
+                return Number((apply.amount * apply.interestRate * discount).toFixed(2));
             }
             if (!period) {
                 period = apply.period;

@@ -1,12 +1,12 @@
 'use strict';
-angular.module('mobileApp').controller('MobileYynConfirmCtrl', ['$scope', '$window', '$http', '$location', function($scope, $window, $http, $location) {
+angular.module('mobileApp').controller('MobileYynConfirmCtrl', ['$scope', '$window', '$http', '$location', 'util', function($scope, $window, $http, $location, util) {
     var vm = this;
     vm.apply = {};
     if (!!$window.bootstrappedApplyObject) {
         angular.extend(vm.apply, $window.bootstrappedApplyObject);
     }
 
-    vm.interest = (vm.apply.amount - vm.apply.deposit) * vm.apply.interestRate;
+    vm.interest = util.getServiceFee(vm.apply);
     vm.totalAmount = vm.apply.deposit + vm.interest;
     vm.shouldPay = vm.totalAmount - vm.apply.userBalance;
     if (vm.shouldPay <= 0) {
