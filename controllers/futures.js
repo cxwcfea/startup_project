@@ -24,6 +24,15 @@ function home(req, res, next) {
     endTime.minute(15);
     endTime.second(00);
 
+    var now = moment();
+
+    res.locals.tradeTime = true;
+    if (util.isHoliday(now.dayOfYear())) {
+        res.locals.tradeTime = false;
+    } else if (now < startTime || now > endTime) {
+        res.locals.tradeTime = false;
+    }
+
     util.getUserViewModel(req.user, function(user) {
         delete req.user.wechat.wechat_uuid;
         console.log(user);

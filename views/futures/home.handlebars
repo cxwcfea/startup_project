@@ -105,15 +105,17 @@
         <div class="profit">
             <p>盈利 <em>6,778,374.00</em> 元</p>
         </div>
-        <p class="trader-time-hint text-danger" ng-click="showTradeTime()">现在是非交易时间，点击查看交易时间</p>
+        {{#if tradeTime}}
+            <p class="trader-time-hint text-danger" ng-click="showTradeTime()">现在是非交易时间，点击查看交易时间</p>
+        {{/if}}
         <div class="opt-btns">
             <div class="btns three" id="J_btns">
-                <button class="circle-btn p circle-btn-disable" ng-click="btnClick()">平</button>
-                <button class="circle-btn z circle-btn-disable">涨</button>
+                <button class="circle-btn p {{#unless tradeTime}}circle-btn-disable{{/unless}}" ng-click="btnClick()">平</button>
+                <button class="circle-btn z {{#unless tradeTime}}circle-btn-disable{{/unless}}">涨</button>
                 <!--
                 <button class="circle-btn pz">平涨</button>
                 -->
-                <button class="circle-btn d circle-btn-disable">跌</button>
+                <button class="circle-btn d {{#unless}}circle-btn-disable{{/unless}}">跌</button>
                 <!--
                 <button class="circle-btn pd">平跌</button>
                 -->
