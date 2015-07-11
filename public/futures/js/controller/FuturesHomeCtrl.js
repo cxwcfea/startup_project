@@ -2,6 +2,7 @@
 angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window', '$location', '$modal', function($scope, $window, $location, $modal) {
     $scope.chartLabels = ["9:15", "10:15", "11:15", "13:45", "14:45", "15:15"];
     $scope.chartData = [4188.57, 4040.48, 4053.70, 4182.93, 4023.93, 3872.15, 4188.57, 4040.48, 4053.70, 4182.93, 4023.93, 3872.15, 4053.70, 4182.93, 4023.93, 3872.15, 4188.57, 4040.48];
+    $scope.user = $scope.data.currentUser;
 
     $scope.showShareHint = false;
     $scope.openIntroPopup = function (size) {

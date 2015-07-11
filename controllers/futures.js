@@ -36,17 +36,17 @@ module.exports = {
         app.get('/futures', passportConf.isWechatAuthenticated, home);
 
         app.get('/futures/*', function(req, res, next) {
-            var startTime = moment();
+            var startTime = moment('2015-07-10');
             startTime.hour(09);
             startTime.minute(15);
             startTime.second(00);
 
-            var endTime = moment();
+            var endTime = moment('2015-07-10');
             endTime.hour(15);
             endTime.minute(15);
             endTime.second(00);
 
-            var now = moment();
+            var now = moment('2015-07-10 10:20:00');
 
             var tradeTime = true;
             if (util.isHoliday(now.dayOfYear())) {
