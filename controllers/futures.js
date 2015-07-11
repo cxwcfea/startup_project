@@ -8,11 +8,22 @@ var User = require('../models/User'),
     util = require('../lib/util'),
     useragent = require('useragent'),
     _ = require('lodash'),
+    moment = require('moment'),
     async = require('async'),
     log4js = require('log4js'),
     logger = log4js.getLogger('mobile');
 
 function home(req, res, next) {
+    var startTime = moment();
+    startTime.hour(09);
+    startTime.minute(15);
+    startTime.second(00);
+
+    var endTime = moment();
+    endTime.hour(15);
+    endTime.minute(15);
+    endTime.second(00);
+
     util.getUserViewModel(req.user, function(user) {
         delete req.user.wechat.wechat_uuid;
         console.log(user);
