@@ -14,33 +14,12 @@ var User = require('../models/User'),
     logger = log4js.getLogger('mobile');
 
 function home(req, res, next) {
-    var startTime = moment('2015-07-10');
-    startTime.hour(09);
-    startTime.minute(15);
-    startTime.second(00);
-
-    var endTime = moment('2015-07-10');
-    endTime.hour(15);
-    endTime.minute(15);
-    endTime.second(00);
-
-    var now = moment('2015-07-10 10:20:00');
-
-    var tradeTime = true;
-    if (util.isHoliday(now.dayOfYear())) {
-        tradeTime = false;
-    } else if (now < startTime || now > endTime) {
-        tradeTime = false;
-    }
-    console.log(tradeTime);
-
     util.getUserViewModel(req.user, function(user) {
         delete req.user.wechat.wechat_uuid;
         console.log(user);
         res.render('futures/index', {
             layout:null,
-            bootstrappedUserObject: JSON.stringify(user),
-            tradeTime: tradeTime
+            bootstrappedUserObject: JSON.stringify(user)
         });
     });
 }
@@ -57,7 +36,29 @@ module.exports = {
         app.get('/futures', passportConf.isWechatAuthenticated, home);
 
         app.get('/futures/*', function(req, res, next) {
-            res.render('futures/' + req.params[0], {layout:null});
+            var startTime = moment('2015-07-10');
+            startTime.hour(09);
+            startTime.minute(15);
+            startTime.second(00);
+
+            var endTime = moment('2015-07-10');
+            endTime.hour(15);
+            endTime.minute(15);
+            endTime.second(00);
+
+            var now = moment('2015-07-10 10:20:00');
+
+            var tradeTime = true;
+            if (util.isHoliday(now.dayOfYear())) {
+                tradeTime = false;
+            } else if (now < startTime || now > endTime) {
+                tradeTime = false;
+            }
+
+            res.render('futures/' + req.params[0], {
+                layout:null,
+                tradeTime: tradeTime
+            });
         });
     }
 };
