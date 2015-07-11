@@ -254,7 +254,7 @@
         if (!!$window.bootstrappedApplyObject) {
             angular.extend(vm.apply, $window.bootstrappedApplyObject);
         }
-        vm.freeDays = 2;
+        vm.freeDays = 1;
         vm.rebate = vm.freeDays * vm.apply.serviceCharge * vm.apply.amount / 10000;
 
         vm.validDays = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
