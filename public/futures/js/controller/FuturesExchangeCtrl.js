@@ -1,5 +1,5 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesExchangeCtrl', ['$scope', '$window', function($scope, $window) {
+angular.module('futuresApp').controller('FuturesExchangeCtrl', ['$scope', '$window', '$modal', function($scope, $window, $modal) {
     var openScoreHintPopup = function (size) {
         var modalInstance = $modal.open({
             animation: true,
