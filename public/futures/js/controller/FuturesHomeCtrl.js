@@ -14,9 +14,11 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     function getUserPositions() {
         $http.get('/api/futures/get_positions')
             .success(function (data, status) {
-                $scope.tradeData.up = data.longQuantity / HAND;
-                $scope.tradeData.down = data.shortQuantity / HAND;
-                $scope.tradeData.sell = data.quantity / HAND;
+                if (data) {
+                    $scope.tradeData.up = data.longQuantity / HAND;
+                    $scope.tradeData.down = data.shortQuantity / HAND;
+                    $scope.tradeData.sell = data.quantity / HAND;
+                }
             })
             .error(function(data, status) {
                 displayError(data.error_msg);
