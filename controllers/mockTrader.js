@@ -308,10 +308,14 @@ function createOrder(data, cb) {
             "stock_code": data.order.contract.stock_code,
             "exchange": data.order.contract.exchange
         }, function(err, contract) {
-            if (err || !contract) {
+            if (err) {
                 console.log(err);
                 cb(err.toString());
                 return;
+            }
+            if (!contract) {
+                console.log('failed to create contract');
+                return cb('failed to create contract');
             }
             // find contract price info
             global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
