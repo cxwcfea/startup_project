@@ -1,7 +1,55 @@
+<style>
+    .add-wechat-wrapper {
+    }
+    .add-wechat-wrapper .info {
+        text-align: center;
+        margin-top: 3em;
+    }
+    .add-wechat-wrapper .info h1 {
+        font-size: 4em;
+        margin-bottom: 0.5em;
+    }
+    .add-wechat-wrapper .info h2 {
+        font-size: 2.8em;
+    }
+    .add-wechat-wrapper .picture {
+        margin-top: 4em;
+        overflow: hidden;
+        margin-bottom: 3em;
+    }
+    .add-wechat-wrapper .picture .head {
+        background-color: #4b90f7;
+        /*
+        position: relative;
+        top: 25%
+        */
+    }
+    .add-wechat-wrapper .instruction {
+        text-align: center;
+        font-size: 1.8em;
+        padding: 1em;
+    }
+</style>
+
 <!--#S header-->
 <header id="header">
     <div class="header-box">
-        <h1>获取服务</h1>
+        <h1>关注服务号</h1>
         <a class="back" href="/futures"></a>
     </div>
 </header><!--#E header-->
+
+<div class="container add-wechat-wrapper">
+    <div class="row info">
+        <h1>关注服务号</h1>
+        <h2>获取更多服务</h2>
+    </div>
+    <div class="row picture">
+        <img class="col-xs-offset-2 col-xs-4 head" src="/futures/images/head_icon.png" alt="...">
+        <img id="finger-print" class="col-xs-4" src="/futures/images/finger_print.png" alt="..." height="100%" >
+    </div>
+    <div class="row instruction">
+        <p>长按指纹图片，在弹出的菜单中</p>
+        <p>选择“识别图中的二维码“即可关注我们</p>
+    </div>
+</div>

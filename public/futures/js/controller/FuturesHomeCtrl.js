@@ -77,7 +77,10 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         });
     };
 
-    $scope.openIntroPopup('lg');
+    if (!$scope.data.introPopupOpened) {
+        $scope.openIntroPopup('lg');
+        $scope.data.introPopupOpened = true;
+    }
 
     $scope.btnClick = function() {
         $scope.openGainPopup('lg');

@@ -3,8 +3,11 @@ angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window'
     $scope.data = {};
     //$scope.data.currentUser = $window.bootstrappedUserObject;
     $scope.data.currentUser = {
-        wechat_img: 'http://wx.qlogo.cn/mmopen/uchmtWQh7iarnsx58BbzlB1GAOzjI3S8elKicd6t8CiahGE3JSDmkVnTNzicQA44DdRliaLOsI1wLI9o79kynDUIchg/0',
-        wechat_name: '程翔',
-        profit: 200
+        score: 5,
+        wechat: {
+            wechat_img: 'http://wx.qlogo.cn/mmopen/uchmtWQh7iarnsx58BbzlB1GAOzjI3S8elKicd6t8CiahGE3JSDmkVnTNzicQA44DdRliaLOsI1wLI9o79kynDUIchg/0',
+            wechat_name: '程翔',
+            profit: 200
+        }
     }
 }]);

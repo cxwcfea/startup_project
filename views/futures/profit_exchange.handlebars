@@ -22,6 +22,7 @@
     .profit-wrapper .formula .num {
         font-size: 1.6em;
         font-weight: bold;
+        text-align: center;
     }
     .profit-wrapper .formula .sign {
         text-align: center;
@@ -81,28 +82,25 @@
 <div class="profit-wrapper">
     <div class="container">
         <div class="row">
-            <p class="info">您盈利21356.98元，可以兑换23.12元现金。</p>
+            <p class="info">您盈利\{{user.wechat.profit | number:2}}元，可以兑换\{{cash | number:2}}元现金。</p>
         </div>
         <div class="formula">
             <div class="row">
                 <p class="title">提现金额计算</p>
                 <div class="body">
-                    <span class="col-xs-3 num">31255.98</span><span class="col-xs-1 sign">x</span><span class="col-xs-3 num text-danger">0.2%</span><span class="col-xs-1 sign">=</span><span class="col-xs-3 num text-danger">31255.98</span>
+                    <span class="col-xs-3 num">\{{user.wechat.profit | number:2}}</span><span class="col-xs-1 sign">x</span><span class="col-xs-3 num text-danger">\{{profitLevel[profitLevelIndex]}}%</span><span class="col-xs-1 sign">=</span><span class="col-xs-3 num text-danger">\{{cash | number:2}}</span>
                     <span class="col-xs-3 desc">盈利</span><span class="col-xs-1"></span><span class="col-xs-3 desc">提现比</span><span class="col-xs-1"></span><span class="col-xs-3 desc">提现金额</span>
                 </div>
             </div>
             <div class="footer">
                 <div class="row">
-                    <span class="col-xs-3 point-box"><span class="percent">0.1%</span><br><span>1-99点</span></span>
-                    <span class="col-xs-3 point-box selected"><span class="percent">0.2%</span><br><span>100-399点</span></span>
-                    <span class="col-xs-3 point-box"><span class="percent">0.3%</span><br><span>400-999点</span></span>
-                    <span class="col-xs-3 point-box"><span class="percent">0.4%</span><br><span>1000+点</span></span>
+                    <span class="col-xs-3 point-box" ng-class="{selected:$index === profitLevelIndex}" ng-repeat="item in profitLevel"><span class="percent">\{{item}}%</span><br><span>\{{pointNeeded[$index]}}点</span></span>
                 </div>
             </div>
         </div>
         <div class="progress">
-            <div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                <span class="">263点</span>
+            <div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="\{{user.score}}" aria-valuemin="0" aria-valuemax="1000" ng-style="percentClass" style="min-width: 1em;">
+                <span class="">\{{user.score}}点</span>
             </div>
             <span class="pull-right">当前积分</span>
         </div>

@@ -14,14 +14,19 @@ var User = require('../models/User'),
     logger = log4js.getLogger('mobile');
 
 function home(req, res, next) {
-    util.getUserViewModel(req.user, function(user) {
-        delete req.user.wechat.wechat_uuid;
-        console.log(user);
-        res.render('futures/index', {
-            layout:null,
-            bootstrappedUserObject: JSON.stringify(user)
+    if (req.user) {
+        util.getUserViewModel(req.user, function(user) {
+            delete user.wechat.wechat_uuid;
+            res.render('futures/index', {
+                layout:null,
+                bootstrappedUserObject: JSON.stringify(user)
+            });
         });
-    });
+    } else {
+        res.render('futures/index', {
+            layout:null
+        });
+    }
 }
 
 module.exports = {
