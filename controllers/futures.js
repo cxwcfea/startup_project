@@ -85,7 +85,7 @@ function getPositions(req, res) {
     if (!req.user || !req.user.wechat || !req.user.wechat.wechat_uuid) {
         return res.status(403).send({error_msg:'user need log in'});
     }
-    mockTrader.getPositions({user_id:req.user.trader}, function(err, positions) {
+    mockTrader.getPositions({user_id:req.user.wechat.trader}, function(err, positions) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
         }
