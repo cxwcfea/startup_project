@@ -79,6 +79,8 @@ module.exports = function(app) {
     });
 
     app.get('/signup', function(req, res) {
+        res.redirect('/login');
+        return;
         if (req.isAuthenticated()) {
             res.redirect('/');
         } else {

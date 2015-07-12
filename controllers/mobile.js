@@ -465,6 +465,8 @@ function getRechargeYeepay(req, res, next) {
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/mobile', function(req, res, next) {
+            res.redirect('/');
+            return;
             if (req.query.refer && req.query.refer.length < 128) {
                 req.session.refer = req.query.refer;
             }

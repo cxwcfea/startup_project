@@ -7,6 +7,8 @@ var User = require('../models/User'),
     logger = log4js.getLogger('home');
 
 function home(req, res, next) {
+    res.redirect('/user');
+    return;
     if (req.query.refer && req.query.refer.length < 128) {
         req.session.refer = req.query.refer;
     }
@@ -120,6 +122,6 @@ function home(req, res, next) {
 
 module.exports = {
     registerRoutes: function(app, passportConf) {
-        app.get('/', home);
+        app.get('/', passportConf.isAuthenticated, home);
     }
 };
