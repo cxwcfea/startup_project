@@ -89,8 +89,7 @@ function getPositions(req, res) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
         }
-        console.log(positions);
-        res.send(positions);
+        res.send(positions[0]);
     });
 }
 
