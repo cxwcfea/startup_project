@@ -2267,6 +2267,21 @@ function getPayUser(req, res) {
     });
 }
 
+function getAllUser(req, res) {
+    User.find({registered:true}, function (err, users) {
+        if (err) {
+            return res.status(500).send(err.toString());
+        }
+        var csvData = '手机号,当前配资额,可投资余额,当前投资额,余额,可兑换佣金\r\n<br>';
+        users.forEach(function (obj) {
+            csvData += obj.mobile + ',' + obj.finance.total_capital + ',' +
+                obj.invest.availableAmount + ',' + obj.invest.occupiedAmount + ',' + obj.finance.balance + ',' +
+                obj.commission + '\r\n<br>';
+        });
+        res.send(csvData);
+    });
+}
+
 function manualFinishContract(req, res) {
     var contractID = req.params.id;
     Contract.findById(contractID, function(err, contract) {
@@ -2496,6 +2511,8 @@ module.exports = {
         app.get('/admin/api/manual_finish_contract/:id', passportConf.requiresRole('admin'), manualFinishContract);
 
         app.post('/admin/api/move_homs_tonghuashun', passportConf.requiresRole('admin'), moveHomsToTonghuashun);
+
+        app.get('/admin/api/get_all_user_info', passportConf.requiresRole('admin'), getAllUser);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
