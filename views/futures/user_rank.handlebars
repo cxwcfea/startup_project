@@ -104,32 +104,33 @@
             <img src="/futures/images/user_rank_background.png" width="100%" alt=""/>
         </div>
         <div class="top-users">
-            <span class="top2"><br>小太阳<br>1234567</span>
-            <span class="top1"><br>mang神<br>1234567</span>
-            <span class="top3"><br>屌丝中得土豪<br>1234567</span>
-            <img class="top2-head img-circle" src="http://wx.qlogo.cn/mmopen/uchmtWQh7iarnsx58BbzlB1GAOzjI3S8elKicd6t8CiahGE3JSDmkVnTNzicQA44DdRliaLOsI1wLI9o79kynDUIchg/0" width="25%" />
-            <img class="top1-head img-circle" src="http://wx.qlogo.cn/mmopen/uchmtWQh7iarnsx58BbzlB1GAOzjI3S8elKicd6t8CiahGE3JSDmkVnTNzicQA44DdRliaLOsI1wLI9o79kynDUIchg/0" width="25%" />
-            <img class="top3-head img-circle" src="http://wx.qlogo.cn/mmopen/uchmtWQh7iarnsx58BbzlB1GAOzjI3S8elKicd6t8CiahGE3JSDmkVnTNzicQA44DdRliaLOsI1wLI9o79kynDUIchg/0" width="25%" />
+            <span class="top2"><br>\{{silverUser.wechat.wechat_name}}<br>\{{silverUser.wechat.profit}}</span>
+            <span class="top1"><br>\{{goldUser.wechat.wechat_name}}<br>\{{goldUser.wechat.profit}}</span>
+            <span class="top3"><br>\{{copperUser.wechat.wechat_name}}<br>\{{copperUser.wechat.profit}}</span>
+            <img class="top2-head img-circle" src="\{{silverUser.wechat.wechat_img}}" width="25%" />
+            <img class="top1-head img-circle" src="\{{goldUser.wechat.wechat_img}}" width="25%" />
+            <img class="top3-head img-circle" src="\{{copperUser.wechat.wechat_img}}" width="25%" />
             <img class="crown-top2" src="/futures/images/top2.png" width="20%" />
             <img class="crown-top1" src="/futures/images/top1.png" width="20%" />
             <img class="crown-top3" src="/futures/images/top3.png" width="20%" />
             <img class="user-badge" src="/futures/images/badge.png" width="35%" />
         </div>
     </div>
-    <div class="row users current">
-        <span class="col-xs-1 badge">42</span>
+    <div class="row users current" ng-hide="userInRank">
+        <span class="col-xs-1 badge">???</span>
         <img class="img-circle col-xs-2" src="http://wx.qlogo.cn/mmopen/uchmtWQh7iarnsx58BbzlB1GAOzjI3S8elKicd6t8CiahGE3JSDmkVnTNzicQA44DdRliaLOsI1wLI9o79kynDUIchg/0" width="12%" />
         <span class="col-xs-5">您没有上榜，啥也不说了，快去交易吧</span>
         <button class="btn btn-danger pull-right col-xs-3" ng-click="trade()">立即交易</button>
     </div>
-    <div class="row users">
-        <span class="col-xs-1 badge">4</span>
-        <img class="img-circle col-xs-2" src="http://wx.qlogo.cn/mmopen/uchmtWQh7iarnsx58BbzlB1GAOzjI3S8elKicd6t8CiahGE3JSDmkVnTNzicQA44DdRliaLOsI1wLI9o79kynDUIchg/0" width="12%" />
+    <div class="row users" ng-repeat="theUser in topUsers">
+        <span class="col-xs-1 badge">\{{4 + $index}}</span>
+        <img class="img-circle col-xs-2" src="\{{theUser.wechat.wechat_img}}" width="12%" />
         <span class="info">
-            <span class="col-xs-5">程翔</span>
-            <span class="pull-right col-xs-3 text-danger">1380</span>
+            <span class="col-xs-5">\{{theUser.wechat.wechat_name}}</span>
+            <span class="pull-right col-xs-3 text-danger">\{{theUser.wechat.profit}}</span>
         </span>
     </div>
+    <!--
     <div class="row users">
         <span class="col-xs-1 badge">5</span>
         <img class="img-circle col-xs-2" src="http://wx.qlogo.cn/mmopen/uchmtWQh7iarnsx58BbzlB1GAOzjI3S8elKicd6t8CiahGE3JSDmkVnTNzicQA44DdRliaLOsI1wLI9o79kynDUIchg/0" width="12%" />
@@ -154,4 +155,5 @@
             <span class="pull-right col-xs-3 text-danger">1380</span>
         </span>
     </div>
+    -->
 </div>

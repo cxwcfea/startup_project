@@ -4,6 +4,12 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     $scope.chartData = [4188.57, 4040.48, 4053.70, 4182.93, 4023.93, 3872.15, 4188.57, 4040.48, 4053.70, 4182.93, 4023.93, 3872.15, 4053.70, 4182.93, 4023.93, 3872.15, 4188.57, 4040.48];
     $scope.user = $scope.data.currentUser;
 
+    $scope.tradeData = {
+        up: 0,
+        down: 0,
+        sell: 0
+    };
+
     $scope.showShareHint = false;
     $scope.openIntroPopup = function (size) {
         var modalInstance = $modal.open({
@@ -96,6 +102,20 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
 
     $scope.showRank = function() {
         $location.path('/user_rank');
+    };
+
+    $scope.placeOrder = function(type) {
+        if (type === 1) {
+            $scope.tradeData.up += 1;
+            $scope.tradeData.sell += 1;
+        } else if (type === -1) {
+            $scope.tradeData.down += 1;
+            $scope.tradeData.sell += 1;
+        } else {
+            $scope.tradeData.down = 0;
+            $scope.tradeData.up = 0;
+            $scope.tradeData.sell = 0;
+        }
     };
 }]);
 
