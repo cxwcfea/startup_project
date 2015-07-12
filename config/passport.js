@@ -5,7 +5,8 @@ var mongoose = require("mongoose"),
     util = require('../lib/util'),
     env = process.env.NODE_ENV,
     config = require('../config/config')[env],
-    User = mongoose.model('User');
+    User = mongoose.model('User'),
+    mockTrader = require('../controllers/mockTrader');
 
 function generateRandomMobile(len) {
     var ret = util.getRandomInt(1, 9);
@@ -46,19 +47,32 @@ passport.use(new wechatStrategy({
             done(err);
         } else if (!user) {
             console.log('wechat login not found user with unionid:' + profile.unionid);
-            var userObj = {
-                mobile: generateRandomMobile(10),
-                password: 'xxxxxx',
-                score: 5,
-                roles: ['wechat'],
-                wechat: {
-                    wechat_uuid: profile.unionid,
-                    wechat_name: profile.nickname,
-                    wechat_img: profile.headimgurl
+            mockTrader.createUser({
+                name: profile.unionid,
+                warning: 100,
+                close: 100,
+                lever: 10,
+                debt: 10000000,
+                cash: 100000000
+            }, function(err, trader) {
+                if (err) {
+                    done(err);
                 }
-            };
-            User.create(userObj, function(err, user) {
-                done(err, user, profile);
+                var userObj = {
+                    mobile: generateRandomMobile(10),
+                    password: 'xxxxxx',
+                    score: 5,
+                    roles: ['wechat'],
+                    wechat: {
+                        wechat_uuid: profile.unionid,
+                        wechat_name: profile.nickname,
+                        wechat_img: profile.headimgurl,
+                        trader: trader
+                    }
+                };
+                User.create(userObj, function(err, user) {
+                    done(err, user, profile);
+                });
             });
         } else {
             console.log('wechat login found user with unionid:' + profile.unionid);

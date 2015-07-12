@@ -61,7 +61,7 @@ module.exports = {
          */
         app.get('/api/futures/user_rank', fetchUserRankData);
 
-        app.get('/futures', /*passportConf.isWechatAuthenticated,*/ home);
+        app.get('/futures', passportConf.isWechatAuthenticated, home);
 
         app.get('/futures/*', function(req, res, next) {
             var startTime = moment('2015-07-10');

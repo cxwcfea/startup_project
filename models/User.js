@@ -61,7 +61,11 @@ var userSchema = new mongoose.Schema({
         wechat_name: String,
         wechat_img: String,
         logged: { type: Boolean, default: true },
-        profit: { type: Number, default: 0 }
+        profit: { type: Number, default: 0 },
+        trader: {
+            type: mongoose.Schema.ObjectId,
+            ref: 'PPJUser'
+        }
     },
 
     identity: {
