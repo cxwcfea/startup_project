@@ -49,10 +49,7 @@ passport.use(new wechatStrategy({
             console.log('wechat login not found user with unionid:' + profile.unionid);
             mockTrader.createUser({
                 name: profile.unionid,
-                warning: 100,
-                close: 100,
-                lever: 10,
-                debt: 10000000,
+                close: 90000000,
                 cash: 100000000
             }, function(err, trader) {
                 if (err) {
