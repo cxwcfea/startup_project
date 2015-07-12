@@ -10,7 +10,7 @@
 <div class="slogan-bd ttn-slogan">
     <div class="line"></div>
     <div class="pic">
-        <img src="images/yyn-slogan.png" width="146" alt="按月配资">
+        <img src="images/yyn-slogan.png" width="146" alt="按月融资">
     </div>
 </div>
 
@@ -20,7 +20,7 @@
         <input type="number" id="J_yynPrincipal" min="50000" max="1000000" placeholder="最少5万，最多100万" ng-model="vm.summary.amount" ng-change="vm.calculateValue()" required autofocus>
     </div>
 
-    <h3>配资比例</h3>
+    <h3>资金倍数</h3>
     <div class="money-select">
         <ul class="money-options" id="J_yynMoney">
             <li ng-repeat="item in vm.parameterList" ng-class="{current: item === vm.selectedValue}" ng-click="vm.selectLever(item)">

@@ -65,7 +65,7 @@ angular.module('userApp').controller('UserOrderListCtrl', ['$scope', '$http', '$
             value: 1
         },
         {
-            name: '配资明细',
+            name: '融资明细',
             value: 2
         },
         {

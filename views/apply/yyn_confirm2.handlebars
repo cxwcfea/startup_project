@@ -44,7 +44,9 @@
 <div class="wrapper" ng-app="mainApp" ng-controller="MainYYnConfirmCtrl" ng-cloak>
     <div class="freeTitle">
         <div class="fl"><span>月月牛</span> &nbsp;&nbsp;炒股利器、最高100万、可投资1-6个月</div>
+        <!--
         <a href="/info/guide">新手引导>></a>
+        -->
         <div class="clear"></div>
     </div>
     <div class="column">
@@ -65,7 +67,7 @@
     <div class="yyn-confirm">
         <div class="confirm-money">
             <div class="money-box">
-                预存配资保证金 <em>\{{apply.deposit | currency:'':2}}</em>元
+                预存融资保证金 <em>\{{apply.deposit | currency:'':2}}</em>元
                 <span class="plus">+</span>
                 首月利息<em>\{{interest | currency:'':2}}</em>元
                 <span>合计需支付<em>\{{totalAmount | currency:'':2}}</em>元</span>
@@ -82,10 +84,10 @@
             </div>
         </div>
         <div class="confirm-capital">
-            <h5>配资方案</h5>
+            <h5>融资方案</h5>
             <table>
                 <tr>
-                    <td>配资金额(元)</td>
+                    <td>融资金额(元)</td>
                     <td>总操盘金额(元)</td>
                     <td>预警线(元)</td>
                     <td>止损线(元)</td>
@@ -106,10 +108,10 @@
             <h5>操盘须知</h5>
             <ol>
                 <!--
-                <li>1、全程只需按天支付配资管理费，无其他任何费用；</li>
-                <li>2、资金使用期限：最短2天，最长10天，账户管理费在配资成功后一次性收取；配资到期默认每天自动延期，费用不足时自动终止；</li>
+                <li>1、全程只需按天支付融资管理费，无其他任何费用；</li>
+                <li>2、资金使用期限：最短2天，最长10天，账户管理费在融资成功后一次性收取；融资到期默认每天自动延期，费用不足时自动终止；</li>
                 <li>3、风险保证金：在您操盘出现亏损后用于支付亏损金，结束时如无亏损全额退还，保证金越低收益越大，同时风险也越大；</li>
-                <li>4、配资管理费：不包含交易印花税、过户费和佣金，且直接由券商和证券交易所收取，实际费用以交易所和券商规定为准。</li>
+                <li>4、融资管理费：不包含交易印花税、过户费和佣金，且直接由券商和证券交易所收取，实际费用以交易所和券商规定为准。</li>
                 -->
             </ol>
         </div>

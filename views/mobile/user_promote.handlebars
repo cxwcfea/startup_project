@@ -32,7 +32,7 @@
 <div class="user-prom" ng-show="vm.showFirstPage">
     <div class="share">
         <h5>分享给好友赚取佣金</h5>
-        <p>我正在这里进行股票配资炒股，可以让您的资金放大10倍利润扩大10倍，一个涨停就赚100%，抓住牛市，赶紧来看看吧！
+        <p>我正在这里进行股票融资炒股，可以让您的资金放大10倍利润扩大10倍，一个涨停就赚100%，抓住牛市，赶紧来看看吧！
             <br />您的推广码：\{{vm.referName}}
             <br />您的推广链接：http://www.niujinwang.com/?refer=\{{vm.user.referName}}
             <h5><a href="http://www.niujinwang.com/?refer=\{{vm.user.referName}}">您的推广页面</a></h5><a href="http://www.niujinwang.com/?refer=\{{vm.user.referName}}">点击</a>进入推广页面，只需分享该页面，新用户通过该页面注册牛金网即为您的推广用户
@@ -55,12 +55,12 @@
     <ul class="intro">
         <li>
             <h5>如何赚钱？</h5>
-            <p>所有通过您的推广连接访问过来的用户，注册后都将成为您的下线用户，而当这些用户在本站配资时，您就可以赚取服务费的7%。我们已向所有推广用户发放了几千万佣金。</p>
+            <p>所有通过您的推广连接访问过来的用户，注册后都将成为您的下线用户，而当这些用户在本站融资时，您就可以赚取服务费的7%。我们已向所有推广用户发放了几千万佣金。</p>
             <p class="center"><img src="images/promote-process.jpg" width="300" height="238" alt=""></p>
         </li>
         <li>
             <h5>佣金怎么结算？</h5>
-            <p>您的用户在注册后一年内每发生一笔配资，在配资完成后，您即可获得一笔佣金，当您的佣金达到100元的时候，即可兑换取出，也可以在本站进行配资。</p>
+            <p>您的用户在注册后一年内每发生一笔融资，在融资完成后，您即可获得一笔佣金，当您的佣金达到100元的时候，即可兑换取出，也可以在本站进行融资。</p>
         </li>
     </ul>
 </div>
@@ -78,7 +78,7 @@
     </div>
     <ul class="asset">
         <li>
-            我的配资用户
+            我的融资用户
             <em>\{{vm.myPayUsers.length}}</em>
         </li>
         <li>
@@ -90,7 +90,7 @@
             <em>\{{vm.total_fee | currency:'':2}}</em>
         </li>
         <li>
-            用户累计配资总额
+            用户累计融资总额
             <em>\{{vm.totalApplyAmount | currency:'':2}}</em>
         </li>
     </ul>
@@ -98,7 +98,7 @@
         <table>
             <tr>
                 <th>用户名</th>
-                <th>配资金额（元）</th>
+                <th>融资金额（元）</th>
                 <th>注册时间</th>
             </tr>
             <tr ng-repeat="user in vm.myUserList">

@@ -9,7 +9,7 @@
         <table>
             <tr>
                 <td width="245" valign="top">
-                    <p class="p01">配资总额</p>
+                    <p class="p01">融资总额</p>
                     <p class="p02"><span>\{{applyVM.user.finance.total_capital | currency:'':2 | integerNum}}</span>\{{applyVM.user.finance.total_capital | currency:'':2 | numTrunc}}</p>
                 </td>
                 <td width="205" valign="top">
@@ -28,11 +28,11 @@
             </tr>
             <tr>
                 <td valign="top">
-                    <p class="p01">累计配资总额</p>
+                    <p class="p01">累计融资总额</p>
                     <p class="p03">\{{applyVM.user.finance.history_capital | currency:'':2}}</p>
                 </td>
                 <td valign="top">
-                    <p class="p01">累计配资笔数</p>
+                    <p class="p01">累计融资笔数</p>
                     <p class="p03">\{{applyVM.ongoing_apply_num}}</p>
                 </td>
                 <td valign="top">
@@ -55,9 +55,9 @@
     <div class="tra_tableBox02">
         <table>
             <tr>
-                <th>配资金额(元)</th>
+                <th>融资金额(元)</th>
                 <th>保证金(元)</th>
-                <th>配资时间</th>
+                <th>融资时间</th>
                 <th>操盘到期日</th>
                 <th>状态</th>
                 <th>操作</th>
