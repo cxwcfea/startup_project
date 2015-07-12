@@ -73,7 +73,7 @@ module.exports = function(app) {
 
     app.post('/apply/apply_postpone/:serial_id', passportConf.isAuthenticated, applies.postApplyPostpone);
 
-    app.get('/free_apply', function(req, res, next) {
+    app.get('/free_apply', passportConf.isAuthenticated, function(req, res, next) {
         res.locals.free_apply_menu = true;
         res.render('apply/free_apply');
     });
@@ -115,7 +115,7 @@ module.exports = function(app) {
 
     //app.get('/yyn', applies.getYYnPage);
 
-    app.get('/apply', applies.getApplyPage);
+    app.get('/apply', passportConf.isAuthenticated, applies.getApplyPage);
 
     app.post('/apply', applies.placeApply);
 
@@ -238,7 +238,7 @@ module.exports = function(app) {
         res.render('info/' + req.params[0]);
     });
 
-    app.get('/yyn', function(req, res) {
+    app.get('/yyn', passportConf.isAuthenticated, function(req, res) {
         res.locals.yyn_menu = true;
         res.render('apply/yyn2');
     });
