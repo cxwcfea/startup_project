@@ -93,6 +93,14 @@ function getPositions(req, res) {
     });
 }
 
+function getOrders(req, res) {
+    if (!req.user || !req.user.wechat || !req.user.wechat.wechat_uuid) {
+        return res.status(403).send({error_msg:'user need log in'});
+    }
+    req.body.user_id = req.user.wechat.trader;
+    mockTrader.getHistoryOrders(req, res);
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         /*
@@ -107,6 +115,8 @@ module.exports = {
         app.post('/api/futures/create_order', placeOrder);
 
         app.get('/api/futures/get_positions', getPositions);
+
+        app.get('/api/futures/get_orders', getOrders);
 
         app.get('/futures', passportConf.isWechatAuthenticated, home);
 

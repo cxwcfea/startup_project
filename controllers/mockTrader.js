@@ -239,12 +239,17 @@ function getHistoryOrders(req, res) {
         {timestamp: {$lt: req.body.date_end + 8*3600*1000}}
     ]}).sort({timestamp: -1}).limit(req.body.limit);
     findings.exec(function(err, collection) {
-        if (err || !collection) {
+        if (err) {
             console.log(err);
-            res.send({code: 1, "msg": err.errmsg});
+            res.status(500).send({error_msg: err.errmsg});
             return;
         }
-        res.send({code: 0, result:collection});
+        if (!collection) {
+            console.log('order not found');
+            res.status(400).send({error_msg: 'order not found'});
+            return;
+        }
+        res.send(collection);
     });
 }
 
@@ -401,6 +406,7 @@ module.exports = {
     createOrder: createOrder,
     getStockCode: getStockCode,
     riskControl: riskControl,
-    getPositions: getPositions
+    getPositions: getPositions,
+    getHistoryOrders: getHistoryOrders
 };
 
