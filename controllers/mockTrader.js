@@ -90,8 +90,8 @@ function closeAll(userId, portfolio, income, contractInfo, cb) {
             if (-portf.quantity < 0) diffShort = Math.abs(portf.quantity);
             Portfolio.update({_id: portf._id},
                 {
-                    $set:{quantity:-portf.quantity},
-                    $inc:{fee: costs.fee, longQuantity: diffLong, shortQuantity: diffShort}
+                    $set:{quantity:0, longQuantity: 0, shortQuantity: 0},
+                    $inc:{fee: costs.fee}
                 },
                 function(err, numberAffected, raw) {
                     asyncObj.remaining -= 1;
