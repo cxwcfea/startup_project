@@ -177,7 +177,7 @@ function windControl(userId, forceClose, cb) {
                         }
                         return;
                     }
-                    redisClient.get(makeRedisKey(contract), function(err, priceInfoString) {
+                    global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
                         if (err || !priceInfoString) {
                             console.log(err);
                             asyncObj.has_error = true;
