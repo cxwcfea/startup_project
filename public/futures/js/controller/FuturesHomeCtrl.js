@@ -10,6 +10,28 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         sell: 0
     };
 
+    function getUserPositions() {
+        $http.get('/api/futures/get_positions')
+            .success(function (data, status) {
+                $scope.tradeData.up = data.longQuantity;
+                $scope.tradeData.down = data.shortQuantity;
+                $scope.tradeData.sell = data.quantity;
+            })
+            .error(function(data, status) {
+                displayError(data.error_msg);
+            });
+    }
+
+    getUserPositions();
+
+    function displayError(msg) {
+        $scope.errorMsg = msg;
+        $scope.showError = true;
+        $timeout(function() {
+            $scope.showError = false;
+        }, 2000);
+    }
+
     $scope.showShareHint = false;
     $scope.openIntroPopup = function (size) {
         var modalInstance = $modal.open({
@@ -115,6 +137,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         }
         $http.post('/api/futures/create_order', {quantity:quantity, force_close:forceClose})
             .success(function(data, status) {
+                /*
                 if (type === 1) {
                     $scope.tradeData.up += 1;
                     $scope.tradeData.sell += 1;
@@ -126,13 +149,11 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                     $scope.tradeData.up = 0;
                     $scope.tradeData.sell = 0;
                 }
+                */
+                getUserPositions();
             })
             .error(function(data, status) {
-                $scope.errorMsg = data.error_msg;
-                $scope.showError = true;
-                $timeout(function() {
-                    $scope.showError = false;
-                }, 2000);
+                displayError(data.error_msg);
             });
     };
 }]);

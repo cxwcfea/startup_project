@@ -248,17 +248,21 @@ function getHistoryOrders(req, res) {
     });
 }
 
-function getPositions(req, res) {
-    console.log(req.body);
+function getPositions(data, cb) {
+    console.log(data);
     // find user
-    var findings = Portfolio.find({userId: req.body.user_id});
+    var findings = Portfolio.find({userId: data.user_id});
     findings.exec(function(err, collection) {
-        if (err || !collection) {
+        if (err) {
             console.log(err);
-            res.send({code: 1, "msg": err.errmsg});
+            cb(err.toString());
             return;
         }
-        res.send({code: 0, result:collection});
+        if (!collection) {
+            console.log('position not found');
+            return cb('position not found');
+        }
+        cb(null, collection);
     });
 }
 
@@ -392,6 +396,7 @@ module.exports = {
     createUser: createUser,
     createOrder: createOrder,
     getStockCode: getStockCode,
-    riskControl: riskControl
+    riskControl: riskControl,
+    getPositions: getPositions
 };
 
