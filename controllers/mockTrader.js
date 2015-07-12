@@ -37,7 +37,7 @@ var PPJOrderSchema = mongoose.Schema({
     // filledAmount: { type: Number, default: 0},  // basis: cent, 0.01
     price: { type: Number, default: 0},  // basis: cent, 0.01
     fee: { type: Number, default: 0},  // basis: cent, 0.01
-    lockedCash: { type: Number, default: 0},  // basis: cent, 0.01
+    lockedCash: { type: Number, default: 0}  // basis: cent, 0.01
 });
 var Order = mongoose.model('PPJOrder', PPJOrderSchema);
 
@@ -71,12 +71,13 @@ function getCosts(stock_price, quantity, position) {
     return {raw: raw, fee: fee, open: raw+fee, close: raw-fee};
 }
 
-function closeAll(userId, portfolio, income, contractInfo, req, res, aftermath) {
+function closeAll(userId, portfolio, income, contractInfo, cb) {
     var asyncObj = {remaining: portfolio.length, value: 0, has_error: false, errmsg:""};
     User.update({_id: userId}, {$inc:{cash: income}}, function(err, numberAffected, raw) {
         if (err || !numberAffected) {
             console.log(err);
-            res.send({code: -6, "msg": err.errmsg});
+            //res.send({code: -6, "msg": err.errmsg});
+            cb(err.toString());
             return;
         }
         for (var p in portfolio) {
@@ -101,7 +102,8 @@ function closeAll(userId, portfolio, income, contractInfo, req, res, aftermath) 
                     }
                     if (asyncObj.has_error) {
                         if (asyncObj.remaining <= 0){
-                            res.send({code: -6, "msg": asyncObj.errmsg});
+                            //res.send({code: -6, "msg": asyncObj.errmsg});
+                            cb(asyncObj.errmsg);
                         }
                         return;
                     }
@@ -121,7 +123,8 @@ function closeAll(userId, portfolio, income, contractInfo, req, res, aftermath) 
                         }
                         if (asyncObj.has_error) {
                             if (asyncObj.remaining <= 0){
-                                res.send({code: -7, "msg": asyncObj.errmsg});
+                                //res.send({code: -7, "msg": asyncObj.errmsg});
+                                cb(asyncObj.errmsg);
                             }
                             return;
                         }
@@ -131,24 +134,26 @@ function closeAll(userId, portfolio, income, contractInfo, req, res, aftermath) 
                         }
                         console.log("Completed: " + asyncObj);
                         // all set
-                        aftermath(req, res);
+                        cb(null);
                     });
                 });
         }
     });
 }
 
-function windControl(userId, forceClose, req, res, aftermath) {
+function windControl(userId, forceClose, cb) {
     User.findOne({_id: userId}, function(err, user) {
         if (err || !user) {
             console.log(err);
-            res.send({code: -1, "msg": err.errmsg});
+            //res.send({code: -1, "msg": err.errmsg});
+            cb(err.toString());
             return;
         }
         Portfolio.find({userId: userId}, function(err, portfolio) {
             if (err || !portfolio) {
                 console.log(err);
-                res.send({code: -2, "msg": err.errmsg});
+                //res.send({code: -2, "msg": err.errmsg});
+                cb(err.toString());
                 return;
             }
             var asyncObj = {remaining: portfolio.length, value: 0, has_error: false, errmsg:""};
@@ -167,7 +172,8 @@ function windControl(userId, forceClose, req, res, aftermath) {
                     }
                     if (asyncObj.has_error) {
                         if (asyncObj.remaining <= 0){
-                            res.send({code: -3, "msg": asyncObj.errmsg});
+                            //res.send({code: -3, "msg": asyncObj.errmsg});
+                            cb(asyncObj.errmsg);
                         }
                         return;
                     }
@@ -178,7 +184,8 @@ function windControl(userId, forceClose, req, res, aftermath) {
                         }
                         if (asyncObj.has_error) {
                             if (asyncObj.remaining <= 0){
-                                res.send({code: -4, "msg": asyncObj.errmsg});
+                                //res.send({code: -4, "msg": asyncObj.errmsg});
+                                cb(asyncObj.errmsg);
                             }
                             return;
                         }
@@ -197,11 +204,11 @@ function windControl(userId, forceClose, req, res, aftermath) {
                         if (!forceClose && user.cash + income > user.close) {
                             // No risk
                             console.log("No risk " + userId + ", " + user.cash + ", " + income + ", " + user.close);
-                            aftermath(req, res);
+                            cb(null);
                         } else {
                             // Close all positions
                             console.log("Closing user " + userId);
-                            closeAll(userId, portfolio, income, contractInfo, req, res, aftermath);
+                            closeAll(userId, portfolio, income, contractInfo, cb);
                         }
                     });
                 });
@@ -270,87 +277,97 @@ function createUser(data, cb) {
 
 function riskControl(req, res) {
     console.log(req.body);
-    windControl(req.body.user_id, req.body.force_close, req, res, function(req, res) { res.send({code: 0}); });
+    windControl(req.body.user_id, req.body.force_close, function(err) {
+        if (err) {
+            return res.status(500).send({error_msg:err.toString()});
+        }
+        res.send({});
+    });
 }
 
-function createOrder(req, res) {
-    console.log(req.body);
-    if (req.body.order.quantity == 0 || req.body.order.quantity % kHand != 0) {
+function createOrder(data, cb) {
+    console.log(data);
+    if (!data.order.quantity || data.order.quantity % kHand != 0) {
         console.log("invalid quantity");
-        res.send({code: 3, "msg": "invalid quantity"});
+        cb("invalid quantity");
         return;
     }
     // find user
-    User.findOne({_id: req.body.user_id}, function(err, user) {
+    User.findOne({_id: data.user_id}, function(err, user) {
         if (err) {
             console.log(err);
-            res.send({code: 1, "msg": err.errmsg});
+            cb(err.toString());
             return;
         }
         // find contract
         Contract.findOne({
-            "stock_code": req.body.order.contract.stock_code,
-            "exchange": req.body.order.contract.exchange
+            "stock_code": data.order.contract.stock_code,
+            "exchange": data.order.contract.exchange
         }, function(err, contract) {
             if (err || !contract) {
                 console.log(err);
-                res.send({code: 2, "msg": err.errmsg});
+                cb(err.toString());
                 return;
             }
             // find contract price info
-            redisClient.get(makeRedisKey(contract), function(err, priceInfoString) {
+            global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
                 var priceInfo = JSON.parse(priceInfoString);
                 console.log(priceInfo);
                 Portfolio.findOne({$and: [{contractId: contract._id}, {userId: user._id}]}, function(err, portfolio) {
                     if (err) {
                         console.log(err);
-                        res.send({code: 5, "msg": err.errmsg});
+                        cb(err.toString());
                         return;
                     }
                     if (!portfolio) {
                         portfolio = new Portfolio({contractId: contract._id, userId: user._id});
                     }
-                    var costs = getCosts(priceInfo.last, req.body.order.quantity, portfolio.quantity);
+                    var costs = getCosts(priceInfo.last, data.order.quantity, portfolio.quantity);
                     if (user.cash < costs.open) {
-                        res.send({code: 4, "msg": "user.cash < costs.open", data: {costs: costs, cash: user.cash}});
+                        //res.send({code: 4, "msg": "user.cash < costs.open", data: {costs: costs, cash: user.cash}});
+                        cb('user.cash < costs.open');
                         return;
                     }
                     var order = new Order({
                         contractId: contract._id,
                         userId: user._id,
-                        quantity: req.body.order.quantity,
+                        quantity: data.order.quantity,
                         price: priceInfo.last,
                         fee: costs.fee,
                         lockedCash: costs.open
                     });
                     user.cash -= costs.open;
-                    portfolio.quantity += req.body.order.quantity;
-                    if (req.body.order.quantity > 0) {
-                        portfolio.longQuantity += req.body.order.quantity;
+                    portfolio.quantity += data.order.quantity;
+                    if (data.order.quantity > 0) {
+                        portfolio.longQuantity += data.order.quantity;
                     } else {
-                        portfolio.shortQuantity -= req.body.order.quantity;
+                        portfolio.shortQuantity -= data.order.quantity;
                     }
                     portfolio.fee += costs.fee;
                     // write back
                     order.save(function(err) {
                         if (err) {
                             console.log(err);
-                            res.send({code: 5, "msg": err.errmsg});
+                            //res.send({code: 5, "msg": err.errmsg});
+                            cb(err.toString());
                             return;
                         }
                         user.save(function(err) {
                             if (err) {
                                 console.log(err);
-                                res.send({code: 6, "msg": err.errmsg});
+                                //res.send({code: 6, "msg": err.errmsg});
+                                cb(err.toString());
                                 return;
                             }
                             portfolio.save(function(err) {
                                 if (err) {
                                     console.log(err);
-                                    res.send({code: 7, "msg": err.errmsg});
+                                    //res.send({code: 7, "msg": err.errmsg});
+                                    cb(err.toString());
                                     return;
                                 }
-                                res.send({code: 0, result: order._id});
+                                //res.send({code: 0, result: order._id});
+                                cb(null, order);
                             });
                         });
                     });
@@ -360,11 +377,21 @@ function createOrder(req, res) {
     });
 }
 
+function getStockCode() {
+    var d = new Date();
+    var month = d.getMonth()+1;
+    if (month < 10) month = "0" + month;
+    return "IF" + (d.getYear()-100) + month;
+}
+
 module.exports = {
     User: User,
     Contract: Contract,
     Order: Order,
     Portfolio: Portfolio,
-    createUser: createUser
+    createUser: createUser,
+    createOrder: createOrder,
+    getStockCode: getStockCode,
+    riskControl: riskControl
 };
 

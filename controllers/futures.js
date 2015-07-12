@@ -6,6 +6,7 @@ var User = require('../models/User'),
     applies = require('../controllers/apply'),
     yeepay = require('../lib/yeepay'),
     util = require('../lib/util'),
+    mockTrader = require('./mockTrader'),
     useragent = require('useragent'),
     _ = require('lodash'),
     moment = require('moment'),
@@ -50,6 +51,36 @@ function fetchUserRankData(req, res) {
     });
 }
 
+function placeOrder(req, res) {
+    if (!req.user || !req.user.wechat || !req.user.wechat.wechat_uuid) {
+        return res.status(403).send({error_msg:'user need log in'});
+    }
+    var quantity = req.body.quantity;
+    var forceClose = req.body.force_close;
+    if (forceClose) {
+        req.body.user_id = req.user.wechat.trader;
+        req.body.force_close = 1;
+        mockTrader.riskControl(req, res);
+    } else {
+        var obj = {
+            order: {
+                quantity: quantity,
+                contract: {
+                    stock_code: mockTrader.getStockCode(),
+                    exchange: 'future'
+                }
+            },
+            user_id: req.user.wechat.trader
+        };
+        mockTrader.createOrder(obj, function(err, order) {
+            if (err) {
+                return res.status(500).send({error_msg:err.toString()});
+            }
+            res.send(order);
+        });
+    }
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         /*
@@ -60,6 +91,8 @@ module.exports = {
         });
          */
         app.get('/api/futures/user_rank', fetchUserRankData);
+
+        app.post('/api/futures/create_order', placeOrder);
 
         app.get('/futures', passportConf.isWechatAuthenticated, home);
 

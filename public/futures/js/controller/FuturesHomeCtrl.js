@@ -1,5 +1,5 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window', '$location', '$modal', function($scope, $window, $location, $modal) {
+angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window', '$location', '$modal', '$http', '$timeout', function($scope, $window, $location, $modal, $http, $timeout) {
     $scope.chartLabels = ["9:15", "10:15", "11:15", "13:45", "14:45", "15:15"];
     $scope.chartData = [4188.57, 4040.48, 4053.70, 4182.93, 4023.93, 3872.15, 4188.57, 4040.48, 4053.70, 4182.93, 4023.93, 3872.15, 4053.70, 4182.93, 4023.93, 3872.15, 4188.57, 4040.48];
     $scope.user = $scope.data.currentUser;
@@ -105,17 +105,35 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     };
 
     $scope.placeOrder = function(type) {
-        if (type === 1) {
-            $scope.tradeData.up += 1;
-            $scope.tradeData.sell += 1;
-        } else if (type === -1) {
-            $scope.tradeData.down += 1;
-            $scope.tradeData.sell += 1;
-        } else {
-            $scope.tradeData.down = 0;
-            $scope.tradeData.up = 0;
-            $scope.tradeData.sell = 0;
+        var quantity = 10000;
+        if (type === -1) {
+            quantity = 0 - quantity;
         }
+        var forceClose = false;
+        if (type === 0) {
+            forceClose = true;
+        }
+        $http.post('/api/futures/create_order', {quantity:quantity, force_close:forceClose})
+            .success(function(data, status) {
+                if (type === 1) {
+                    $scope.tradeData.up += 1;
+                    $scope.tradeData.sell += 1;
+                } else if (type === -1) {
+                    $scope.tradeData.down += 1;
+                    $scope.tradeData.sell += 1;
+                } else {
+                    $scope.tradeData.down = 0;
+                    $scope.tradeData.up = 0;
+                    $scope.tradeData.sell = 0;
+                }
+            })
+            .error(function(data, status) {
+                $scope.errorMsg = data.error_msg;
+                $scope.showError = true;
+                $timeout(function() {
+                    $scope.showError = false;
+                }, 2000);
+            });
     };
 }]);
 
