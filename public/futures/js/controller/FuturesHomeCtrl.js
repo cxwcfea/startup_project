@@ -11,7 +11,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         sell: 0
     };
 
-    function getUserPositions() {
+    function getUserPositions(init) {
         $http.get('/api/futures/get_positions')
             .success(function (data, status) {
                 var position = data.position;
@@ -21,13 +21,16 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                     $scope.tradeData.sell = Math.abs($scope.tradeData.up + $scope.tradeData.down);
                 }
                 $scope.profit = data.user.cash / 100 - 1000000;
+                if (!init && $scope.tradeData.sell === 0) {
+                    $scope.openGainPopup('lg');
+                }
             })
             .error(function(data, status) {
                 displayError(data.error_msg);
             });
     }
 
-    getUserPositions();
+    getUserPositions(true);
 
     function displayError(msg) {
         $scope.errorMsg = msg;
@@ -145,9 +148,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         $http.post('/api/futures/create_order', {quantity:quantity, force_close:forceClose})
             .success(function(data, status) {
                 getUserPositions();
-                if ($scope.tradeData.sell === 0) {
-                    $scope.openGainPopup('lg');
-                }
             })
             .error(function(data, status) {
                 displayError(data.error_msg);
