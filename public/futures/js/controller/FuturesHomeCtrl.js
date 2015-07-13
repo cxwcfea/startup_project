@@ -18,6 +18,9 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                     $scope.tradeData.up = data.longQuantity / HAND;
                     $scope.tradeData.down = data.shortQuantity / HAND;
                     $scope.tradeData.sell = data.quantity / HAND;
+                    if ($scope.tradeData.sell === 0) {
+                        $scope.openGainPopup('lg');
+                    }
                 }
             })
             .error(function(data, status) {
@@ -108,10 +111,12 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         });
     };
 
+    /*
     if (!$scope.data.introPopupOpened) {
         $scope.openIntroPopup('lg');
         $scope.data.introPopupOpened = true;
     }
+    */
 
     $scope.btnClick = function() {
         $scope.openGainPopup('lg');
@@ -140,19 +145,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         }
         $http.post('/api/futures/create_order', {quantity:quantity, force_close:forceClose})
             .success(function(data, status) {
-                /*
-                if (type === 1) {
-                    $scope.tradeData.up += 1;
-                    $scope.tradeData.sell += 1;
-                } else if (type === -1) {
-                    $scope.tradeData.down += 1;
-                    $scope.tradeData.sell += 1;
-                } else {
-                    $scope.tradeData.down = 0;
-                    $scope.tradeData.up = 0;
-                    $scope.tradeData.sell = 0;
-                }
-                */
                 getUserPositions();
             })
             .error(function(data, status) {
