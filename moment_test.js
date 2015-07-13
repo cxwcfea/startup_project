@@ -160,3 +160,7 @@ console.log(startTime.toDate());
 
 var theDays = moment(1436758926543);
 console.log(theDays.toDate());
+
+var now = moment();
+
+console.log((now - theDays) / 1000 / 60 / 60 / 24);

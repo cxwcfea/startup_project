@@ -95,7 +95,9 @@ angular.module('userApp').controller('UserApplyListCtrl', ['$scope', '$location'
         item.start_date = item.startTime ? item.startTime : days.startTime();
         item.end_date = item.endTime ? item.endTime : days.endTime(item.start_date, item.period, item.type);
         item.days_till_now = days.tradeDaysTillNow(item.startTime);
-        item.left_days = item.period - item.days_till_now;
+        var now = moment();
+        var endDate = moment(item.end_date);
+        item.left_days = Math.ceil((endDate - now) / 3600 / 1000 / 24);
     }
 
     vm.pageChanged = function() {
