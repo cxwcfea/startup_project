@@ -786,6 +786,7 @@ exports.confirmApply = function(req, res, next) {
 
 exports.postConfirmApply = function(req, res, next) {
     var applyData = req.body;
+    logger.debug('postConfirmApply user:' + req.user.mobile + ' apply:' + JSON.stringify(applyData));
     if (req.user._id != applyData.userID) {
         res.status(403);
         logger.warn('postConfirmApply error:apply is not belongs to the user');
