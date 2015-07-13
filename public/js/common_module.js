@@ -415,6 +415,23 @@
                     return "Homs";
             }
         };
+    }).filter("displayFutureQuantity", function() {
+        return function(input) {
+            if (!angular.isNumber(input)) {
+                return input;
+            } else {
+                var ret = '';
+                if (input > 0) {
+                    ret += '涨';
+                } else {
+                    ret += '跌'
+                }
+                input /= 10000;
+                input = Math.abs(input);
+                ret += input;
+                return ret;
+            }
+        };
     }).service("days", function () {
         this.startTime = getStartDay;
         this.endTime = getEndDay;
