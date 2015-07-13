@@ -93,6 +93,7 @@ function getPositions(req, res) {
             if (err) {
                 return res.status(500).send({error_msg:err.toString()});
             }
+            console.log(user);
             res.send({position:positions[0], user:user});
         });
     });
