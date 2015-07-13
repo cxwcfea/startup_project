@@ -103,7 +103,7 @@
         </ul>
         -->
         <div class="profit">
-            <p>盈利 <em>\{{user.wechat.profit | number:2}}</em> 元</p>
+            <p>盈利 <em>\{{profit | number:2}}</em> 元</p>
         </div>
         {{#unless tradeTime}}
             <p class="trader-time-hint text-danger" ng-click="showTradeTime()">现在是非交易时间，点击查看交易时间</p>

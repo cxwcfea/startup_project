@@ -89,7 +89,12 @@ function getPositions(req, res) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
         }
-        res.send(positions[0]);
+        mockTrader.getUserInfo({user_id:req.user.wechat.trader}, function(err, user) {
+            if (err) {
+                return res.status(500).send({error_msg:err.toString()});
+            }
+            res.send({position:positions[0], user:user});
+        });
     });
 }
 

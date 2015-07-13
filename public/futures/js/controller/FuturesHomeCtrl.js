@@ -14,14 +14,17 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     function getUserPositions() {
         $http.get('/api/futures/get_positions')
             .success(function (data, status) {
-                if (data) {
-                    $scope.tradeData.up = data.longQuantity / HAND;
-                    $scope.tradeData.down = data.shortQuantity / HAND;
-                    $scope.tradeData.sell = data.quantity / HAND;
+                var position = data.position;
+                var userInfo = data.user | { cash:0 };
+                if (position) {
+                    $scope.tradeData.up = position.longQuantity / HAND;
+                    $scope.tradeData.down = position.shortQuantity / HAND;
+                    $scope.tradeData.sell = position.quantity / HAND;
                     if ($scope.tradeData.sell === 0) {
                         $scope.openGainPopup('lg');
                     }
                 }
+                $scope.profit = userInfo.cash / 100 - 1000000;
             })
             .error(function(data, status) {
                 displayError(data.error_msg);
