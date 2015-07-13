@@ -25,6 +25,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                     }
                 }
                 $scope.profit = userInfo.cash / 100 - 1000000;
+                alert($scope.profit);
             })
             .error(function(data, status) {
                 displayError(data.error_msg);
