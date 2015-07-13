@@ -24,7 +24,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                         $scope.openGainPopup('lg');
                     }
                 }
-                alert(data.user);
+                alert(data.user.cash);
                 $scope.profit = userInfo.cash / 100 - 1000000;
             })
             .error(function(data, status) {
