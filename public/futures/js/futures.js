@@ -31,6 +31,7 @@ angular.module('futuresApp').config(['$routeProvider', '$httpProvider', function
 }]);
 
 angular.module('futuresApp').controller('IntroModalCtrl', ['$scope', '$modalInstance', 'profit', function ($scope, $modalInstance, profit) {
+    alert(profit);
     $scope.profit = profit;
     $scope.ok = function () {
         $modalInstance.close();
