@@ -15,7 +15,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         $http.get('/api/futures/get_positions')
             .success(function (data, status) {
                 var position = data.position;
-                var userInfo = data.user | { cash:0 };
                 if (position) {
                     $scope.tradeData.up = position.longQuantity / HAND;
                     $scope.tradeData.down = position.shortQuantity / HAND;
@@ -24,8 +23,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                         $scope.openGainPopup('lg');
                     }
                 }
-                alert(data.user.cash);
-                $scope.profit = userInfo.cash / 100 - 1000000;
+                $scope.profit = data.user.cash / 100 - 1000000;
             })
             .error(function(data, status) {
                 displayError(data.error_msg);
