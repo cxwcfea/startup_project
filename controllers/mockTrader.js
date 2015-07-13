@@ -55,6 +55,7 @@ var Portfolio = mongoose.model('PPJPortfolio', PPJPortfolioSchema);
 
 var kHand = 10000;
 var kFeePerHand = 20000;  // 200 RMB per hand
+var kFeePerTenThousand = 25;  // 0.25 RMB per 10000.00 RMB
 // util.js
 function makeTimestamp() { return Date.now();}
 function makeRedisKey(contract) { return "mt://" + contract.exchange + "/" + contract.stock_code; }
@@ -67,7 +68,8 @@ function getCosts(stock_price, quantity, position) {
         q = diff;
     }
     raw = stock_price * q / 100;
-    fee = quantity / kHand * kFeePerHand;
+    //fee = Math.abs(position) / kHand * kFeePerHand;
+    fee = Math.abs(position) * stock_price / 10000 * kFeePerTenThousand / 10000;
     return {raw: raw, fee: fee, open: raw+fee, close: raw-fee};
 }
 

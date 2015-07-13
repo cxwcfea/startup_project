@@ -146,9 +146,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             .success(function(data, status) {
                 getUserPositions();
                 if (type === 0) {
-                    if ($scope.tradeData.sell === 0) {
-                        $scope.openGainPopup('lg');
-                    }
+                    $scope.openGainPopup('lg');
                 }
             })
             .error(function(data, status) {
