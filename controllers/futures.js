@@ -98,6 +98,8 @@ function getOrders(req, res) {
         return res.status(403).send({error_msg:'user need log in'});
     }
     req.body.user_id = req.user.wechat.trader;
+    req.body.date_begin = 0;
+    req.body.date_end = Date.now();
     mockTrader.getHistoryOrders(req, res);
 }
 
