@@ -228,9 +228,9 @@ function getUserInfo(data, cb) {
             return;
         }
         if (!user) {
-            console.log(err);
+            console.log('user not found');
             //res.send({code: 1, "msg": err.errmsg});
-            cb(err.errmsg);
+            cb('user not found');
             return;
         }
         //res.send({code: 0, result:user});
