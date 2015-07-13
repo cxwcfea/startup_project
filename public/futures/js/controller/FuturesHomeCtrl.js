@@ -18,7 +18,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                 if (position) {
                     $scope.tradeData.up = position.longQuantity / HAND;
                     $scope.tradeData.down = position.shortQuantity / HAND;
-                    $scope.tradeData.sell = Math.abs($scope.tradeData.up - $scope.tradeData.down);
+                    $scope.tradeData.sell = Math.abs($scope.tradeData.up + $scope.tradeData.down);
                 }
                 $scope.profit = data.user.cash / 100 - 1000000;
             })
