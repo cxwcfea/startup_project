@@ -75,7 +75,9 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             controller: 'GainModalCtrl',
             size: size,
             resolve: {
-                profit: delta
+                profit: function () {
+                    return delta;
+                }
             }
         });
 
