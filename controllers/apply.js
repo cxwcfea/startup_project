@@ -154,6 +154,7 @@ exports.postApplyPostpone = function(req, res, next) {
 
     var serial_id = req.params.serial_id;
 
+    logger.debug('postApplyPostpone serial_id:' + serial_id + ' period:' + period + ' timestamp:' + Date.now());
     async.waterfall([
         function(callback) {
             Apply.findOne({serialID:serial_id}, function(err, apply) {
@@ -327,6 +328,7 @@ exports.addDeposit = function(req, res, next) {
         return res.send({error_msg:'deposit amount invalid:' + amount});
     }
     var serial_id = req.params.serial_id;
+    logger.debug('addDeposit serial_id:' + serial_id + ' amount:' + amount + ' timestamp:' + Date.now());
     async.waterfall([
         function(callback) {
             Apply.findOne({serialID:serial_id}, function(err, apply) {
@@ -653,6 +655,7 @@ exports.placeApply = function(req, res, next) {
         return res.send({error_msg:'invalid data'});
     }
 
+    logger.debug('placeApply user:' + req.user.mobile + ' apply:' + JSON.stringify(req.body));
     var amount = Number(Number(req.body.amount).toFixed(2));
     var deposit = Number(Number(req.body.deposit).toFixed(2));
     var lever = Math.round(amount / deposit);
