@@ -1,3 +1,14 @@
+<style>
+    .neword_Left {
+        width: 430px;
+    }
+    .neword_right {
+        width: 325px;
+    }
+    .acc_btn02 {
+        width: 90px;
+    }
+</style>
 <div class="fl tra_right">
     <div class="tra_column">
         <span class="dis fl">资金明细</span>
@@ -7,9 +18,12 @@
             <p class="p01">总资产(元)</p>
             <p class="p02"><span>\{{orderVM.user.finance.deposit+orderVM.user.finance.freeze_capital+orderVM.user.finance.balance+orderVM.user.invest.availableAmount+orderVM.user.invest.occupiedAmount | currency:'':2 | integerNum}}</span>\{{orderVM.user.finance.deposit+orderVM.user.finance.freeze_capital+orderVM.user.finance.balance | currency:'':2 | numTrunc}}</p>
         </div>
+        <div>
+        </div>
         <div class="fr neword_right">
             <a href="/user/#/recharge" class="acc_btn01">充&nbsp;值</a>
-            <a href="/user/#/withdraw" class="acc_btn02">提&nbsp;现</a>
+            <a href="/user/#/withdraw" class="acc_btn01">提&nbsp;现</a>
+            <a href="" class="acc_btn02" ng-click="orderVM.showInvestTransWindow = true;">投资转入余额</a>
         </div>
         <div class="neword_img"></div>
     </div>
@@ -119,3 +133,43 @@
         </div>
     </div>
 </div>
+
+<div class="regTcc" ng-show="orderVM.showInvestTransWindow">
+    <div class="tmbg"></div>
+    <div class="tar_TccBox">
+        <div class="regColumn">
+            投资本金转入余额
+            <div class="loginClose jq_loginClose" ng-click="orderVM.closePopupWindow()"></div>
+        </div>
+        <div class="pass_Box jq_email1" ng-hide="orderVM.transSuccess">
+            <div class=" pass_formBox">
+                <div class="fl pass_left">
+                    可转金额
+                </div>
+                <div class="pass_right fl">
+                    <span class="color_999999">\{{orderVM.user.invest.availableAmount | number:2}}元</span>
+                </div>
+            </div>
+            <div class="pass_formBox">
+                <div class="fl pass_left">
+                    预转出金额
+                </div>
+                <div class="pass_right fl">
+                    <input type="number" min="0.01" class="newcar_inputText pass_inputText" ng-model="orderVM.trans_amount" required>
+                </div>
+            </div>
+            <alert ng-repeat="alert in orderVM.alerts" type="\{{alert.type}}" close="orderVM.closeAlert($index)">\{{alert.msg}}</alert>
+            <a class="newrec_btn02 newrec_zfbbtn01 jq_Btn02" href="" ng-click="orderVM.investToRecharge()">提  交</a>
+        </div>
+        <div class="pass_box2 jq_email2" ng-show="orderVM.transSuccess">
+            <div class="pass_img fl"></div>
+            <div class="pass_text fl">
+                <p class="p01">转账结果</p>
+                <p class="p01">\{{orderVM.trans_amount | currency:'':2}}元投资本金已转出到余额</p>
+                <a class="newrec_btn02 " href="" ng-click="orderVM.closePopupWindow()">确   定</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+

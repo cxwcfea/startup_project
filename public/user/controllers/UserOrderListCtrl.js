@@ -90,5 +90,30 @@ angular.module('userApp').controller('UserOrderListCtrl', ['$scope', '$http', '$
         vm.currentCategory = vm.categories[3];
     };
 
+    vm.investToRecharge = function() {
+        if (!vm.trans_amount) {
+            addAlert('danger', '请输入欲转出金额');
+            return;
+        }
+        var data = {
+            amount: vm.trans_amount
+        };
+        $http.post('/api/user/invest_to_balance', data)
+            .success(function(data, status) {
+                vm.transSuccess = true;
+                vm.user.finance.balance += vm.trans_amount;
+                vm.user.invest.availableAmount -= vm.trans_amount;
+            })
+            .error(function(data, status) {
+                addAlert('danger', data.error_msg);
+            });
+    };
+
+    vm.closePopupWindow = function() {
+        vm.alerts = [];
+        vm.showInvestTransWindow = false;
+        vm.transSuccess = false;
+        vm.trans_amount = 0;
+    };
 
 }]);
