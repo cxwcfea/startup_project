@@ -1,5 +1,5 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesExchangeCtrl', ['$scope', '$window', '$modal', function($scope, $window, $modal) {
+angular.module('futuresApp').controller('FuturesExchangeCtrl', ['$scope', '$window', '$modal', '$location', function($scope, $window, $modal, $location) {
     $scope.user = $scope.data.currentUser;
 
     $scope.profitLevel = [0.1, 0.2, 0.3, 0.4];
@@ -37,5 +37,9 @@ angular.module('futuresApp').controller('FuturesExchangeCtrl', ['$scope', '$wind
 
     $scope.showScoreHint = function() {
         openScoreHintPopup('lg');
+    };
+
+    $scope.changeCash = function() {
+        $location.path('/add_wechat');
     };
 }]);

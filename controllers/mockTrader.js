@@ -217,16 +217,24 @@ function windControl(userId, forceClose, cb) {
     });
 }
 
-function getUserInfo(req, res) {
-    console.log(req.body);
+function getUserInfo(data, cb) {
+    console.log(data);
     // find user
-    User.findOne({_id: req.body.user_id}, function(err, user) {
-        if (err || !user) {
+    User.findOne({_id: data.user_id}, function(err, user) {
+        if (err) {
             console.log(err);
-            res.send({code: 1, "msg": err.errmsg});
+            //res.send({code: 1, "msg": err.errmsg});
+            cb(err.errmsg);
             return;
         }
-        res.send({code: 0, result:user});
+        if (!user) {
+            console.log(err);
+            //res.send({code: 1, "msg": err.errmsg});
+            cb(err.errmsg);
+            return;
+        }
+        //res.send({code: 0, result:user});
+        cb(null, user);
     });
 }
 
@@ -249,7 +257,14 @@ function getHistoryOrders(req, res) {
             res.status(400).send({error_msg: 'order not found'});
             return;
         }
-        res.send(collection);
+        getUserInfo({user_id:req.body.user_id}, function(err, user) {
+            if (err) {
+                console.log(err);
+                res.status(500).send({error_msg: err.errmsg});
+                return;
+            }
+            res.send({user:user, orders:collection});
+        });
     });
 }
 
@@ -407,6 +422,7 @@ module.exports = {
     getStockCode: getStockCode,
     riskControl: riskControl,
     getPositions: getPositions,
-    getHistoryOrders: getHistoryOrders
+    getHistoryOrders: getHistoryOrders,
+    getUserInfo: getUserInfo
 };
 
