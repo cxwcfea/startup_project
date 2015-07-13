@@ -30,7 +30,8 @@ angular.module('futuresApp').config(['$routeProvider', '$httpProvider', function
         });
 }]);
 
-angular.module('futuresApp').controller('IntroModalCtrl', function ($scope, $modalInstance) {
+angular.module('futuresApp').controller('IntroModalCtrl', ['$scope', '$modalInstance', 'profit', function ($scope, $modalInstance, profit) {
+    $scope.profit = profit;
     $scope.ok = function () {
         $modalInstance.close();
     };
@@ -38,7 +39,7 @@ angular.module('futuresApp').controller('IntroModalCtrl', function ($scope, $mod
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
-});
+}]);
 
 angular.module('futuresApp').controller('GainModalCtrl', function ($scope, $modalInstance) {
     $scope.ok = function () {
