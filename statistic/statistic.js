@@ -1081,6 +1081,17 @@ function changeManager(callback) {
     });
 }
 
+function disableAllInvest(callback) {
+    User.update({'invest.enable':true}, {$set:{'invest.enable':false}}, {multi:true}, function(err, numberAffected, raw) {
+        if (err) {
+            callback(err);
+        } else {
+            console.log(numberAffected);
+            callback(null);
+        }
+    });
+}
+
 var options = {};
 mongoose.connect(config.db, options);
 var db = mongoose.connection;
@@ -1308,7 +1319,7 @@ db.once('open', function callback() {
             }
              */
             function(callback) {
-                getApplyUserData(function(err) {
+                disableAllInvest(function(err) {
                     callback(err);
                 });
             }
