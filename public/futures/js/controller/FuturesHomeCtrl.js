@@ -77,6 +77,9 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             resolve: {
                 profit: function () {
                     return delta;
+                },
+                constant: function() {
+                    return 100000;
                 }
             }
         });

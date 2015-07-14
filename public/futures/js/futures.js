@@ -30,8 +30,9 @@ angular.module('futuresApp').config(['$routeProvider', '$httpProvider', function
         });
 }]);
 
-angular.module('futuresApp').controller('IntroModalCtrl', ['$scope', '$modalInstance', 'profit', function ($scope, $modalInstance, profit) {
+angular.module('futuresApp').controller('IntroModalCtrl', ['$scope', '$modalInstance', 'profit', 'constant', function ($scope, $modalInstance, profit, constant) {
     $scope.profit = profit;
+    $scope.constant = constant;
     $scope.ok = function () {
         $modalInstance.close();
     };
