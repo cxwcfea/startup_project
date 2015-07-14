@@ -29,7 +29,9 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                 if (!init && $scope.tradeData.sell === 0) {
                     delta = $scope.profit - lastProfit;
                     lastProfit = $scope.profit;
-                    $scope.openGainPopup('lg');
+                    if (delta > 0) {
+                        $scope.openGainPopup('lg');
+                    }
                 }
             })
             .error(function(data, status) {
@@ -133,10 +135,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         $scope.data.introPopupOpened = true;
     }
     */
-
-    $scope.btnClick = function() {
-        $scope.openGainPopup('lg');
-    };
 
     $scope.showTradeTime = function() {
         $scope.openTimeHintPopup('lg');
