@@ -113,7 +113,7 @@ function test(req, res) {
     var query = User.find({});
     query.exists('wechat.wechat_uuid');
     query.populate('wechat.trader');
-    query.sort('-wechat.profit').limit(8).select('wechat');
+    query.sort('-wechat.trader.cash').limit(8).select('wechat');
     query.exec(function(err, users) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
