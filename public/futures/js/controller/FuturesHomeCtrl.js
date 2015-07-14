@@ -30,7 +30,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                     delta = $scope.profit - lastProfit;
                     lastProfit = $scope.profit;
                     $scope.openGainPopup('lg');
-                    alert(delta);
                 }
             })
             .error(function(data, status) {
