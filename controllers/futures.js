@@ -109,6 +109,28 @@ function getOrders(req, res) {
     mockTrader.getHistoryOrders(req, res);
 }
 
+function test(req, res) {
+    var query = User.find({});
+    query.exists('wechat.wechat_uuid');
+    query.populate('trader');
+    query.sort('-wechat.profit').limit(8).select('wechat');
+    query.exec(function(err, users) {
+        if (err) {
+            return res.status(500).send({error_msg:err.toString()});
+        }
+        var userInRank = false;
+        /*
+         for (var i = 0; i < users.length; ++i) {
+         if (users[i].wechat.wechat_uuid == req.user.wechat.wechat_uuid) {
+         userInRank = true;
+         break;
+         }
+         }
+         */
+        res.send({users:users, userInRank:userInRank});
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         /*
@@ -127,6 +149,8 @@ module.exports = {
         app.get('/api/futures/get_orders', getOrders);
 
         app.get('/futures', passportConf.isWechatAuthenticated, home);
+
+        app.get('/futures/test', test);
 
         app.get('/futures/*', function(req, res, next) {
             var startTime = moment('2015-07-10');
