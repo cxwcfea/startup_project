@@ -40,9 +40,10 @@ angular.module('futuresApp').controller('IntroModalCtrl', ['$scope', '$modalInst
     };
 }]);
 
-angular.module('futuresApp').controller('GainModalCtrl', ['$scope', '$modalInstance', 'profit', 'constant', function ($scope, $modalInstance, profit, constant) {
+angular.module('futuresApp').controller('GainModalCtrl', ['$scope', '$modalInstance', 'profit', 'constant', 'cash', function ($scope, $modalInstance, profit, constant, cash) {
     $scope.profit = profit;
     $scope.constant = constant;
+    $scope.cash = cash;
     $scope.ok = function () {
         $modalInstance.close();
     };

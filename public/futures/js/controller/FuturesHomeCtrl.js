@@ -81,7 +81,18 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                     return delta;
                 },
                 constant: function() {
-                    return 100000;
+                    return 1000;
+                },
+                cash: function() {
+                    if ($scope.user.score > 99) {
+                        return 2;
+                    } else if ($scope.user.score > 399) {
+                        return 3;
+                    } else if ($scope.user.score > 999) {
+                        return 4;
+                    } else {
+                        return 1;
+                    }
                 }
             }
         });
