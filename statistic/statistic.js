@@ -1319,7 +1319,7 @@ db.once('open', function callback() {
             }
              */
             function(callback) {
-                disableAllInvest(function(err) {
+                historyCloseApplyFee(function(err) {
                     callback(err);
                 });
             }
