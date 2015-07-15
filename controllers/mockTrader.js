@@ -203,14 +203,20 @@ function windControl(userId, forceClose, cb) {
                         }
                         console.log("Completed: " + asyncObj);
                         var income = asyncObj.value;
+                        console.log("User info: " + userId + ", " + user.cash + ", " + income + ", " + user.close);
                         if (!forceClose && user.cash + income > user.close) {
                             // No risk
-                            console.log("No risk " + userId + ", " + user.cash + ", " + income + ", " + user.close);
+                            console.log("No risk");
                             cb(null);
                         } else {
-                            // Close all positions
-                            console.log("Closing user " + userId);
-                            closeAll(userId, portfolio, income, contractInfo, cb);
+                            if (income > 0) {
+                                // Close all positions
+                                console.log("Closing user");
+                                closeAll(userId, portfolio, income, contractInfo, cb);
+                            } else {
+                                console.log("Closed");
+                                cb(null);
+                            }
                         }
                     });
                 });
