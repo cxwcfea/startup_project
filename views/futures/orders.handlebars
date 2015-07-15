@@ -41,14 +41,14 @@
             <div class="user-info col-xs-offset-1 col-xs-6">
                 <ul>
                     <li class="name">\{{user.wechat.wechat_name}}</li>
-                    <li>盈&nbsp;&nbsp;&nbsp;&nbsp;利: \{{user.wechat.profit}}元</li>
+                    <li>盈&nbsp;&nbsp;&nbsp;&nbsp;利: \{{userInfo.cash - originCapital}}元</li>
                     <li>积分点: \{{user.score}}</li>
                 </ul>
             </div>
         </div>
     </div>
     <div class="finance-info">
-        <span class="pull-left">资产:\{{userInfo.cash | number:2}}元</span><span class="pull-right">本金:\{{1000000.00 | number:2}}元</span>
+        <span class="pull-left">资产:\{{userInfo.cash | number:2}}元</span><span class="pull-right">本金:\{{originCapital | number:2}}元</span>
     </div>
     <div class="records">
         <table class="records-table">
@@ -66,7 +66,7 @@
                 </td>
                 <td align="right">
                     <strong>-\{{order.fee / 100 | number:2}}</strong>
-                    <p>\{{order.price | number:1}}</p>
+                    <p>\{{order.price / 100 | number:1}}</p>
                 </td>
             </tr>
             <!--
