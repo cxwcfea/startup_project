@@ -26,7 +26,7 @@ angular.module('futuresApp').controller('FuturesUserRankCtrl', ['$scope', '$wind
         });
 
     $scope.trade = function() {
-        $location.path('/futures');
+        $window.location.assign('/futures');
     }
 
 }]);
