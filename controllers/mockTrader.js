@@ -80,7 +80,7 @@ function closeAll(userId, portfolio, income, contractInfo, cb) {
         for (var p in portfolio) {
             var portf = portfolio[p];
             console.log(contractInfo);
-            var costs = getCosts(contractInfo[portf.contractId].last, -portf.quantity, portf.quantity);
+            var costs = getCosts(contractInfo[portf.contractId].LastPrice, -portf.quantity, portf.quantity);
             var diffLong = 0;
             var diffShort = 0;
             if (-portf.quantity > 0) diffLong = Math.abs(portf.quantity);
@@ -109,7 +109,7 @@ function closeAll(userId, portfolio, income, contractInfo, cb) {
                         contractId: portf.contractId,
                         userId: userId,
                         quantity: -portf.quantity,
-                        price: contractInfo[portf.contractId].last,
+                        price: contractInfo[portf.contractId].LastPrice,
                         fee: costs.fee,
                         lockedCash: costs.open
                     });
