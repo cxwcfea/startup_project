@@ -1339,13 +1339,13 @@ db.once('open', function callback() {
                 moveHomsToTonghuashun(function(err) {
                     callback(err);
                 });
-            }
-             */
+            },
             function(callback) {
                 closeAllContract(function(err) {
                     callback(err);
                 });
             }
+             */
 
             /*
             function(callback) {
