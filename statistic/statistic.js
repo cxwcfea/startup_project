@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
     _ = require('lodash'),
     async = require('async'),
     util = require('../lib/util'),
+    invest = require('../lib/invest'),
     sms = require('../lib/sms'),
     Apply = require('../models/Apply'),
     Card = require('../models/Card'),
@@ -1092,6 +1093,28 @@ function disableAllInvest(callback) {
     });
 }
 
+function finishContract(contract, callback) {
+    invest.returnProfitToInvestor(contract, function(err) {
+        if (err) {
+            console.log('checkContract error ' + err.toString());
+        }
+        callback(null);
+    });
+}
+
+function closeAllContract(callback) {
+    Contract.find({status:1}, function(err, contracts) {
+        async.mapSeries(contracts, finishContract, function(err, results) {
+            if (err) {
+                console.log('finish contract error:' + err.toString());
+            } else {
+                console.log('finish contract done');
+            }
+            callback(null);
+        });
+    });
+}
+
 var options = {};
 mongoose.connect(config.db, options);
 var db = mongoose.connection;
@@ -1319,7 +1342,7 @@ db.once('open', function callback() {
             }
              */
             function(callback) {
-                historyCloseApplyFee(function(err) {
+                closeAllContract(function(err) {
                     callback(err);
                 });
             }
