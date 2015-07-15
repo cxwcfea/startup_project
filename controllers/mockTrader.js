@@ -15,12 +15,7 @@ var User = mongoose.model('PPJUser', PPJUserSchema);
 
 var PPJContractSchema = mongoose.Schema({
     exchange: { type: String, default: "future" },
-    stock_code: { type: String, default: function() {
-        var d = new Date();
-        var month = d.getMonth()+1;
-        if (month < 10) month = "0" + month;
-        return "IF" + (d.getYear()-100) + month;
-    }}
+    stock_code: { type: String, default: getStockCode}
 });
 PPJContractSchema.index({exchange: 1, stock_code: -1}, {unique: true});
 var Contract = mongoose.model('PPJContract', PPJContractSchema);
@@ -195,7 +190,7 @@ function windControl(userId, forceClose, cb) {
                         console.log(priceInfo);
 
                         contractInfo[portf.contractId] = priceInfo;
-                        var costs = getCosts(priceInfo.last, -portf.quantity, portf.quantity);
+                        var costs = getCosts(priceInfo.LastPrice, -portf.quantity, portf.quantity);
                         asyncObj.value += costs.close;
                         if (asyncObj.remaining > 0) {
                             console.log("Still counting: " + asyncObj);
@@ -358,7 +353,7 @@ function createOrder(data, cb) {
                     if (!portfolio) {
                         portfolio = new Portfolio({contractId: contract._id, userId: user._id});
                     }
-                    var costs = getCosts(priceInfo.last, data.order.quantity, portfolio.quantity);
+                    var costs = getCosts(priceInfo.LastPrice, data.order.quantity, portfolio.quantity);
                     if (user.cash < costs.open) {
                         //res.send({code: 4, "msg": "user.cash < costs.open", data: {costs: costs, cash: user.cash}});
                         cb('user.cash < costs.open');
@@ -368,7 +363,7 @@ function createOrder(data, cb) {
                         contractId: contract._id,
                         userId: user._id,
                         quantity: data.order.quantity,
-                        price: priceInfo.last,
+                        price: priceInfo.LastPrice,
                         fee: costs.fee,
                         lockedCash: costs.open
                     });
@@ -414,10 +409,26 @@ function createOrder(data, cb) {
 }
 
 function getStockCode() {
+    /*
     var d = new Date();
     var month = d.getMonth()+1;
     if (month < 10) month = "0" + month;
     return "IF" + (d.getYear()-100) + month;
+    */
+    return "IFCURR";
+}
+
+function getLastFuturesPrice(cb) {
+    global.redis_client.get('mt://future/IFCURR', function(err, priceInfoString) {
+        if (err) {
+            cb(err);
+        }
+        if (!priceInfoString) {
+            cb('the value not found in redis');
+        }
+        var priceInfo = JSON.parse(priceInfoString);
+        cb(null, {ts:priceInfo.ts, lastPrice:priceInfo.LastPrice});
+    });
 }
 
 module.exports = {
@@ -431,6 +442,7 @@ module.exports = {
     riskControl: riskControl,
     getPositions: getPositions,
     getHistoryOrders: getHistoryOrders,
-    getUserInfo: getUserInfo
+    getUserInfo: getUserInfo,
+    windControl: windControl,
+    getLastFuturesPrice: getLastFuturesPrice
 };
-

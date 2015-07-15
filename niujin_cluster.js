@@ -17,6 +17,9 @@ if(cluster.isMaster){
             task.scheduleDailyDataJob();
             task.scheduleContractCheckJob();
             task.scheduleOperationDataCollectJob();
+        } else if (worker.id === 2) {
+            task.scheduleFuturesRiskControlJob();
+            task.scheduleFuturesForceCloseJob();
         }
     });
 

@@ -1,5 +1,6 @@
 'use strict';
-var util = require('../lib/util');
+var util = require('../lib/util'),
+    mockTrader = require('../controllers/mockTrader');
 
 var channelName = 'futures';
 //var users
@@ -26,8 +27,17 @@ module.exports = function(io) {
         });
     });
     setInterval(function() {
-        var x = (new Date()).getTime(), // current time
-            y = util.getRandomInt(3600, 4000);
-        io.sockets.emit('new_data', [x, y]);
-    }, 60000);
+        mockTrader.getLastFuturesPrice(function(err, data) {
+            if (err) {
+                console.log('getLastFuturesPrice error:' + err.toString());
+                var x = (new Date()).getTime(), // current time
+                    y = util.getRandomInt(3600, 4000);
+                io.sockets.emit('new_data', [x, y]);
+            } else {
+                var x = data.ts, // current time
+                    y = data.lastPrice;
+                io.sockets.emit('new_data', [x, y]);
+            }
+        });
+    }, 30000);
 };
