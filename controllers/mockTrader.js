@@ -48,9 +48,11 @@ var PPJPortfolioSchema = mongoose.Schema({
 });
 var Portfolio = mongoose.model('PPJPortfolio', PPJPortfolioSchema);
 
-var kHand = 10000;
+var kHand = 100;
 var kFeePerHand = 20000;  // 200 RMB per hand
 var kFeePerTenThousand = 25;  // 0.25 RMB per 10000.00 RMB
+var kMarketDepositPercentage = 1200;  // to buy 1 hand you need 12.00% deposit
+var kMarketPointValue = 30000;  // 300RMB per point
 // util.js
 function makeTimestamp() { return Date.now();}
 function makeRedisKey(contract) { return "mt://" + contract.exchange + "/" + contract.stock_code; }
@@ -58,14 +60,17 @@ function getCosts(stock_price, quantity, position) {
     var raw = 0;
     var fee = 0;
     var q = Math.abs(quantity);  // additional cost for adjusting positions
-    var diff = Math.abs(position) - Math.abs(position + quantity);
-    if (diff > 0) {
-        q = diff;
+    if ((position > 0 && quantity < 0) || (position < 0 && quantity > 0)) {
+        var pos_released = Math.min(Math.abs(position), Math.abs(quantity));
+        var new_open = Math.abs(quantity) - pos_released;
+        q = new_open - pos_released;
     }
-    raw = stock_price * q / 100;
-    //fee = Math.abs(position) / kHand * kFeePerHand;
-    fee = Math.abs(position) * stock_price / 10000 * kFeePerTenThousand / 10000;
-    return {raw: raw, fee: fee, open: raw+fee, close: raw-fee};
+    var coeff = kMarketPointValue * stock_price / 10000.0 * kMarketDepositPercentage / 10000.0;
+    raw = coeff * q;
+    // fee = Math.abs(quantity) / kHand * kFeePerHand;
+    fee = kMarketPointValue * Math.abs(quantity) * stock_price / 10000 * kFeePerTenThousand / 1000000;
+    var locked_cash = coeff * Math.abs(quantity) + fee;
+    return {raw: raw, fee: fee, open: raw+fee, locked_cash: locked_cash};
 }
 
 function closeAll(userId, portfolio, income, contractInfo, cb) {
@@ -111,7 +116,7 @@ function closeAll(userId, portfolio, income, contractInfo, cb) {
                         quantity: -portf.quantity,
                         price: contractInfo[portf.contractId].LastPrice,
                         fee: costs.fee,
-                        lockedCash: costs.open
+                        lockedCash: costs.locked_cash
                     });
                     order.save(function(err) {
                         if (err) {
@@ -138,19 +143,44 @@ function closeAll(userId, portfolio, income, contractInfo, cb) {
     });
 }
 
+function setStatus(userId, status) {
+    User.update({_id: userId}, {$set:{status: status}}, function(err, numberAffected, raw) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        if (!numberAffected) {
+            console.log('mockTrader.setStatus no user found');
+            return;
+        }
+    });
+}
+
 function windControl(userId, forceClose, cb) {
-    User.findOne({_id: userId}, function(err, user) {
-        if (err || !user) {
+    User.findOne({$and: [{_id: userId}, {status: 0}]}, function(err, user) {
+        if (err) {
             console.log(err);
             //res.send({code: -1, "msg": err.errmsg});
             cb(err.toString());
             return;
         }
+        if (!user) {
+            console.log('no available user');
+            //res.send({code: -1, "msg": err.errmsg});
+            cb('no available user');
+            return;
+        }
         Portfolio.find({userId: userId}, function(err, portfolio) {
-            if (err || !portfolio) {
+            if (err) {
                 console.log(err);
                 //res.send({code: -2, "msg": err.errmsg});
                 cb(err.toString());
+                return;
+            }
+            if (!portfolio) {
+                console.log('no available portfolio');
+                //res.send({code: -2, "msg": err.errmsg});
+                cb('no available portfolio');
                 return;
             }
             var asyncObj = {remaining: portfolio.length, value: 0, has_error: false, errmsg:""};
@@ -178,6 +208,7 @@ function windControl(userId, forceClose, cb) {
                         if (err || !priceInfoString) {
                             console.log(err);
                             asyncObj.has_error = true;
+                            if (err) asyncObj.errmsg = err.errmsg;
                         }
                         if (asyncObj.has_error) {
                             if (asyncObj.remaining <= 0){
@@ -192,7 +223,7 @@ function windControl(userId, forceClose, cb) {
 
                         contractInfo[portf.contractId] = priceInfo;
                         var costs = getCosts(priceInfo.LastPrice, -portf.quantity, portf.quantity);
-                        asyncObj.value += costs.close;
+                        asyncObj.value -= costs.open;
                         if (asyncObj.remaining > 0) {
                             console.log("Still counting: " + asyncObj);
                             return;
@@ -208,6 +239,7 @@ function windControl(userId, forceClose, cb) {
                             if (income > 0) {
                                 // Close all positions
                                 console.log("Closing user");
+                                setStatus(userId, 1);  // cannot buy
                                 closeAll(userId, portfolio, income, contractInfo, cb);
                             } else {
                                 console.log("Closed");
@@ -327,6 +359,11 @@ function createOrder(data, cb) {
             cb(err.toString());
             return;
         }
+        if (user.status != 0) {
+            //res.send({code: 3, "msg": "Account status is not normal."});
+            cb('Account status is not normal.');
+            return;
+        }
         // find contract
         Contract.findOne({
             "stock_code": data.order.contract.stock_code,
@@ -367,7 +404,7 @@ function createOrder(data, cb) {
                         quantity: data.order.quantity,
                         price: priceInfo.LastPrice,
                         fee: costs.fee,
-                        lockedCash: costs.open
+                        lockedCash: costs.locked_cash
                     });
                     user.cash -= costs.open;
                     portfolio.quantity += data.order.quantity;
