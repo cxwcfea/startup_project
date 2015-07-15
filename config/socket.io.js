@@ -34,7 +34,6 @@ module.exports = function(io) {
                     y = util.getRandomInt(3600, 4000);
                 io.sockets.emit('new_data', [x, y]);
             } else {
-                console.log('getLastFuturesPrice data:' + data);
                 var x = data.ts, // current time
                     y = data.lastPrice;
                 io.sockets.emit('new_data', [x, y]);
