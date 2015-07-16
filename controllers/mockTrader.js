@@ -239,7 +239,8 @@ function windControl(userId, forceClose, cb) {
                             if (income > 0) {
                                 // Close all positions
                                 console.log("Closing user");
-                                setStatus(userId, 1);  // cannot buy
+                                if (!forceClose)
+                                    setStatus(userId, 1);  // cannot buy
                                 closeAll(userId, portfolio, income, contractInfo, cb);
                             } else {
                                 console.log("Closed");
