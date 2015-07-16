@@ -10,6 +10,7 @@ function generateInitData() {
         if (err) {
             console.log(err.toString());
         }
+        data = JSON.parse(data);
         console.log(data);
     });
 
