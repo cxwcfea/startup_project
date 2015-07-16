@@ -10,15 +10,14 @@ function generateInitData() {
         if (err) {
             console.log(err.toString());
         }
-        var data = [];
+        var ret = [];
         for (var i in data) {
             var line = data[i];
             line = JSON.parse(line.replace(/'/g, ''))[0];
             //console.log(JSON.parse(line));
-            data.push([line.ts/1000, line.LastPrice]);
+            ret.push([line.ts/1000, line.LastPrice]);
         }
-        console.log(data);
-        return data;
+        return ret;
     });
 
     /*
