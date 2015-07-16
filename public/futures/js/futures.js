@@ -96,11 +96,11 @@ angular.module("futuresApp")
                 var series;
                 // send a join event with your name
                 socket.emit('join', 'user');
-                socket.on('new_data', function(newData) {
-                    console.log('new data ' + newData);
-                    series.addPoint(newData, true, true);
-                });
                 socket.on('history_data', function(historyData) {
+                    socket.on('new_data', function(newData) {
+                        console.log('new data ' + newData);
+                        series.addPoint(newData, true, true);
+                    });
                     //alert(historyData);
                     element.highcharts('StockChart', {
                         chart : {
