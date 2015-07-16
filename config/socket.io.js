@@ -59,7 +59,7 @@ module.exports = function(io) {
         for (var i in data) {
             var line = data[i];
             line = JSON.parse(line.replace(/'/g, ''))[0];
-            historyData.push([parseInt(line.ts/1000), parseInt(line.LastPrice)]);
+            historyData.shift([parseInt(line.ts/1000), parseInt(line.LastPrice)]);
         }
 
         io.on('connection', function(socket) {
@@ -81,12 +81,12 @@ module.exports = function(io) {
                     console.log('getLastFuturesPrice error:' + err.toString());
                     var x = (new Date()).getTime(), // current time
                         y = util.getRandomInt(3600, 4000);
-                    historyData.push([x, y]);
+                    historyData.shift([x, y]);
                     io.sockets.emit('new_data', [x, y]);
                 } else {
                     var x = parseInt(data.ts/1000), // current time
                         y = parseInt(data.lastPrice);
-                    historyData.push([x, y]);
+                    historyData.shift([x, y]);
                     io.sockets.emit('new_data', [x, y]);
                 }
             });
