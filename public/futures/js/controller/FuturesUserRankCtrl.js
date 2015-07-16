@@ -4,17 +4,17 @@ angular.module('futuresApp').controller('FuturesUserRankCtrl', ['$scope', '$wind
         .success(function(data, status) {
             var users = data.users;
             users.sort(function(x, y) {
-                return x.wechat.trader.cash - y.wechat.trader.cash;
+                return y.wechat.trader.cash - x.wechat.trader.cash;
             });
-            $scope.goldUser = users.pop();
+            $scope.goldUser = users.shift();
             if (!$scope.goldUser) {
                 $scope.goldUser = {};
             }
-            $scope.silverUser = users.pop();
+            $scope.silverUser = users.shift();
             if (!$scope.silverUser) {
                 $scope.silverUser = {};
             }
-            $scope.copperUser = users.pop();
+            $scope.copperUser = users.shift();
             if (!$scope.copperUser) {
                 $scope.copperUser = {};
             }
