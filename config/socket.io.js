@@ -15,7 +15,7 @@ function generateInitData(cb) {
             var line = data[i];
             line = JSON.parse(line.replace(/'/g, ''))[0];
             //console.log(JSON.parse(line));
-            ret.push([line.ts/1000, line.LastPrice]);
+            ret.push([line.ts/1000, parseFloat(line.LastPrice)]);
         }
         console.log(ret);
         cb(ret);
