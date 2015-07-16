@@ -12,6 +12,7 @@ function generateInitData() {
         }
         for (var i in data) {
             var line = data[i];
+            line = line.replace('\'', '');
             console.log(line);
         }
     });
