@@ -374,6 +374,7 @@ function getProfit(req, res) {
                             return;
                         }
                         var priceInfo = JSON.parse(priceInfoString);
+                        priceInfo.LastPrice *= 100;
                         console.log(priceInfo.LastPrice);
 
                         contractInfo[portf.contractId] = priceInfo;
