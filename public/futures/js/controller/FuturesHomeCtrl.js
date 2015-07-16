@@ -51,7 +51,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         }, 2000);
     }
 
-    $interval(function() {
+    function fetchUserProfit() {
         $http.get('/api/futures/get_user_profit')
             .success(function(data, status) {
                 $scope.profit = data.result / 100;
@@ -59,6 +59,11 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             .error(function(data, status) {
                 console.log(data.error_msg);
             });
+    }
+
+    fetchUserProfit();
+    $interval(function() {
+        fetchUserProfit();
     }, 5000);
 
     $scope.showShareHint = false;
