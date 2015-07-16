@@ -6,6 +6,13 @@ var channelName = 'futures';
 //var users
 
 function generateInitData() {
+    global.redis_client.lrange('mt://future/IFHIST', 0, 999, function(err, data) {
+        if (err) {
+            console.log(err.toString());
+        }
+        console.log(data);
+    });
+
     var data = [], time = (new Date()).getTime(), i;
 
     for (i = -999; i <= 0; i += 1) {
