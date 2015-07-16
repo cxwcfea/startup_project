@@ -53,6 +53,7 @@ module.exports = function(io) {
             socket.on('join', function (name) {
                 console.log(name + ' joined');
                 socket.emit('history_data', historyData);
+                console.log(historyData);
                 /*
                 generateInitData(function(data) {
                     socket.emit('history_data', data);
