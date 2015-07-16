@@ -45,16 +45,19 @@ module.exports = function(io) {
         for (var i in data) {
             var line = data[i];
             line = JSON.parse(line.replace(/'/g, ''))[0];
-            historyData.push([line.ts/1000, parseFloat(line.LastPrice)]);
+            historyData.push([line.ts/1000, parseInt(line.LastPrice)]);
         }
 
         io.on('connection', function(socket) {
             console.log(socket.id + ' connected');
             socket.on('join', function (name) {
                 console.log(name + ' joined');
+                socket.emit('history_data', historyData);
+                /*
                 generateInitData(function(data) {
                     socket.emit('history_data', data);
                 });
+                */
             });
         });
         setInterval(function() {
