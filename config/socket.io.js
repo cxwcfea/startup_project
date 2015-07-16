@@ -5,7 +5,7 @@ var util = require('../lib/util'),
 var channelName = 'futures';
 //var users
 
-function generateInitData() {
+function generateInitData(cb) {
     global.redis_client.lrange('mt://future/IFHIST', 0, 999, function(err, data) {
         if (err) {
             console.log(err.toString());
@@ -17,7 +17,8 @@ function generateInitData() {
             //console.log(JSON.parse(line));
             ret.push([line.ts/1000, line.LastPrice]);
         }
-        return ret;
+        console.log(ret);
+        cb(ret);
     });
 
     /*
@@ -39,7 +40,9 @@ module.exports = function(io) {
         console.log(socket.id + ' connected');
         socket.on('join', function (name) {
             console.log(name + ' joined');
-            socket.emit('history_data', generateInitData());
+            generateInitData(function(data) {
+                socket.emit('history_data', data);
+            });
         });
     });
     setInterval(function() {
