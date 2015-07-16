@@ -98,10 +98,10 @@ angular.module("futuresApp")
                 socket.emit('join', 'user');
                 socket.on('history_data', function(historyData) {
                     socket.on('new_data', function(newData) {
-                        console.log('new data ' + newData);
+                        //console.log('new data ' + newData);
                         series.addPoint(newData, true, true);
                     });
-                    alert(historyData);
+                    //alert(historyData);
                     element.highcharts('StockChart', {
                         chart : {
                             events : {
