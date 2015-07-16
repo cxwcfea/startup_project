@@ -17,6 +17,7 @@ function generateInitData() {
             //console.log(JSON.parse(line));
             data.push([line.ts/1000, line.LastPrice]);
         }
+        console.log(data);
         return data;
     });
 
