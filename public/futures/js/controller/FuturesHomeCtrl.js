@@ -1,5 +1,5 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window', '$location', '$modal', '$http', '$timeout', function($scope, $window, $location, $modal, $http, $timeout) {
+angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window', '$location', '$modal', '$http', '$timeout', '$interval', function($scope, $window, $location, $modal, $http, $timeout, $interval) {
     $scope.chartLabels = ["9:15", "10:15", "11:15", "13:45", "14:45", "15:15"];
     $scope.chartData = [4188.57, 4040.48, 4053.70, 4182.93, 4023.93, 3872.15, 4188.57, 4040.48, 4053.70, 4182.93, 4023.93, 3872.15, 4053.70, 4182.93, 4023.93, 3872.15, 4188.57, 4040.48];
     $scope.user = $scope.data.currentUser;
@@ -22,7 +22,8 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                     $scope.tradeData.down = position.shortQuantity / HAND;
                     $scope.tradeData.sell = Math.abs($scope.tradeData.up + $scope.tradeData.down);
                 }
-                $scope.profit = data.user.cash / 100 - 1000000;
+                //$scope.profit = data.user.cash / 100 - 1000000;
+                /*
                 if (init) {
                     lastProfit = $scope.profit;
                 }
@@ -33,6 +34,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                         $scope.openGainPopup('lg');
                     }
                 }
+                 */
             })
             .error(function(data, status) {
                 displayError(data.error_msg);
@@ -48,6 +50,16 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             $scope.showError = false;
         }, 2000);
     }
+
+    $interval(function() {
+        $http.get('/api/futures/get_user_profit')
+            .success(function(data, status) {
+                $scope.profit = data.result;
+            })
+            .error(function(data, status) {
+                alert('get profit err');
+            });
+    }, 5000);
 
     $scope.showShareHint = false;
     $scope.openIntroPopup = function (size) {

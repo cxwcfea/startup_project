@@ -8,6 +8,7 @@ var PPJUserSchema = mongoose.Schema({
     lever: { type: Number, default: 0 },  // basis: 0.0001
     debt: { type: Number, default: 0 },  // basis: cent, 0.01
     cash: { type: Number, default: 0 },  // basis: cent, 0.01
+    deposit: { type: Number, default: 0 },  // basis: cent, 0.01
     status: { type: Number, default: 0 },  // 0: Normal, 1: Cannot buy, 2: Forbidden
     timestamp: { type: Date, default: Date.now }
 });
@@ -323,6 +324,77 @@ function getPositions(data, cb) {
     });
 }
 
+function getProfit(req, res) {
+    User.findOne({_id: req.body.user_id}, function(err, user) {
+        if (err || !user) {
+            console.log(err);
+            res.status(500).send({error_msg: err? err.errmsg: "no available user"});
+            return;
+        }
+        Portfolio.find({userId: req.body.user_id}, function(err, portfolio) {
+            if (err) {
+                console.log(err);
+                res.status(500).send({error_msg: err.errmsg});
+                return;
+            }
+            if (!portfolio) {
+                res.status(400).send({error_msg:'portfolio not found'});
+                return;
+            }
+            var asyncObj = {remaining: portfolio.length, value: 0, has_error: false, errmsg:""};
+            var contractInfo = {};
+
+            for (var p in portfolio) {
+                var portf = portfolio[p];
+                Contract.findOne({_id: portf.contractId}, function(err, contract) {
+                    asyncObj.remaining -= 1;
+                    if (err || !contract) {
+                        console.log(err);
+                        console.log(contract);
+                        console.log(portf);
+                        asyncObj.has_error = true;
+                        if (err) asyncObj.errmsg = err.errmsg;
+                    }
+                    if (asyncObj.has_error) {
+                        if (asyncObj.remaining <= 0){
+                            res.status(500).send({error_msg: asyncObj.errmsg});
+                        }
+                        return;
+                    }
+                    redisClient.get(makeRedisKey(contract), function(err, priceInfoString) {
+                        if (err || !priceInfoString) {
+                            console.log(err);
+                            asyncObj.has_error = true;
+                            if (err) asyncObj.errmsg = err.errmsg;
+                        }
+                        if (asyncObj.has_error) {
+                            if (asyncObj.remaining <= 0){
+                                res.status(500).send({error_msg: asyncObj.errmsg});
+                            }
+                            return;
+                        }
+                        var priceInfo = JSON.parse(priceInfoString);
+                        console.log(priceInfo.LastPrice);
+
+                        contractInfo[portf.contractId] = priceInfo;
+                        var costs = getCosts(priceInfo.LastPrice, -portf.quantity, portf.quantity);
+                        asyncObj.value -= costs.open;
+                        if (asyncObj.remaining > 0) {
+                            console.log("Still counting: " + asyncObj);
+                            return;
+                        }
+                        console.log("Completed: " + asyncObj);
+                        var income = asyncObj.value;
+                        console.log("User info: " + req.body.user_id + ", " + user.cash + ", " + income + ", " + user.close);
+                        res.send({result: user.cash + income - user.deposit - user.debt});
+                        return;
+                    });
+                });
+            }
+        });
+    });
+}
+
 function createUser(data, cb) {
     console.log(data);
     var user = new User(data);
@@ -484,5 +556,6 @@ module.exports = {
     getHistoryOrders: getHistoryOrders,
     getUserInfo: getUserInfo,
     windControl: windControl,
-    getLastFuturesPrice: getLastFuturesPrice
+    getLastFuturesPrice: getLastFuturesPrice,
+    getProfit: getProfit
 };

@@ -110,6 +110,14 @@ function getOrders(req, res) {
     mockTrader.getHistoryOrders(req, res);
 }
 
+function getUserProfit(req, res) {
+    if (!req.user || !req.user.wechat || !req.user.wechat.wechat_uuid) {
+        return res.status(403).send({error_msg:'user need log in'});
+    }
+    req.body.user_id = req.user.wechat.trader;
+    mockTrader.getProfit(req, res);
+}
+
 function test(req, res) {
     var query = User.find({});
     query.exists('wechat.wechat_uuid');
@@ -148,6 +156,8 @@ module.exports = {
         app.get('/api/futures/get_positions', getPositions);
 
         app.get('/api/futures/get_orders', getOrders);
+
+        app.get('/api/futures/get_user_profit', getUserProfit);
 
         app.get('/futures', passportConf.isWechatAuthenticated, home);
 
