@@ -12,8 +12,8 @@ function generateInitData() {
         }
         console.log(typeof data);
         for (var i in data) {
-            var line = data[i];
-            console.log(typeof line);
+            var line = JSON.parse(data[i]);
+            console.log(line);
         }
     });
 
