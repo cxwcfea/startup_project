@@ -33,6 +33,20 @@ function generateInitData(cb) {
     return data;
 }
      */
+function test() {
+    var data = [], time = (new Date()).getTime(), i;
+
+    for (i = -999; i <= 0; i += 1) {
+        data.push([
+            time + i * 1000 * 60,
+            util.getRandomInt(3600, 4000)
+        ]);
+    }
+    console.log('test data');
+    console.log(data);
+    return data;
+}
+test();
 
 var historyData = [];
 
