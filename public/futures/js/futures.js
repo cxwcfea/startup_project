@@ -101,7 +101,7 @@ angular.module("futuresApp")
                         console.log('new data ' + newData);
                         series.addPoint(newData, true, true);
                     });
-                    //alert(historyData);
+                    alert(historyData);
                     element.highcharts('StockChart', {
                         chart : {
                             events : {
