@@ -10,13 +10,17 @@ function generateInitData() {
         if (err) {
             console.log(err.toString());
         }
+        var data = [];
         for (var i in data) {
             var line = data[i];
-            line = line.replace(/'/g, '');
-            console.log(JSON.parse(line));
+            line = JSON.parse(line.replace(/'/g, ''))[0];
+            //console.log(JSON.parse(line));
+            data.push([line.ts/1000, line.LastPrice]);
         }
+        return data;
     });
 
+    /*
     var data = [], time = (new Date()).getTime(), i;
 
     for (i = -999; i <= 0; i += 1) {
@@ -26,6 +30,7 @@ function generateInitData() {
         ]);
     }
     return data;
+    */
 }
 
 // Define the Socket.io configuration method
