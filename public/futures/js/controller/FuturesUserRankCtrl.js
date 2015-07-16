@@ -2,15 +2,16 @@
 angular.module('futuresApp').controller('FuturesUserRankCtrl', ['$scope', '$window', '$location', '$http', '$filter', function($scope, $window, $location, $http, filter) {
     $http.get('/api/futures/user_rank')
         .success(function(data, status) {
-            $scope.goldUser = users.pop();
+            var users = $filter('orderBy')(data.users, 'wechat.trader.cash', false);
+            $scope.goldUser = users.shift();
             if (!$scope.goldUser) {
                 $scope.goldUser = {};
             }
-            $scope.silverUser = users.pop();
+            $scope.silverUser = users.shift();
             if (!$scope.silverUser) {
                 $scope.silverUser = {};
             }
-            $scope.copperUser = users.pop();
+            $scope.copperUser = users.shift();
             if (!$scope.copperUser) {
                 $scope.copperUser = {};
             }
