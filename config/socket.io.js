@@ -10,7 +10,7 @@ function generateInitData() {
         if (err) {
             console.log(err.toString());
         }
-        console.log(JSON.parse(data));
+        console.log(data);
         /*
         for (var i in data) {
             var line = JSON.parse(data[i]);
