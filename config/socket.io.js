@@ -10,9 +10,10 @@ function generateInitData() {
         if (err) {
             console.log(err.toString());
         }
+        console.log(typeof data);
         for (var i in data) {
             var line = data[i];
-            console.log(line.ts);
+            console.log(typeof line);
         }
     });
 
