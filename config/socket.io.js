@@ -13,7 +13,7 @@ function generateInitData() {
         for (var i in data) {
             var line = data[i];
             line = line.replace(/\\'/g, '');
-            console.log(line);
+            console.log(JSON.parse(line));
         }
     });
 
