@@ -10,11 +10,13 @@ function generateInitData() {
         if (err) {
             console.log(err.toString());
         }
-        console.log(typeof data);
+        console.log(JSON.parse(data));
+        /*
         for (var i in data) {
             var line = JSON.parse(data[i]);
             console.log(line);
         }
+        */
     });
 
     var data = [], time = (new Date()).getTime(), i;
