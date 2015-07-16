@@ -18,9 +18,15 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             .success(function (data, status) {
                 var position = data.position;
                 if (position) {
-                    $scope.tradeData.up = position.longQuantity / HAND;
-                    $scope.tradeData.down = position.shortQuantity / HAND;
-                    $scope.tradeData.sell = Math.abs($scope.tradeData.up + $scope.tradeData.down);
+                    if (position.longQuantity > position.shortQuantity) {
+                        $scope.tradeData.up = (position.longQuantity - position.shortQuantity) / HAND;
+                        $scope.tradeData.down = 0;
+                        $scope.tradeData.sell = $scope.tradeData.up;
+                    } else {
+                        $scope.tradeData.down = (position.shortQuantity - position.longQuantity) / HAND;
+                        $scope.tradeData.up = 0;
+                        $scope.tradeData.sell = $scope.tradeData.down;
+                    }
                 }
                 if (init) {
                     lastProfit = $scope.profit;
