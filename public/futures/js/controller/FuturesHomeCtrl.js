@@ -181,7 +181,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     };
 
     $scope.placeOrder = function(type) {
-        if ($scope.tradeData.sell === 0) {
+        if ($scope.tradeData.sell === 0 && type === 0) {
             displayError('您当前没有持仓');
             return;
         }
