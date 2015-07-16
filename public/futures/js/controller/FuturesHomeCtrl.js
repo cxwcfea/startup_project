@@ -57,7 +57,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                 $scope.profit = data.result / 100;
             })
             .error(function(data, status) {
-                alert('get profit err');
+                console.log(data.error_msg);
             });
     }, 5000);
 
