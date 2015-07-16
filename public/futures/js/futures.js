@@ -101,7 +101,7 @@ angular.module("futuresApp")
                         //console.log('new data ' + newData);
                         //series.addPoint(newData, true, true);
                         series.setData(newData, true, true);
-                        //window.niujin_futures_new_data = newData[1];
+                        window.niujin_futures_new_data = newData[0][1];
                     });
                     //alert(historyData);
                     element.highcharts('StockChart', {
