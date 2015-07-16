@@ -50,7 +50,9 @@ passport.use(new wechatStrategy({
             mockTrader.createUser({
                 name: profile.unionid,
                 close: 90000000,
-                cash: 100000000
+                cash: 100000000,
+                deposit: 10000000,
+                debt: 90000000
             }, function(err, trader) {
                 if (err) {
                     done(err);
