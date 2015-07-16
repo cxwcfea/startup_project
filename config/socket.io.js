@@ -84,8 +84,8 @@ module.exports = function(io) {
                     historyData.push([x, y]);
                     io.sockets.emit('new_data', [x, y]);
                 } else {
-                    var x = data.ts, // current time
-                        y = parseInt(data.lastPrice/1000);
+                    var x = parseInt(data.ts/1000), // current time
+                        y = data.lastPrice;
                     historyData.push([x, y]);
                     io.sockets.emit('new_data', [x, y]);
                 }
