@@ -12,9 +12,10 @@ var User = require('../models/User'),
     moment = require('moment'),
     async = require('async'),
     log4js = require('log4js'),
-    logger = log4js.getLogger('mobile');
+    logger = log4js.getLogger('futures');
 
 function home(req, res, next) {
+    logger.debug('access home');
     if (req.user) {
         util.getUserViewModel(req.user, function(user) {
             delete user.wechat.wechat_uuid;
