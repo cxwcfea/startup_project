@@ -1,8 +1,8 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesUserRankCtrl', ['$scope', '$window', '$location', '$http', function($scope, $window, $location, $http) {
+angular.module('futuresApp').controller('FuturesUserRankCtrl', ['$scope', '$window', '$location', '$http', '$filter', function($scope, $window, $location, $http, filter) {
     $http.get('/api/futures/user_rank')
         .success(function(data, status) {
-            var users = data.users;
+            var users = $filter('orderBy')(data, 'wechat.trader.cash', true);
             $scope.goldUser = users.shift();
             if (!$scope.goldUser) {
                 $scope.goldUser = {};
