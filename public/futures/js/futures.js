@@ -122,13 +122,13 @@ angular.module("futuresApp")
 
                         rangeSelector: {
                             buttons: [{
-                                count: 1,
-                                type: 'minute',
-                                text: '1M'
+                                count: 20,
+                                type: 'second',
+                                text: '20S'
                             }, {
-                                count: 5,
-                                type: 'minute',
-                                text: '5M'
+                                count: 60,
+                                type: 'second',
+                                text: '60S'
                             }],
                             inputEnabled: false,
                             selected: 0
