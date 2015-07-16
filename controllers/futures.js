@@ -34,20 +34,19 @@ function home(req, res, next) {
 function fetchUserRankData(req, res) {
     var query = User.find({});
     query.exists('wechat.wechat_uuid');
-    query.sort('-wechat.profit').limit(8).select('wechat');
+    query.populate('wechat.trader');
+    query.sort('-wechat.trader.cash').limit(8).select('wechat');
     query.exec(function(err, users) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
         }
         var userInRank = false;
-        /*
         for (var i = 0; i < users.length; ++i) {
             if (users[i].wechat.wechat_uuid == req.user.wechat.wechat_uuid) {
                 userInRank = true;
                 break;
             }
         }
-        */
         res.send({users:users, userInRank:userInRank});
     });
 }
