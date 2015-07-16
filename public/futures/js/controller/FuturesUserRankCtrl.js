@@ -3,6 +3,9 @@ angular.module('futuresApp').controller('FuturesUserRankCtrl', ['$scope', '$wind
     $http.get('/api/futures/user_rank')
         .success(function(data, status) {
             var users = data.users;
+            users.sort(function(x, y) {
+                return x.wechat.trader.cash - y.wechat.trader.cash;
+            });
             $scope.goldUser = users.pop();
             if (!$scope.goldUser) {
                 $scope.goldUser = {};
