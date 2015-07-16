@@ -45,7 +45,7 @@ module.exports = function(io) {
         for (var i in data) {
             var line = data[i];
             line = JSON.parse(line.replace(/'/g, ''))[0];
-            historyData.push([line.ts/1000, parseInt(line.LastPrice)]);
+            historyData.push([parseInt(line.ts/1000), parseInt(line.LastPrice)]);
         }
 
         io.on('connection', function(socket) {
