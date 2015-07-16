@@ -128,14 +128,12 @@ function test(req, res) {
             return res.status(500).send({error_msg:err.toString()});
         }
         var userInRank = false;
-        /*
-         for (var i = 0; i < users.length; ++i) {
-         if (users[i].wechat.wechat_uuid == req.user.wechat.wechat_uuid) {
-         userInRank = true;
-         break;
-         }
-         }
-         */
+        for (var i = 0; i < users.length; ++i) {
+            if (users[i].wechat.wechat_uuid == req.user.wechat.wechat_uuid) {
+                userInRank = true;
+                break;
+            }
+        }
         res.send({users:users, userInRank:userInRank});
     });
 }
@@ -164,17 +162,20 @@ module.exports = {
         app.get('/futures/test', test);
 
         app.get('/futures/*', function(req, res, next) {
-            var startTime = moment('2015-07-10');
+            //var startTime = moment('2015-07-10');
+            var startTime = moment();
             startTime.hour(09);
             startTime.minute(15);
             startTime.second(00);
 
-            var endTime = moment('2015-07-10');
+            //var endTime = moment('2015-07-10');
+            var endTime = moment();
             endTime.hour(15);
             endTime.minute(15);
             endTime.second(00);
 
-            var now = moment('2015-07-10 10:20:00');
+            //var now = moment('2015-07-10 10:20:00');
+            var now = moment();
 
             var tradeTime = true;
             if (util.isHoliday(now.dayOfYear())) {
