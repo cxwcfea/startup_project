@@ -11,7 +11,7 @@ function generateInitData() {
             console.log(err.toString());
         }
         for (var i in data) {
-            var line = JSON.parse(data[i]);
+            var line = data[i];
             console.log(line);
         }
     });
