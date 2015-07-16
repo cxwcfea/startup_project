@@ -186,8 +186,12 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         $http.post('/api/futures/create_order', {quantity:quantity, force_close:forceClose})
             .success(function(data, status) {
                 getUserPositions();
-                var type = data.quantity > 0 ? '涨' : '跌';
-                displayError('您成功买' + type + '1手,价格' + (data.price/100).toFixed(1) + '元');
+                var orderType = data.quantity > 0 ? '涨' : '跌';
+                if (type != 0) {
+                    displayError('您成功买' + orderType + data.quantity/100 + '手,价格' + (data.price/100).toFixed(1) + '元');
+                } else {
+                    displayError('您成功平' + orderType + data.quantity/100 + '手,价格' + (data.price/100).toFixed(1) + '元');
+                }
             })
             .error(function(data, status) {
                 displayError(data.error_msg);
