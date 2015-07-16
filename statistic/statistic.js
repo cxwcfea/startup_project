@@ -1347,13 +1347,11 @@ db.once('open', function callback() {
             }
              */
 
-            /*
             function(callback) {
-                historyPayApplyData(function(err) {
+                historyApplyData(function(err) {
                     callback(err);
                 });
             }
-             */
 
             /*
             function (callback) {
