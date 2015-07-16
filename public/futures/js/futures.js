@@ -149,31 +149,17 @@ angular.module("futuresApp")
                         scrollbar: {
                             enabled: false
                         },
+                        navigator: {
+                            enabled: false
+                        },
                         /*
                          rangeSelector: {
-                         enabled: false
-                         },
-                         navigator: {
                          enabled: false
                          },
                          */
 
                         series : [{
                             name : '股指',
-                            /*
-                            data : (function () {
-                                // generate an array of random data
-                                var data = [], time = (new Date()).getTime(), i;
-
-                                for (i = -999; i <= 0; i += 1) {
-                                    data.push([
-                                        time + i * 1000,
-                                        Math.round(Math.random() * 100)
-                                    ]);
-                                }
-                                return data;
-                            }())
-                            */
                             data: historyData
                         }]
                     });
