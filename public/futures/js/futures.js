@@ -152,10 +152,10 @@ angular.module("futuresApp")
                         navigator: {
                             enabled: false
                         },
+                        rangeSelector: {
+                            enabled: false
+                        },
                         /*
-                         rangeSelector: {
-                         enabled: false
-                         },
                          */
 
                         series : [{
