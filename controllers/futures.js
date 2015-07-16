@@ -47,6 +47,7 @@ function fetchUserRankData(req, res) {
                 break;
             }
         }
+        console.log(users);
         res.send({users:users, userInRank:userInRank});
     });
 }
