@@ -52,7 +52,7 @@ var historyData = [];
 
 // Define the Socket.io configuration method
 module.exports = function(io) {
-    global.redis_client.lrange('mt://future/IFHIST', 0, 999, function(err, data) {
+    global.redis_client.lrange('mt://future/IFHIST', 0, 10, function(err, data) {
         if (err) {
             console.log(err.toString());
         }
@@ -66,7 +66,7 @@ module.exports = function(io) {
             console.log(socket.id + ' connected');
             socket.on('join', function (name) {
                 console.log(name + ' joined');
-                socket.emit('history_data', test());
+                socket.emit('history_data', historyData);
                 console.log(historyData);
                 /*
                 generateInitData(function(data) {
