@@ -110,12 +110,12 @@
         {{/unless}}
         <div class="opt-btns">
             <div class="btns three" id="J_btns">
-                <button class="circle-btn p {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#unless tradeTime}}ng-click="placeOrder(0)"{{/unless}}>平</button>
-                <button class="circle-btn z {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#unless tradeTime}}ng-click="placeOrder(1)"{{/unless}}>涨</button>
+                <button class="circle-btn p {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(0)"{{/if}}>平</button>
+                <button class="circle-btn z {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(1)"{{/if}}>涨</button>
                 <!--
                 <button class="circle-btn pz">平涨</button>
                 -->
-                <button class="circle-btn d {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#unless tradeTime}}ng-click="placeOrder(-1)"{{/unless}}>跌</button>
+                <button class="circle-btn d {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(-1)"{{/if}}>跌</button>
                 <!--
                 <button class="circle-btn pd">平跌</button>
                 -->
