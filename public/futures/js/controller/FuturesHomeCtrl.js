@@ -160,7 +160,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     };
 
     $scope.placeOrder = function(type) {
-        var quantity = 10000;
+        var quantity = 100;
         if (type === -1) {
             quantity = 0 - quantity;
         }
