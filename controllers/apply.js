@@ -147,7 +147,7 @@ exports.getApplyPostpone = function(req, res, next) {
 
 exports.postApplyPostpone = function(req, res, next) {
     var period = Number(req.body.period);
-    if (period <= 0 || period > 22) {
+    if (period <= 0 || period > 2) {
         res.status(400);
         return res.send({error_msg:'period invalid:' + period});
     }

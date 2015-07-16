@@ -230,8 +230,8 @@ $(document).ready(function() {
     $(".jq_yzBtn01").click(function (e) {
         e.preventDefault();
         var period = Number($("#postpone_input")[0].value);
-        if (period <= 0 || period > 22) {
-            alert('请输入有效的日期，日期大于1小于23');
+        if (period <= 0 || period > 2) {
+            alert('请输入有效的日期，日期大于1小于3');
             return;
         }
         var apply_serial_id = $('#apply_serial_id')[0].innerText;
