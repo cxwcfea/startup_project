@@ -426,7 +426,7 @@
                 } else {
                     ret += '跌'
                 }
-                input /= 10000;
+                input /= 100;
                 input = Math.abs(input);
                 ret += input;
                 return ret;
