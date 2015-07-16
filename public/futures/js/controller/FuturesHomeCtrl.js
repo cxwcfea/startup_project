@@ -22,8 +22,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                     $scope.tradeData.down = position.shortQuantity / HAND;
                     $scope.tradeData.sell = Math.abs($scope.tradeData.up + $scope.tradeData.down);
                 }
-                //$scope.profit = data.user.cash / 100 - 1000000;
-                /*
                 if (init) {
                     lastProfit = $scope.profit;
                 }
@@ -34,7 +32,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                         $scope.openGainPopup('lg');
                     }
                 }
-                 */
             })
             .error(function(data, status) {
                 displayError(data.error_msg);
