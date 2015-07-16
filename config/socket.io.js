@@ -12,7 +12,7 @@ function generateInitData() {
         }
         for (var i in data) {
             var line = data[i];
-            console.log(JSON.parse(line));
+            console.log(line.ts);
         }
     });
 
