@@ -90,6 +90,6 @@ module.exports = function(io) {
                     io.sockets.emit('new_data', [x, y]);
                 }
             });
-        }, 5000);
+        }, 1000);
     });
 };
