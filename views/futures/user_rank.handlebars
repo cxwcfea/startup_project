@@ -104,9 +104,9 @@
             <img src="/futures/images/user_rank_background.png" width="100%" alt=""/>
         </div>
         <div class="top-users">
-            <span class="top2"><br>\{{silverUser.wechat.wechat_name}}<br>\{{silverUser.wechat.profit}}</span>
-            <span class="top1"><br>\{{goldUser.wechat.wechat_name}}<br>\{{goldUser.wechat.profit}}</span>
-            <span class="top3"><br>\{{copperUser.wechat.wechat_name}}<br>\{{copperUser.wechat.profit}}</span>
+            <span class="top2"><br>\{{silverUser.wechat.wechat_name}}<br>\{{silverUser.wechat.trader.cash | number:0}}</span>
+            <span class="top1"><br>\{{goldUser.wechat.wechat_name}}<br>\{{goldUser.wechat.trader.cash | number:0}}</span>
+            <span class="top3"><br>\{{copperUser.wechat.wechat_name}}<br>\{{copperUser.wechat.trader.cash | number:0}}</span>
             <img class="top2-head img-circle" src="\{{silverUser.wechat.wechat_img}}" width="25%" />
             <img class="top1-head img-circle" src="\{{goldUser.wechat.wechat_img}}" width="25%" />
             <img class="top3-head img-circle" src="\{{copperUser.wechat.wechat_img}}" width="25%" />
