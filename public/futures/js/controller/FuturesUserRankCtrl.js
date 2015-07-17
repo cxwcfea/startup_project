@@ -9,10 +9,10 @@ angular.module('futuresApp').controller('FuturesUserRankCtrl', ['$scope', '$wind
                 return y.wechat.trader.cash - x.wechat.trader.cash;
             });
             var length = Math.min(users.length, 8);
-            var userInRank = false;
+            $scope.userInRank = false;
             for (var i = 0; i < length; ++i) {
-                if ($scope.user.wechat.wechat_uuid === users[i].wechat.wechat_uuid) {
-                    userInRank = true;
+                if ($scope.user.wechat.wechat_uuid == users[i].wechat.wechat_uuid) {
+                    $scope.userInRank = true;
                     break;
                 }
             }
@@ -29,7 +29,6 @@ angular.module('futuresApp').controller('FuturesUserRankCtrl', ['$scope', '$wind
                 $scope.copperUser = {};
             }
             $scope.topUsers = users;
-            $scope.userInRank = data.userInRank;
         })
         .error(function(data, status) {
             $scope.goldUser = {};
