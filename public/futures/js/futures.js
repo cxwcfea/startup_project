@@ -156,9 +156,9 @@ angular.module("futuresApp")
                         rangeSelector: {
                             enabled: false
                         },
-                        /*
-                         */
-
+                        yAxis: {
+                            opposite: false
+                        },
                         series : [{
                             name : '股指',
                             data: historyData
