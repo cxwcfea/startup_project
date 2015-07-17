@@ -17,7 +17,7 @@ function fetchHistoryData(cb) {
             //console.log(JSON.parse(line));
             ret.unshift([parseInt(line.ts/1000), parseInt(line.LastPrice)]);
         }
-        console.log(ret);
+        //console.log(ret);
         cb(ret);
     });
 }
