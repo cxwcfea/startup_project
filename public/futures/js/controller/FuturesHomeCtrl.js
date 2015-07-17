@@ -62,16 +62,17 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                 } else {
                     $scope.profit = 0;
                 }
+                $scope.currentPrice = $window.niujin_futures_new_data;
             })
             .error(function(data, status) {
                 $scope.profit = 0;
+                $scope.currentPrice = 0;
             });
     }
 
     fetchUserProfit();
     $interval(function() {
         fetchUserProfit();
-        $scope.currentPrice = $window.niujin_futures_new_data;
     }, 2000);
 
     $scope.showShareHint = false;
