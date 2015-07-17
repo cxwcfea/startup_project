@@ -6,8 +6,16 @@ angular.module('futuresApp').controller('FuturesUserRankCtrl', ['$scope', '$wind
         .success(function(data, status) {
             var users = data.users;
             users.sort(function(x, y) {
-                return y.wechat.trader.cash / 100 - x.wechat.trader.cash / 100;
+                return y.wechat.trader.cash - x.wechat.trader.cash;
             });
+            var length = Math.min(users.length, 8);
+            var userInRank = false;
+            for (var i = 0; i < length; ++i) {
+                if ($scope.user.wechat.wechat_uuid === users[i].wechat.wechat_uuid) {
+                    userInRank = true;
+                    break;
+                }
+            }
             $scope.goldUser = users.shift();
             if (!$scope.goldUser) {
                 $scope.goldUser = {};
