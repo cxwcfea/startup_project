@@ -194,8 +194,8 @@ angular.module("futuresApp")
                 });
             });
 
-            scope.$watch('tradeData', function(newValue, oldValue) {
-                alert(newValue);
+            scope.$watch('punch', function(newValue, oldValue) {
+                alert(scope.tradeData.up);
             });
 
         }
