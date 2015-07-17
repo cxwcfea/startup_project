@@ -187,7 +187,7 @@ module.exports = {
             //var endTime = moment('2015-07-10');
             var endTime = moment();
             endTime.hour(15);
-            endTime.minute(15);
+            endTime.minute(10);
             endTime.second(00);
 
             //var now = moment('2015-07-10 10:20:00');
