@@ -91,9 +91,9 @@ angular.module("futuresApp")
             */
 
             var socket = io.connect();
+            var series, flags_series;
             socket.on('connect', function () {
                 console.log('socket connect');
-                var series, flags_series;
                 // send a join event with your name
                 socket.emit('join', 'user');
                 socket.on('history_data', function(historyData) {
@@ -195,7 +195,19 @@ angular.module("futuresApp")
             });
 
             scope.$watch('currentOrder', function(newValue, oldValue) {
-                alert(newValue);
+                //alert(newValue);
+                var flags_data = [];
+                if (newValue) {
+                    var flags_data = [{
+                        x: newValue.timestamp,
+                        y: newValue.price/100,
+                        //color:'#FF0000',
+                        //fillColor: '#FF0000',
+                        text: Math.round(newValue.price/100),
+                        title: Math.round(newValue.price/100)
+                    }];
+                }
+                flags_series.setData(flags_data, true, true);
             });
 
         }
