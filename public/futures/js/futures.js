@@ -175,18 +175,20 @@ angular.module("futuresApp")
                         yAxis: {
                             opposite: false
                         },
-                        series : [{
-                            name : '股指',
-                            data: historyData,
-                            id: 'stock_data'
-                        },  {
-                          type: 'flags',
-                          shape:'flag',
-                          onSeries: 'stock_data',
-                          data: [],
-                          width: 20,
-                          id: 'stock_data_flags',
-                          showInLegend: false
+                        series : [
+                            {
+                                name : '股指',
+                                data: historyData,
+                                id: 'stock_data'
+                            },
+                            {
+                                type: 'flags',
+                                shape : 'circlepin',
+                                width : 16,
+                                onSeries: 'stock_data',
+                                data: [],
+                                id: 'stock_data_flags',
+                                showInLegend: false
                         }]
                     });
                 });
