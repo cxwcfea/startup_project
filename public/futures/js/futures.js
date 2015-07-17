@@ -198,18 +198,18 @@ angular.module("futuresApp")
             });
 
             scope.$watch('currentOrder', function(newValue, oldValue) {
-                alert(Date.parse(newValue.timestamp) + ' ' + newValue.price/100);
                 if (newValue) {
-                    flags_data = [{
+                    flags_data.push({
                         x: Date.parse(newValue.timestamp),
                         y: newValue.price/100,
                         //color:'#FF0000',
                         //fillColor: '#FF0000',
                         text: Math.round(newValue.price/100),
                         title: Math.round(newValue.price/100)
-                    }];
+                    });
+                } else {
+                    flags_data = [];
                 }
-                //flags_series.setData(flags_data, true, true);
             });
 
         }
