@@ -186,7 +186,7 @@ angular.module("futuresApp")
                             },
                             {
                                 type: 'flags',
-                                shape : 'circlepin',
+                                shape : 'flag',
                                 width : 20,
                                 onSeries: 'stock_data',
                                 data: [],
