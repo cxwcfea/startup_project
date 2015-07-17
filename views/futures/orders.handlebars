@@ -55,7 +55,7 @@
             <thead>
             <tr>
                 <th>业务/时间</th>
-                <th class="pull-right">金额/价格</th>
+                <th class="pull-right">手续费/价格</th>
             </tr>
             </thead>
             <tbody>
@@ -65,7 +65,7 @@
                     <p>\{{order.timestamp | date:'yyyy-MM-dd HH:mm'}}</p>
                 </td>
                 <td align="right">
-                    <strong>-\{{order.fee / 100 | number:2}}</strong>
+                    <strong class="text-danger">-\{{order.fee / 100 | number:2}}</strong>
                     <p>\{{order.price / 100 | number:1}}</p>
                 </td>
             </tr>
