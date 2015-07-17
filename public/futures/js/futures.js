@@ -117,7 +117,6 @@ angular.module("futuresApp")
                                  }];
                         series.setData(newData, true, true);
                         flags_series.setData(flags_data, true, true);
-                        window.niujin_futures_new_data = newData.pop()[1];
                     });
                     //alert(historyData);
                     element.highcharts('StockChart', {

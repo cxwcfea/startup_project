@@ -59,10 +59,11 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             .success(function(data, status) {
                 if (data.result != null && data.result != undefined) {
                     $scope.profit = data.result / 100;
+                    $scope.currentPrice = data.lastPrice;
                 } else {
                     $scope.profit = 0;
+                    $scope.currentPrice = 0;
                 }
-                $scope.currentPrice = $window.niujin_futures_new_data;
             })
             .error(function(data, status) {
                 $scope.profit = 0;
