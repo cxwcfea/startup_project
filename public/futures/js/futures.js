@@ -103,15 +103,15 @@ angular.module("futuresApp")
                         var flags_data = [{
                                    x: newData[200][0],
                                    y: newData[200][1],
-                                   color:'#FF0000',
-                                   fillColor: '#FF0000',
+                                   //color:'#FF0000',
+                                   //fillColor: '#FF0000',
                                    text: Math.round(newData[200][1]),
                                    title: Math.round(newData[200][1])
                                  }, {
                                    x: newData[400][0],
                                    y: newData[400][1],
-                                   color:'#00FF00',
-                                   fillColor: '#00FF00',
+                                   //color:'#00FF00',
+                                   //fillColor: '#00FF00',
                                    text: Math.round(newData[400][1]),
                                    title: Math.round(newData[400][1])
                                  }];
@@ -125,7 +125,7 @@ angular.module("futuresApp")
                                 load : function () {
                                     // set up the updating of the chart each second
                                     series = this.series[0];
-                                    flags_series = this.series[1];
+                                    window.niujin_chart_flags = flags_series = this.series[1];
                                     /*
                                     setInterval(function () {
                                         var x = (new Date()).getTime(), // current time
