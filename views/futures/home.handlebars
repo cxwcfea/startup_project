@@ -62,7 +62,7 @@
         height: 100px;
     }
     .index-box .current-price {
-        margin-left: 8px;
+        margin-left: 12px;
     }
 </style>
 <!--#S header-->
@@ -76,7 +76,7 @@
 
 <div class="index-box">
     <div class="chart-box">
-        <h4>今日股指走势图 <span class="current-price">当前价 <em class="text-success">\{{currentPrice | number:1}}元</em> 每手</span> <span class="pull-right" ng-click="showOrders()">查看交易记录</span></h4>
+        <h4>股指走势图 <span class="current-price">当前价 <em class="text-success">\{{currentPrice | number:1}}元</em> 每手</span> <span class="pull-right" ng-click="showOrders()">查看交易记录</span></h4>
         <div class="chart">
             <!--
             <canvas id="J_chart" width="300" height="160" futures-chart="chartLabels" chart-data="chartData"></canvas>
