@@ -59,7 +59,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             .success(function(data, status) {
                 if (data.result != null && data.result != undefined) {
                     $scope.profit = data.result / 100;
-                    $scope.currentPrice = data.lastPrice;
+                    $scope.currentPrice = data.lastPrice / 100;
                 } else {
                     $scope.profit = 0;
                     $scope.currentPrice = 0;
