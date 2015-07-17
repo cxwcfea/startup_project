@@ -212,6 +212,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                     displayError('您成功买' + orderType + Math.abs(data.quantity/100) + '手,价格' + (data.price/100).toFixed(1) + '元');
                 } else {
                     delta = data.income;
+                    alert(delta);
                     orderType = $scope.tradeData.up > 0 ? '涨' : '跌';
                     displayError('您成功平' + orderType + '' + $scope.tradeData.sell + '手');
                 }
