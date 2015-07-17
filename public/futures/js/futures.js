@@ -198,7 +198,7 @@ angular.module("futuresApp")
             });
 
             scope.$watch('currentOrder', function(newValue, oldValue) {
-                //alert(newValue);
+                alert(newValue.timestamp + ' ' + newValue.price/100);
                 if (newValue) {
                     flags_data = [{
                         x: newValue.timestamp,
