@@ -208,14 +208,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                 getUserPositions();
                 var orderType = data.quantity > 0 ? '涨' : '跌';
 
-                var newData = [{
-                    x: data.timestamp,
-                    y: data.price/100,
-                    text: (data.price/100).toFixed(0),
-                    title: (data.price/100).toFixed(0)
-                }];
-                $window.niujin_chart_flags.setData(newData, true, true);
-
                 if (type != 0) {
                     displayError('您成功买' + orderType + Math.abs(data.quantity/100) + '手,价格' + (data.price/100).toFixed(1) + '元');
                 } else {
