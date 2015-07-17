@@ -57,10 +57,14 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     function fetchUserProfit() {
         $http.get('/api/futures/get_user_profit')
             .success(function(data, status) {
-                $scope.profit = data.result / 100;
+                if (data.result != null && data.result != undefined) {
+                    $scope.profit = data.result / 100;
+                } else {
+                    $scope.profit = 0;
+                }
             })
             .error(function(data, status) {
-                console.log(data.error_msg);
+                alert(data.error_msg);
                 $scope.profit = 0;
             });
     }
