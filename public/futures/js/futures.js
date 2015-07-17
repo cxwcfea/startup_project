@@ -98,20 +98,22 @@ angular.module("futuresApp")
                 socket.emit('join', 'user');
                 socket.on('history_data', function(historyData) {
                     socket.on('new_data', function(newData) {
-                        //console.log('new data ' + newData);
+                        // console.log('new data ' + newData);
                         //series.addPoint(newData, true, true);
                         var flags_data = [{
-                                   x: 0,
+                                   x: newData[200][0],
+                                   y: newData[200][1],
                                    color:'#FF0000',
                                    fillColor: '#FF0000',
-                                   text: '+1',
-                                   title: '+1'
+                                   text: Math.round(newData[200][1]),
+                                   title: Math.round(newData[200][1])
                                  }, {
-                                   x: 8,
+                                   x: newData[400][0],
+                                   y: newData[400][1],
                                    color:'#00FF00',
                                    fillColor: '#00FF00',
-                                   text: '-1',
-                                   title: '-1'
+                                   text: Math.round(newData[400][1]),
+                                   title: Math.round(newData[400][1])
                                  }];
                         series.setData(newData, true, true);
                         flags_series.setData(flags_data, true, true);
@@ -183,7 +185,7 @@ angular.module("futuresApp")
                           shape:'flag',
                           onSeries: 'stock_data',
                           data: [],
-                          width: 16,
+                          width: 20,
                           id: 'stock_data_flags',
                           showInLegend: false
                         }]
