@@ -11,7 +11,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         sell: 0
     };
 
-    var lastProfit = 0;
+    var lastCash = 0;
     var delta = 0;
     function getUserPositions(init) {
         $http.get('/api/futures/get_positions')
@@ -29,11 +29,11 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                     }
                 }
                 if (init) {
-                    lastProfit = $scope.profit;
+                    lastCash = data.user.cash;
                 }
                 if (!init && $scope.tradeData.sell === 0) {
-                    delta = $scope.profit - lastProfit;
-                    lastProfit = $scope.profit;
+                    delta = data.user.cash - lastCash;
+                    lastCash = data.user.cash;
                     if (delta > 0) {
                         $scope.openGainPopup('lg');
                     }

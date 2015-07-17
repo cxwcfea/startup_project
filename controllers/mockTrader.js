@@ -440,7 +440,7 @@ function createOrder(data, cb) {
     console.log(data);
     if (!data.order.quantity || data.order.quantity % kHand != 0) {
         console.log("invalid quantity");
-        cb("invalid quantity");
+        cb({code:1, msg:"invalid quantity"});
         return;
     }
     // find user
@@ -452,7 +452,7 @@ function createOrder(data, cb) {
         }
         if (user.status != 0) {
             //res.send({code: 3, "msg": "Account status is not normal."});
-            cb('Account status is not normal.');
+            cb({code:3, msg:'Account status is not normal.'});
             return;
         }
         // find contract
@@ -462,12 +462,12 @@ function createOrder(data, cb) {
         }, function(err, contract) {
             if (err) {
                 console.log(err);
-                cb(err.toString());
+                cb({code:2, msg:err.toString()});
                 return;
             }
             if (!contract) {
                 console.log('failed to create contract');
-                return cb('failed to create contract');
+                return cb({code:2, msg:'failed to create contract'});
             }
             // find contract price info
             global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
@@ -477,7 +477,7 @@ function createOrder(data, cb) {
                 Portfolio.findOne({$and: [{contractId: contract._id}, {userId: user._id}]}, function(err, portfolio) {
                     if (err) {
                         console.log(err);
-                        cb(err.toString());
+                        cb({code:2, msg:err.toString()});
                         return;
                     }
                     if (!portfolio) {
@@ -486,7 +486,7 @@ function createOrder(data, cb) {
                     var costs = getCosts(priceInfo.LastPrice, data.order.quantity, portfolio.quantity, portfolio.total_point, portfolio.total_deposit);
                     if (user.cash < costs.open) {
                         //res.send({code: 4, "msg": "user.cash < costs.open", data: {costs: costs, cash: user.cash}});
-                        cb('user.cash < costs.open');
+                        cb({code:5, msg:'user.cash < costs.open'});
                         return;
                     }
                     var order = new Order({
@@ -512,21 +512,21 @@ function createOrder(data, cb) {
                         if (err) {
                             console.log(err);
                             //res.send({code: 5, "msg": err.errmsg});
-                            cb(err.toString());
+                            cb({code:2, msg:err.toString()});
                             return;
                         }
                         user.save(function(err) {
                             if (err) {
                                 console.log(err);
                                 //res.send({code: 6, "msg": err.errmsg});
-                                cb(err.toString());
+                                cb({code:2, msg:err.toString()});
                                 return;
                             }
                             portfolio.save(function(err) {
                                 if (err) {
                                     console.log(err);
                                     //res.send({code: 7, "msg": err.errmsg});
-                                    cb(err.toString());
+                                    cb({code:2, msg:err.toString()});
                                     return;
                                 }
                                 //res.send({code: 0, result: order._id});

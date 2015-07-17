@@ -75,7 +75,22 @@ function placeOrder(req, res) {
         };
         mockTrader.createOrder(obj, function(err, order) {
             if (err) {
-                return res.status(500).send({error_msg:err.toString()});
+                var msg;
+                switch (err.code) {
+                    case 1:
+                        msg = '无效的购买数量';
+                        break;
+                    case 3:
+                        msg = '账户已被冻结';
+                        break;
+                    case 5:
+                        msg = '账户余额不足';
+                        break;
+                    default:
+                        msg = '内部错误';
+                        break;
+                }
+                return res.status(500).send({error_msg:msg});
             }
             res.send(order);
         });

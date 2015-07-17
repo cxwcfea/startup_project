@@ -107,9 +107,9 @@
             <span class="top2"><br>\{{silverUser.wechat.wechat_name}}<br>\{{silverUser.wechat.trader.cash/100 | number:0}}</span>
             <span class="top1"><br>\{{goldUser.wechat.wechat_name}}<br>\{{goldUser.wechat.trader.cash/100 | number:0}}</span>
             <span class="top3"><br>\{{copperUser.wechat.wechat_name}}<br>\{{copperUser.wechat.trader.cash/100 | number:0}}</span>
-            <img class="top2-head img-circle" src="\{{silverUser.wechat.wechat_img}}" width="25%" />
-            <img class="top1-head img-circle" src="\{{goldUser.wechat.wechat_img}}" width="25%" />
-            <img class="top3-head img-circle" src="\{{copperUser.wechat.wechat_img}}" width="25%" />
+            <img class="top2-head img-circle" ng-src="\{{silverUser.wechat.wechat_img}}" width="25%" />
+            <img class="top1-head img-circle" ng-src="\{{goldUser.wechat.wechat_img}}" width="25%" />
+            <img class="top3-head img-circle" ng-src="\{{copperUser.wechat.wechat_img}}" width="25%" />
             <img class="crown-top2" src="/futures/images/top2.png" width="20%" />
             <img class="crown-top1" src="/futures/images/top1.png" width="20%" />
             <img class="crown-top3" src="/futures/images/top3.png" width="20%" />
@@ -118,13 +118,13 @@
     </div>
     <div class="row users current" ng-hide="userInRank">
         <span class="col-xs-1 badge">???</span>
-        <img class="img-circle col-xs-2" src="http://wx.qlogo.cn/mmopen/uchmtWQh7iarnsx58BbzlB1GAOzjI3S8elKicd6t8CiahGE3JSDmkVnTNzicQA44DdRliaLOsI1wLI9o79kynDUIchg/0" width="12%" />
+        <img class="img-circle col-xs-2" ng-src="\{{user.wechat.wechat_img}}" width="12%" />
         <span class="col-xs-5">您没有上榜，啥也不说了，快去交易吧</span>
         <button class="btn btn-danger pull-right col-xs-3" ng-click="trade()">立即交易</button>
     </div>
     <div class="row users" ng-repeat="theUser in topUsers | limitTo:5">
         <span class="col-xs-1 badge">\{{4 + $index}}</span>
-        <img class="img-circle col-xs-2" src="\{{theUser.wechat.wechat_img}}" width="12%" />
+        <img class="img-circle col-xs-2" ng-src="\{{theUser.wechat.wechat_img}}" width="12%" />
         <span class="info">
             <span class="col-xs-4">\{{theUser.wechat.wechat_name}}</span>
             <span class="pull-right col-xs-4 text-danger">\{{theUser.wechat.trader.cash/100 | number:0}}</span>

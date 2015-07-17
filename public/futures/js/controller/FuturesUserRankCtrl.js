@@ -1,5 +1,7 @@
 'use strict';
 angular.module('futuresApp').controller('FuturesUserRankCtrl', ['$scope', '$window', '$location', '$http', '$filter', function($scope, $window, $location, $http, filter) {
+    $scope.user = $scope.data.currentUser;
+
     $http.get('/api/futures/user_rank')
         .success(function(data, status) {
             var users = data.users;
