@@ -61,6 +61,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             })
             .error(function(data, status) {
                 console.log(data.error_msg);
+                $scope.profit = 0;
             });
     }
 
