@@ -354,7 +354,7 @@ function getProfit(req, res) {
                 res.status(500).send({error_msg: err.errmsg});
                 return;
             }
-            if (!portfolio) {
+            if (!portfolio.length) {
                 res.status(400).send({error_msg:'portfolio not found'});
                 return;
             }
