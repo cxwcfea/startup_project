@@ -93,14 +93,28 @@ angular.module("futuresApp")
             var socket = io.connect();
             socket.on('connect', function () {
                 console.log('socket connect');
-                var series;
+                var series, flags_series;
                 // send a join event with your name
                 socket.emit('join', 'user');
                 socket.on('history_data', function(historyData) {
                     socket.on('new_data', function(newData) {
                         //console.log('new data ' + newData);
                         //series.addPoint(newData, true, true);
+                        var flags_data = [{
+                                   x: 0,
+                                   color:'#FF0000',
+                                   fillColor: '#FF0000',
+                                   text: '+1',
+                                   title: '+1'
+                                 }, {
+                                   x: 8,
+                                   color:'#00FF00',
+                                   fillColor: '#00FF00',
+                                   text: '-1',
+                                   title: '-1'
+                                 }];
                         series.setData(newData, true, true);
+                        flags_series.setData(flags_data, true, true);
                         window.niujin_futures_new_data = newData.pop()[1];
                     });
                     //alert(historyData);
@@ -110,6 +124,7 @@ angular.module("futuresApp")
                                 load : function () {
                                     // set up the updating of the chart each second
                                     series = this.series[0];
+                                    flags_series = this.series[1];
                                     /*
                                     setInterval(function () {
                                         var x = (new Date()).getTime(), // current time
@@ -161,7 +176,16 @@ angular.module("futuresApp")
                         },
                         series : [{
                             name : '股指',
-                            data: historyData
+                            data: historyData,
+                            id: 'stock_data'
+                        },  {
+                          type: 'flags',
+                          shape:'flag',
+                          onSeries: 'stock_data',
+                          data: [],
+                          width: 16,
+                          id: 'stock_data_flags',
+                          showInLegend: false
                         }]
                     });
                 });
