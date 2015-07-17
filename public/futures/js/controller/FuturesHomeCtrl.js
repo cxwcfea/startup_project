@@ -185,7 +185,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     };
 
     $scope.showOrders = function() {
-        $location.path('/futures/#/orders');
+        $location.path('/orders');
     };
 
     $scope.placeOrder = function(type) {
