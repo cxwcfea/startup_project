@@ -10,6 +10,7 @@ angular.module('futuresApp').controller('FuturesUserRankCtrl', ['$scope', '$wind
             });
             var length = Math.min(users.length, 8);
             $scope.userInRank = false;
+            alert($scope.user.wechat.wechat_uuid);
             for (var i = 0; i < length; ++i) {
                 if ($scope.user.wechat.wechat_uuid == users[i].wechat.wechat_uuid) {
                     $scope.userInRank = true;
