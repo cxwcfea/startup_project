@@ -207,7 +207,7 @@ angular.module("futuresApp")
                     flags_data.push({
                         x: Date.parse(newValue.timestamp),
                         y: value,
-                        color:'#FFFFFF',
+                        color:'#000000',
                         fillColor: color,
                         text: value.toFixed(0),
                         title: value.toFixed(0)
