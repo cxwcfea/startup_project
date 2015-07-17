@@ -73,7 +73,7 @@
 
 <div class="index-box">
     <div class="chart-box">
-        <h4>今日股指走势图 <span class="pull-right" ng-click="showOrders()">交易记录</span></h4>
+        <h4>今日股指走势图 <span class="">当前价 <em class="text-success">\{{currentPrice | number:1}}元</em> 每手</span> <span class="pull-right" ng-click="showOrders()">交易记录</span></h4>
         <div class="chart">
             <!--
             <canvas id="J_chart" width="300" height="160" futures-chart="chartLabels" chart-data="chartData"></canvas>
@@ -110,13 +110,6 @@
             <p class="trader-time-hint text-danger" ng-click="showTradeTime()">现在是非交易时间，点击查看交易时间</p>
         {{/unless}}
         <div class="opt-btns">
-            <div class="container">
-                <div class="row">
-                    <button class="col-xs-3 btn left pull-left" disabled>\{{tradeData.up}}手</button>
-                    <button class="col-xs-3 btn mid pull-left" disabled>可平\{{tradeData.sell}}手</button>
-                    <button class="col-xs-3 btn right pull-right" disabled>\{{tradeData.down}}手</button>
-                </div>
-            </div>
             <div class="btns three" id="J_btns">
                 <button class="circle-btn p {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(0)"{{/if}}>平</button>
                 <button class="circle-btn z {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(1)"{{/if}}>涨</button>
@@ -134,6 +127,13 @@
                 <span><em>5</em>键</span>
             </div>
             -->
+            <div class="container">
+                <div class="row">
+                    <button class="col-xs-3 btn left pull-left" disabled>\{{tradeData.up}}手</button>
+                    <button class="col-xs-3 btn mid pull-left" disabled>可平\{{tradeData.sell}}手</button>
+                    <button class="col-xs-3 btn right pull-right" disabled>\{{tradeData.down}}手</button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="money-status container">
