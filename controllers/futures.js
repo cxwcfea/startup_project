@@ -41,12 +41,15 @@ function fetchUserRankData(req, res) {
             return res.status(500).send({error_msg:err.toString()});
         }
         var userInRank = false;
+        /*
         for (var i = 0; i < users.length; ++i) {
             if (users[i].wechat.wechat_uuid == req.user.wechat.wechat_uuid) {
                 userInRank = true;
                 break;
             }
         }
+        */
+        console.log(users);
         res.send({users:users, userInRank:userInRank});
     });
 }

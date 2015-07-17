@@ -6,7 +6,7 @@ angular.module('futuresApp').controller('FuturesUserRankCtrl', ['$scope', '$wind
         .success(function(data, status) {
             var users = data.users;
             users.sort(function(x, y) {
-                return y.wechat.trader.cash - x.wechat.trader.cash;
+                return y.wechat.trader.cash / 100 - x.wechat.trader.cash / 100;
             });
             $scope.goldUser = users.shift();
             if (!$scope.goldUser) {
