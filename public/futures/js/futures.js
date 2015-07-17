@@ -125,7 +125,7 @@ angular.module("futuresApp")
                                 load : function () {
                                     // set up the updating of the chart each second
                                     series = this.series[0];
-                                    window.niujin_chart_flags = flags_series = this.series[1];
+                                    flags_series = this.series[1];
                                     /*
                                     setInterval(function () {
                                         var x = (new Date()).getTime(), // current time
@@ -192,6 +192,10 @@ angular.module("futuresApp")
                         }]
                     });
                 });
+            });
+
+            scope.$watch(scope.tradeData, function(newValue, oldValue) {
+                alert(newValue);
             });
 
         }
