@@ -262,7 +262,7 @@ function windControl(userId, forceClose, cb) {
                                 closeAll(userId, portfolio, income, contractInfo, cb);
                             } else {
                                 console.log("Closed");
-                                cb(null);
+                                cb(null, {income:income});
                             }
                         }
                     });
