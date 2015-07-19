@@ -71,9 +71,6 @@ angular.module("futuresApp")
             var chartData = scope[attrs['chartData']];
             */
 
-            if (scope.data.chart) {
-            }
-
             var socket = io.connect();
             var series, flags_series, flags_data;
             flags_data = [];
@@ -105,37 +102,17 @@ angular.module("futuresApp")
                         series.setData(newData, true, true);
                         flags_series.setData(flags_data, true, true);
                     });
-                    scope.data.chart = element.highcharts('StockChart', {
+
+                    var chart = element.highcharts('StockChart', {
                         chart : {
                             events : {
                                 load : function () {
                                     // set up the updating of the chart each second
                                     series = this.series[0];
                                     flags_series = this.series[1];
-                                    alert(this.chart);
                                 }
                             }
                         },
-
-                        /*
-                        rangeSelector: {
-                            buttons: [{
-                                count: 20,
-                                type: 'second',
-                                text: '20S'
-                            }, {
-                                count: 60,
-                                type: 'second',
-                                text: '60S'
-                            }],
-                            inputEnabled: false,
-                            selected: 0
-                        },
-
-                         title : {
-                         text : 'Live random data'
-                         },
-                         */
 
                         exporting: {
                             enabled: false
@@ -171,6 +148,11 @@ angular.module("futuresApp")
                                 showInLegend: false
                         }]
                     });
+                    var debuglog = '';
+                    for (var key in chart) {
+                        debuglog += key + ':' + chart[key] + ',';
+                    }
+                    alert(debuglog);
                 });
             });
 
