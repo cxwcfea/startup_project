@@ -99,6 +99,7 @@ angular.module("futuresApp")
                     events : {
                         load : function () {
                             // set up the updating of the chart each second
+                            alert('on load');
                             series = this.series[0];
                             flags_series = this.series[1];
                         }
