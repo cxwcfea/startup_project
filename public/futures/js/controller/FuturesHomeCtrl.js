@@ -35,7 +35,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                 }
                 $scope.cash = data.user.cash/100;
                 if (!init && $scope.tradeData.sell === 0) {
-                    delta = data.user.cash - InitCapital;
+                    delta = $scope.cash - InitCapital;
                     if (delta > 0) {
                         $scope.openGainPopup('lg');
                     }
