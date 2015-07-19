@@ -33,6 +33,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                         $scope.tradeData.sell = $scope.tradeData.down;
                     }
                 }
+                $scope.cash = data.user.cash;
                 if (!init && $scope.tradeData.sell === 0) {
                     delta = data.user.cash - InitCapital;
                     if (delta > 0) {
