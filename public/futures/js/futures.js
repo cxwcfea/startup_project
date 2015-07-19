@@ -71,117 +71,71 @@ angular.module("futuresApp")
             var chartData = scope[attrs['chartData']];
             */
 
-            var socket = io.connect();
-            var series, flags_series, flags_data;
-            flags_data = [];
-            socket.on('connect', function () {
-                // send a join event with your name
-                socket.emit('join', 'user');
-                socket.on('history_data', function(historyData) {
+            if (!scope.data.socket) {
+                scope.data.socket = io.connect();
+                var series, flags_series, flags_data;
+                flags_data = [];
+                socket.on('connect', function () {
+                    // send a join event with your name
+                    socket.emit('join', 'user');
+                    /*
+                     socket.on('history_data', function(historyData) {
+                     });
+                     */
                     socket.on('new_data', function(newData) {
                         //series.addPoint(newData, true, true);
                         series.setData(newData, true, true);
                         flags_series.setData(flags_data, true, true);
                     });
-
-
-                    scope.data.chart = new Highcharts.StockChart({
-                        chart: {
-                            renderTo: element[0],
-                            events : {
-                                load : function () {
-                                    // set up the updating of the chart each second
-                                    series = this.series[0];
-                                    flags_series = this.series[1];
-                                }
-                            }
-                        },
-
-                        exporting: {
-                            enabled: false
-                        },
-                        credits: {
-                            enabled: false
-                        },
-                        scrollbar: {
-                            enabled: false
-                        },
-                        navigator: {
-                            enabled: false
-                        },
-                        rangeSelector: {
-                            enabled: false
-                        },
-                        yAxis: {
-                            opposite: false
-                        },
-                        series : [
-                            {
-                                name : '股指',
-                                data: historyData,
-                                id: 'stock_data'
-                            },
-                            {
-                                type: 'flags',
-                                shape : 'squarepin',
-                                width : 20,
-                                onSeries: 'stock_data',
-                                data: [],
-                                id: 'stock_data_flags',
-                                showInLegend: false
-                            }
-                        ]
-                    });
-
-
-                    /*
-                    element.highcharts('StockChart', {
-                        chart : {
-                            events : {
-                                load : function () {
-                                    // set up the updating of the chart each second
-                                    series = this.series[0];
-                                    flags_series = this.series[1];
-                                }
-                            }
-                        },
-
-                        exporting: {
-                            enabled: false
-                        },
-                        credits: {
-                            enabled: false
-                        },
-                        scrollbar: {
-                            enabled: false
-                        },
-                        navigator: {
-                            enabled: false
-                        },
-                        rangeSelector: {
-                            enabled: false
-                        },
-                        yAxis: {
-                            opposite: false
-                        },
-                        series : [
-                            {
-                                name : '股指',
-                                data: historyData,
-                                id: 'stock_data'
-                            },
-                            {
-                                type: 'flags',
-                                shape : 'squarepin',
-                                width : 20,
-                                onSeries: 'stock_data',
-                                data: [],
-                                id: 'stock_data_flags',
-                                showInLegend: false
-                        }]
-                    });
-                    */
                 });
+            }
+
+            scope.data.chart = new Highcharts.StockChart({
+                chart: {
+                    renderTo: element[0],
+                    events : {
+                        load : function () {
+                            // set up the updating of the chart each second
+                            series = this.series[0];
+                            flags_series = this.series[1];
+                        }
+                    }
+                },
+
+                exporting: {
+                    enabled: false
+                },
+                credits: {
+                    enabled: false
+                },
+                scrollbar: {
+                    enabled: false
+                },
+                navigator: {
+                    enabled: false
+                },
+                rangeSelector: {
+                    enabled: false
+                },
+                yAxis: {
+                    opposite: false
+                },
+                series : [
+                    {
+                        name : '股指',
+                        data: [],
+                        id: 'stock_data'
+                    },
+                    {
+                        type: 'flags',
+                        shape : 'squarepin',
+                        width : 20,
+                        onSeries: 'stock_data',
+                        data: [],
+                        id: 'stock_data_flags',
+                        showInLegend: false
+                    }
+                ]
             });
 
             scope.$watch('currentOrder', function(newValue, oldValue) {
@@ -203,6 +157,5 @@ angular.module("futuresApp")
                     flags_data = [];
                 }
             });
-
         }
     });
