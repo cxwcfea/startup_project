@@ -71,10 +71,10 @@ angular.module("futuresApp")
             var chartData = scope[attrs['chartData']];
             */
 
+            var series, flags_series, flags_data;
+            flags_data = [];
             if (!scope.data.socket) {
                 var socket = scope.data.socket = io.connect();
-                var series, flags_series, flags_data;
-                flags_data = [];
                 socket.on('connect', function () {
                     // send a join event with your name
                     socket.emit('join', 'user');
@@ -90,6 +90,9 @@ angular.module("futuresApp")
                 });
             }
 
+            if (scope.data.chart) {
+                scope.data.chart.destroy();
+            }
             scope.data.chart = new Highcharts.StockChart({
                 chart: {
                     renderTo: element[0],
