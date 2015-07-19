@@ -71,7 +71,6 @@ angular.module("futuresApp")
             var chartData = scope[attrs['chartData']];
             */
 
-            alert('run');
             var socket = io.connect();
             var series, flags_series, flags_data;
             flags_data = [];
@@ -103,7 +102,6 @@ angular.module("futuresApp")
                         series.setData(newData, true, true);
                         flags_series.setData(flags_data, true, true);
                     });
-                    //alert(historyData);
                     element.highcharts('StockChart', {
                         chart : {
                             events : {
@@ -111,10 +109,12 @@ angular.module("futuresApp")
                                     // set up the updating of the chart each second
                                     series = this.series[0];
                                     flags_series = this.series[1];
+                                    alert('run');
                                 }
                             }
                         },
 
+                        /*
                         rangeSelector: {
                             buttons: [{
                                 count: 20,
@@ -129,7 +129,6 @@ angular.module("futuresApp")
                             selected: 0
                         },
 
-                        /*
                          title : {
                          text : 'Live random data'
                          },
