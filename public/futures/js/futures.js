@@ -72,7 +72,7 @@ angular.module("futuresApp")
             */
 
             if (scope.data.chart) {
-                alert('destroy');
+                alert(scope.data.chart.destroy);
                 scope.data.chart.destroy();
             }
 
