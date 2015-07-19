@@ -12,7 +12,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         sell: 0
     };
 
-    alert($scope.data.chart);
     var delta = 0;
     function getUserPositions(init) {
         $http.get('/api/futures/get_positions')
