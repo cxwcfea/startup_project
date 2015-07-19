@@ -4,6 +4,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     $scope.chartData = [4188.57, 4040.48, 4053.70, 4182.93, 4023.93, 3872.15, 4188.57, 4040.48, 4053.70, 4182.93, 4023.93, 3872.15, 4053.70, 4182.93, 4023.93, 3872.15, 4188.57, 4040.48];
     $scope.user = $scope.data.currentUser;
     var HAND = 100;
+    var InitCapital = 1000000;
 
     $scope.tradeData = {
         up: 0,
@@ -11,7 +12,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         sell: 0
     };
 
-    var lastCash = 0;
     var delta = 0;
     function getUserPositions(init) {
         $http.get('/api/futures/get_positions')
@@ -28,12 +28,8 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                         $scope.tradeData.sell = $scope.tradeData.down;
                     }
                 }
-                if (init) {
-                    lastCash = data.user.cash;
-                }
                 if (!init && $scope.tradeData.sell === 0) {
-                    delta = data.user.cash - lastCash;
-                    lastCash = data.user.cash;
+                    delta = data.user.cash - InitCapital;
                     if (delta > 0) {
                         $scope.openGainPopup('lg');
                     }

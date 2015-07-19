@@ -69,27 +69,9 @@ angular.module("futuresApp")
             /*
             var chartLabels = scope[attrs['futuresChart']];
             var chartData = scope[attrs['chartData']];
-            var ctx = element[0].getContext("2d");
-            var data = {
-                labels: chartLabels,
-                datasets: [
-                    {
-                        label: "",
-                        fillColor: "rgba(151,187,205,0.2)",
-                        strokeColor: "rgba(151,187,205,1)",
-                        pointColor: "rgba(151,187,205,1)",
-                        pointStrokeColor: "#fff",
-                        pointHighlightFill: "#fff",
-                        pointHighlightStroke: "rgba(151,187,205,1)",
-                        data: chartData
-                    }
-                ]
-            };
-            new Chart(ctx).Line(data, {
-                responsive: true
-            });
             */
 
+            alert('run');
             var socket = io.connect();
             var series, flags_series, flags_data;
             flags_data = [];
@@ -129,13 +111,6 @@ angular.module("futuresApp")
                                     // set up the updating of the chart each second
                                     series = this.series[0];
                                     flags_series = this.series[1];
-                                    /*
-                                    setInterval(function () {
-                                        var x = (new Date()).getTime(), // current time
-                                            y = Math.round(Math.random() * 100);
-                                        series.addPoint([x, y], true, true);
-                                    }, 1000);
-                                    */
                                 }
                             }
                         },

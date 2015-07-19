@@ -14,10 +14,8 @@ function fetchHistoryData(cb) {
         for (var i in data) {
             var line = data[i];
             line = JSON.parse(line.replace(/'/g, ''))[0];
-            //console.log(JSON.parse(line));
             ret.unshift([parseInt(line.ts/1000), parseInt(line.LastPrice)]);
         }
-        //console.log(ret);
         cb(ret);
     });
 }
@@ -56,34 +54,5 @@ module.exports = function(io) {
         fetchHistoryData(function(data) {
             io.sockets.emit('new_data', data);
         });
-        /*
-         mockTrader.getLastFuturesPrice(function(err, data) {
-         if (err) {
-         console.log('getLastFuturesPrice error:' + err.toString());
-         var x = (new Date()).getTime(), // current time
-         y = util.getRandomInt(3600, 4000);
-         historyData.unshift([x, y]);
-         io.sockets.emit('new_data', [x, y]);
-         } else {
-         var x = parseInt(data.ts/1000), // current time
-         y = parseInt(data.lastPrice);
-         historyData.unshift([x, y]);
-         io.sockets.emit('new_data', [x, y]);
-         }
-         });
-         */
     }, 2000);
-    /*
-    global.redis_client.lrange('mt://future/IFHIST', 0, 999, function(err, data) {
-        if (err) {
-            console.log(err.toString());
-        }
-        for (var i in data) {
-            var line = data[i];
-            line = JSON.parse(line.replace(/'/g, ''))[0];
-            historyData.unshift([parseInt(line.ts/1000), parseInt(line.LastPrice)]);
-        }
-
-    });
-    */
 };
