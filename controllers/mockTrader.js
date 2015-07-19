@@ -33,7 +33,8 @@ var PPJOrderSchema = mongoose.Schema({
     // filledAmount: { type: Number, default: 0},  // basis: cent, 0.01
     price: { type: Number, default: 0},  // basis: cent, 0.01
     fee: { type: Number, default: 0},  // basis: cent, 0.01
-    lockedCash: { type: Number, default: 0}  // basis: cent, 0.01
+    lockedCash: { type: Number, default: 0},  // basis: cent, 0.01
+    profit: { type: Number, default: 0 }
 });
 var Order = mongoose.model('PPJOrder', PPJOrderSchema);
 
@@ -88,7 +89,7 @@ function getCosts(stock_price, quantity, position, total_point, total_deposit) {
     var point_diff = point_released - q * stock_price / 100;
     var deposit_diff = deposit_released - raw;
     console.log(q, pos_released, raw, profit, fee, point_diff, deposit_diff);
-    return {raw: raw, fee: fee, open: raw-profit+fee, locked_cash: locked_cash, point:point_diff, deposit:deposit_diff};
+    return {raw: raw, fee: fee, open: raw-profit+fee, locked_cash: locked_cash, point:point_diff, deposit:deposit_diff, profit:profit};
 }
 
 function closeAll(userId, portfolio, income, contractInfo, cb) {
@@ -134,7 +135,8 @@ function closeAll(userId, portfolio, income, contractInfo, cb) {
                         quantity: -portf.quantity,
                         price: contractInfo[portf.contractId].LastPrice,
                         fee: costs.fee,
-                        lockedCash: costs.locked_cash
+                        lockedCash: costs.locked_cash,
+                        profit: costs.profit
                     });
                     order.save(function(err) {
                         if (err) {
@@ -495,7 +497,8 @@ function createOrder(data, cb) {
                         quantity: data.order.quantity,
                         price: priceInfo.LastPrice,
                         fee: costs.fee,
-                        lockedCash: costs.locked_cash
+                        lockedCash: costs.locked_cash,
+                        profit: costs.profit
                     });
                     user.cash -= costs.open;
                     portfolio.quantity += data.order.quantity;
