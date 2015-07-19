@@ -73,26 +73,22 @@ angular.module("futuresApp")
 
             var series, flags_series, flags_data;
             flags_data = [];
-            if (!scope.data.socket) {
-                var socket = scope.data.socket = io.connect();
-                socket.on('connect', function () {
-                    // send a join event with your name
-                    socket.emit('join', 'user');
-                    /*
-                     socket.on('history_data', function(historyData) {
-                     });
-                    socket.on('new_data', function(newData) {
-                        //series.addPoint(newData, true, true);
-                        series.setData(newData, true, true);
-                        flags_series.setData(flags_data, true, true);
-                    });
-                     */
-                });
+            if (scope.data.socket) {
+                io.disconnect();
             }
-            scope.data.socket.on('new_data', function(newData) {
-                //series.addPoint(newData, true, true);
-                series.setData(newData, true, true);
-                flags_series.setData(flags_data, true, true);
+            var socket = scope.data.socket = io.connect();
+            socket.on('connect', function () {
+                // send a join event with your name
+                socket.emit('join', 'user');
+                /*
+                 socket.on('history_data', function(historyData) {
+                 });
+                 */
+                socket.on('new_data', function(newData) {
+                    //series.addPoint(newData, true, true);
+                    series.setData(newData, true, true);
+                    flags_series.setData(flags_data, true, true);
+                });
             });
 
             if (scope.data.chart) {
