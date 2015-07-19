@@ -72,7 +72,6 @@ angular.module("futuresApp")
             */
 
             if (scope.data.chart) {
-                alert(scope.data.chart.redraw);
             }
 
             var socket = io.connect();
@@ -113,6 +112,7 @@ angular.module("futuresApp")
                                     // set up the updating of the chart each second
                                     series = this.series[0];
                                     flags_series = this.series[1];
+                                    alert(this.chart);
                                 }
                             }
                         },
