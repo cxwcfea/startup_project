@@ -71,6 +71,11 @@ angular.module("futuresApp")
             var chartData = scope[attrs['chartData']];
             */
 
+            if (scope.data.chart) {
+                alert('destroy');
+                scope.data.chart.destroy();
+            }
+
             var socket = io.connect();
             var series, flags_series, flags_data;
             flags_data = [];
@@ -104,7 +109,7 @@ angular.module("futuresApp")
                     });
 
 
-                    window.chart = new Highcharts.StockChart({
+                    scope.data.chart = new Highcharts.StockChart({
                         chart: {
                             renderTo: element[0],
                             events : {
