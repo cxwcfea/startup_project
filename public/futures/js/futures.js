@@ -84,11 +84,11 @@ angular.module("futuresApp")
                  socket.on('history_data', function(historyData) {
                  });
                  */
-                socket.on('new_data', function(newData) {
-                    //series.addPoint(newData, true, true);
-                    series.setData(newData, true, true);
-                    flags_series.setData(flags_data, true, true);
-                });
+            });
+            socket.on('new_data', function(newData) {
+                //series.addPoint(newData, true, true);
+                series.setData(newData, true, true);
+                flags_series.setData(flags_data, true, true);
             });
 
             if (scope.data.chart) {
