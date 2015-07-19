@@ -71,25 +71,26 @@ angular.module("futuresApp")
             var chartData = scope[attrs['chartData']];
             */
 
+            /*
             var series, flags_series, flags_data;
             flags_data = [];
-            if (scope.data.socket) {
-                scope.data.socket.disconnect();
+            */
+            if (!scope.data.socket) {
+                var socket = scope.data.socket = io.connect();
+                socket.on('connect', function () {
+                    // send a join event with your name
+                    socket.emit('join', 'user');
+                    /*
+                     socket.on('history_data', function(historyData) {
+                     });
+                     */
+                });
+                socket.on('new_data', function(newData) {
+                    //series.addPoint(newData, true, true);
+                    scope.data.series.setData(newData, true, true);
+                    scope.data.flags_series.setData(scope.data.flags_data, true, true);
+                });
             }
-            var socket = scope.data.socket = io.connect();
-            socket.on('connect', function () {
-                // send a join event with your name
-                socket.emit('join', 'user');
-                /*
-                 socket.on('history_data', function(historyData) {
-                 });
-                 */
-            });
-            socket.on('new_data', function(newData) {
-                //series.addPoint(newData, true, true);
-                series.setData(newData, true, true);
-                flags_series.setData(flags_data, true, true);
-            });
 
             if (scope.data.chart) {
                 scope.data.chart.destroy();
@@ -100,8 +101,8 @@ angular.module("futuresApp")
                     events : {
                         load : function () {
                             // set up the updating of the chart each second
-                            series = this.series[0];
-                            flags_series = this.series[1];
+                            scope.data.series = this.series[0];
+                            scope.data.flags_series = this.series[1];
                         }
                     }
                 },
@@ -149,7 +150,7 @@ angular.module("futuresApp")
                     if (newValue.quantity < 0) {
                         color = '#00FF00';
                     }
-                    flags_data.push({
+                    scope.data.flags_data.push({
                         x: Date.parse(newValue.timestamp),
                         y: value,
                         color:'#000000',
@@ -158,7 +159,7 @@ angular.module("futuresApp")
                         title: value.toFixed(0)
                     });
                 } else {
-                    flags_data = [];
+                    scope.data.flags_data = [];
                 }
             });
         }
