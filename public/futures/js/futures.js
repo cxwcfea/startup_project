@@ -73,7 +73,9 @@ angular.module("futuresApp")
 
             var series, flags_series, flags_data;
             flags_data = [];
-            io.disconnect();
+            if (scope.data.socket) {
+                scope.data.socket.disconnect();
+            }
             var socket = scope.data.socket = io.connect();
             socket.on('connect', function () {
                 // send a join event with your name
