@@ -106,7 +106,7 @@ angular.module("futuresApp")
 
                     window.chart = new Highcharts.StockChart({
                         chart: {
-                            renderTo: element,
+                            renderTo: element[0],
                             events : {
                                 load : function () {
                                     // set up the updating of the chart each second
