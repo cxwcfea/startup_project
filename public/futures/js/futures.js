@@ -72,7 +72,7 @@ angular.module("futuresApp")
             */
 
             if (scope.data.chart) {
-                scope.data.chart.destroy();
+                alert(scope.data.chart.redraw);
             }
 
             var socket = io.connect();
