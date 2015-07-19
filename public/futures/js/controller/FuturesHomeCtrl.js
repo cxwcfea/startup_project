@@ -108,7 +108,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             size: size,
             resolve: {
                 profit: function () {
-                    return delta/100;
+                    return delta;
                 },
                 constant: function() {
                     return 1000;
