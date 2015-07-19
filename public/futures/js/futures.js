@@ -102,7 +102,7 @@ angular.module("futuresApp")
                         series.setData(newData, true, true);
                         flags_series.setData(flags_data, true, true);
                     });
-                    element.highcharts('StockChart', {
+                    scope.data.chart = element.highcharts('StockChart', {
                         chart : {
                             events : {
                                 load : function () {
