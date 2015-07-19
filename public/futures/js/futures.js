@@ -109,7 +109,6 @@ angular.module("futuresApp")
                                     // set up the updating of the chart each second
                                     series = this.series[0];
                                     flags_series = this.series[1];
-                                    alert('run');
                                 }
                             }
                         },
