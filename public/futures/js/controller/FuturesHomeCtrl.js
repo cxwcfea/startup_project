@@ -12,6 +12,11 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         sell: 0
     };
 
+    if (scope.data.chart) {
+        //alert(scope.data.chart.destroy);
+        scope.data.chart.destroy();
+    }
+
     var delta = 0;
     function getUserPositions(init) {
         $http.get('/api/futures/get_positions')
