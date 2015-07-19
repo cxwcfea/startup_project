@@ -72,7 +72,7 @@ angular.module("futuresApp")
             */
 
             if (!scope.data.socket) {
-                scope.data.socket = io.connect();
+                var socket = scope.data.socket = io.connect();
                 var series, flags_series, flags_data;
                 flags_data = [];
                 socket.on('connect', function () {
