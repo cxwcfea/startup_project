@@ -80,6 +80,7 @@ angular.module("futuresApp")
                 // send a join event with your name
                 socket.emit('join', 'user');
                 socket.on('history_data', function(historyData) {
+                    alert('on hsitory data');
                     socket.on('new_data', function(newData) {
                         // console.log('new data ' + newData);
                         //series.addPoint(newData, true, true);
