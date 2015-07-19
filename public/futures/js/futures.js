@@ -81,14 +81,19 @@ angular.module("futuresApp")
                     /*
                      socket.on('history_data', function(historyData) {
                      });
-                     */
                     socket.on('new_data', function(newData) {
                         //series.addPoint(newData, true, true);
                         series.setData(newData, true, true);
                         flags_series.setData(flags_data, true, true);
                     });
+                     */
                 });
             }
+            scope.data.socket.on('new_data', function(newData) {
+                //series.addPoint(newData, true, true);
+                series.setData(newData, true, true);
+                flags_series.setData(flags_data, true, true);
+            });
 
             if (scope.data.chart) {
                 scope.data.chart.destroy();
@@ -99,7 +104,6 @@ angular.module("futuresApp")
                     events : {
                         load : function () {
                             // set up the updating of the chart each second
-                            alert('on load');
                             series = this.series[0];
                             flags_series = this.series[1];
                         }
