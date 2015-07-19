@@ -79,7 +79,6 @@ angular.module("futuresApp")
                 socket.emit('join', 'user');
                 socket.on('history_data', function(historyData) {
                     socket.on('new_data', function(newData) {
-                        alert('on new data');
                         //series.addPoint(newData, true, true);
                         series.setData(newData, true, true);
                         flags_series.setData(flags_data, true, true);
