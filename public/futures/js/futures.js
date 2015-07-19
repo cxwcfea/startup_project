@@ -103,7 +103,58 @@ angular.module("futuresApp")
                         flags_series.setData(flags_data, true, true);
                     });
 
-                    var chart = element.highcharts('StockChart', {
+
+                    window.chart = new Highcharts.StockChart({
+                        chart: {
+                            renderTo: element,
+                            events : {
+                                load : function () {
+                                    // set up the updating of the chart each second
+                                    series = this.series[0];
+                                    flags_series = this.series[1];
+                                }
+                            }
+                        },
+
+                        exporting: {
+                            enabled: false
+                        },
+                        credits: {
+                            enabled: false
+                        },
+                        scrollbar: {
+                            enabled: false
+                        },
+                        navigator: {
+                            enabled: false
+                        },
+                        rangeSelector: {
+                            enabled: false
+                        },
+                        yAxis: {
+                            opposite: false
+                        },
+                        series : [
+                            {
+                                name : '股指',
+                                data: historyData,
+                                id: 'stock_data'
+                            },
+                            {
+                                type: 'flags',
+                                shape : 'squarepin',
+                                width : 20,
+                                onSeries: 'stock_data',
+                                data: [],
+                                id: 'stock_data_flags',
+                                showInLegend: false
+                            }
+                        ]
+                    });
+
+
+                    /*
+                    element.highcharts('StockChart', {
                         chart : {
                             events : {
                                 load : function () {
@@ -148,11 +199,7 @@ angular.module("futuresApp")
                                 showInLegend: false
                         }]
                     });
-                    var debuglog = '';
-                    for (var key in chart) {
-                        debuglog += key + ':' + chart[key] + ',';
-                    }
-                    alert(debuglog);
+                    */
                 });
             });
 
