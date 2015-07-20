@@ -110,14 +110,20 @@ angular.module("futuresApp")
                 scrollbar: {
                     enabled: false
                 },
-                /*
                 navigator: {
-                    enabled: false
+                    height: 20
                 },
                 rangeSelector: {
-                    enabled: false
+                    buttons: [{
+                        type: 'minute',
+                        count: 20,
+                        text: '20M'
+                    }, {
+                        type: 'all',
+                        text: 'All'
+                    }]
                 },
-                */
+
                 yAxis: {
                     opposite: false
                 },
