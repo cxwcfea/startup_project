@@ -33,7 +33,7 @@ function fetchHistoryData(cb) {
         for (var i in data) {
             var line = data[i];
             line = JSON.parse(line.replace(/'/g, ''))[0];
-            ret.unshift({x:parseInt(line.ts/1000), y:parseInt(line.LastPrice), color:'#ffffff'});
+            ret.unshift([parseInt(line.ts/1000), parseInt(line.LastPrice)]);
         }
         var blankData = generateBlankData(ret[0][0], ret[ret.length-1]);
         cb({data1:ret, data2:blankData});
