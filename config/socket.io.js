@@ -12,7 +12,7 @@ function generateBlankData(timestamp, lastPoint) {
     var startTime = lastPoint[0];
     while (startTime < endTime) {
         startTime += 1000;
-        ret.push([startTime, lastPoint[1]]);
+        ret.push([{x:startTime, y:lastPoint[1], color:'#ffffff'}]);
     }
     console.log(ret);
     return ret;
@@ -33,7 +33,7 @@ function fetchHistoryData(cb) {
         for (var i in data) {
             var line = data[i];
             line = JSON.parse(line.replace(/'/g, ''))[0];
-            ret.unshift([parseInt(line.ts/1000), parseInt(line.LastPrice)]);
+            ret.unshift({x:parseInt(line.ts/1000), y:parseInt(line.LastPrice), color:'#ffffff'});
         }
         var blankData = generateBlankData(ret[0][0], ret[ret.length-1]);
         cb({data1:ret, data2:blankData});
