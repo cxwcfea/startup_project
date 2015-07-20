@@ -7238,7 +7238,7 @@ function fetchHistoryData(cb) {
             line = JSON.parse(line.replace(/'/g, ''))[0];
             ret.unshift([parseInt(line.ts/1000), parseInt(line.LastPrice)]);
         }
-        var blankData = generateBlankData(ret[0][0], ret[ret.length]);
+        var blankData = generateBlankData(ret[0][0], ret[ret.length-1]);
         cb({data1:ret, data2:blankData});
     });
 }
