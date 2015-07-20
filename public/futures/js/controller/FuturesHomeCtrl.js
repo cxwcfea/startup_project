@@ -226,5 +226,9 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                 displayError(data.error_msg);
             });
     };
+
+    $scope.handleEvent = function (e) {
+        alert("Event type: " + e.type);
+    };
 }]);
 
