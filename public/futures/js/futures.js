@@ -81,7 +81,7 @@ angular.module("futuresApp")
                     //series.addPoint(newData, true, true);
                     scope.data.series.setData(newData.data1, true, true);
                     scope.data.fake_series.setData(newData.data2, true, true);
-                    //scope.data.flags_series.setData(scope.data.flags_data, true, true);
+                    scope.data.flags_series.setData(scope.data.flags_data, true, true);
                 });
             }
 
