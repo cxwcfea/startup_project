@@ -227,7 +227,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             });
     };
 
-    $scope.buttonPressed = false;
     $scope.handleEvent = function (e) {
         if (e.type == 'mousedown') {
             if (e.target.id == 'bp') {
