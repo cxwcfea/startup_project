@@ -122,7 +122,7 @@
     left: 0;
     top: 0;
 }
-.opt-btns .circle-btn.p{
+.opt-btns .circle-btn.p1{
     /*
     background: #fa9d01;
     */
@@ -131,7 +131,7 @@
 .opt-btns .circle-btn.p3{
     background-image: url('../images/p3.png');
 }
-.opt-btns .circle-btn.d{
+.opt-btns .circle-btn.d1{
     /*
     background: #34cc67;
     font-size: 28px;
@@ -144,7 +144,7 @@
 .opt-btns .circle-btn.pd{
     background: #34cc67;
 }
-.opt-btns .circle-btn.z{
+.opt-btns .circle-btn.z1{
     /*
     background: #ff414b;
     font-size: 28px;
