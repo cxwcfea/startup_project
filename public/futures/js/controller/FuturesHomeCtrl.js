@@ -232,7 +232,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             if (e.target.id == 'bp') {
                 $scope.PButtonPressed = true;
                 $timeout(function() {
-                    $scope.PBbuttonPressed = false;
+                    $scope.PButtonPressed = false;
                 }, 200);
             }
             if (e.target.id == 'bz') {
