@@ -110,12 +110,14 @@ angular.module("futuresApp")
                 scrollbar: {
                     enabled: false
                 },
+                /*
                 navigator: {
                     enabled: false
                 },
                 rangeSelector: {
                     enabled: false
                 },
+                */
                 yAxis: {
                     opposite: false
                 },
