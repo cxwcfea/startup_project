@@ -230,7 +230,11 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     $scope.buttonPressed = false;
     $scope.handleEvent = function (e) {
         if (e.type == 'mousedown') {
-            alert(e[0].val());
+            var str = '';
+            for (var key in e) {
+                str += key + '' + e[key] + ',';
+            }
+            alert(str);
             $scope.buttonPressed = true;
             $timeout(function() {
                 $scope.buttonPressed = false;
