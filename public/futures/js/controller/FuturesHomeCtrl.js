@@ -233,19 +233,19 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                 $scope.PButtonPressed = true;
                 $timeout(function() {
                     $scope.PButtonPressed = false;
-                }, 200);
+                }, 500);
             }
             if (e.target.id == 'bz') {
                 $scope.ZButtonPressed = true;
                 $timeout(function() {
                     $scope.ZButtonPressed = false;
-                }, 200);
+                }, 500);
             }
             if (e.target.id == 'bd') {
                 $scope.DButtonPressed = true;
                 $timeout(function() {
                     $scope.DButtonPressed = false;
-                }, 200);
+                }, 500);
             }
         }
     };
