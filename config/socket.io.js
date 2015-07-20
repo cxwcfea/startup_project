@@ -6,7 +6,6 @@ var channelName = 'futures';
 //var users
 
 function generateBlankData(timestamp, lastPoint) {
-    console.log('time stamp ' + timestamp);
     var endTime = (timestamp + 2 * 3600 * 1000) % 1000;
     var ret = [];
     var startTime = lastPoint[0];
@@ -14,6 +13,7 @@ function generateBlankData(timestamp, lastPoint) {
         startTime += 1000;
         ret.push([startTime, lastPoint[1]]);
     }
+    console.log(ret);
     return ret;
 }
 
