@@ -111,9 +111,11 @@ angular.module("futuresApp")
                     enabled: false
                 },
                 navigator: {
-                    height: 20
+                    height: 30
                 },
                 rangeSelector: {
+                    enabled: false
+                    /*
                     buttons: [{
                         type: 'minute',
                         count: 20,
@@ -122,6 +124,7 @@ angular.module("futuresApp")
                         type: 'all',
                         text: 'All'
                     }]
+                    */
                 },
 
                 yAxis: {
