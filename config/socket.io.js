@@ -7,14 +7,14 @@ var channelName = 'futures';
 
 function generateBlankData(timestamp, lastPoint) {
     var endTime = timestamp + 2 * 3600 * 1000 + 15 * 60000;
-    console.log('endTime:' + endTime + ' lastTime:' + lastPoint[0]);
+    //console.log('endTime:' + endTime + ' lastTime:' + lastPoint[0]);
     var ret = [];
     var startTime = lastPoint[0];
     while (startTime < endTime) {
         startTime += 1000;
-        ret.push([{x:startTime, y:lastPoint[1], color:'#ffffff'}]);
+        ret.push({x:startTime, y:lastPoint[1], color:'#ffffff'});
     }
-    console.log(ret);
+    //console.log(ret);
     return ret;
 }
 
