@@ -76,15 +76,12 @@ angular.module("futuresApp")
                 socket.on('connect', function () {
                     // send a join event with your name
                     socket.emit('join', 'user');
-                    /*
-                     socket.on('history_data', function(historyData) {
-                     });
-                     */
                 });
                 socket.on('new_data', function(newData) {
                     //series.addPoint(newData, true, true);
-                    scope.data.series.setData(newData, true, true);
-                    scope.data.flags_series.setData(scope.data.flags_data, true, true);
+                    scope.data.series.setData(newData.data1, true, true);
+                    scope.data.fake_series.setData(newData.data2, true, true);
+                    //scope.data.flags_series.setData(scope.data.flags_data, true, true);
                 });
             }
 
@@ -98,7 +95,8 @@ angular.module("futuresApp")
                         load : function () {
                             // set up the updating of the chart each second
                             scope.data.series = this.series[0];
-                            scope.data.flags_series = this.series[1];
+                            scope.data.fake_series = this.series[1];
+                            scope.data.flags_series = this.series[2];
                         }
                     }
                 },
@@ -126,6 +124,10 @@ angular.module("futuresApp")
                         name : '股指',
                         data: [],
                         id: 'stock_data'
+                    },
+                    {
+                        name : '股指2',
+                        data: []
                     },
                     {
                         type: 'flags',
