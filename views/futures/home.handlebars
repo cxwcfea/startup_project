@@ -28,6 +28,12 @@
     .opt-btns .circle-btn.p.pressed {
         background-color: gray;
     }
+    .opt-btns .circle-btn.z.pressed {
+        background-color: gray;
+    }
+    .opt-btns .circle-btn.d.pressed {
+        background-color: gray;
+    }
     .share-mask {
         position: absolute;
         z-index: 10000;
@@ -126,11 +132,11 @@
         <div class="opt-btns">
             <div class="btns three" id="J_btns">
                 <button ng-class="{pressed:buttonPressed}" class="circle-btn p {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(0)"{{/if}} ng-mousedown="handleEvent($event)" ng-mouseup="handleEvent($event)">平</button>
-                <button class="circle-btn z {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(1)"{{/if}}>涨</button>
+                <button ng-class="{pressed:buttonPressed}" class="circle-btn z {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(1)"{{/if}}>涨</button>
                 <!--
                 <button class="circle-btn pz">平涨</button>
                 -->
-                <button class="circle-btn d {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(-1)"{{/if}}>跌</button>
+                <button ng-class="{pressed:buttonPressed}" class="circle-btn d {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(-1)"{{/if}}>跌</button>
                 <!--
                 <button class="circle-btn pd">平跌</button>
                 -->
