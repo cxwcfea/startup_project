@@ -227,8 +227,10 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             });
     };
 
+    $scope.buttonPressed = false;
     $scope.handleEvent = function (e) {
         alert("Event type: " + e.type);
+        $scope.buttonPressed = true;
     };
 }]);
 
