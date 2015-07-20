@@ -77,8 +77,10 @@
     position: absolute;
     width: 80px;
     height: 80px;
+    /*
     border: 5px solid #dce5e0;
     border-radius: 50% 50%;
+    */
     font-size: 20px;
     color: #fff;
 }
@@ -121,18 +123,27 @@
     top: 0;
 }
 .opt-btns .circle-btn.p{
+    /*
     background: #fa9d01;
+    */
+    background-image: url('../images/p1.png');
 }
 .opt-btns .circle-btn.d{
+    /*
     background: #34cc67;
     font-size: 28px;
+    */
+    background-image: url('../images/d1.png');
 }
 .opt-btns .circle-btn.pd{
     background: #34cc67;
 }
 .opt-btns .circle-btn.z{
+    /*
     background: #ff414b;
     font-size: 28px;
+    */
+    background-image: url('../images/z1.png');
 }
 .opt-btns .circle-btn.pz{
     background: #ff414b;
