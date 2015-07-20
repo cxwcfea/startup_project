@@ -12,7 +12,7 @@ function generateBlankData(timestamp, lastPoint) {
     var startTime = lastPoint[0];
     while (startTime < endTime) {
         startTime += 1000;
-        ret.push({x:startTime, y:lastPoint[1], color:'#ffffff'});
+        ret.push([startTime, null]);
     }
     //console.log(ret);
     return ret;
