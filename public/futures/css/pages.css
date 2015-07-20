@@ -157,6 +157,9 @@
 .opt-btns .circle-btn.pz{
     background: #ff414b;
 }
+.opt-box .opt-btns .circle-btn-disable {
+    background-image: url('../images/disable.png');
+}
 .opt-btns .switch-btns {
     position: relative;
     margin-top: -30px;
