@@ -128,12 +128,18 @@
     */
     background-image: url('../images/p1.png');
 }
+.opt-btns .circle-btn.p3{
+    background-image: url('../images/p3.png');
+}
 .opt-btns .circle-btn.d{
     /*
     background: #34cc67;
     font-size: 28px;
     */
     background-image: url('../images/d1.png');
+}
+.opt-btns .circle-btn.d3{
+    background-image: url('../images/d3.png');
 }
 .opt-btns .circle-btn.pd{
     background: #34cc67;
@@ -144,6 +150,9 @@
     font-size: 28px;
     */
     background-image: url('../images/z1.png');
+}
+.opt-btns .circle-btn.z3{
+    background-image: url('../images/z3.png');
 }
 .opt-btns .circle-btn.pz{
     background: #ff414b;
