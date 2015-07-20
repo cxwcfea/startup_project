@@ -5,6 +5,17 @@ var util = require('../lib/util'),
 var channelName = 'futures';
 //var users
 
+function generateBlankData(timestamp, lastPoint) {
+    var endTime = (timestamp + 2 * 3600 * 1000) % 1000;
+    var ret = [];
+    var startTime = lastPoint[0];
+    while (startTime < endTime) {
+        startTime += 1000;
+        ret.push([startTime, lastPoint[1]]);
+    }
+    return ret;
+}
+
 var testData1 = [
     [ 1437384600000, 3908 ],
     [ 1437384601000, 3840 ],
@@ -7211,11 +7222,12 @@ var testData2 = [
     [ 1437391800000, 4100 ] ];
 
 function fetchHistoryData(cb) {
+    /*
     var data = testData2.shift();
     data[1] = Math.floor(Math.random() * (4200 - 3800)) + 3800;
     testData1.push(data);
     cb({data1:testData1, data2:testData2});
-    /*
+    */
     global.redis_client.lrange('mt://future/IFHIST', 0, 999, function(err, data) {
         if (err) {
             console.log(err.toString());
@@ -7226,9 +7238,9 @@ function fetchHistoryData(cb) {
             line = JSON.parse(line.replace(/'/g, ''))[0];
             ret.unshift([parseInt(line.ts/1000), parseInt(line.LastPrice)]);
         }
-        cb(ret);
+        var blankData = generateBlankData(ret[0][0], ret[ret.length]);
+        cb({data1:ret, data2:blankData});
     });
-    */
 }
 
 function test() {
