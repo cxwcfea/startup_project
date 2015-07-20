@@ -6,8 +6,8 @@ var channelName = 'futures';
 //var users
 
 function generateBlankData(timestamp, lastPoint) {
-    console.log('endTime:' + endTime + ' lastTime:' + lastPoint[0]);
     var endTime = (timestamp + 2 * 3600 * 1000 + 15 * 60000) % 1000;
+    console.log('endTime:' + endTime + ' lastTime:' + lastPoint[0]);
     var ret = [];
     var startTime = lastPoint[0];
     while (startTime < endTime) {
