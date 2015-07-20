@@ -230,11 +230,24 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     $scope.buttonPressed = false;
     $scope.handleEvent = function (e) {
         if (e.type == 'mousedown') {
-            alert(e.target.id);
-            $scope.buttonPressed = true;
-            $timeout(function() {
-                $scope.buttonPressed = false;
-            }, 200);
+            if (e.target.id == 'bp') {
+                $scope.PButtonPressed = true;
+                $timeout(function() {
+                    $scope.PBbuttonPressed = false;
+                }, 200);
+            }
+            if (e.target.id == 'bz') {
+                $scope.ZButtonPressed = true;
+                $timeout(function() {
+                    $scope.ZButtonPressed = false;
+                }, 200);
+            }
+            if (e.target.id == 'bd') {
+                $scope.DButtonPressed = true;
+                $timeout(function() {
+                    $scope.DButtonPressed = false;
+                }, 200);
+            }
         }
     };
 }]);
