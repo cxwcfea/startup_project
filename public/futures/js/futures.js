@@ -71,10 +71,6 @@ angular.module("futuresApp")
             var chartData = scope[attrs['chartData']];
             */
 
-            /*
-            var series, flags_series, flags_data;
-            flags_data = [];
-            */
             if (!scope.data.socket) {
                 var socket = scope.data.socket = io.connect();
                 socket.on('connect', function () {
