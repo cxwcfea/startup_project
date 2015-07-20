@@ -233,7 +233,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             $scope.buttonPressed = true;
             $timeout(function() {
                 $scope.buttonPressed = false;
-            }, 500);
+            }, 200);
         }
     };
 }]);
