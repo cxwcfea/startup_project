@@ -63,7 +63,7 @@
             <tr ng-repeat="order in orders">
                 <td>
                     <strong>买\{{order.quantity | displayFutureQuantity}}手</strong>
-                    <p>\{{order.timestamp | date:'yyyy-MM-dd HH:mm'}}</p>
+                    <p>\{{order.timestamp | date:'yyyy-MM-dd HH:mm:sss'}}</p>
                 </td>
                 <td align="right">
                     <strong class="text-danger">\{{order.lockedCash / 100 | number:2}}</strong>
