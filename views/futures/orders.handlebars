@@ -66,7 +66,7 @@
                     <p>\{{order.timestamp | date:'yyyy-MM-dd HH:mm:ss'}}</p>
                 </td>
                 <td align="right">
-                    <strong class="text-danger">\{{Math.abs(order.lockedCash / 100) | number:2}}</strong>
+                    <strong class="text-danger">\{{(order.lockedCash > 0 ? order.lockedCash : 0 - order.lockedCash) / 100 | number:2}}</strong>
                     <p>\{{order.price / 100 | number:1}}</p>
                 </td>
                 <td align="right">
