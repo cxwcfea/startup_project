@@ -154,7 +154,7 @@ function closeAll(userId, portfolio, income, contractInfo, cb) {
                             console.log("Still counting: " + asyncObj);
                             return;
                         }
-                        console.log("Completed: " + asyncObj);
+                        //console.log("Completed: " + asyncObj);
                         // all set
                         cb(null);
                     });
@@ -248,7 +248,7 @@ function windControl(userId, forceClose, cb) {
                             console.log("Still counting: " + asyncObj);
                             return;
                         }
-                        console.log("Completed: " + asyncObj);
+                        //console.log("Completed: " + asyncObj);
                         var income = asyncObj.value;
                         console.log("User info: " + userId + ", " + user.cash + ", " + income + ", " + user.close);
                         if (!forceClose && user.cash + income > user.close) {
@@ -403,7 +403,7 @@ function getProfit(req, res) {
                             console.log("Still counting: " + asyncObj);
                             return;
                         }
-                        console.log("Completed: " + asyncObj);
+                        //console.log("Completed: " + asyncObj);
                         var income = asyncObj.value;
                         console.log("User info: " + req.body.user_id + ", " + user.cash + ", " + income + ", " + user.close);
                         res.send({result: user.cash + income - user.deposit - user.debt, lastPrice:priceInfo.LastPrice});
