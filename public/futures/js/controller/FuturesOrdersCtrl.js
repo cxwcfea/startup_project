@@ -1,5 +1,5 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window', '$http', function($scope, $window, $http) {
+angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window', '$http', '$filter', function($scope, $window, $http, $filter) {
     $scope.user = $scope.data.currentUser;
     $scope.originCapital = 1000000;
 
