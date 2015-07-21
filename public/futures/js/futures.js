@@ -64,7 +64,21 @@ angular.module('futuresApp').controller('InfoModalCtrl', function ($scope, $moda
 });
 
 angular.module("futuresApp")
-    .directive("futuresChart", function () {
+    .service("util", [function () {
+        this.generateBlankData = function(timestamp, lastPoint) {
+            var endTime = timestamp + 2 * 3600 * 1000 + 15 * 60000;
+            var ret = [];
+            var startTime = lastPoint[0];
+            while (startTime < endTime) {
+                startTime += 1000;
+                ret.push([startTime, null]);
+            }
+            return ret;
+        }
+    }]);
+
+angular.module("futuresApp")
+    .directive("futuresChart", ['util', function (util) {
         return function (scope, element, attrs) {
             /*
             var chartLabels = scope[attrs['futuresChart']];
@@ -79,6 +93,8 @@ angular.module("futuresApp")
                 });
                 socket.on('new_data', function(newData) {
                     //series.addPoint(newData, true, true);
+                    var blankData = util.generateBlankData(newData.data1[0][0], newData.data1[newData.data1.length-1]);
+                    alert(blankData);
                     scope.data.series.setData(newData.data1, true, true);
                     scope.data.fake_series.setData(newData.data2, true, true);
                     scope.data.flags_series.setData(scope.data.flags_data, true, true);
@@ -170,4 +186,4 @@ angular.module("futuresApp")
                 }
             });
         }
-    });
+    }]);
