@@ -23,7 +23,7 @@ function fetchHistoryData(cb) {
 function test() {
     global.redis_client.get('mt://future/IFCURR', function(err, data) {
         data = JSON.parse(data);
-        console.log('current data:', data.ts + ' ' + data.LastPrice);
+        console.log('current data:', parseInt(data.ts/1000) + ' ' + parseInt(data.LastPrice));
     });
 }
 
