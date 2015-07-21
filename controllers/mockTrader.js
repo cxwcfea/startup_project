@@ -67,6 +67,7 @@ function getCosts(stock_price, quantity, position, total_point, total_deposit) {
     var profit = 0;
     var point_released = 0;
     var deposit_released = 0;
+    var net_profit = 0;
     if ((position > 0 && quantity < 0) || (position < 0 && quantity > 0)) {
         var pos_released = Math.min(Math.abs(position), Math.abs(quantity));
         var new_open = Math.abs(quantity) - pos_released;
@@ -77,6 +78,7 @@ function getCosts(stock_price, quantity, position, total_point, total_deposit) {
         if (position < 0) {
           profit = -profit;
         }
+        net_profit = profit;
         // released deposit
         deposit_released = (total_deposit / Math.abs(position)) * pos_released;
         profit += deposit_released;
@@ -85,11 +87,12 @@ function getCosts(stock_price, quantity, position, total_point, total_deposit) {
     raw = coeff * q;
     // fee = Math.abs(quantity) / kHand * kFeePerHand;
     fee = kMarketPointValue * Math.abs(quantity) * stock_price / 10000 * kFeePerTenThousand / 1000000;
-    var locked_cash = coeff * Math.abs(quantity) + fee;
+    net_profit -= fee;
     var point_diff = point_released - q * stock_price / 100;
     var deposit_diff = deposit_released - raw;
+    var locked_cash = raw-profit+fee;
     console.log(q, pos_released, raw, profit, fee, point_diff, deposit_diff);
-    return {raw: raw, fee: fee, open: raw-profit+fee, locked_cash: locked_cash, point:point_diff, deposit:deposit_diff, profit:profit};
+    return {raw: raw, fee: fee, open: locked_cash, locked_cash: locked_cash, point:point_diff, deposit:deposit_diff, profit:profit, net_profit:net_profit};
 }
 
 function closeAll(userId, portfolio, income, contractInfo, cb) {
@@ -136,7 +139,7 @@ function closeAll(userId, portfolio, income, contractInfo, cb) {
                         price: contractInfo[portf.contractId].LastPrice,
                         fee: costs.fee,
                         lockedCash: costs.locked_cash,
-                        profit: costs.profit
+                        profit: costs.net_profit
                     });
                     order.save(function(err) {
                         if (err) {
@@ -156,7 +159,7 @@ function closeAll(userId, portfolio, income, contractInfo, cb) {
                         }
                         //console.log("Completed: " + asyncObj);
                         // all set
-                        cb(null);
+                        cb(null, order);
                     });
                 });
         }
@@ -429,12 +432,12 @@ function createUser(data, cb) {
 }
 
 function riskControl(req, res) {
-    console.log(req.body);
-    windControl(req.body.user_id, req.body.force_close, function(err) {
+    //console.log(req.body);
+    windControl(req.body.user_id, req.body.force_close, function(err, order) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
         }
-        res.send({});
+        res.send(order);
     });
 }
 
@@ -498,7 +501,7 @@ function createOrder(data, cb) {
                         price: priceInfo.LastPrice,
                         fee: costs.fee,
                         lockedCash: costs.locked_cash,
-                        profit: costs.profit
+                        profit: costs.net_profit
                     });
                     user.cash -= costs.open;
                     portfolio.quantity += data.order.quantity;

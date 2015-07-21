@@ -35,12 +35,14 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                     }
                 }
                 $scope.cash = data.user.cash/100;
+                /*
                 if (!init && $scope.tradeData.sell === 0) {
                     delta = $scope.cash - InitCapital;
                     if (delta > 0) {
                         $scope.openGainPopup('lg');
                     }
                 }
+                */
             })
             .error(function(data, status) {
                 displayError(data.error_msg);
@@ -212,6 +214,11 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             .success(function(data, status) {
                 getUserPositions();
                 var orderType = data.quantity > 0 ? '涨' : '跌';
+
+                delta = data.net_profit;
+                if (delta > 0) {
+                    $scope.openGainPopup('lg');
+                }
 
                 if (type != 0) {
                     displayError('您成功买' + orderType + Math.abs(data.quantity/100) + '手,价格' + (data.price/100).toFixed(1) + '元');

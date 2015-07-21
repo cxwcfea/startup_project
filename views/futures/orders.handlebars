@@ -65,42 +65,18 @@
                     <p>\{{order.timestamp | date:'yyyy-MM-dd HH:mm'}}</p>
                 </td>
                 <td align="right">
-                    <strong class="text-danger">-\{{order.fee / 100 | number:2}}</strong>
+                    <strong class="text-danger">-\{{order.lockedCash / 100 | number:2}}</strong>
                     <p>\{{order.price / 100 | number:1}}</p>
                 </td>
-            </tr>
-            <!--
-            <tr>
                 <td>
-                    <strong>买跌</strong>
-                    <p>2015-06-13 15:37:34</p>
+                    <strong>手续费</strong>
+                    <p>\{{order.timestamp | date:'yyyy-MM-dd HH:mm'}}</p>
                 </td>
                 <td align="right">
-                    <strong>-23,000.00</strong>
-                    <p>4389.32 点</p>
+                    <strong class="text-danger">-\{{order.fee / 100 | number:2}}</strong>
+                    <p></p>
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <strong>平跌</strong>
-                    <p>2015-06-13 15:37:34</p>
-                </td>
-                <td align="right">
-                    <strong>+23,000.00</strong>
-                    <p>4389.32 点</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <strong>买涨</strong>
-                    <p>2015-06-13 15:37:34</p>
-                </td>
-                <td align="right">
-                    <strong>-23,000.00</strong>
-                    <p>4389.32 点</p>
-                </td>
-            </tr>
-            -->
             </tbody>
         </table>
     </div>
