@@ -79,24 +79,38 @@ angular.module("futuresApp")
 
 angular.module("futuresApp")
     .directive("futuresChart", ['util', function (util) {
+        function updateData(root, newData, blankData, addFlag) {
+            if (addFlag) {
+                root.series.addPoint(newData, true, true);
+            } else {
+                root.series.setData(newData, true, true);
+            }
+            root.fake_series.setData(blankData, true, true);
+            root.flags_series.setData(root.flags_data, true, true);
+        }
+
         return function (scope, element, attrs) {
             /*
             var chartLabels = scope[attrs['futuresChart']];
             var chartData = scope[attrs['chartData']];
             */
 
+            var firstPoint;
             if (!scope.data.socket) {
                 var socket = scope.data.socket = io.connect();
                 socket.on('connect', function () {
                     // send a join event with your name
                     socket.emit('join', 'user');
                 });
-                socket.on('new_data', function(newData) {
+                socket.on('history_data', function(newData) {
                     //series.addPoint(newData, true, true);
-                    var blankData = util.generateBlankData(newData[0][0], newData[newData.length-1]);
-                    scope.data.series.setData(newData, true, true);
-                    scope.data.fake_series.setData(blankData, true, true);
-                    scope.data.flags_series.setData(scope.data.flags_data, true, true);
+                    firstPoint = newData[0][0];
+                    var blankData = util.generateBlankData(firstPoint, newData[newData.length-1]);
+                    updateData(scope.data, newData, blankData, false);
+                });
+                socket.on('new_data', function(newData) {
+                    var blankData = util.generateBlankData(firstPoint, newData);
+                    updateData(scope.data, newData, blankData, true);
                 });
             }
 
