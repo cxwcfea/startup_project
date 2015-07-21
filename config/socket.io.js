@@ -5,17 +5,6 @@ var util = require('../lib/util'),
 var channelName = 'futures';
 //var users
 
-function generateBlankData(timestamp, lastPoint) {
-    var endTime = timestamp + 2 * 3600 * 1000 + 15 * 60000;
-    var ret = [];
-    var startTime = lastPoint[0];
-    while (startTime < endTime) {
-        startTime += 1000;
-        ret.push([startTime, null]);
-    }
-    return ret;
-}
-
 function fetchHistoryData(cb) {
     global.redis_client.lrange('mt://future/IFHIST', 0, -1, function(err, data) {
         if (err) {
@@ -27,25 +16,15 @@ function fetchHistoryData(cb) {
             line = JSON.parse(line.replace(/'/g, ''))[0];
             ret.unshift([parseInt(line.ts/1000), parseInt(line.LastPrice)]);
         }
-        //var blankData = generateBlankData(ret[0][0], ret[ret.length-1]);
         cb(ret);
     });
 }
 
 function test() {
-    var data = [], time = (new Date()).getTime(), i;
-
-    for (i = -999; i <= 0; i += 1) {
-        data.push([
-            time + i * 1000 * 60,
-            util.getRandomInt(3600, 4000)
-        ]);
-    }
-    console.log('test data');
-    console.log(data);
-    return data;
+    global.redis_client.get('mt://future/IFCURR', function(err, data) {
+        console.log('current data:', data.ts + ' ' + data.LastPrice);
+    });
 }
-//test();
 
 var historyData = [];
 
@@ -66,5 +45,8 @@ module.exports = function(io) {
         fetchHistoryData(function(data) {
             io.sockets.emit('new_data', data);
         });
+    }, 2000);
+    setInterval(function() {
+        test();
     }, 2000);
 };
