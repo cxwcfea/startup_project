@@ -108,10 +108,12 @@ angular.module("futuresApp")
                     var blankData = util.generateBlankData(firstPoint, newData[newData.length-1]);
                     updateData(scope.data, newData, blankData, false);
                 });
+                /*
                 socket.on('new_data', function(newData) {
                     var blankData = util.generateBlankData(firstPoint, newData);
                     updateData(scope.data, newData, blankData, true);
                 });
+                */
             }
 
             if (scope.data.chart) {

@@ -48,11 +48,13 @@ module.exports = function(io) {
             historyData = data;
             io.sockets.emit('history_data', historyData);
         });
-    }, 120000);
+    }, 2000);
+    /*
     setInterval(function() {
         fetchNewData(function(err, data) {
             historyData.push(data);
             io.sockets.emit('new_data', data);
         });
     }, 2000);
+    */
 };

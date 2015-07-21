@@ -215,8 +215,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                 getUserPositions();
                 var orderType = data.quantity > 0 ? '涨' : '跌';
 
-                alert(data.net_profit);
-                delta = data.net_profit;
+                delta = data.profit;
                 if (delta > 0) {
                     $scope.openGainPopup('lg');
                 }
