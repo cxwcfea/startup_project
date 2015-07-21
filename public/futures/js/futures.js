@@ -93,9 +93,9 @@ angular.module("futuresApp")
                 });
                 socket.on('new_data', function(newData) {
                     //series.addPoint(newData, true, true);
-                    //var blankData = util.generateBlankData(newData.data1[0][0], newData.data1[newData.data1.length-1]);
-                    scope.data.series.setData(newData.data1, true, true);
-                    scope.data.fake_series.setData(newData.data2, true, true);
+                    var blankData = util.generateBlankData(newData[0][0], newData[newData.length-1]);
+                    scope.data.series.setData(newData, true, true);
+                    scope.data.fake_series.setData(blankData, true, true);
                     scope.data.flags_series.setData(scope.data.flags_data, true, true);
                 });
             }
