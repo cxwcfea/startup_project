@@ -215,10 +215,12 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                 getUserPositions();
                 var orderType = data.quantity > 0 ? '涨' : '跌';
 
+                /*
                 delta = data.profit/100;
                 if (delta > 0) {
                     $scope.openGainPopup('lg');
                 }
+                */
 
                 if (type != 0) {
                     displayError('您成功买' + orderType + Math.abs(data.quantity/100) + '手,价格' + (data.price/100).toFixed(1) + '元');
