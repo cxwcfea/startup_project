@@ -201,6 +201,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     $scope.currentOrder = null;
 
     $scope.placeOrder = function(type) {
+        handleClick(type);
         if ($scope.tradeData.sell === 0 && type === 0) {
             displayError('您当前没有持仓');
             return;
@@ -239,6 +240,28 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             });
     };
 
+    function handleClick(type) {
+        if (type == 0) {
+            $scope.PButtonPressed = true;
+            $timeout(function() {
+                $scope.PButtonPressed = false;
+            }, 500);
+        }
+        if (type == 1) {
+            $scope.ZButtonPressed = true;
+            $timeout(function() {
+                $scope.ZButtonPressed = false;
+            }, 500);
+        }
+        if (type == -1) {
+            $scope.DButtonPressed = true;
+            $timeout(function() {
+                $scope.DButtonPressed = false;
+            }, 500);
+        }
+    }
+
+    /*
     $scope.handleEvent = function (e) {
         if (e.type == 'mouseup') {
             if (e.target.id == 'bp') {
@@ -261,5 +284,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             }
         }
     };
+    */
 }]);
 
