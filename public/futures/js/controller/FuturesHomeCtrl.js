@@ -69,13 +69,13 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                 } else {
                     $scope.profit = 0;
                     $scope.lastCash = 0;
-                    $scope.currentPrice = 0;
+                    $scope.currentPrice = $scope.data.lastPoint;
                 }
             })
             .error(function(data, status) {
                 $scope.profit = 0;
                 $scope.lastCash = 0;
-                $scope.currentPrice = 0;
+                $scope.currentPrice = $scope.data.lastPoint;
             });
     }
 

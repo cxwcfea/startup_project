@@ -107,7 +107,9 @@ angular.module("futuresApp")
                 socket.on('history_data', function(newData) {
                     //series.addPoint(newData, true, true);
                     //firstPoint = newData[0][0];
-                    var blankData = util.generateBlankData(newData[0][0], newData[newData.length-1]);
+                    var lastIndex = newData.length - 1;
+                    var blankData = util.generateBlankData(newData[0][0], newData[lastIndex]);
+                    scope.data.lastPoint = newData[lastIndex][1];
                     //updateData(scope.data, newData, blankData, false);
                     scope.data.series.setData(newData, true, true);
                     scope.data.fake_series.setData(blankData, true, true);
