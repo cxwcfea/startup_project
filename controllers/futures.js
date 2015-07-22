@@ -41,7 +41,7 @@ function fetchUserRankData(req, res) {
             return res.status(500).send({error_msg:err.toString()});
         }
         users.sort(function(x, y) {
-            return y.wechat.trader.cash - x.wechat.trader.cash;
+            return y.wechat.trader.lastCash - x.wechat.trader.lastCash;
         });
         users = users.slice(0, 20);
         var userInRank = false;
