@@ -122,7 +122,7 @@
         <span class="col-xs-5">您没有上榜，啥也不说了，快去交易吧</span>
         <button class="btn btn-danger pull-right col-xs-3" ng-click="trade()">立即交易</button>
     </div>
-    <div class="row users" ng-repeat="theUser in topUsers | limitTo:5">
+    <div class="row users" ng-repeat="theUser in topUsers">
         <span class="col-xs-1 badge">\{{4 + $index}}</span>
         <img class="img-circle col-xs-2" ng-src="\{{theUser.wechat.wechat_img}}" width="12%" />
         <span class="info">
