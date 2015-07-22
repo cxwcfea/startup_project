@@ -123,9 +123,9 @@
         {{/unless}}
         <div class="opt-btns">
             <div class="btns three" id="J_btns">
-                <button id="bp" {{#if tradeTime}}ng-class="{p3:PButtonPressed, p1:!PButtonPressed}"{{/if}} class="circle-btn p {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(0)"{{/if}} ng-mouseenter="handleEvent($event)">{{#unless tradeTime}}涨{{/unless}}</button>
-                <button id="bz" {{#if tradeTime}}ng-class="{z3:ZButtonPressed, z1:!ZButtonPressed}"{{/if}} class="circle-btn z {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(1)"{{/if}} ng-mouseenter="handleEvent($event)">{{#unless tradeTime}}跌{{/unless}}</button>
-                <button id="bd" {{#if tradeTime}}ng-class="{d3:DButtonPressed, d1:!DButtonPressed}"{{/if}} class="circle-btn d {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(-1)"{{/if}} ng-mouseenter="handleEvent($event)">{{#unless tradeTime}}平{{/unless}}</button>
+                <button id="bp" {{#if tradeTime}}ng-class="{p3:PButtonPressed, p1:!PButtonPressed}"{{/if}} class="circle-btn p {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(0)"{{/if}} ng-mouseup="handleEvent($event)">{{#unless tradeTime}}涨{{/unless}}</button>
+                <button id="bz" {{#if tradeTime}}ng-class="{z3:ZButtonPressed, z1:!ZButtonPressed}"{{/if}} class="circle-btn z {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(1)"{{/if}} ng-mouseup="handleEvent($event)">{{#unless tradeTime}}跌{{/unless}}</button>
+                <button id="bd" {{#if tradeTime}}ng-class="{d3:DButtonPressed, d1:!DButtonPressed}"{{/if}} class="circle-btn d {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(-1)"{{/if}} ng-mouseup="handleEvent($event)">{{#unless tradeTime}}平{{/unless}}</button>
                 <!--
                 <button class="circle-btn pz">平涨</button>
                 <button class="circle-btn pd">平跌</button>
