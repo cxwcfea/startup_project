@@ -89,12 +89,23 @@ angular.module("futuresApp")
             root.flags_series.setData(root.flags_data, true, true);
         }
 
+        function fillWholeData(historyData, root, firstPoint) {
+            var lastIndex = historyData.length - 1;
+            var blankData = util.generateBlankData(firstPoint, historyData[lastIndex]);
+            root.lastPoint = historyData[lastIndex][1];
+            updateData(root, historyData, blankData, false);
+            root.historyData = historyData;
+        }
+
         return function (scope, element, attrs) {
             /*
             var chartLabels = scope[attrs['futuresChart']];
             var chartData = scope[attrs['chartData']];
             */
 
+            if (!scope.data.historyData) {
+                scope.data.historyData = [];
+            }
             var firstPoint;
             if (!scope.data.socket) {
                 var socket = scope.data.socket = io.connect();
@@ -105,10 +116,7 @@ angular.module("futuresApp")
                 socket.on('history_data', function(historyData) {
                     //series.addPoint(newData, true, true);
                     firstPoint = historyData[0][0];
-                    var lastIndex = historyData.length - 1;
-                    var blankData = util.generateBlankData(firstPoint, historyData[lastIndex]);
-                    scope.data.lastPoint = historyData[lastIndex][1];
-                    updateData(scope.data, historyData, blankData, false);
+                    fillWholeData(historyData, scope.data, firstPoint);
                     /*
                     scope.data.series.setData(newData, true, true);
                     scope.data.fake_series.setData(blankData, true, true);
@@ -116,18 +124,13 @@ angular.module("futuresApp")
                     */
                 });
                 socket.on('new_data', function(newData) {
+                    scope.data.historyData.push(newData);
                     var blankData = util.generateBlankData(firstPoint, newData);
                     updateData(scope.data, newData, blankData, true);
                 });
             }
 
-            var seriesData1 = null;
-            var seriesData2 = null;
-            var seriesData3 = null;
             if (scope.data.chart) {
-                seriesData1 = scope.data.series.data;
-                seriesData2 = scope.data.fake_series.data;
-                seriesData3 = scope.data.flags_series.data;
                 scope.data.chart.destroy();
             }
             scope.data.chart = new Highcharts.StockChart({
@@ -139,6 +142,9 @@ angular.module("futuresApp")
                             scope.data.series = this.series[0];
                             scope.data.fake_series = this.series[1];
                             scope.data.flags_series = this.series[2];
+                            if (scope.data.historyData.length) {
+                                fillWholeData(historyData, scope.data, firstPoint);
+                            }
                         }
                     }
                 },
@@ -173,19 +179,19 @@ angular.module("futuresApp")
                 series : [
                     {
                         name : '股指',
-                        data: seriesData1 | [],
+                        data: [],
                         id: 'stock_data'
                     },
                     {
                         name : '股指2',
-                        data: seriesData2 | []
+                        data: []
                     },
                     {
                         type: 'flags',
                         shape : 'squarepin',
                         width : 20,
                         onSeries: 'stock_data',
-                        data: seriesData3 | [],
+                        data: [],
                         id: 'stock_data_flags',
                         showInLegend: false
                     }
