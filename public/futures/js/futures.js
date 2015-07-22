@@ -106,7 +106,7 @@ angular.module("futuresApp")
                     //series.addPoint(newData, true, true);
                     firstPoint = historyData[0][0];
                     var lastIndex = historyData.length - 1;
-                    var blankData = util.generateBlankData(historyData[0][0], historyData[lastIndex]);
+                    var blankData = util.generateBlankData(firstPoint, historyData[lastIndex]);
                     scope.data.lastPoint = historyData[lastIndex][1];
                     updateData(scope.data, historyData, blankData, false);
                     /*
