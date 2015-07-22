@@ -143,7 +143,7 @@ angular.module("futuresApp")
                             scope.data.fake_series = this.series[1];
                             scope.data.flags_series = this.series[2];
                             if (scope.data.historyData.length) {
-                                fillWholeData(historyData, scope.data, firstPoint);
+                                fillWholeData(scope.data.historyData, scope.data, firstPoint);
                             }
                         }
                     }
