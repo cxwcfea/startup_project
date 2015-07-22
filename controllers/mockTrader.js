@@ -10,6 +10,7 @@ var PPJUserSchema = mongoose.Schema({
     cash: { type: Number, default: 0 },  // basis: cent, 0.01
     deposit: { type: Number, default: 0 },  // basis: cent, 0.01
     status: { type: Number, default: 0 },  // 0: Normal, 1: Cannot buy, 2: Forbidden
+    lastCash: { type: Number, default: 0 },  // basis: cent, 0.01, the cash of the last time when user have no position
     timestamp: { type: Date, default: Date.now }
 });
 var User = mongoose.model('PPJUser', PPJUserSchema);
@@ -97,72 +98,82 @@ function getCosts(stock_price, quantity, position, total_point, total_deposit) {
 
 function closeAll(userId, portfolio, income, contractInfo, cb) {
     var asyncObj = {remaining: portfolio.length, value: 0, has_error: false, errmsg:""};
-    User.update({_id: userId}, {$inc:{cash: income}}, function(err, numberAffected, raw) {
-        if (err || !numberAffected) {
+    User.findById(userId, function(err, user) {
+        if (err) {
             console.log(err);
-            //res.send({code: -6, "msg": err.errmsg});
-            cb(err.toString());
-            return;
+            return cb(err.toString());
         }
-        for (var p in portfolio) {
-            var portf = portfolio[p];
-            console.log(contractInfo);
-            var costs = getCosts(contractInfo[portf.contractId].LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
-            var diffLong = 0;
-            var diffShort = 0;
-            if (-portf.quantity > 0) diffLong = Math.abs(portf.quantity);
-            if (-portf.quantity < 0) diffShort = Math.abs(portf.quantity);
-            Portfolio.update({_id: portf._id},
-                {
-                    $set:{quantity:0, longQuantity: 0, shortQuantity: 0, total_point:0, total_deposit:0},
-                    $inc:{fee: costs.fee}
-                },
-                function(err, numberAffected, raw) {
-                    asyncObj.remaining -= 1;
-                    if (err || !numberAffected) {
-                        console.log(err);
-                        asyncObj.has_error = true;
-                        asyncObj.errmsg = err.errmsg;
-                    }
-                    if (asyncObj.has_error) {
-                        if (asyncObj.remaining <= 0){
-                            //res.send({code: -6, "msg": asyncObj.errmsg});
-                            cb(asyncObj.errmsg);
-                        }
-                        return;
-                    }
-                    // create order
-                    var order = new Order({
-                        contractId: portf.contractId,
-                        userId: userId,
-                        quantity: -portf.quantity,
-                        price: contractInfo[portf.contractId].LastPrice,
-                        fee: costs.fee,
-                        lockedCash: costs.locked_cash,
-                        profit: costs.net_profit
-                    });
-                    order.save(function(err) {
-                        if (err) {
+        if (!user) {
+            console.log('user not found when closeAll');
+            return cb(err.toString());
+        }
+        user.cash += income;
+        user.lastCash = user.cash;
+        user.save(function(err) {
+            if (err) {
+                console.log(err);
+                return cb(err.toString());
+            }
+            for (var p in portfolio) {
+                var portf = portfolio[p];
+                console.log(contractInfo);
+                var costs = getCosts(contractInfo[portf.contractId].LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
+                var diffLong = 0;
+                var diffShort = 0;
+                if (-portf.quantity > 0) diffLong = Math.abs(portf.quantity);
+                if (-portf.quantity < 0) diffShort = Math.abs(portf.quantity);
+                Portfolio.update({_id: portf._id},
+                    {
+                        $set:{quantity:0, longQuantity: 0, shortQuantity: 0, total_point:0, total_deposit:0},
+                        $inc:{fee: costs.fee}
+                    },
+                    function(err, numberAffected, raw) {
+                        asyncObj.remaining -= 1;
+                        if (err || !numberAffected) {
                             console.log(err);
                             asyncObj.has_error = true;
+                            asyncObj.errmsg = err.errmsg;
                         }
                         if (asyncObj.has_error) {
                             if (asyncObj.remaining <= 0){
-                                //res.send({code: -7, "msg": asyncObj.errmsg});
+                                //res.send({code: -6, "msg": asyncObj.errmsg});
                                 cb(asyncObj.errmsg);
                             }
                             return;
                         }
-                        if (asyncObj.remaining > 0) {
-                            console.log("Still counting: " + asyncObj);
-                            return;
-                        }
-                        //console.log("Completed: " + asyncObj);
-                        // all set
-                        cb(null, order);
-                    });
+                        // create order
+                        var order = new Order({
+                            contractId: portf.contractId,
+                            userId: userId,
+                            quantity: -portf.quantity,
+                            price: contractInfo[portf.contractId].LastPrice,
+                            fee: costs.fee,
+                            lockedCash: costs.locked_cash,
+                            profit: costs.net_profit
+                        });
+                        order.save(function(err) {
+                            if (err) {
+                                console.log(err);
+                                asyncObj.has_error = true;
+                            }
+                            if (asyncObj.has_error) {
+                                if (asyncObj.remaining <= 0){
+                                    //res.send({code: -7, "msg": asyncObj.errmsg});
+                                    cb(asyncObj.errmsg);
+                                }
+                                return;
+                            }
+                            if (asyncObj.remaining > 0) {
+                                console.log("Still counting: " + asyncObj);
+                                return;
+                            }
+                            //console.log("Completed: " + asyncObj);
+                            // all set
+                            cb(null, order);
+                        });
                 });
-        }
+            }
+        });
     });
 }
 
@@ -409,8 +420,7 @@ function getProfit(req, res) {
                         //console.log("Completed: " + asyncObj);
                         var income = asyncObj.value;
                         console.log("User info: " + req.body.user_id + ", " + user.cash + ", " + income + ", " + user.close);
-                        console.log('=============last price=================:' + priceInfo.LastPrice);
-                        res.send({result: user.cash + income - user.deposit - user.debt, lastPrice:priceInfo.LastPrice});
+                        res.send({result: user.cash + income - user.deposit - user.debt - user.lastCash, lastCash:user.lastCash, lastPrice:priceInfo.LastPrice});
                         return;
                     });
                 });
@@ -514,6 +524,9 @@ function createOrder(data, cb) {
                         portfolio.shortQuantity -= data.order.quantity;
                     }
                     portfolio.fee += costs.fee;
+                    if (portfolio.quantity === 0) {
+                        user.lastCash = user.cash;
+                    }
                     // write back
                     order.save(function(err) {
                         if (err) {

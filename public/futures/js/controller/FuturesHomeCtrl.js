@@ -64,14 +64,17 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             .success(function(data, status) {
                 if (data.result != null && data.result != undefined) {
                     $scope.profit = data.result / 100;
+                    $scope.lastCash = data.lastCash / 100;
                     $scope.currentPrice = data.lastPrice / 100;
                 } else {
                     $scope.profit = 0;
+                    $scope.lastCash = 0;
                     $scope.currentPrice = 0;
                 }
             })
             .error(function(data, status) {
                 $scope.profit = 0;
+                $scope.lastCash = 0;
                 $scope.currentPrice = 0;
             });
     }

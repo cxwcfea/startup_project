@@ -43,7 +43,7 @@ function fetchUserRankData(req, res) {
         users.sort(function(x, y) {
             return y.wechat.trader.cash - x.wechat.trader.cash;
         });
-        users = users.slice(0, 8);
+        users = users.slice(0, 20);
         var userInRank = false;
         for (var i = 0; i < users.length; ++i) {
             if (req.user.wechat.wechat_uuid == users[i].wechat.wechat_uuid) {
