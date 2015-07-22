@@ -540,7 +540,6 @@ function createOrder(data, cb) {
                             cb({code:2, msg:err? err.toString(): "Placing order too fast"});
                             return;
                         }
-                        console.log('user written');
                         portfolio.save(function(err) {
                             if (err) {
                                 console.log(err);
