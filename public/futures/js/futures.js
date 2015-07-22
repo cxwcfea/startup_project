@@ -169,19 +169,19 @@ angular.module("futuresApp")
                 series : [
                     {
                         name : '股指',
-                        data: [],
+                        data: scope.data.series | [],
                         id: 'stock_data'
                     },
                     {
                         name : '股指2',
-                        data: []
+                        data: scope.data.fake_series | []
                     },
                     {
                         type: 'flags',
                         shape : 'squarepin',
                         width : 20,
                         onSeries: 'stock_data',
-                        data: [],
+                        data: scope.data.flags_series | [],
                         id: 'stock_data_flags',
                         showInLegend: false
                     }
