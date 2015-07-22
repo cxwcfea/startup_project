@@ -421,7 +421,7 @@ function getProfit(req, res) {
                         //console.log("Completed: " + asyncObj);
                         var income = asyncObj.value;
                         console.log("User info: " + req.body.user_id + ", " + user.cash + ", " + income + ", " + user.close);
-                        var lastProfit = user.lastCash - kInitialCapital;
+                        var lastProfit = user.lastCash ? user.lastCash - kInitialCapital : 0;
                         res.send({result: user.cash + income - user.deposit - user.debt - lastProfit, lastProfit:lastProfit, lastPrice:priceInfo.LastPrice});
                         return;
                     });
