@@ -124,6 +124,7 @@ function getOrders(req, res) {
     req.body.user_id = req.user.wechat.trader;
     req.body.date_begin = 0;
     req.body.date_end = Date.now();
+    req.body.limit = 25;
     mockTrader.getHistoryOrders(req, res);
 }
 

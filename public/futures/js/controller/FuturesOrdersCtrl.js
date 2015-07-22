@@ -5,7 +5,7 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
 
     $http.get('/api/futures/get_orders')
         .success(function(data, status) {
-            $scope.orders = $filter('orderBy')(data.orders, 'timestamp', true);
+            $scope.orders = data.orders;
             $scope.userInfo = data.user;
         })
         .error(function(data, status) {
