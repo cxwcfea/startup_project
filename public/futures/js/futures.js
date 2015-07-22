@@ -121,10 +121,13 @@ angular.module("futuresApp")
                 });
             }
 
-            var seriesData1 = scope.data.series.data | [];
-            var seriesData2 = scope.data.fake_series.data | [];
-            var seriesData3 = scope.data.flags_series.data | [];
+            var seriesData1 = null;
+            var seriesData2 = null;
+            var seriesData3 = null;
             if (scope.data.chart) {
+                seriesData1 = scope.data.series.data;
+                seriesData2 = scope.data.fake_series.data;
+                seriesData3 = scope.data.flags_series.data;
                 scope.data.chart.destroy();
             }
             scope.data.chart = new Highcharts.StockChart({
@@ -170,19 +173,19 @@ angular.module("futuresApp")
                 series : [
                     {
                         name : '股指',
-                        data: seriesData1,
+                        data: seriesData1 | [],
                         id: 'stock_data'
                     },
                     {
                         name : '股指2',
-                        data: seriesData2
+                        data: seriesData2 | []
                     },
                     {
                         type: 'flags',
                         shape : 'squarepin',
                         width : 20,
                         onSeries: 'stock_data',
-                        data: seriesData3,
+                        data: seriesData3 | [],
                         id: 'stock_data_flags',
                         showInLegend: false
                     }
