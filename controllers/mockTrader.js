@@ -516,6 +516,8 @@ function createOrder(data, cb) {
                         lockedCash: costs.locked_cash,
                         profit: costs.net_profit
                     });
+                    var oldUserCash = user.cash;
+                    var oldUserLastCash = user.lastCash;
                     user.cash -= costs.open;
                     portfolio.quantity += data.order.quantity;
                     portfolio.total_point -= costs.point;
@@ -530,21 +532,22 @@ function createOrder(data, cb) {
                         user.lastCash = user.cash;
                     }
                     // write back
-                    order.save(function(err) {
-                        if (err) {
+                    User.update({_id: user._id, cash: oldUserCash, lastCash: oldUserLastCash},
+                        {$set:{cash: user.cash, lastCash: user.lastCash}}, function(err, numberAffected, raw) {
+                        if (err || numberAffected != 1) {
                             console.log(err);
                             //res.send({code: 5, "msg": err.errmsg});
-                            cb({code:2, msg:err.toString()});
+                            cb({code:2, msg:err? err.toString(): "Placing order too fast"});
                             return;
                         }
-                        user.save(function(err) {
+                        portfolio.save(function(err) {
                             if (err) {
                                 console.log(err);
                                 //res.send({code: 6, "msg": err.errmsg});
                                 cb({code:2, msg:err.toString()});
                                 return;
                             }
-                            portfolio.save(function(err) {
+                            order.save(function(err) {
                                 if (err) {
                                     console.log(err);
                                     //res.send({code: 7, "msg": err.errmsg});
