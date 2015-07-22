@@ -53,6 +53,7 @@ var PPJPortfolioSchema = mongoose.Schema({
 });
 var Portfolio = mongoose.model('PPJPortfolio', PPJPortfolioSchema);
 
+var kInitialCapital = 100000000;
 var kHand = 100;
 var kFeePerHand = 20000;  // 200 RMB per hand
 var kFeePerTenThousand = 25;  // 0.25 RMB per 10000.00 RMB
@@ -420,7 +421,8 @@ function getProfit(req, res) {
                         //console.log("Completed: " + asyncObj);
                         var income = asyncObj.value;
                         console.log("User info: " + req.body.user_id + ", " + user.cash + ", " + income + ", " + user.close);
-                        res.send({result: user.cash + income - user.deposit - user.debt - user.lastCash, lastCash:user.lastCash, lastPrice:priceInfo.LastPrice});
+                        var lastProfit = user.lastCash - kInitialCapital;
+                        res.send({result: user.cash + income - user.deposit - user.debt - lastProfit, lastProfit:lastProfit, lastPrice:priceInfo.LastPrice});
                         return;
                     });
                 });
