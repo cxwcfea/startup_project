@@ -240,7 +240,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     };
 
     $scope.handleEvent = function (e) {
-        if (e.type == 'mousedown') {
+        if (e.type == 'mouseenter') {
             if (e.target.id == 'bp') {
                 $scope.PButtonPressed = true;
                 $timeout(function() {
