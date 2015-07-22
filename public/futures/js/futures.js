@@ -79,7 +79,6 @@ angular.module("futuresApp")
 
 angular.module("futuresApp")
     .directive("futuresChart", ['util', function (util) {
-        /*
         function updateData(root, newData, blankData, addFlag) {
             if (addFlag) {
                 root.series.addPoint(newData, true, true);
@@ -89,7 +88,6 @@ angular.module("futuresApp")
             root.fake_series.setData(blankData, true, true);
             root.flags_series.setData(root.flags_data, true, true);
         }
-        */
 
         return function (scope, element, attrs) {
             /*
@@ -104,23 +102,23 @@ angular.module("futuresApp")
                     // send a join event with your name
                     socket.emit('join', 'user');
                 });
-                socket.on('history_data', function(newData) {
+                socket.on('history_data', function(historyData) {
                     //series.addPoint(newData, true, true);
-                    //firstPoint = newData[0][0];
-                    var lastIndex = newData.length - 1;
-                    var blankData = util.generateBlankData(newData[0][0], newData[lastIndex]);
-                    scope.data.lastPoint = newData[lastIndex][1];
-                    //updateData(scope.data, newData, blankData, false);
+                    firstPoint = historyData[0][0];
+                    var lastIndex = historyData.length - 1;
+                    var blankData = util.generateBlankData(historyData[0][0], historyData[lastIndex]);
+                    scope.data.lastPoint = historyData[lastIndex][1];
+                    updateData(scope.data, historyData, blankData, false);
+                    /*
                     scope.data.series.setData(newData, true, true);
                     scope.data.fake_series.setData(blankData, true, true);
                     scope.data.flags_series.setData(scope.data.flags_data, true, true);
+                    */
                 });
-                /*
                 socket.on('new_data', function(newData) {
                     var blankData = util.generateBlankData(firstPoint, newData);
                     updateData(scope.data, newData, blankData, true);
                 });
-                */
             }
 
             if (scope.data.chart) {

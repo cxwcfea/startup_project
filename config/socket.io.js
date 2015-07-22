@@ -32,28 +32,28 @@ var historyData = [];
 
 // Define the Socket.io configuration method
 module.exports = function(io) {
+    fetchHistoryData(function(data) {
+        historyData = data;
+    });
     io.on('connection', function(socket) {
         console.log(socket.id + ' connected');
         socket.on('join', function (name) {
             console.log(name + ' joined');
-            fetchHistoryData(function(data) {
-                socket.emit('history_data', data);
-                //io.sockets.emit('history_data', historyData);
-            });
+            socket.emit('history_data', historyData);
         });
     });
     setInterval(function() {
         fetchHistoryData(function(data) {
-            //historyData = data;
+            historyData = data;
             io.sockets.emit('history_data', data);
         });
-    }, 2000);
-    /*
+    }, 600000);
     setInterval(function() {
         fetchNewData(function(err, data) {
-            historyData.push(data);
-            io.sockets.emit('new_data', data);
+            if (data[0] > historyData[historyData.length-1][0]) {
+                historyData.push(data);
+                io.sockets.emit('new_data', data);
+            }
         });
     }, 2000);
-    */
 };
