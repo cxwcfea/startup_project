@@ -1,4 +1,4 @@
-angular.module('futuresApp', ['ngResource', 'ngRoute', 'ui.bootstrap', 'commonApp']);
+angular.module('futuresApp', ['ngResource', 'ngRoute', 'ui.bootstrap', 'commonApp', 'ngTouch']);
 
 angular.module('futuresApp').config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
     // Initialize get if not there
