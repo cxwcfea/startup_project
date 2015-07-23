@@ -242,6 +242,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     $scope.handleEvent = function (e) {
         if (e.type == 'mouseup') {
             if (e.target.id == 'bp') {
+				alert("haha");
                 $scope.PButtonPressed = true;
                 $timeout(function() {
                     $scope.PButtonPressed = false;
