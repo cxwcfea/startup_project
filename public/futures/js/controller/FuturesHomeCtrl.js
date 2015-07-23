@@ -198,6 +198,9 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         $location.path('/orders');
     };
 
+    $scope.share = function() {
+    };
+
     $scope.currentOrder = null;
 
     $scope.placeOrder = function(type) {
