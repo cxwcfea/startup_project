@@ -182,4 +182,10 @@
 	margin-top:2px;
 	text-align:center;
 }
+.selected {
+	color:#adcbfc;
+}
+.un-selected {
+	color:#ffffff;
+}
 
