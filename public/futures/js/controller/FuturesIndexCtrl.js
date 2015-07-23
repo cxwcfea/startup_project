@@ -23,20 +23,41 @@ angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window'
             }
         }
     };
+    
+	$scope.imgSrc1 = '/futures/images/foot1.png';
+	$scope.imgSrc2 = '/futures/images/foot2-dark.png';
+	$scope.imgSrc3 = '/futures/images/foot3.png';
+	$scope.imgSrc4 = '/futures/images/foot4.png';
 
     $scope.showRank = function() {
         $location.path('/user_rank');
+		imgSrc1 = '/futures/images/foot1.png';
+		imgSrc2 = '/futures/images/foot2.png';
+		imgSrc3 = '/futures/images/foot3-dark.png';
+		imgSrc4 = '/futures/images/foot4.png';
     };
 
     $scope.showOrders = function() {
         $location.path('/orders');
+		imgSrc1 = '/futures/images/foot1.png';
+		imgSrc2 = '/futures/images/foot2.png';
+		imgSrc3 = '/futures/images/foot3.png';
+		imgSrc4 = '/futures/images/foot4-dark.png';
     };
 
     $scope.showHome = function() {
         $location.path('/home');
+		imgSrc1 = '/futures/images/foot1.png';
+		imgSrc2 = '/futures/images/foot2-dark.png';
+		imgSrc3 = '/futures/images/foot3.png';
+		imgSrc4 = '/futures/images/foot4.png';
     };
 
     $scope.showProducts = function() {
         $location.path('/products');
+		imgSrc1 = '/futures/images/foot1-dark.png';
+		imgSrc2 = '/futures/images/foot2.png';
+		imgSrc3 = '/futures/images/foot3.png';
+		imgSrc4 = '/futures/images/foot4.png';
     };
 }]);
