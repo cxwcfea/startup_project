@@ -89,6 +89,7 @@
 	border-radius:100px;
 	width:72px;
 	height:72px;
+	margin:0 auto;
 }
 .ex-btn-common {
 	position:absolute;
@@ -102,6 +103,11 @@
 	vertical-align:middle;
 	color:#ffffff;
 	line-height:64px;
+}
+.log-label {
+	font-size:14px;
+	color:#000000;
+	margin:0 auto;
 }
 .p11 {
 	background-color:#f19149;

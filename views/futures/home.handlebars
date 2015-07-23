@@ -122,6 +122,7 @@
 							平
 						</div>
 					</div>
+					<label class="log-label">可平\{{tradeData.sell}}手</label>
 				</div>
 				<div class="circle-btn z {{#unless tradeTime}}circle-btn-disable{{/unless}}">
 					<div {{#if tradeTime}}ng-class="{z3:ZButtonPressed, z1:!ZButtonPressed}"{{/if}} class="ex-btn">
@@ -129,6 +130,7 @@
 							涨
 						</div>
 					</div>
+					<label class="log-label">\{{tradeData.up}}手</label>
 				</div>
 				<div class="circle-btn d {{#unless tradeTime}}circle-btn-disable{{/unless}}">
 					<div {{#if tradeTime}}ng-class="{d3:DButtonPressed, d1:!DButtonPressed}"{{/if}} class="ex-btn">
@@ -136,6 +138,7 @@
 							跌
 						</div>
 					</div>
+					<label class="log-label">\{{tradeData.down}}手</label>
 				</div>
 				<!--
                 <button class="circle-btn pz">平涨</button>
@@ -150,9 +153,9 @@
             -->
             <div class="container">
                 <div class="row">
-                    <button class="col-xs-3 btn left pull-left" disabled>\{{tradeData.up}}手</button>
-                    <button class="col-xs-3 btn mid pull-left" disabled>可平\{{tradeData.sell}}手</button>
-                    <button class="col-xs-3 btn right pull-right" disabled>\{{tradeData.down}}手</button>
+                    
+                    
+                    
                 </div>
             </div>
         </div>
