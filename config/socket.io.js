@@ -22,9 +22,13 @@ function fetchHistoryData(cb) {
 
 function fetchNewData(cb) {
     global.redis_client.get('mt://future/IFCURR', function(err, data) {
-        data = JSON.parse(data);
+        var ret = null;
+        if (!err) {
+            data = JSON.parse(data);
+            ret = [parseInt(data.ts/1000), parseInt(data.LastPrice)];
+        }
         //console.log('current data:', parseInt(data.ts/1000) + ' ' + parseInt(data.LastPrice));
-        cb(err, [parseInt(data.ts/1000), parseInt(data.LastPrice)]);
+        cb(err, ret);
     });
 }
 
@@ -50,6 +54,10 @@ module.exports = function(io) {
     }, 600000);
     setInterval(function() {
         fetchNewData(function(err, data) {
+            if (err) {
+                console.log(err.toString());
+                return;
+            }
             if (data[0] > historyData[historyData.length-1][0]) {
                 historyData.push(data);
                 io.sockets.emit('new_data', data);

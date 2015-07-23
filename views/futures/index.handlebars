@@ -31,6 +31,14 @@
     <script> window.bootstrappedUserObject = {{{bootstrappedUserObject}}} </script>
 {{/if}}
 <div ng-view></div>
+<div class="container ppj-footer">
+    <div class="row">
+        <button type="button" class="btn btn-danger col-xs-3" ng-click="showProducts()">自  选</button>
+        <button type="button" class="btn btn-danger col-xs-3" ng-click="showHome()">交  易</button>
+        <button type="button" class="btn btn-danger col-xs-3" ng-click="showRank()">股神榜</button>
+        <button type="button" class="btn btn-danger col-xs-3" ng-click="showOrders()">交易记录</button>
+    </div>
+</div>
 
 <!-- build:js js/script.js -->
 <script src="/futures/js/lib/zepto.min.js"></script>
@@ -56,6 +64,7 @@
 <script src="{{static '/futures/js/controller/FuturesExchangeCtrl.js'}}"></script>
 <script src="{{static '/futures/js/controller/FuturesWechatCtrl.js'}}"></script>
 <script src="{{static '/futures/js/controller/FuturesUserRankCtrl.js'}}"></script>
+<script src="{{static '/futures/js/controller/FuturesProductsCtrl.js'}}"></script>
 <!-- endbuild -->
 </body>
 </html>

@@ -25,6 +25,9 @@ angular.module('futuresApp').config(['$routeProvider', '$httpProvider', function
         .when('/user_rank', { templateUrl: '/futures/user_rank',
             controller: 'FuturesUserRankCtrl'
         })
+        .when('/products', { templateUrl: '/futures/products',
+            controller: 'FuturesProductsCtrl'
+        })
         .otherwise({
             redirectTo: '/home'
         });
