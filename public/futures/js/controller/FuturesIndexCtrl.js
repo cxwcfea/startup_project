@@ -28,36 +28,56 @@ angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window'
 	$scope.imgSrc2 = '/futures/images/foot2-dark.png';
 	$scope.imgSrc3 = '/futures/images/foot3.png';
 	$scope.imgSrc4 = '/futures/images/foot4.png';
+	$scope.imgNote1 = 'color:#ffffff';
+	$scope.imgNote2 = 'color:#adcbfc';
+	$scope.imgNote3 = 'color:#ffffff';
+	$scope.imgNote4 = 'color:#ffffff';
 
     $scope.showRank = function() {
         $location.path('/user_rank');
-		imgSrc1 = '/futures/images/foot1.png';
-		imgSrc2 = '/futures/images/foot2.png';
-		imgSrc3 = '/futures/images/foot3-dark.png';
-		imgSrc4 = '/futures/images/foot4.png';
+		$scope.imgSrc1 = '/futures/images/foot1.png';
+		$scope.imgSrc2 = '/futures/images/foot2.png';
+		$scope.imgSrc3 = '/futures/images/foot3-dark.png';
+		$scope.imgSrc4 = '/futures/images/foot4.png';
+		$scope.imgNote1 = 'color:#ffffff';
+		$scope.imgNote2 = 'color:#ffffff';
+		$scope.imgNote3 = 'color:#adcbfc';
+		$scope.imgNote4 = 'color:#ffffff';
     };
 
     $scope.showOrders = function() {
         $location.path('/orders');
-		imgSrc1 = '/futures/images/foot1.png';
-		imgSrc2 = '/futures/images/foot2.png';
-		imgSrc3 = '/futures/images/foot3.png';
-		imgSrc4 = '/futures/images/foot4-dark.png';
+		$scope.imgSrc1 = '/futures/images/foot1.png';
+		$scope.imgSrc2 = '/futures/images/foot2.png';
+		$scope.imgSrc3 = '/futures/images/foot3.png';
+		$scope.imgSrc4 = '/futures/images/foot4-dark.png';
+		$scope.imgNote1 = 'color:#ffffff';
+		$scope.imgNote2 = 'color:#ffffff';
+		$scope.imgNote3 = 'color:#ffffff';
+		$scope.imgNote4 = 'color:#adcbfc';
     };
 
     $scope.showHome = function() {
         $location.path('/home');
-		imgSrc1 = '/futures/images/foot1.png';
-		imgSrc2 = '/futures/images/foot2-dark.png';
-		imgSrc3 = '/futures/images/foot3.png';
-		imgSrc4 = '/futures/images/foot4.png';
+		$scope.imgSrc1 = '/futures/images/foot1.png';
+		$scope.imgSrc2 = '/futures/images/foot2-dark.png';
+		$scope.imgSrc3 = '/futures/images/foot3.png';
+		$scope.imgSrc4 = '/futures/images/foot4.png';
+		$scope.imgNote1 = 'color:#ffffff';
+		$scope.imgNote2 = 'color:#adcbfc';
+		$scope.imgNote3 = 'color:#ffffff';
+		$scope.imgNote4 = 'color:#ffffff';
     };
 
     $scope.showProducts = function() {
         $location.path('/products');
-		imgSrc1 = '/futures/images/foot1-dark.png';
-		imgSrc2 = '/futures/images/foot2.png';
-		imgSrc3 = '/futures/images/foot3.png';
-		imgSrc4 = '/futures/images/foot4.png';
+		$scope.imgSrc1 = '/futures/images/foot1-dark.png';
+		$scope.imgSrc2 = '/futures/images/foot2.png';
+		$scope.imgSrc3 = '/futures/images/foot3.png';
+		$scope.imgSrc4 = '/futures/images/foot4.png';
+		$scope.imgNote1 = 'color:#adcbfc';
+		$scope.imgNote2 = 'color:#ffffff';
+		$scope.imgNote3 = 'color:#ffffff';
+		$scope.imgNote4 = 'color:#ffffff';
     };
 }]);
