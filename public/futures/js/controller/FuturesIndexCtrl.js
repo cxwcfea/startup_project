@@ -28,7 +28,11 @@ angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window'
 	$scope.imgSrc2 = '/futures/images/foot2-dark.png';
 	$scope.imgSrc3 = '/futures/images/foot3.png';
 	$scope.imgSrc4 = '/futures/images/foot4.png';
-
+	$scope.rankSelected = false;
+	$scope.productSelected = false;
+	$scope.ordersSelected = false;
+	$scope.homeSelected = true;
+		
     $scope.showRank = function() {
         $location.path('/user_rank');
 		$scope.imgSrc1 = '/futures/images/foot1.png';
