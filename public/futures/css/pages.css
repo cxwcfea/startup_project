@@ -74,19 +74,50 @@
     height: 120px;
 }
 .opt-btns .circle-btn {
-/*position: absolute;
+	position: absolute;
     width: 90px;
-    height: 90px;*/
+    height: 90px;
     /*
     border: 5px solid #dce5e0;
     border-radius: 50% 50%;
     */
-    /*font-size: 20px;
-    color: #fff;*/
+    font-size: 20px;
+    color: #fff;
+}
+.ex-btn {
 	position:relative;
 	border-radius:100px;
 	width:72px;
 	height:72px;
+}
+.ex-btn-common {
+	position:absolute;
+	border-radius:100px;
+	top:2px;
+	left:2px;
+	bottom:2px;
+	right:2px;
+}
+.p11 {
+	background-color:#eb6877;
+}
+.p33 {
+	background-color:#ff0000;
+	box-shadow:0px 0px 10px #ff0000;
+}
+.z11 {
+	background-color:#36cc68;
+}
+.z33 {
+	background-color:#1af646;
+	box-shadow:0px 0px 10px #1af646;
+}
+.d11 {
+	background-color:#f19149;
+}
+.d33 {
+	background-color:#ff5e00;
+	box-shadow:0px 0px 10px #ff5e00;
 }
 .opt-btns .btns.three .p {
     top: 10px;
