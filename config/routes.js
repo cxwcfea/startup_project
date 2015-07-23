@@ -257,6 +257,7 @@ module.exports = function(app) {
     app.get('/auth/wechat/callback', weixin.logInfo, weixin.login);
     app.get('/auth/wechat/err', weixin.authFail);
     app.get('/auth/wechat/success', weixin.authSuccess);
+    app.get('/wechat/get_jsapi_token', weixin.getJSToken);
 
     futures.registerRoutes(app, passportConf);
 

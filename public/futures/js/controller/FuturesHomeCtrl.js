@@ -198,6 +198,9 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         $location.path('/orders');
     };
 
+    $scope.share = function() {
+    };
+
     $scope.currentOrder = null;
 
     $scope.placeOrder = function(type) {
@@ -240,7 +243,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     };
 
     $scope.handleEvent = function (e) {
-        if (e.type == 'mouseup') {
+        if (e.type == 'mousedown') {
             if (e.target.id == 'bp') {
                 $scope.PButtonPressed = true;
                 $timeout(function() {

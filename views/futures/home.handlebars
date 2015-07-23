@@ -79,7 +79,7 @@
 
 <div class="index-box">
     <div class="chart-box">
-        <h4>股指走势图 <span class="current-price">持有现金<em>\{{cash | number:0}}</em>牛币</span> <span class="pull-right order-list" ng-click="showOrders()">查看交易记录</span></h4>
+        <h4>股指走势图 <span class="current-price">持有现金<em>\{{cash | number:0}}</em>牛币</span> <span class="pull-right order-list" ng-click="share()">分享</span></h4>
         <div class="chart">
             <!--
             <canvas id="J_chart" width="300" height="160" futures-chart="chartLabels" chart-data="chartData"></canvas>
@@ -118,7 +118,7 @@
 				-->
 				<div class="circle-btn p {{#unless tradeTime}}circle-btn-disable{{/unless}}">
 					<div {{#if tradeTime}}ng-class="{p3:PButtonPressed, p1:!PButtonPressed}"{{/if}} class="ex-btn">
-						<div id="bp" {{#if tradeTime}}ng-class="{p33:PButtonPressed, p11:!PButtonPressed}"{{/if}} class="ex-btn-common" {{#if tradeTime}}ng-click="placeOrder(0)"{{/if}} ng-mouseup="handleEvent($event)">
+						<div id="bp" {{#if tradeTime}}ng-class="{p33:PButtonPressed, p11:!PButtonPressed}"{{/if}} class="ex-btn-common" {{#if tradeTime}}ng-click="placeOrder(0)"{{/if}} ng-mousedown="handleEvent($event)">
 							平
 						</div>
 					</div>
@@ -126,7 +126,7 @@
 				</div>
 				<div class="circle-btn z {{#unless tradeTime}}circle-btn-disable{{/unless}}">
 					<div {{#if tradeTime}}ng-class="{z3:ZButtonPressed, z1:!ZButtonPressed}"{{/if}} class="ex-btn">
-						<div id="bz" {{#if tradeTime}}ng-class="{z33:ZButtonPressed, z11:!ZButtonPressed}"{{/if}} class="ex-btn-common" {{#if tradeTime}}ng-click="placeOrder(1)"{{/if}} ng-mouseup="handleEvent($event)">
+						<div id="bz" {{#if tradeTime}}ng-class="{z33:ZButtonPressed, z11:!ZButtonPressed}"{{/if}} class="ex-btn-common" {{#if tradeTime}}ng-click="placeOrder(1)"{{/if}} ng-mousedown="handleEvent($event)">
 							涨
 						</div>
 					</div>
@@ -134,7 +134,7 @@
 				</div>
 				<div class="circle-btn d {{#unless tradeTime}}circle-btn-disable{{/unless}}">
 					<div {{#if tradeTime}}ng-class="{d3:DButtonPressed, d1:!DButtonPressed}"{{/if}} class="ex-btn">
-						<div id="bd" {{#if tradeTime}}ng-class="{d33:DButtonPressed, d11:!DButtonPressed}"{{/if}} class="ex-btn-common" {{#if tradeTime}}ng-click="placeOrder(-1)"{{/if}} ng-mouseup="handleEvent($event)">
+						<div id="bd" {{#if tradeTime}}ng-class="{d33:DButtonPressed, d11:!DButtonPressed}"{{/if}} class="ex-btn-common" {{#if tradeTime}}ng-click="placeOrder(-1)"{{/if}} ng-mousedown="handleEvent($event)">
 							跌
 						</div>
 					</div>
