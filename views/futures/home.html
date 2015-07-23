@@ -1,3 +1,7 @@
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, minimal-ui" />
 <style>
     .index-box .opt-box .profit {
         margin-bottom: 2em;
@@ -68,6 +72,7 @@
         color: orangered;
     }
 </style>
+</head>
 <!--#S header-->
 <!--
 <header id="header">
@@ -77,6 +82,7 @@
     </div>
 </header>--><!--#E header-->
 
+<body>
 <div class="index-box">
     <div class="chart-box">
         <h4>股指走势图 <span class="current-price">持有现金<em>\{{cash | number:0}}</em>牛币</span> <span class="pull-right order-list" ng-click="showOrders()">查看交易记录</span></h4>
@@ -111,27 +117,29 @@
         {{/unless}}
         <div class="opt-btns">
             <div class="btns three" id="J_btns">
-                <button id="bp" {{#if tradeTime}}ng-class="{p3:PButtonPressed, p1:!PButtonPressed}"{{/if}} class="circle-btn p {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(0)"{{/if}} ng-mouseup="handleEvent($event)">{{#unless tradeTime}}涨{{/unless}}</button>
+                <!--
+				<button id="bp" {{#if tradeTime}}ng-class="{p3:PButtonPressed, p1:!PButtonPressed}"{{/if}} class="circle-btn p {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(0)"{{/if}} ng-mouseup="handleEvent($event)">{{#unless tradeTime}}涨{{/unless}}</button>
                 <button id="bz" {{#if tradeTime}}ng-class="{z3:ZButtonPressed, z1:!ZButtonPressed}"{{/if}} class="circle-btn z {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(1)"{{/if}} ng-mouseup="handleEvent($event)">{{#unless tradeTime}}跌{{/unless}}</button>
                 <button id="bd" {{#if tradeTime}}ng-class="{d3:DButtonPressed, d1:!DButtonPressed}"{{/if}} class="circle-btn d {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(-1)"{{/if}} ng-mouseup="handleEvent($event)">{{#unless tradeTime}}平{{/unless}}</button>
-                <a href="#">
-					<div id="bp" {{#if tradeTime}}ng-class="{p3:PButtonPressed, p1:!PButtonPressed}"{{/if}} class="circle-btn p {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(0)"{{/if}} ng-mouseup="handleEvent($event)">
+				-->
+				<a id="bp" {{#if tradeTime}}ng-class="{p3:PButtonPressed, p1:!PButtonPressed}"{{/if}} {{#if tradeTime}}ng-click="placeOrder(0)"{{/if}} ng-mouseup="handleEvent($event)">
+					<div style="position:relative;border-radius:100px;width:72px;height:72px;border:2px solid #f19149">
+						<div style="position:absolute;border-radius:100px;top:2px;left:2px;bottom:2px;right:2px;background-color:#f19149">
+							<p style="font-size:30px;text-align:center;margin-top:15px;color:#ffffff">平</p>
+						</div>
+					</div>
+				</a>
+				<a id="bz" {{#if tradeTime}}ng-class="{z3:ZButtonPressed, z1:!ZButtonPressed}"{{/if}} {{#if tradeTime}}ng-click="placeOrder(1)"{{/if}} ng-mouseup="handleEvent($event)">
+					<div style="position:relative;border-radius:100px;width:72px;height:72px;border:2px solid #eb6877">
 						<div style="position:absolute;border-radius:100px;top:2px;left:2px;bottom:2px;right:2px;background-color:#eb6877">
 							<p style="font-size:30px;text-align:center;margin-top:15px;color:#ffffff">涨</p>
 						</div>
 					</div>
 				</a>
-				<a href="#">
-					<div id="bz" {{#if tradeTime}}ng-class="{z3:ZButtonPressed, z1:!ZButtonPressed}"{{/if}} class="circle-btn z {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(1)"{{/if}} ng-mouseup="handleEvent($event)">
+				<a id="bd" {{#if tradeTime}}ng-class="{d3:DButtonPressed, d1:!DButtonPressed}"{{/if}} {{#if tradeTime}}ng-click="placeOrder(-1)"{{/if}} ng-mouseup="handleEvent($event)">
+					<div style="position:relative;border-radius:100px;width:72px;height:72px;border:2px solid #36cc68">
 						<div style="position:absolute;border-radius:100px;top:2px;left:2px;bottom:2px;right:2px;background-color:#36cc68">
 							<p style="font-size:30px;text-align:center;margin-top:15px;color:#ffffff">跌</p>
-						</div>
-					</div>
-				</a>
-				<a href="#">
-					<div id="bd" {{#if tradeTime}}ng-class="{d3:DButtonPressed, d1:!DButtonPressed}"{{/if}} class="circle-btn d {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(-1)"{{/if}} ng-mouseup="handleEvent($event)">
-						<div style="position:absolute;border-radius:100px;top:2px;left:2px;bottom:2px;right:2px;background-color:#f19149">
-							<p style="font-size:30px;text-align:center;margin-top:15px;color:#ffffff">平</p>
 						</div>
 					</div>
 				</a>
@@ -204,3 +212,5 @@
     tab.onmouseout=function() {MyMar=setInterval(Marquee,speed)};//鼠标移开时重设定时器
     */
 </script>
+</body>
+</html>
