@@ -118,7 +118,7 @@
 				-->
 				<div id="bp" class="circle-btn p {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(0)"{{/if}} ng-mouseup="handleEvent($event)">
 					<div {{#if tradeTime}}ng-class="{p3:PButtonPressed, p1:!PButtonPressed}"{{/if}} class="ex-btn">
-						<div {{#if tradeTime}}ng-class="{p33:PButtonPressed, p11:!PButtonPressed} ex-btn-common"{{/if}}>
+						<div {{#if tradeTime}}ng-class="{p33:PButtonPressed, p11:!PButtonPressed}"{{/if}} class="ex-btn-common">
 							<p style="font-size:30px;text-align:center;margin-top:15px;color:#ffffff">涨</p>
 						</div>
 					</div>
