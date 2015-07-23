@@ -32,18 +32,49 @@
 {{/if}}
 <div ng-view></div>
 <div class="container ppj-footer">
+	<!--
     <div class="row">
-        <!--
 		<button type="button" class="btn btn-danger col-xs-3" ng-click="showProducts()">自  选</button>
         <button type="button" class="btn btn-danger col-xs-3" ng-click="showHome()">交  易</button>
         <button type="button" class="btn btn-danger col-xs-3" ng-click="showRank()">股神榜</button>
         <button type="button" class="btn btn-danger col-xs-3" ng-click="showOrders()">交易记录</button>
 		-->
-		<button style="height:50px;width:25%;background-color:#4b90f7;color:#ffffff;font-size:12px">自    选</button>
-		<button style="height:50px;width:25%;background-color:#4b90f7;color:#ffffff;font-size:12px">交    易</button>
-		<button style="height:50px;width:25%;background-color:#4b90f7;color:#ffffff;font-size:12px">股 神 榜</button>
-		<button style="height:50px;width:25%;background-color:#4b90f7;color:#ffffff;font-size:12px">交易记录</button>
-    </div>
+	<table style="width:100%;height:50px;font-size:12px;color:#ffffff;table-layout:fixed;background-color:#4b90f7">
+		<tr>
+			<td>
+				<a href="#">
+					<div style="width:100%;height:50px;margin-top:2px">
+						<img src="/futures/images/foot1.png" style="width:28px" />
+						<p>自选</p>
+					</div>
+				</a>
+			</td>
+			<td>
+				<a href="#">
+					<div style="width:100%;height:50px;margin-top:2px">
+						<img src="/futures/images/foot1.png" style="width:28px" />
+						<p>交易</p>
+					</div>
+				</a>
+			</td>
+			<td>
+				<a href="#">
+					<div style="width:100%;height:50px;margin-top:2px">
+						<img src="/futures/images/foot1.png" style="width:28px" />
+						<p>股神榜</p>
+					</div>
+				</a>
+			</td>
+			<td>
+				<a href="#">
+					<div style="width:100%;height:50px;margin-top:2px">
+						<img src="/futures/images/foot1.png" style="width:28px" />
+						<p>交易记录</p>
+					</div>
+				</a>
+			</td>
+		</tr>
+    </table>
 </div>
 
 <!-- build:js js/script.js -->
