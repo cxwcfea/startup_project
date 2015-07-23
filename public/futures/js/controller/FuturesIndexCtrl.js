@@ -1,5 +1,5 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$location', function($scope, $location) {
+angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window', '$location', function($scope, $window, $location) {
     $scope.data = {};
     $scope.data.currentUser = $window.bootstrappedUserObject;
     /*
