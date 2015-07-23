@@ -157,19 +157,19 @@
     left: 0;
     top: 0;
 }
-.opt-btns .circle-btn.p1{
+.opt-btns .circle-btn .p1{
     /*
     background: #fa9d01;
     */
     /*background-image: url('../images/p1.png');*/
 	border:2px solid #eb6877;
 }
-.opt-btns .circle-btn.p3{
+.opt-btns .circle-btn .p3{
     /*background-image: url('../images/p3.png');*/
 	border:2px solid #ff0000;
 	box-shadow:0px 0px 10px #ff0000;
 }
-.opt-btns .circle-btn.d1{
+.opt-btns .circle-btn .d1{
     /*
     background: #34cc67;
     font-size: 28px;
@@ -177,7 +177,7 @@
     /*background-image: url('../images/d1.png');*/
 	border:2px solid #f19149;
 }
-.opt-btns .circle-btn.d3{
+.opt-btns .circle-btn .d3{
     /*background-image: url('../images/d3.png');*/
 	border:2px solid #ff5e00;
 	box-shadow:0px 0px 10px #ff5e00;
@@ -185,7 +185,7 @@
 .opt-btns .circle-btn.pd{
     background: #34cc67;
 }
-.opt-btns .circle-btn.z1{
+.opt-btns .circle-btn .z1{
     /*
     background: #ff414b;
     font-size: 28px;
@@ -193,7 +193,7 @@
     /*background-image: url('../images/z1.png');*/
 	border:2px solid #36cc68;
 }
-.opt-btns .circle-btn.z3{
+.opt-btns .circle-btn .z3{
     /*background-image: url('../images/z3.png');*/
 	border:2px solid #1af646;
 	box-shadow:0px 0px 10px #1af646;
