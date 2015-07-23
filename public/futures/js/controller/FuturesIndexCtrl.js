@@ -23,7 +23,6 @@ angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window'
             }
         }
     };
-    
 
     $scope.showRank = function() {
         $location.path('/user_rank');
