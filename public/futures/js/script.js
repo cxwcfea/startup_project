@@ -112,7 +112,6 @@ $(function () {
         console.log( "get jsapi token done" );
     })
     .done(function(data) {
-        alert(data);
         wx.config(data);
     })
     .fail(function(data, text) {
