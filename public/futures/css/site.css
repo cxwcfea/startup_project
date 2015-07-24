@@ -171,10 +171,11 @@
 	height:50px;
 	font-size:12px;
 	table-layout:fixed;
-	background-color:#4b90f7;
+	background-color:#ffffff;
 	position:fixed;
 	bottom:0;
 	left:0;
+	border-top:1px solid #e5e5e5;
 }
 .foot-table .url-content {
 	width:100%;
