@@ -108,24 +108,22 @@ $(function () {
         }
     });
 
-    alert(location.href.split('#')[0]);
-
     wx.ready(function(){
-        alert('wechat sign success');
+        //alert('wechat sign success');
     });
 
     wx.error(function(res){
-        alert('wechat sign error:' + res.errMsg);
+        //alert('wechat sign error:' + res.errMsg);
     });
 
     $.get("/wechat/get_jsapi_token", function() {
-        console.log( "get jsapi token done" );
+        //console.log( "get jsapi token done" );
     })
     .done(function(data) {
         wx.config(data);
     })
     .fail(function(data, text) {
-        alert('fail');
+        //alert('fail');
     })
     .always(function() {
     });
