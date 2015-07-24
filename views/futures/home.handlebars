@@ -31,10 +31,6 @@
     .share-mask img {
         width: 100%;
     }
-    .columnRightText {
-        overflow: hidden;
-        height: 30px;
-    }
     .money-status .scroll-area {
         height: 30px;
         /*
@@ -118,23 +114,23 @@
 				-->
 				<div class="circle-btn p {{#unless tradeTime}}circle-btn-disable{{/unless}}">
 					<div {{#if tradeTime}}ng-class="{'p-outer-btn-pressed':PButtonPressed, 'p-outer-btn':!PButtonPressed}"{{/if}} class="ex-btn">
-						<div id="bp" {{#if tradeTime}}ng-class=""{{/if}} class="p-inner-btn ex-btn-common" {{#if tradeTime}}ng-click="placeOrder(0)"{{/if}}>
+						<div id="bp" class="p-inner-btn ex-btn-common" {{#if tradeTime}}ng-click="placeOrder(0)"{{/if}}>
 							平
 						</div>
 					</div>
 					<p class="log-label">可平\{{tradeData.sell}}手</p>
 				</div>
 				<div class="circle-btn z {{#unless tradeTime}}circle-btn-disable{{/unless}}">
-					<div {{#if tradeTime}}ng-class="{z3:ZButtonPressed, z1:!ZButtonPressed}"{{/if}} class="ex-btn">
-						<div id="bz" {{#if tradeTime}}ng-class="{z33:ZButtonPressed, z11:!ZButtonPressed}"{{/if}} class="ex-btn-common" {{#if tradeTime}}ng-click="placeOrder(1)"{{/if}}>
+					<div {{#if tradeTime}}ng-class="{'z-outer-btn-pressed':ZButtonPressed, 'z-outer-btn':!ZButtonPressed}"{{/if}} class="ex-btn">
+						<div id="bz" class="z-inner-btn ex-btn-common" {{#if tradeTime}}ng-click="placeOrder(1)"{{/if}}>
 							涨
 						</div>
 					</div>
 					<p class="log-label">\{{tradeData.up}}手</p>
 				</div>
 				<div class="circle-btn d {{#unless tradeTime}}circle-btn-disable{{/unless}}">
-					<div {{#if tradeTime}}ng-class="{d3:DButtonPressed, d1:!DButtonPressed}"{{/if}} class="ex-btn">
-						<div id="bd" {{#if tradeTime}}ng-class="{d33:DButtonPressed, d11:!DButtonPressed}"{{/if}} class="ex-btn-common" {{#if tradeTime}}ng-click="placeOrder(-1)"{{/if}}>
+					<div {{#if tradeTime}}ng-class="{'d-outer-btn-pressed':DButtonPressed, 'd-outer-btn':!DButtonPressed}"{{/if}} class="ex-btn">
+						<div id="bd" class="d-inner-btn ex-btn-common" {{#if tradeTime}}ng-click="placeOrder(-1)"{{/if}}>
 							跌
 						</div>
 					</div>
@@ -153,26 +149,6 @@
             -->
         </div>
     </div>
-    <!--
-    <div class="money-status container">
-        <div class="row">
-            <button class="col-xs-3 btn btn-danger pull-left" ng-click="showRank()">看排名</button>
-            <div class="scroll-area col-xs-6">
-                <div class="columnRightText fl" id="demo">
-                    <div id="demo1">
-                        <div><span class="">永远的山河兑换现金1000</span>元</div>
-                        <div><span class="">美国的日落兑换现金200</span>元</div>
-                        <div><span class="">飞翔的毛驴兑换现金300</span>元</div>
-                        <div><span class="">吃货的烦恼兑换现金400</span>元</div>
-                        <div><span class="">没文化的人兑换现金500</span>元</div>
-                    </div>
-                    <div id="demo2"></div>
-                </div>
-            </div>
-            <button class="col-xs-3 btn btn-danger pull-right" ng-click="withdraw()">提现</button>
-        </div>
-    </div>
-    -->
 </div>
 <div class="share-mask container" ng-show="showShareHint">
     <div class="row">
@@ -181,24 +157,3 @@
 </div>
 
 <div class="ui-tip" ng-show="showError">\{{errorMsg}}</div>
-
-<script>
-    /*
-    var speed=180; //数字越大速度越慢
-    var tab=document.getElementById("demo");
-    var tab1=document.getElementById("demo1");
-    var tab2=document.getElementById("demo2");
-    tab2.innerHTML=tab1.innerHTML; //克隆demo1为demo2
-    function Marquee(){
-        if(tab2.offsetTop-tab.scrollTop<=0){//当滚动至demo1与demo2交界时
-            tab.scrollTop-=tab1.offsetHeight; //demo跳到最顶端
-        }
-        else{
-            tab.scrollTop++;
-        }
-    }
-    var MyMar=setInterval(Marquee,speed);
-    tab.onmouseover=function() {clearInterval(MyMar)};//鼠标移上时清除定时器达到滚动停止的目的
-    tab.onmouseout=function() {MyMar=setInterval(Marquee,speed)};//鼠标移开时重设定时器
-    */
-</script>
