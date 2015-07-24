@@ -144,7 +144,7 @@
 					<div style="width:44px;height:44px;border-radius:50px;overflow:hidden;margin-left:5px">
 							<img ng-src="\{{user.wechat.wechat_img}}" style="width:44px" />
 					</div>
-					<span>您没有上榜</span>
+					<p style="margin-left:50px;margin-top:-10px">您没有上榜</p>
 				</td>
 				<td>
 					<button ng-click="trade()" class="btn btn-danger">立即交易</button>
@@ -156,7 +156,7 @@
 					<div style="width:44px;height:44px;border-radius:50px;overflow:hidden;margin-left:5px">
 							<img ng-src="\{{theUser.wechat.wechat_img}}" style="width:44px" />
 					</div>
-					<span>\{{theUser.wechat.wechat_name}}</span>
+					<p style="margin-left:50px;margin-top:-10px">\{{theUser.wechat.wechat_name}}</p>
 				</td>
 				<td class="text-danger">\{{theUser.wechat.trader.lastCash ? (theUser.wechat.trader.lastCash-100000000)/100 : 0 | number:0}}</td>
 			</tr>
