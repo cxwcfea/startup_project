@@ -142,7 +142,8 @@ $(function () {
         //alert('wechat sign error:' + res.errMsg);
     });
 
-    $.get("/wechat/get_jsapi_token", function() {
+    var currentUrl = location.href.split('#')[0];
+    $.get("/wechat/get_jsapi_token?url=" + encodeURIComponent(currentUrl), function() {
         //console.log( "get jsapi token done" );
     })
     .done(function(data) {
