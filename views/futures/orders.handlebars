@@ -42,16 +42,16 @@
                 <img class="img-circle header-icon" ng-src="\{{user.wechat.wechat_img}}" width="100%" alt="...">
             </div>
             <div class="user-info col-xs-7">
-                <ul>
+                <ul style="margin-top:10px">
                     <li class="name">\{{user.wechat.wechat_name}}</li>
-                    <li>盈&nbsp;&nbsp;&nbsp;&nbsp;利: \{{userInfo.cash / 100 - originCapital | number:2}}牛币</li>
+                    <li>盈利: \{{userInfo.cash / 100 - originCapital | number:2}}牛币</li>
                     <!--<li>积分点: \{{user.score}}</li>-->
                 </ul>
             </div>
         </div>
     </div>
     <div class="finance-info">
-        <span class="pull-left">资产:\{{userInfo.cash / 100 | number:2}}元</span><span class="pull-right">本金:\{{originCapital | number:2}}元</span>
+        <span class="pull-left">资产:\{{userInfo.cash / 100 | number:2}}</span><span class="pull-right">本金:\{{originCapital | number:2}}</span>
     </div>
     <div class="records">
         <table class="records-table">
