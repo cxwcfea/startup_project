@@ -45,7 +45,7 @@
 				<a ng-click="showProducts()">
 					<div class="url-content">
 						<img src="\{{imgSrc1}}" style="width:28px" />
-						<p style="\{{imgNote1}}">自选</p>
+						<p ng-class="{selected:productSelected, un_selected:!productSelected}">自选</p>
 					</div>
 				</a>
 			</td>
@@ -53,7 +53,7 @@
 				<a ng-click="showHome()">
 					<div class="url-content">
 						<img src="\{{imgSrc2}}" style="width:28px" />
-						<p style="\{{imgNote2}}">交易</p>
+						<p ng-class="{selected:homeSelected, un_selected:!homeSelected}">交易</p>
 					</div>
 				</a>
 			</td>
@@ -61,7 +61,7 @@
 				<a ng-click="showRank()">
 					<div class="url-content">
 						<img src="\{{imgSrc3}}" style="width:28px" />
-						<p style="\{{imgNote3}}">股神榜</p>
+						<p ng-class="{selected:rankSelected, un_selected:!rankSelected}">股神榜</p>
 					</div>
 				</a>
 			</td>
@@ -69,7 +69,7 @@
 				<a ng-click="showOrders()">
 					<div class="url-content">
 						<img src="\{{imgSrc4}}" style="width:28px" />
-						<p style="\{{imgNote4}}">我的</p>
+						<p ng-class="{selected:ordersSelected, un_selected:!ordersSelected}">我的</p>
 					</div>
 				</a>
 			</td>

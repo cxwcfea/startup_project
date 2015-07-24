@@ -182,4 +182,10 @@
 	margin-top:2px;
 	text-align:center;
 }
+.foot-table .selected {
+	color:#adcbfc;
+}
+.foot-table .un_selected {
+	color:#ffffff;
+}
 
