@@ -29,7 +29,7 @@ angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window'
         {
             value: 0,
             name: '自选',
-            normalImg: '/futures/images/foot1.png',
+            img: '/futures/images/foot1.png',
             selectedImg: '/futures/images/foot1-dark.png',
             page: '/products'
         },
