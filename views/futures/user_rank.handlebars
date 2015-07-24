@@ -132,15 +132,19 @@
     </div>-->
 	<div>
 		<div style="height:92px;width:100%">
-			<span style="background-color:#777777;">???</span>
+			<span>???</span>
 			<span><img ng-src="\{{user.wechat.wechat_img}}" style="width:44px" /></span>
 			<span>您没有上榜，啥也不说了，快去交易吧</span>
 			<span><button ng-click="trade()" width:>立即交易</button></span>
 		</div>
 		<table style="width:100%;font-size:15px;color:#000000;text-align:center">
-			<tr ng-repeat="theUser in topUsers" style="height:92px">
+			<tr ng-repeat="theUser in topUsers" style="height:92px;border-top:1px solid #e5e5e5">
 				<td>\{{4 + $index}}</td>
-				<td><img ng-src="\{{theUser.wechat.wechat_img}}" style="width:44px" /></td>
+				<td>
+					<div style="width:44px;height:44px;border-radius:50px;overflow:hide">
+						<img ng-src="\{{theUser.wechat.wechat_img}}" style="width:44px" />
+					</div>
+				</td>
 				<td>\{{theUser.wechat.wechat_name}}</td>
 				<td class="text-danger">\{{theUser.wechat.trader.lastCash ? (theUser.wechat.trader.lastCash-100000000)/100 : 0 | number:0}}</td>
 			</tr>
