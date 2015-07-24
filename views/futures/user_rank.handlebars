@@ -122,11 +122,11 @@
 				<tr>
 					<td>
 						<div style="width:95px;height:100%;position:relative;margin:0 auto">
-							<div style="height:75px;width:75px;border-radius:100px;overflow:hidden;position:absolute;bottom:60px;left:10px">
+							<div style="height:75px;width:75px;border-radius:100px;overflow:hidden;position:absolute;bottom:60px;left:10px;z-index:10">
 								<img ng-src="\{{silverUser.wechat.wechat_img}}" style="width:75px"/>
 							</div>
-							<img src="/futures/images/second.png" style="position:absolute;bottom:0;left:0;width:95px" />
-							<div style="font-size:10px;color:#ffffff;padding-top:60px;text-align:center">
+							<img src="/futures/images/second.png" style="position:absolute;bottom:0;left:0;width:95px;z-index:20" />
+							<div style="font-size:10px;color:#ffffff;padding-top:60px;text-align:center;z-index:30">
 								<p>\{{silverUser.wechat.wechat_name}}</p>
 								<p>\{{silverUser.wechat.trader.lastCash ? (silverUser.wechat.trader.lastCash-100000000)/100 : 0 | number:0}}</p>
 							</div>
