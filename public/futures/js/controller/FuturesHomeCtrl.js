@@ -199,6 +199,17 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     };
 
     $scope.share = function() {
+        wx.onMenuShareTimeline({
+            title: '拍拍机',
+            link: 'http://test2.niujinwang.com',
+            imgUrl: 'http://test2.niujinwang.com/futures/images/head_icon.png',
+            success: function () {
+
+            },
+            cancel: function () {
+
+            }
+        });
     };
 
     $scope.currentOrder = null;
