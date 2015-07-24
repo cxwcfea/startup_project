@@ -108,6 +108,14 @@ $(function () {
         }
     });
 
+    wx.ready(function(){
+        alert('wechat sign success');
+    });
+
+    wx.error(function(res){
+        alert('wechat sign error:' + res.errMsg);
+    });
+
     $.get("/wechat/get_jsapi_token", function() {
         console.log( "get jsapi token done" );
     })
@@ -119,4 +127,5 @@ $(function () {
     })
     .always(function() {
     });
+
 });
