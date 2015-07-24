@@ -12,6 +12,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         sell: 0
     };
 
+
     /*
     if ($scope.data.chart) {
         $scope.data.chart.destroy();
