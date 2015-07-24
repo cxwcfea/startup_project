@@ -112,11 +112,23 @@ $(function () {
         //alert('wechat sign success');
         wx.onMenuShareAppMessage({
             title: '快来玩股指拍拍机',
-            desc: '拍拍机时模拟股指期货交易的小游戏',
+            desc: '拍拍机是模拟股指期货交易的小游戏',
             link: 'http://test2.niujinwang.com/futures/',
             imgUrl: 'http://test2.niujinwang.com/futures/images/head_icon.png',
             type: 'link',
             dataUrl: '',
+            success: function () {
+
+            },
+            cancel: function () {
+
+            }
+        });
+
+        wx.onMenuShareTimeline({
+            title: '拍拍机',
+            link: 'http://test2.niujinwang.com',
+            imgUrl: 'http://test2.niujinwang.com/futures/images/head_icon.png',
             success: function () {
 
             },

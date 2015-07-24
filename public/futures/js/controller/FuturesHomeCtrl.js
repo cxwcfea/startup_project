@@ -12,13 +12,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         sell: 0
     };
 
-
-    /*
-    if ($scope.data.chart) {
-        $scope.data.chart.destroy();
-    }
-    */
-
     var delta = 0;
     function getUserPositions(init) {
         $http.get('/api/futures/get_positions')
@@ -176,13 +169,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         });
     };
 
-    /*
-    if (!$scope.data.introPopupOpened) {
-        $scope.openIntroPopup('lg');
-        $scope.data.introPopupOpened = true;
-    }
-    */
-
     $scope.showTradeTime = function() {
         $scope.openTimeHintPopup('lg');
     };
@@ -200,17 +186,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     };
 
     $scope.share = function() {
-        wx.onMenuShareTimeline({
-            title: '拍拍机',
-            link: 'http://test2.niujinwang.com',
-            imgUrl: 'http://test2.niujinwang.com/futures/images/head_icon.png',
-            success: function () {
-
-            },
-            cancel: function () {
-
-            }
-        });
     };
 
     $scope.currentOrder = null;
@@ -220,6 +195,26 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             displayError('您当前没有持仓');
             return;
         }
+
+        if (type == 0) {
+            $scope.PButtonPressed = true;
+            $timeout(function() {
+                $scope.PButtonPressed = false;
+            }, 500);
+        }
+        if (type == 1) {
+            $scope.ZButtonPressed = true;
+            $timeout(function() {
+                $scope.ZButtonPressed = false;
+            }, 500);
+        }
+        if (type == -1) {
+            $scope.DButtonPressed = true;
+            $timeout(function() {
+                $scope.DButtonPressed = false;
+            }, 500);
+        }
+
         var quantity = 100;
         if (type === -1) {
             quantity = 0 - quantity;
@@ -233,13 +228,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                 getUserPositions();
                 var orderType = data.quantity > 0 ? '涨' : '跌';
 
-                /*
-                delta = data.profit/100;
-                if (delta > 0) {
-                    $scope.openGainPopup('lg');
-                }
-                */
-
                 if (type != 0) {
                     displayError('您成功买' + orderType + Math.abs(data.quantity/100) + '手,价格' + (data.price/100).toFixed(1) + '元');
                     $scope.currentOrder = data;
@@ -252,29 +240,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             .error(function(data, status) {
                 displayError(data.error_msg);
             });
-    };
-
-    $scope.handleEvent = function (e) {
-        if (e.type == 'mousedown') {
-            if (e.target.id == 'bp') {
-                $scope.PButtonPressed = true;
-                $timeout(function() {
-                    $scope.PButtonPressed = false;
-                }, 500);
-            }
-            if (e.target.id == 'bz') {
-                $scope.ZButtonPressed = true;
-                $timeout(function() {
-                    $scope.ZButtonPressed = false;
-                }, 500);
-            }
-            if (e.target.id == 'bd') {
-                $scope.DButtonPressed = true;
-                $timeout(function() {
-                    $scope.DButtonPressed = false;
-                }, 500);
-            }
-        }
     };
 }]);
 
