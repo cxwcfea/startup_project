@@ -23,6 +23,42 @@ angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window'
             }
         }
     };*/
+
+    $scope.data.selectedItem = 1;
+    $scope.items = [
+        {
+            value: 0,
+            name: '自选',
+            normalImg: '/futures/images/foot1.png',
+            selectedImg: '/futures/images/foot1-dark.png',
+            page: '/products'
+        },
+        {
+            value: 1,
+            name: '交易',
+            img: '/futures/images/foot2.png',
+            selectedImg: '/futures/images/foot2-dark.png',
+            page: '/home'
+        },
+        {
+            value: 2,
+            name: '股神榜',
+            img: '/futures/images/foot3.png',
+            selectedImg: '/futures/images/foot3-dark.png',
+            page: '/user_rank'
+        },
+        {
+            value: 3,
+            name: '我的',
+            img: '/futures/images/foot4.png',
+            selectedImg: '/futures/images/foot4-dark.png',
+            page: '/orders'
+        }
+    ];
+
+    $scope.switchPage = function(item) {
+        $location.path(item.page);
+    };
     
 	$scope.imgSrc1 = '/futures/images/foot1.png';
 	$scope.imgSrc2 = '/futures/images/foot2-dark.png';

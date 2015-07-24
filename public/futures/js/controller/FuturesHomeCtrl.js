@@ -5,6 +5,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     $scope.user = $scope.data.currentUser;
     var HAND = 100;
     var InitCapital = 1000000;
+    $scope.data.selectedItem = 1;
 
     $scope.tradeData = {
         up: 0,

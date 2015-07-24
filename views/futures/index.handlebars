@@ -34,38 +34,15 @@
 <div class="container ppj-footer">
 	<table class="foot-table">
 		<tr>
-			<td>
-				<a ng-click="showProducts()">
-					<div class="url-content">
-						<img ng-src="\{{imgSrc1}}" style="width:28px" />
-						<p ng-class="{selected:productSelected, un_selected:!productSelected}">自选</p>
-					</div>
-				</a>
-			</td>
-			<td>
-				<a ng-click="showHome()">
-					<div class="url-content">
-						<img ng-src="\{{imgSrc2}}" style="width:28px" />
-						<p ng-class="{selected:homeSelected, un_selected:!homeSelected}">交易</p>
-					</div>
-				</a>
-			</td>
-			<td>
-				<a ng-click="showRank()">
-					<div class="url-content">
-						<img src="\{{imgSrc3}}" style="width:28px" />
-						<p ng-class="{selected:rankSelected, un_selected:!rankSelected}">股神榜</p>
-					</div>
-				</a>
-			</td>
-			<td>
-				<a ng-click="showOrders()">
-					<div class="url-content">
-						<img ng-src="\{{imgSrc4}}" style="width:28px" />
-						<p ng-class="{selected:ordersSelected, un_selected:!ordersSelected}">我的</p>
-					</div>
-				</a>
-			</td>
+            <td ng-repeat="item in items">
+                <a ng-click="switchPage(item)">
+                    <div class="url-content">
+                        <img ng-src="\{{item.img}}" style="width:28px" ng-show="data.selectedItem !== item.value" >
+                        <img ng-src="\{{item.selectedImg}}" style="width:28px" ng-show="data.selectedItem === item.value" >
+                        <p ng-class="{selected:data.selectedItem === item.value , un_selected:data.selectedItem !== item.value}">\{{item.name}}</p>
+                    </div>
+                </a>
+            </td>
 		</tr>
     </table>
 </div>
