@@ -30,14 +30,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                     }
                 }
                 $scope.cash = data.user.cash/100;
-                /*
-                if (!init && $scope.tradeData.sell === 0) {
-                    delta = $scope.cash - InitCapital;
-                    if (delta > 0) {
-                        $scope.openGainPopup('lg');
-                    }
-                }
-                */
             })
             .error(function(data, status) {
                 displayError(data.error_msg);
@@ -192,11 +184,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     $scope.currentOrder = null;
 
     $scope.placeOrder = function(type) {
-        if ($scope.tradeData.sell === 0 && type === 0) {
-            displayError('您当前没有持仓');
-            return;
-        }
-
         if (type == 0) {
             $scope.PButtonPressed = true;
             $timeout(function() {
@@ -214,6 +201,11 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             $timeout(function() {
                 $scope.DButtonPressed = false;
             }, 500);
+        }
+
+        if ($scope.tradeData.sell === 0 && type === 0) {
+            displayError('您当前没有持仓');
+            return;
         }
 
         var quantity = 100;

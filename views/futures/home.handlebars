@@ -118,23 +118,23 @@
 				-->
 				<div class="circle-btn p {{#unless tradeTime}}circle-btn-disable{{/unless}}">
 					<div {{#if tradeTime}}ng-class="{'p-outer-btn-pressed':PButtonPressed, 'p-outer-btn':!PButtonPressed}"{{/if}} class="ex-btn">
-						<div id="bp" {{#if tradeTime}}ng-class=""{{/if}} class="p-inner-btn ex-btn-common" {{#if tradeTime}}ng-click="placeOrder(0)"{{/if}}>
+						<div id="bp" class="p-inner-btn ex-btn-common" {{#if tradeTime}}ng-click="placeOrder(0)"{{/if}}>
 							平
 						</div>
 					</div>
 					<p class="log-label">可平\{{tradeData.sell}}手</p>
 				</div>
 				<div class="circle-btn z {{#unless tradeTime}}circle-btn-disable{{/unless}}">
-					<div {{#if tradeTime}}ng-class="{z3:ZButtonPressed, z1:!ZButtonPressed}"{{/if}} class="ex-btn">
-						<div id="bz" {{#if tradeTime}}ng-class="{z33:ZButtonPressed, z11:!ZButtonPressed}"{{/if}} class="ex-btn-common" {{#if tradeTime}}ng-click="placeOrder(1)"{{/if}}>
+					<div {{#if tradeTime}}ng-class="{'z-outer-btn-pressed':ZButtonPressed, 'z-outer-btn':!ZButtonPressed}"{{/if}} class="ex-btn">
+						<div id="bz" class="z-inner-btn ex-btn-common" {{#if tradeTime}}ng-click="placeOrder(1)"{{/if}}>
 							涨
 						</div>
 					</div>
 					<p class="log-label">\{{tradeData.up}}手</p>
 				</div>
 				<div class="circle-btn d {{#unless tradeTime}}circle-btn-disable{{/unless}}">
-					<div {{#if tradeTime}}ng-class="{d3:DButtonPressed, d1:!DButtonPressed}"{{/if}} class="ex-btn">
-						<div id="bd" {{#if tradeTime}}ng-class="{d33:DButtonPressed, d11:!DButtonPressed}"{{/if}} class="ex-btn-common" {{#if tradeTime}}ng-click="placeOrder(-1)"{{/if}}>
+					<div {{#if tradeTime}}ng-class="{'d-outer-btn-pressed':DButtonPressed, 'd-outer-btn':!DButtonPressed}"{{/if}} class="ex-btn">
+						<div id="bd" class="d-inner-btn ex-btn-common" {{#if tradeTime}}ng-click="placeOrder(-1)"{{/if}}>
 							跌
 						</div>
 					</div>

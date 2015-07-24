@@ -123,9 +123,62 @@
     top: 10px;
     left: 0;
 }
+.opt-btns .circle-btn .p-outer-btn {
+	border:2px solid #f19149;
+}
+.opt-btns .circle-btn .p-outer-btn-pressed {
+	border:2px solid #ff5e00;
+	box-shadow:0px 0px 10px #ff5e00;
+}
+.opt-btns .circle-btn .p-outer-btn .p-inner-btn {
+    background-color:#f19149;
+}
+.opt-btns .circle-btn .p-outer-btn-pressed .p-inner-btn {
+    background-color:#ff5e00;
+    box-shadow:0px 0px 10px #ff5e00;
+}
+.opt-btns .circle-btn .d-outer-btn {
+	border:2px solid #36cc68;
+}
+.opt-btns .circle-btn .d-outer-btn-pressed {
+	border:2px solid #1af646;
+	box-shadow:0px 0px 10px #1af646;
+}
+.opt-btns .circle-btn .d-outer-btn .d-inner-btn {
+    background-color:#36cc68;
+}
+.opt-btns .circle-btn .d-outer-btn-pressed .d-inner-btn {
+    background-color:#1af646;
+    box-shadow:0px 0px 10px #1af646;
+}
+.opt-btns .circle-btn .z-outer-btn {
+	border:2px solid #eb6877;
+}
+.opt-btns .circle-btn .z-outer-btn-pressed {
+	border:2px solid #ff0000;
+	box-shadow:0px 0px 10px #ff0000;
+}
+.opt-btns .circle-btn .z-outer-btn .z-inner-btn {
+    background-color:#eb6877;
+}
+.opt-btns .circle-btn .z-outer-btn-pressed .z-inner-btn {
+    background-color:#ff0000;
+    box-shadow:0px 0px 10px #ff0000;
+}
+
+/*
 .opt-btns .btns.three .pd,
 .opt-btns .btns.three .pz {
     display: none;
+}
+.opt-btns .circle-btn.pz{
+    background: #ff414b;
+}
+.opt-btns .circle-btn.pd{
+    background: #34cc67;
+}
+.opt-box .opt-btns .circle-btn-disable {
+    background-image: url('../images/disable.png');
 }
 .opt-btns .btns.five .p{
     top: 50%;
@@ -148,57 +201,6 @@
     left: 0;
     top: 0;
 }
-.opt-btns .circle-btn .p-outer-btn {
-	border:2px solid #f19149;
-}
-.opt-btns .circle-btn .p-outer-btn-pressed {
-	border:2px solid #ff5e00;
-	box-shadow:0px 0px 10px #ff5e00;
-}
-.opt-btns .circle-btn .p-outer-btn .p-inner-btn {
-    background-color:#f19149;
-}
-.opt-btns .circle-btn .p-outer-btn-pressed .p-inner-btn {
-    background-color:#ff5e00;
-    box-shadow:0px 0px 10px #ff5e00;
-}
-.opt-btns .circle-btn .d1{
-	border:2px solid #36cc68;
-}
-.opt-btns .circle-btn .d3{
-	border:2px solid #1af646;
-	box-shadow:0px 0px 10px #1af646;
-}
-.opt-btns .circle-btn.pd{
-    background: #34cc67;
-}
-.opt-btns .circle-btn .z1{
-	border:2px solid #eb6877;
-}
-.opt-btns .circle-btn .z3{
-	border:2px solid #ff0000;
-	box-shadow:0px 0px 10px #ff0000;
-}
-.z11 {
-    background-color:#eb6877;
-}
-.z33 {
-    background-color:#ff0000;
-    box-shadow:0px 0px 10px #ff0000;
-}
-.d11 {
-    background-color:#36cc68;
-}
-.d33 {
-    background-color:#1af646;
-    box-shadow:0px 0px 10px #1af646;
-}
-.opt-btns .circle-btn.pz{
-    background: #ff414b;
-}
-.opt-box .opt-btns .circle-btn-disable {
-    background-image: url('../images/disable.png');
-}
 .opt-btns .switch-btns {
     position: relative;
     margin-top: -30px;
@@ -216,6 +218,7 @@
 .opt-btns .switch-btns .cur {
     color:#242c2d;
 }
+*/
 
 /* money-status */
 .money-status {
