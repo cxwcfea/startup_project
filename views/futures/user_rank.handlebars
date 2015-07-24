@@ -139,7 +139,7 @@
 		</div>-->
 		<table style="width:100%;font-size:15px;color:#2d3e4f;text-align:center">
 			<tr ng-hide="userInRank" style="background-color:#ffffff;height:92px">
-				<td>???</td>
+				<td style="padding-left:5px;padding-right:5px">???</td>
 				<td>
 					<div style="width:44px;height:44px;border-radius:50px;overflow:hidden;margin:0 auto">
 						<img ng-src="\{{user.wechat.wechat_img}}" style="width:44px" />
@@ -154,7 +154,7 @@
 				</td>
 			</tr>
 			<tr ng-repeat="theUser in topUsers" style="height:92px;border-top:1px solid #e5e5e5">
-				<td>\{{4 + $index}}</td>
+				<td style="padding-left:5px;padding-right:5px">\{{4 + $index}}</td>
 				<td>
 					<div style="width:44px;height:44px;border-radius:50px;overflow:hidden;margin:0 auto">
 						<img ng-src="\{{theUser.wechat.wechat_img}}" style="width:44px" />
