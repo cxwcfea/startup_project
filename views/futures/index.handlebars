@@ -32,19 +32,12 @@
 {{/if}}
 <div ng-view></div>
 <div class="container ppj-footer">
-	<!--
-    <div class="row">
-		<button type="button" class="btn btn-danger col-xs-3" ng-click="showProducts()">自  选</button>
-        <button type="button" class="btn btn-danger col-xs-3" ng-click="showHome()">交  易</button>
-        <button type="button" class="btn btn-danger col-xs-3" ng-click="showRank()">股神榜</button>
-        <button type="button" class="btn btn-danger col-xs-3" ng-click="showOrders()">交易记录</button>
-		-->
 	<table class="foot-table">
 		<tr>
 			<td>
 				<a ng-click="showProducts()">
 					<div class="url-content">
-						<img src="\{{imgSrc1}}" style="width:28px" />
+						<img ng-src="\{{imgSrc1}}" style="width:28px" />
 						<p ng-class="{selected:productSelected, un_selected:!productSelected}">自选</p>
 					</div>
 				</a>
@@ -52,7 +45,7 @@
 			<td>
 				<a ng-click="showHome()">
 					<div class="url-content">
-						<img src="\{{imgSrc2}}" style="width:28px" />
+						<img ng-src="\{{imgSrc2}}" style="width:28px" />
 						<p ng-class="{selected:homeSelected, un_selected:!homeSelected}">交易</p>
 					</div>
 				</a>
@@ -68,7 +61,7 @@
 			<td>
 				<a ng-click="showOrders()">
 					<div class="url-content">
-						<img src="\{{imgSrc4}}" style="width:28px" />
+						<img ng-src="\{{imgSrc4}}" style="width:28px" />
 						<p ng-class="{selected:ordersSelected, un_selected:!ordersSelected}">我的</p>
 					</div>
 				</a>
