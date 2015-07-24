@@ -110,27 +110,6 @@
 	text-align:center;
 	padding-top:5px;
 }
-.p11 {
-	background-color:#f19149;
-}
-.p33 {
-	background-color:#ff5e00;
-	box-shadow:0px 0px 10px #ff5e00;
-}
-.z11 {
-	background-color:#eb6877;
-}
-.z33 {
-	background-color:#ff0000;
-	box-shadow:0px 0px 10px #ff0000;
-}
-.d11 {
-	background-color:#36cc68;
-}
-.d33 {
-	background-color:#1af646;
-	box-shadow:0px 0px 10px #1af646;
-}
 .opt-btns .btns.three .p {
     top: 10px;
     left: 48%;
@@ -169,28 +148,24 @@
     left: 0;
     top: 0;
 }
-.opt-btns .circle-btn .p1{
-    /*
-    background: #fa9d01;
-    */
-    /*background-image: url('../images/p1.png');*/
+.opt-btns .circle-btn .p-outer-btn {
 	border:2px solid #f19149;
 }
-.opt-btns .circle-btn .p3{
-    /*background-image: url('../images/p3.png');*/
+.opt-btns .circle-btn .p-outer-btn-pressed {
 	border:2px solid #ff5e00;
 	box-shadow:0px 0px 10px #ff5e00;
 }
+.opt-btns .circle-btn .p-outer-btn .p-inner-btn {
+    background-color:#f19149;
+}
+.opt-btns .circle-btn .p-outer-btn-pressed .p-inner-btn {
+    background-color:#ff5e00;
+    box-shadow:0px 0px 10px #ff5e00;
+}
 .opt-btns .circle-btn .d1{
-    /*
-    background: #34cc67;
-    font-size: 28px;
-    */
-    /*background-image: url('../images/d1.png');*/
 	border:2px solid #36cc68;
 }
 .opt-btns .circle-btn .d3{
-    /*background-image: url('../images/d3.png');*/
 	border:2px solid #1af646;
 	box-shadow:0px 0px 10px #1af646;
 }
@@ -198,17 +173,25 @@
     background: #34cc67;
 }
 .opt-btns .circle-btn .z1{
-    /*
-    background: #ff414b;
-    font-size: 28px;
-    */
-    /*background-image: url('../images/z1.png');*/
 	border:2px solid #eb6877;
 }
 .opt-btns .circle-btn .z3{
-    /*background-image: url('../images/z3.png');*/
 	border:2px solid #ff0000;
 	box-shadow:0px 0px 10px #ff0000;
+}
+.z11 {
+    background-color:#eb6877;
+}
+.z33 {
+    background-color:#ff0000;
+    box-shadow:0px 0px 10px #ff0000;
+}
+.d11 {
+    background-color:#36cc68;
+}
+.d33 {
+    background-color:#1af646;
+    box-shadow:0px 0px 10px #1af646;
 }
 .opt-btns .circle-btn.pz{
     background: #ff414b;
