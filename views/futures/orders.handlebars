@@ -36,7 +36,15 @@
 </header><!--#E header-->
 
 <div class="orders-wrapper">
-    <div class="orders-header container">
+	<div style="width:100%;height:150px;background-attachment:fixed;background:url('/futures/images/sky.jpg');background-position:center;background-size:293px 150px">
+		<div style="padding-top:46px;text-align:center;font-size:15px;color:#ffffff">
+			<div style="width:64px;height:64px;border-radius:100px;border:2px solid #4b90f7;overflow:hidden">
+				<img ng-src="\{{user.wechat.wechat_img}}" style="width:64px" />
+			</div>
+			<p>\{{user.wechat.wechat_name}}</p>
+		</div>
+	</div>
+    <!--<div class="orders-header container">
         <div class="row">
             <div class="col-xs-offset-1 col-xs-3">
                 <img class="img-circle header-icon" ng-src="\{{user.wechat.wechat_img}}" width="100%" alt="...">
@@ -46,10 +54,10 @@
                     <li class="name">\{{user.wechat.wechat_name}}</li>
                     <li>盈利: \{{userInfo.cash / 100 - originCapital | number:2}}牛币</li>
                     <!--<li>积分点: \{{user.score}}</li>-->
-                </ul>
+                <!--</ul>
             </div>
         </div>
-    </div>
+    </div>-->
     <div class="finance-info">
         <span class="pull-left">资产:\{{userInfo.cash / 100 | number:2}}</span><span class="pull-right">本金:\{{originCapital | number:2}}</span>
     </div>
