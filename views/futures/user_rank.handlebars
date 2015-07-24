@@ -141,7 +141,7 @@
 			<tr style="background-color:#ffffff;height:92px">
 				<td>???</td>
 				<td>
-					<div style="width:44px;height:44px;border-radius:50px;overflow:hidden;margin-left:5px">
+					<div style="width:44px;height:44px;border-radius:50px;overflow:hidden;margin:0 auto">
 							<img ng-src="\{{user.wechat.wechat_img}}" style="width:44px" />
 					</div>
 				</td>
@@ -155,10 +155,12 @@
 			</tr>
 			<tr ng-repeat="theUser in topUsers" style="height:92px;border-top:1px solid #e5e5e5">
 				<td>\{{4 + $index}}</td>
-				<td colspan="2">
-					<div style="width:44px;height:44px;border-radius:50px;overflow:hidden;margin-left:5px">
+				<td>
+					<div style="width:44px;height:44px;border-radius:50px;overflow:hidden;margin:0 auto">
 							<img ng-src="\{{theUser.wechat.wechat_img}}" style="width:44px" />
 					</div>
+				</td>
+				<td>
 					<p style="margin-top:-30px">\{{theUser.wechat.wechat_name}}</p>
 				</td>
 				<td class="text-danger">\{{theUser.wechat.trader.lastCash ? (theUser.wechat.trader.lastCash-100000000)/100 : 0 | number:0}}</td>
