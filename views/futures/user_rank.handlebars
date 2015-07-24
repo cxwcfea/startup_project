@@ -144,8 +144,10 @@
 					<div style="width:44px;height:44px;border-radius:50px;overflow:hidden;margin-left:5px">
 							<img ng-src="\{{user.wechat.wechat_img}}" style="width:44px" />
 					</div>
-					<p style="margin-top:-40px;font-size:12px">少年您距离股神还有120步</p>
-					<p style="font-size:10px">啥也不说了，快去交易吧</p>
+				</td>
+				<td>
+					<p style="font-size:12px">少年您距离股神还有120步</p>
+					<p style="font-size:10px">啥也不说了，快去联系交易吧</p>
 				</td>
 				<td>
 					<button ng-click="trade()" class="btn btn-danger">立即交易</button>
@@ -153,7 +155,7 @@
 			</tr>
 			<tr ng-repeat="theUser in topUsers" style="height:92px;border-top:1px solid #e5e5e5">
 				<td>\{{4 + $index}}</td>
-				<td>
+				<td colspan="3">
 					<div style="width:44px;height:44px;border-radius:50px;overflow:hidden;margin-left:5px">
 							<img ng-src="\{{theUser.wechat.wechat_img}}" style="width:44px" />
 					</div>
