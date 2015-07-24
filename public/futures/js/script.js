@@ -108,6 +108,8 @@ $(function () {
         }
     });
 
+    alert(location.href.split('#')[0]);
+
     wx.ready(function(){
         alert('wechat sign success');
     });
