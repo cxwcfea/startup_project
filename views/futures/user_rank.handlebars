@@ -116,27 +116,28 @@
             <img class="user-badge" src="/futures/images/badge.png" width="35%" />
         </div>
     </div>
-    <div class="row users current" ng-hide="userInRank">
+    <!--<div class="row users current" ng-hide="userInRank">
         <span class="col-xs-1 badge">???</span>
         <img class="img-circle col-xs-2" ng-src="\{{user.wechat.wechat_img}}" width="12%" />
-        <span class="col-xs-4">您没有上榜，啥也不说了，快去交易吧</span>
+        <span class="col-xs-5">您没有上榜，啥也不说了，快去交易吧</span>
         <button class="btn btn-danger pull-right col-xs-3" ng-click="trade()">立即交易</button>
     </div>
     <div class="row users" ng-repeat="theUser in topUsers">
         <span class="col-xs-1 badge">\{{4 + $index}}</span>
         <img class="img-circle col-xs-2" ng-src="\{{theUser.wechat.wechat_img}}" width="12%" />
         <span class="info">
-            <span class="col-xs-3">\{{theUser.wechat.wechat_name}}</span>
+            <span class="col-xs-4">\{{theUser.wechat.wechat_name}}</span>
             <span class="pull-right col-xs-4 text-danger">\{{theUser.wechat.trader.lastCash ? (theUser.wechat.trader.lastCash-100000000)/100 : 0 | number:0}}</span>
         </span>
-    </div>
-	<!--<div>
+    </div>-->
+	<div>
 		<table style="width:100%;font-size:15px;color:#000000">
-			<tr ng-repeat="theUser in topUsers">
+			<tr ng-repeat="theUser in topUsers" style="height:92px">
 				<td>\{{4 + $index}}</td>
 				<td><img src="\{{user.wechat.wechat_img}}" style="width:44px" /></td>
 				<td>\{{theUser.wechat.wechat_name}}</td>
+				<td class="text-danger">\{{theUser.wechat.trader.lastCash ? (theUser.wechat.trader.lastCash-100000000)/100 : 0 | number:0}}</td>
 			</tr>
 		</table>
-	</div>-->
+	</div>
 </div>
