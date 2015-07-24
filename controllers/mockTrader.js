@@ -97,7 +97,7 @@ function getCosts(stock_price, quantity, position, total_point, total_deposit) {
     return {raw: raw, fee: fee, open: locked_cash, locked_cash: locked_cash, point:point_diff, deposit:deposit_diff, profit:profit, net_profit:net_profit};
 }
 
-function closeAll(userId, portfolio, income, contractInfo, cb) {
+function closeAll(userId, portfolio, income, contractInfo, reset, cb) {
     var asyncObj = {remaining: portfolio.length, value: 0, has_error: false, errmsg:""};
     User.findById(userId, function(err, user) {
         if (err) {
@@ -108,7 +108,13 @@ function closeAll(userId, portfolio, income, contractInfo, cb) {
             console.log('user not found when closeAll');
             return cb(err.toString());
         }
-        user.cash += income;
+        if (reset == 1) {
+          // Reset user
+          user.cash = user.deposit + user.debt;
+        } else {
+          // Close user
+          user.cash += income;
+        }
         user.lastCash = user.cash;
         user.save(function(err) {
             if (err) {
@@ -275,8 +281,12 @@ function windControl(userId, forceClose, cb) {
                                 // Close all positions
                                 console.log("Closing user");
                                 if (!forceClose)
-                                    setStatus(userId, 1);  // cannot buy
-                                closeAll(userId, portfolio, income, contractInfo, cb);
+                                  // Have to close
+                                  // setStatus(userId, 1);  // cannot buy
+                                  closeAll(userId, portfolio, income, contractInfo, 1, cb);
+                                else
+                                  // Force close
+                                  closeAll(userId, portfolio, income, contractInfo, 0, cb);
                             } else {
                                 console.log("Closed");
                                 cb(null);
