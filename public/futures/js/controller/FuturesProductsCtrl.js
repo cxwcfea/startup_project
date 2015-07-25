@@ -38,7 +38,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
         }
     ];
 	
-	$scope.openQrcodePopup = function (size) {
+	/*$scope.openQrcodePopup = function (size) {
 		var modalInstance = $modal.open({
 			animation: true,
             backdrop: 'static',
@@ -52,7 +52,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
 	
 	$scope.showQrcode = function() {
 		$scope.openQrcodePopup('lg');
-	}
+	}*/
 
     $scope.selectProduct = function (index) {
         $scope.selectedProduct = index;
