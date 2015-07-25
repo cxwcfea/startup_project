@@ -1,5 +1,5 @@
 .xx-dialog .modal-dialog {
-    top: 15em;
+    top: 12em;
 }
 
 .header-box h1 {
@@ -23,11 +23,6 @@
 }
 
 .ppj-footer {
-    /*
-    padding: 10px 18px;
-    background: #fff;
-    border-radius: 4px;
-    */
     position: fixed;
     width: 100%;
     bottom: 0;
