@@ -77,7 +77,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             animation: true,
             backdrop: 'static',
             windowClass: 'xx-dialog',
-            templateUrl: 'views/intro_popup.html',
+            templateUrl: 'views/qrcode_popup.html',
             controller: 'IntroModalCtrl',
             size: size,
             resolve: {}
