@@ -36,5 +36,9 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             status: 0,
             time: '工作日00:00-23:59（全天）'
         }
-    ]
+    ];
+
+    $scope.selectProduct = function (index) {
+        $scope.selectedProduct = index;
+    };
 }]);
