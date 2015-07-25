@@ -52,7 +52,7 @@ function fetchHistoryData(cb) {
             products[j].historyData = ret;
             console.log('got ' + products[j].name + ' data');
             console.log(products[j].historyData);
-            cb();
+            //cb();
         });
     }
 }
