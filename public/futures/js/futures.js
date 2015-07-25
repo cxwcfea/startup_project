@@ -118,8 +118,10 @@ angular.module("futuresApp")
                 });
                 socket.on('history_data', function(historyData) {
                     //series.addPoint(newData, true, true);
-                    firstPoint = historyData[0][0];
-                    fillWholeData(historyData, scope.data, firstPoint);
+                    if (historyData.productID == scope.data.productID) {
+                        firstPoint = historyData.data[0][0];
+                        fillWholeData(historyData.data, scope.data, firstPoint);
+                    }
                     /*
                     scope.data.series.setData(newData, true, true);
                     scope.data.fake_series.setData(blankData, true, true);

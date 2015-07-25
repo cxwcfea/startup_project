@@ -57,9 +57,9 @@ function fetchHistoryData(cb) {
                 if (index === 0) {
                     historyData = ret;
                 }
-                //console.log('got ' + products[index].name + ' data');
-                //console.log(products[index].historyData);
-                cb(index);
+                if (cb) {
+                    cb(index);
+                }
             });
         })();
     }
@@ -81,23 +81,18 @@ var historyData = [];
 
 // Define the Socket.io configuration method
 module.exports = function(io) {
-    fetchHistoryData(function(data) {
-        //historyData = data;
-    });
+    fetchHistoryData();
     io.on('connection', function(socket) {
         console.log(socket.id + ' connected');
         socket.on('join', function (user) {
             console.log(user.name + ' joined room ' + user.room);
             //socket.join(user.room);
-            socket.emit('history_data', products[user.room].historyData);
+            socket.emit('history_data', {productID:user.room, data:products[user.room].historyData});
         });
     });
     setInterval(function() {
         fetchHistoryData(function(productIndex) {
-            //historyData = data;
-            if (productIndex === 0) {
-                io.sockets.emit('history_data', products[productIndex].historyData);
-            }
+            io.sockets.emit('history_data', {productID:user.room, data:products[productIndex].historyData});
         });
     }, 600000);
     setInterval(function() {
