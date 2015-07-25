@@ -10,7 +10,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             type: '股 指',
             intro: '沪深300指数，涨跌均可买',
             status: 1,
-            time: '工作日09:15-11:30&nbsp&nbsp&nbsp&nbsp13:00-15:15'
+            time: '工作日09:15-11:30  13:00-15:15'
         },
         {
             value: 1,
@@ -18,7 +18,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             type: '美 股',
             intro: '中概股，晚上交易，涨跌均可买',
             status: 0,
-            time: '工作日09:15-11:30&nbsp&nbsp&nbsp&nbsp13:00-15:15'
+            time: '工作日09:15-11:30  13:00-15:15'
         },
         {
             value: 2,
