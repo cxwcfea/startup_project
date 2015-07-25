@@ -177,7 +177,7 @@ angular.module("futuresApp")
                     }]
                 },
                 yAxis: {
-                    opposite: false
+                    opposite: true
                 },
                 series : [
                     {
