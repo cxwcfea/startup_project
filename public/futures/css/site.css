@@ -1,5 +1,5 @@
 .xx-dialog .modal-dialog {
-    top: 12em;
+    top: 10em;
 }
 
 .header-box h1 {
@@ -28,139 +28,10 @@
     bottom: 0;
 }
 
-.product-wrapper {
+.index-box .opt-btns {
+    margin-bottom: 5px;
 }
 
-/* for products */
-.pdsa-summary-block-primary {
-    background-color: #428bca;
-    color: #fff;
-}
-
-/*
-.pdsa-summary-block-primary .summary-footer {
-    background-color: deepskyblue;
-}
-
-.pdsa-summary-block-primary .summary-footer a {
-    color: #ffffff;
-}
-*/
-
-.pdsa-summary-block-disable {
-    background-color: gray;
-    color: #fff;
-}
-
-.pdsa-summary-block-success {
-    background-color: #3c763d;
-    color: #fff;
-}
-
-.pdsa-summary-block-success .summary-footer {
-    background-color: green;
-}
-
-.pdsa-summary-block-success .summary-footer a {
-    color: #ffffff;
-}
-
-.pdsa-summary-block-info {
-    background-color: #31708f;
-    color: #fff;
-}
-
-/*
-.pdsa-summary-block-info .summary-footer {
-    background-color: teal;
-}
-
-.pdsa-summary-block-info .summary-footer a {
-    color: #ffffff;
-}
-*/
-
-.pdsa-summary-block-danger {
-    background-color: #a94442;
-    color: #fff;
-}
-
-.pdsa-summary-block-danger .summary-footer {
-    background-color: red;
-}
-
-.pdsa-summary-block-danger .summary-footer a {
-    color: #ffffff;
-}
-
-.pdsa-summary-block {
-    position: relative;
-    width: 100%;
-    margin: 0.3em;
-    padding: 1em;
-    min-height: 15em;
-    border-radius: 1em;
-}
-
-.pdsa-summary-block .summary-background i,
-.pdsa-summary-block .summary-background div {
-    margin-left: -0.4em;
-    margin-top: 0.1em;
-    font-size: 8em;
-    opacity: 0.3;
-}
-
-.pdsa-summary-block .summary-header {
-    position: absolute;
-    top: 0;
-    right: 1em;
-    font-size: 1.5em;
-}
-
-.pdsa-summary-block .summary-check {
-    position: absolute;
-    bottom: 0;
-    right: 1em;
-    font-size: 2em;
-    color: #ffffff;
-}
-
-.pdsa-summary-block .summary-body {
-    position: absolute;
-    top: 3em;
-    right: 6em;
-}
-
-.pdsa-summary-block .summary-body .summary-line-1 {
-    text-align: left;
-    font-size: x-large;
-}
-
-.pdsa-summary-block .summary-body .summary-line-2 {
-    text-align: left;
-    font-size: medium;
-}
-
-.pdsa-summary-block .summary-footer {
-    position: absolute;
-    bottom: 1em;
-    right: -1em;
-    width: 100%;
-    font-weight: 300;
-    padding: 0.4em;
-    text-transform: uppercase;
-    font-size: small;
-    opacity: 0.6;
-}
-
-.pdsa-summary-block .summary-footer a {
-    text-decoration: none;
-}
-
-.pdsa-summary-block .summary-footer:hover {
-    opacity: 1;
-    cursor: pointer;
-}
 .foot-table {
 	width:100%;
 	height:50px;
