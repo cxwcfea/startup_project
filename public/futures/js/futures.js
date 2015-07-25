@@ -129,9 +129,11 @@ angular.module("futuresApp")
                     */
                 });
                 socket.on('new_data', function(newData) {
-                    scope.data.historyData.push(newData);
-                    var blankData = util.generateBlankData(firstPoint, newData);
-                    updateData(scope.data, newData, blankData, true);
+                    if (newData.productID == scope.data.productID) {
+                        scope.data.historyData.push(newData.data);
+                        var blankData = util.generateBlankData(firstPoint, newData.data);
+                        updateData(scope.data, newData.data, blankData, true);
+                    }
                 });
             }
 

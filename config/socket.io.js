@@ -66,6 +66,7 @@ function fetchHistoryData(cb) {
 }
 
 function fetchNewData(cb) {
+    /*
     global.redis_client.get('mt://future/IFCURR', function(err, data) {
         var ret = null;
         if (!err) {
@@ -75,6 +76,24 @@ function fetchNewData(cb) {
         //console.log('current data:', parseInt(data.ts/1000) + ' ' + parseInt(data.LastPrice));
         cb(err, ret);
     });
+    */
+    for (var j = 0; j < products.length; ++j) {
+        (function () {
+            var index = j;
+            global.redis_client.get(products[index].currKey, function(err, data) {
+                var ret = null;
+                if (!err) {
+                    var historyData = products[index].historyData;
+                    data = JSON.parse(data);
+                    ret = [parseInt(data.ts/1000), parseInt(data.LastPrice)];
+                    if (ret[0] > historyData[historyData.length-1][0]) {
+                        historyData.push(ret);
+                    }
+                }
+                cb(err, ret, index);
+            });
+        })();
+    }
 }
 
 var historyData = [];
@@ -92,19 +111,16 @@ module.exports = function(io) {
     });
     setInterval(function() {
         fetchHistoryData(function(productIndex) {
-            io.sockets.emit('history_data', {productID:user.room, data:products[productIndex].historyData});
+            io.sockets.emit('history_data', {productID:productIndex, data:products[productIndex].historyData});
         });
     }, 600000);
     setInterval(function() {
-        fetchNewData(function(err, data) {
+        fetchNewData(function(err, data, productIndex) {
             if (err) {
                 console.log(err.toString());
                 return;
             }
-            if (data[0] > historyData[historyData.length-1][0]) {
-                historyData.push(data);
-                io.sockets.emit('new_data', data);
-            }
+            io.sockets.emit('new_data', {productID:productIndex, data:data});
         });
     }, 2000);
 };
