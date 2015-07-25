@@ -88,15 +88,16 @@ module.exports = function(io) {
         console.log(socket.id + ' connected');
         socket.on('join', function (user) {
             console.log(user.name + ' joined room ' + user.room);
-            socket.emit('history_data', historyData);
+            socket.join(user.room);
+            socket.emit('history_data', products[user.room].historyData);
         });
     });
     setInterval(function() {
         fetchHistoryData(function(productIndex) {
             //historyData = data;
-            if (productIndex === 0) {
-                io.sockets.emit('history_data', products[productIndex].historyData);
-            }
+            //if (productIndex === 0) {
+                io.sockets.in(productIndex).broadcast.emit('history_data', products[productIndex].historyData);
+            //}
         });
     }, 600000);
     setInterval(function() {
