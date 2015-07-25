@@ -108,7 +108,7 @@ module.exports = function(io) {
             }
             if (data[0] > historyData[historyData.length-1][0]) {
                 historyData.push(data);
-                io.sockets.emit('new_data', data);
+                io.sockets.in(0).broadcast.emit('new_data', data);
             }
         });
     }, 2000);
