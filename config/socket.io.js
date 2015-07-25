@@ -39,24 +39,24 @@ function fetchHistoryData(cb) {
         cb(ret);
     });
     for (var j = 1; j < products.length; ++j) {
-        console.log(products[j]);
-        /*
-        global.redis_client.lrange(products[j].historyKey, 0, -1, function(err, data) {
-            if (err) {
-                console.log(err.toString());
-            }
-            var ret = [];
-            for (var i in data) {
-                var line = data[i];
-                line = JSON.parse(line.replace(/'/g, ''))[0];
-                ret.unshift([parseInt(line.ts/1000), parseInt(line.LastPrice)]);
-            }
-            products[j].historyData = ret;
-            console.log('got ' + products[j].name + ' data');
-            console.log(products[j].historyData);
-            //cb();
-        });
-        */
+        (function(){
+            var index = j;
+            global.redis_client.lrange(products[index].historyKey, 0, -1, function(err, data) {
+                if (err) {
+                    console.log(err.toString());
+                }
+                var ret = [];
+                for (var i in data) {
+                    var line = data[i];
+                    line = JSON.parse(line.replace(/'/g, ''))[0];
+                    ret.unshift([parseInt(line.ts/1000), parseInt(line.LastPrice)]);
+                }
+                products[index].historyData = ret;
+                console.log('got ' + products[index].name + ' data');
+                console.log(products[index].historyData);
+                //cb();
+            });
+        })();
     }
 }
 
