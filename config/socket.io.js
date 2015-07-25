@@ -88,16 +88,16 @@ module.exports = function(io) {
         console.log(socket.id + ' connected');
         socket.on('join', function (user) {
             console.log(user.name + ' joined room ' + user.room);
-            socket.join(user.room);
+            //socket.join(user.room);
             socket.emit('history_data', products[user.room].historyData);
         });
     });
     setInterval(function() {
         fetchHistoryData(function(productIndex) {
             //historyData = data;
-            //if (productIndex === 0) {
-                io.sockets.in(productIndex).broadcast.emit('history_data', products[productIndex].historyData);
-            //}
+            if (productIndex === 0) {
+                io.sockets.emit('history_data', products[productIndex].historyData);
+            }
         });
     }, 600000);
     setInterval(function() {
@@ -108,7 +108,7 @@ module.exports = function(io) {
             }
             if (data[0] > historyData[historyData.length-1][0]) {
                 historyData.push(data);
-                io.sockets.in(0).broadcast.emit('new_data', data);
+                io.sockets.emit('new_data', data);
             }
         });
     }, 2000);
