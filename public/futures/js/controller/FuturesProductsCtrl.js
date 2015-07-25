@@ -37,6 +37,22 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             time: '工作日00:00-23:59（全天）'
         }
     ];
+	
+	$scope.openQrcodePopup = function (size) {
+		var modalInstance = $modal.open({
+			animation: true,
+            backdrop: 'static',
+            windowClass: 'xx-dialog',
+            templateUrl: 'views/qrcode_popup.html',
+            controller: 'QrModalCtrl',
+            size: size,
+            resolve: {}
+		});
+	};
+	
+	$scope.showQrcode = function() {
+		$scope.openQrcodePopup('lg');
+	}
 
     $scope.selectProduct = function (index) {
         $scope.selectedProduct = index;

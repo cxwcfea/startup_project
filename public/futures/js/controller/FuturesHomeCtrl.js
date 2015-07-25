@@ -77,7 +77,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             animation: true,
             backdrop: 'static',
             windowClass: 'xx-dialog',
-            templateUrl: 'views/qrcode_popup.html',
+            templateUrl: 'views/instr_popup.html',
             controller: 'IntroModalCtrl',
             size: size,
             resolve: {}
@@ -89,18 +89,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             console.log('Modal dismissed at: ' + new Date());
         });
     };
-	
-	$scope.openQrcodePopup = function (size) {
-		var modalInstance = $modal.open({
-			animation: true,
-            backdrop: 'static',
-            windowClass: 'xx-dialog',
-            templateUrl: 'views/qrcode_popup.html',
-            controller: 'IntroModalCtrl',
-            size: size,
-            resolve: {}
-		});
-	}
 
     $scope.openGainPopup = function (size) {
         var modalInstance = $modal.open({
@@ -185,10 +173,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     $scope.help = function() {
         $scope.openIntroPopup('lg');
     };
-	
-	$scope.showQrcode = function() {
-		$scope.openQrcodePopup('lg');
-	}
 
     $scope.currentOrder = null;
 
