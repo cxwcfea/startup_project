@@ -114,7 +114,7 @@ angular.module("futuresApp")
                 var socket = scope.data.socket = io.connect();
                 socket.on('connect', function () {
                     // send a join event with your name
-                    socket.emit('join', 'user');
+                    socket.emit('join', {name:scope.data.currentUser._id, room:1});
                 });
                 socket.on('history_data', function(historyData) {
                     //series.addPoint(newData, true, true);

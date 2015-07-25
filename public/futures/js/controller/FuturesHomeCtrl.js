@@ -170,15 +170,8 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         $location.path('/profit_exchange');
     };
 
-    $scope.showRank = function() {
-        $location.path('/user_rank');
-    };
-
-    $scope.showOrders = function() {
-        $location.path('/orders');
-    };
-
-    $scope.share = function() {
+    $scope.help = function() {
+        $scope.openIntroPopup('lg');
     };
 
     $scope.currentOrder = null;

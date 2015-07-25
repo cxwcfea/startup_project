@@ -41,8 +41,8 @@ module.exports = function(io) {
     });
     io.on('connection', function(socket) {
         console.log(socket.id + ' connected');
-        socket.on('join', function (name) {
-            console.log(name + ' joined');
+        socket.on('join', function (user) {
+            console.log(user.name + ' joined room ' + user.room);
             socket.emit('history_data', historyData);
         });
     });

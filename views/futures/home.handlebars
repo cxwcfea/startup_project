@@ -55,7 +55,7 @@
         height: 100px;
     }
     .index-box .current-price {
-        margin-left: 25px;
+        margin-left: 30px;
     }
     .index-box .current-price em {
         color: red;
@@ -75,7 +75,7 @@
 
 <div class="index-box">
     <div class="chart-box">
-        <h4>股指走势图 <span class="current-price pull-right">持有<em>\{{cash | number:0}}</em>牛币</span></h4>
+        <h4>股指走势图 <span class="current-price">余额<em>\{{cash | number:0}}</em>牛币</span> <span class="order-list pull-right" ng-click="help()">帮助</span></h4>
         <div class="chart">
             <!--
             <canvas id="J_chart" width="300" height="160" futures-chart="chartLabels" chart-data="chartData"></canvas>
@@ -107,11 +107,6 @@
         {{/unless}}
         <div class="opt-btns">
             <div class="btns three" id="J_btns">
-                <!--
-				<button id="bp" {{#if tradeTime}}ng-class="{p3:PButtonPressed, p1:!PButtonPressed}"{{/if}} class="circle-btn p {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(0)"{{/if}} ng-mouseup="handleEvent($event)">{{#unless tradeTime}}涨{{/unless}}</button>
-                <button id="bz" {{#if tradeTime}}ng-class="{z3:ZButtonPressed, z1:!ZButtonPressed}"{{/if}} class="circle-btn z {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(1)"{{/if}} ng-mouseup="handleEvent($event)">{{#unless tradeTime}}跌{{/unless}}</button>
-                <button id="bd" {{#if tradeTime}}ng-class="{d3:DButtonPressed, d1:!DButtonPressed}"{{/if}} class="circle-btn d {{#unless tradeTime}}circle-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(-1)"{{/if}} ng-mouseup="handleEvent($event)">{{#unless tradeTime}}平{{/unless}}</button>
-				-->
 				<div class="circle-btn p {{#unless tradeTime}}circle-btn-disable{{/unless}}">
 					<div {{#if tradeTime}}ng-class="{'p-outer-btn-pressed':PButtonPressed, 'p-outer-btn':!PButtonPressed}"{{/if}} class="ex-btn">
 						<div id="bp" class="p-inner-btn ex-btn-common" {{#if tradeTime}}ng-click="placeOrder(0)"{{/if}}>
@@ -136,17 +131,7 @@
 					</div>
 					<p class="log-label">\{{tradeData.down}}手</p>
 				</div>
-				<!--
-                <button class="circle-btn pz">平涨</button>
-                <button class="circle-btn pd">平跌</button>
-                -->
             </div>
-            <!--
-            <div class="switch-btns" id="J_switchBtn">
-                <span class="cur"><em>3</em>键</span>
-                <span><em>5</em>键</span>
-            </div>
-            -->
         </div>
     </div>
 </div>
