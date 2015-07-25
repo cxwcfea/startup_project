@@ -26,6 +26,7 @@ var products = [
 ];
 
 function fetchHistoryData(cb) {
+    /*
     global.redis_client.lrange('mt://future/IFHIST', 0, -1, function(err, data) {
         if (err) {
             console.log(err.toString());
@@ -38,7 +39,8 @@ function fetchHistoryData(cb) {
         }
         cb(ret);
     });
-    for (var j = 1; j < products.length; ++j) {
+    */
+    for (var j = 0; j < products.length; ++j) {
         (function(){
             var index = j;
             global.redis_client.lrange(products[index].historyKey, 0, -1, function(err, data) {
@@ -52,9 +54,12 @@ function fetchHistoryData(cb) {
                     ret.unshift([parseInt(line.ts/1000), parseInt(line.LastPrice)]);
                 }
                 products[index].historyData = ret;
-                console.log('got ' + products[index].name + ' data');
-                console.log(products[index].historyData);
-                //cb();
+                if (index === 0) {
+                    historyData = ret;
+                }
+                //console.log('got ' + products[index].name + ' data');
+                //console.log(products[index].historyData);
+                cb(index);
             });
         })();
     }
@@ -77,7 +82,7 @@ var historyData = [];
 // Define the Socket.io configuration method
 module.exports = function(io) {
     fetchHistoryData(function(data) {
-        historyData = data;
+        //historyData = data;
     });
     io.on('connection', function(socket) {
         console.log(socket.id + ' connected');
@@ -87,9 +92,11 @@ module.exports = function(io) {
         });
     });
     setInterval(function() {
-        fetchHistoryData(function(data) {
-            historyData = data;
-            io.sockets.emit('history_data', data);
+        fetchHistoryData(function(productIndex) {
+            //historyData = data;
+            if (productIndex === 0) {
+                io.sockets.emit('history_data', products[productIndex].historyData);
+            }
         });
     }, 600000);
     setInterval(function() {
