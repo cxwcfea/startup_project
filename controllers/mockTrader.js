@@ -259,7 +259,6 @@ function windControl(userId, forceClose, cb) {
                             return;
                         }
                         var priceInfo = JSON.parse(priceInfoString);
-                        console.log(priceInfo);
                         priceInfo.LastPrice *= 100;
 
                         contractInfo[portf.contractId] = priceInfo;

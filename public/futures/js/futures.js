@@ -114,12 +114,14 @@ angular.module("futuresApp")
                 var socket = scope.data.socket = io.connect();
                 socket.on('connect', function () {
                     // send a join event with your name
-                    socket.emit('join', {name:scope.data.currentUser._id, room:1});
+                    socket.emit('join', {name:scope.data.currentUser._id, room:0});
                 });
                 socket.on('history_data', function(historyData) {
                     //series.addPoint(newData, true, true);
-                    firstPoint = historyData[0][0];
-                    fillWholeData(historyData, scope.data, firstPoint);
+                    if (historyData.productID == scope.data.productID) {
+                        firstPoint = historyData.data[0][0];
+                        fillWholeData(historyData.data, scope.data, firstPoint);
+                    }
                     /*
                     scope.data.series.setData(newData, true, true);
                     scope.data.fake_series.setData(blankData, true, true);
@@ -127,9 +129,11 @@ angular.module("futuresApp")
                     */
                 });
                 socket.on('new_data', function(newData) {
-                    scope.data.historyData.push(newData);
-                    var blankData = util.generateBlankData(firstPoint, newData);
-                    updateData(scope.data, newData, blankData, true);
+                    if (newData.productID == scope.data.productID) {
+                        scope.data.historyData.push(newData.data);
+                        var blankData = util.generateBlankData(firstPoint, newData.data);
+                        updateData(scope.data, newData.data, blankData, true);
+                    }
                 });
             }
 
@@ -177,7 +181,7 @@ angular.module("futuresApp")
                     }]
                 },
                 yAxis: {
-                    opposite: false
+                    opposite: true
                 },
                 series : [
                     {

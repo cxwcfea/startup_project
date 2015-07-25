@@ -253,8 +253,8 @@ module.exports = function(app) {
 
     yeepay.registerRoutes(app, passportConf);
 
-    app.get('/auth/wechat', weixin.logInfo, passport.authenticate('wechat'));
-    app.get('/auth/wechat/callback', weixin.logInfo, weixin.login);
+    app.get('/auth/wechat', passport.authenticate('wechat'));
+    app.get('/auth/wechat/callback', weixin.login);
     app.get('/auth/wechat/err', weixin.authFail);
     app.get('/auth/wechat/success', weixin.authSuccess);
     app.get('/wechat/get_jsapi_token', weixin.getJSToken);
