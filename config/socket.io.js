@@ -39,6 +39,8 @@ function fetchHistoryData(cb) {
         cb(ret);
     });
     for (var j = 1; j < products.length; ++j) {
+        console.log(products[j]);
+        /*
         global.redis_client.lrange(products[j].historyKey, 0, -1, function(err, data) {
             if (err) {
                 console.log(err.toString());
@@ -54,6 +56,7 @@ function fetchHistoryData(cb) {
             console.log(products[j].historyData);
             //cb();
         });
+        */
     }
 }
 
