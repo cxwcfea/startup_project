@@ -156,7 +156,7 @@ $(function () {
     });
 
 	window.njPersonChart = function() {
-		$('#container').highcharts({
+		$('#sectorChart').highcharts({
 			chart: {
 				plotBackgroundColor: null,
 				plotBorderWidth: 0,
