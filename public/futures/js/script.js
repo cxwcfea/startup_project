@@ -158,7 +158,7 @@ $(function () {
 	$(document).ready(function () {
 		$("#sectorChart").highcharts({
             chart: {
-                plotBackgroundColor: #000000,
+                plotBackgroundColor: '#000000',
                 plotBorderWidth: null,
                 plotShadow: false
             },
