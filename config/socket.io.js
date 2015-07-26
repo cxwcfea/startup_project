@@ -55,7 +55,11 @@ function fetchHistoryData(cb) {
                 for (var i in data) {
                     var line = data[i];
                     line = JSON.parse(line.replace(/'/g, ''))[0];
-                    ret.unshift([parseInt(line.ts/1000), parseInt(line.LastPrice)]);
+                    if (index === 0) {
+                        ret.unshift([parseInt(line.ts/1000), parseInt(line.LastPrice)]);
+                    } else {
+                        ret.unshift([parseInt(line.ts/1000), parseFloat(line.LastPrice)]);
+                    }
                 }
                 products[index].historyData = ret;
                 if (cb) {
@@ -86,7 +90,11 @@ function fetchNewData(cb) {
                 if (!err) {
                     var historyData = products[index].historyData;
                     data = JSON.parse(data);
-                    ret = [parseInt(data.ts/1000), parseInt(data.LastPrice)];
+                    if (index === 0) {
+                        ret = [parseInt(data.ts/1000), parseInt(data.LastPrice)];
+                    } else {
+                        ret = [parseInt(data.ts/1000), parseFloat(data.LastPrice)];
+                    }
                     if (ret[0] > historyData[historyData.length-1][0]) {
                         historyData.push(ret);
                     }
