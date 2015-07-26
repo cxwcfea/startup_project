@@ -175,11 +175,9 @@ $(function () {
 				pie: {
 					dataLabels: {
 						enabled: true,
-						distance: -50,
+						distance: 10,
 						style: {
-							fontWeight: 'bold',
-							color: 'white',
-							textShadow: '0px 1px 2px black'
+							color: 'black',
 						}
 					},
 					startAngle: 0,
