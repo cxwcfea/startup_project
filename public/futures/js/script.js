@@ -194,7 +194,13 @@ $(function () {
 					['本金', income],
 					['亏损', lost]
 				]
-			}]
+			}],
+			exporting:{
+                enabled:false
+            },
+            credits: {
+                enabled: false
+            }
 		});
 	};
 });
