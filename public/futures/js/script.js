@@ -155,6 +155,7 @@ $(function () {
     .always(function() {
     });
 	window.njPersonChart = function() {
+		$(document).ready(function () {
 		$('#container').highcharts({
             chart: {
                 plotBackgroundColor: null,
@@ -196,5 +197,6 @@ $(function () {
             }]
         });
 	};
+	});
 
 });
