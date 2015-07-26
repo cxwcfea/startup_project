@@ -12,16 +12,14 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             status: 1,
             time: '工作日09:15-11:30  13:00-15:15'
         },
-        /*
         {
             value: 1,
-            name: 'BABA',
-            type: '美 股',
-            intro: '中概股，晚上交易，涨跌均可买',
+            name: 'EURUSD',
+            type: '欧 元',
+            intro: '暂无相关介绍',
             status: 0,
-            time: '工作日09:15-11:30  13:00-15:15'
+            time: '工作日00:00-23:59（全天）'
         },
-        */
         {
             value: 2,
             name: 'XAUUSD',
@@ -29,15 +27,17 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             intro: '暂无相关介绍',
             status: 0,
             time: '工作日00:00-23:59（全天）'
-        },
-        {
-            value: 3,
-            name: 'EURUSD',
-            type: '欧 元',
-            intro: '暂无相关介绍',
-            status: 0,
-            time: '工作日00:00-23:59（全天）'
         }
+        /*
+         {
+         value: 1,
+         name: 'BABA',
+         type: '美 股',
+         intro: '中概股，晚上交易，涨跌均可买',
+         status: 0,
+         time: '工作日09:15-11:30  13:00-15:15'
+         },
+         */
     ];
 	
 	$scope.openQrcodePopup = function (size) {
@@ -60,7 +60,10 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
         var oldIndex = $scope.selectedProduct;
         $scope.selectedProduct = index;
         if (oldIndex != index) {
-
+            $scope.data.productID = index;
+            if ($scope.data.socket) {
+                $scope.data.socket.emit('join', {name:$scope.data.currentUser._id, room:index});
+            }
         }
     };
 }]);
