@@ -13,22 +13,6 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
 
         });
 	
-	/*$scope.drawSector = function(x, y, radius, sAngle, eAngle) {
-		alert("haha");
-		var sector = angular.element("canvas");
-		var ctx = sector.getContext('2d');
-		ctx.beginPath();
-		ctx.translate(x, y);
-		ctx.moveTo(0, 0);
-		ctx.arc(0, 0, radius, sAngle, eAngle);
-		ctx.closePath();
-		ctx.fill();
-	};
-	
-	$scope.drawPecetageSector = function() {
-		$scope.drawSector(100,100,50,0,MATH.PI*1.5);
-		alert("hehe");
-	}*/
-	$window.njPersonChart();
+	$window.njPersonChart(1000000.00,1234000.00,0.00);
 	
 }]);
