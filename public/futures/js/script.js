@@ -154,49 +154,49 @@ $(function () {
     })
     .always(function() {
     });
+
 	window.njPersonChart = function() {
-		$(document).ready(function () {
 		$('#container').highcharts({
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false
-            },
-            title: {
-                text: 'Browser market shares at a specific website, 2014'
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: false
-                    },
-                    showInLegend: true
-                }
-            },
-            series: [{
-                type: 'pie',
-                name: 'Browser share',
-                data: [
-                    ['Firefox',   45.0],
-                    ['IE',       26.8],
-                    {
-                        name: 'Chrome',
-                        y: 12.8,
-                        sliced: true,
-                        selected: true
-                    },
-                    ['Safari',    8.5],
-                    ['Opera',     6.2],
-                    ['Others',   0.7]
-                ]
-            }]
-        });
+			chart: {
+				plotBackgroundColor: null,
+				plotBorderWidth: 0,
+				plotShadow: false
+			},
+			title: {
+				text: 'Browser'+'<br>总资产',
+				align: 'center',
+				verticalAlign: 'middle',
+				y: 0
+			},
+			tooltip: {
+				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+			},
+			plotOptions: {
+				pie: {
+					dataLabels: {
+						enabled: true,
+						distance: -50,
+						style: {
+							fontWeight: 'bold',
+							color: 'white',
+							textShadow: '0px 1px 2px black'
+						}
+					},
+					startAngle: 0,
+					endAngle: 360,
+					center: ['50%', '50%']
+				}
+			},
+			series: [{
+				type: 'pie',
+				name: 'Browser share',
+				innerSize: '70%',
+				data: [
+					['收益', 12345.00],
+					['本金', 2612345.00],
+					['亏损', 0.00]
+				]
+			}]
 		});
 	};
-
 });
