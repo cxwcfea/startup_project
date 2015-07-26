@@ -120,7 +120,7 @@
         <div ng-repeat="product in products" class="product-body" ng-class="{'product-body-primary': product.value === 0, 'product-body-secondary': product.value === 1, 'product-body-warning': product.value === 2, 'product-body-success': product.value === 3}">
             <div ng-click="selectProduct(product.value)">
                 <div class="product-intro" >
-                    <p class="name">\{{product.name}}<span class="type">\{{product.type}}</span></p>
+                    <p class="name">\{{product.type}}<span class="type">\{{product.name}}</span></p>
                     <p class="info">\{{product.intro}}</p>
                 </div>
                 <div class="product-status">
