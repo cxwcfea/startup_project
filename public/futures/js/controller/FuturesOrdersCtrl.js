@@ -30,6 +30,7 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
 		alert("hehe");
 	}*/
 	$scope.$('#sectorChart').highcharts({
+		alert("123");
             chart: {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
