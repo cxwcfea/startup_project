@@ -25,6 +25,7 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
 	};
 	
 	$scope.drawPecetageSector = function() {
+		alert("haha");
 		$scope.drawSector(100,100,50,0,MATH.PI*1.5);
 	}
 	
