@@ -29,6 +29,7 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
 		$scope.drawSector(100,100,50,0,MATH.PI*1.5);
 		alert("hehe");
 	}*/
+	alert($scope.$('#sectorChart'));
 	$scope.$('#sectorChart').highcharts({
 		alert("123");
             chart: {
