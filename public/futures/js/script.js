@@ -156,6 +156,7 @@ $(function () {
     });
 
 	window.njPersonChart = function(basic,income,lost) {
+		var total = basic + income + lost;
 		$('#sectorChart').highcharts({
 			chart: {
 				plotBackgroundColor: null,
@@ -163,7 +164,7 @@ $(function () {
 				plotShadow: false
 			},
 			title: {
-				text: 'Browser'+'<br>总资产',
+				text: total +'<br>总资产',
 				align: 'center',
 				verticalAlign: 'middle',
 				y: 0
