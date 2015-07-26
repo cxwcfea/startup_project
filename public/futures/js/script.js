@@ -155,7 +155,7 @@ $(function () {
     .always(function() {
     });
 
-	window.njPersonChart = function() {
+	window.njPersonChart = function(basic,income,lost) {
 		$('#sectorChart').highcharts({
 			chart: {
 				plotBackgroundColor: null,
@@ -187,12 +187,12 @@ $(function () {
 			},
 			series: [{
 				type: 'pie',
-				name: 'Browser share',
+				name: '总资产',
 				innerSize: '70%',
 				data: [
-					['收益', 12345.00],
-					['本金', 2612345.00],
-					['亏损', 0.00]
+					['收益', basic],
+					['本金', income],
+					['亏损', lost]
 				]
 			}]
 		});
