@@ -2,7 +2,6 @@
 angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$window', '$modal', function($scope, $window, $modal) {
     $scope.data.selectedItem = 0;
 
-    $scope.selectedProduct = 0;
     $scope.products = [
         {
             value: 0,

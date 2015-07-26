@@ -25,6 +25,7 @@ angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window'
 
     $scope.data.productID = 0;
     $scope.data.selectedItem = 1;
+    $scope.selectedProduct = 0;
     $scope.items = [
         {
             value: 0,
