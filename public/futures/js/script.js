@@ -156,7 +156,7 @@ $(function () {
     });
 	
 	$(document).ready(function () {
-		document.getElementById("sectorChart").highcharts({
+		$("#sectorChart").highcharts({
             chart: {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
