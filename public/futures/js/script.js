@@ -154,7 +154,7 @@ $(function () {
     })
     .always(function() {
     });
-	
+	window.njChart = function() {
 	$('#sectorChart').highcharts({
         chart: {
             plotBackgroundColor: null,
@@ -206,5 +206,6 @@ $(function () {
             ]
         }]
     });
+	};
 
 });
