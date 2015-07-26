@@ -1,8 +1,8 @@
 'use strict';
 angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window', '$location', function($scope, $window, $location) {
     $scope.data = {};
-    //$scope.data.currentUser = $window.bootstrappedUserObject;
-    $scope.data.currentUser = {
+    $scope.data.currentUser = $window.bootstrappedUserObject;
+    /*$scope.data.currentUser = {
         score: 5,
         wechat: {
             wechat_img: 'http://wx.qlogo.cn/mmopen/uchmtWQh7iarnsx58BbzlB1GAOzjI3S8elKicd6t8CiahGE3JSDmkVnTNzicQA44DdRliaLOsI1wLI9o79kynDUIchg/0',
@@ -21,7 +21,7 @@ angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window'
                 "name" : "ogpOvt172ybaWRZBoxuiuEiB7wP0"
             }
         }
-    };
+    };*/
 
     $scope.data.productID = 0;
     $scope.data.selectedItem = 1;
