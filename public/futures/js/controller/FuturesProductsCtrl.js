@@ -1,5 +1,5 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$window', function($scope, $window) {
+angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$window', '$modal', function($scope, $window, $modal) {
     $scope.data.selectedItem = 0;
 
     $scope.selectedProduct = 0;
