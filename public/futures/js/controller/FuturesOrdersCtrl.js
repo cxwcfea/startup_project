@@ -14,6 +14,7 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
         });
 	
 	$scope.drawSector = function(x, y, radius, sAngle, eAngle) {
+		alert("haha");
 		var sector = angular.element("canvas");
 		var ctx = sector.getContext('2d');
 		ctx.beginPath();
@@ -25,7 +26,6 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
 	};
 	
 	$scope.drawPecetageSector = function() {
-		alert("haha");
 		$scope.drawSector(100,100,50,0,MATH.PI*1.5);
 	}
 	
