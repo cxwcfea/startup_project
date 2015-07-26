@@ -12,6 +12,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             status: 1,
             time: '工作日09:15-11:30  13:00-15:15'
         },
+        /*
         {
             value: 1,
             name: 'BABA',
@@ -20,6 +21,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             status: 0,
             time: '工作日09:15-11:30  13:00-15:15'
         },
+        */
         {
             value: 2,
             name: 'XAUUSD',
@@ -52,9 +54,13 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
 	
 	$scope.showQrcode = function() {
 		$scope.openQrcodePopup('lg');
-	}
+	};
 
     $scope.selectProduct = function (index) {
+        var oldIndex = $scope.selectedProduct;
         $scope.selectedProduct = index;
+        if (oldIndex != index) {
+
+        }
     };
 }]);
