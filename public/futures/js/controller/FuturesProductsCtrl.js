@@ -1,5 +1,5 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$window', '$modal', function($scope, $window, $modal) {
+angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$window', '$modal', '$location', function($scope, $window, $modal, $location) {
     $scope.data.selectedItem = 0;
 
     $scope.products = [
@@ -60,9 +60,11 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
         $scope.data.selectedProduct = index;
         if (oldIndex != index) {
             $scope.data.productID = index;
+            $scope.data.productType = $scope.products[index].type;
             if ($scope.data.socket) {
                 $scope.data.socket.emit('join', {name:$scope.data.currentUser._id, room:index});
             }
+            $location.path('/home');
         }
     };
 }]);
