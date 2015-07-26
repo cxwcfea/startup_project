@@ -56,8 +56,8 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
 	};
 
     $scope.selectProduct = function (index) {
-        var oldIndex = $scope.selectedProduct;
-        $scope.selectedProduct = index;
+        var oldIndex = $scope.data.selectedProduct;
+        $scope.data.selectedProduct = index;
         if (oldIndex != index) {
             $scope.data.productID = index;
             if ($scope.data.socket) {
