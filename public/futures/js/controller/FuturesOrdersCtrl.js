@@ -12,4 +12,20 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
         .error(function(data, status) {
 
         });
+	
+	$scope.drawSector = function(x, y, radius, sAngle, eAngle) {
+		var sector = angular.element("canvas");
+		var ctx = sector.getContext('2d');
+		ctx.beginPath();
+		ctx.translate(x, y);
+		ctx.moveTo(0, 0);
+		ctx.arc(0, 0, radius, sAngle, eAngle);
+		ctx.closePath();
+		ctx.fill();
+	};
+	
+	$scope.drawPecetageSector = function() {
+		$scope.drawSector(100,100,50,0,MATH.PI*1.5);
+	}
+	
 }]);

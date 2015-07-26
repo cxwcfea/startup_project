@@ -44,7 +44,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             backdrop: 'static',
             windowClass: 'xx-dialog',
             templateUrl: 'views/qrcode_popup.html',
-            controller: 'IntroModalCtrl',
+            controller: 'QrModalCtrl',
             size: size,
             resolve: {}
 		});
