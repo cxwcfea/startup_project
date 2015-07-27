@@ -191,16 +191,29 @@ $(function () {
 					},
 					startAngle: 0,
 					endAngle: 360,
-					center: ['50%', '50%']
+					center: ['50%', '50%'],
+					showInLegend: true
 				}
 			},
+			 legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: 5,
+                y: 50,
+                borderWidth: 0,
+                labelFormatter: function () {
+                    return this.name + '&nbsp';
+                },
+                useHTML: true
+            },
 			series: [{
 				type: 'pie',
 				name: '总资产',
 				innerSize: '70%',
 				data: [
-					['收益', basic],
-					['本金', income],
+					['收益', income],
+					['本金', basic],
 					['亏损', lost]
 				]
 			}],
