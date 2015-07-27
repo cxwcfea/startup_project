@@ -169,13 +169,13 @@ $(function () {
 				plotShadow: false
 			},
 			title: {
-				text: total +'<br>总资产',
+				text: total.toFixed(2) +'<br>总资产',
 				align: 'center',
 				verticalAlign: 'middle',
-				x: -30,
+				x: -100,
 				y: 0,
 				style: {
-					fontSize:'10'
+					fontSize:'12'
 				}
 			},
 			tooltip: {
