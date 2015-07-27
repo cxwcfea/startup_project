@@ -214,34 +214,19 @@ $(function () {
 				innerSize: '70%',
 				data: [
 					[
-						{
-							name:'收益:'+income.toFixed(2),
-							color:'#eb6877'
-						}, 
-						{
-							name:income,
-							color:'#eb6877'
-						}
+						name:'收益:'+income.toFixed(2),
+						color:'#eb6877',
+						y:income
 					],
 					[
-						{
-							name:'本金:'+basic.toFixed(2),
-							color:'#dfe9eb'
-						},
-						{
-							name:basic,
-							color:'#dfe9eb'
-						}
+						name:'本金:'+basic.toFixed(2),
+						color:'#dfe9eb',
+						y:basic
 					],
 					[
-						{
-							name:'亏损:'+lost.toFixed(2),
-							color:'#6fd264'
-						},
-						{
-							name:lost,
-							color:'#6fd264'
-						}
+						name:'亏损:'+lost.toFixed(2),
+						color:'#6fd264',
+						y:lost
 					]
 				]
 			}],
