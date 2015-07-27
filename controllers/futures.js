@@ -128,6 +128,7 @@ function getOrders(req, res) {
     req.body.limit = 25;//page.perpage;
     req.body.page = page;
     mockTrader.getHistoryOrders(req, res);
+    getOrderCount();
 }
 
 function getUserProfit(req, res) {
@@ -154,6 +155,16 @@ function test(req, res) {
             }
         }
         res.send({users:users, userInRank:userInRank});
+    });
+}
+
+function getOrderCount(fn) {
+    mockTrader.Order.count({}, function(err, count) {
+        if (err) {
+            console.log('getOrderCount err' + err.toString());
+        } else {
+            console.log('getOrderCount ' + count);
+        }
     });
 }
 
