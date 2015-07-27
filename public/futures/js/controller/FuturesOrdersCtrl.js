@@ -13,7 +13,7 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
 
         });
 	
-	$window.njPersonChart($scope.originCapital,$scope.userInfo.cash / 100);
+	$window.njPersonChart($scope.originCapital,$scope.originCapital);
 	//$window.njPersonChart(1000000,1000000);
 	
 }]);
