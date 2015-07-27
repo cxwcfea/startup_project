@@ -156,7 +156,7 @@ $(function () {
     });
 
 	Highcharts.setOptions({
-		colors: ['#6fd264', '#dfe9eb', '#eb6877']
+		colors: ['#eb6877', '#dfe9eb', '#6fd264']
 	});
 	
 	window.njPersonChart = function(basic,total) {
