@@ -3,13 +3,18 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
     $scope.user = $scope.data.currentUser;
     $scope.data.selectedItem = 3;
     $scope.originCapital = 1000000;
+    var pageCount = 1;
+    $scope.orders = [];
 
     function getOrderForPage(pageNum) {
         $http.get('/api/futures/get_orders?page=' + pageNum)
             .success(function(data, status) {
-                $scope.orders = data.orders;
+                $scope.orders.concat(data.orders);
                 $scope.userInfo = data.user;
-                $window.njPersonChart($scope.originCapital, ($scope.userInfo.cash/100));
+                if (pageNum === 1) {
+                    $window.njPersonChart($scope.originCapital, ($scope.userInfo.cash/100));
+                }
+                pageCount = data.pageCount;
             })
             .error(function(data, status) {
                 alert('error');
