@@ -10,7 +10,7 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
         $http.get('/api/futures/get_orders?page=' + pageNum)
             .success(function(data, status) {
                 $scope.orders.concat(data.orders);
-                console.log($scope.orders.length);
+                alert($scope.orders.length);
                 $scope.userInfo = data.user;
                 if (pageNum === 1) {
                     $window.njPersonChart($scope.originCapital, ($scope.userInfo.cash/100));
