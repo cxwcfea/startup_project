@@ -199,7 +199,7 @@ $(function () {
                 layout: 'vertical',
                 align: 'right',
                 verticalAlign: 'top',
-                x: 5,
+                x: 0,
                 y: 50,
                 borderWidth: 0,
                 labelFormatter: function () {
