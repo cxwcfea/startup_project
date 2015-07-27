@@ -9,7 +9,7 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
     function getOrderForPage(pageNum) {
         $http.get('/api/futures/get_orders?page=' + pageNum)
             .success(function(data, status) {
-                $scope.orders.concat(data.orders);
+                $scope.orders = $scope.orders.concat(data.orders);
                 alert($scope.orders.length);
                 $scope.userInfo = data.user;
                 if (pageNum === 1) {
