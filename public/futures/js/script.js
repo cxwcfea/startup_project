@@ -172,7 +172,7 @@ $(function () {
 				text: total +'<br>总资产',
 				align: 'center',
 				verticalAlign: 'middle',
-				x: -10,
+				x: -30,
 				y: 0,
 				style: {
 					fontSize:'10'
@@ -213,9 +213,9 @@ $(function () {
 				name: '总资产',
 				innerSize: '70%',
 				data: [
-					['收益', income],
-					['本金', basic],
-					['亏损', lost]
+					['收益'+income, income],
+					['本金'+basic, basic],
+					['亏损'+lost, lost]
 				]
 			}],
 			exporting:{
