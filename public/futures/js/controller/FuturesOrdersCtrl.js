@@ -8,7 +8,7 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
         .success(function(data, status) {
             $scope.orders = data.orders;
             $scope.userInfo = data.user;
-			$window.njPersonChart($scope.originCapital | number:2,$scope.userInfo.cash / 100 | number:2);
+			$window.njPersonChart($scope.originCapital,$scope.userInfo.cash / 100);
         })
         .error(function(data, status) {
 
