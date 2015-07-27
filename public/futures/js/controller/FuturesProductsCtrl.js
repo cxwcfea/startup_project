@@ -16,19 +16,19 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             value: 1,
             name: 'EURUSD',
             type: '欧 元',
-            intro: '暂无相关介绍',
+            intro: '（开发中...）暂无相关介绍',
             status: 0,
             alias: '欧元',
-            time: '工作日00:00-23:59（全天）'
+            time: '工作日05:15-次日05:00'
         },
         {
             value: 2,
             name: 'XAUUSD',
             type: '黄 金',
-            intro: '暂无相关介绍',
+            intro: '（开发中...）暂无相关介绍',
             status: 0,
             alias: '黄金',
-            time: '工作日00:00-23:59（全天）'
+            time: '工作日06:00-次日05:00'
         }
         /*
          {
