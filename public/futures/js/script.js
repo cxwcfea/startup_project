@@ -213,9 +213,9 @@ $(function () {
 				name: '总资产',
 				innerSize: '70%',
 				data: [
-					['收益:'+income, income],
-					['本金:'+basic, basic],
-					['亏损:'+lost, lost]
+					['收益:'+income.toFixed(2), income],
+					['本金:'+basic.toFixed(2), basic],
+					['亏损:'+lost.toFixed(2), lost]
 				]
 			}],
 			exporting:{
