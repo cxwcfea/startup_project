@@ -121,10 +121,12 @@ function getOrders(req, res) {
     if (!req.user || !req.user.wechat || !req.user.wechat.wechat_uuid) {
         return res.status(403).send({error_msg:'user need log in'});
     }
+    var page = req.page;
     req.body.user_id = req.user.wechat.trader;
     req.body.date_begin = 0;
     req.body.date_end = Date.now();
-    req.body.limit = 25;
+    req.body.limit = page.perpage;
+    req.body.page = page;
     mockTrader.getHistoryOrders(req, res);
 }
 
@@ -170,7 +172,7 @@ module.exports = {
 
         app.get('/api/futures/get_positions', getPositions);
 
-        app.get('/api/futures/get_orders', getOrders);
+        app.get('/api/futures/get_orders', util.page(mockTrader.Order.count), getOrders);
 
         app.get('/api/futures/get_user_profit', getUserProfit);
 

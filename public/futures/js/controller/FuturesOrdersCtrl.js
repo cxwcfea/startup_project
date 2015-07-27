@@ -8,6 +8,7 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
         .success(function(data, status) {
             $scope.orders = data.orders;
             $scope.userInfo = data.user;
+            alert(data.pageCount);
         })
         .error(function(data, status) {
 
