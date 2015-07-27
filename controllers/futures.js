@@ -125,10 +125,8 @@ function getOrders(req, res) {
     req.body.user_id = req.user.wechat.trader;
     req.body.date_begin = 0;
     req.body.date_end = Date.now();
-    req.body.limit = 25;//page.perpage;
     req.body.page = page;
     mockTrader.getHistoryOrders(req, res);
-    getOrderCount();
 }
 
 function getUserProfit(req, res) {
@@ -159,13 +157,7 @@ function test(req, res) {
 }
 
 function getOrderCount(fn) {
-    mockTrader.Order.count({}, function(err, count) {
-        if (err) {
-            console.log('getOrderCount err' + err.toString());
-        } else {
-            console.log('getOrderCount ' + count);
-        }
-    });
+    mockTrader.Order.count({}, fn);
 }
 
 module.exports = {
@@ -183,7 +175,7 @@ module.exports = {
 
         app.get('/api/futures/get_positions', getPositions);
 
-        app.get('/api/futures/get_orders', /*util.page(mockTrader.Order.count),*/ getOrders);
+        app.get('/api/futures/get_orders', util.page(getOrderCount), getOrders);
 
         app.get('/api/futures/get_user_profit', getUserProfit);
 
