@@ -155,8 +155,13 @@ $(function () {
     .always(function() {
     });
 
-	window.njPersonChart = function(basic,income,lost) {
-		var total = basic + income + lost;
+	window.njPersonChart = function(basic,total) {
+		var income = total - basic;
+		var lost = 0;
+		if (income < 0) {
+			lost = 0 - income;
+			income = 0;
+		}
 		$('#sectorChart').highcharts({
 			chart: {
 				plotBackgroundColor: null,
@@ -175,11 +180,11 @@ $(function () {
 			plotOptions: {
 				pie: {
 					dataLabels: {
-						enabled: true,
-						distance: 10,
+						enabled: false,
+						/*distance: 10,
 						style: {
 							color: 'black',
-						}
+						}*/
 					},
 					startAngle: 0,
 					endAngle: 360,

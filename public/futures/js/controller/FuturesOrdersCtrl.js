@@ -13,6 +13,6 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
 
         });
 	
-	$window.njPersonChart(1000000.00,1234000.00,0.00);
+	$window.njPersonChart($scope.originCapital,$scope.userInfo.cash);
 	
 }]);
