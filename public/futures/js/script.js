@@ -155,6 +155,10 @@ $(function () {
     .always(function() {
     });
 
+	Highcharts.setOptions({
+		colors: ['#6fd264', '#dfe9eb', '#eb6877']
+	});
+	
 	window.njPersonChart = function(basic,total) {
 		var income = total - basic;
 		var lost = 0;

@@ -53,9 +53,18 @@
     </div>-->
 	<div style="background-color:#ffffff;height:200px;width:100%">
 		<div style="float:right;width:40%;height:200px">
-			<p style="font-size:15px;padding-top:40px">收益:\{{((userInfo.cash / 100 - originCapital))<0?0:((userInfo.cash / 100 - originCapital) | number:2)}}</p>
-			<p style="font-size:15px;padding-top:16px">本金:\{{originCapital | number:2}}</p>
-			<p style="font-size:15px;padding-top:16px">亏损:\{{((originCapital - userInfo.cash / 100))<0?0:((originCapital - userInfo.cash / 100) | number:2)}}</p>
+			<div style="padding-top:40px;background-color:#6fd264;width:17px;height:17px"></div>
+			<div style="height:17px;margin-left:20px;margin-top:-17px;font-size:15px">
+				<p>收益:\{{((userInfo.cash / 100 - originCapital))<0?0:((userInfo.cash / 100 - originCapital) | number:2)}}</p>
+			</div>
+			<div style="padding-top:16px;background-color:#dfe9eb;width:17px;height:17px"></div>
+			<div style="height:17px;margin-left:20px;margin-top:-17px;font-size:15px">
+				<p>本金:\{{originCapital | number:2}}</p>
+			</div>
+			<div style="padding-top:16px;background-color:#eb6877;width:17px;height:17px"></div>
+			<div style="height:17px;margin-left:20px;margin-top:-17px;font-size:15px">
+				<p>亏损:\{{((originCapital - userInfo.cash / 100))<0?0:((originCapital - userInfo.cash / 100) | number:2)}}</p>
+			</div>
 		</div>
 		<div id="sectorChart" style="width:50%;height:200px;overflow:hide"></div>
 	</div>
@@ -67,7 +76,7 @@
             <thead>
             <tr>
                 <th>业务/时间</th>
-                <th class="pull-right">总价/单价</th>
+                <th>总价/单价</th>
                 <th class="pull-right">手续费</th>
             </tr>
             </thead>
