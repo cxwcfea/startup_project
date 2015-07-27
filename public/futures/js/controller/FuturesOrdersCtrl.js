@@ -9,12 +9,13 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
             $scope.orders = data.orders;
             $scope.userInfo = data.user;
             alert(data.pageCount);
+			//$window.njPersonChart($scope.originCapital.toFixed(2),($scope.userInfo.cash/100).toFixed(2));
+			$window.njPersonChart($scope.originCapital, ($scope.userInfo.cash/100));
         })
         .error(function(data, status) {
 
         });
 	
-	$window.njPersonChart($scope.originCapital,$scope.originCapital);
-	//$window.njPersonChart(1000000,1000000);
-	
+	//$window.njPersonChart($scope.originCapital,$scope.userInfo.cash / 100);
+
 }]);

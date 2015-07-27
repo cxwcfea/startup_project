@@ -155,6 +155,10 @@ $(function () {
     .always(function() {
     });
 
+	Highcharts.setOptions({
+		colors: ['#6fd264', '#dfe9eb', '#eb6877']
+	});
+	
 	window.njPersonChart = function(basic,total) {
 		var income = total - basic;
 		var lost = 0;
@@ -169,10 +173,14 @@ $(function () {
 				plotShadow: false
 			},
 			title: {
-				text: total +'<br>总资产',
+				text: total.toFixed(2) +'<br>总资产',
 				align: 'center',
 				verticalAlign: 'middle',
-				y: 0
+				x: 0,
+				y: 0,
+				style: {
+					fontSize:'15'
+				}
 			},
 			tooltip: {
 				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -188,24 +196,37 @@ $(function () {
 					},
 					startAngle: 0,
 					endAngle: 360,
-					center: ['50%', '50%']
+					center: ['50%', '50%'],
+					showInLegend: false
 				}
 			},
+			/*legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: 0,
+                y: 60,
+                borderWidth: 0,
+                labelFormatter: function () {
+                    return this.name + '&nbsp';
+                },
+                useHTML: true
+            },*/
 			series: [{
 				type: 'pie',
 				name: '总资产',
 				innerSize: '70%',
 				data: [
-					['收益', basic],
-					['本金', income],
-					['亏损', lost]
+					['收益:'+income.toFixed(2), income],
+					['本金:'+basic.toFixed(2), basic],
+					['亏损:'+lost.toFixed(2), lost]
 				]
 			}],
 			exporting:{
                 enabled:false
             },
             credits: {
-                enabled: false
+                enabled:false
             }
 		});
 	};
