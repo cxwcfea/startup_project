@@ -15,7 +15,6 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
                 ++currentPage;
                 loading = false;
                 $scope.orders = $scope.orders.concat(data.orders);
-                alert($scope.orders.length);
                 $scope.userInfo = data.user;
                 if (pageNum === 1) {
                     $window.njPersonChart($scope.originCapital, ($scope.userInfo.cash/100));
