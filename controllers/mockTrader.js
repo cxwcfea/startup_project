@@ -344,7 +344,7 @@ function getHistoryOrders(req, res) {
                 res.status(500).send({error_msg: err.errmsg});
                 return;
             }
-            res.send({user:user, orders:collection, pageCount:req.body.page.count});
+            res.send({user:user, orders:collection, pageCount:8});
         });
     });
 }
