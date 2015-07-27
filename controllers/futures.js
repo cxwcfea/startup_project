@@ -175,7 +175,7 @@ module.exports = {
 
         app.get('/api/futures/get_positions', getPositions);
 
-        app.get('/api/futures/get_orders', util.page(getOrderCount), getOrders);
+        app.get('/api/futures/get_orders', util.page(getOrderCount, 15), getOrders);
 
         app.get('/api/futures/get_user_profit', getUserProfit);
 
