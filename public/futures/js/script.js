@@ -193,10 +193,10 @@ $(function () {
 					startAngle: 0,
 					endAngle: 360,
 					center: ['50%', '50%'],
-					showInLegend: true
+					showInLegend: false
 				}
 			},
-			 legend: {
+			/*legend: {
                 layout: 'vertical',
                 align: 'right',
                 verticalAlign: 'top',
@@ -207,7 +207,7 @@ $(function () {
                     return this.name + '&nbsp';
                 },
                 useHTML: true
-            },
+            },*/
 			series: [{
 				type: 'pie',
 				name: '总资产',
