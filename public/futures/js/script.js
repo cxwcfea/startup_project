@@ -172,7 +172,10 @@ $(function () {
 				text: total +'<br>总资产',
 				align: 'center',
 				verticalAlign: 'middle',
-				y: 0
+				y: 0,
+				style: {
+					fontSize:'10'
+				}
 			},
 			tooltip: {
 				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
