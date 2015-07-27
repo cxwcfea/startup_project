@@ -172,6 +172,7 @@ $(function () {
 				text: total +'<br>总资产',
 				align: 'center',
 				verticalAlign: 'middle',
+				x: -10,
 				y: 0,
 				style: {
 					fontSize:'10'
@@ -200,7 +201,7 @@ $(function () {
                 align: 'right',
                 verticalAlign: 'top',
                 x: 0,
-                y: 50,
+                y: 60,
                 borderWidth: 0,
                 labelFormatter: function () {
                     return this.name + '&nbsp';
