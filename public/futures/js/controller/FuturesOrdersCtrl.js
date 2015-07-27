@@ -4,11 +4,16 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
     $scope.data.selectedItem = 3;
     $scope.originCapital = 1000000;
     var pageCount = 1;
+    var currentPage = 1;
     $scope.orders = [];
+    var loading = false;
 
     function getOrderForPage(pageNum) {
+        loading = true;
         $http.get('/api/futures/get_orders?page=' + pageNum)
             .success(function(data, status) {
+                ++currentPage;
+                loading = false;
                 $scope.orders = $scope.orders.concat(data.orders);
                 alert($scope.orders.length);
                 $scope.userInfo = data.user;
@@ -22,6 +27,16 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
             });
     }
 
-    getOrderForPage(1);
+    getOrderForPage(currentPage);
+
+    $scope.loadMore = function() {
+        if (loading) {
+            return;
+        }
+        if (currentPage >= pageCount) {
+            return;
+        }
+        getOrderForPage(currentPage);
+    };
 
 }]);
