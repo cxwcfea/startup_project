@@ -326,7 +326,7 @@ function getHistoryOrders(req, res) {
         {userId: req.body.user_id},
         {timestamp: {$gte: req.body.date_begin + 8*3600*1000}},
         {timestamp: {$lt: req.body.date_end + 8*3600*1000}}
-    ]}).sort({timestamp: -1}).skip(0).limit(req.body.limit);
+    ]}).sort({timestamp: -1}).skip(req.body.page.from).limit(req.body.page.perpage);
     findings.exec(function(err, collection) {
         if (err) {
             console.log(err);
@@ -344,7 +344,7 @@ function getHistoryOrders(req, res) {
                 res.status(500).send({error_msg: err.errmsg});
                 return;
             }
-            res.send({user:user, orders:collection, pageCount:8});
+            res.send({user:user, orders:collection, pageCount:req.body.page.count});
         });
     });
 }
