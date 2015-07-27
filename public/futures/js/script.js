@@ -154,10 +154,6 @@ $(function () {
     })
     .always(function() {
     });
-
-	Highcharts.setOptions({
-		colors: ['#eb6877', '#dfe9eb', '#6fd264']
-	});
 	
 	window.njPersonChart = function(basic,total) {
 		var income = total - basic;
@@ -217,9 +213,36 @@ $(function () {
 				name: '总资产',
 				innerSize: '70%',
 				data: [
-					['收益:'+income.toFixed(2), income],
-					['本金:'+basic.toFixed(2), basic],
-					['亏损:'+lost.toFixed(2), lost]
+					[
+						{
+							name:'收益:'+income.toFixed(2),
+							color:'#eb6877'
+						}, 
+						{
+							name:income,
+							color:'#eb6877'
+						}
+					],
+					[
+						{
+							name:'本金:'+basic.toFixed(2),
+							color:'#dfe9eb'
+						},
+						{
+							name:basic,
+							color:'#dfe9eb'
+						}
+					],
+					[
+						{
+							name:'亏损:'+lost.toFixed(2),
+							color:'#6fd264'
+						},
+						{
+							name:lost,
+							color:'#6fd264'
+						}
+					]
 				]
 			}],
 			exporting:{
