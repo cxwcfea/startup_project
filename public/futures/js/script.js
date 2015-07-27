@@ -172,10 +172,10 @@ $(function () {
 				text: total.toFixed(2) +'<br>总资产',
 				align: 'center',
 				verticalAlign: 'middle',
-				x: -100,
+				x: -80,
 				y: 0,
 				style: {
-					fontSize:'12'
+					fontSize:'15'
 				}
 			},
 			tooltip: {
