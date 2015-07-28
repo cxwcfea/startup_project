@@ -154,6 +154,34 @@
 	.user-rank-wrapper .wall-paper .basic-table .wechathead-out .data-third {
 		bottom:28px;
 	}
+	.user-rank-wrapper .list-table {
+		width:100%;
+		font-size:15px;
+		color:#2d3e4f;
+		text-align:center;
+	}
+	.user-rank-wrapper .list-table .user-in-rank {
+		background-color:#ffffff;
+		height:92px;
+	}
+	.user-rank-wrapper .list-table .wechathead {
+		width:44px;
+		height:44px;
+		border-radius:50px;
+		overflow:hidden;
+		margin:0 auto;
+	}
+	.user-rank-wrapper .list-table .user-in-rank button{
+		width:80px;
+	}
+	.user-rank-wrapper .list-table .order-blank {
+		padding-left:5px;
+		padding-right:5px;
+	}
+	.user-rank-wrapper .list-table .table-content {
+		height:92px;
+		border-top:1px solid #e5e5e5;
+	}
 </style>
 
 <!--
@@ -223,11 +251,11 @@
         </span>
     </div>-->
 	<div>
-		<table style="width:100%;font-size:15px;color:#2d3e4f;text-align:center">
-			<tr ng-hide="userInRank" style="background-color:#ffffff;height:92px">
-				<td style="padding-left:5px;padding-right:5px">???</td>
+		<table class="list-table">
+			<tr ng-hide="userInRank" class="user-in-rank">
+				<td class="order-blank">???</td>
 				<td>
-					<div style="width:44px;height:44px;border-radius:50px;overflow:hidden;margin:0 auto">
+					<div style="wechathead">
 						<img ng-src="\{{user.wechat.wechat_img}}" style="width:44px" />
 					</div>
 				</td>
@@ -236,13 +264,13 @@
 					<p style="font-size:10px">啥也不说了，快去联系交易吧</p>
 				</td>
 				<td>
-					<button ng-click="trade()" class="btn btn-danger" style="width:80px">立即交易</button>
+					<button ng-click="trade()" class="btn btn-danger">立即交易</button>
 				</td>
 			</tr>
-			<tr ng-repeat="theUser in topUsers" style="height:92px;border-top:1px solid #e5e5e5">
-				<td style="padding-left:5px;padding-right:5px">\{{4 + $index}}</td>
+			<tr ng-repeat="theUser in topUsers" class="table-content">
+				<td class="order-blank">\{{4 + $index}}</td>
 				<td>
-					<div style="width:44px;height:44px;border-radius:50px;overflow:hidden;margin:0 auto">
+					<div style="wechathead">
 						<img ng-src="\{{theUser.wechat.wechat_img}}" style="width:44px" />
 					</div>
 				</td>
