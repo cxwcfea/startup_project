@@ -113,8 +113,8 @@ $(function () {
         wx.onMenuShareAppMessage({
             title: '快来玩股指拍拍机',
             desc: '拍拍机是模拟股指期货交易的小游戏',
-            link: 'http://test2.niujinwang.com/futures/',
-            imgUrl: 'http://test2.niujinwang.com/futures/images/logo.png',
+            link: 'http://www.niujinwang.com/futures/',
+            imgUrl: 'http://www.niujinwang.com/futures/images/logo.png',
             type: 'link',
             dataUrl: '',
             success: function () {
@@ -127,8 +127,8 @@ $(function () {
 
         wx.onMenuShareTimeline({
             title: '拍拍机',
-            link: 'http://test2.niujinwang.com',
-            imgUrl: 'http://test2.niujinwang.com/futures/images/logo.png',
+            link: 'http://www.niujinwang.com/futures',
+            imgUrl: 'http://www.niujinwang.com/futures/images/logo.png',
             success: function () {
 
             },
