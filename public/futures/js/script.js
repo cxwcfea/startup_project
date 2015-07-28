@@ -118,7 +118,7 @@ $(function () {
         }
         wx.onMenuShareAppMessage({
             title: '股指拍拍机',
-            desc: name + '玩拍拍机赚了' + profit + '，赶紧来PK！',
+            desc: name + '玩拍拍机赚了' + profit.toFixed(0) + '，赶紧来PK！',
             link: 'http://www.niujin.cn/futures/',
             imgUrl: 'http://www.niujin.cn/futures/images/logo.png',
             type: 'link',
