@@ -110,6 +110,21 @@ $(function () {
 
     wx.ready(function(){
         //alert('wechat sign success');
+        wx.onMenuShareAppMessage({
+            title: '股指拍拍机',
+            desc: njUserName + '玩拍拍机赚了' + njUserProfit + '，赶紧来PK！',
+            link: 'http://www.niujin.cn/futures/',
+            imgUrl: 'http://www.niujin.cn/futures/images/logo.png',
+            type: 'link',
+            dataUrl: '',
+            success: function () {
+
+            },
+            cancel: function () {
+
+            }
+        });
+
         wx.onMenuShareTimeline({
             title: '拍拍机',
             link: 'http://www.niujin.cn/futures',

@@ -25,21 +25,8 @@ angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window'
     };
     */
 
-    var profit = ($scope.data.currentUser.wechat.trader.cash - 100000000) / 100;
-    wx.onMenuShareAppMessage({
-        title: '股指拍拍机',
-        desc: $scope.data.currentUser.wechat.wechat_name + '玩拍拍机赚了' + profit + '，赶紧来PK！',
-        link: 'http://www.niujin.cn/futures/',
-        imgUrl: 'http://www.niujin.cn/futures/images/logo.png',
-        type: 'link',
-        dataUrl: '',
-        success: function () {
-
-        },
-        cancel: function () {
-
-        }
-    });
+    $window.njUserProfit = ($scope.data.currentUser.wechat.trader.cash - 100000000) / 100;
+    $window.njUserName = $scope.data.currentUser.wechat.wechat_name;
 
     $scope.data.productID = 0;
     $scope.data.selectedItem = 1;
