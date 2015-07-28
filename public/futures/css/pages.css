@@ -123,6 +123,12 @@
     top: 10px;
     left: 0;
 }
+.opt-btns .circle-btn .outer-btn-disable {
+	border:2px solid #969696 !important;
+}
+.opt-btns .circle-btn .inner-btn-disable {
+	background-color:#969696 !important;
+}
 .opt-btns .circle-btn .p-outer-btn {
 	border:2px solid #f19149;
 }
