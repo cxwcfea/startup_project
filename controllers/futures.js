@@ -14,11 +14,30 @@ var User = require('../models/User'),
     log4js = require('log4js'),
     logger = log4js.getLogger('futures');
 
+function populatePPJUser(user, cb) {
+    var query = User.findById(user._id);
+    query.populate('wechat.trader');
+    query.exec(function(err, u) {
+        if (err) {
+            cb(err);
+        } else {
+            util.getUserViewModel(u, function(vm) {
+                cb(null, vm);
+            });
+        }
+    });
+}
+
 function home(req, res, next) {
     logger.debug('access home');
     if (req.user) {
-        util.getUserViewModel(req.user, function(user) {
+        populatePPJUser(req.user, function(err, user) {
+            if (err) {
+                return next();
+            }
             delete user.wechat.wechat_uuid;
+            console.log('=============futures get user==============');
+            console.log(user);
             res.render('futures/index', {
                 layout:null,
                 bootstrappedUserObject: JSON.stringify(user)
@@ -162,13 +181,6 @@ function getOrderCount(fn) {
 
 module.exports = {
     registerRoutes: function(app, passportConf) {
-        /*
-        app.get('/futures', function(req, res, next) {
-            res.render('futures/index', {
-                layout:null
-            });
-        });
-         */
         app.get('/api/futures/user_rank', fetchUserRankData);
 
         app.post('/api/futures/create_order', placeOrder);
@@ -217,7 +229,7 @@ module.exports = {
 
             res.render('futures/' + req.params[0], {
                 layout:null,
-                tradeTime: tradeTime
+                tradeTime: true
             });
         });
     }
