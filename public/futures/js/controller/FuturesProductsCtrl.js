@@ -7,6 +7,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
     startTime.minute(15);
     startTime.second(0);
 
+    /*
     var endTime = moment();
     endTime.hour(15);
     endTime.minute(10);
@@ -32,6 +33,8 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
     } else if (now > midTime1 && now < midTime2) {
         tradeTime = false;
     }
+    */
+    var tradeTime = true;
 
     $scope.products = [
         {
