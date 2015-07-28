@@ -162,4 +162,5 @@ endTime.hour(15);
 endTime.minute(15);
 endTime.second(00);
 
-console.log(startTime.toDate());
+console.log((endTime - startTime) / 3600000);
+
