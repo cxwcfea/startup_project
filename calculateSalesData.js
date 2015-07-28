@@ -13,8 +13,8 @@ var mongoose = require('mongoose'),
 
 //var startOfMonth = moment().startOf('month').toDate();
 //var endOfMonth = moment().endOf('month').toDate();
-var startOfMonth = moment("2015-05-26").toDate();
-var endOfMonth = moment("2015-06-25").toDate();
+var startOfMonth = moment("2015-06-26").toDate();
+var endOfMonth = moment("2015-07-28").toDate();
 var month = moment().startOf('month').format('YYYYMM');
 //console.log(startOfMonth);
 //console.log(endOfMonth);
@@ -210,10 +210,12 @@ var sales = [
         mobile: '17709810065',
         name: '刘恩泽'
     },
+    /*
     {
         mobile: '18911347741',
         name: '刘瑞'
     },
+    */
     {
         mobile: '18511565878',
         name: '刘亚东'
@@ -226,10 +228,12 @@ var sales = [
         mobile: '18931040286',
         name: '魏昊庚'
     },
+    /*
     {
         mobile: '15710035052',
         name: '张丽霞'
     }
+    */
 ];
 
 var options = {};
