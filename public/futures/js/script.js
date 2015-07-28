@@ -110,8 +110,12 @@ $(function () {
 
     wx.ready(function(){
         //alert('wechat sign success');
-        var name = bootstrappedUserObject.wechat.wechat_name;
-        var profit = (bootstrappedUserObject.wechat.trader.lastCash - 100000000)/100;
+        var name = '我';
+        var profit = '';
+        if (bootstrappedUserObject) {
+            name = bootstrappedUserObject.wechat.wechat_name;
+            profit = (bootstrappedUserObject.wechat.trader.lastCash - 100000000)/100;
+        }
         wx.onMenuShareAppMessage({
             title: '股指拍拍机',
             desc: name + '玩拍拍机赚了' + profit + '，赶紧来PK！',

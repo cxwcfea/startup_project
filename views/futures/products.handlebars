@@ -63,9 +63,6 @@
     .product-body-primary .product-intro .info {
         color: #d9b3eb
     }
-    .product-body-primary .product-status {
-        background-color: #80c269;
-    }
     .product-body-primary .product-time p {
         color: #d9b3eb;
     }
@@ -77,9 +74,6 @@
     }
     .product-body-secondary .product-intro .info {
         color: #f8c7cd;
-    }
-    .product-body-secondary .product-status {
-        background-color:#bfbfbf;
     }
     .product-body-secondary .product-time p {
         color:#f8c7cd;
@@ -93,9 +87,6 @@
     .product-body-warning .product-intro .info {
         color: #ffd9bd
     }
-    .product-body-warning .product-status {
-        background-color: #bfbfbf;
-    }
     .product-body-warning .product-time p {
         color: #ffd9bd;
     }
@@ -107,9 +98,6 @@
     }
     .product-body-success .product-intro .info {
         color: #91cbde;
-    }
-    .product-body-success .product-status {
-        background-color: #bfbfbf;
     }
     .product-body-success .product-time p {
         color: #91cbde;
@@ -127,6 +115,12 @@
 		color:#b3b2b2;
 		font-size:15px;
 	}
+    .product-body-close.product-status {
+        background-color: #bfbfbf;
+    }
+    .product-body-trade.product-status {
+        background-color: #80c269;
+    }
 </style>
 <div class="product-block">
     <div class="product-list">
@@ -136,7 +130,7 @@
                     <p class="name">\{{product.type}}<span class="type">\{{product.name}}</span></p>
                     <p class="info">\{{product.intro}}</p>
                 </div>
-                <div class="product-status">
+                <div class="product-status" ng-class="{'product-body-trade':product.status, 'product-body-close':!product.status}">
                     <p>\{{product.status ? '盘 中' : '休 市'}}</p>
                 </div>
                 <div class="product-selected" ng-show="product.value === data.selectedProduct">
