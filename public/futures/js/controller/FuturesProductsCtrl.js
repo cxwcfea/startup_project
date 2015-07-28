@@ -1,5 +1,5 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$window', '$modal', '$location', 'util', function($scope, $window, $modal, $location, util) {
+angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$window', '$modal', '$location', function($scope, $window, $modal, $location) {
     $scope.data.selectedItem = 0;
 
     var startTime = moment();
@@ -24,19 +24,12 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
     midTime2.minute(0);
     midTime2.second(0);
 
-    /*
     var tradeTime = true;
-    if (util.isHoliday(now.dayOfYear())) {
-        tradeTime = false;
-    } else if (now < startTime || now > endTime) {
+    if (now < startTime || now > endTime) {
         tradeTime = false;
     } else if (now > midTime1 && now < midTime2) {
         tradeTime = false;
     }
-    */
-    alert(util.serviceCharge);
-
-    var tradeTime = true;
 
     $scope.products = [
         {
