@@ -27,7 +27,9 @@ var privateProperties = [
     'finance',
     'identity',
     'mobile',
-    'wechat.wechat_uuid'
+    'wechat.wechat_uuid',
+    'wechat._id',
+    'wechat.__v'
 ];
 
 var getUserViewModel = function (user) {
@@ -56,9 +58,6 @@ function home(req, res, next) {
             if (err) {
                 return next();
             }
-            delete user.wechat.wechat_uuid;
-            console.log('=============futures get user==============');
-            console.log(user);
             res.render('futures/index', {
                 layout:null,
                 bootstrappedUserObject: JSON.stringify(user)
