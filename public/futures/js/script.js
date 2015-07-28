@@ -163,15 +163,13 @@ $(function () {
 	
 	window.njPersonChart = function(basic,total) {
 		var income = total - basic;
-		var lost = 0;
 		var pieColor = '#eb6877';
 		var chartTitle = '总资产';
 		var chartContent1 = '收益:';
 		var chartContent2 = '本金:';
 		var chartTitleNum = total.toFixed(0);
 		if (income < 0) {
-			lost = 0 - income;
-			income = 0;
+			income = 0 - income;
 			pieColor = '#6fd264';
 			chartTitle = '本金';
 			chartContent1 = '亏损:';
