@@ -34,12 +34,72 @@
 		height:60px;
 		line-height:60px;
 	}
+	.orders-wrapper .wall-paper {
+		width:100%;
+		height:150px;
+		background-attachment:fixed;
+		background:url('/futures/images/sky.jpg');
+		background-position:center;
+		background-size:320px 200px;
+	}
+	.orders-wrapper .wall-paper .wechatheader-out {
+		padding-top:44px;
+		text-align:center;
+		font-size:15px;
+		color:#ffffff;
+	}
+	.orders-wrapper .wall-paper .wechatheader-in {
+		width:68px;
+		height:68px;
+		border-radius:100px;
+		overflow:hidden;
+		margin:0 auto;
+	}
+	.orders-wrapper .chart-area {
+		background-color:#ffffff;
+		height:200px;
+		width:100%;
+	}
+	.orders-wrapper .chart-area .note {
+		float:right;
+		width:50%;
+		height:200px;
+		font-size:15px;
+	}
+	.orders-wrapper .chart-area .note .chart-title {
+		color:#959595;
+		margin-top:40px;
+	}
+	.orders-wrapper .chart-area .note .color-example {
+		margin-top:16px;
+		width:17px;
+		height:17px;
+	}
+	.orders-wrapper .chart-area .note .example {
+		height:17px;
+		margin-left:20px;
+		margin-top:-17px;
+	}
+	.orders-wrapper .chart-area .note .color-example-income {
+		background-color:#eb6877;
+	}
+	.orders-wrapper .chart-area .note .color-example-base {
+		background-color:#dfe9eb;
+	}
+	.orders-wrapper .chart-area .note .color-example-lose {
+		background-color:#6fd264;
+	}
+	.orders-wrapper .chart-area .chart {
+		width:50%;
+		height:200px;
+		overflow:hide;
+	}
 </style>
 <div class="orders-wrapper">
-	<div style="width:100%;height:150px;background-attachment:fixed;background:url('/futures/images/sky.jpg');background-position:center;background-size:320px 200px">
+	<div class="wall-paper">
 	<!--<div style="width:100%;height:150px;background-color:#0cbef8">-->
-		<div style="padding-top:44px;text-align:center;font-size:15px;color:#ffffff">
-			<div style="width:68px;height:68px;border-radius:100px;overflow:hidden;margin:0 auto">
+		<div class="wechatheader-out">
+			<div class="wechatheader-in">
 				<img ng-src="\{{user.wechat.wechat_img}}" style="width:68px" />
 			</div>
 			<p>\{{user.wechat.wechat_name}}</p>
@@ -59,23 +119,23 @@
             </div>
         </div>
     </div>-->
-	<div style="background-color:#ffffff;height:200px;width:100%">
-		<div style="float:right;width:50%;height:200px;font-size:15px">
-			<div style="color:#959595;margin-top:40px"><p><strong>个人资产分布图</strong></p></div>
-			<div style="margin-top:16px;background-color:#eb6877;width:17px;height:17px"></div>
-			<div style="height:17px;margin-left:20px;margin-top:-17px">
+	<div class="chart-area">
+		<div class="note">
+			<div class="chart-title"><p>个人资产分布图</p></div>
+			<div class="color-example-income color-example"></div>
+			<div class="example">
 				<p>收益:\{{profit | number:0}}</p>
 			</div>
-			<div style="margin-top:16px;background-color:#dfe9eb;width:17px;height:17px"></div>
-			<div style="height:17px;margin-left:20px;margin-top:-17px">
+			<div class="color-example-base color-example"></div>
+			<div class="example">
 				<p>本金:\{{originCapital | number:0}}</p>
 			</div>
-			<div style="margin-top:16px;background-color:#6fd264;width:17px;height:17px"></div>
-			<div style="height:17px;margin-left:20px;margin-top:-17px">
+			<div class="color-example-lose color-example"></div>
+			<div class="example">
 				<p>亏损:\{{loss | number:0}}</p>
 			</div>
 		</div>
-		<div id="sectorChart" style="width:50%;height:200px;overflow:hide"></div>
+		<div id="sectorChart" class="chart"></div>
 	</div>
 	<!--
 	<div class="finance-info">
