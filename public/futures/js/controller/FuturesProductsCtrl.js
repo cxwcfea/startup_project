@@ -24,6 +24,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
     midTime2.minute(0);
     midTime2.second(0);
 
+    /*
     var tradeTime = true;
     if (util.isHoliday(now.dayOfYear())) {
         tradeTime = false;
@@ -32,8 +33,10 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
     } else if (now > midTime1 && now < midTime2) {
         tradeTime = false;
     }
+    */
+    alert(util.serviceCharge);
 
-    //var tradeTime = true;
+    var tradeTime = true;
 
     $scope.products = [
         {
