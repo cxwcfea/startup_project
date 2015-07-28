@@ -131,6 +131,7 @@ angular.module("futuresApp")
                 socket.on('new_data', function(newData) {
                     if (newData.productID == scope.data.productID) {
                         scope.data.historyData.push(newData.data);
+                        scope.data.lastPoint = newData.data[1];
                         var blankData = util.generateBlankData(firstPoint, newData.data);
                         updateData(scope.data, newData.data, blankData, true);
                     }
