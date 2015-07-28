@@ -184,19 +184,16 @@ module.exports = {
         app.get('/futures/test', test);
 
         app.get('/futures/*', function(req, res, next) {
-            //var startTime = moment('2015-07-10');
             var startTime = moment();
             startTime.hour(09);
             startTime.minute(15);
             startTime.second(00);
 
-            //var endTime = moment('2015-07-10');
             var endTime = moment();
             endTime.hour(15);
-            endTime.minute(10);
+            endTime.minute(15);
             endTime.second(00);
 
-            //var now = moment('2015-07-10 10:20:00');
             var now = moment();
 
             var midTime1 = moment();
