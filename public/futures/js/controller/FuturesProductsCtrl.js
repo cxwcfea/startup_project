@@ -70,7 +70,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             if ($scope.data.socket) {
                 $scope.data.socket.emit('join', {name:$scope.data.currentUser._id, room:index});
             }
-            $location.path('/home');
         }
+        $location.path('/home');
     };
 }]);
