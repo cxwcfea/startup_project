@@ -88,74 +88,6 @@
         font-size: 1.5em;
         vertical-align: middle;
     }
-	.user-rank-wrapper .wall-paper {
-		width:100%;
-		height:200px;
-		background-attachment:fixed;
-		background:url('/futures/images/sky.jpg');
-		background-position:center;
-		background-size:320px 200px;
-	}
-	.user-rank-wrapper .wall-paper .table-style {
-		table-layout:fixed;
-		width:100%;
-		height:200px;
-	}
-	.user-rank-wrapper .wall-paper .table-style .wechathead-outer {
-		width:105px;
-		height:100%;
-		position:relative;
-		margin:0 auto;
-	}
-	.user-rank-wrapper .wall-paper .table-style .wechathead-inner {
-		height:75px;
-		width:75px;
-		border-radius:100px;
-		overflow:hidden;
-		position:absolute;
-	}
-	.user-rank-wrapper .wall-paper .table-style .second-wechathead-inner {
-		bottom:73px;
-		left:13px;
-	}
-	.user-rank-wrapper .wall-paper .table-style .first-wechathead-inner {
-		bottom:82px;
-		left:12px;
-	}
-	.user-rank-wrapper .wall-paper .table-style .third-wechathead-inner {
-		bottom:77px;
-		left:22px;
-	}
-	.user-rank-wrapper .wall-paper .table-style .ring {
-		position:absolute;
-		bottom:0;
-		left:0;
-		width:105px;
-	}
-	.user-rank-wrapper .wall-paper .table-style .data {
-		font-size:10px;
-		color:#ffffff;
-		padding-top:60px;
-		text-align:center;
-		position:absolute;
-		width:100%;
-		text-align:center;
-	}
-	.user-rank-wrapper .wall-paper .table-style .second-data {
-		bottom:28px;
-	}
-	.user-rank-wrapper .wall-paper .table-style .first-data {
-		bottom:33px;
-	}
-	.user-rank-wrapper .wall-paper .table-style .third-data {
-		bottom:28px;
-	}
-	.list-style {
-		width:100%;
-		font-size:15px;
-		color:#2d3e4f;
-		text-align:center;
-	}
 </style>
 
 <!--
@@ -167,41 +99,58 @@
 </header>-->
 
 <div class="user-rank-wrapper" ng-cloak>
-	<div class="wall-paper">
+    <!--<div class="container">
+        <div class="row">
+            <img src="/futures/images/user_rank_background.png" width="100%" alt=""/>
+        </div>
+        <div class="top-users">
+            <span class="top2"><br>\{{silverUser.wechat.wechat_name}}<br>\{{silverUser.wechat.trader.lastCash ? (silverUser.wechat.trader.lastCash-100000000)/100 : 0 | number:0}}</span>
+            <span class="top1"><br>\{{goldUser.wechat.wechat_name}}<br>\{{goldUser.wechat.trader.lastCash ? (goldUser.wechat.trader.lastCash-100000000)/100 : 0 | number:0}}</span>
+            <span class="top3"><br>\{{copperUser.wechat.wechat_name}}<br>\{{copperUser.wechat.trader.lastCash ? (copperUser.wechat.trader.lastCash-100000000)/100 : 0 | number:0}}</span>
+            <img class="top2-head img-circle" ng-src="\{{silverUser.wechat.wechat_img}}" width="25%" />
+            <img class="top1-head img-circle" ng-src="\{{goldUser.wechat.wechat_img}}" width="25%" />
+            <img class="top3-head img-circle" ng-src="\{{copperUser.wechat.wechat_img}}" width="25%" />
+            <img class="crown-top2" src="/futures/images/top2.png" width="20%" />
+            <img class="crown-top1" src="/futures/images/top1.png" width="20%" />
+            <img class="crown-top3" src="/futures/images/top3.png" width="20%" />
+            <img class="user-badge" src="/futures/images/badge.png" width="35%" />
+        </div>
+    </div>-->
+	<div style="width:100%;height:200px;background-attachment:fixed;background:url('/futures/images/sky.jpg');background-position:center;background-size:320px 200px">
 	<!--<div style="width:100%;height:200px;background-color:#0cbef8">-->
-        <table class="table-style">
+        <table style="table-layout:fixed;width:100%;height:200px">
             <tr>
                 <td>
-					<div class="wechathead-outer">
-						<div class="second-wechathead-inner wechathead-inner">
+					<div style="width:105px;height:100%;position:relative;margin:0 auto">
+						<div style="height:75px;width:75px;border-radius:100px;overflow:hidden;position:absolute;bottom:73px;left:13px">
 							<img ng-src="\{{silverUser.wechat.wechat_img}}" style="width:75px" />
 						</div>
-						<img src="/futures/images/second.png" class="ring" />
-						<div class="second-data data">
+						<img src="/futures/images/second.png" style="position:absolute;bottom:0;left:0;width:105px" />
+						<div style="font-size:10px;color:#ffffff;padding-top:60px;text-align:center;position:absolute;bottom:28px;width:100%;text-align:center">
 							<p>\{{silverUser.wechat.wechat_name}}</p>
 							<p>\{{silverUser.wechat.trader.lastCash ? (silverUser.wechat.trader.lastCash-100000000)/100 : 0 | number:0}}</p>
 						</div>
 					</div>
 				</td>
 				<td>
-					<div class="wechathead-outer">
-						<div class="first-wechathead-inner wechathead-inner">
+					<div style="width:105px;height:100%;position:relative;margin:0 auto">
+						<div style="height:80px;width:80px;border-radius:100px;overflow:hidden;position:absolute;bottom:82px;left:12px">
 							<img ng-src="\{{goldUser.wechat.wechat_img}}" style="width:80px" />
 						</div>
-						<img src="/futures/images/first.png" class="ring" />
-						<div class="first-data data">
+						<img src="/futures/images/first.png" style="position:absolute;bottom:0;left:0;width:105px" />
+						<div style="font-size:10px;color:#ffffff;padding-top:60px;text-align:center;position:absolute;bottom:33px;width:100%;text-align:center">
 							<p>\{{goldUser.wechat.wechat_name}}</p>
 							<p>\{{goldUser.wechat.trader.lastCash ? (goldUser.wechat.trader.lastCash-100000000)/100 : 0 | number:0}}</p>
 						</div>
 					</div>
 				</td>
 				<td>
-					<div class="wechathead-outer">
-						<div class="third-wechathead-inner wechathead-inner">
+					<div style="width:105px;height:100%;position:relative;margin:0 auto">
+						<div style="height:60px;width:60px;border-radius:100px;overflow:hidden;position:absolute;bottom:77px;left:22px">
 							<img ng-src="\{{copperUser.wechat.wechat_img}}" style="width:60px" />
 						</div>
-						<img src="/futures/images/third.png" class="ring" />
-						<div class="third-data data">
+						<img src="/futures/images/third.png" style="position:absolute;bottom:0;left:0;width:105px" />
+						<div style="font-size:10px;color:#ffffff;padding-top:60px;text-align:center;position:absolute;bottom:28px;width:100%;text-align:center">
 							<p>\{{copperUser.wechat.wechat_name}}</p>
 							<p>\{{copperUser.wechat.trader.lastCash ? (copperUser.wechat.trader.lastCash-100000000)/100 : 0 | number:0}}</p>
 						</div>
@@ -225,7 +174,7 @@
         </span>
     </div>-->
 	<div>
-		<table class="list-style">
+		<table style="width:100%;font-size:15px;color:#2d3e4f;text-align:center">
 			<tr ng-hide="userInRank" style="background-color:#ffffff;height:92px">
 				<td style="padding-left:5px;padding-right:5px">???</td>
 				<td>
