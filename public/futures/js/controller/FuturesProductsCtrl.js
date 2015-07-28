@@ -59,6 +59,9 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
 	};
 
     $scope.selectProduct = function (index) {
+		if (index != 0) {
+			return;
+		}
         var oldIndex = $scope.data.selectedProduct;
         $scope.data.selectedProduct = index;
         if (oldIndex != index) {
