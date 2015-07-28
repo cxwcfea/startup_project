@@ -488,7 +488,10 @@
         };
         this.getSellValue = function(amount, deposit) {
             return Number((amount - sell_factor * deposit).toFixed(2));
-        }
+        };
+        this.isHoliday = function(theDay) {
+            return holiday.indexOf(theDay) !== -1;
+        };
     }]);
 
     var sms_macro = [

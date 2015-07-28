@@ -14,6 +14,30 @@ var User = require('../models/User'),
     log4js = require('log4js'),
     logger = log4js.getLogger('futures');
 
+var privateProperties = [
+    '__v',
+    'verifyEmailToken',
+    'registered',
+    'roles',
+    'password',
+    'manager',
+    'resetPasswordToken',
+    'resetPasswordExpires',
+    'invest',
+    'finance',
+    'identity',
+    'mobile',
+    'wechat.wechat_uuid',
+    'trader._id',
+    'trader.__v'
+];
+
+var getUserViewModel = function (user) {
+    var realUser = user._doc;
+    var vm = _.omit(realUser, privateProperties);
+    return vm;
+};
+
 function populatePPJUser(user, cb) {
     var query = User.findById(user._id);
     query.populate('wechat.trader');
@@ -21,9 +45,8 @@ function populatePPJUser(user, cb) {
         if (err) {
             cb(err);
         } else {
-            util.getUserViewModel(u, function(vm) {
-                cb(null, vm);
-            });
+            var vm = getUserViewModel(u);
+            cb(null, vm);
         }
     });
 }
@@ -35,9 +58,6 @@ function home(req, res, next) {
             if (err) {
                 return next();
             }
-            delete user.wechat.wechat_uuid;
-            console.log('=============futures get user==============');
-            console.log(user);
             res.render('futures/index', {
                 layout:null,
                 bootstrappedUserObject: JSON.stringify(user)
@@ -214,9 +234,9 @@ module.exports = {
             midTime1.second(01);
 
             var midTime2 = moment();
-            midTime1.hour(13);
-            midTime1.minute(00);
-            midTime1.second(00);
+            midTime2.hour(13);
+            midTime2.minute(00);
+            midTime2.second(00);
 
             var tradeTime = true;
             if (util.isHoliday(now.dayOfYear())) {
