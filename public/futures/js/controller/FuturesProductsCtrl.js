@@ -2,6 +2,38 @@
 angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$window', '$modal', '$location', function($scope, $window, $modal, $location) {
     $scope.data.selectedItem = 0;
 
+    /*
+    var startTime = moment();
+    startTime.hour(9);
+    startTime.minute(15);
+    startTime.second(0);
+
+    var endTime = moment();
+    endTime.hour(15);
+    endTime.minute(10);
+    endTime.second(0);
+
+    var now = moment();
+
+    var midTime1 = moment();
+    midTime1.hour(11);
+    midTime1.minute(30);
+    midTime1.second(1);
+
+    var midTime2 = moment();
+    midTime1.hour(13);
+    midTime1.minute(0);
+    midTime1.second(0);
+
+    var tradeTime = true;
+    if (util.isHoliday(now.dayOfYear())) {
+        tradeTime = false;
+    } else if (now < startTime || now > endTime) {
+        tradeTime = false;
+    } else if (now > midTime1 && now < midTime2) {
+        tradeTime = false;
+    }
+     */
 
     $scope.products = [
         {
