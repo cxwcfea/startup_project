@@ -199,16 +199,28 @@ module.exports = {
             //var now = moment('2015-07-10 10:20:00');
             var now = moment();
 
+            var midTime1 = moment();
+            midTime1.hour(11);
+            midTime1.minute(30);
+            midTime1.second(01);
+
+            var midTime2 = moment();
+            midTime1.hour(13);
+            midTime1.minute(00);
+            midTime1.second(00);
+
             var tradeTime = true;
             if (util.isHoliday(now.dayOfYear())) {
                 tradeTime = false;
             } else if (now < startTime || now > endTime) {
                 tradeTime = false;
+            } else if (now > midTime1 && now < midTime2) {
+                tradeTime = false;
             }
 
             res.render('futures/' + req.params[0], {
                 layout:null,
-                tradeTime: false
+                tradeTime: tradeTime
             });
         });
     }
