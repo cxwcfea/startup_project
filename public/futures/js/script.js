@@ -110,9 +110,11 @@ $(function () {
 
     wx.ready(function(){
         //alert('wechat sign success');
+        var name = bootstrappedUserObject.wechat.wechat_name;
+        var profit = (bootstrappedUserObject.wechat.trader.lastCash - 100000000)/100;
         wx.onMenuShareAppMessage({
             title: '股指拍拍机',
-            desc: njUserName + '玩拍拍机赚了' + (njUserProfit ? njUserProfit : 0) + '，赶紧来PK！',
+            desc: name + '玩拍拍机赚了' + profit + '，赶紧来PK！',
             link: 'http://www.niujin.cn/futures/',
             imgUrl: 'http://www.niujin.cn/futures/images/logo.png',
             type: 'link',

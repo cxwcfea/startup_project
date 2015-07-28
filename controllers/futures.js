@@ -28,8 +28,8 @@ var privateProperties = [
     'identity',
     'mobile',
     'wechat.wechat_uuid',
-    'wechat._id',
-    'wechat.__v'
+    'trader._id',
+    'trader.__v'
 ];
 
 var getUserViewModel = function (user) {
