@@ -17,7 +17,7 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
                 $scope.orders = $scope.orders.concat(data.orders);
                 $scope.userInfo = data.user;
                 if (pageNum === 1) {
-                    $window.njPersonChart($scope.originCapital, ($scope.userInfo.cash/100));
+                    $window.njPersonChart($scope.originCapital, ($scope.userInfo.lastCash/100));
                 }
                 pageCount = data.pageCount;
             })
