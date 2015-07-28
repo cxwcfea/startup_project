@@ -208,7 +208,7 @@ module.exports = {
 
             res.render('futures/' + req.params[0], {
                 layout:null,
-                tradeTime: false
+                tradeTime: true
             });
         });
     }
