@@ -1,0 +1,207 @@
+<style>
+    .top-users {
+        position: relative;
+    }
+    .top1 {
+        position: absolute;
+        top: -90px;
+        width: 23%;
+        left: 38%;
+        height: 90px;
+        background-color: #ff6773;
+        color: white;
+        text-align: center;
+        font-size: 1.1em;
+    }
+    .top2 {
+        position: absolute;
+        top: -80px;
+        width: 23%;
+        left: 5%;
+        height: 80px;
+        background-color: #ff6773;
+        color: white;
+        text-align: center;
+        font-size: 1.1em;
+    }
+    .top3 {
+        position: absolute;
+        top: -70px;
+        width: 23%;
+        left: 71%;
+        height: 70px;
+        background-color: #ff6773;
+        color: white;
+        text-align: center;
+        font-size: 1.1em;
+    }
+    .top1-head {
+        position: absolute;
+        top: -185px;
+        left: 37%;
+    }
+    .top2-head {
+        position: absolute;
+        top: -175px;
+        left: 4%;
+    }
+    .top3-head {
+        position: absolute;
+        top: -165px;
+        left: 70%;
+    }
+    .crown-top1 {
+        position: absolute;
+        top: -230px;
+        left: 40%;
+    }
+    .crown-top2 {
+        position: absolute;
+        top: -220px;
+        left: 6%;
+    }
+    .crown-top3 {
+        position: absolute;
+        top: -205px;
+        left: 73%;
+    }
+    .user-badge {
+        position: absolute;
+        top: -105px;
+        left: 32%
+    }
+    .user-rank-wrapper .users {
+        padding-top: 2em;
+        padding-bottom: 2em;
+        padding-left: 1.5em;
+        padding-right: 2em;
+        border-bottom: 0.1em solid #d3d3d3;
+    }
+    .user-rank-wrapper .users .badge {
+        margin-left: 1.2em;
+        margin-top: 1em;
+    }
+    .user-rank-wrapper .current {
+        background-color: white;
+    }
+    .user-rank-wrapper .users .info {
+        font-size: 1.5em;
+        vertical-align: middle;
+    }
+</style>
+
+<!--
+<header id="header">
+    <div class="header-box">
+        <h1>拍拍股神榜</h1>
+        <a class="back" href="/futures"></a>
+    </div>
+</header>-->
+
+<div class="user-rank-wrapper" ng-cloak>
+    <!--<div class="container">
+        <div class="row">
+            <img src="/futures/images/user_rank_background.png" width="100%" alt=""/>
+        </div>
+        <div class="top-users">
+            <span class="top2"><br>\{{silverUser.wechat.wechat_name}}<br>\{{silverUser.wechat.trader.lastCash ? (silverUser.wechat.trader.lastCash-100000000)/100 : 0 | number:0}}</span>
+            <span class="top1"><br>\{{goldUser.wechat.wechat_name}}<br>\{{goldUser.wechat.trader.lastCash ? (goldUser.wechat.trader.lastCash-100000000)/100 : 0 | number:0}}</span>
+            <span class="top3"><br>\{{copperUser.wechat.wechat_name}}<br>\{{copperUser.wechat.trader.lastCash ? (copperUser.wechat.trader.lastCash-100000000)/100 : 0 | number:0}}</span>
+            <img class="top2-head img-circle" ng-src="\{{silverUser.wechat.wechat_img}}" width="25%" />
+            <img class="top1-head img-circle" ng-src="\{{goldUser.wechat.wechat_img}}" width="25%" />
+            <img class="top3-head img-circle" ng-src="\{{copperUser.wechat.wechat_img}}" width="25%" />
+            <img class="crown-top2" src="/futures/images/top2.png" width="20%" />
+            <img class="crown-top1" src="/futures/images/top1.png" width="20%" />
+            <img class="crown-top3" src="/futures/images/top3.png" width="20%" />
+            <img class="user-badge" src="/futures/images/badge.png" width="35%" />
+        </div>
+    </div>-->
+	<div style="width:100%;height:200px;background-attachment:fixed;background:url('/futures/images/sky.jpg');background-position:center;background-size:320px 200px">
+	<!--<div style="width:100%;height:200px;background-color:#0cbef8">-->
+        <table style="table-layout:fixed;width:100%;height:200px">
+            <tr>
+                <td>
+					<div style="width:105px;height:100%;position:relative;margin:0 auto">
+						<div style="height:75px;width:75px;border-radius:100px;overflow:hidden;position:absolute;bottom:73px;left:13px">
+							<img ng-src="\{{silverUser.wechat.wechat_img}}" style="width:75px" />
+						</div>
+						<img src="/futures/images/second.png" style="position:absolute;bottom:0;left:0;width:105px" />
+						<div style="font-size:10px;color:#ffffff;padding-top:60px;text-align:center;position:absolute;bottom:28px;width:100%;text-align:center">
+							<p>\{{silverUser.wechat.wechat_name}}</p>
+							<p>\{{silverUser.wechat.trader.lastCash ? (silverUser.wechat.trader.lastCash-100000000)/100 : 0 | number:0}}</p>
+						</div>
+					</div>
+				</td>
+				<td>
+					<div style="width:105px;height:100%;position:relative;margin:0 auto">
+						<div style="height:80px;width:80px;border-radius:100px;overflow:hidden;position:absolute;bottom:82px;left:12px">
+							<img ng-src="\{{goldUser.wechat.wechat_img}}" style="width:80px" />
+						</div>
+						<img src="/futures/images/first.png" style="position:absolute;bottom:0;left:0;width:105px" />
+						<div style="font-size:10px;color:#ffffff;padding-top:60px;text-align:center;position:absolute;bottom:33px;width:100%;text-align:center">
+							<p>\{{goldUser.wechat.wechat_name}}</p>
+							<p>\{{goldUser.wechat.trader.lastCash ? (goldUser.wechat.trader.lastCash-100000000)/100 : 0 | number:0}}</p>
+						</div>
+					</div>
+				</td>
+				<td>
+					<div style="width:105px;height:100%;position:relative;margin:0 auto">
+						<div style="height:60px;width:60px;border-radius:100px;overflow:hidden;position:absolute;bottom:77px;left:22px">
+							<img ng-src="\{{copperUser.wechat.wechat_img}}" style="width:60px" />
+						</div>
+						<img src="/futures/images/third.png" style="position:absolute;bottom:0;left:0;width:105px" />
+						<div style="font-size:10px;color:#ffffff;padding-top:60px;text-align:center;position:absolute;bottom:28px;width:100%;text-align:center">
+							<p>\{{copperUser.wechat.wechat_name}}</p>
+							<p>\{{copperUser.wechat.trader.lastCash ? (copperUser.wechat.trader.lastCash-100000000)/100 : 0 | number:0}}</p>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+    <!--<div class="row users current" ng-hide="userInRank">
+        <span class="col-xs-1 badge">???</span>
+        <img class="img-circle col-xs-2" ng-src="\{{user.wechat.wechat_img}}" width="12%" />
+        <span class="col-xs-5">您没有上榜，啥也不说了，快去交易吧</span>
+        <button class="btn btn-danger pull-right col-xs-3" ng-click="trade()">立即交易</button>
+    </div>
+    <div class="row users" ng-repeat="theUser in topUsers">
+        <span class="col-xs-1 badge">\{{4 + $index}}</span>
+        <img class="img-circle col-xs-2" ng-src="\{{theUser.wechat.wechat_img}}" width="12%" />
+        <span class="info">
+            <span class="col-xs-4">\{{theUser.wechat.wechat_name}}</span>
+            <span class="pull-right col-xs-4 text-danger">\{{theUser.wechat.trader.lastCash ? (theUser.wechat.trader.lastCash-100000000)/100 : 0 | number:0}}</span>
+        </span>
+    </div>-->
+	<div>
+		<table style="width:100%;font-size:15px;color:#2d3e4f;text-align:center">
+			<tr ng-hide="userInRank" style="background-color:#ffffff;height:92px">
+				<td style="padding-left:5px;padding-right:5px">???</td>
+				<td>
+					<div style="width:44px;height:44px;border-radius:50px;overflow:hidden;margin:0 auto">
+						<img ng-src="\{{user.wechat.wechat_img}}" style="width:44px" />
+					</div>
+				</td>
+				<td>
+					<p style="font-size:12px">少年您距离股神还有很远哦</p>
+					<p style="font-size:10px">啥也不说了，快去联系交易吧</p>
+				</td>
+				<td>
+					<button ng-click="trade()" class="btn btn-danger" style="width:80px">立即交易</button>
+				</td>
+			</tr>
+			<tr ng-repeat="theUser in topUsers" style="height:92px;border-top:1px solid #e5e5e5">
+				<td style="padding-left:5px;padding-right:5px">\{{4 + $index}}</td>
+				<td>
+					<div style="width:44px;height:44px;border-radius:50px;overflow:hidden;margin:0 auto">
+						<img ng-src="\{{theUser.wechat.wechat_img}}" style="width:44px" />
+					</div>
+				</td>
+				<td style="text-align:left">
+					<p>\{{theUser.wechat.wechat_name}}</p>
+				</td>
+				<td class="text-danger">\{{theUser.wechat.trader.lastCash ? (theUser.wechat.trader.lastCash-100000000)/100 : 0 | number:0}}</td>
+			</tr>
+		</table>
+	</div>
+</div>

@@ -17,6 +17,8 @@ if(cluster.isMaster){
             task.scheduleDailyDataJob();
             task.scheduleContractCheckJob();
             task.scheduleOperationDataCollectJob();
+            task.scheduleFuturesRiskControlJob();
+            task.scheduleFuturesForceCloseJob();
         }
     });
 
@@ -37,5 +39,7 @@ if(cluster.isMaster){
 
 } else {
     // start our app on worker; see server.js
-    require('./server.js')();
+    if (cluster.worker.id === 2) {
+        require('./server.js')(true);
+    }
 }

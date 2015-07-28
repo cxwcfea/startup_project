@@ -7,4 +7,5 @@ data
 log
 test.js
 moment_test.js
+start_database.sh
 *.swp

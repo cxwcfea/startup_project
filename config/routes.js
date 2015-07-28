@@ -4,6 +4,7 @@ var users = require('../controllers/user'),
     applies = require('../controllers/apply'),
     home = require('../controllers/home'),
     mobile = require('../controllers/mobile'),
+    futures = require('../controllers/futures'),
     sms = require('../lib/sms'),
     admin = require('../controllers/admin'),
     util = require('../lib/util'),
@@ -13,6 +14,7 @@ var users = require('../controllers/user'),
     logger = log4js.getLogger('routes'),
     _ = require('lodash'),
     ecitic = require('../lib/ecitic'),
+    passport = require('passport'),
     passportConf = require('./passport');
 
 module.exports = function(app) {
@@ -252,6 +254,14 @@ module.exports = function(app) {
     app.get('/api/test_weixin', weixin.testTemplateMsg);
 
     yeepay.registerRoutes(app, passportConf);
+
+    app.get('/auth/wechat', passport.authenticate('wechat'));
+    app.get('/auth/wechat/callback', weixin.login);
+    app.get('/auth/wechat/err', weixin.authFail);
+    app.get('/auth/wechat/success', weixin.authSuccess);
+    app.get('/wechat/get_jsapi_token', weixin.getJSToken);
+
+    futures.registerRoutes(app, passportConf);
 
     /*
     app.get('/admin_test', passportConf.requiresRole('admin'), function(req, res, next) {

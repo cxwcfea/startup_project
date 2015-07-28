@@ -1,0 +1,37 @@
+<style>
+    .modal-header .modal-title {
+        font-size: 1.2em;
+    }
+    .modal-footer .container .top-btn {
+        margin-bottom: 1em;
+    }
+    .modal-footer .container .bottom-btn {
+        margin-left: 0;
+    }
+    .modal-footer .container button {
+        width: 100%;
+    }
+    .modal-body p {
+        font-size: 2em;
+    }
+</style>
+<div class="modal-header">
+    <h3 class="modal-title">盈利小报</h3>
+</div>
+<div class="modal-body">
+    <div>
+        <p>您共赚取了牛币{{profit | number:0}}个，{{constant}}牛币可兑换现金{{cash}}元</p>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-11">
+                <button class="btn btn-primary top-btn" ng-click="ok()">分享赚取盈利</button>
+            </div>
+            <div class="col-xs-12 col-md-11">
+                <button class="btn btn-primary bottom-btn" ng-click="cancel()">继续交易</button>
+            </div>
+        </div>
+    </div>
+</div>

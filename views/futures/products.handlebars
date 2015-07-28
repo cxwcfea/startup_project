@@ -1,0 +1,160 @@
+<style>
+    .product-block .product-list .product-body {
+        margin-left: 10px;
+        margin-right: 10px;
+        height: 110px;
+        margin-top: 10px;
+        position: relative;
+        border-radius: 5px;
+    }
+    .product-block .product-list .product-body .product-intro {
+        padding-left: 20px;
+        padding-top: 17px;
+    }
+    .product-block .product-list .product-body .product-intro .name {
+        font-size: 18px;
+        color: #ffffff;
+    }
+    .product-block .product-list .product-body .product-intro .type {
+        border-radius: 5px;
+        margin-left: 8px;
+        font-size: 12px;
+        text-align: center;
+        padding:3px 8px;
+        color: #ffffff;
+    }
+    .product-block .product-list .product-body .product-intro .info {
+        font-size:15px;
+    }
+    .product-block .product-list .product-body .product-status {
+        height: 23px;
+        width: 53px;
+        position: absolute;
+        right: 14px;
+        top: 0;
+    }
+    .product-block .product-list .product-body .product-status p {
+        font-size: 15px;
+        text-align: center;
+        color: #ffffff;
+    }
+    .product-block .product-list .product-selected {
+        float: right;
+        margin-right: 12px;
+        margin-top: -30px;
+    }
+    .product-block .product-list .product-selected img {
+        width: 64px;
+    }
+    .product-block .product-list .product-body .product-time {
+        margin-top: 20px
+    }
+    .product-block .product-list .product-body .product-time p {
+        font-size: 12px;
+        float: right;
+        margin-right: 5px;
+    }
+    .product-body-primary {
+        background-color: #8957a1;;
+    }
+    .product-body-primary .product-intro .type {
+        background-color: #9d6cb5;
+    }
+    .product-body-primary .product-intro .info {
+        color: #d9b3eb
+    }
+    .product-body-primary .product-status {
+        background-color: #80c269;
+    }
+    .product-body-primary .product-time p {
+        color: #d9b3eb;
+    }
+    .product-body-secondary {
+        background-color:#eb6877;
+    }
+    .product-body-secondary .product-intro .type {
+        background-color:#f4828f;
+    }
+    .product-body-secondary .product-intro .info {
+        color: #f8c7cd;
+    }
+    .product-body-secondary .product-status {
+        background-color:#bfbfbf;
+    }
+    .product-body-secondary .product-time p {
+        color:#f8c7cd;
+    }
+    .product-body-warning {
+        background-color: #f19149;
+    }
+    .product-body-warning .product-intro .type {
+        background-color: #f99d59;
+    }
+    .product-body-warning .product-intro .info {
+        color: #ffd9bd
+    }
+    .product-body-warning .product-status {
+        background-color: #bfbfbf;
+    }
+    .product-body-warning .product-time p {
+        color: #ffd9bd;
+    }
+    .product-body-success {
+        background-color: #0c637f;
+    }
+    .product-body-success .product-intro .type {
+        background-color: #107da0;
+    }
+    .product-body-success .product-intro .info {
+        color: #91cbde;
+    }
+    .product-body-success .product-status {
+        background-color: #bfbfbf;
+    }
+    .product-body-success .product-time p {
+        color: #91cbde;
+    }
+	.product-more {
+		height:110px;
+		margin-top:10px;
+		background-color:#707070;
+		margin-left:10px;
+		margin-right:10px;
+		border-radius:5px;
+	}
+	.product-more .product-content {
+		text-align:center;
+		color:#b3b2b2;
+		font-size:15px;
+	}
+</style>
+<div class="product-block">
+    <div class="product-list">
+        <div ng-repeat="product in products" class="product-body" ng-class="{'product-body-primary': product.value === 0, 'product-body-secondary': product.value === 1, 'product-body-warning': product.value === 2, 'product-body-success': product.value === 3}">
+            <div ng-click="selectProduct(product.value)">
+                <div class="product-intro" >
+                    <p class="name">\{{product.type}}<span class="type">\{{product.name}}</span></p>
+                    <p class="info">\{{product.intro}}</p>
+                </div>
+                <div class="product-status">
+                    <p>\{{product.status ? '盘 中' : '休 市'}}</p>
+                </div>
+                <div class="product-selected" ng-show="product.value === data.selectedProduct">
+                    <img src="/futures/images/investing.png" />
+                </div>
+                <div class="product-time">
+                    <p>交易时间:\{{product.time}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+	<div class="product-more">
+		<a ng-click="showQrcode()">
+			<div class="product-content">
+				<p style="padding-top:25px"><img src="/futures/images/bell.png" style="width:25px" /><span style="margin-left:6px">更多交易品种即将上线,敬请期待</span></p>
+				<p style="font-size:12px">点击关注拍拍公众号</p>
+				<p style="font-size:12px">更多品种及时知道</p>
+			</div>
+		</a>
+	</div>
+</div>

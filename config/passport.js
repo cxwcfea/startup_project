@@ -1,7 +1,21 @@
 var mongoose = require("mongoose"),
     passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
-    User = mongoose.model('User');
+    wechatStrategy = require('passport-wechat'),
+    util = require('../lib/util'),
+    env = process.env.NODE_ENV,
+    config = require('../config/config')[env],
+    User = mongoose.model('User'),
+    mockTrader = require('../controllers/mockTrader');
+
+function generateRandomMobile(len) {
+    var ret = util.getRandomInt(1, 9);
+    for (var i = 1; i < len; ++i) {
+        ret *= 10;
+        ret += util.getRandomInt(0, 9);
+    }
+    return ret;
+}
 
 passport.use(new LocalStrategy({ usernameField: 'mobile' },
     function(mobile, password, done) {
@@ -18,6 +32,61 @@ passport.use(new LocalStrategy({ usernameField: 'mobile' },
         });
     }
 ));
+
+passport.use(new wechatStrategy({
+    appid: 'wx8e029a336ad0a880',
+    appsecret: 'a6217b36a4ef01b9f801c2d338fb7548',
+    callbackURL: config.pay_callback_domain + '/auth/wechat/callback',
+    scope: 'snsapi_login',
+    state: true
+}, function (openid, profile, token, done) {
+    console.log('wechat openid:' + openid + ' profile:' + util.printObject(profile) + ' token:' + util.printObject(token));
+    User.findOne({'wechat.wechat_uuid':profile.unionid}, function(err, user) {
+        if (err) {
+            console.log('wechat login find user err:' + err.toString());
+            done(err);
+        } else if (!user) {
+            console.log('wechat login not found user with unionid:' + profile.unionid);
+            mockTrader.createUser({
+                name: profile.unionid,
+                close: 50000000,
+                cash: 100000000,
+                deposit: 50000000,
+                debt: 50000000
+            }, function(err, trader) {
+                if (err) {
+                    done(err);
+                }
+                var userObj = {
+                    mobile: generateRandomMobile(10),
+                    password: 'xxxxxx',
+                    score: 5,
+                    roles: ['wechat'],
+                    wechat: {
+                        wechat_uuid: profile.unionid,
+                        wechat_name: profile.nickname,
+                        wechat_img: profile.headimgurl,
+                        trader: trader
+                    }
+                };
+                User.create(userObj, function(err, user) {
+                    done(err, user, profile);
+                });
+            });
+        } else {
+            console.log('wechat login found user with unionid:' + profile.unionid);
+            if (!user.wechat.logged) {
+                user.wechat.logged = true;
+                user.score += 5;
+                user.save(function(err) {
+                    done(err, user, profile);
+                });
+            } else {
+                done(null, user, profile);
+            }
+        }
+    });
+}));
 
 passport.serializeUser(function(user, done) {
     if (user) {
@@ -74,5 +143,13 @@ module.exports.requiresRole = function(role) {
         } else {
             next();
         }
+    }
+};
+
+module.exports.isWechatAuthenticated = function(req, res, next) {
+    if (!req.isAuthenticated() || !req.user.wechat.wechat_uuid) {
+        res.redirect('/auth/wechat');
+    } else {
+        next();
     }
 };

@@ -153,14 +153,13 @@ console.log(bbb - aaa);
 //console.log(aaa.diff(bbb, 'days'));
 //
 var startTime = moment();
-startTime.hour(15);
-startTime.minute(00);
+startTime.hour(09);
+startTime.minute(15);
 startTime.second(00);
+
+var endTime = moment();
+endTime.hour(15);
+endTime.minute(15);
+endTime.second(00);
+
 console.log(startTime.toDate());
-
-var theDays = moment(1436758926543);
-console.log(theDays.toDate());
-
-var now = moment();
-
-console.log((now - theDays) / 1000 / 60 / 60 / 24);

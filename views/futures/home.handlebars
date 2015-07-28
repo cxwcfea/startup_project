@@ -1,0 +1,144 @@
+<style>
+    .index-box .opt-box .profit {
+        margin-bottom: 2em;
+        border-bottom: 1px solid #999;
+    }
+    .index-box .opt-box .profit p {
+        text-align: center;
+        font-size: 1.4em;
+    }
+    .index-box .opt-box .profit p>em {
+        color: red;
+        font-weight: bold;
+        font-size: 1.3em;
+    }
+    .index-box .opt-box .info-box {
+        font-size: 3em;
+        text-align: center;
+    }
+    .index-box .opt-box .trader-time-hint {
+        text-align: center;
+    }
+    .index-box .money-status span {
+        font-size: 0.9em;
+    }
+    .share-mask {
+        position: absolute;
+        z-index: 10000;
+        opacity: 0.8;
+        top: -28px;
+    }
+    .share-mask img {
+        width: 100%;
+    }
+    .money-status .scroll-area {
+        height: 30px;
+        /*
+        background-color: gray;
+        color: white;
+        */
+    }
+    .money-status .scroll-area #demo1,
+    .money-status .scroll-area #demo2 {
+        text-align: center;
+    }
+    .opt-btns .container .row .mid {
+        margin-left: 3em;
+    }
+    .opt-btns .container .row .left {
+        text-align: left;
+    }
+    .opt-btns .container .row .right {
+        text-align: right;
+    }
+    .opt-btns .btns.three {
+        height: 100px;
+    }
+    .index-box .current-price {
+        margin-left: 30px;
+    }
+    .index-box .current-price em {
+        color: red;
+    }
+    .index-box .order-list {
+        color: orangered;
+    }
+</style>
+<!--#S header-->
+<!--
+<header id="header">
+    <div class="header-box">
+        <h1>拍拍机</h1>
+        <a class="f-pr" href="/futures/#/orders">交易记录</a>
+    </div>
+</header>--><!--#E header-->
+
+<div class="index-box">
+    <div class="chart-box">
+        <h4>\{{data.productType}}走势图 <span class="current-price">余额<em>\{{cash | number:0}}</em>牛币</span> <span class="order-list pull-right" ng-click="help()">帮助</span></h4>
+        <div class="chart">
+            <!--
+            <canvas id="J_chart" width="300" height="160" futures-chart="chartLabels" chart-data="chartData"></canvas>
+            -->
+            <div id="container" style="min-widht:400px;height:230px" futures-chart="chartLabels" chart-data="chartData"></div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <!--
+                <span class="col-xs-offset-3 col-xs-7">当前价 <em class="text-success">\{{currentPrice | number:1}}元</em> 每手</span>
+                <span class="col-xs-6">卖价 <em class="text-success">4138.90</em> 2手</span>
+                <span class="col-xs-6">买价 <em class="text-danger">4136.50</em> 21手</span>
+                -->
+            </div>
+        </div>
+    </div>
+    <div class="opt-box">
+        <div class="profit">
+            <div class="container">
+                <div class="row">
+                    <p class="col-xs-4">平仓盈亏 <br><em>\{{lastProfit.toFixed(0)}}</em> </p>
+                    <p class="col-xs-4">持仓盈亏 <br><em>\{{profit.toFixed(0)}}</em> </p>
+                    <p class="col-xs-4">股指 <br><em>\{{currentPrice.toFixed(1)}}</em> </p>
+                </div>
+            </div>
+        </div>
+        {{#unless tradeTime}}
+            <p class="trader-time-hint text-danger" ng-click="showTradeTime()">现在是非交易时间，点击查看交易时间</p>
+        {{/unless}}
+        <div class="opt-btns">
+            <div class="btns three" id="J_btns">
+				<div class="circle-btn p {{#unless tradeTime}}circle-btn-disable{{/unless}}">
+					<div {{#if tradeTime}}ng-class="{'p-outer-btn-pressed':PButtonPressed, 'p-outer-btn':!PButtonPressed}"{{/if}} class="ex-btn">
+						<div id="bp" class="p-inner-btn ex-btn-common" {{#if tradeTime}}ng-click="placeOrder(0)"{{/if}}>
+							平
+						</div>
+					</div>
+					<p class="log-label">可平\{{tradeData.sell}}手</p>
+				</div>
+				<div class="circle-btn z {{#unless tradeTime}}circle-btn-disable{{/unless}}">
+					<div {{#if tradeTime}}ng-class="{'z-outer-btn-pressed':ZButtonPressed, 'z-outer-btn':!ZButtonPressed}"{{/if}} class="ex-btn">
+						<div id="bz" class="z-inner-btn ex-btn-common" {{#if tradeTime}}ng-click="placeOrder(1)"{{/if}}>
+							涨
+						</div>
+					</div>
+					<p class="log-label">\{{tradeData.up}}手</p>
+				</div>
+				<div class="circle-btn d {{#unless tradeTime}}circle-btn-disable{{/unless}}">
+					<div {{#if tradeTime}}ng-class="{'d-outer-btn-pressed':DButtonPressed, 'd-outer-btn':!DButtonPressed}"{{/if}} class="ex-btn">
+						<div id="bd" class="d-inner-btn ex-btn-common" {{#if tradeTime}}ng-click="placeOrder(-1)"{{/if}}>
+							跌
+						</div>
+					</div>
+					<p class="log-label">\{{tradeData.down}}手</p>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="share-mask container" ng-show="showShareHint">
+    <div class="row">
+        <img src="/futures/images/share.png" alt="" ng-click="showShareHint = false" />
+    </div>
+</div>
+
+<div class="ui-tip" ng-show="showError">\{{errorMsg}}</div>

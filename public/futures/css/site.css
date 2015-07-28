@@ -1,0 +1,58 @@
+.xx-dialog .modal-dialog {
+    top: 10em;
+}
+
+.header-box h1 {
+    text-align: center;
+    font-size: 2em;
+}
+
+/* for modal */
+.modal-header {
+    background-color: #4b90f7;
+    color: white;
+}
+
+.modal-footer .container .btn-primary {
+    background-color: #4b90f7;
+}
+
+.ppj-footer .btn {
+    border-radius: 0;
+    border-color: white;
+}
+
+.ppj-footer {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+.index-box .opt-btns {
+    margin-bottom: 25px;
+}
+
+.foot-table {
+	width:100%;
+	height:50px;
+	font-size:12px;
+	table-layout:fixed;
+	background-color:#ffffff;
+	position:fixed;
+	bottom:0;
+	left:0;
+	border-top:1px solid #e5e5e5;
+}
+.foot-table .url-content {
+	width:100%;
+	height:50px;
+	margin-top:2px;
+	text-align:center;
+}
+.foot-table .selected {
+	color:#4b90f7;
+}
+.foot-table .un_selected {
+	color:#969696;
+}
+

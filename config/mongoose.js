@@ -2,7 +2,8 @@ var mongoose = require('mongoose'),
     User = require('../models/User'),
     Homas = require('../models/Homas'),
     Order = require('../models/Order'),
-    Apply = require('../models/Apply');
+    Apply = require('../models/Apply'),
+    PPJ = require('../controllers/mockTrader');
 
 function createDefaultUsers() {
     User.find({}).exec(function (err, collection) {
@@ -26,9 +27,19 @@ function createDefaultUsers() {
     });
 }
 
-function createOrderDefaultUsers(uID) {
-    Order.create({userID:uID, dealType:1, amount:1000, status:1, description: '网站充值'});
-    Order.create({userID:uID, dealType:2, amount:500, status:1, description: '提现'});
+function createDefaultPPJContract() {
+    PPJ.Contract.find({}).exec(function(err, data) {
+        if (data && data.length === 0) {
+            // Default invest target
+            var c = new PPJ.Contract({});
+            c.save(function(err) {
+                if (err) {
+                    if (err.code == 11000) return;
+                    console.log(err);
+                }
+            });
+        }
+    });
 }
 
 var options = {
@@ -45,4 +56,5 @@ module.exports = function(config) {
     });
 
     createDefaultUsers();
+    createDefaultPPJContract();
 };

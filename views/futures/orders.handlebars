@@ -1,0 +1,113 @@
+<style>
+    .orders-wrapper .orders-header {
+        background-color: #4b90f7;
+    }
+    .orders-wrapper .orders-header .row img {
+        margin-top: 2em;
+    }
+    .orders-wrapper .orders-header .user-info {
+        text-align: left;
+        font-size: 1.5em;
+        color: white;
+    }
+    .orders-wrapper .orders-header .user-info .name {
+        font-size: 1em;
+    }
+    .records-table thead {
+        background: #959595;
+    }
+    .orders-wrapper .finance-info {
+        font-size: 1.3em;
+        background-color: white;
+        margin-top: 0.3em;
+        margin-left: 0.5em;
+        margin-right: 0.5em;
+    }
+    .orders-wrapper .orders-header .header-icon {
+        margin-bottom: 1.5em;
+    }
+	.btn-load {
+		color:#a69d98;
+		width:100%;
+		text-align:center;
+		font-size:12px;
+		height:30px;
+		line-height:30px;
+	}
+</style>
+<div class="orders-wrapper">
+	<div style="width:100%;height:150px;background-attachment:fixed;background:url('/futures/images/sky.jpg');background-position:center;background-size:320px 200px">
+	<!--<div style="width:100%;height:150px;background-color:#0cbef8">-->
+		<div style="padding-top:44px;text-align:center;font-size:15px;color:#ffffff">
+			<div style="width:68px;height:68px;border-radius:100px;overflow:hidden;margin:0 auto">
+				<img ng-src="\{{user.wechat.wechat_img}}" style="width:68px" />
+			</div>
+			<p>\{{user.wechat.wechat_name}}</p>
+		</div>
+	</div>
+    <!--<div class="orders-header container">
+        <div class="row">
+            <div class="col-xs-offset-1 col-xs-3">
+                <img class="img-circle header-icon" ng-src="\{{user.wechat.wechat_img}}" width="100%" alt="...">
+            </div>
+            <div class="user-info col-xs-7">
+                <ul style="margin-top:10px">
+                    <li class="name">\{{user.wechat.wechat_name}}</li>
+                    <li>盈利: \{{userInfo.cash / 100 - originCapital | number:2}}牛币</li>
+                    <!--<li>积分点: \{{user.score}}</li>-->
+                <!--</ul>
+            </div>
+        </div>
+    </div>-->
+	<div style="background-color:#ffffff;height:200px;width:100%">
+		<div style="float:right;width:50%;height:200px;font-size:15px">
+			<div style="color:#959595;margin-top:40px"><p><strong>个人资产分布图</strong></p></div>
+			<div style="margin-top:16px;background-color:#eb6877;width:17px;height:17px"></div>
+			<div style="height:17px;margin-left:20px;margin-top:-17px">
+				<p>收益:\{{((userInfo.cash / 100 - originCapital))<0?0.00:((userInfo.cash / 100 - originCapital) | number:2)}}</p>
+			</div>
+			<div style="margin-top:16px;background-color:#dfe9eb;width:17px;height:17px"></div>
+			<div style="height:17px;margin-left:20px;margin-top:-17px">
+				<p>本金:\{{originCapital | number:2}}</p>
+			</div>
+			<div style="margin-top:16px;background-color:#6fd264;width:17px;height:17px"></div>
+			<div style="height:17px;margin-left:20px;margin-top:-17px">
+				<p>亏损:\{{((originCapital - userInfo.cash / 100))<0?0.00:((originCapital - userInfo.cash / 100) | number:2)}}</p>
+			</div>
+		</div>
+		<div id="sectorChart" style="width:50%;height:200px;overflow:hide"></div>
+	</div>
+	<!--
+	<div class="finance-info">
+        <span class="pull-left">资产:\{{userInfo.cash / 100 | number:2}}</span><span class="pull-right">本金:\{{originCapital | number:2}}</span>
+    </div>
+	-->
+    <div class="records">
+        <table class="records-table">
+            <thead>
+            <tr>
+                <th>业务/时间</th>
+                <th>总价/单价</th>
+                <th class="pull-right">手续费</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="order in orders">
+                <td>
+                    <strong>买\{{order.quantity | displayFutureQuantity}}手</strong>
+                    <p>\{{order.timestamp | date:'yyyy-MM-dd HH:mm:ss'}}</p>
+                </td>
+                <td align="right">
+                    <strong class="text-danger">\{{(order.lockedCash > 0 ? order.lockedCash : 0 - order.lockedCash) / 100 | number:2}}</strong>
+                    <p>\{{order.price / 100 | number:1}}</p>
+                </td>
+                <td align="right">
+                    <strong class="text-danger">-\{{order.fee / 100 | number:2}}</strong>
+                    <p></p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <a ng-click="loadMore()"><div class="btn-load">加载更多</div></a>
+    </div>
+</div>
