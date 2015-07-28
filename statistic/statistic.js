@@ -1115,6 +1115,30 @@ function closeAllContract(callback) {
     });
 }
 
+var getLossOrderData = function(callback) {
+    Order.find({$and:[{dealType:15}, {status:1}]}, function(err, orders) {
+        if (err) {
+            console.log(err.toString());
+            callback(err);
+            return;
+        }
+        var options = { encoding: 'utf8', flag: 'w' };
+        var fileWriteStream = fs.createWriteStream("getLossOrders-" + moment().format("YYYY-MM-DD") + ".csv",  options);
+        fileWriteStream.on("close", function() {
+            console.log("File Closed.");
+        });
+        var data = 'userID, userMobile, userBalance, createdAt, dealType, amount, status, applySerialID, payType, bankTransID\n';
+        fileWriteStream.write(data);
+        orders.forEach(function (order) {
+            data = order.userID + ', ' + order.userMobile + ', ' + order.userBalance + ', ' + order.createdAt + ', ' + order.dealType + ', '
+            + order.amount.toFixed(2) + ', ' + order.status + ', ' + order.applySerialID + ', ' + order.payType + ', ' + order.bankTransID + '\n';
+            fileWriteStream.write(data);
+        });
+        fileWriteStream.end();
+        callback(null);
+    });
+};
+
 var options = {};
 mongoose.connect(config.db, options);
 var db = mongoose.connection;
@@ -1278,6 +1302,12 @@ db.once('open', function callback() {
                 });
             },
             */
+
+            function(callback) {
+                getLossOrderData(function(err) {
+                    callback(err);
+                });
+            },
 
             /*
             function(callback){
