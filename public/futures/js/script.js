@@ -112,7 +112,7 @@ $(function () {
         //alert('wechat sign success');
         wx.onMenuShareAppMessage({
             title: '股指拍拍机',
-            desc: njUserName + '玩拍拍机赚了' + njUserProfit + '，赶紧来PK！',
+            desc: njUserName + '玩拍拍机赚了' + (njUserProfit ? njUserProfit : 0) + '，赶紧来PK！',
             link: 'http://www.niujin.cn/futures/',
             imgUrl: 'http://www.niujin.cn/futures/images/logo.png',
             type: 'link',
@@ -169,7 +169,7 @@ $(function () {
 				plotShadow: false
 			},
 			title: {
-				text: total.toFixed(2) +'<br>总资产',
+				text: total.toFixed(0) +'<br>总资产',
 				align: 'center',
 				verticalAlign: 'middle',
 				x: 0,
