@@ -211,7 +211,7 @@ module.exports = {
 
         app.get('/api/futures/get_user_profit', getUserProfit);
 
-        app.get('/futures', passportConf.isWechatAuthenticated, home);
+        app.get('/futures', /*passportConf.isWechatAuthenticated,*/ home);
 
         app.get('/futures/test', test);
 
