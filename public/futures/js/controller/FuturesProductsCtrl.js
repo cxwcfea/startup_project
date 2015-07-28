@@ -7,7 +7,6 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
     startTime.minute(15);
     startTime.second(0);
 
-    /*
     var endTime = moment();
     endTime.hour(15);
     endTime.minute(10);
@@ -21,10 +20,11 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
     midTime1.second(1);
 
     var midTime2 = moment();
-    midTime1.hour(13);
-    midTime1.minute(0);
-    midTime1.second(0);
+    midTime2.hour(13);
+    midTime2.minute(0);
+    midTime2.second(0);
 
+    /*
     var tradeTime = true;
     if (util.isHoliday(now.dayOfYear())) {
         tradeTime = false;

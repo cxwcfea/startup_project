@@ -234,9 +234,9 @@ module.exports = {
             midTime1.second(01);
 
             var midTime2 = moment();
-            midTime1.hour(13);
-            midTime1.minute(00);
-            midTime1.second(00);
+            midTime2.hour(13);
+            midTime2.minute(00);
+            midTime2.second(00);
 
             var tradeTime = true;
             if (util.isHoliday(now.dayOfYear())) {
