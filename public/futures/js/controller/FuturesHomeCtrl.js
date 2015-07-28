@@ -6,6 +6,31 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     var HAND = 100;
     var InitCapital = 1000000;
     $scope.data.selectedItem = 1;
+    $scope.close = false;
+
+    var now = moment();
+
+    var firstEnd = moment();
+    firstEnd.hour(11);
+    firstEnd.minute(30);
+    firstEnd.second(0);
+
+    if (now < firstEnd) {
+        $timeout(function() {
+            $scope.close = true;
+        }, firstEnd-now);
+    }
+
+    var secondEnd = moment();
+    secondEnd.hour(15);
+    secondEnd.minute(15);
+    secondEnd.second(0);
+
+    if (now < secondEnd) {
+        $timeout(function() {
+            $scope.close = true;
+        }, secondEnd-now);
+    }
 
     $scope.tradeData = {
         up: 0,
