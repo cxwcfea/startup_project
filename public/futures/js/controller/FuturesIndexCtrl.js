@@ -26,7 +26,7 @@ angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window'
     */
 
     $window.njUserProfit = ($scope.data.currentUser.wechat.trader.lastCash - 100000000) / 100;
-    alert($window.bootstrappedUserObject);
+    alert($window.bootstrappedUserObject.wechat.trader.lastCash);
     $window.njUserName = $scope.data.currentUser.wechat.wechat_name;
 
     $scope.data.productID = 0;
