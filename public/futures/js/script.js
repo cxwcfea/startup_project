@@ -167,6 +167,7 @@ $(function () {
 		var chartTitle = '总资产';
 		var chartContent1 = '收益:';
 		var chartContent2 = '本金:';
+		var chartContent2Num = basic;
 		var chartTitleNum = total.toFixed(0);
 		if (income < 0) {
 			income = 0 - income;
@@ -174,6 +175,7 @@ $(function () {
 			chartTitle = '本金';
 			chartContent1 = '亏损:';
 			chartContent2 = '总资产:';
+			chartContent2Num = basic - income;
 			chartTitleNum = basic.toFixed(0);
 		}
 		$('#sectorChart').highcharts({
@@ -235,7 +237,7 @@ $(function () {
 					{
 						name:chartContent2+basic.toFixed(0),
 						color:'#dfe9eb',
-						y:basic
+						y:chartContent2Num
 					}
 				]
 			}],
