@@ -1,8 +1,7 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$window', '$modal', '$location', function($scope, $window, $modal, $location) {
+angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$window', '$modal', '$location', 'util', function($scope, $window, $modal, $location, util) {
     $scope.data.selectedItem = 0;
 
-    /*
     var startTime = moment();
     startTime.hour(9);
     startTime.minute(15);
@@ -33,7 +32,6 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
     } else if (now > midTime1 && now < midTime2) {
         tradeTime = false;
     }
-     */
 
     $scope.products = [
         {
@@ -41,7 +39,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             name: 'IF1508',
             type: '股 指',
             intro: '沪深300指数，涨跌均可买',
-            status: 1,
+            status: tradeTime ? 1 : 0,
             alias: '股指',
             time: '工作日09:15-11:30  13:00-15:15'
         },
