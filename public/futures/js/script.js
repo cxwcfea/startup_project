@@ -235,7 +235,7 @@ $(function () {
 						y:income
 					},
 					{
-						name:chartContent2+basic.toFixed(0),
+						name:chartContent2+chartContent2Num.toFixed(0),
 						color:'#dfe9eb',
 						y:chartContent2Num
 					}
