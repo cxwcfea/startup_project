@@ -162,6 +162,7 @@ function getOrderCount(fn) {
 
 module.exports = {
     registerRoutes: function(app, passportConf) {
+        console.log('=========================== futures registerRoutes ==================');
         /*
         app.get('/futures', function(req, res, next) {
             res.render('futures/index', {
