@@ -57,14 +57,12 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                     $scope.profit = 0;
                     $scope.lastProfit = 0;
                     $scope.currentPrice = $scope.data.lastPoint;
-                    alert('no value');
                 }
             })
             .error(function(data, status) {
                 $scope.profit = 0;
                 $scope.lastProfit = 0;
                 $scope.currentPrice = $scope.data.lastPoint;
-                alert('failed ' + data.error_msg);
             });
     }
 
