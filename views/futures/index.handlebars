@@ -25,7 +25,7 @@
     <script src="{{static '/vendor/angular/angular.js'}}"></script>
 </head>
 
-<body ng-controller="FuturesIndexCtrl">
+<body ng-controller="FuturesIndexCtrl" ng-cloak>
 
 {{#if bootstrappedUserObject}}
     <script> window.bootstrappedUserObject = {{{bootstrappedUserObject}}} </script>
