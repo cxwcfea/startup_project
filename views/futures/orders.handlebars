@@ -122,17 +122,17 @@
 	<div class="chart-area">
 		<div class="note">
 			<div class="chart-title"><p>个人资产分布图</p></div>
-			<div class="color-example-income color-example"></div>
-			<div class="example">
-				<p ng-show="loss == 0">收益:\{{profit | number:0}}</p>
+			<div ng-show="loss == 0" class="color-example-income color-example"></div>
+			<div ng-show="loss == 0" class="example">
+				<p>收益:\{{profit | number:0}}</p>
 			</div>
 			<div class="color-example-base color-example"></div>
 			<div class="example">
 				<p>本金:\{{originCapital | number:0}}</p>
 			</div>
-			<div class="color-example-lose color-example"></div>
-			<div class="example">
-				<p ng-show="loss > 0">亏损:\{{loss | number:0}}</p>
+			<div ng-show="loss > 0" class="color-example-lose color-example"></div>
+			<div ng-show="loss > 0" class="example">
+				<p>亏损:\{{loss | number:0}}</p>
 			</div>
 		</div>
 		<div id="sectorChart" class="chart"></div>
