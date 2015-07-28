@@ -14,6 +14,28 @@ var User = require('../models/User'),
     log4js = require('log4js'),
     logger = log4js.getLogger('futures');
 
+var privateProperties = [
+    '__v',
+    'verifyEmailToken',
+    'registered',
+    'roles',
+    'password',
+    'manager',
+    'resetPasswordToken',
+    'resetPasswordExpires',
+    'invest',
+    'finance',
+    'identity',
+    'mobile',
+    'wechat.wechat_uuid'
+];
+
+var getUserViewModel = function (user) {
+    var realUser = user._doc;
+    var vm = _.omit(realUser, privateProperties);
+    return vm;
+};
+
 function populatePPJUser(user, cb) {
     var query = User.findById(user._id);
     query.populate('wechat.trader');
@@ -21,9 +43,8 @@ function populatePPJUser(user, cb) {
         if (err) {
             cb(err);
         } else {
-            util.getUserViewModel(u, function(vm) {
-                cb(null, vm);
-            });
+            var vm = getUserViewModel(u);
+            cb(null, vm);
         }
     });
 }
