@@ -34,8 +34,8 @@ passport.use(new LocalStrategy({ usernameField: 'mobile' },
 ));
 
 passport.use(new wechatStrategy({
-    appid: 'wx93316d2e330a4d21',
-    appsecret: '2fc6cd4d6bb198ece969664509562e02',
+    appid: config.wechatAppId,
+    appsecret: config.wechatSecret,
     callbackURL: config.ppj_callback_domain + '/auth/wechat/callback',
     scope: 'snsapi_login',
     state: true
