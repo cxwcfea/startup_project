@@ -9,6 +9,13 @@
         margin-bottom: 5px;
         font-size: 1.2em;
     }
+	.z-inner-btn {
+		background-color:#eb6877;
+	}
+	.z-outer-btn {
+		border:2px solid #eb6877;
+	}
+	
 </style>
 <div class="modal-header">
     <h3 class="modal-title">拍拍必读</h3>
@@ -48,9 +55,12 @@
 </div>
 <div class="modal-footer">
     <div class="container">
-        <div class="row">
-            <!--<button class="btn col-xs-5" ng-click="ok()">我知道了</button>-->
+        <!--<div class="row">
+            <button class="btn col-xs-5" ng-click="ok()">我知道了</button>
             <button class="btn btn-primary col-xs-6 col-md-5 col-lg-3" ng-click="cancel()">进入虚拟交易</button>
+        </div>-->
+		<div style="text-align:center">
+            <button class="btn btn-primary" ng-click="cancel()">进入虚拟交易</button>
         </div>
     </div>
 </div>
