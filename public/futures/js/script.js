@@ -214,17 +214,17 @@ $(function () {
 				innerSize: '70%',
 				data: [
 					{
-						name:'收益:'+income.toFixed(2),
+						name:'收益:'+income.toFixed(0),
 						color:'#eb6877',
 						y:income
 					},
 					{
-						name:'本金:'+basic.toFixed(2),
+						name:'本金:'+basic.toFixed(0),
 						color:'#dfe9eb',
 						y:basic
 					},
 					{
-						name:'亏损:'+lost.toFixed(2),
+						name:'亏损:'+lost.toFixed(0),
 						color:'#6fd264',
 						y:lost
 					}
