@@ -20,10 +20,10 @@ angular.module('adminApp').controller('AdminPPJUserListCtrl', ['$scope', '$locat
     function pageReset() {
         $scope.totalItems = currentUsers.length;
         $scope.currentPage = 1;
-        vm.pageChanged();
+        $scope.pageChanged();
     }
 
-    vm.pageChanged = function() {
+    $scope.pageChanged = function() {
         var start = ($scope.currentPage - 1) * $scope.itemsPerPage;
         var end = start + $scope.itemsPerPage;
         if (end > $scope.totalItems) {
