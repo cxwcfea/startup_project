@@ -1139,6 +1139,17 @@ var getLossOrderData = function(callback) {
     });
 };
 
+var sales = {
+    '13520978346': '秦亚景',
+    '13488867185': '姜涛',
+    '17709810065': '刘恩泽',
+    '18911347741': '刘瑞',
+    '18511565878': '刘亚东',
+    '15101183931': '孟雪',
+    '18931040286': '魏昊庚',
+    '15710035052': '张丽霞'
+};
+
 function getherSalesData(apply, callback) {
     User.findById(apply.userID, function(err, user) {
         if (err) {
@@ -1146,7 +1157,7 @@ function getherSalesData(apply, callback) {
         }
         var csvData = apply.serialID + ', ' + apply.userMobile + ', ' + apply.amount + ', '
         + apply.deposit + ', ' + apply.profit + ', ' + (apply.deposit + apply.profit) + ', '
-            + moment(apply.endTime).format('YYYYMMDDHHmmss') + ', ' + user.identity.name + '\r\n';
+            + moment(apply.endTime).format('YYYYMMDDHHmmss') + ', ' + sales[user.manager] + '\r\n';
         callback(null, csvData);
     });
 }
