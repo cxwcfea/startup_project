@@ -22,8 +22,8 @@
                         <td><img ng-src="\{{user.wechat.wechat_img}}" width="50" height="50"></td>
                         <td>\{{user.wechat.wechat_name || 'N/A'}}</td>
                         <td>\{{user.wechat.wechat_uuid}}</td>
-                        <td>\{{user.wechat.trader.logged ? '是' : '否'}}</td>
-                        <td>\{{user.wechat.trader.lastCash/100-1000000 | number:2}}</td>
+                        <td>\{{user.wechat.logged ? '是' : '否'}}</td>
+                        <td>\{{user.wechat.trader.lastCash == 0 ? 0 | user.wechat.trader.lastCash/100-1000000 | number:2}}</td>
                     </tr>
                     </tbody>
                 </table>
