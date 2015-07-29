@@ -97,29 +97,31 @@
             </div>
         </div>
         {{#unless tradeTime}}
-            <p class="trader-time-hint text-danger" {{#if tradeTime}}ng-show="close"{{/if}}>现在是非交易时间</p>
+            <p class="trader-time-hint text-danger">现在是非交易时间</p>
+        {{else}}
+            <p class="trader-time-hint text-danger" ng-show="tradeClose">现在是非交易时间</p>
         {{/unless}}
         <div class="opt-btns">
             <div class="btns three" id="J_btns">
-				<div class="circle-btn p {{#unless tradeTime}}circle-btn-disable{{/unless}}" ng-class="{'circle-btn-disable':close}">
-					<div {{#if tradeTime}}ng-class="{'p-outer-btn-pressed':PButtonPressed, 'p-outer-btn':!PButtonPressed}"{{/if}} class="ex-btn {{#unless tradeTime}}outer-btn-disable{{/unless}}">
-						<div id="bp" class="p-inner-btn ex-btn-common {{#unless tradeTime}}inner-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(0)"{{/if}}>
+				<div class="circle-btn p {{#unless tradeTime}}circle-btn-disable{{/unless}}" ng-class="{'circle-btn-disable':tradeClose}">
+					<div {{#if tradeTime}}ng-class="{'p-outer-btn-pressed':PButtonPressed, 'p-outer-btn':!PButtonPressed, 'outer-btn-disable':tradeClose}"{{/if}} class="ex-btn {{#unless tradeTime}}outer-btn-disable{{/unless}}">
+						<div id="bp" class="p-inner-btn ex-btn-common {{#unless tradeTime}}inner-btn-disable{{/unless}}" ng-class="{'inner-btn-disable':tradeClose}" {{#if tradeTime}}ng-click="placeOrder(0)"{{/if}}>
 							平
 						</div>
 					</div>
 					<p class="log-label">可平\{{tradeData.sell}}手</p>
 				</div>
 				<div class="circle-btn z {{#unless tradeTime}}circle-btn-disable{{/unless}}" ng-class="{'circle-btn-disable':close}">
-					<div {{#if tradeTime}}ng-class="{'z-outer-btn-pressed':ZButtonPressed, 'z-outer-btn':!ZButtonPressed}"{{/if}} class="ex-btn {{#unless tradeTime}}outer-btn-disable{{/unless}}">
-						<div id="bz" class="z-inner-btn ex-btn-common {{#unless tradeTime}}inner-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(1)"{{/if}}>
+					<div {{#if tradeTime}}ng-class="{'z-outer-btn-pressed':ZButtonPressed, 'z-outer-btn':!ZButtonPressed, 'outer-btn-disable':tradeClose}"{{/if}} class="ex-btn {{#unless tradeTime}}outer-btn-disable{{/unless}}">
+						<div id="bz" class="z-inner-btn ex-btn-common {{#unless tradeTime}}inner-btn-disable{{/unless}}" ng-class="{'inner-btn-disable':tradeClose}" {{#if tradeTime}}ng-click="placeOrder(1)"{{/if}}>
 							涨
 						</div>
 					</div>
 					<p class="log-label">\{{tradeData.up}}手</p>
 				</div>
 				<div class="circle-btn d {{#unless tradeTime}}circle-btn-disable{{/unless}}" ng-class="{'circle-btn-disable':close}">
-					<div {{#if tradeTime}}ng-class="{'d-outer-btn-pressed':DButtonPressed, 'd-outer-btn':!DButtonPressed}"{{/if}} class="ex-btn {{#unless tradeTime}}outer-btn-disable{{/unless}}">
-						<div id="bd" class="d-inner-btn ex-btn-common {{#unless tradeTime}}inner-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(-1)"{{/if}}>
+					<div {{#if tradeTime}}ng-class="{'d-outer-btn-pressed':DButtonPressed, 'd-outer-btn':!DButtonPressed, 'outer-btn-disable':tradeClose}"{{/if}} class="ex-btn {{#unless tradeTime}}outer-btn-disable{{/unless}}">
+						<div id="bd" class="d-inner-btn ex-btn-common {{#unless tradeTime}}inner-btn-disable{{/unless}}" ng-class="{'inner-btn-disable':tradeClose}" {{#if tradeTime}}ng-click="placeOrder(-1)"{{/if}}>
 							跌
 						</div>
 					</div>
