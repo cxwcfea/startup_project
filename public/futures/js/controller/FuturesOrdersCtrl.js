@@ -16,12 +16,6 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
                 loading = false;
                 $scope.orders = $scope.orders.concat(data.orders);
                 $scope.userInfo = data.user;
-                if (pageNum === 1) {
-                    $window.njPersonChart($scope.originCapital, ($scope.userInfo.lastCash/100));
-                    var delta = $scope.userInfo.lastCash/100 - $scope.originCapital;
-                    $scope.profit = delta > 0 ? delta : 0;
-                    $scope.loss = delta < 0 ? delta : 0;
-                }
                 pageCount = data.pageCount;
             })
             .error(function(data, status) {
