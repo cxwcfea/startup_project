@@ -2328,6 +2328,15 @@ function moveHomsToTonghuashun(req, res) {
     });
 }
 
+function getAllPPJUser(req, res) {
+    User.find({'wechat.logged':true}, function (err, users) {
+        if (err) {
+            return res.status(500).send(err.toString());
+        }
+        res.send(users);
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -2513,6 +2522,8 @@ module.exports = {
         app.post('/admin/api/move_homs_tonghuashun', passportConf.requiresRole('admin'), moveHomsToTonghuashun);
 
         app.get('/admin/api/get_all_user_info', passportConf.requiresRole('admin'), getAllUser);
+
+        app.get('/admin/api/get_all_ppj_user', passportConf.requiresRole('admin'), getAllPPJUser);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
