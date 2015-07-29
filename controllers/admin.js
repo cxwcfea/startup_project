@@ -2329,7 +2329,7 @@ function moveHomsToTonghuashun(req, res) {
 }
 
 function getAllPPJUser(req, res) {
-    User.find({'wechat.logged':true}, function (err, users) {
+    User.find({'wechat':{$exists:true}}, function (err, users) {
         if (err) {
             return res.status(500).send(err.toString());
         }
