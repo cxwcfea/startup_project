@@ -1,7 +1,7 @@
 'use strict';
 angular.module('adminApp').controller('AdminPPJUserListCtrl', ['$scope', '$location', '$routeParams', '$modal', '$http', 'gbNotifier', function($scope, $location, $routeParams, $modal, $http, gbNotifier) {
     var users = {};
-    var currentUsers;
+    $scope.currentUsers;
     $scope.itemsPerPage = 15;
 
     initData();
@@ -9,7 +9,7 @@ angular.module('adminApp').controller('AdminPPJUserListCtrl', ['$scope', '$locat
     function initData() {
         $http.get('/admin/api/get_all_ppj_user')
             .success(function(data, status) {
-                currentUsers = users = data;
+                $scope.currentUsers = users = data;
                 pageReset();
             })
             .error(function(data, status) {
@@ -18,7 +18,7 @@ angular.module('adminApp').controller('AdminPPJUserListCtrl', ['$scope', '$locat
     }
 
     function pageReset() {
-        $scope.totalItems = currentUsers.length;
+        $scope.totalItems = $scope.currentUsers.length;
         $scope.currentPage = 1;
         $scope.pageChanged();
     }
@@ -29,6 +29,6 @@ angular.module('adminApp').controller('AdminPPJUserListCtrl', ['$scope', '$locat
         if (end > $scope.totalItems) {
             end = $scope.totalItems;
         }
-        $scope.showingItems = currentUsers.slice(start, end);
+        $scope.showingItems = $scope.currentUsers.slice(start, end);
     };
 }]);

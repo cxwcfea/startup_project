@@ -19,7 +19,7 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="user in showingItems">
-                        <td><img ng-src="\{{user.wechat.wechat_img}}" width="200" height="200"></td>
+                        <td><img ng-src="\{{user.wechat.wechat_img}}" width="100" height="100"></td>
                         <td>\{{user.wechat.wechat_name || 'N/A'}}</td>
                         <td>\{{user.wechat.wechat_uuid}}</td>
                         <td>\{{user.wechat.logged ? '是' : '否'}}</td>
@@ -28,7 +28,7 @@
                 </table>
             </div>
             <div class="am-cf">
-                共 \{{users.length}} 条记录
+                共 \{{currentUsers.length}} 条记录
                 <div class="am-fr">
                     <pagination previous-text="&lsaquo;" next-text="&rsaquo;" max-size="maxSize" rotate="false" items-per-page="itemsPerPage" total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></pagination>
                 </div>
