@@ -1115,6 +1115,53 @@ function closeAllContract(callback) {
     });
 }
 
+function getherSalesData(apply, callback) {
+    User.findById(apply.userID, function(err, user) {
+        if (err) {
+            callback(null, '');
+        }
+        var csvData = apply.serialID + ', ' + apply.userMobile + ', ' + apply.amount + ', '
+        + apply.deposit + ', ' + apply.profit + ', ' + (apply.deposit + apply.profit) + ', '
+            + moment(apply.endTime).format('YYYYMMDDHHmmss') + ', ' + user.identity.name + '\r\n';
+        callback(null, csvData);
+    });
+}
+
+function lossApplyData(callback) {
+    Apply.find({$and:[{status:3}, {isTrial:false}]}, function(err, applies) {
+        if (err) {
+            return callback(err.toString());
+        }
+        var lossApplies = applies.filter(function(elem) {
+            if (elem.profit + elem.deposit < 0) {
+                return true;
+            }
+            return false;
+        });
+        async.map(lossApplies, getherSalesData, function(err, result) {
+            var options = { encoding: 'utf8', flag: 'w' };
+            var fileWriteStream = fs.createWriteStream("穿仓.csv",  options);
+            fileWriteStream.on("close", function() {
+                console.log("File Closed.");
+            });
+            var csvData = '配资单号, 手机号, 配资金额, 保证金, 盈亏, 亏损, 结束日期, 销售\r\n';
+            fileWriteStream.write(csvData);
+            result.forEach(function (obj) {
+                fileWriteStream.write(obj);
+            });
+            callback(null);
+        });
+        /*
+        lossApplies.forEach(function (obj) {
+            csvData += obj.serialID + ', ' + obj.userMobile + ', ' + obj.amount + ', '
+            + obj.deposit + ', ' + obj.profit + ', ' + obj.isTrial + ', '
+            + (obj.isTrial ? obj.profit : (obj.deposit + obj.profit)) + ', ' + moment(obj.endTime).format('YYYYMMDDHHmmss') + '<br>\n';
+        });
+        res.send(csvData);
+        */
+    });
+}
+
 var options = {};
 mongoose.connect(config.db, options);
 var db = mongoose.connection;
@@ -1348,7 +1395,7 @@ db.once('open', function callback() {
              */
 
             function(callback) {
-                historyApplyData(function(err) {
+                lossApplyData(function(err) {
                     callback(err);
                 });
             }
