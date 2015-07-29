@@ -6,7 +6,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     var HAND = 100;
     var InitCapital = 1000000;
     $scope.data.selectedItem = 1;
-    $scope.close = true;
+    $scope.tradeClose = true;
 
     var now = moment();
 
@@ -17,7 +17,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
 
     if (now < firstEnd) {
         $timeout(function() {
-            $scope.close = true;
+            $scope.tradeClose = true;
         }, firstEnd-now);
     }
 
@@ -32,13 +32,13 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     test.second(0);
 
     $timeout(function() {
-        $scope.close = true;
+        $scope.tradeClose = true;
         alert('I am run');
     }, secondEnd-test);
 
     if (now < secondEnd) {
         $timeout(function() {
-            $scope.close = true;
+            $scope.tradeClose = true;
         }, secondEnd-now);
     }
 
@@ -244,7 +244,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         if (type === 0) {
             forceClose = true;
         }
-        $http.post('/api/futures/create_order', {quantity:quantity, force_close:forceClose})
+        $http.post('/api/futures/create_order', {quantity:quantity, force_tradeClose:forceClose})
             .success(function(data, status) {
                 getUserPositions();
                 var orderType = data.quantity > 0 ? '涨' : '跌';
