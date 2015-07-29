@@ -19,7 +19,7 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="user in showingItems">
-                        <td><img ng-src="\{{user.wechat_img}}" width="50" height="50"></td>
+                        <td><img ng-src="\{{user.wechat.wechat_img}}" width="50" height="50"></td>
                         <td>\{{user.wechat.wechat_name || 'N/A'}}</td>
                         <td>\{{user.wechat.wechat_uuid}}</td>
                         <td>\{{user.wechat.trader.logged ? '是' : '否'}}</td>
