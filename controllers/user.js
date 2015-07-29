@@ -1757,12 +1757,12 @@ function getUserInvestDetail(req, res) {
 
 function transCommission(req, res) {
     var amount = Number(req.body.amount);
-    amount = Math.floor(amount / 100) * 100;
+    //amount = Math.floor(amount / 100) * 100;
     if (amount <= 0) {
         res.status(403);
-        return res.send({error_msg:'佣金不足100'});
+        return res.send({error_msg:'数值必须大于0'});
     } else {
-        User.update({_id: req.user._id}, {$inc: {'finance.balance': amount, 'finance.commission':-amount}}, function (err, numberAffected, raw) {
+        User.update({$and:[{_id: req.user._id}, {'finance.commission':{$gte:amount}}]}, {$inc: {'finance.balance': amount, 'finance.commission':-amount}}, function (err, numberAffected, raw) {
             if (err) {
                 logger.debug('transCommission error:' + err.toString());
                 res.status(500);
