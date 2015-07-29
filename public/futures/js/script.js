@@ -163,10 +163,20 @@ $(function () {
 	
 	window.njPersonChart = function(basic,total) {
 		var income = total - basic;
-		var lost = 0;
+		var pieColor = '#eb6877';
+		var chartTitle = '总资产';
+		var chartContent1 = '收益:';
+		var chartContent2 = '本金:';
+		var chartContent2Num = basic;
+		var chartTitleNum = total.toFixed(0);
 		if (income < 0) {
-			lost = 0 - income;
-			income = 0;
+			income = 0 - income;
+			pieColor = '#6fd264';
+			chartTitle = '本金';
+			chartContent1 = '亏损:';
+			chartContent2 = '总资产:';
+			chartContent2Num = basic - income;
+			chartTitleNum = basic.toFixed(0);
 		}
 		$('#sectorChart').highcharts({
 			chart: {
@@ -175,7 +185,7 @@ $(function () {
 				plotShadow: false
 			},
 			title: {
-				text: total.toFixed(0) +'<br>总资产',
+				text: chartTitleNum + '<br>' + chartTitle,
 				align: 'center',
 				verticalAlign: 'middle',
 				x: 0,
@@ -216,23 +226,18 @@ $(function () {
             },*/
 			series: [{
 				type: 'pie',
-				name: '总资产',
+				name: chartTitle,
 				innerSize: '70%',
 				data: [
 					{
-						name:'收益:'+income.toFixed(0),
-						color:'#eb6877',
+						name:chartContent1+income.toFixed(0),
+						color:pieColor,
 						y:income
 					},
 					{
-						name:'本金:'+basic.toFixed(0),
+						name:chartContent2+chartContent2Num.toFixed(0),
 						color:'#dfe9eb',
-						y:basic
-					},
-					{
-						name:'亏损:'+lost.toFixed(0),
-						color:'#6fd264',
-						y:lost
+						y:chartContent2Num
 					}
 				]
 			}],
