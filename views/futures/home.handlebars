@@ -104,8 +104,8 @@
         <div class="opt-btns">
             <div class="btns three" id="J_btns">
 				<div class="circle-btn p {{#unless tradeTime}}circle-btn-disable{{/unless}}" ng-class="{'circle-btn-disable':tradeClose}">
-					<div {{#if tradeTime}}ng-class="{'p-outer-btn-pressed':PButtonPressed, 'p-outer-btn':!PButtonPressed}"{{/if}} class="ex-btn {{#unless tradeTime}}outer-btn-disable{{/unless}}">
-						<div id="bp" class="p-inner-btn ex-btn-common {{#unless tradeTime}}inner-btn-disable{{/unless}}" {{#if tradeTime}}ng-click="placeOrder(0)"{{/if}}>
+					<div {{#if tradeTime}}ng-class="{'p-outer-btn-pressed':PButtonPressed, 'p-outer-btn':!PButtonPressed, 'outer-btn-disable':tradeClose}"{{/if}} class="ex-btn {{#unless tradeTime}}outer-btn-disable{{/unless}}">
+						<div id="bp" class="p-inner-btn ex-btn-common {{#unless tradeTime}}inner-btn-disable{{/unless}}" ng-class="{'inner-btn-disable':tradeClose}" {{#if tradeTime}}ng-click="placeOrder(0)"{{/if}}>
 							平
 						</div>
 					</div>

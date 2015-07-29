@@ -212,6 +212,9 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     $scope.currentOrder = null;
 
     $scope.placeOrder = function(type) {
+        if ($scope.tradeClose) {
+            return;
+        }
         if (type == 0) {
             $scope.PButtonPressed = true;
             $timeout(function() {
