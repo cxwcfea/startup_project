@@ -136,6 +136,12 @@
 	<div style="height:210px;margin-left:15px;margin-right:15px;margin-top:37px;overflow:hide;border-radius:5px">
 		<div style="height:100%;width:100%;background-color:#ffffff"></div>
 	</div>
+	<div ng-show="status == 1" style="width:80px;height:80px;border-radius:100px;left:33px;top:356px;background-color:#ffffff;position:absolute"></div>
+	<div ng-show="status == 2" style="width:80px;height:80px;border-radius:100px;left:50%;top:356px;margin-left:-40px;background-color:#ffffff;position:absolute"></div>
+	<div ng-show="status == 3" style="width:80px;height:80px;border-radius:100px;right:33px;top:356px;background-color:#ffffff;position:absolute"></div>
+	<div ng-show="status == 4" style="width:80px;height:80px;border-radius:100px;left:50%;top:356px;margin-left:-40px;background-color:#ffffff;position:absolute"></div>
+</div>
+<div style="" ng-show="status != 0" style="width:100%;height:500px;position:absolute;top:0;left:0">
 	<div ng-show="status == 1" ng-click="status = 2" style="width:80px;height:80px;border-radius:100px;left:33px;top:356px;background-color:#ffffff;position:absolute"></div>
 	<div ng-show="status == 2" ng-click="status = 3" style="width:80px;height:80px;border-radius:100px;left:50%;top:356px;margin-left:-40px;background-color:#ffffff;position:absolute"></div>
 	<div ng-show="status == 3" ng-click="status = 4" style="width:80px;height:80px;border-radius:100px;right:33px;top:356px;background-color:#ffffff;position:absolute"></div>
