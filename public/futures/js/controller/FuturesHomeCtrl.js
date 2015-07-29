@@ -6,7 +6,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     var HAND = 100;
     var InitCapital = 1000000;
     $scope.data.selectedItem = 1;
-    $scope.tradeClose = true;
+    $scope.tradeClose = false;
 
     var now = moment();
 
@@ -33,7 +33,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
 
     $timeout(function() {
         $scope.tradeClose = true;
-        alert('I am run');
     }, secondEnd-test);
 
     if (now < secondEnd) {
