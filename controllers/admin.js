@@ -2329,7 +2329,11 @@ function moveHomsToTonghuashun(req, res) {
 }
 
 function getAllPPJUser(req, res) {
-    User.find({'wechat.logged':true}, function (err, users) {
+    var query = User.find({});
+    query.exists('wechat.wechat_uuid');
+    query.populate('wechat.trader');
+    query.select('wechat');
+    query.exec(function (err, users) {
         if (err) {
             return res.status(500).send(err.toString());
         }
