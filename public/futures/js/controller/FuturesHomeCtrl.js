@@ -32,6 +32,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     test.second(0);
 
     $timeout(function() {
+        $scope.close = true;
         alert('I am run');
     }, secondEnd-test);
 
