@@ -6,7 +6,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     var HAND = 100;
     var InitCapital = 1000000;
     $scope.data.selectedItem = 1;
-    $scope.close = false;
+    $scope.close = true;
 
     var now = moment();
 
