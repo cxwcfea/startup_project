@@ -199,6 +199,15 @@ function getOrderCount(fn) {
     mockTrader.Order.count({}, fn);
 }
 
+function getUserInfo(req, res) {
+    mockTrader.getUserInfo({user_id:req.user.wechat.trader}, function(err, user) {
+        if (err) {
+            return res.status(500).send({error_msg:err.toString()});
+        }
+        res.send(user);
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/api/futures/user_rank', fetchUserRankData);
@@ -210,6 +219,8 @@ module.exports = {
         app.get('/api/futures/get_orders', util.page(getOrderCount, 15), getOrders);
 
         app.get('/api/futures/get_user_profit', getUserProfit);
+
+        app.get('/api/futures/user_info', getUserInfo);
 
         app.get('/futures', passportConf.isWechatAuthenticated, home);
 
