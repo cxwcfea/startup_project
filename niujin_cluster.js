@@ -19,7 +19,7 @@ if(cluster.isMaster){
             task.scheduleOperationDataCollectJob();
             task.scheduleFuturesRiskControlJob();
             task.scheduleFuturesForceCloseJob();
-            task.scheduleResetWechatUserJob();
+            //task.scheduleResetWechatUserJob();
         }
     });
 
