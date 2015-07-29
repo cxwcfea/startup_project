@@ -78,6 +78,8 @@ passport.use(new wechatStrategy({
             if (!user.wechat.logged) {
                 user.wechat.logged = true;
                 user.score += 5;
+                user.wechat.wechat_name = profile.nickname;
+                user.wechat.wechat_img = profile.headimgurl;
                 user.save(function(err) {
                     done(err, user, profile);
                 });
