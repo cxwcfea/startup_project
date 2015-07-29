@@ -1,5 +1,5 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window', '$http', function($scope, $window, $http) {
+angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window', '$http', '$location', function($scope, $window, $http, $location) {
     $scope.user = $scope.data.currentUser;
     $scope.originCapital = 1000000;
 
@@ -13,4 +13,8 @@ angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window',
         .error(function(data, status) {
             alert('load user info error');
         });
+
+    $scope.showOrders = function() {
+        $location.path('/orders');
+    };
 }]);
