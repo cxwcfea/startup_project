@@ -26,6 +26,13 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     secondEnd.minute(15);
     secondEnd.second(0);
 
+    var test = moment();
+    test.hour(15);
+    test.minute(14);
+    test.second(0);
+
+    alert(secondEnd-test);
+
     if (now < secondEnd) {
         $timeout(function() {
             $scope.close = true;
