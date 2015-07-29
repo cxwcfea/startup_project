@@ -118,7 +118,7 @@ $(function () {
         }
         wx.onMenuShareAppMessage({
             title: '股指拍拍机',
-            desc: name + '玩拍拍机赚了' + profit.toFixed(0) + '，赶紧来PK！',
+            desc: '我玩股指拍拍机获得100万交易本金，快来一起成为交易高手吧！',
             link: 'http://www.niujin.cn/futures/',
             imgUrl: 'http://www.niujin.cn/futures/images/logo.png',
             type: 'link',
@@ -132,7 +132,7 @@ $(function () {
         });
 
         wx.onMenuShareTimeline({
-            title: '拍拍机',
+            title: '股指拍拍机成就您交易高手梦想',
             link: 'http://www.niujin.cn/futures',
             imgUrl: 'http://www.niujin.cn/futures/images/logo.png',
             success: function () {
