@@ -56,7 +56,7 @@ angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window'
             name: '我的',
             img: '/futures/images/foot4.png',
             selectedImg: '/futures/images/foot4-dark.png',
-            page: '/orders'
+            page: '/user'
         }
     ];
 
