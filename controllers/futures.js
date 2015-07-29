@@ -201,15 +201,15 @@ function getOrderCount(fn) {
 
 module.exports = {
     registerRoutes: function(app, passportConf) {
-        app.get('/api/futures/user_rank', fetchUserRankData);
+        app.get('/api/futures/user_rank', passportConf.isWechatAuthenticated, fetchUserRankData);
 
-        app.post('/api/futures/create_order', placeOrder);
+        app.post('/api/futures/create_order', passportConf.isWechatAuthenticated, placeOrder);
 
-        app.get('/api/futures/get_positions', getPositions);
+        app.get('/api/futures/get_positions', passportConf.isWechatAuthenticated, getPositions);
 
-        app.get('/api/futures/get_orders', util.page(getOrderCount, 15), getOrders);
+        app.get('/api/futures/get_orders', passportConf.isWechatAuthenticated, util.page(getOrderCount, 15), getOrders);
 
-        app.get('/api/futures/get_user_profit', getUserProfit);
+        app.get('/api/futures/get_user_profit', passportConf.isWechatAuthenticated, getUserProfit);
 
         app.get('/futures', passportConf.isWechatAuthenticated, home);
 
