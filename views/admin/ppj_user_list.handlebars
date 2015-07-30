@@ -4,6 +4,11 @@
 
 <div class="am-g">
     <div class="am-u-sm-12">
+        <div class="am-btn-toolbar">
+            <div class="am-btn-group am-btn-group-xs">
+                <button ng-repeat="item in queryItems" type="button" class="am-btn am-btn-default" ng-click="queryItem(item)"> \{{item.name}}</button>
+            </div>
+        </div>
     </div>
 </div>
 
