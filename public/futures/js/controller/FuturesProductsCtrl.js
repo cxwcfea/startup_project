@@ -58,17 +58,15 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             status: 0,
             alias: '黄金',
             time: '工作日06:00-次日05:00'
+        },
+        {
+            value: 3,
+            name: 'BABA',
+            type: '美 股',
+            intro: '中概股，晚上交易，涨跌均可买',
+            status: 0,
+            time: '工作日09:15-11:30  13:00-15:15'
         }
-        /*
-         {
-         value: 1,
-         name: 'BABA',
-         type: '美 股',
-         intro: '中概股，晚上交易，涨跌均可买',
-         status: 0,
-         time: '工作日09:15-11:30  13:00-15:15'
-         },
-         */
     ];
 	
 	$scope.openQrcodePopup = function (size) {

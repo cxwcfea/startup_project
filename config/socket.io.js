@@ -22,6 +22,12 @@ var products = [
         historyKey: 'mt://commodity/XAUUSDHIST',
         currKey: 'mt://commodity/XAUUSD',
         historyData: []
+    },
+    {
+        name: 'BABA',
+        historyKey: 'mt://stock/BABA',
+        currKey: 'mt://stock/BABA',
+        historyData: []
     }
 ];
 
