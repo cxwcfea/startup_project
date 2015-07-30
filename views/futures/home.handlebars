@@ -162,9 +162,15 @@
 		<p>若您涨跌预测准确，“持仓盈亏”会为正值，代表您有盈利<p>
 		<p>如预测错误，则会亏损</p>
 	</div>
+	<div ng-show="status == 3" style="left:50%;top:325px;position:absolute;color:#ffffff;font-size:16px;width:60px;text-align:center">
+		<p>点我继续</p>
+	</div>
 	<div ng-show="status == 4" ng-click="status = 0" style="width:80px;height:80px;border-radius:100px;left:50%;top:356px;margin-left:-40px;position:absolute"></div>
 	<div ng-show="status == 4" style="top:270px;text-align:center;color:#ffffff;position:absolute;font-size:16px;width:100%">
 		<p>盈利时您可以点击“平”按钮将盈利转移至本金账户<p>
 		<p>亏损时您也可以择时平仓及时止损</p>
+	</div>
+	<div ng-show="status == 4" style="left:50%;top:440px;position:absolute;color:#ffffff;font-size:16px;width:80px;text-align:center">
+		<p>点我继续</p>
 	</div>
 </div>
