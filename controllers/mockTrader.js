@@ -108,8 +108,8 @@ function closeAll(userId, portfolio, income, contractInfo, reset, cb) {
             console.log('user not found when closeAll');
             return cb(err.toString());
         }
-        var oldUserCash = user.cash;
-        var oldUserLastCash = user.lastCash;
+        //var oldUserCash = user.cash;
+        //var oldUserLastCash = user.lastCash;
         if (reset == 1) {
           // Reset user
           user.cash = user.deposit + user.debt;
@@ -118,6 +118,11 @@ function closeAll(userId, portfolio, income, contractInfo, reset, cb) {
           user.cash += income;
         }
         user.lastCash = user.cash;
+        user.save(function(err) {
+            if (err) {
+                console.log(err);
+                return cb(err.toString());
+                /*
         User.update({_id: user._id, cash: oldUserCash, lastCash: oldUserLastCash},
             {$set:{cash: user.cash, lastCash: user.lastCash}}, function(err, numberAffected, raw) {
             if (err || numberAffected != 1) {
@@ -125,6 +130,7 @@ function closeAll(userId, portfolio, income, contractInfo, reset, cb) {
                 //res.send({code: 5, "msg": err.errmsg});
                 cb({code:2, msg:err? err.toString(): "Placing order too fast"});
                 return;
+                */
             }
             for (var p in portfolio) {
                 var portf = portfolio[p];
