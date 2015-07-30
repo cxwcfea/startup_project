@@ -69,13 +69,14 @@
         text-decoration: none;
     }
     .user-items .item-list .item {
-        width: 100%;
+        margin-left: 10px;
+		margin-right: 10px;
         font-weight: 300;
         padding: 0.4em;
         font-size: medium;
-        opacity: 0.6;
-        background-color: gray;
+        background-color: #ffffff;
         margin-top: 20px;
+		border-radius: 5px;
     }
 </style>
 <div class="orders-wrapper">
@@ -112,17 +113,13 @@
     </div>
     <div class="user-items">
         <div class="item-list">
-            <div class="item">
-                <a href="" ng-click="showOrders()">
-                    交易记录
-                    <i class="glyphicon glyphicon-chevron-right"></i>
-                </a>
+            <div class="item" ng-click="showOrders()">
+                交易记录
+                <i class="glyphicon glyphicon-chevron-right"></i>
             </div>
             <div class="item">
-                <a href="">
-                    获取帮助
-                    <i class="glyphicon glyphicon-chevron-right"></i>
-                </a>
+                获取帮助
+                <i class="glyphicon glyphicon-chevron-right"></i>
             </div>
         </div>
     </div>
