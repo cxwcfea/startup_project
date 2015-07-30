@@ -1,8 +1,8 @@
 'use strict';
 angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window', '$location', function($scope, $window, $location) {
     $scope.data = {};
-    //$scope.data.currentUser = $window.bootstrappedUserObject;
-    
+    $scope.data.currentUser = $window.bootstrappedUserObject;
+    /*
     $scope.data.currentUser = {
         score: 5,
         wechat: {
@@ -23,7 +23,7 @@ angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window'
             }
         }
     };
-    
+    */
 
 	$scope.data.status = 0;
 	
