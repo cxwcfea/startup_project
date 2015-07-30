@@ -7,8 +7,8 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     var InitCapital = 1000000;
     $scope.data.selectedItem = 1;
     $scope.tradeClose = false;
-	
-	//$scope.status = 0;/*help modal use*/
+
+	$scope.browserHeight = document.documentElement.clientHeight;
 
     var now = moment();
 
