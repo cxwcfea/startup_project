@@ -149,7 +149,7 @@
 </div>
 <div ng-show="data.status != 0" style="width:100%;position:absolute;top:0;left:0;opacity:0.8" ng-class="{'black-height-full':(browserHeight > 557), 'black-height-max':(browserHeight <= 557)}">
 	<div ng-show="data.status == 1" ng-click="data.status = 2" style="width:80px;height:80px;border-radius:100px;left:33px;top:356px;position:absolute"></div>
-	<div ng-show="data.status == 1" style="left:130px;top:360px;width:150px;background-color:#000000;color:#ffffff;position:absolute;font-size:16px;border-radius:5px;padding:5px">
+	<div ng-show="data.status == 1" style="left:130px;top:360px;width:155px;background-color:#000000;color:#ffffff;position:absolute;font-size:16px;border-radius:5px;padding:5px">
 		<p>预测曲线涨跌，觉得曲线会上涨，就点击“涨”按钮<p>
 		<p>可点击多次购买多手</p>
 	</div>
@@ -158,7 +158,7 @@
 		<p>点我继续</p>
 	</div>
 	<div ng-show="data.status == 2" ng-click="data.status = 3" style="width:80px;height:80px;border-radius:100px;right:33px;top:356px;position:absolute"></div>
-	<div ng-show="data.status == 2" style="right:130px;top:380px;width:150px;background-color:#000000;color:#ffffff;position:absolute;font-size:16px;border-radius:5px;padding:5px">
+	<div ng-show="data.status == 2" style="right:130px;top:380px;width:155px;background-color:#000000;color:#ffffff;position:absolute;font-size:16px;border-radius:5px;padding:5px">
 		<p>若觉得曲线会下跌，就点“跌”按钮<p>
 	</div>
 	<div ng-show="data.status == 2" style="right:33px;top:440px;position:absolute;color:#ffffff;font-size:16px;width:80px;text-align:center">
@@ -168,8 +168,7 @@
 	<div ng-show="data.status == 3" ng-click="data.status = 4" style="width:80px;height:45px;border-radius:5px;left:50%;top:275px;margin-left:-40px;position:absolute"></div>
 	<div ng-show="data.status == 3" style="top:160px;color:#ffffff;position:absolute;font-size:16px;width:100%">
 		<div style="width:225px;margin:0 auto;background-color:#000000;border-radius:5px;padding:5px">
-			<p>若您涨跌预测准确，</p>
-			<p>“持仓盈亏”会为正值，代表您有盈利<p>
+			<p>若您涨跌预测准确，“持仓盈亏”会为正值，代表您有盈利<p>
 			<p>如预测错误，则会亏损</p>
 		</div>
 	</div>
