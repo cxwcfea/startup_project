@@ -222,7 +222,7 @@ module.exports = {
 
         app.get('/api/futures/user_info', getUserInfo);
 
-        app.get('/futures', passportConf.isWechatAuthenticated, home);
+        app.get('/futures', /*passportConf.isWechatAuthenticated,*/ home);
 
         app.get('/futures/test', test);
 
