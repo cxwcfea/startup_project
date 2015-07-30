@@ -8,6 +8,22 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
     $scope.orders = [];
     var loading = false;
 
+    $scope.currentItem = 0;
+    $scope.items = [
+        {
+            name: '股指',
+            value: 0
+        },
+        {
+            name: '美元',
+            value: 1
+        },
+        {
+            name: '欧元',
+            value: 2
+        }
+    ];
+
     function getOrderForPage(pageNum) {
         loading = true;
         $http.get('/api/futures/get_orders?page=' + pageNum)
@@ -33,6 +49,10 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
             return;
         }
         getOrderForPage(currentPage);
+    };
+
+    $scope.changeItem = function(item) {
+        $scope.currentItem = item.value;
     };
 
 }]);

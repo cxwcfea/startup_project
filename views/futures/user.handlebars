@@ -65,6 +65,18 @@
     .orders-wrapper .user-items {
         border-top: 1px dotted #969696;
     }
+    .user-items .item-list .item a {
+        text-decoration: none;
+    }
+    .user-items .item-list .item {
+        width: 100%;
+        font-weight: 300;
+        padding: 0.4em;
+        font-size: medium;
+        opacity: 0.6;
+        background-color: gray;
+        margin-top: 20px;
+    }
 </style>
 <div class="orders-wrapper">
     <div class="wall-paper">
@@ -99,11 +111,19 @@
         <div id="sectorChart" class="chart"></div>
     </div>
     <div class="user-items">
-        <div class="list-group">
-            <a href="" class="list-group-item active" ng-click="showOrders()">
-                交易记录
-            </a>
-            <a href="" class="list-group-item">获取帮助</a>
+        <div class="item-list">
+            <div class="item">
+                <a href="" ng-click="showOrders()">
+                    交易记录
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                </a>
+            </div>
+            <div class="item">
+                <a href="">
+                    获取帮助
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                </a>
+            </div>
         </div>
     </div>
 </div>

@@ -11,14 +11,12 @@
 		line-height:60px;
 	}
 </style>
-<div class="container">
-    <div class="row">
-        <ul class="nav nav-tabs">
-            <li role="presentation" class="active">股指</li>
-            <li role="presentation">Profile</li>
-            <li role="presentation">Messages</li>
-        </ul>
-    </div>
+<div class="nav-tabs">
+    <ul>
+        <li ng-repeat="item in items" ng-class="{current:item.value === currentItem}">
+            <a ng-click="changeItem(item)">\{{item.name}}</a>
+        </li>
+    </ul>
 </div>
 <div class="orders-wrapper">
     <div class="records">
