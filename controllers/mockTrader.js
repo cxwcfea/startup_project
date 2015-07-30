@@ -117,96 +117,101 @@ function getCosts(stock_price, quantity, position, total_point, total_deposit) {
     return {raw: raw, fee: fee, open: locked_cash, locked_cash: locked_cash, point:point_diff, deposit:deposit_diff, profit:profit, net_profit:net_profit};
 }
 
-function closeAll(userId, portfolio, income, contractInfo, reset, cb) {
+function closeAll(userId, portfolio, income, contractInfo, reset, cb, lock) {
     var asyncObj = {remaining: portfolio.length, value: 0, has_error: false, errmsg:""};
-    User.findById(userId, function(err, user) {
-        if (err) {
-            console.log(err);
-            return cb(err.toString());
-        }
-        if (!user) {
-            console.log('user not found when closeAll');
-            return cb(err.toString());
-        }
-        var oldUserCash = user.cash;
-        var oldUserLastCash = user.lastCash;
-        if (reset == 1) {
-          // Reset user
-          user.cash = user.deposit + user.debt;
-        } else {
-          // Close user
-          user.cash += income;
-        }
-        user.lastCash = user.cash;
-        User.update({_id: user._id, cash: oldUserCash, lastCash: oldUserLastCash},
-            {$set:{cash: user.cash, lastCash: user.lastCash}}, function(err, numberAffected, raw) {
-            if (err || numberAffected != 1) {
-                 console.log(err);
-                //res.send({code: 5, "msg": err.errmsg});
-                cb({code:2, msg:err? err.toString(): "Placing order too fast"});
-                return;
-            }
-            for (var p in portfolio) {
-                var portf = portfolio[p];
-                console.log(contractInfo);
-                var costs = getCosts(contractInfo[portf.contractId].LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
-                var diffLong = 0;
-                var diffShort = 0;
-                if (-portf.quantity > 0) diffLong = Math.abs(portf.quantity);
-                if (-portf.quantity < 0) diffShort = Math.abs(portf.quantity);
-                Portfolio.update({_id: portf._id},
-                    {
-                        $set:{quantity:0, longQuantity: 0, shortQuantity: 0, total_point:0, total_deposit:0},
-                        $inc:{fee: costs.fee}
-                    },
-                    function(err, numberAffected, raw) {
-                        asyncObj.remaining -= 1;
-                        if (err || !numberAffected) {
-                            console.log(err);
-                            asyncObj.has_error = true;
-                            asyncObj.errmsg = err.errmsg;
-                        }
-                        if (asyncObj.has_error) {
-                            if (asyncObj.remaining <= 0){
-                                //res.send({code: -6, "msg": asyncObj.errmsg});
-                                cb(asyncObj.errmsg);
-                            }
-                            return;
-                        }
-                        // create order
-                        var order = new Order({
-                            contractId: portf.contractId,
-                            userId: userId,
-                            quantity: -portf.quantity,
-                            price: contractInfo[portf.contractId].LastPrice,
-                            fee: costs.fee,
-                            lockedCash: costs.locked_cash,
-                            profit: costs.net_profit
-                        });
-                        order.save(function(err) {
-                            if (err) {
-                                console.log(err);
-                                asyncObj.has_error = true;
-                            }
-                            if (asyncObj.has_error) {
-                                if (asyncObj.remaining <= 0){
-                                    //res.send({code: -7, "msg": asyncObj.errmsg});
-                                    cb(asyncObj.errmsg);
-                                }
-                                return;
-                            }
-                            if (asyncObj.remaining > 0) {
-                                console.log("Still counting: " + asyncObj);
-                                return;
-                            }
-                            //console.log("Completed: " + asyncObj);
-                            // all set
-                            cb(null, order);
-                        });
-                });
-            }
-        });
-    });
+      User.findById(userId, function(err, user) {
+          if (err) {
+              console.log(err);
+              cb(err.toString());
+              return lock.unlock();
+          }
+          if (!user) {
+              console.log('user not found when closeAll');
+              cb(err.toString());
+              return lock.unlock();
+          }
+          var oldUserCash = user.cash;
+          var oldUserLastCash = user.lastCash;
+          if (reset == 1) {
+            // Reset user
+            user.cash = user.deposit + user.debt;
+          } else {
+            // Close user
+            user.cash += income;
+          }
+          user.lastCash = user.cash;
+          User.update({_id: user._id, cash: oldUserCash, lastCash: oldUserLastCash},
+              {$set:{cash: user.cash, lastCash: user.lastCash}}, function(err, numberAffected, raw) {
+              if (err || numberAffected != 1) {
+                   console.log(err);
+                  //res.send({code: 5, "msg": err.errmsg});
+                  cb({code:2, msg:err? err.toString(): "Placing order too fast"});
+                  return lock.unlock();
+              }
+              for (var p in portfolio) {
+                  var portf = portfolio[p];
+                  console.log(contractInfo);
+                  var costs = getCosts(contractInfo[portf.contractId].LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
+                  var diffLong = 0;
+                  var diffShort = 0;
+                  if (-portf.quantity > 0) diffLong = Math.abs(portf.quantity);
+                  if (-portf.quantity < 0) diffShort = Math.abs(portf.quantity);
+                  Portfolio.update({_id: portf._id},
+                      {
+                          $set:{quantity:0, longQuantity: 0, shortQuantity: 0, total_point:0, total_deposit:0},
+                          $inc:{fee: costs.fee}
+                      },
+                      function(err, numberAffected, raw) {
+                          asyncObj.remaining -= 1;
+                          if (err || !numberAffected) {
+                              console.log(err);
+                              asyncObj.has_error = true;
+                              asyncObj.errmsg = err.errmsg;
+                          }
+                          if (asyncObj.has_error) {
+                              if (asyncObj.remaining <= 0){
+                                  //res.send({code: -6, "msg": asyncObj.errmsg});
+                                  cb(asyncObj.errmsg);
+                                  lock.unlock();
+                              }
+                              return;
+                          }
+                          // create order
+                          var order = new Order({
+                              contractId: portf.contractId,
+                              userId: userId,
+                              quantity: -portf.quantity,
+                              price: contractInfo[portf.contractId].LastPrice,
+                              fee: costs.fee,
+                              lockedCash: costs.locked_cash,
+                              profit: costs.net_profit
+                          });
+                          order.save(function(err) {
+                              if (err) {
+                                  console.log(err);
+                                  asyncObj.has_error = true;
+                              }
+                              if (asyncObj.has_error) {
+                                  if (asyncObj.remaining <= 0){
+                                      //res.send({code: -7, "msg": asyncObj.errmsg});
+                                      cb(asyncObj.errmsg);
+                                      lock.unlock();
+                                  }
+                                  return;
+                              }
+                              if (asyncObj.remaining > 0) {
+                                  console.log("Still counting: " + asyncObj);
+                                  return;
+                              }
+                              //console.log("Completed: " + asyncObj);
+                              // all set
+                              cb(null, order);
+                              return lock.unlock();
+                          });
+                  });
+              }
+          });
+      });
 }
 
 function setStatus(userId, status) {
@@ -223,103 +228,111 @@ function setStatus(userId, status) {
 }
 
 function windControl(userId, forceClose, cb) {
-    User.findOne({$and: [{_id: userId}, {status: 0}]}, function(err, user) {
-        if (err) {
-            console.log(err);
-            //res.send({code: -1, "msg": err.errmsg});
-            cb(err.toString());
-            return;
-        }
-        if (!user) {
-            console.log('no available user');
-            //res.send({code: -1, "msg": err.errmsg});
-            cb('no available user');
-            return;
-        }
-        Portfolio.find({userId: userId}, function(err, portfolio) {
-            if (err) {
-                console.log(err);
-                //res.send({code: -2, "msg": err.errmsg});
-                cb(err.toString());
-                return;
-            }
-            if (!portfolio) {
-                console.log('no available portfolio');
-                //res.send({code: -2, "msg": err.errmsg});
-                cb('no available portfolio');
-                return;
-            }
-            var asyncObj = {remaining: portfolio.length, value: 0, has_error: false, errmsg:""};
-            var contractInfo = {};
+    var resource = 'mt://lock/user/' + data.user_id;
+    var ttl = 10000;
+    redlock.lock(resource, ttl).then(function(lock) {
+      User.findOne({$and: [{_id: userId}, {status: 0}]}, function(err, user) {
+          if (err) {
+              console.log(err);
+              //res.send({code: -1, "msg": err.errmsg});
+              cb(err.toString());
+              return lock.unlock();
+          }
+          if (!user) {
+              console.log('no available user');
+              //res.send({code: -1, "msg": err.errmsg});
+              cb('no available user');
+              return lock.unlock();
+          }
+          Portfolio.find({userId: userId}, function(err, portfolio) {
+              if (err) {
+                  console.log(err);
+                  //res.send({code: -2, "msg": err.errmsg});
+                  cb(err.toString());
+                  return lock.unlock();
+              }
+              if (!portfolio) {
+                  console.log('no available portfolio');
+                  //res.send({code: -2, "msg": err.errmsg});
+                  cb('no available portfolio');
+                  return lock.unlock();
+              }
+              var asyncObj = {remaining: portfolio.length, value: 0, has_error: false, errmsg:""};
+              var contractInfo = {};
 
-            for (var p in portfolio) {
-                var portf = portfolio[p];
-                Contract.findOne({_id: portf.contractId}, function(err, contract) {
-                    asyncObj.remaining -= 1;
-                    if (err || !contract) {
-                        console.log(err);
-                        console.log(contract);
-                        console.log(portf);
-                        asyncObj.has_error = true;
-                        if (err) asyncObj.errmsg = err.errmsg;
-                    }
-                    if (asyncObj.has_error) {
-                        if (asyncObj.remaining <= 0){
-                            //res.send({code: -3, "msg": asyncObj.errmsg});
-                            cb(asyncObj.errmsg);
-                        }
-                        return;
-                    }
-                    global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
-                        if (err || !priceInfoString) {
-                            console.log(err);
-                            asyncObj.has_error = true;
-                            if (err) asyncObj.errmsg = err.errmsg;
-                        }
-                        if (asyncObj.has_error) {
-                            if (asyncObj.remaining <= 0){
-                                //res.send({code: -4, "msg": asyncObj.errmsg});
-                                cb(asyncObj.errmsg);
-                            }
-                            return;
-                        }
-                        var priceInfo = JSON.parse(priceInfoString);
-                        priceInfo.LastPrice *= 100;
+              for (var p in portfolio) {
+                  var portf = portfolio[p];
+                  Contract.findOne({_id: portf.contractId}, function(err, contract) {
+                      asyncObj.remaining -= 1;
+                      if (err || !contract) {
+                          console.log(err);
+                          console.log(contract);
+                          console.log(portf);
+                          asyncObj.has_error = true;
+                          if (err) asyncObj.errmsg = err.errmsg;
+                      }
+                      if (asyncObj.has_error) {
+                          if (asyncObj.remaining <= 0){
+                              //res.send({code: -3, "msg": asyncObj.errmsg});
+                              cb(asyncObj.errmsg);
+                              lock.unlock();
+                          }
+                          return;
+                      }
+                      global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
+                          if (err || !priceInfoString) {
+                              console.log(err);
+                              asyncObj.has_error = true;
+                              if (err) asyncObj.errmsg = err.errmsg;
+                          }
+                          if (asyncObj.has_error) {
+                              if (asyncObj.remaining <= 0){
+                                  //res.send({code: -4, "msg": asyncObj.errmsg});
+                                  cb(asyncObj.errmsg);
+                                  lock.unlock();
+                              }
+                              return;
+                          }
+                          var priceInfo = JSON.parse(priceInfoString);
+                          priceInfo.LastPrice *= 100;
 
-                        contractInfo[portf.contractId] = priceInfo;
-                        var costs = getCosts(priceInfo.LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
-                        asyncObj.value -= costs.open;
-                        if (asyncObj.remaining > 0) {
-                            console.log("Still counting: " + asyncObj);
-                            return;
-                        }
-                        //console.log("Completed: " + asyncObj);
-                        var income = asyncObj.value;
-                        console.log("User info: " + userId + ", " + user.cash + ", " + income + ", " + user.close);
-                        if (!forceClose && user.cash + income > user.close) {
-                            // No risk
-                            console.log("No risk");
-                            cb(null);
-                        } else {
-                            if (income > 0) {
-                                // Close all positions
-                                console.log("Closing user");
-                                if (!forceClose)
-                                  // Have to close
-                                  // setStatus(userId, 1);  // cannot buy
-                                  closeAll(userId, portfolio, income, contractInfo, 1, cb);
-                                else
-                                  // Force close
-                                  closeAll(userId, portfolio, income, contractInfo, 0, cb);
-                            } else {
-                                console.log("Closed");
-                                cb(null);
-                            }
-                        }
-                    });
-                });
-            }
-        });
+                          contractInfo[portf.contractId] = priceInfo;
+                          var costs = getCosts(priceInfo.LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
+                          asyncObj.value -= costs.open;
+                          if (asyncObj.remaining > 0) {
+                              console.log("Still counting: " + asyncObj);
+                              return;
+                          }
+                          //console.log("Completed: " + asyncObj);
+                          var income = asyncObj.value;
+                          console.log("User info: " + userId + ", " + user.cash + ", " + income + ", " + user.close);
+                          if (!forceClose && user.cash + income > user.close) {
+                              // No risk
+                              console.log("No risk");
+                              cb(null);
+                              return lock.unlock();
+                          } else {
+                              if (income > 0) {
+                                  // Close all positions
+                                  console.log("Closing user");
+                                  if (!forceClose)
+                                    // Have to close
+                                    // setStatus(userId, 1);  // cannot buy
+                                    closeAll(userId, portfolio, income, contractInfo, 1, cb, lock);
+                                  else
+                                    // Force close
+                                    closeAll(userId, portfolio, income, contractInfo, 0, cb, lock);
+                              } else {
+                                  console.log("Closed");
+                                  cb(null);
+                                  return lock.unlock();
+                              }
+                          }
+                      });
+                  });
+              }
+          });
+      });
     });
 }
 
