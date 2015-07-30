@@ -2,6 +2,7 @@
 angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window', '$http', '$location', function($scope, $window, $http, $location) {
     $scope.user = $scope.data.currentUser;
     $scope.originCapital = 1000000;
+	$scope.data.selectedItem = 3;
 
     $http.get('/api/futures/user_info')
         .success(function(data, status) {
