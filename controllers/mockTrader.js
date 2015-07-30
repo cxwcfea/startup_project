@@ -228,7 +228,7 @@ function setStatus(userId, status) {
 }
 
 function windControl(userId, forceClose, cb) {
-    var resource = 'mt://lock/user/' + data.user_id;
+    var resource = 'mt://lock/user/' + userId;
     var ttl = 10000;
     redlock.lock(resource, ttl).then(function(lock) {
       User.findOne({$and: [{_id: userId}, {status: 0}]}, function(err, user) {
