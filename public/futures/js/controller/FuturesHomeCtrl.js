@@ -114,6 +114,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
 
         modalInstance.result.then(function () {
             console.log('Modal dismissed at: ' + new Date());
+			status = 1;
         }, function () {
             console.log('Modal dismissed at: ' + new Date());
         });
