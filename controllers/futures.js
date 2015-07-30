@@ -99,7 +99,7 @@ function placeOrder(req, res) {
         return res.status(403).send({error_msg:'user need log in'});
     }
     var quantity = req.body.quantity;
-    var forceClose = req.body.force_close;
+    var forceClose = req.body.forceClose;
     if (forceClose) {
         req.body.user_id = req.user.wechat.trader;
         req.body.force_close = 1;
