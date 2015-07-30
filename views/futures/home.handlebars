@@ -132,46 +132,46 @@
     </div>
 </div>
 <div class="ui-tip" ng-show="showError">\{{errorMsg}}</div>
-<div ng-show="status != 0" style="background-color:#000000;width:100%;height:500px;opacity:0.5;position:absolute;top:0;left:0">
-	<div ng-show="status == 1 || status == 2" style="height:210px;margin-left:15px;margin-right:15px;margin-top:37px;overflow:hide;border-radius:5px">
+<div ng-show="data.status != 0" style="background-color:#000000;width:100%;height:500px;opacity:0.5;position:absolute;top:0;left:0">
+	<div ng-show="data.status == 1 || data.status == 2" style="height:210px;margin-left:15px;margin-right:15px;margin-top:37px;overflow:hide;border-radius:5px">
 		<div style="height:100%;width:100%;background-color:#ffffff"></div>
 	</div>
-	<div ng-show="status == 1" style="width:80px;height:80px;border-radius:100px;left:33px;top:356px;background-color:#ffffff;position:absolute"></div>
-	<div ng-show="status == 2" style="width:80px;height:80px;border-radius:100px;right:33px;top:356px;background-color:#ffffff;position:absolute"></div>
-	<div ng-show="status == 3" style="width:80px;height:45px;border-radius:5px;left:50%;top:275px;margin-left:-40px;background-color:#ffffff;position:absolute"></div>
-	<div ng-show="status == 4" style="width:80px;height:80px;border-radius:100px;left:50%;top:356px;margin-left:-40px;background-color:#ffffff;position:absolute"></div>
+	<div ng-show="data.status == 1" style="width:80px;height:80px;border-radius:100px;left:33px;top:356px;background-color:#ffffff;position:absolute"></div>
+	<div ng-show="data.status == 2" style="width:80px;height:80px;border-radius:100px;right:33px;top:356px;background-color:#ffffff;position:absolute"></div>
+	<div ng-show="data.status == 3" style="width:80px;height:45px;border-radius:5px;left:50%;top:275px;margin-left:-40px;background-color:#ffffff;position:absolute"></div>
+	<div ng-show="data.status == 4" style="width:80px;height:80px;border-radius:100px;left:50%;top:356px;margin-left:-40px;background-color:#ffffff;position:absolute"></div>
 </div>
-<div style="" ng-show="status != 0" style="width:100%;height:500px;position:absolute;top:0;left:0">
-	<div ng-show="status == 1" ng-click="status = 2" style="width:80px;height:80px;border-radius:100px;left:33px;top:356px;position:absolute"></div>
-	<div ng-show="status == 1" style="left:130px;top:360px;width:60%;color:#ffffff;position:absolute;font-size:16px">
+<div style="" ng-show="data.status != 0" style="width:100%;height:500px;position:absolute;top:0;left:0">
+	<div ng-show="data.status == 1" ng-click="data.status = 2" style="width:80px;height:80px;border-radius:100px;left:33px;top:356px;position:absolute"></div>
+	<div ng-show="data.status == 1" style="left:130px;top:360px;width:60%;color:#ffffff;position:absolute;font-size:16px">
 		<p>预测曲线涨跌，觉得曲线会上涨，就点击“涨”按钮<p>
 		<p>可点击多次购买多手</p>
 	</div>
-	<div ng-show="status == 1" style="left:33px;top:440px;position:absolute;color:#ffffff;font-size:16px;width:80px;text-align:center">
+	<div ng-show="data.status == 1" style="left:33px;top:440px;position:absolute;color:#ffffff;font-size:16px;width:80px;text-align:center">
 		<p>点我继续</p>
 	</div>
-	<div ng-show="status == 2" ng-click="status = 3" style="width:80px;height:80px;border-radius:100px;right:33px;top:356px;position:absolute"></div>
-	<div ng-show="status == 2" style="left:10px;top:380px;width:60%;color:#ffffff;position:absolute;font-size:16px">
+	<div ng-show="data.status == 2" ng-click="data.status = 3" style="width:80px;height:80px;border-radius:100px;right:33px;top:356px;position:absolute"></div>
+	<div ng-show="data.status == 2" style="left:10px;top:380px;width:60%;color:#ffffff;position:absolute;font-size:16px">
 		<p>若觉得曲线会下跌，就点“跌”按钮<p>
 	</div>
-	<div ng-show="status == 2" style="right:33px;top:440px;position:absolute;color:#ffffff;font-size:16px;width:80px;text-align:center">
+	<div ng-show="data.status == 2" style="right:33px;top:440px;position:absolute;color:#ffffff;font-size:16px;width:80px;text-align:center">
 		<p>点我继续</p>
 	</div>
-	<div ng-show="status == 3" ng-click="status = 4" style="width:80px;height:45px;border-radius:5px;left:50%;top:275px;margin-left:-40px;position:absolute"></div>
-	<div ng-show="status == 3" style="top:200px;text-align:center;color:#ffffff;position:absolute;font-size:16px;width:100%">
+	<div ng-show="data.status == 3" ng-click="data.status = 4" style="width:80px;height:45px;border-radius:5px;left:50%;top:275px;margin-left:-40px;position:absolute"></div>
+	<div ng-show="data.status == 3" style="top:200px;text-align:center;color:#ffffff;position:absolute;font-size:16px;width:100%">
 		<p>若您涨跌预测准确，</p>
 		<p>“持仓盈亏”会为正值，代表您有盈利<p>
 		<p>如预测错误，则会亏损</p>
 	</div>
-	<div ng-show="status == 3" style="left:50%;margin-left:-40px;top:325px;position:absolute;color:#ffffff;font-size:16px;width:80px;text-align:center">
+	<div ng-show="data.status == 3" style="left:50%;margin-left:-40px;top:325px;position:absolute;color:#ffffff;font-size:16px;width:80px;text-align:center">
 		<p>点我继续</p>
 	</div>
-	<div ng-show="status == 4" ng-click="status = 0" style="width:80px;height:80px;border-radius:100px;left:50%;top:356px;margin-left:-40px;position:absolute"></div>
-	<div ng-show="status == 4" style="top:300px;text-align:center;color:#ffffff;position:absolute;font-size:16px;width:100%">
+	<div ng-show="data.status == 4" ng-click="data.status = 0" style="width:80px;height:80px;border-radius:100px;left:50%;top:356px;margin-left:-40px;position:absolute"></div>
+	<div ng-show="data.status == 4" style="top:300px;text-align:center;color:#ffffff;position:absolute;font-size:16px;width:100%">
 		<p>盈利时您可以点击“平”按钮将盈利转移至本金账户<p>
 		<p>亏损时您也可以择时平仓及时止损</p>
 	</div>
-	<div ng-show="status == 4" style="left:50%;margin-left:-40px;top:440px;position:absolute;color:#ffffff;font-size:16px;width:80px;text-align:center">
+	<div ng-show="data.status == 4" style="left:50%;margin-left:-40px;top:440px;position:absolute;color:#ffffff;font-size:16px;width:80px;text-align:center">
 		<p>点我继续</p>
 	</div>
 </div>

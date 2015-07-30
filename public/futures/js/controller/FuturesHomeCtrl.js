@@ -8,7 +8,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     $scope.data.selectedItem = 1;
     $scope.tradeClose = false;
 	
-	$scope.status = 0;/*help modal use*/
+	//$scope.status = 0;/*help modal use*/
 
     var now = moment();
 
@@ -114,7 +114,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
 
         modalInstance.result.then(function () {
             console.log('Modal dismissed at: ' + new Date());
-			$scope.status = 1;
+			$scope.data.status = 1;
         }, function () {
             console.log('Modal dismissed at: ' + new Date());
         });
