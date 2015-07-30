@@ -21,11 +21,14 @@
     border-bottom: 1px solid #999;
 }
 .header-box h1 {
-    font-weight: 400;
-    font-size: 16px;
+	font-weight: 400;
+    font-size: 18px;
     height: 49px;
     line-height: 49px;
     padding-left: 26px;
+	text-align:center;
+	padding-left:0;
+	font-family:黑体;
 }
 .header-box h1 span{
     position: relative;
