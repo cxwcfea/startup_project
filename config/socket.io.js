@@ -25,8 +25,8 @@ var products = [
     },
     {
         name: 'BABA',
-        historyKey: 'mt://stock/BABA',
-        currKey: 'mt://stock/BABAHIST',
+        historyKey: 'mt://stock/BABAHIST',
+        currKey: 'mt://stock/BABA',
         historyData: []
     }
 ];
