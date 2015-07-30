@@ -65,8 +65,15 @@
     .orders-wrapper .user-items {
         border-top: 1px dotted #969696;
     }
-    .user-items .item-list a {
+    .user-items .item-list .item a {
         text-decoration: none;
+    }
+    .user-items .item-list .item {
+        width: 100%;
+        font-weight: 300;
+        padding: 0.4em;
+        font-size: medium;
+        opacity: 0.6;
     }
 </style>
 <div class="orders-wrapper">
@@ -103,14 +110,18 @@
     </div>
     <div class="user-items">
         <div class="item-list">
-            <a href="" class="item" ng-click="showOrders()">
-                交易记录
-                <i class="glyphicon glyphicon-chevron-right"></i>
-            </a>
-            <a href="" class="item">
-                获取帮助
-                <i class="glyphicon glyphicon-chevron-right"></i>
-            </a>
+            <div class="item">
+                <a href="" ng-click="showOrders()">
+                    交易记录
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                </a>
+            </div>
+            <div class="item">
+                <a href="">
+                    获取帮助
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                </a>
+            </div>
         </div>
     </div>
 </div>
