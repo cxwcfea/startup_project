@@ -65,6 +65,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             type: '美 股',
             intro: '中概股，晚上交易，涨跌均可买',
             status: 0,
+            alias: 'BABA',
             time: '工作日09:15-11:30  13:00-15:15'
         }
     ];
