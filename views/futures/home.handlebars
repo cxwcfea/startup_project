@@ -147,7 +147,7 @@
 	<div ng-show="data.status == 3" style="width:80px;height:45px;border-radius:5px;left:50%;top:275px;margin-left:-40px;background-color:#ffffff;position:absolute"></div>
 	<div ng-show="data.status == 4" style="width:80px;height:80px;border-radius:100px;left:50%;top:356px;margin-left:-40px;background-color:#ffffff;position:absolute"></div>
 </div>
-<div ng-show="data.status != 0" style="width:100%;position:absolute;top:0;left:0" ng-class="{'black-height-full':(browserHeight > 557), 'black-height-max':(browserHeight <= 557)}">
+<div ng-show="data.status != 0" style="width:100%;position:absolute;top:0;left:0;opacity:0.8" ng-class="{'black-height-full':(browserHeight > 557), 'black-height-max':(browserHeight <= 557)}">
 	<div ng-show="data.status == 1" ng-click="data.status = 2" style="width:80px;height:80px;border-radius:100px;left:33px;top:356px;position:absolute"></div>
 	<div ng-show="data.status == 1" style="left:130px;top:360px;width:150px;background-color:#000000;color:#ffffff;position:absolute;font-size:16px;border-radius:5px;padding:5px">
 		<p>预测曲线涨跌，觉得曲线会上涨，就点击“涨”按钮<p>
