@@ -1,10 +1,11 @@
 var mongoose = require('mongoose');
 var Redlock = require('redlock');
 
+console.log(global.redis_client);
 var redlock = new Redlock(
     // you should have one client for each redis node
     // in your cluster
-    [global.redis_client],
+    [require("redis").createClient()],
     {
       // the expected clock drift; for more details
       // see http://redis.io/topics/distlock
