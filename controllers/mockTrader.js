@@ -1,4 +1,24 @@
 var mongoose = require('mongoose');
+var redisClient = require('redis').createClient(6379, 'localhost');
+var Redlock = require('redlock');
+
+var redlock = new Redlock(
+    // you should have one client for each redis node
+    // in your cluster
+    [redisClient],
+    {
+      // the expected clock drift; for more details
+      // see http://redis.io/topics/distlock
+      driftFactor: 0.01,
+
+      // the max number of times Redlock will attempt
+      // to lock a resource before erroring
+      retryCount:  3,
+
+      // the time in ms between attempts
+      retryDelay:  200
+    }
+);
 
 // model.js
 var PPJUserSchema = mongoose.Schema({
@@ -475,107 +495,113 @@ function createOrder(data, cb) {
         cb({code:1, msg:"invalid quantity"});
         return;
     }
+    var resource = 'mt://lock/user/' + data.user_id;
+    var ttl = 10000;
     // find user
-    User.findOne({_id: data.user_id}, function(err, user) {
-        if (err) {
-            console.log(err);
-            cb(err.toString());
-            return;
-        }
-        if (user.status != 0) {
-            //res.send({code: 3, "msg": "Account status is not normal."});
-            cb({code:3, msg:'Account status is not normal.'});
-            return;
-        }
-        // find contract
-        Contract.findOne({
-            "stock_code": data.order.contract.stock_code,
-            "exchange": data.order.contract.exchange
-        }, function(err, contract) {
-            if (err) {
-                console.log(err);
-                cb({code:2, msg:err.toString()});
-                return;
-            }
-            if (!contract) {
-                console.log('failed to create contract');
-                return cb({code:2, msg:'failed to create contract'});
-            }
-            // find contract price info
-            global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
-                var priceInfo = JSON.parse(priceInfoString);
-                priceInfo.LastPrice *= 100;
-                console.log(priceInfo);
-                Portfolio.findOne({$and: [{contractId: contract._id}, {userId: user._id}]}, function(err, portfolio) {
-                    if (err) {
-                        console.log(err);
-                        cb({code:2, msg:err.toString()});
-                        return;
-                    }
-                    if (!portfolio) {
-                        portfolio = new Portfolio({contractId: contract._id, userId: user._id});
-                    }
-                    var costs = getCosts(priceInfo.LastPrice, data.order.quantity, portfolio.quantity, portfolio.total_point, portfolio.total_deposit);
-                    if (user.cash < costs.open) {
-                        //res.send({code: 4, "msg": "user.cash < costs.open", data: {costs: costs, cash: user.cash}});
-                        cb({code:5, msg:'user.cash < costs.open'});
-                        return;
-                    }
-                    var order = new Order({
-                        contractId: contract._id,
-                        userId: user._id,
-                        quantity: data.order.quantity,
-                        price: priceInfo.LastPrice,
-                        fee: costs.fee,
-                        lockedCash: costs.locked_cash,
-                        profit: costs.net_profit
-                    });
-                    var oldUserCash = user.cash;
-                    var oldUserLastCash = user.lastCash;
-                    user.cash -= costs.open;
-                    portfolio.quantity += data.order.quantity;
-                    portfolio.total_point -= costs.point;
-                    portfolio.total_deposit -= costs.deposit;
-                    if (data.order.quantity > 0) {
-                        portfolio.longQuantity += data.order.quantity;
-                    } else {
-                        portfolio.shortQuantity -= data.order.quantity;
-                    }
-                    portfolio.fee += costs.fee;
-                    if (portfolio.quantity === 0) {
-                        user.lastCash = user.cash;
-                    }
-                    // write back
-                    User.update({_id: user._id, cash: oldUserCash, lastCash: oldUserLastCash},
-                        {$set:{cash: user.cash, lastCash: user.lastCash}}, function(err, numberAffected, raw) {
-                        if (err || numberAffected != 1) {
-                            console.log(err);
-                            //res.send({code: 5, "msg": err.errmsg});
-                            cb({code:2, msg:err? err.toString(): "Placing order too fast"});
-                            return;
-                        }
-                        portfolio.save(function(err) {
-                            if (err) {
-                                console.log(err);
-                                //res.send({code: 6, "msg": err.errmsg});
-                                cb({code:2, msg:err.toString()});
-                                return;
-                            }
-                            order.save(function(err) {
-                                if (err) {
-                                    console.log(err);
-                                    //res.send({code: 7, "msg": err.errmsg});
-                                    cb({code:2, msg:err.toString()});
-                                    return;
-                                }
-                                //res.send({code: 0, result: order._id});
-                                cb(null, order);
-                            });
-                        });
-                    });
-                });
-            });
-        });
+    redlock.lock(resource, ttl).then(function(lock) {
+      User.findOne({_id: data.user_id}, function(err, user) {
+          if (err) {
+              console.log(err);
+              cb(err.toString());
+              return lock.unlock();
+          }
+          if (user.status != 0) {
+              //res.send({code: 3, "msg": "Account status is not normal."});
+              cb({code:3, msg:'Account status is not normal.'});
+              return lock.unlock();
+          }
+          // find contract
+          Contract.findOne({
+              "stock_code": data.order.contract.stock_code,
+              "exchange": data.order.contract.exchange
+          }, function(err, contract) {
+              if (err) {
+                  console.log(err);
+                  cb({code:2, msg:err.toString()});
+                  return lock.unlock();
+              }
+              if (!contract) {
+                  console.log('failed to create contract');
+                  cb({code:2, msg:'failed to create contract'});
+                  return lock.unlock();
+              }
+              // find contract price info
+              global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
+                  var priceInfo = JSON.parse(priceInfoString);
+                  priceInfo.LastPrice *= 100;
+                  console.log(priceInfo);
+                  Portfolio.findOne({$and: [{contractId: contract._id}, {userId: user._id}]}, function(err, portfolio) {
+                      if (err) {
+                          console.log(err);
+                          cb({code:2, msg:err.toString()});
+                          return lock.unlock();
+                      }
+                      if (!portfolio) {
+                          portfolio = new Portfolio({contractId: contract._id, userId: user._id});
+                      }
+                      var costs = getCosts(priceInfo.LastPrice, data.order.quantity, portfolio.quantity, portfolio.total_point, portfolio.total_deposit);
+                      if (user.cash < costs.open) {
+                          //res.send({code: 4, "msg": "user.cash < costs.open", data: {costs: costs, cash: user.cash}});
+                          cb({code:5, msg:'user.cash < costs.open'});
+                          return lock.unlock();
+                      }
+                      var order = new Order({
+                          contractId: contract._id,
+                          userId: user._id,
+                          quantity: data.order.quantity,
+                          price: priceInfo.LastPrice,
+                          fee: costs.fee,
+                          lockedCash: costs.locked_cash,
+                          profit: costs.net_profit
+                      });
+                      var oldUserCash = user.cash;
+                      var oldUserLastCash = user.lastCash;
+                      user.cash -= costs.open;
+                      portfolio.quantity += data.order.quantity;
+                      portfolio.total_point -= costs.point;
+                      portfolio.total_deposit -= costs.deposit;
+                      if (data.order.quantity > 0) {
+                          portfolio.longQuantity += data.order.quantity;
+                      } else {
+                          portfolio.shortQuantity -= data.order.quantity;
+                      }
+                      portfolio.fee += costs.fee;
+                      if (portfolio.quantity === 0) {
+                          user.lastCash = user.cash;
+                      }
+                      // write back
+                      User.update({_id: user._id, cash: oldUserCash, lastCash: oldUserLastCash},
+                          {$set:{cash: user.cash, lastCash: user.lastCash}}, function(err, numberAffected, raw) {
+                          if (err || numberAffected != 1) {
+                              console.log(err);
+                              //res.send({code: 5, "msg": err.errmsg});
+                              cb({code:2, msg:err? err.toString(): "Placing order too fast"});
+                              return lock.unlock();
+                          }
+                          portfolio.save(function(err) {
+                              if (err) {
+                                  console.log(err);
+                                  //res.send({code: 6, "msg": err.errmsg});
+                                  cb({code:2, msg:err.toString()});
+                                  return lock.unlock();
+                              }
+                              order.save(function(err) {
+                                  if (err) {
+                                      console.log(err);
+                                      //res.send({code: 7, "msg": err.errmsg});
+                                      cb({code:2, msg:err.toString()});
+                                      return lock.unlock();
+                                  }
+                                  //res.send({code: 0, result: order._id});
+                                  cb(null, order);
+                                  return lock.unlock();
+                              });
+                          });
+                      });
+                  });
+              });
+          });
+      });
     });
 }
 
