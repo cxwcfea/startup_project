@@ -242,7 +242,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         if (type === 0) {
             forceClose = true;
         }
-        $http.post('/api/futures/create_order', {quantity:quantity, force_tradeClose:forceClose})
+        $http.post('/api/futures/create_order', {quantity:quantity, forceClose:forceClose})
             .success(function(data, status) {
                 getUserPositions();
                 var orderType = data.quantity > 0 ? '涨' : '跌';

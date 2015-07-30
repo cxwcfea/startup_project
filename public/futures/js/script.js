@@ -132,7 +132,7 @@ $(function () {
         });
 
         wx.onMenuShareTimeline({
-            title: '股指拍拍机成就您交易高手梦想',
+            title: '现在玩拍拍机可获得100万本金，快来一起成为交易高手吧！',
             link: 'http://www.niujin.cn/futures',
             imgUrl: 'http://www.niujin.cn/futures/images/logo.png',
             success: function () {
