@@ -9,6 +9,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     $scope.tradeClose = false;
 
 	$scope.browserHeight = document.documentElement.clientHeight;
+	alert($scope.browserHeight);
 
     var now = moment();
 
