@@ -149,7 +149,7 @@
 </div>
 <div ng-show="data.status != 0" style="width:100%;position:absolute;top:0;left:0" ng-class="{'black-height-full':(browserHeight > 557), 'black-height-max':(browserHeight <= 557)}">
 	<div ng-show="data.status == 1" ng-click="data.status = 2" style="width:80px;height:80px;border-radius:100px;left:33px;top:356px;position:absolute"></div>
-	<div ng-show="data.status == 1" style="left:130px;top:360px;width:150px;background-color:#000000;color:#ffffff;position:absolute;font-size:16px">
+	<div ng-show="data.status == 1" style="left:130px;top:360px;width:150px;background-color:#000000;color:#ffffff;position:absolute;font-size:16px;border-radius:5px;padding:5px">
 		<p>预测曲线涨跌，觉得曲线会上涨，就点击“涨”按钮<p>
 		<p>可点击多次购买多手</p>
 	</div>
@@ -158,7 +158,7 @@
 		<p>点我继续</p>
 	</div>
 	<div ng-show="data.status == 2" ng-click="data.status = 3" style="width:80px;height:80px;border-radius:100px;right:33px;top:356px;position:absolute"></div>
-	<div ng-show="data.status == 2" style="right:130px;top:380px;width:150px;background-color:#000000;color:#ffffff;position:absolute;font-size:16px">
+	<div ng-show="data.status == 2" style="right:130px;top:380px;width:150px;background-color:#000000;color:#ffffff;position:absolute;font-size:16px;border-radius:5px;padding:5px">
 		<p>若觉得曲线会下跌，就点“跌”按钮<p>
 	</div>
 	<div ng-show="data.status == 2" style="right:33px;top:440px;position:absolute;color:#ffffff;font-size:16px;width:80px;text-align:center">
@@ -166,19 +166,23 @@
 		<p>点我继续</p>
 	</div>
 	<div ng-show="data.status == 3" ng-click="data.status = 4" style="width:80px;height:45px;border-radius:5px;left:50%;top:275px;margin-left:-40px;position:absolute"></div>
-	<div ng-show="data.status == 3" style="top:200px;background-color:#000000;color:#ffffff;position:absolute;font-size:16px;width:150px;margin:0 auto">
-		<p>若您涨跌预测准确，</p>
-		<p>“持仓盈亏”会为正值，代表您有盈利<p>
-		<p>如预测错误，则会亏损</p>
+	<div ng-show="data.status == 3" style="top:200px;color:#ffffff;position:absolute;font-size:16px;width:100%">
+		<div style="width:150px;margin:0 auto;background-color:#000000">
+			<p>若您涨跌预测准确，</p>
+			<p>“持仓盈亏”会为正值，代表您有盈利<p>
+			<p>如预测错误，则会亏损</p>
+		</div>
 	</div>
 	<div ng-show="data.status == 3" style="left:50%;margin-left:-40px;top:325px;position:absolute;color:#ffffff;font-size:16px;width:80px;text-align:center">
 		<img src="/futures/images/mark-jt.png" style="width:18px" />
 		<p>点我继续</p>
 	</div>
 	<div ng-show="data.status == 4" ng-click="data.status = 0" style="width:80px;height:80px;border-radius:100px;left:50%;top:356px;margin-left:-40px;position:absolute"></div>
-	<div ng-show="data.status == 4" style="top:300px;background-color:#000000;color:#ffffff;position:absolute;font-size:16px;width:150px;margin:0 auto">
-		<p>盈利时您可以点击“平”按钮将盈利转移至本金账户<p>
-		<p>亏损时您也可以择时平仓及时止损</p>
+	<div ng-show="data.status == 4" style="top:300px;color:#ffffff;position:absolute;font-size:16px">
+		<div style="width:150px;margin:0 auto;background-color:#000000">
+			<p>盈利时您可以点击“平”按钮将盈利转移至本金账户<p>
+			<p>亏损时您也可以择时平仓及时止损</p>
+		</div>
 	</div>
 	<div ng-show="data.status == 4" style="left:50%;margin-left:-40px;top:440px;position:absolute;color:#ffffff;font-size:16px;width:80px;text-align:center">
 		<img src="/futures/images/mark-jt.png" style="width:18px" />
