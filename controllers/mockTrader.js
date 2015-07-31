@@ -13,7 +13,7 @@ var redlock = new Redlock(
 
       // the max number of times Redlock will attempt
       // to lock a resource before erroring
-      retryCount:  3,
+      retryCount:  10,
 
       // the time in ms between attempts
       retryDelay:  200
