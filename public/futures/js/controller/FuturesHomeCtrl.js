@@ -8,30 +8,33 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     $scope.data.selectedItem = 1;
     $scope.tradeClose = false;
 
-    var now = moment();
+    if (!$scope.data.timeoutSet) {
+        $scope.data.timeoutSet = true;
+        var now = moment();
 
-    var firstEnd = moment();
-    firstEnd.hour(11);
-    firstEnd.minute(30);
-    firstEnd.second(0);
+        var firstEnd = moment();
+        firstEnd.hour(11);
+        firstEnd.minute(30);
+        firstEnd.second(0);
 
-    if (now < firstEnd) {
-        $timeout(function() {
-            $scope.tradeClose = true;
-            $scope.openTimeHintPopup('lg');
-        }, firstEnd-now);
-    }
+        if (now < firstEnd) {
+            $timeout(function() {
+                $scope.tradeClose = true;
+                $scope.openTimeHintPopup('lg');
+            }, firstEnd-now);
+        }
 
-    var secondEnd = moment();
-    secondEnd.hour(15);
-    secondEnd.minute(15);
-    secondEnd.second(0);
+        var secondEnd = moment();
+        secondEnd.hour(15);
+        secondEnd.minute(15);
+        secondEnd.second(0);
 
-    if (now < secondEnd) {
-        $timeout(function() {
-            $scope.tradeClose = true;
-            $scope.openTimeHintPopup('lg');
-        }, secondEnd-now);
+        if (now < secondEnd) {
+            $timeout(function() {
+                $scope.tradeClose = true;
+                $scope.openTimeHintPopup('lg');
+            }, secondEnd-now);
+        }
     }
 
     $scope.tradeData = {
