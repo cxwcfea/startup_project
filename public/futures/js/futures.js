@@ -28,6 +28,9 @@ angular.module('futuresApp').config(['$routeProvider', '$httpProvider', function
         .when('/products', { templateUrl: '/futures/products',
             controller: 'FuturesProductsCtrl'
         })
+        .when('/withdraw', { templateUrl: '/futures/withdraw',
+            controller: 'FuturesWithdrawCtrl'
+        })
         .otherwise({
             redirectTo: '/home'
         });
