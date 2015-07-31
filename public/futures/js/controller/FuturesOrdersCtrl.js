@@ -42,6 +42,7 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
     };
 
     $scope.showWithdraw = function() {
+        alert('saldfkjaslkj');
         $location('/withdraw');
     };
 
