@@ -333,6 +333,9 @@ function windControl(userId, forceClose, cb) {
               }
           });
       });
+    }, function(){
+      console.log("fail to lock resource: " + resource);
+      cb("fail to lock resource: " + resource);
     });
 }
 
@@ -615,6 +618,9 @@ function createOrder(data, cb) {
               });
           });
       });
+    }, function(){
+      console.log("fail to lock resource: " + resource);
+      cb("fail to lock resource: " + resource);
     });
 }
 
