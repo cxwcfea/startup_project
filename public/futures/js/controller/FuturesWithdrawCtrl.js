@@ -1,9 +1,7 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesWithdrawCtrl', ['$scope', '$window', function($scope, $window) {
+angular.module('futuresApp').controller('FuturesWithdrawCtrl', ['$scope', '$window', '$http', function($scope, $window, $http) {
     $scope.user = $scope.data.currentUser;
     $scope.withdraw = function() {
-        alert($scope.user.wechat.wechat_openid);
-		// $http.get('/api/futures/get_redEnvelop?openid=' + $scope.user.wechat.wechat_openid)
 		$http.get('/api/futures/get_redEnvelop')
 			.success(function(data, status) {
 				var money = data.money;
