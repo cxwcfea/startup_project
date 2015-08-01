@@ -191,7 +191,7 @@ function getRedEnvelop(req, res) {
     if (!req.user || !req.user.wechat || !req.user.wechat.wechat_uuid) {
         return res.status(403).send({error_msg:'user need log in'});
     }
-	redEnvelope.sendRE(req.user.wechat.wechat_openid, 1, 1, "恭喜您获得提现资格", "提现", "祝您操盘顺利。", 0);
+	redEnvelope.sendRE(req.user.wechat.wechat_openid, 1, 1, "恭喜您获得提现资格", "提现", "祝您操盘顺利。", 0, res);
 }
 
 function getOrders(req, res) {
