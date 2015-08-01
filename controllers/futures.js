@@ -12,6 +12,7 @@ var User = require('../models/User'),
     moment = require('moment'),
     async = require('async'),
     log4js = require('log4js'),
+	redEnvelope = require('../lib/redEnvelopes'),
     logger = log4js.getLogger('futures');
 
 var privateProperties = [
@@ -156,6 +157,43 @@ function getPositions(req, res) {
     });
 }
 
+function deposit(req, res) {
+	/*
+    if (!req.user || !req.user.wechat || !req.user.wechat.wechat_uuid) {
+        return res.status(403).send({error_msg:'user need log in'});
+    }
+    var initConfig = {
+	   partnerKey: "QWWEasdaaQW2EQWE1231234KOIJJD999",
+	   appId: "wx8e029a336ad0a880",
+	   mchId: "1260898201",
+	   notifyUrl: "http://server2.niujinwang.com/futures/notify",
+	   pfx: fs.readFileSync("/home/zhaoguojie/ppj/niujinwang-website/cert/apiclient_cert.p12")
+	};
+	var payment = new Payment(initConfig);
+	var order = {
+	   body: '拍拍机点卡 * 1',
+	   attach: '{"部位":"三角"}',
+	   out_trade_no: 'kfc001',
+	   total_fee: 10 * 100,
+	   spbill_create_ip: "127.0.0.1",
+	   product_id: "123",
+	   trade_type: "NATIVE"
+	};
+	payment.getBrandWCPayRequestParams(order, function(err, payargs){
+		 console.log(err, payargs);
+		 res.send(payargs);
+	});
+	*/
+	res.send({});
+}
+
+function getRedEnvelop(req, res) {
+    if (!req.user || !req.user.wechat || !req.user.wechat.wechat_uuid) {
+        return res.status(403).send({error_msg:'user need log in'});
+    }
+	redEnvelope.sendRE(req.user.wechat.wechat_openid, 1, 1, "恭喜您获得提现资格", "提现", "祝您操盘顺利。", 0);
+}
+
 function getOrders(req, res) {
     if (!req.user || !req.user.wechat || !req.user.wechat.wechat_uuid) {
         return res.status(403).send({error_msg:'user need log in'});
@@ -214,6 +252,8 @@ module.exports = {
         app.get('/futures', passportConf.isWechatAuthenticated, home);
 
         app.get('/futures/test', test);
+
+		app.get('/api/futures/get_redEnvelop', getRedEnvelop);
 
         app.get('/futures/*', function(req, res, next) {
             var startTime = moment();
