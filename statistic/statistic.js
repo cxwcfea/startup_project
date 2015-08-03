@@ -725,11 +725,11 @@ var getDailyData = function(callback) {
         fileWriteStream.on("close", function() {
             console.log("File Closed.");
         });
-        var data = 'applyAmount, applyNum, income, newUsers, date\n';
+        var data = 'applyAmount, applyNum, income, newUsers, mgmReturnFee, manualReturnFee, date\r\n';
         fileWriteStream.write(data);
         datas.forEach(function (d) {
             data = d.applyAmount + ', ' + d.applyNum + ', ' + d.income + ', ' + d.newUsers + ', '
-            + d.date + '\n';
+            + d.mgmReturnFee + ', ' + d.manualReturnFee + ', ' + d.date + '\r\n';
             fileWriteStream.write(data);
         });
         fileWriteStream.end();
@@ -1436,7 +1436,7 @@ db.once('open', function callback() {
              */
 
             function(callback) {
-                lossApplyData(function(err) {
+                getDailyData(function(err) {
                     callback(err);
                 });
             }
