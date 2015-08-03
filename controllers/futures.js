@@ -226,6 +226,8 @@ module.exports = {
 
         app.get('/futures/test', test);
 
+        app.get('/futures/deposit', deposit);
+
         app.get('/futures/*', function(req, res, next) {
             var startTime = moment();
             startTime.hour(09);
