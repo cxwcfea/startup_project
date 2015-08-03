@@ -75,7 +75,7 @@ var Portfolio = mongoose.model('PPJPortfolio', PPJPortfolioSchema);
 
 var kInitialCapital = 100000000;
 var kHand = 100;
-var kFeePerHand = 20000;  // 200 RMB per hand
+var kFeePerHand = 15000;  // 150 RMB per hand
 var kFeePerTenThousand = 25;  // 0.25 RMB per 10000.00 RMB
 var kMarketDepositPercentage = 1200;  // to buy 1 hand you need 12.00% deposit
 var kMarketPointValue = 30000;  // 300RMB per point
@@ -107,8 +107,8 @@ function getCosts(stock_price, quantity, position, total_point, total_deposit) {
     }
     var coeff = kMarketPointValue * stock_price / 10000.0 * kMarketDepositPercentage / 10000.0;
     raw = coeff * q;
-    // fee = Math.abs(quantity) / kHand * kFeePerHand;
-    fee = kMarketPointValue * Math.abs(quantity) * stock_price / 10000 * kFeePerTenThousand / 1000000;
+    fee = Math.abs(quantity) / kHand * kFeePerHand;
+    // fee = kMarketPointValue * Math.abs(quantity) * stock_price / 10000 * kFeePerTenThousand / 1000000;
     net_profit -= fee;
     var point_diff = point_released - q * stock_price / 100;
     var deposit_diff = deposit_released - raw;
