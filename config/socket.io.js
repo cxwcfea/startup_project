@@ -83,6 +83,9 @@ function fetchNewData(cb) {
     });
     */
     for (var j = 0; j < products.length; ++j) {
+        if (!products[j].historyData.length) {
+            continue;
+        }
         (function () {
             var index = j;
             global.redis_client.get(products[index].currKey, function(err, data) {

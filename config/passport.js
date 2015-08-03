@@ -66,6 +66,7 @@ passport.use(new wechatStrategy({
                         wechat_uuid: profile.unionid,
                         wechat_name: profile.nickname,
                         wechat_img: profile.headimgurl,
+                        wechat_openid: openid,
                         trader: trader
                     }
                 };
@@ -80,6 +81,7 @@ passport.use(new wechatStrategy({
                 user.score += 5;
                 user.wechat.wechat_name = profile.nickname;
                 user.wechat.wechat_img = profile.headimgurl;
+                user.wechat.wechat_openid = openid;
                 user.save(function(err) {
                     done(err, user, profile);
                 });
