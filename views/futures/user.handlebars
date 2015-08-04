@@ -75,6 +75,11 @@
         margin-top: 20px;
 		border-radius: 5px;
     }
+    .orders-wrapper .user-items .chevron-right {
+        float: right;
+        width: 17px;
+        margin-right: 10px;
+    }
 </style>
 <div class="orders-wrapper">
     <div class="wall-paper">
@@ -111,13 +116,13 @@
     <div class="user-items">
         <div class="item-list">
             <div class="item" ng-click="showOrders()">
-				<img src="/futures/images/go.png" style="float:right;width:17px;margin-right:10px" />
+				<img src="/futures/images/go.png" class="chevron-right" />
 				<p>交易记录</p>
                 <!--<i class="glyphicon glyphicon-chevron-right"></i>-->
             </div>
             <div class="item" ng-click="resetCapital()">
+                <img src="/futures/images/go.png" class="chevron-right" />
                 资金重置
-                <i class="glyphicon glyphicon-chevron-right"></i>
             </div>
         </div>
     </div>
