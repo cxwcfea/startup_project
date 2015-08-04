@@ -227,7 +227,7 @@ function setStatus(userId, status) {
     });
 }
 
-function windControl(userId, forceClose, cb) {
+function windControl(userId, forceClose, userContract, cb) {
     var resource = 'mt://lock/user/' + userId;
     var ttl = 10000;
     redlock.lock(resource, ttl).then(function(lock) {
@@ -279,6 +279,16 @@ function windControl(userId, forceClose, cb) {
                           }
                           return;
                       }
+                      if (typeof userContract !== 'undefined') {
+                        if (!(contract.exchange === userContract.exchange &&
+                            contract.stock_code === userContract.stock_code)) {
+                          if (asyncObj.remaining <= 0){
+                              cb("No stock matching request");
+                              lock.unlock();
+                          }
+                          return;
+                        }
+                      }
                       global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
                           if (err || !priceInfoString) {
                               console.log(err);
@@ -299,7 +309,7 @@ function windControl(userId, forceClose, cb) {
                           contractInfo[portf.contractId] = priceInfo;
                           var costs = getCosts(priceInfo.LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
                           asyncObj.value -= costs.open;
-                          if (asyncObj.remaining > 0) {
+                          if (asyncObj.remaining > 0 && typeof userContract === 'undefined') {
                               console.log("Still counting: " + asyncObj);
                               return;
                           }
@@ -315,13 +325,17 @@ function windControl(userId, forceClose, cb) {
                               if (income > 0) {
                                   // Close all positions
                                   console.log("Closing user");
-                                  if (!forceClose)
+                                  if (!forceClose) {
                                     // Have to close
                                     // setStatus(userId, 1);  // cannot buy
                                     closeAll(userId, portfolio, income, contractInfo, 1, cb, lock);
-                                  else
+                                  } else {
                                     // Force close
+                                    if (typeof userContract !== 'undefined') {
+                                        portfolio = [portf];
+                                    }
                                     closeAll(userId, portfolio, income, contractInfo, 0, cb, lock);
+                                  }
                               } else {
                                   console.log("Closed");
                                   cb(null);
@@ -516,7 +530,7 @@ function createUser(data, cb) {
 
 function riskControl(req, res) {
     //console.log(req.body);
-    windControl(req.body.user_id, req.body.force_close, function(err, order) {
+    windControl(req.body.user_id, req.body.force_close, req.body.contract, function(err, order) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
         }
