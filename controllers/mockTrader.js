@@ -69,7 +69,7 @@ var PPJPortfolioSchema = mongoose.Schema({
     shortQuantity: { type: Number, default: 0},  // basis: 0.01
     fee: { type: Number, default: 0},  // basis: cent, 0.01
     total_deposit: { type: Number, default: 0},  // basis: cent, 0.01
-    total_point: { type: Number, default: 0},  // basis: cent, 0.01
+    total_point: { type: Number, default: 0}  // basis: cent, 0.01
 });
 var Portfolio = mongoose.model('PPJPortfolio', PPJPortfolioSchema);
 
@@ -528,6 +528,20 @@ function createUser(data, cb) {
     });
 }
 
+function resetUser(userID, cb) {
+    User.update({_id:userID}, {$set:{close:50000000, cash: 100000000, deposit: 50000000, debt: 50000000}}, function(err, numberAffected, raw) {
+        if (err) {
+            return cb(err);
+        }
+        Portfolio.update({userId:userID}, {$set:{total_point:0, total_deposit:0, fee:0, shortQuantity:0, longQuantity:0, quantity:0}}, function(err, numberAffected, raw) {
+            if (err) {
+                return cb(err);
+            }
+            cb(null);
+        });
+    });
+}
+
 function riskControl(req, res) {
     //console.log(req.body);
     windControl(req.body.user_id, req.body.force_close, req.body.contract, function(err, order) {
@@ -695,5 +709,6 @@ module.exports = {
     getUserInfo: getUserInfo,
     windControl: windControl,
     getLastFuturesPrice: getLastFuturesPrice,
-    getProfit: getProfit
+    getProfit: getProfit,
+    resetUser: resetUser
 };

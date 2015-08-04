@@ -115,10 +115,11 @@
 				<p>交易记录</p>
                 <!--<i class="glyphicon glyphicon-chevron-right"></i>-->
             </div>
-            <!--<div class="item">
-                获取帮助
+            <div class="item" ng-click="resetCapital()">
+                资金重置
                 <i class="glyphicon glyphicon-chevron-right"></i>
-            </div>-->
+            </div>
         </div>
     </div>
 </div>
+<div class="ui-tip" ng-show="showError">\{{errorMsg}}</div>

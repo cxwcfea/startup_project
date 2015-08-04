@@ -4,6 +4,14 @@ angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window',
     $scope.originCapital = 1000000;
 	$scope.data.selectedItem = 3;
 
+    function displayError(msg) {
+        $scope.errorMsg = msg;
+        $scope.showError = true;
+        $timeout(function() {
+            $scope.showError = false;
+        }, 2000);
+    }
+
     $http.get('/api/futures/user_info')
         .success(function(data, status) {
             $window.njPersonChart($scope.originCapital, (data.lastCash/100));
@@ -17,5 +25,15 @@ angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window',
 
     $scope.showOrders = function() {
         $location.path('/orders');
+    };
+
+    $scope.resetCapital = function() {
+        $http.get('/futures/reset_user')
+            .success(function(data, status) {
+                displayError('重置成功');
+            })
+            .error(function(data, status) {
+                displayError(data.error_msg);
+            });
     };
 }]);

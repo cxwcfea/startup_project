@@ -208,6 +208,15 @@ function getUserInfo(req, res) {
     });
 }
 
+function resetUser(req, res) {
+    mockTrader.resetUser(req.user.wechat.trader, function(err) {
+        if (err) {
+            return res.status(500).send({error_msg:err.toString()});
+        }
+        res.send({});
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/api/futures/user_rank', fetchUserRankData);
@@ -223,6 +232,8 @@ module.exports = {
         app.get('/api/futures/user_info', getUserInfo);
 
         app.get('/futures', passportConf.isWechatAuthenticated, home);
+
+        app.get('/futures/reset_user', resetUser);
 
         app.get('/futures/test', test);
 
