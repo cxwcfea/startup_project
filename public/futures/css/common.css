@@ -272,7 +272,7 @@
 @-ms-keyframes boxfade{0%{opacity:0;}20%{opacity:0.8;}80%{opacity:0.8;}100%{opacity:0;}}
 
 .ui-tip,
-.ui-tip-success{font-size:15px;text-align: center;border-radius:5px;position: fixed;left:50%;top:50%;margin:-20px 0 0 -150px;background:#000;color:#fff;width:300px;height:40px;line-height:40px; z-index:11001;}
+.ui-tip-success{font-size:15px;text-align: center;border-radius:5px;position: fixed;left:50%;top:50%;margin:-20px 0 0 -150px;background:#000;color:#fff;width:300px;height:40px;line-height:40px;-webkit-animation:boxfade 2s ease;-moz-animation:boxfade 2s ease;-ms-animation:boxfade 2s ease; z-index:11001;}
 .ui-tip-success {height: 112px;margin:-56px 0 0 -150px;}
 .ui-tip-success .icon {margin: 15px 0; height: 42px;background: url(../images/success.png) no-repeat center;background-size: 42px 42px;}
 

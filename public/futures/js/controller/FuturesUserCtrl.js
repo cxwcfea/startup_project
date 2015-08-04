@@ -1,5 +1,5 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window', '$http', '$location', function($scope, $window, $http, $location) {
+angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window', '$http', '$location', '$timeout', function($scope, $window, $http, $location, $timeout) {
     $scope.user = $scope.data.currentUser;
     $scope.originCapital = 1000000;
 	$scope.data.selectedItem = 3;
@@ -35,12 +35,7 @@ angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window',
     $scope.resetCapital = function() {
         $http.get('/futures/reset_user')
             .success(function(data, status) {
-                $scope.errorMsg = '重置成功';
-                $scope.showError = true;
-                $timeout(function() {
-                    $scope.showError = false;
-                    alert($scope.showError);
-                }, 2500);
+                displayError('重置成功');
             })
             .error(function(data, status) {
                 displayError(data.error_msg);
