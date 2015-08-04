@@ -39,6 +39,7 @@ angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window',
                 $scope.showError = true;
                 $timeout(function() {
                     $scope.showError = false;
+                    alert($scope.showError);
                 }, 2500);
             })
             .error(function(data, status) {
