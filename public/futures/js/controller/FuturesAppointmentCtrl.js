@@ -15,15 +15,12 @@ angular.module('futuresApp').controller('FuturesAppointmentCtrl', ['$scope', '$w
             displayError('请输入有效手机号');
             return;
         }
-        /*
-        $http.get('/api/futures/deposit')
+        $http.post('/futures/make_appointment', {mobile:mobile})
             .success(function(data, status) {
-                // var money = data.money;
-                alert('您已成功充值');
+                displayError('预约成功');
             })
             .error(function(data, status) {
-                alert('网络错误');
+                displayError('预约失败');
             });
-            */
     };
 }]);
