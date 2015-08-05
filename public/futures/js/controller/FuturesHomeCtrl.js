@@ -4,9 +4,10 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     $scope.chartData = [4188.57, 4040.48, 4053.70, 4182.93, 4023.93, 3872.15, 4188.57, 4040.48, 4053.70, 4182.93, 4023.93, 3872.15, 4053.70, 4182.93, 4023.93, 3872.15, 4188.57, 4040.48];
     $scope.user = $scope.data.currentUser;
     var HAND = 100;
-    var InitCapital = 1000000;
+    var InitCapital = 150000;
     $scope.data.selectedItem = 1;
     $scope.tradeClose = false;
+	$scope.browserHeight = document.documentElement.clientHeight;
 
     if (!$scope.data.timeoutSet) {
         $scope.data.timeoutSet = true;
@@ -17,25 +18,25 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         firstEnd.minute(30);
         firstEnd.second(0);
 
-        if (now < firstEnd) {
-            $timeout(function() {
-                $scope.tradeClose = true;
-                $scope.openTimeHintPopup('lg');
-            }, firstEnd-now);
-        }
+		if (now < firstEnd) {
+			$timeout(function() {
+				$scope.tradeClose = true;
+				$scope.openTimeHintPopup('lg');
+			}, firstEnd-now);
+		}
 
         var secondEnd = moment();
         secondEnd.hour(15);
         secondEnd.minute(15);
         secondEnd.second(0);
 
-        if (now < secondEnd) {
-            $timeout(function() {
-                $scope.tradeClose = true;
-                $scope.openTimeHintPopup('lg');
-            }, secondEnd-now);
-        }
-    }
+		if (now < secondEnd) {
+			$timeout(function() {
+				$scope.tradeClose = true;
+				$scope.openTimeHintPopup('lg');
+			}, secondEnd-now);
+		}
+	}
 
     $scope.tradeData = {
         up: 0,
@@ -77,7 +78,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     }
 
     function fetchUserProfit() {
-        $http.get('/api/futures/get_user_profit')
+        $http.get('/api/futures/get_user_profit?product=' + $scope.data.productID)
             .success(function(data, status) {
                 if (data.result != null && data.result != undefined) {
                     $scope.profit = data.result / 100;
@@ -115,6 +116,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
 
         modalInstance.result.then(function () {
             console.log('Modal dismissed at: ' + new Date());
+			$scope.data.status = 1;
         }, function () {
             console.log('Modal dismissed at: ' + new Date());
         });
@@ -192,6 +194,29 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         });
     };
 
+    var openResetPopup = function () {
+        var modalInstance = $modal.open({
+            animation: true,
+            backdrop: 'static',
+            windowClass: 'xx-dialog',
+            templateUrl: 'views/reset_confirm_popup.html',
+            controller: 'InfoModalCtrl',
+            size: 'lg',
+            resolve: {}
+        });
+
+        modalInstance.result.then(function () {
+            $http.get('/futures/reset_user')
+                .success(function(data, status) {
+                    displayError('重置成功');
+                })
+                .error(function(data, status) {
+                    displayError(data.error_msg);
+                });
+        }, function () {
+        });
+    };
+
     $scope.showTradeTime = function() {
         $scope.openTimeHintPopup('lg');
     };
@@ -242,7 +267,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         if (type === 0) {
             forceClose = true;
         }
-        $http.post('/api/futures/create_order', {quantity:quantity, forceClose:forceClose})
+        $http.post('/api/futures/create_order', {quantity:quantity, forceClose:forceClose, product:$scope.data.productID})
             .success(function(data, status) {
                 getUserPositions();
                 var orderType = data.quantity > 0 ? '涨' : '跌';
@@ -259,6 +284,14 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             .error(function(data, status) {
                 displayError(data.error_msg);
             });
+    };
+
+    $scope.makeAppointment = function() {
+        $location.path('/appointment');
+    };
+
+    $scope.resetCapital = function() {
+        openResetPopup();
     };
 }]);
 

@@ -1,0 +1,134 @@
+<style>
+    .records-table thead {
+        background: #959595;
+    }
+    .orders-wrapper .wall-paper {
+        width:100%;
+        height:150px;
+        background-attachment:fixed;
+        background:url('/futures/images/sky.jpg');
+        background-position:center;
+        background-size:320px 200px;
+    }
+    .orders-wrapper .wall-paper .wechatheader-out {
+        padding-top:44px;
+        text-align:center;
+        font-size:15px;
+        color:#ffffff;
+    }
+    .orders-wrapper .wall-paper .wechatheader-in {
+        width:68px;
+        height:68px;
+        border-radius:100px;
+        overflow:hidden;
+        margin:0 auto;
+    }
+    .orders-wrapper .chart-area {
+        background-color:#ffffff;
+        height:200px;
+        width:100%;
+    }
+    .orders-wrapper .chart-area .note {
+        float:right;
+        width:50%;
+        height:200px;
+        font-size:15px;
+    }
+    .orders-wrapper .chart-area .note .chart-title {
+        color:#959595;
+        margin-top:40px;
+    }
+    .orders-wrapper .chart-area .note .color-example {
+        margin-top:16px;
+        width:17px;
+        height:17px;
+    }
+    .orders-wrapper .chart-area .note .example {
+        height:17px;
+        margin-left:20px;
+        margin-top:-17px;
+    }
+    .orders-wrapper .chart-area .note .color-example-income {
+        background-color:#eb6877;
+    }
+    .orders-wrapper .chart-area .note .color-example-base {
+        background-color:#dfe9eb;
+    }
+    .orders-wrapper .chart-area .note .color-example-lose {
+        background-color:#6fd264;
+    }
+    .orders-wrapper .chart-area .chart {
+        width:50%;
+        height:200px;
+        overflow:hidden;
+    }
+    .user-items .item-list .item a {
+        text-decoration: none;
+    }
+    .user-items .item-list .item {
+        margin-left: 10px;
+		margin-right: 10px;
+        font-weight: 300;
+        padding: 0.4em;
+        font-size: medium;
+        background-color: #ffffff;
+        margin-top: 20px;
+		border-radius: 5px;
+    }
+    .orders-wrapper .user-items .chevron-right {
+        float: right;
+        width: 17px;
+        margin-right: 10px;
+    }
+</style>
+<div class="orders-wrapper">
+    <div class="wall-paper">
+        <!--<div style="width:100%;height:150px;background-color:#0cbef8">-->
+        <div class="wechatheader-out">
+            <div class="wechatheader-in">
+                <img ng-src="\{{user.wechat.wechat_img}}" style="width:68px" />
+            </div>
+            <p>\{{user.wechat.wechat_name}}</p>
+        </div>
+    </div>
+    <div class="chart-area">
+        <div class="note">
+            <div class="chart-title"><p>个人资产分布图</p></div>
+            <div ng-show="loss == 0" class="color-example-income color-example"></div>
+            <div ng-show="loss == 0" class="example">
+                <p>收益:\{{profit | number:0}}</p>
+            </div>
+            <div ng-show="loss == 0" class="color-example-base color-example"></div>
+            <div ng-show="loss == 0" class="example">
+                <p>本金:\{{originCapital | number:0}}</p>
+            </div>
+            <div ng-show="loss < 0" class="color-example-base color-example"></div>
+            <div ng-show="loss < 0" class="example">
+                <p>总资产:\{{originCapital + loss | number:0}}</p>
+            </div>
+            <div ng-show="loss < 0" class="color-example-lose color-example"></div>
+            <div ng-show="loss < 0" class="example">
+                <p>亏损:\{{loss | number:0}}</p>
+            </div>
+        </div>
+        <div id="sectorChart" class="chart"></div>
+    </div>
+    <div class="user-items">
+        <div class="item-list">
+            <div class="item" ng-click="showOrders()">
+				<img src="/futures/images/go.png" class="chevron-right" />
+				<p>交易记录</p>
+                <!--<i class="glyphicon glyphicon-chevron-right"></i>-->
+            </div>
+            <!--
+            <div class="item" ng-click="resetCapital()">
+                <img src="/futures/images/go.png" class="chevron-right" />
+                资金重置
+            </div>
+            -->
+        </div>
+    </div>
+    <div ng-show="showError">
+        <div class="ui-tip">\{{errorMsg}}</div>
+    </div>
+</div>

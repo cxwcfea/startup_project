@@ -101,6 +101,7 @@ function placeOrder(req, res) {
     }
     var quantity = req.body.quantity;
     var forceClose = req.body.forceClose;
+
     if (forceClose) {
         req.body.user_id = req.user.wechat.trader;
         req.body.force_close = 1;
@@ -110,12 +111,30 @@ function placeOrder(req, res) {
             order: {
                 quantity: quantity,
                 contract: {
-                    stock_code: mockTrader.getStockCode(),
+                    stock_code: 'IFCURR',
                     exchange: 'future'
                 }
             },
             user_id: req.user.wechat.trader
         };
+
+        switch (parseInt(req.body.product)) {
+            case 0: // IF
+                obj.order.contract = {exchange:'future', stock_code:'IFCURR'};
+                break;
+            case 1: // EURUSD
+                obj.order.contract = {exchange:'forex', stock_code:'EURUSD'};
+                break;
+            case 2: // XAUUSD
+                obj.order.contract = {exchange:'commodity', stock_code:'XAUUSD'};
+                break;
+            case 3: // BABA
+                obj.order.contract = {exchange:'stock', stock_code:'BABA'};
+                break;
+            default :
+                obj.order.contract = {exchange:'future', stock_code:'IFCURR'};
+        }
+
         mockTrader.createOrder(obj, function(err, order) {
             if (err) {
                 var msg;
@@ -211,6 +230,22 @@ function getUserProfit(req, res) {
         return res.status(403).send({error_msg:'user need log in'});
     }
     req.body.user_id = req.user.wechat.trader;
+    switch (req.query.product) {
+        case '0': // IF
+            req.body.contract = {exchange:'future', stock_code:'IFCURR'};
+            break;
+        case '1': // EURUSD
+            req.body.contract = {exchange:'forex', stock_code:'EURUSD'};
+            break;
+        case '2': // XAUUSD
+            req.body.contract = {exchange:'commodity', stock_code:'XAUUSD'};
+            break;
+        case '3': // BABA
+            req.body.contract = {exchange:'stock', stock_code:'BABA'};
+            break;
+        default :
+            req.body.contract = {exchange:'future', stock_code:'IFCURR'};
+    }
     mockTrader.getProfit(req, res);
 }
 
@@ -237,6 +272,39 @@ function getOrderCount(fn) {
     mockTrader.Order.count({}, fn);
 }
 
+function getUserInfo(req, res) {
+    mockTrader.getUserInfo({user_id:req.user.wechat.trader}, function(err, user) {
+        if (err) {
+            return res.status(500).send({error_msg:err.toString()});
+        }
+        res.send(user);
+    });
+}
+
+function resetUser(req, res) {
+    mockTrader.resetUser(req.user.wechat.trader, function(err) {
+        if (err) {
+            return res.status(500).send({error_msg:err.toString()});
+        }
+        res.send({});
+    });
+}
+
+function makeAppointment(req, res) {
+    console.log('makeAppintment ' + req.body);
+    if (!req.body.mobile) {
+        return res.status(400).send({error_msg:'无效的手机号'});
+    }
+    req.user.wechat.mobile = req.body.mobile;
+    req.user.wechat.appointment = true;
+    req.user.save(function(err) {
+        if (err) {
+            return res.status(500).send({error_msg:err.toString()});
+        }
+        res.send({});
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/api/futures/user_rank', passportConf.isWechatAuthenticated, fetchUserRankData);
@@ -249,7 +317,13 @@ module.exports = {
 
         app.get('/api/futures/get_user_profit', passportConf.isWechatAuthenticated, getUserProfit);
 
+        app.get('/api/futures/user_info', getUserInfo);
+
         app.get('/futures', passportConf.isWechatAuthenticated, home);
+
+        app.get('/futures/reset_user', resetUser);
+
+        app.post('/futures/make_appointment', passportConf.isWechatAuthenticated, makeAppointment);
 
         app.get('/futures/test', test);
 

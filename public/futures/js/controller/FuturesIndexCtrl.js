@@ -25,6 +25,8 @@ angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window'
     };
     */
 
+	$scope.data.status = 0;
+	
     $scope.data.productID = 0;
     $scope.data.selectedItem = 1;
     $scope.data.selectedProduct = 0;
@@ -56,7 +58,7 @@ angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window'
             name: '我的',
             img: '/futures/images/foot4.png',
             selectedImg: '/futures/images/foot4-dark.png',
-            page: '/orders'
+            page: '/user'
         }
     ];
 

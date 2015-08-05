@@ -8,6 +8,22 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
     $scope.orders = [];
     var loading = false;
 
+    $scope.currentItem = 0;
+    $scope.items = [
+        {
+            name: '股指',
+            value: 0
+        },
+        {
+            name: '美元',
+            value: 1
+        },
+        {
+            name: '欧元',
+            value: 2
+        }
+    ];
+
     function getOrderForPage(pageNum) {
         loading = true;
         $http.get('/api/futures/get_orders?page=' + pageNum)
@@ -16,12 +32,6 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
                 loading = false;
                 $scope.orders = $scope.orders.concat(data.orders);
                 $scope.userInfo = data.user;
-                if (pageNum === 1) {
-                    $window.njPersonChart($scope.originCapital, ($scope.userInfo.lastCash/100));
-                    var delta = $scope.userInfo.lastCash == 0 ? 0 : $scope.userInfo.lastCash/100 - $scope.originCapital;
-                    $scope.profit = delta > 0 ? delta : 0;
-                    $scope.loss = delta < 0 ? delta : 0;
-                }
                 pageCount = data.pageCount;
             })
             .error(function(data, status) {
@@ -41,8 +51,9 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
         getOrderForPage(currentPage);
     };
 
-    $scope.showWithdraw = function() {
-        $location.path('/withdraw');
+    $scope.changeItem = function(item) {
+        return;
+        $scope.currentItem = item.value;
     };
 
 }]);

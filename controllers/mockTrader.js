@@ -13,7 +13,7 @@ var redlock = new Redlock(
 
       // the max number of times Redlock will attempt
       // to lock a resource before erroring
-      retryCount:  3,
+      retryCount:  10,
 
       // the time in ms between attempts
       retryDelay:  200
@@ -69,13 +69,13 @@ var PPJPortfolioSchema = mongoose.Schema({
     shortQuantity: { type: Number, default: 0},  // basis: 0.01
     fee: { type: Number, default: 0},  // basis: cent, 0.01
     total_deposit: { type: Number, default: 0},  // basis: cent, 0.01
-    total_point: { type: Number, default: 0},  // basis: cent, 0.01
+    total_point: { type: Number, default: 0}  // basis: cent, 0.01
 });
 var Portfolio = mongoose.model('PPJPortfolio', PPJPortfolioSchema);
 
-var kInitialCapital = 100000000;
+var kInitialCapital = 15000000;
 var kHand = 100;
-var kFeePerHand = 20000;  // 200 RMB per hand
+var kFeePerHand = 15000;  // 150 RMB per hand
 var kFeePerTenThousand = 25;  // 0.25 RMB per 10000.00 RMB
 var kMarketDepositPercentage = 1200;  // to buy 1 hand you need 12.00% deposit
 var kMarketPointValue = 30000;  // 300RMB per point
@@ -107,8 +107,8 @@ function getCosts(stock_price, quantity, position, total_point, total_deposit) {
     }
     var coeff = kMarketPointValue * stock_price / 10000.0 * kMarketDepositPercentage / 10000.0;
     raw = coeff * q;
-    // fee = Math.abs(quantity) / kHand * kFeePerHand;
-    fee = kMarketPointValue * Math.abs(quantity) * stock_price / 10000 * kFeePerTenThousand / 1000000;
+    fee = Math.abs(quantity) / kHand * kFeePerHand;
+    // fee = kMarketPointValue * Math.abs(quantity) * stock_price / 10000 * kFeePerTenThousand / 1000000;
     net_profit -= fee;
     var point_diff = point_released - q * stock_price / 100;
     var deposit_diff = deposit_released - raw;
@@ -227,7 +227,7 @@ function setStatus(userId, status) {
     });
 }
 
-function windControl(userId, forceClose, cb) {
+function windControl(userId, forceClose, userContract, cb) {
     var resource = 'mt://lock/user/' + userId;
     var ttl = 10000;
     redlock.lock(resource, ttl).then(function(lock) {
@@ -279,6 +279,16 @@ function windControl(userId, forceClose, cb) {
                           }
                           return;
                       }
+                      if (typeof userContract !== 'undefined') {
+                        if (!(contract.exchange === userContract.exchange &&
+                            contract.stock_code === userContract.stock_code)) {
+                          if (asyncObj.remaining <= 0){
+                              cb("No stock matching request");
+                              lock.unlock();
+                          }
+                          return;
+                        }
+                      }
                       global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
                           if (err || !priceInfoString) {
                               console.log(err);
@@ -299,7 +309,7 @@ function windControl(userId, forceClose, cb) {
                           contractInfo[portf.contractId] = priceInfo;
                           var costs = getCosts(priceInfo.LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
                           asyncObj.value -= costs.open;
-                          if (asyncObj.remaining > 0) {
+                          if (asyncObj.remaining > 0 && typeof userContract === 'undefined') {
                               console.log("Still counting: " + asyncObj);
                               return;
                           }
@@ -315,13 +325,17 @@ function windControl(userId, forceClose, cb) {
                               if (income > 0) {
                                   // Close all positions
                                   console.log("Closing user");
-                                  if (!forceClose)
+                                  if (!forceClose) {
                                     // Have to close
                                     // setStatus(userId, 1);  // cannot buy
                                     closeAll(userId, portfolio, income, contractInfo, 1, cb, lock);
-                                  else
+                                  } else {
                                     // Force close
+                                    if (typeof userContract !== 'undefined') {
+                                        portfolio = [portf];
+                                    }
                                     closeAll(userId, portfolio, income, contractInfo, 0, cb, lock);
+                                  }
                               } else {
                                   console.log("Closed");
                                   cb(null);
@@ -333,6 +347,9 @@ function windControl(userId, forceClose, cb) {
               }
           });
       });
+    }, function(){
+      console.log("fail to lock resource: " + resource);
+      cb("fail to lock resource: " + resource);
     });
 }
 
@@ -405,34 +422,44 @@ function getPositions(data, cb) {
     });
 }
 
-function getProfit(req, res) {
-    User.findOne({_id: req.body.user_id}, function(err, user) {
-        if (err || !user) {
+function getProfitImpl(req, res, user, contractId) {
+    var query = {userId: req.body.user_id};
+    if (contractId !== null) {
+      query = {userId: req.body.user_id, contractId: contractId};
+    }
+    Portfolio.find(query, function(err, portfolio) {
+        if (err) {
             console.log(err);
-            res.status(500).send({error_msg: err? err.errmsg: "no available user"});
+            res.status(500).send({error_msg: err.errmsg});
             return;
         }
-        Portfolio.find({userId: req.body.user_id}, function(err, portfolio) {
-            if (err) {
-                console.log(err);
-                res.status(500).send({error_msg: err.errmsg});
-                return;
-            }
-            if (!portfolio.length) {
-                res.status(400).send({error_msg:'portfolio not found'});
-                return;
-            }
-            var asyncObj = {remaining: portfolio.length, value: 0, has_error: false, errmsg:""};
-            var contractInfo = {};
+        if (!portfolio.length) {
+            res.status(400).send({error_msg:'portfolio not found'});
+            return;
+        }
+        var asyncObj = {remaining: portfolio.length, value: 0, has_error: false, errmsg:""};
+        var contractInfo = {};
 
-            for (var p in portfolio) {
-                var portf = portfolio[p];
-                Contract.findOne({_id: portf.contractId}, function(err, contract) {
-                    asyncObj.remaining -= 1;
-                    if (err || !contract) {
+        for (var p in portfolio) {
+            var portf = portfolio[p];
+            Contract.findOne({_id: portf.contractId}, function(err, contract) {
+                asyncObj.remaining -= 1;
+                if (err || !contract) {
+                    console.log(err);
+                    console.log(contract);
+                    console.log(portf);
+                    asyncObj.has_error = true;
+                    if (err) asyncObj.errmsg = err.errmsg;
+                }
+                if (asyncObj.has_error) {
+                    if (asyncObj.remaining <= 0){
+                        res.status(500).send({error_msg: asyncObj.errmsg});
+                    }
+                    return;
+                }
+                global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
+                    if (err || !priceInfoString) {
                         console.log(err);
-                        console.log(contract);
-                        console.log(portf);
                         asyncObj.has_error = true;
                         if (err) asyncObj.errmsg = err.errmsg;
                     }
@@ -442,39 +469,49 @@ function getProfit(req, res) {
                         }
                         return;
                     }
-                    global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
-                        if (err || !priceInfoString) {
-                            console.log(err);
-                            asyncObj.has_error = true;
-                            if (err) asyncObj.errmsg = err.errmsg;
-                        }
-                        if (asyncObj.has_error) {
-                            if (asyncObj.remaining <= 0){
-                                res.status(500).send({error_msg: asyncObj.errmsg});
-                            }
-                            return;
-                        }
-                        var priceInfo = JSON.parse(priceInfoString);
-                        priceInfo.LastPrice *= 100;
-                        console.log(priceInfo.LastPrice);
+                    var priceInfo = JSON.parse(priceInfoString);
+                    priceInfo.LastPrice *= 100;
+                    console.log(priceInfo.LastPrice);
 
-                        contractInfo[portf.contractId] = priceInfo;
-                        var costs = getCosts(priceInfo.LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
-                        asyncObj.value -= costs.open;
-                        if (asyncObj.remaining > 0) {
-                            console.log("Still counting: " + asyncObj);
-                            return;
-                        }
-                        //console.log("Completed: " + asyncObj);
-                        var income = asyncObj.value;
-                        console.log("User info: " + req.body.user_id + ", " + user.cash + ", " + income + ", " + user.close);
-                        var lastProfit = user.lastCash ? user.lastCash - kInitialCapital : 0;
-                        res.send({result: user.cash + income - user.deposit - user.debt - lastProfit, lastProfit:lastProfit, lastPrice:priceInfo.LastPrice});
+                    contractInfo[portf.contractId] = priceInfo;
+                    var costs = getCosts(priceInfo.LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
+                    asyncObj.value -= costs.open;
+                    if (asyncObj.remaining > 0) {
+                        console.log("Still counting: " + asyncObj);
                         return;
-                    });
+                    }
+                    //console.log("Completed: " + asyncObj);
+                    var income = asyncObj.value;
+                    console.log("User info: " + req.body.user_id + ", " + user.cash + ", " + income + ", " + user.close);
+                    var lastProfit = user.lastCash ? user.lastCash - kInitialCapital : 0;
+                    res.send({result: user.cash + income - user.deposit - user.debt - lastProfit, lastProfit:lastProfit, lastPrice:priceInfo.LastPrice});
+                    return;
                 });
-            }
-        });
+            });
+        }
+    });
+}
+function getProfit(req, res) {
+    User.findOne({_id: req.body.user_id}, function(err, user) {
+        if (err || !user) {
+            console.log(err);
+            res.status(500).send({error_msg: err? err.errmsg: "no available user"});
+            return;
+        }
+        if (typeof req.body.contract !== 'undefined') {
+            Contract.findOne({exchange: req.body.contract.exchange,
+                              stock_code: req.body.contract.stock_code}, function(err, contract) {
+                if (err || !contract) {
+                    console.log(err);
+                    res.status(500).send({error_msg: err? err.errmsg: "no available contract"});
+                    return;
+                }
+                getProfitImpl(req, res, user, contract._id);
+                
+            });
+        } else {
+            getProfitImpl(req, res, user, null);
+        }
     });
 }
 
@@ -491,9 +528,23 @@ function createUser(data, cb) {
     });
 }
 
+function resetUser(userID, cb) {
+    User.update({_id:userID}, {$set:{close:50000000, cash:100000000, deposit:50000000, debt:50000000, lastCash:0}}, function(err, numberAffected, raw) {
+        if (err) {
+            return cb(err);
+        }
+        Portfolio.update({userId:userID}, {$set:{total_point:0, total_deposit:0, fee:0, shortQuantity:0, longQuantity:0, quantity:0}}, function(err, numberAffected, raw) {
+            if (err) {
+                return cb(err);
+            }
+            cb(null);
+        });
+    });
+}
+
 function riskControl(req, res) {
     //console.log(req.body);
-    windControl(req.body.user_id, req.body.force_close, function(err, order) {
+    windControl(req.body.user_id, req.body.force_close, req.body.contract, function(err, order) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
         }
@@ -615,6 +666,9 @@ function createOrder(data, cb) {
               });
           });
       });
+    }, function(){
+      console.log("fail to lock resource: " + resource);
+      cb("fail to lock resource: " + resource);
     });
 }
 
@@ -655,5 +709,6 @@ module.exports = {
     getUserInfo: getUserInfo,
     windControl: windControl,
     getLastFuturesPrice: getLastFuturesPrice,
-    getProfit: getProfit
+    getProfit: getProfit,
+    resetUser: resetUser
 };

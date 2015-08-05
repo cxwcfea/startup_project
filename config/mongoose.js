@@ -30,14 +30,22 @@ function createDefaultUsers() {
 function createDefaultPPJContract() {
     PPJ.Contract.find({}).exec(function(err, data) {
         if (data && data.length === 0) {
+            var contracts = [
+              {exchange:'future', stock_code:'IFCURR'},
+              {exchange:'stock', stock_code:'BABA'},
+              {exchange:'commodity', stock_code:'XAUUSD'},
+              {exchange:'forex', stock_code:'EURUSD'}
+            ];
             // Default invest target
-            var c = new PPJ.Contract({});
-            c.save(function(err) {
-                if (err) {
-                    if (err.code == 11000) return;
-                    console.log(err);
-                }
-            });
+            for (var cid in contracts) {
+                var c = new PPJ.Contract(contracts[cid]);
+                c.save(function(err) {
+                    if (err) {
+                        if (err.code == 11000) return;
+                        console.log(err);
+                    }
+                });
+            }
         }
     });
 }
