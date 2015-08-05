@@ -32,33 +32,4 @@ angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window',
         $location.path('/orders');
     };
 
-    $scope.resetCapital = function() {
-        openRiskPopup();
-    };
-
-    var openRiskPopup = function () {
-        var modalInstance = $modal.open({
-            animation: true,
-            backdrop: 'static',
-            windowClass: 'xx-dialog',
-            templateUrl: 'views/reset_confirm_popup.html',
-            controller: 'InfoModalCtrl',
-            size: 'lg',
-            resolve: {}
-        });
-
-        modalInstance.result.then(function () {
-            $http.get('/futures/reset_user')
-                .success(function(data, status) {
-                    $scope.profit = 0;
-                    $scope.loss = 0;
-                    $window.njPersonChart($scope.originCapital, 0);
-                    displayError('重置成功');
-                })
-                .error(function(data, status) {
-                    displayError(data.error_msg);
-                });
-        }, function () {
-        });
-    };
 }]);
