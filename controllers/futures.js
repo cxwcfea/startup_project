@@ -252,6 +252,20 @@ function resetUser(req, res) {
     });
 }
 
+function makeAppointment(req, res) {
+    if (!req.body.mobile) {
+        return res.status(400).send({error_msg:'无效的手机号'});
+    }
+    req.user.mobile = req.body.mobile;
+    req.user.wechat.appointment = true;
+    req.user.save(function(err) {
+        if (err) {
+            return res.status(500).send({error_msg:err.toString()});
+        }
+        res.send({});
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/api/futures/user_rank', fetchUserRankData);
@@ -269,6 +283,8 @@ module.exports = {
         app.get('/futures', passportConf.isWechatAuthenticated, home);
 
         app.get('/futures/reset_user', resetUser);
+
+        app.post('/futures/make_appointment', passportConf.isWechatAuthenticated, makeAppointment);
 
         app.get('/futures/test', test);
 
