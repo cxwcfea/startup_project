@@ -1,5 +1,5 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window', '$http', '$location', '$timeout', function($scope, $window, $http, $location, $timeout) {
+angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window', '$http', '$location', '$timeout', '$modal', function($scope, $window, $http, $location, $timeout, $modal) {
     $scope.user = $scope.data.currentUser;
     $scope.originCapital = 1000000;
 	$scope.data.selectedItem = 3;
