@@ -64,8 +64,13 @@
 		height:557px;
 	}
     .index-box .appoint {
+        margin: 0 0 10px;
+        padding: 10px 18px;
+        background: #fff;
+        border-radius: 4px;
+    }
+    .index-box .appoint p {
         text-align: center;
-        margin-bottom: 15px;
     }
 </style>
 <!--#S header-->
@@ -140,7 +145,9 @@
             </div>
         </div>
     </div>
-    <p class="appoint" ng-click="makeAppointment()">预约实盘交易</p>
+    <div class="appoint">
+        <p ng-click="makeAppointment()">预约实盘交易</p>
+    </div>
 </div>
 
 <div class="ui-tip" ng-show="showError">\{{errorMsg}}</div>
