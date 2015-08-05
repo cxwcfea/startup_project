@@ -256,7 +256,7 @@ function makeAppointment(req, res) {
     if (!req.body.mobile) {
         return res.status(400).send({error_msg:'无效的手机号'});
     }
-    req.user.mobile = req.body.mobile;
+    req.user.wechat.mobile = req.body.mobile;
     req.user.wechat.appointment = true;
     req.user.save(function(err) {
         if (err) {
