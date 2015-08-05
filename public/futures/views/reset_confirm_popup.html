@@ -1,0 +1,27 @@
+<style>
+    .modal-header .modal-title {
+        font-size: 1.8em;
+    }
+    .modal-footer .container button {
+        width: 100%;
+        font-size: 1.5em;
+        height: 2em;
+    }
+    .modal-body p {
+        font-size: 1.5em;
+    }
+</style>
+<div class="modal-header">
+    <h3 class="modal-title">资金重置</h3>
+</div>
+<div class="modal-body">
+    <div>
+        <p>该操作将会使您的拍拍机本金及盈亏包括持仓都被重置为初始状态</p>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="container">
+        <button class="btn btn-primary col-xs-5" ng-click="cancel()" style="float:right">取消</button>
+        <button class="btn btn-primary col-xs-5" ng-click="ok()">确认</button>
+    </div>
+</div>

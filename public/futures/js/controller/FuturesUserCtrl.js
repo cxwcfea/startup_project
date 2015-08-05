@@ -33,6 +33,7 @@ angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window',
     };
 
     $scope.resetCapital = function() {
+        /*
         $http.get('/futures/reset_user')
             .success(function(data, status) {
                 displayError('重置成功');
@@ -40,5 +41,27 @@ angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window',
             .error(function(data, status) {
                 displayError(data.error_msg);
             });
+            */
+        openRiskPopup();
+    };
+
+    var openRiskPopup = function () {
+        var modalInstance = $modal.open({
+            animation: true,
+            backdrop: 'static',
+            windowClass: 'xx-dialog',
+            templateUrl: 'views/reset_confirm_popup.html',
+            controller: 'InfoModalCtrl',
+            size: 'lg',
+            resolve: {}
+        });
+
+        modalInstance.result.then(function () {
+            //console.log('ok at: ' + new Date());
+            alert('ok');
+        }, function () {
+            //console.log('cancel at: ' + new Date());
+            alert('cancel');
+        });
     };
 }]);
