@@ -52,6 +52,7 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
     };
 
     $scope.changeItem = function(item) {
+        return;
         $scope.currentItem = item.value;
     };
 
