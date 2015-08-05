@@ -208,11 +208,28 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         modalInstance.result.then(function () {
             $http.get('/futures/reset_user')
                 .success(function(data, status) {
+                    $scope.cash = InitCapital;
                     displayError('重置成功');
                 })
                 .error(function(data, status) {
                     displayError(data.error_msg);
                 });
+        }, function () {
+        });
+    };
+
+    var openProfitHintPopup = function () {
+        var modalInstance = $modal.open({
+            animation: true,
+            backdrop: 'static',
+            windowClass: 'xx-dialog',
+            templateUrl: 'views/profit_not_enough_popup.html',
+            controller: 'InfoModalCtrl',
+            size: 'lg',
+            resolve: {}
+        });
+
+        modalInstance.result.then(function () {
         }, function () {
         });
     };
@@ -287,6 +304,10 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     };
 
     $scope.makeAppointment = function() {
+        if ($scope.lastProfit < 10000) {
+            openProfitHintPopup();
+            return;
+        }
         $location.path('/appointment');
     };
 
