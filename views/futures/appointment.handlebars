@@ -26,15 +26,16 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">手机号</div>
-                        <input type="text" class="form-control" id="user-phone" placeholder="请输入您的手机号">
+                        <input type="tel" class="form-control" id="user-phone" ng-model="mobile" pattern="1[3|5|7|8|][0-9]{9}" autofocus placeholder="请输入您的手机号" required>
                     </div>
                 </div>
             </form>
             <p>我们将尽快联系您</p>
             <div class="confirm">
-                <button type="submit" class="btn btn-primary col-xs-offset-1 col-xs-10">立即预约</button>
+                <button type="submit" class="btn btn-primary col-xs-offset-1 col-xs-10" ng-click="appoint()">立即预约</button>
                 <p class="col-xs-12">盈利能力优秀的用户预约成功的概率更大</p>
             </div>
         </div>
     </div>
 </div>
+<div class="ui-tip" ng-show="showError">\{{errorMsg}}</div>
