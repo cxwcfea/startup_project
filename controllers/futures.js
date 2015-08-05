@@ -100,6 +100,7 @@ function placeOrder(req, res) {
     }
     var quantity = req.body.quantity;
     var forceClose = req.body.forceClose;
+
     if (forceClose) {
         req.body.user_id = req.user.wechat.trader;
         req.body.force_close = 1;
@@ -109,12 +110,30 @@ function placeOrder(req, res) {
             order: {
                 quantity: quantity,
                 contract: {
-                    stock_code: mockTrader.getStockCode(),
+                    stock_code: 'IFCURR',
                     exchange: 'future'
                 }
             },
             user_id: req.user.wechat.trader
         };
+
+        switch (parseInt(req.body.product)) {
+            case 0: // IF
+                obj.order.contract = {exchange:'future', stock_code:'IFCURR'};
+                break;
+            case 1: // EURUSD
+                obj.order.contract = {exchange:'forex', stock_code:'EURUSD'};
+                break;
+            case 2: // XAUUSD
+                obj.order.contract = {exchange:'commodity', stock_code:'XAUUSD'};
+                break;
+            case 3: // BABA
+                obj.order.contract = {exchange:'stock', stock_code:'BABA'};
+                break;
+            default :
+                obj.order.contract = {exchange:'future', stock_code:'IFCURR'};
+        }
+
         mockTrader.createOrder(obj, function(err, order) {
             if (err) {
                 var msg;
