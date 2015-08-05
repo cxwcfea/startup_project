@@ -262,7 +262,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     };
 
     $scope.makeAppointment = function() {
-        alert('好');
+        $location.path('/appointment');
     };
 }]);
 
