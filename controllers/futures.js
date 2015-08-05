@@ -253,6 +253,7 @@ function resetUser(req, res) {
 }
 
 function makeAppointment(req, res) {
+    console.log('makeAppintment ' + req.body);
     if (!req.body.mobile) {
         return res.status(400).send({error_msg:'无效的手机号'});
     }

@@ -15,7 +15,7 @@ angular.module('futuresApp').controller('FuturesAppointmentCtrl', ['$scope', '$w
             displayError('请输入有效手机号');
             return;
         }
-        $http.post('/futures/make_appointment', {mobile:mobile})
+        $http.post('/futures/make_appointment', {mobile:$scope.mobile})
             .success(function(data, status) {
                 displayError('预约成功');
             })
