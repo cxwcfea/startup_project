@@ -173,6 +173,22 @@ function getUserProfit(req, res) {
         return res.status(403).send({error_msg:'user need log in'});
     }
     req.body.user_id = req.user.wechat.trader;
+    switch (req.query.product) {
+        case '0': // IF
+            req.body.contract = {exchange:'future', stock_code:'IFCURR'};
+            break;
+        case '1': // EURUSD
+            req.body.contract = {exchange:'forex', stock_code:'EURUSD'};
+            break;
+        case '2': // XAUUSD
+            req.body.contract = {exchange:'commodity', stock_code:'XAUUSD'};
+            break;
+        case '3': // BABA
+            req.body.contract = {exchange:'stock', stock_code:'BABA'};
+            break;
+        default :
+            req.body.contract = {exchange:'future', stock_code:'IFCURR'};
+    }
     mockTrader.getProfit(req, res);
 }
 

@@ -76,7 +76,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     }
 
     function fetchUserProfit() {
-        $http.get('/api/futures/get_user_profit')
+        $http.get('/api/futures/get_user_profit?product=' + $scope.data.productID)
             .success(function(data, status) {
                 if (data.result != null && data.result != undefined) {
                     $scope.profit = data.result / 100;
