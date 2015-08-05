@@ -33,15 +33,6 @@ angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window',
     };
 
     $scope.resetCapital = function() {
-        /*
-        $http.get('/futures/reset_user')
-            .success(function(data, status) {
-                displayError('重置成功');
-            })
-            .error(function(data, status) {
-                displayError(data.error_msg);
-            });
-            */
         openRiskPopup();
     };
 
@@ -57,11 +48,14 @@ angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window',
         });
 
         modalInstance.result.then(function () {
-            //console.log('ok at: ' + new Date());
-            alert('ok');
+            $http.get('/futures/reset_user')
+                .success(function(data, status) {
+                    displayError('重置成功');
+                })
+                .error(function(data, status) {
+                    displayError(data.error_msg);
+                });
         }, function () {
-            //console.log('cancel at: ' + new Date());
-            alert('cancel');
         });
     };
 }]);
