@@ -1,5 +1,5 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesAppointmentCtrl', ['$scope', '$window', '$http', function($scope, $window, $http) {
+angular.module('futuresApp').controller('FuturesAppointmentCtrl', ['$scope', '$window', '$http', '$timeout', function($scope, $window, $http, $timeout) {
     $scope.user = $scope.data.currentUser;
 
     function displayError(msg) {
