@@ -50,6 +50,9 @@ angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window',
         modalInstance.result.then(function () {
             $http.get('/futures/reset_user')
                 .success(function(data, status) {
+                    $scope.profit = 0;
+                    $scope.loss = 0;
+                    $window.njPersonChart($scope.originCapital, 0);
                     displayError('重置成功');
                 })
                 .error(function(data, status) {
