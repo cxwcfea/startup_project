@@ -11,8 +11,7 @@ angular.module('futuresApp').controller('FuturesAppointmentCtrl', ['$scope', '$w
     }
 
     $scope.appoint = function() {
-        alert('appoint');
-        if (!mobile) {
+        if (!$scope.mobile) {
             displayError('请输入有效手机号');
             return;
         }
