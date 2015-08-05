@@ -73,7 +73,7 @@ var PPJPortfolioSchema = mongoose.Schema({
 });
 var Portfolio = mongoose.model('PPJPortfolio', PPJPortfolioSchema);
 
-var kInitialCapital = 100000000;
+var kInitialCapital = 15000000;
 var kHand = 100;
 var kFeePerHand = 15000;  // 150 RMB per hand
 var kFeePerTenThousand = 25;  // 0.25 RMB per 10000.00 RMB

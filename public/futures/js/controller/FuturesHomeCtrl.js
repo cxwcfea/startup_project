@@ -4,7 +4,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     $scope.chartData = [4188.57, 4040.48, 4053.70, 4182.93, 4023.93, 3872.15, 4188.57, 4040.48, 4053.70, 4182.93, 4023.93, 3872.15, 4053.70, 4182.93, 4023.93, 3872.15, 4188.57, 4040.48];
     $scope.user = $scope.data.currentUser;
     var HAND = 100;
-    var InitCapital = 1000000;
+    var InitCapital = 150000;
     $scope.data.selectedItem = 1;
     $scope.tradeClose = false;
 

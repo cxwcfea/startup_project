@@ -45,7 +45,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             value: 1,
             name: 'EURUSD',
             type: '欧 元',
-            intro: '暂无相关介绍',
+            intro: '暂无相关介绍（开发中）',
             status: 0,
             alias: '欧元',
             time: '工作日05:15-次日05:00'
@@ -54,7 +54,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             value: 2,
             name: 'XAUUSD',
             type: '黄 金',
-            intro: '暂无相关介绍',
+            intro: '暂无相关介绍（开发中）',
             status: 0,
             alias: '黄金',
             time: '工作日06:00-次日05:00'
@@ -63,7 +63,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             value: 3,
             name: 'BABA',
             type: '美 股',
-            intro: '中概股，晚上交易，涨跌均可买',
+            intro: '中概股，晚上交易，涨跌均可买（开发中）',
             status: 0,
             alias: 'BABA',
             time: '工作日09:15-11:30  13:00-15:15'
@@ -87,6 +87,9 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
 	};
 
     $scope.selectProduct = function (index) {
+        if (!index) {
+            return;
+        }
         var oldIndex = $scope.data.selectedProduct;
         $scope.data.selectedProduct = index;
         if (oldIndex != index) {
