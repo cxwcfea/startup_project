@@ -85,7 +85,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                     $scope.profit = data.result / 100;
                     $scope.lastProfit = data.lastProfit / 100;
                     $scope.currentPrice = data.lastPrice / 100;
-                    $scope.balance = Deposit - $scope.profit;
+                    $scope.balance = Deposit + $scope.profit + $scope.lastProfit;
                 } else {
                     $scope.profit = 0;
                     $scope.lastProfit = 0;
