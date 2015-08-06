@@ -5,6 +5,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     $scope.user = $scope.data.currentUser;
     var HAND = 100;
     var InitCapital = 150000;
+    var Deposit = 30000;
     $scope.data.selectedItem = 1;
     $scope.tradeClose = false;
 	$scope.browserHeight = document.documentElement.clientHeight;
@@ -84,16 +85,19 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                     $scope.profit = data.result / 100;
                     $scope.lastProfit = data.lastProfit / 100;
                     $scope.currentPrice = data.lastPrice / 100;
+                    $scope.balance = Deposit - $scope.profit;
                 } else {
                     $scope.profit = 0;
                     $scope.lastProfit = 0;
                     $scope.currentPrice = $scope.data.lastPoint;
+                    $scope.balance = Deposit;
                 }
             })
             .error(function(data, status) {
                 $scope.profit = 0;
                 $scope.lastProfit = 0;
                 $scope.currentPrice = $scope.data.lastPoint;
+                $scope.balance = Deposit;
             });
     }
 
