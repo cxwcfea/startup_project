@@ -290,11 +290,11 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                 var orderType = data.quantity > 0 ? '涨' : '跌';
 
                 if (type != 0) {
-                    displayError('您成功买' + orderType + Math.abs(data.quantity/100) + '手,价格' + (data.price/100).toFixed(1) + '元');
+                    //displayError('您成功买' + orderType + Math.abs(data.quantity/100) + '手,价格' + (data.price/100).toFixed(1) + '元');
                     $scope.currentOrder = data;
                 } else {
-                    orderType = $scope.tradeData.up > 0 ? '涨' : '跌';
-                    displayError('您成功平' + orderType + '' + $scope.tradeData.sell + '手');
+                    //orderType = $scope.tradeData.up > 0 ? '涨' : '跌';
+                    //displayError('您成功平' + orderType + '' + $scope.tradeData.sell + '手');
                     $scope.currentOrder = null;
                 }
             })
