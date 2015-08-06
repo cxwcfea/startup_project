@@ -618,7 +618,7 @@ function createOrder(data, cb) {
                       if (!portfolio) {
                           portfolio = new Portfolio({contractId: contract._id, userId: user._id});
                       }
-                      var costs = getCosts(priceInfo.LastPrice, data.order.quantity, portfolio.quantity, portfolio.total_point, portfolio.total_deposit);
+                      var costs = getCosts(contract, priceInfo.LastPrice, data.order.quantity, portfolio.quantity, portfolio.total_point, portfolio.total_deposit);
                       if (user.cash < costs.open) {
                           //res.send({code: 4, "msg": "user.cash < costs.open", data: {costs: costs, cash: user.cash}});
                           cb({code:5, msg:'user.cash < costs.open'});
