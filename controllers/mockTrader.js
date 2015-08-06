@@ -544,7 +544,7 @@ function createUser(data, cb) {
 }
 
 function resetUser(userID, cb) {
-    User.update({_id:userID}, {$set:{close:50000000, cash:100000000, deposit:50000000, debt:50000000, lastCash:0}}, function(err, numberAffected, raw) {
+    User.update({_id:userID}, {$set:{close:12500000, cash:15000000, deposit:3000000, debt:12000000, lastCash:0}}, function(err, numberAffected, raw) {
         if (err) {
             return cb(err);
         }
@@ -585,7 +585,6 @@ function createOrder(data, cb) {
               return lock.unlock();
           }
           if (user.status != 0) {
-              //res.send({code: 3, "msg": "Account status is not normal."});
               cb({code:3, msg:'Account status is not normal.'});
               return lock.unlock();
           }
@@ -620,7 +619,6 @@ function createOrder(data, cb) {
                       }
                       var costs = getCosts(contract, priceInfo.LastPrice, data.order.quantity, portfolio.quantity, portfolio.total_point, portfolio.total_deposit);
                       if (user.cash < costs.open) {
-                          //res.send({code: 4, "msg": "user.cash < costs.open", data: {costs: costs, cash: user.cash}});
                           cb({code:5, msg:'user.cash < costs.open'});
                           return lock.unlock();
                       }
@@ -653,25 +651,21 @@ function createOrder(data, cb) {
                           {$set:{cash: user.cash, lastCash: user.lastCash}}, function(err, numberAffected, raw) {
                           if (err || numberAffected != 1) {
                               console.log(err);
-                              //res.send({code: 5, "msg": err.errmsg});
                               cb({code:2, msg:err? err.toString(): "Placing order too fast"});
                               return lock.unlock();
                           }
                           portfolio.save(function(err) {
                               if (err) {
                                   console.log(err);
-                                  //res.send({code: 6, "msg": err.errmsg});
                                   cb({code:2, msg:err.toString()});
                                   return lock.unlock();
                               }
                               order.save(function(err) {
                                   if (err) {
                                       console.log(err);
-                                      //res.send({code: 7, "msg": err.errmsg});
                                       cb({code:2, msg:err.toString()});
                                       return lock.unlock();
                                   }
-                                  //res.send({code: 0, result: order._id});
                                   cb(null, order);
                                   return lock.unlock();
                               });
@@ -682,8 +676,8 @@ function createOrder(data, cb) {
           });
       });
     }, function(){
-      console.log("fail to lock resource: " + resource);
-      cb("fail to lock resource: " + resource);
+        console.log("fail to lock resource: " + resource);
+        cb({code:4, msg:"fail to lock resource: " + resource});
     });
 }
 
