@@ -146,7 +146,7 @@ function placeOrder(req, res) {
                         msg = '账户已被冻结';
                         break;
                     case 5:
-                        msg = '账户余额不足';
+                        msg = '余额不足1手';
                         break;
                     default:
                         msg = '内部错误';
