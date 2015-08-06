@@ -304,7 +304,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     };
 
     $scope.makeAppointment = function() {
-        if ($scope.lastProfit < 10000) {
+        if ($scope.lastProfit <= 3000) {
             openProfitHintPopup();
             return;
         }
