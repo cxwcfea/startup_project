@@ -37,7 +37,14 @@ var User = mongoose.model('PPJUser', PPJUserSchema);
 
 var PPJContractSchema = mongoose.Schema({
     exchange: { type: String, default: "future" },
-    stock_code: { type: String, default: getStockCode}
+    stock_code: { type: String, default: getStockCode},
+    hand: { type: Number, default: 100 },  // basis: 0.01
+    fee_type: { type: String, default: "value" },  // hand/value
+    fee_per_hand: { type: Number, default: 15000 },  // basis: cent, 0.01
+    fee_per_ten_thousand: { type: Number, default: 25 },  // basis: cent, 0.01
+    deposit_percentage: { type: Number, default: 1200 },  // basis: 0.01
+    point_value: { type: Number, default: 30000 },  // basis: cent, 0.01
+    cash: { type: String, default: "CNY" }  // CNY/USD
 });
 PPJContractSchema.index({exchange: 1, stock_code: -1}, {unique: true});
 var Contract = mongoose.model('PPJContract', PPJContractSchema);
@@ -75,14 +82,15 @@ var Portfolio = mongoose.model('PPJPortfolio', PPJPortfolioSchema);
 
 var kInitialCapital = 15000000;
 var kHand = 100;
-var kFeePerHand = 15000;  // 150 RMB per hand
-var kFeePerTenThousand = 25;  // 0.25 RMB per 10000.00 RMB
-var kMarketDepositPercentage = 1200;  // to buy 1 hand you need 12.00% deposit
-var kMarketPointValue = 30000;  // 300RMB per point
+// var kFeePerHand = 15000;  // 150 RMB per hand
+// var kFeePerTenThousand = 25;  // 0.25 RMB per 10000.00 RMB
+// var kMarketDepositPercentage = 1200;  // to buy 1 hand you need 12.00% deposit
+// var kMarketPointValue = 30000;  // 300RMB per point
+var kUSDCNY = 620;  // 6.20 exchange rate
 // util.js
 function makeTimestamp() { return Date.now();}
 function makeRedisKey(contract) { return "mt://" + contract.exchange + "/" + contract.stock_code; }
-function getCosts(stock_price, quantity, position, total_point, total_deposit) {
+function getCosts(contract, stock_price, quantity, position, total_point, total_deposit) {
     var raw = 0;
     var fee = 0;
     var q = Math.abs(quantity);  // additional cost for adjusting positions
@@ -90,13 +98,15 @@ function getCosts(stock_price, quantity, position, total_point, total_deposit) {
     var point_released = 0;
     var deposit_released = 0;
     var net_profit = 0;
+    var ex_rate = 100;
+    if (contract.cash === 'USD') ex_rate = kUSDCNY;
     if ((position > 0 && quantity < 0) || (position < 0 && quantity > 0)) {
         var pos_released = Math.min(Math.abs(position), Math.abs(quantity));
         var new_open = Math.abs(quantity) - pos_released;
         q = new_open;
         // released point
         point_released = (total_point / Math.abs(position)) * pos_released;
-        profit = kMarketPointValue * (stock_price * pos_released / 100 - point_released) / 100.0;
+        profit = contract.point_value * ex_rate / 100.0 * (stock_price * pos_released / 100 - point_released) / 100.0;
         if (position < 0) {
           profit = -profit;
         }
@@ -105,10 +115,13 @@ function getCosts(stock_price, quantity, position, total_point, total_deposit) {
         deposit_released = (total_deposit / Math.abs(position)) * pos_released;
         profit += deposit_released;
     }
-    var coeff = kMarketPointValue * stock_price / 10000.0 * kMarketDepositPercentage / 10000.0;
+    var coeff = contract.point_value * ex_rate / 100.0 * stock_price / 10000.0 * contract.deposit_percentage / 10000.0;
     raw = coeff * q;
-    fee = Math.abs(quantity) / kHand * kFeePerHand;
-    // fee = kMarketPointValue * Math.abs(quantity) * stock_price / 10000 * kFeePerTenThousand / 1000000;
+    if (contract.fee_type === 'hand') {
+      fee = Math.abs(quantity) / contract.hand * contract.fee_per_hand;
+    } else {
+      fee = contract.point_value * ex_rate / 100.0 * Math.abs(quantity) * stock_price / 10000 * contract.fee_per_ten_thousand / 1000000;
+    }
     net_profit -= fee;
     var point_diff = point_released - q * stock_price / 100;
     var deposit_diff = deposit_released - raw;
@@ -117,7 +130,7 @@ function getCosts(stock_price, quantity, position, total_point, total_deposit) {
     return {raw: raw, fee: fee, open: locked_cash, locked_cash: locked_cash, point:point_diff, deposit:deposit_diff, profit:profit, net_profit:net_profit};
 }
 
-function closeAll(userId, portfolio, income, contractInfo, reset, cb, lock) {
+function closeAll(userId, portfolio, income, contractInfo, contractData, reset, cb, lock) {
     var asyncObj = {remaining: portfolio.length, value: 0, has_error: false, errmsg:""};
       User.findById(userId, function(err, user) {
           if (err) {
@@ -151,7 +164,7 @@ function closeAll(userId, portfolio, income, contractInfo, reset, cb, lock) {
               for (var p in portfolio) {
                   var portf = portfolio[p];
                   console.log(contractInfo);
-                  var costs = getCosts(contractInfo[portf.contractId].LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
+                  var costs = getCosts(contractData[portf.contractId], contractInfo[portf.contractId].LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
                   var diffLong = 0;
                   var diffShort = 0;
                   if (-portf.quantity > 0) diffLong = Math.abs(portf.quantity);
@@ -259,6 +272,7 @@ function windControl(userId, forceClose, userContract, cb) {
               }
               var asyncObj = {remaining: portfolio.length, value: 0, has_error: false, errmsg:""};
               var contractInfo = {};
+              var contractData = {};
 
               for (var p in portfolio) {
                   var portf = portfolio[p];
@@ -307,7 +321,8 @@ function windControl(userId, forceClose, userContract, cb) {
                           priceInfo.LastPrice *= 100;
 
                           contractInfo[portf.contractId] = priceInfo;
-                          var costs = getCosts(priceInfo.LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
+                          contractData[portf.contractId] = contract;
+                          var costs = getCosts(contract, priceInfo.LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
                           asyncObj.value -= costs.open;
                           if (asyncObj.remaining > 0 && typeof userContract === 'undefined') {
                               console.log("Still counting: " + asyncObj);
@@ -328,13 +343,13 @@ function windControl(userId, forceClose, userContract, cb) {
                                   if (!forceClose) {
                                     // Have to close
                                     // setStatus(userId, 1);  // cannot buy
-                                    closeAll(userId, portfolio, income, contractInfo, 1, cb, lock);
+                                    closeAll(userId, portfolio, income, contractInfo, contractData, 1, cb, lock);
                                   } else {
                                     // Force close
                                     if (typeof userContract !== 'undefined') {
                                         portfolio = [portf];
                                     }
-                                    closeAll(userId, portfolio, income, contractInfo, 0, cb, lock);
+                                    closeAll(userId, portfolio, income, contractInfo, contractData, 0, cb, lock);
                                   }
                               } else {
                                   console.log("Closed");
@@ -474,7 +489,7 @@ function getProfitImpl(req, res, user, contractId) {
                     console.log(priceInfo.LastPrice);
 
                     contractInfo[portf.contractId] = priceInfo;
-                    var costs = getCosts(priceInfo.LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
+                    var costs = getCosts(contract, priceInfo.LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
                     asyncObj.value -= costs.open;
                     if (asyncObj.remaining > 0) {
                         console.log("Still counting: " + asyncObj);
@@ -529,7 +544,7 @@ function createUser(data, cb) {
 }
 
 function resetUser(userID, cb) {
-    User.update({_id:userID}, {$set:{close:12500000, cash:15000000, deposit:3000000, debt:12000000, lastCash:0}}, function(err, numberAffected, raw) {
+    User.update({_id:userID}, {$set:{close:50000000, cash:100000000, deposit:50000000, debt:50000000, lastCash:0}}, function(err, numberAffected, raw) {
         if (err) {
             return cb(err);
         }
@@ -568,12 +583,11 @@ function createOrder(data, cb) {
               console.log(err);
               cb(err.toString());
               return lock.unlock();
-              //return;
           }
           if (user.status != 0) {
+              //res.send({code: 3, "msg": "Account status is not normal."});
               cb({code:3, msg:'Account status is not normal.'});
               return lock.unlock();
-              //return;
           }
           // find contract
           Contract.findOne({
@@ -584,13 +598,11 @@ function createOrder(data, cb) {
                   console.log(err);
                   cb({code:2, msg:err.toString()});
                   return lock.unlock();
-                  //return;
               }
               if (!contract) {
                   console.log('failed to create contract');
                   cb({code:2, msg:'failed to create contract'});
                   return lock.unlock();
-                  //return;
               }
               // find contract price info
               global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
@@ -602,16 +614,15 @@ function createOrder(data, cb) {
                           console.log(err);
                           cb({code:2, msg:err.toString()});
                           return lock.unlock();
-                          //return;
                       }
                       if (!portfolio) {
                           portfolio = new Portfolio({contractId: contract._id, userId: user._id});
                       }
                       var costs = getCosts(priceInfo.LastPrice, data.order.quantity, portfolio.quantity, portfolio.total_point, portfolio.total_deposit);
                       if (user.cash < costs.open) {
+                          //res.send({code: 4, "msg": "user.cash < costs.open", data: {costs: costs, cash: user.cash}});
                           cb({code:5, msg:'user.cash < costs.open'});
                           return lock.unlock();
-                          //return;
                       }
                       var order = new Order({
                           contractId: contract._id,
@@ -642,27 +653,27 @@ function createOrder(data, cb) {
                           {$set:{cash: user.cash, lastCash: user.lastCash}}, function(err, numberAffected, raw) {
                           if (err || numberAffected != 1) {
                               console.log(err);
+                              //res.send({code: 5, "msg": err.errmsg});
                               cb({code:2, msg:err? err.toString(): "Placing order too fast"});
                               return lock.unlock();
-                              //return;
                           }
                           portfolio.save(function(err) {
                               if (err) {
                                   console.log(err);
+                                  //res.send({code: 6, "msg": err.errmsg});
                                   cb({code:2, msg:err.toString()});
                                   return lock.unlock();
-                                  //return;
                               }
                               order.save(function(err) {
                                   if (err) {
                                       console.log(err);
+                                      //res.send({code: 7, "msg": err.errmsg});
                                       cb({code:2, msg:err.toString()});
                                       return lock.unlock();
-                                      //return;
                                   }
+                                  //res.send({code: 0, result: order._id});
                                   cb(null, order);
                                   return lock.unlock();
-                                  //return;
                               });
                           });
                       });
@@ -671,8 +682,8 @@ function createOrder(data, cb) {
           });
       });
     }, function(){
-        console.log("fail to lock resource: " + resource);
-        cb({code:4, msg:"fail to lock resource: " + resource});
+      console.log("fail to lock resource: " + resource);
+      cb("fail to lock resource: " + resource);
     });
 }
 

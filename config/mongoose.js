@@ -31,10 +31,50 @@ function createDefaultPPJContract() {
     PPJ.Contract.find({}).exec(function(err, data) {
         if (data && data.length === 0) {
             var contracts = [
-              {exchange:'future', stock_code:'IFCURR'},
-              {exchange:'stock', stock_code:'BABA'},
-              {exchange:'commodity', stock_code:'XAUUSD'},
-              {exchange:'forex', stock_code:'EURUSD'}
+              {
+                exchange:'future',
+                stock_code:'IFCURR',
+                hand:100,
+                fee_type:'value',
+                fee_per_hand:15000,
+                fee_per_ten_thousand:25,
+                deposit_percentage:1200,
+                point_value:30000,
+                cash:'CNY'
+              },
+              {
+                exchange:'stock',
+                stock_code:'BABA',
+                hand:20000,
+                fee_type:'hand',
+                fee_per_hand:100,
+                fee_per_ten_thousand:0,
+                deposit_percentage:1200,
+                point_value:20000,
+                cash:'USD'
+              },
+              {
+                exchange:'commodity',
+                stock_code:'XAUUSD',
+                hand:10000,
+                fee_type:'hand',
+                fee_per_hand:200,
+                fee_per_ten_thousand:0,
+                deposit_percentage:1200,
+                point_value:10000,
+                cash:'USD'
+              },
+              {
+                exchange:'forex',
+                stock_code:'EURUSD',
+                hand:2000000,
+                fee_type:'hand',
+                fee_per_hand:200,
+                fee_per_ten_thousand:0,
+                deposit_percentage:1200,
+                point_value:10000,
+                cash:'USD'
+              }
             ];
             // Default invest target
             for (var cid in contracts) {
