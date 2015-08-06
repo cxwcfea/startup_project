@@ -118,7 +118,7 @@ function getCosts(contract, stock_price, quantity, position, total_point, total_
     var coeff = contract.point_value * ex_rate / 100.0 * stock_price / 10000.0 * contract.deposit_percentage / 10000.0;
     raw = coeff * q;
     if (contract.fee_type === 'hand') {
-      fee = Math.abs(quantity) / contract.hand * contract.fee_per_hand;
+      fee = Math.abs(quantity) / contract.hand * contract.fee_per_hand * ex_rate / 100.0;
     } else {
       fee = contract.point_value * ex_rate / 100.0 * Math.abs(quantity) * stock_price / 10000 * contract.fee_per_ten_thousand / 1000000;
     }

@@ -35,7 +35,7 @@ function createDefaultPPJContract() {
                 exchange:'future',
                 stock_code:'IFCURR',
                 hand:100,
-                fee_type:'value',
+                fee_type:'hand',
                 fee_per_hand:15000,
                 fee_per_ten_thousand:25,
                 deposit_percentage:1200,
