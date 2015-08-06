@@ -567,12 +567,14 @@ function createOrder(data, cb) {
           if (err) {
               console.log(err);
               cb(err.toString());
-              return lock.unlock();
+              //return lock.unlock();
+              return;
           }
           if (user.status != 0) {
               //res.send({code: 3, "msg": "Account status is not normal."});
               cb({code:3, msg:'Account status is not normal.'});
-              return lock.unlock();
+              //return lock.unlock();
+              return;
           }
           // find contract
           Contract.findOne({
@@ -582,12 +584,14 @@ function createOrder(data, cb) {
               if (err) {
                   console.log(err);
                   cb({code:2, msg:err.toString()});
-                  return lock.unlock();
+                  //return lock.unlock();
+                  return;
               }
               if (!contract) {
                   console.log('failed to create contract');
                   cb({code:2, msg:'failed to create contract'});
-                  return lock.unlock();
+                  //return lock.unlock();
+                  return;
               }
               // find contract price info
               global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
@@ -598,7 +602,8 @@ function createOrder(data, cb) {
                       if (err) {
                           console.log(err);
                           cb({code:2, msg:err.toString()});
-                          return lock.unlock();
+                          //return lock.unlock();
+                          return;
                       }
                       if (!portfolio) {
                           portfolio = new Portfolio({contractId: contract._id, userId: user._id});
@@ -607,7 +612,8 @@ function createOrder(data, cb) {
                       if (user.cash < costs.open) {
                           //res.send({code: 4, "msg": "user.cash < costs.open", data: {costs: costs, cash: user.cash}});
                           cb({code:5, msg:'user.cash < costs.open'});
-                          return lock.unlock();
+                          //return lock.unlock();
+                          return;
                       }
                       var order = new Order({
                           contractId: contract._id,
@@ -640,14 +646,16 @@ function createOrder(data, cb) {
                               console.log(err);
                               //res.send({code: 5, "msg": err.errmsg});
                               cb({code:2, msg:err? err.toString(): "Placing order too fast"});
-                              return lock.unlock();
+                              //return lock.unlock();
+                              return;
                           }
                           portfolio.save(function(err) {
                               if (err) {
                                   console.log(err);
                                   //res.send({code: 6, "msg": err.errmsg});
                                   cb({code:2, msg:err.toString()});
-                                  return lock.unlock();
+                                  //return lock.unlock();
+                                  return;
                               }
                               order.save(function(err) {
                                   if (err) {
@@ -658,7 +666,8 @@ function createOrder(data, cb) {
                                   }
                                   //res.send({code: 0, result: order._id});
                                   cb(null, order);
-                                  return lock.unlock();
+                                  //return lock.unlock();
+                                  return;
                               });
                           });
                       });
