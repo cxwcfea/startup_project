@@ -529,7 +529,7 @@ function createUser(data, cb) {
 }
 
 function resetUser(userID, cb) {
-    User.update({_id:userID}, {$set:{close:50000000, cash:100000000, deposit:50000000, debt:50000000, lastCash:0}}, function(err, numberAffected, raw) {
+    User.update({_id:userID}, {$set:{close:3000000, cash:15000000, deposit:3000000, debt:12000000, lastCash:0}}, function(err, numberAffected, raw) {
         if (err) {
             return cb(err);
         }
