@@ -562,7 +562,7 @@ function createOrder(data, cb) {
     var resource = 'mt://lock/user/' + data.user_id;
     var ttl = 10000;
     // find user
-    redlock.lock(resource, ttl).then(function(lock) {
+    //redlock.lock(resource, ttl).then(function(lock) {
       User.findOne({_id: data.user_id}, function(err, user) {
           if (err) {
               console.log(err);
@@ -666,10 +666,10 @@ function createOrder(data, cb) {
               });
           });
       });
-    }, function(){
-      console.log("fail to lock resource: " + resource);
-      cb("fail to lock resource: " + resource);
-    });
+    //}, function(){
+    //  console.log("fail to lock resource: " + resource);
+    //  cb("fail to lock resource: " + resource);
+    //});
 }
 
 function getStockCode() {
