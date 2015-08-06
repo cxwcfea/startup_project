@@ -327,8 +327,6 @@ module.exports = {
 
         app.get('/futures/test', test);
 
-		app.get('/api/futures/get_redEnvelop', getRedEnvelop);
-
         app.get('/futures/*', function(req, res, next) {
             var startTime = moment();
             startTime.hour(09);
@@ -363,7 +361,7 @@ module.exports = {
 
             res.render('futures/' + req.params[0], {
                 layout:null,
-                tradeTime: tradeTime
+                tradeTime: true
             });
         });
     }
