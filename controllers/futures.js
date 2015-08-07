@@ -305,6 +305,7 @@ function makeAppointment(req, res) {
     });
 }
 
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/api/futures/user_rank', passportConf.isWechatAuthenticated, fetchUserRankData);
@@ -365,6 +366,50 @@ module.exports = {
                 layout:null,
                 tradeTime: tradeTime
             });
+        });
+    },
+    collectStatisticData: function(cb) {
+        var query = User.find({});
+        query.exists('wechat.wechat_uuid');
+        query.populate('wechat.trader');
+        query.exec(function(err, users) {
+            if (err) {
+                return cb(err);
+            }
+            var today = moment().startOf('day');
+            var userCount = users.length;
+            var newUserCount = 0;
+            var winUserCount = 0;
+            var canAppointmentUserCount = 0;
+            var appointmentUserCount = 0;
+            var totalProfit = 0;
+            for (var i = 0; i < users.length; ++i) {
+                if (users[i].registerAt > today) {
+                    ++newUserCount;
+                }
+                if (users[i].wechat.trader.lastCash > 0) {
+                    ++winUserCount;
+                    totalProfit += users[i].wechat.trader.lastCash;
+                    if (users[i].wechat.trader.lastCash > 3000) {
+                        ++canAppointmentUserCount;
+                    }
+                }
+                if (user[i].wechat.appointment) {
+                    ++appointmentUserCount;
+                }
+            }
+            var aveProfit = totalProfit / userCount;
+
+            var obj = {
+                userCount: userCount,
+                newUserCount: newUserCount,
+                winUserCount: winUserCount,
+                canAppointmentUserCount: canAppointmentUserCount,
+                appointmentUserCount: appointmentUserCount,
+                totalProfit: totalProfit.toFixed(2),
+                aveProfit: aveProfit.toFixed(2)
+            };
+            cb(null, obj);
         });
     }
 };

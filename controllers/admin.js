@@ -20,8 +20,21 @@ var User = require('../models/User'),
     weixin = require('../lib/weixin'),
     ecitic = require("../lib/ecitic"),
     invest = require('../lib/invest'),
-    sms = require('../lib/sms');
+    sms = require('../lib/sms'),
+    ppj = require('./futures'),
     wechat = require('../lib/weixin');
+
+function getPPJStatisticsPage(req, res, next) {
+    ppj.collectStatisticData(function(err, data) {
+        if (err) {
+            return next(err);
+        }
+        res.render('admin/ppjUserStatistics', {
+            layout:null,
+            data: data
+        });
+    });
+}
 
 function getStatisticsPage(req, res, next) {
     async.waterfall([
@@ -2528,6 +2541,8 @@ module.exports = {
         app.get('/admin/api/get_all_user_info', passportConf.requiresRole('admin'), getAllUser);
 
         app.get('/admin/api/get_all_ppj_user', passportConf.requiresRole('admin'), getAllPPJUser);
+
+        app.get('/admin/ppj_statistics', passportConf.requiresRole('admin'), getPPJStatisticsPage);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});
