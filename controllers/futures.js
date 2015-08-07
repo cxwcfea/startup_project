@@ -397,7 +397,7 @@ module.exports = {
                         ++canAppointmentUserCount;
                     }
                 }
-                if (user[i].wechat.appointment) {
+                if (users[i].wechat.appointment) {
                     ++appointmentUserCount;
                 }
             }
