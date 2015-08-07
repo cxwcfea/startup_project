@@ -1,7 +1,12 @@
 var mongoose = require('mongoose');
-var Redlock = require('redlock');
-var Hive = require('./hive').Hive;
-var redis = require('redis');
+    Redlock = require('redlock'),
+    Hive = require('./hive').Hive,
+    redis = require('redis'),
+    log4js = require('log4js'),
+    env = process.env.NODE_ENV,
+    config = require('../config/config')[env],
+	redEnvelope = require('../lib/redEnvelopes'),
+    logger = log4js.getLogger('futures');
 
 console.log(global.redis_client);
 var redlock = new Redlock(
@@ -91,7 +96,8 @@ var kHand = 100;
 var kUSDCNY = 620;  // 6.20 exchange rate
 // util.js
 function makeTimestamp() { return Date.now();}
-function makeRedisKey(contract) { return "mt://" + contract.exchange + "/" + contract.stock_code; }
+//function makeRedisKey(contract) { return "mt://" + contract.exchange + "/" + contract.stock_code; }
+function makeRedisKey(contract) { return "mt://" + contract.exchange + "/" + config.futureIF; }
 function getCosts(contract, stock_price, quantity, position, total_point, total_deposit) {
     var raw = 0;
     var fee = 0;
@@ -578,7 +584,7 @@ function getInstrument(){
 	return "IF" + (d.getYear()-100) + month;
 }
 function createOrder(data, cb) {
-    console.log(data);
+    logger.debug(data);
     if (!data.order.quantity || data.order.quantity % kHand != 0) {
         console.log("invalid quantity");
         cb({code:1, msg:"invalid quantity"});
@@ -617,6 +623,9 @@ function createOrder(data, cb) {
               global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
                   var priceInfo = JSON.parse(priceInfoString);
                   priceInfo.LastPrice *= 100;
+                  priceInfo.PreClosePrice;
+                  var top_price = priceInfo.PreClosePrice*1.0995;
+                  var bottom_price = priceInfo.PreClosePrice*(1-0.0995);
                   console.log(priceInfo);
                   Portfolio.findOne({$and: [{contractId: contract._id}, {userId: user._id}]}, function(err, portfolio) {
                       if (err) {
@@ -649,16 +658,17 @@ function createOrder(data, cb) {
 							  instrument: instrument,
 							  act: 1, // positive for buy, 0 for close, negative for sell
 							  size: 1.0, // volume
-							  px_raw: 1.0 // price
+							  px_raw: priceInfo.LastPrice/100 // price
 						  };
 						  hive.createOrder(order, function(error, user2cb_obj) {
-                          console.log('================');
+                          console.log('================shaka');
                           console.log(user2cb_obj);
 							  if(error.code == 0){
 								  console.log('order created in ctp.');
 							  } else if(error.code == -1) {
-								  console.log('rejected.');
-                                  return;
+								  console.log('ctp rejected.');
+                                  delete user2cb_obj[data.user_id];
+                                  return lock.unlock();
 							  }
 							  
 							  var order = new Order({

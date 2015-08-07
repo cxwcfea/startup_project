@@ -71,7 +71,7 @@ Hive.prototype.login = function (){
 	var client = this.socket_client;
 	client.connect(param.port, param.ip, function(){
 		console.log('connect to '+ param.ip);
-		var sbuf = new bytebuffer();
+		var sbuf = new bytebuffer().littleEndian();
 		var req = sbuf.byte(param.mtype)
 						.vstring(param.investor, HIVE_USERNAME_LEN)
 						.vstring(param.password, HIVE_PASSWORD_LEN)
@@ -88,7 +88,7 @@ Hive.prototype.login = function (){
 	client.on('data',function(data){
 		if(that.isLogin == false){
 			console.log('login recv response ');
-			var buff = new bytebuffer(data);
+			var buff = new bytebuffer(data).littleEndian();
 			//FIXME: need to make sure the parsing process 
 			//does't exceeds the boundry.
 			var arr = buff.byte()
@@ -103,7 +103,7 @@ Hive.prototype.login = function (){
 			console.log('login '+that.isLogin);
 		} else {
 			console.log('recv order response ');
-			var buff = new bytebuffer(data);
+			var buff = new bytebuffer(data).littleEndian();
 			//FIXME: need to make sure the parsing process 
 			//does't exceeds the boundry.
 			var arr = buff.byte()		//mtype
@@ -170,7 +170,7 @@ Hive.prototype.createOrder = function (param, callback){
 	// param.px_bps uint32
 	// param.flag uint64
 	var client = this.socket_client;
-	var sbuf = new bytebuffer();
+	var sbuf = new bytebuffer().littleEndian();
 	var req = sbuf.byte(param.mtype)
 					.int64(param.order_id)
 					.vstring(param.instrument, HIVE_SYMBOL_LEN)
