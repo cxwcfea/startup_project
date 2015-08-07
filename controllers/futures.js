@@ -403,7 +403,6 @@ module.exports = {
                     ++appointmentUserCount;
                 }
             }
-            totalProfit /= 100;
             var aveProfit = totalProfit / userCount;
 
             var obj = {
