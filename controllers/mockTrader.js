@@ -562,19 +562,16 @@ function createOrder(data, cb) {
     var resource = 'mt://lock/user/' + data.user_id;
     var ttl = 10000;
     // find user
-    //redlock.lock(resource, ttl).then(function(lock) {
+    redlock.lock(resource, ttl).then(function(lock) {
       User.findOne({_id: data.user_id}, function(err, user) {
           if (err) {
               console.log(err);
               cb(err.toString());
-              //return lock.unlock();
-              return;
+              return lock.unlock();
           }
           if (user.status != 0) {
-              //res.send({code: 3, "msg": "Account status is not normal."});
               cb({code:3, msg:'Account status is not normal.'});
-              //return lock.unlock();
-              return;
+              return lock.unlock();
           }
           // find contract
           Contract.findOne({
@@ -584,14 +581,12 @@ function createOrder(data, cb) {
               if (err) {
                   console.log(err);
                   cb({code:2, msg:err.toString()});
-                  //return lock.unlock();
-                  return;
+                  return lock.unlock();
               }
               if (!contract) {
                   console.log('failed to create contract');
                   cb({code:2, msg:'failed to create contract'});
-                  //return lock.unlock();
-                  return;
+                  return lock.unlock();
               }
               // find contract price info
               global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
@@ -602,18 +597,15 @@ function createOrder(data, cb) {
                       if (err) {
                           console.log(err);
                           cb({code:2, msg:err.toString()});
-                          //return lock.unlock();
-                          return;
+                          return lock.unlock();
                       }
                       if (!portfolio) {
                           portfolio = new Portfolio({contractId: contract._id, userId: user._id});
                       }
                       var costs = getCosts(priceInfo.LastPrice, data.order.quantity, portfolio.quantity, portfolio.total_point, portfolio.total_deposit);
                       if (user.cash < costs.open) {
-                          //res.send({code: 4, "msg": "user.cash < costs.open", data: {costs: costs, cash: user.cash}});
                           cb({code:5, msg:'user.cash < costs.open'});
-                          //return lock.unlock();
-                          return;
+                          return lock.unlock();
                       }
                       var order = new Order({
                           contractId: contract._id,
@@ -644,30 +636,23 @@ function createOrder(data, cb) {
                           {$set:{cash: user.cash, lastCash: user.lastCash}}, function(err, numberAffected, raw) {
                           if (err || numberAffected != 1) {
                               console.log(err);
-                              //res.send({code: 5, "msg": err.errmsg});
                               cb({code:2, msg:err? err.toString(): "Placing order too fast"});
-                              //return lock.unlock();
-                              return;
+                              return lock.unlock();
                           }
                           portfolio.save(function(err) {
                               if (err) {
                                   console.log(err);
-                                  //res.send({code: 6, "msg": err.errmsg});
                                   cb({code:2, msg:err.toString()});
-                                  //return lock.unlock();
-                                  return;
+                                  return lock.unlock();
                               }
                               order.save(function(err) {
                                   if (err) {
                                       console.log(err);
-                                      //res.send({code: 7, "msg": err.errmsg});
                                       cb({code:2, msg:err.toString()});
                                       return lock.unlock();
                                   }
-                                  //res.send({code: 0, result: order._id});
                                   cb(null, order);
-                                  //return lock.unlock();
-                                  return;
+                                  return lock.unlock();
                               });
                           });
                       });
@@ -675,10 +660,10 @@ function createOrder(data, cb) {
               });
           });
       });
-    //}, function(){
-    //  console.log("fail to lock resource: " + resource);
-    //  cb("fail to lock resource: " + resource);
-    //});
+    }, function(){
+        console.log("fail to lock resource: " + resource);
+        cb({code:4, msg:"fail to lock resource: " + resource});
+    });
 }
 
 function getStockCode() {
