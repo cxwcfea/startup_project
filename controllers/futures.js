@@ -393,7 +393,7 @@ module.exports = {
                 if (users[i].wechat.trader.lastCash > 0) {
                     ++winUserCount;
                     totalProfit += users[i].wechat.trader.lastCash;
-                    if (users[i].wechat.trader.lastCash > 3000) {
+                    if (users[i].wechat.trader.lastCash > 300000) {
                         ++canAppointmentUserCount;
                     }
                 }
@@ -401,6 +401,7 @@ module.exports = {
                     ++appointmentUserCount;
                 }
             }
+            totalProfit /= 100;
             var aveProfit = totalProfit / userCount;
 
             var obj = {
