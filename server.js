@@ -87,6 +87,7 @@ function startServer(master) {
     server.listen(app.get('port'), function(){
         logger.info('Express started on ' + app.get('port') + '; press Ctrl-C to terminate.');
     });
+	require('./controllers/mockTrader').initHive();
 }
 
 if(require.main === module){

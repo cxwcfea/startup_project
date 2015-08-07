@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Redlock = require('redlock');
+var Hive = require('./hive').Hive;
 
 console.log(global.redis_client);
 var redlock = new Redlock(
@@ -567,6 +568,14 @@ function riskControl(req, res) {
     });
 }
 
+function getInstrument(){
+	// FIXME: the actual instrument need to be generated according to
+	// the prompt day, should maintain a table here.
+	var d = new Date();
+	var month = d.getMonth()+1;
+	if (month < 10) month = "0" + month;
+	return "IF" + (d.getYear()-100) + month;
+}
 function createOrder(data, cb) {
     console.log(data);
     if (!data.order.quantity || data.order.quantity % kHand != 0) {
@@ -622,55 +631,85 @@ function createOrder(data, cb) {
                           cb({code:5, msg:'user.cash < costs.open'});
                           return lock.unlock();
                       }
-                      var order = new Order({
-                          contractId: contract._id,
-                          userId: user._id,
-                          quantity: data.order.quantity,
-                          price: priceInfo.LastPrice,
-                          fee: costs.fee,
-                          lockedCash: costs.locked_cash,
-                          profit: costs.net_profit
-                      });
-                      var oldUserCash = user.cash;
-                      var oldUserLastCash = user.lastCash;
-                      user.cash -= costs.open;
-                      portfolio.quantity += data.order.quantity;
-                      portfolio.total_point -= costs.point;
-                      portfolio.total_deposit -= costs.deposit;
-                      if (data.order.quantity > 0) {
-                          portfolio.longQuantity += data.order.quantity;
-                      } else {
-                          portfolio.shortQuantity -= data.order.quantity;
-                      }
-                      portfolio.fee += costs.fee;
-                      if (portfolio.quantity === 0) {
-                          user.lastCash = user.cash;
-                      }
-                      // write back
-                      User.update({_id: user._id, cash: oldUserCash, lastCash: oldUserLastCash},
-                          {$set:{cash: user.cash, lastCash: user.lastCash}}, function(err, numberAffected, raw) {
-                          if (err || numberAffected != 1) {
-                              console.log(err);
-                              cb({code:2, msg:err? err.toString(): "Placing order too fast"});
-                              return lock.unlock();
-                          }
-                          portfolio.save(function(err) {
-                              if (err) {
-                                  console.log(err);
-                                  cb({code:2, msg:err.toString()});
-                                  return lock.unlock();
-                              }
-                              order.save(function(err) {
-                                  if (err) {
-                                      console.log(err);
-                                      cb({code:2, msg:err.toString()});
-                                      return lock.unlock();
-                                  }
-                                  cb(null, order);
-                                  return lock.unlock();
-                              });
-                          });
-                      });
+/*********create order in ctp************/
+					  var instrument = getInstrument();
+					  var key = 'IF-OrderID';
+					  global.redis_client.get(key, function(err, order_id){
+						  if (!err && order_id) {
+							  global.redis_client.set(key, parseInt(order_id)+1, redis.print);
+							  order_id = parseInt(order_id)+1;
+						  } else {
+							  global.redis_client.set(key, 0, redis.print);
+							  order_id = 1;
+						  }
+						  var order = {
+							  user_id: data.user_id,
+							  order_id: order_id,
+							  instrument: instrument,
+							  act: 1, // positive for buy, 0 for close, negative for sell
+							  size: 1.0, // volume
+							  px_raw: 1.0 // price
+						  };
+						  hive.createOrder(order, function(error, user2cb_obj) {
+							  if(error.code == 0){
+								  console.log('success');
+							  } else if(error.code == -1) {
+								  console.log('rejected.');
+							  }
+							  
+							  var order = new Order({
+								  contractId: contract._id,
+								  userId: user._id,
+								  quantity: data.order.quantity,
+								  price: priceInfo.LastPrice,
+								  fee: costs.fee,
+								  lockedCash: costs.locked_cash,
+								  profit: costs.net_profit
+							  });
+							  var oldUserCash = user.cash;
+							  var oldUserLastCash = user.lastCash;
+							  user.cash -= costs.open;
+							  portfolio.quantity += data.order.quantity;
+							  portfolio.total_point -= costs.point;
+							  portfolio.total_deposit -= costs.deposit;
+							  if (data.order.quantity > 0) {
+								  portfolio.longQuantity += data.order.quantity;
+							  } else {
+								  portfolio.shortQuantity -= data.order.quantity;
+							  }
+							  portfolio.fee += costs.fee;
+							  if (portfolio.quantity === 0) {
+								  user.lastCash = user.cash;
+							  }
+							  // write back
+							  User.update({_id: user._id, cash: oldUserCash, lastCash: oldUserLastCash},
+								  {$set:{cash: user.cash, lastCash: user.lastCash}}, function(err, numberAffected, raw) {
+								  if (err || numberAffected != 1) {
+									  console.log(err);
+									  cb({code:2, msg:err? err.toString(): "Placing order too fast"});
+									  return lock.unlock();
+								  }
+								  portfolio.save(function(err) {
+									  if (err) {
+										  console.log(err);
+										  cb({code:2, msg:err.toString()});
+										  return lock.unlock();
+									  }
+									  order.save(function(err) {
+										  if (err) {
+											  console.log(err);
+											  cb({code:2, msg:err.toString()});
+											  return lock.unlock();
+										  }
+										  cb(null, order);
+										  return lock.unlock();
+									  });
+								  });
+							  });
+							  delete user2cb_obj[data.user_id];
+						  });
+					  });
+/*********create order in ctp ends in here************/
                   });
               });
           });
@@ -703,6 +742,21 @@ function getLastFuturesPrice(cb) {
         cb(null, {ts:priceInfo.ts, lastPrice:priceInfo.LastPrice});
     });
 }
+var hive;
+function initHive() {
+	var initConfig = {
+		ip: '218.241.142.230',
+		port: 7777,
+		investor: '00001',
+		password: '123456',
+		front_addr: 'tcp://180.168.146.181:10000/0096',
+		client_id: 1,
+		version: 1,
+		interval:128
+	};
+	hive = new Hive(initConfig);
+	hive.login();
+}
 
 module.exports = {
     User: User,
@@ -719,5 +773,6 @@ module.exports = {
     windControl: windControl,
     getLastFuturesPrice: getLastFuturesPrice,
     getProfit: getProfit,
-    resetUser: resetUser
+    resetUser: resetUser,
+	initHive: initHive
 };
