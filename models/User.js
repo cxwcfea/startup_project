@@ -64,6 +64,7 @@ var userSchema = new mongoose.Schema({
         logged: { type: Boolean, default: true },
         profit: { type: Number, default: 0 },
         appointment: { type: Boolean, default: false },
+        appointmentAt: Date,
         mobile: String,
         trader: {
             type: mongoose.Schema.ObjectId,

@@ -18,6 +18,10 @@ angular.module('adminApp').controller('AdminPPJUserListCtrl', ['$scope', '$locat
         {
             name: '今日登陆的',
             value: 2
+        },
+        {
+            name: '预约实盘的',
+            value: 3
         }
     ];
 
@@ -29,6 +33,9 @@ angular.module('adminApp').controller('AdminPPJUserListCtrl', ['$scope', '$locat
             }
             if (item.value === 1) {
                 return user.wechat.trader.lastCash === 0;
+            }
+            if (item.value === 3) {
+                return user.wechat.appointment;
             }
         });
         pageReset();

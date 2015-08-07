@@ -297,6 +297,7 @@ function makeAppointment(req, res) {
     }
     req.user.wechat.mobile = req.body.mobile;
     req.user.wechat.appointment = true;
+    req.user.wechat.appointmentAt = Date.now();
     req.user.save(function(err) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
@@ -304,7 +305,6 @@ function makeAppointment(req, res) {
         res.send({});
     });
 }
-
 
 module.exports = {
     registerRoutes: function(app, passportConf) {
