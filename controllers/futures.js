@@ -372,6 +372,7 @@ module.exports = {
         });
     },
     collectStatisticData: function(cb) {
+        var Capital = 15000000;
         var query = User.find({});
         query.exists('wechat.wechat_uuid');
         query.populate('wechat.trader');
@@ -390,10 +391,11 @@ module.exports = {
                 if (users[i].registerAt > today) {
                     ++newUserCount;
                 }
-                if (users[i].wechat.trader.lastCash > 0) {
+                var profit = (users[i].wechat.trader.lastCash - Capital) / 100;
+                if (profit > 0) {
                     ++winUserCount;
-                    totalProfit += users[i].wechat.trader.lastCash;
-                    if (users[i].wechat.trader.lastCash > 300000) {
+                    totalProfit += profit;
+                    if (profit > 3000) {
                         ++canAppointmentUserCount;
                     }
                 }
