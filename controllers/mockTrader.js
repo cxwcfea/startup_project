@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Redlock = require('redlock');
 var Hive = require('./hive').Hive;
+var redis = require('redis');
 
 console.log(global.redis_client);
 var redlock = new Redlock(
@@ -651,6 +652,8 @@ function createOrder(data, cb) {
 							  px_raw: 1.0 // price
 						  };
 						  hive.createOrder(order, function(error, user2cb_obj) {
+                          console.log('================');
+                          console.log(user2cb_obj);
 							  if(error.code == 0){
 								  console.log('success');
 							  } else if(error.code == -1) {

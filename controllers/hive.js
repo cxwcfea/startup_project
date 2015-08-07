@@ -1,6 +1,5 @@
 var net = require("net"),
 	_ = require('underscore'),
-	sleep = require('sleep'),
 	bytebuffer = require("ByteBuffer");
 var HIVE_USERNAME_LEN = 32,
 	HIVE_PASSWORD_LEN = 32,
@@ -157,7 +156,8 @@ Hive.prototype.createOrder = function (param, callback){
 	}
 	console.log('in createOrder, login '+this.isLogin);
 	if(!this.isLogin){
-		callback({code:-1, msg:'No login.'});
+        return;
+		//callback({code:-1, msg:'No login.'}, {});
 	}
 	console.log(param);
 	param.mtype = HIVE_MSG_TYPE.HiveMsgOrder;
