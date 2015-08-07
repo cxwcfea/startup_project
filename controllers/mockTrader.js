@@ -655,9 +655,10 @@ function createOrder(data, cb) {
                           console.log('================');
                           console.log(user2cb_obj);
 							  if(error.code == 0){
-								  console.log('success');
+								  console.log('order created in ctp.');
 							  } else if(error.code == -1) {
 								  console.log('rejected.');
+                                  return;
 							  }
 							  
 							  var order = new Order({

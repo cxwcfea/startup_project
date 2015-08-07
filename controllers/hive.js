@@ -135,12 +135,10 @@ Hive.prototype.login = function (){
 	});
 	client.on('error',function(error){
 		console.log('error:'+error);
-		that.socket_client.destory();
-		return null;
+		//that.socket_client.destory();
 	});
 	client.on('close',function(){
 		console.log('Connection closed');
-		return null;
 	});
 }
 
