@@ -58,6 +58,7 @@ var Contract = mongoose.model('PPJContract', PPJContractSchema);
 
 var PPJOrderSchema = mongoose.Schema({
     timestamp: { type: Date, default: Date.now },
+    orderId: {type: Number},
     contractId: { type: String },
     userId: { type: String },
     // status: { type: Number, default: 0},  // 0: open
@@ -69,7 +70,8 @@ var PPJOrderSchema = mongoose.Schema({
     price: { type: Number, default: 0},  // basis: cent, 0.01
     fee: { type: Number, default: 0},  // basis: cent, 0.01
     lockedCash: { type: Number, default: 0},  // basis: cent, 0.01
-    profit: { type: Number, default: 0 }
+    profit: { type: Number, default: 0 },
+    isClosed: {type: Number, default:0} // 1 means order is closed
 });
 var Order = mongoose.model('PPJOrder', PPJOrderSchema);
 
@@ -107,8 +109,17 @@ function getCosts(contract, stock_price, quantity, position, total_point, total_
     var deposit_released = 0;
     var net_profit = 0;
     var ex_rate = 100;
+    var quantity_to_close = 0;
+    var actual_quantity = quantity;
     if (contract.cash === 'USD') ex_rate = kUSDCNY;
     if ((position > 0 && quantity < 0) || (position < 0 && quantity > 0)) {
+        if(Math.abs(position) >= Math.abs(quantity)){
+            quantity_to_close = Math.abs(quantity);
+            actual_quantity = 0;
+        } else {
+            quantity_to_close = Math.abs(position);
+            actual_quntity = quantity+position;
+        }
         var pos_released = Math.min(Math.abs(position), Math.abs(quantity));
         var new_open = Math.abs(quantity) - pos_released;
         q = new_open;
@@ -135,7 +146,10 @@ function getCosts(contract, stock_price, quantity, position, total_point, total_
     var deposit_diff = deposit_released - raw;
     var locked_cash = raw-profit+fee;
     console.log(q, pos_released, raw, profit, fee, point_diff, deposit_diff);
-    return {raw: raw, fee: fee, open: locked_cash, locked_cash: locked_cash, point:point_diff, deposit:deposit_diff, profit:profit, net_profit:net_profit};
+    return {raw: raw, fee: fee, open: locked_cash, 
+            locked_cash: locked_cash, point:point_diff, 
+            deposit:deposit_diff, profit:profit, net_profit:net_profit,
+            quantity_to_close: quantity_to_close, actual_quantity:actual_quantity};
 }
 
 function closeAll(userId, portfolio, income, contractInfo, contractData, reset, cb, lock) {
@@ -583,6 +597,9 @@ function getInstrument(){
 	if (month < 10) month = "0" + month;
 	return "IF" + (d.getYear()-100) + month;
 }
+//FIXME: the order need to be stored in db
+var order_info = {};
+
 function createOrder(data, cb) {
     logger.debug(data);
     if (!data.order.quantity || data.order.quantity % kHand != 0) {
@@ -644,90 +661,217 @@ function createOrder(data, cb) {
 /*********create order in ctp************/
 					  var instrument = getInstrument();
 					  var key = 'IF-OrderID';
+                      var quantity_to_close = costs.quantity_to_close;
+                      var actual_quantity = costs.actual_quantity;
 					  global.redis_client.get(key, function(err, order_id){
-						  if (!err && order_id) {
-							  global.redis_client.set(key, parseInt(order_id)+1, redis.print);
-							  order_id = parseInt(order_id)+1;
-						  } else {
-							  global.redis_client.set(key, 0, redis.print);
-							  order_id = 1;
-						  }
-						  var order = {
-							  user_id: data.user_id,
-							  order_id: order_id,
-							  instrument: instrument,
-							  act: 1, // positive for buy, 0 for close, negative for sell
-							  size: 1.0, // volume
-							  px_raw: priceInfo.LastPrice/100 // price
-						  };
-						  hive.createOrder(order, function(error, user2cb_obj) {
-                          console.log('================shaka');
-                          console.log(user2cb_obj);
-							  if(error.code == 0){
-								  console.log('order created in ctp.');
-							  } else if(error.code == -1) {
-								  console.log('ctp rejected.');
+                          // close positon first
+                          if(quantity_to_close != 0){
+                              // FIXME: now we only allow to buy one share, so it's good for now.
+                              Order.findOne({$and: [{contractId: contract._id}, {userId: user._id}, {isClosed: 0}]}, function(err, order){
+                                  if (err) {
+                                      console.log(err);
+                                      cb({code:2, msg:err.toString()});
+                                      return lock.unlock();
+                                  }
+                                  if(!order) {
+                                      cb({code:2, msg:'cannot find order to close.'});
+                                      return lock.unlock();
+                                  }
+                                  var ctp_order_close = {
+                                      user_id: data.user_id,
+                                      order_id: order.orderId,
+                                      instrument: instrument,
+                                      act: 0, // positive for buy, 0 for close, negative for sell
+                                      size: 0, // volume
+                                      px_raw: 0 // price
+                                  };
+                                  hive.createOrder(ctp_order_close, function(info, user2cb_obj) {
+                                      if(info.code == 0){
+                                          console.log('order closed in hive.');
+                                      } else if(info.code == -1) {
+                                          console.log('hive rejected to close order.');
+                                          delete user2cb_obj[data.user_id];
+                                          cb({code:2, msg: 'close order failed in hive'});
+                                          return lock.unlock();
+                                      }
+                                      //TODO: update order here
+                                      //TODO: user, portfolio also need to update.
+                                      // the old order have been closed, start creating new order
+                                      if (!err && order_id) {
+                                          global.redis_client.set(key, parseInt(order_id)+1, redis.print);
+                                          order_id = parseInt(order_id)+1;
+                                      } else {
+                                          global.redis_client.set(key, 0, redis.print);
+                                          order_id = 1;
+                                      }
+                                      var price = top_price;
+                                      if(actual_quantity < 0){
+                                          price = bottom_price;
+                                      }
+                                      var ctp_order = {
+                                          user_id: data.user_id,
+                                          order_id: order_id,
+                                          instrument: instrument,
+                                          act: actual_quantity, // positive for buy, 0 for close, negative for sell
+                                          size: 1.0, // volume
+                                          px_raw: price // price 
+                                      };
+                                      hive.createOrder(ctp_order, function(info, user2cb_obj) {
+                                      console.log('================shaka');
+                                      console.log(user2cb_obj);
+                                          if(info.code == 0){
+                                              console.log('order created in ctp.');
+                                          } else if(info.code == -1) {
+                                              console.log('ctp rejected.');
+                                              delete user2cb_obj[data.user_id];
+                                              return lock.unlock();
+                                          }
+                                          // FIXME: price and quantity need to get from ctp 
+                                          // OnRtnOrder(which should be in info)
+                                          var order = new Order({
+                                              orderId: order_id,
+                                              contractId: contract._id,
+                                              userId: user._id,
+                                              quantity: data.order.quantity,
+                                              price: priceInfo.LastPrice,
+                                              fee: costs.fee,
+                                              lockedCash: costs.locked_cash,
+                                              profit: costs.net_profit,
+                                              isClosed: 0
+                                          });
+                                          var oldUserCash = user.cash;
+                                          var oldUserLastCash = user.lastCash;
+                                          user.cash -= costs.open;
+                                          portfolio.quantity += data.order.quantity;
+                                          portfolio.total_point -= costs.point;
+                                          portfolio.total_deposit -= costs.deposit;
+                                          if (data.order.quantity > 0) {
+                                              portfolio.longQuantity += data.order.quantity;
+                                          } else {
+                                              portfolio.shortQuantity -= data.order.quantity;
+                                          }
+                                          portfolio.fee += costs.fee;
+                                          if (portfolio.quantity === 0) {
+                                              user.lastCash = user.cash;
+                                          }
+                                          // write back
+                                          User.update({_id: user._id, cash: oldUserCash, lastCash: oldUserLastCash},
+                                              {$set:{cash: user.cash, lastCash: user.lastCash}}, function(err, numberAffected, raw) {
+                                              if (err || numberAffected != 1) {
+                                                  console.log(err);
+                                                  cb({code:2, msg:err? err.toString(): "Placing order too fast"});
+                                                  return lock.unlock();
+                                              }
+                                              portfolio.save(function(err) {
+                                                  if (err) {
+                                                      console.log(err);
+                                                      cb({code:2, msg:err.toString()});
+                                                      return lock.unlock();
+                                                  }
+                                                  order.save(function(err) {
+                                                      if (err) {
+                                                          console.log(err);
+                                                          cb({code:2, msg:err.toString()});
+                                                          return lock.unlock();
+                                                      }
+                                                      cb(null, order);
+                                                      return lock.unlock();
+                                                  });
+                                              });
+                                          });
+                                          delete user2cb_obj[data.user_id];
+                                      }); // new order creation ends here
+                                  /////////////////      
+                                  }); // close old order ends here
+                                  
+                              }); // find order need to be closed ends
+                          } // quantity_to_close != 0 ends 
+                          else { // create new order directly for user position is empty
+                              var price = top_price;
+                              if(actual_quantity < 0){
+                                  price = bottom_price;
+                              }
+                              var ctp_order = {
+                                  user_id: data.user_id,
+                                  order_id: order_id,
+                                  instrument: instrument,
+                                  act: actual_quantity, // positive for buy, 0 for close, negative for sell
+                                  size: 1.0, // volume
+                                  px_raw: price // price 
+                              };
+                              hive.createOrder(ctp_order, function(info, user2cb_obj) {
+                              console.log('================shaka');
+                              console.log(user2cb_obj);
+                                  if(info.code == 0){
+                                      console.log('order created in ctp.');
+                                  } else if(info.code == -1) {
+                                      console.log('ctp rejected.');
+                                      delete user2cb_obj[data.user_id];
+                                      return lock.unlock();
+                                  }
+                                  // FIXME: price and quantity need to get from ctp 
+                                  // OnRtnOrder(which should be in info)
+                                  var order = new Order({
+                                      orderId: order_id,
+                                      contractId: contract._id,
+                                      userId: user._id,
+                                      quantity: data.order.quantity,
+                                      price: priceInfo.LastPrice,
+                                      fee: costs.fee,
+                                      lockedCash: costs.locked_cash,
+                                      profit: costs.net_profit,
+                                      isClosed: 0
+                                  });
+                                  var oldUserCash = user.cash;
+                                  var oldUserLastCash = user.lastCash;
+                                  user.cash -= costs.open;
+                                  portfolio.quantity += data.order.quantity;
+                                  portfolio.total_point -= costs.point;
+                                  portfolio.total_deposit -= costs.deposit;
+                                  if (data.order.quantity > 0) {
+                                      portfolio.longQuantity += data.order.quantity;
+                                  } else {
+                                      portfolio.shortQuantity -= data.order.quantity;
+                                  }
+                                  portfolio.fee += costs.fee;
+                                  if (portfolio.quantity === 0) {
+                                      user.lastCash = user.cash;
+                                  }
+                                  // write back
+                                  User.update({_id: user._id, cash: oldUserCash, lastCash: oldUserLastCash},
+                                      {$set:{cash: user.cash, lastCash: user.lastCash}}, function(err, numberAffected, raw) {
+                                      if (err || numberAffected != 1) {
+                                          console.log(err);
+                                          cb({code:2, msg:err? err.toString(): "Placing order too fast"});
+                                          return lock.unlock();
+                                      }
+                                      portfolio.save(function(err) {
+                                          if (err) {
+                                              console.log(err);
+                                              cb({code:2, msg:err.toString()});
+                                              return lock.unlock();
+                                          }
+                                          order.save(function(err) {
+                                              if (err) {
+                                                  console.log(err);
+                                                  cb({code:2, msg:err.toString()});
+                                                  return lock.unlock();
+                                              }
+                                              cb(null, order);
+                                              return lock.unlock();
+                                          });
+                                      });
+                                  });
                                   delete user2cb_obj[data.user_id];
-                                  return lock.unlock();
-							  }
-							  
-							  var order = new Order({
-								  contractId: contract._id,
-								  userId: user._id,
-								  quantity: data.order.quantity,
-								  price: priceInfo.LastPrice,
-								  fee: costs.fee,
-								  lockedCash: costs.locked_cash,
-								  profit: costs.net_profit
-							  });
-							  var oldUserCash = user.cash;
-							  var oldUserLastCash = user.lastCash;
-							  user.cash -= costs.open;
-							  portfolio.quantity += data.order.quantity;
-							  portfolio.total_point -= costs.point;
-							  portfolio.total_deposit -= costs.deposit;
-							  if (data.order.quantity > 0) {
-								  portfolio.longQuantity += data.order.quantity;
-							  } else {
-								  portfolio.shortQuantity -= data.order.quantity;
-							  }
-							  portfolio.fee += costs.fee;
-							  if (portfolio.quantity === 0) {
-								  user.lastCash = user.cash;
-							  }
-							  // write back
-							  User.update({_id: user._id, cash: oldUserCash, lastCash: oldUserLastCash},
-								  {$set:{cash: user.cash, lastCash: user.lastCash}}, function(err, numberAffected, raw) {
-								  if (err || numberAffected != 1) {
-									  console.log(err);
-									  cb({code:2, msg:err? err.toString(): "Placing order too fast"});
-									  return lock.unlock();
-								  }
-								  portfolio.save(function(err) {
-									  if (err) {
-										  console.log(err);
-										  cb({code:2, msg:err.toString()});
-										  return lock.unlock();
-									  }
-									  order.save(function(err) {
-										  if (err) {
-											  console.log(err);
-											  cb({code:2, msg:err.toString()});
-											  return lock.unlock();
-										  }
-										  cb(null, order);
-										  return lock.unlock();
-									  });
-								  });
-							  });
-							  delete user2cb_obj[data.user_id];
-						  });
-					  });
+                              }); // new order creation ends here
+                          }
+
+                      }); // get new order id from redis ends here
+                  }); //get portfolio
 /*********create order in ctp ends in here************/
-                  });
-              });
-          });
-      });
+              }); // get price info from redis ends here
+          }); // get contract ends here
+      }); // get user ends here
     }, function(){
         console.log("fail to lock resource: " + resource);
         cb({code:4, msg:"fail to lock resource: " + resource});
