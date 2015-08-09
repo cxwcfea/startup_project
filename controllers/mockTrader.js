@@ -222,9 +222,6 @@ function closeAll(userId, portfolio, income, contractInfo, contractData, reset, 
                               profit: costs.net_profit
                           });
                           console.log(order);
-                          cb(null, order);
-                          return lock.unlock();
-                          /*
                           order.save(function(err) {
                               if (err) {
                                   console.log(err);
@@ -247,7 +244,6 @@ function closeAll(userId, portfolio, income, contractInfo, contractData, reset, 
                               cb(null, order);
                               return lock.unlock();
                           });
-                          */
                   });
               }
           });
@@ -331,18 +327,28 @@ function windControl(userId, forceClose, userContract, cb) {
                         }
                       }
                       //global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
-                      Order.findOne({$and: [{contractId: contract._id}, {userId: user._id}, {isClosed: 0}]}, function(err, order){
+                      //Order.findOne({$and: [{contractId: contract._id}, {userId: user._id}, {isClosed: 0}]}, function(err, order){
+                      //Order.find({$and: [{contractId: contract._id}, {userId: user._id}]}, function(err, order){
                       //Order.remove({$and: [{contractId: contract._id}, {userId: user._id}, {isClosed: 0}]}, function(err, order){
+					  var key = 'IF-OrderID';
+					  global.redis_client.get(key, function(err, order_id){
+                          if (!err && order_id) {
+                              global.redis_client.set(key, parseInt(order_id)+1, redis.print);
+                              order_id = parseInt(order_id)+1;
+                          } else {
+                              global.redis_client.set(key, 0, redis.print);
+                              order_id = 1;
+                          }
+                          /*
                           if (err || !order) {
                               console.log('fatal: cannot find order unclosed of '+user._id+','+contract.stock_code);
                               cb('cannot find order unclosed');
                               lock.unlock();
                               return;
-                          }
-                          console.log(order);
+                          }*/
                           var ctp_order_close = {
                               user_id: userId,
-                              order_id: order.orderId,
+                              order_id: order_id,
                               instrument: config.futureIF,
                               act: 0, // positive for buy, 0 for close, negative for sell
                               size: 0, // volume
@@ -357,6 +363,7 @@ function windControl(userId, forceClose, userContract, cb) {
                                   //<<<<<<<<<<<cb('close order failed in hive');
                                   //<<<<<<<<return lock.unlock();
                               }
+                              /*
                               Order.update({orderId: order.orderId},
                                       {$set:{isClosed: 1}}, function(err, numberAffected, raw) {
                                   if (err || !numberAffected) {
@@ -365,11 +372,10 @@ function windControl(userId, forceClose, userContract, cb) {
                                       cb(err.errmsg);
                                       return lock.unlock();
                                   }
-                              });
+                              });*/
                               //var priceInfo = JSON.parse(priceInfoString);
                               priceInfo = {};
-                              priceInfo.LastPrice = 3940;
-                              //TODO: should get the close price from info
+                              priceInfo.LastPrice = 3940;// info.traded_price; //TODO
 
                               contractInfo[portf.contractId] = priceInfo;
                               contractData[portf.contractId] = contract;
@@ -388,7 +394,7 @@ function windControl(userId, forceClose, userContract, cb) {
                                   cb(null);
                                   return lock.unlock();
                               } else {
-                              income = 400000;
+                              income = 400000;// FIXME:
                                   if (income > 0) {
                                       // Close all positions
                                       console.log("Closing user");
@@ -848,14 +854,12 @@ function createOrder(data, cb) {
                                       //delete user2cb_obj[data.user_id];
                                       //return lock.unlock();
                                   }
-                                  // FIXME: price and quantity need to get from ctp 
-                                  // OnRtnOrder(which should be in info)
                                   var order = new Order({
                                       orderId: order_id,
                                       contractId: contract._id,
                                       userId: user._id,
                                       quantity: data.order.quantity,
-                                      price: priceInfo.LastPrice,
+                                      price: priceInfo.LastPrice, //FIXME: info.traded_price,
                                       fee: costs.fee,
                                       lockedCash: costs.locked_cash,
                                       profit: costs.net_profit,

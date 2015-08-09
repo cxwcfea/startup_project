@@ -27,7 +27,7 @@ var HIVE_TIF = {
 var HiveExecType = {
 	HiveExecNew       : 'n',
 	HiveExecPartial   : 'f',
-	HiveExecFill      : 'F',
+	HiveExecFill      : 70, //'F',
 	HiveExecDone      : 100, //'d',
 	HiveExecCancel    : 'c',
 	HiveExecCancelRej : 'j',
@@ -123,6 +123,7 @@ Hive.prototype.login = function (){
 			//console.log(arr);
 			var order_id = arr[1];
 			var result = arr[3];
+            var traded_price = arr[6];
 			//console.log('order_id = '+order_id+', result type = '+result);
 			var user_id = that.order2user[order_id];
             //console.log(that.order2user);
@@ -130,9 +131,9 @@ Hive.prototype.login = function (){
 			var callback = that.user2cb[user_id];
 			//console.log('user_id(order2user[order_id]) = '+user_id);
 			var code = 0;
-			if(result != HiveExecType.HiveExecDone)
+			if(result != HiveExecType.HiveExecFill)
 				code = -1;
-			callback({code: code}, that.user2cb);
+			callback({code: code, traded_price: traded_price}, that.user2cb);
 		}
 	});
 	client.on('error',function(error){
