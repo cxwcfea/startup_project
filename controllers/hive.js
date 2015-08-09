@@ -102,7 +102,7 @@ Hive.prototype.login = function (){
 				that.isLogin = true;
 			console.log('login '+that.isLogin);
 		} else {
-			console.log('recv order response ');
+			//console.log('++++++recv order response ');
 			var buff = new bytebuffer(data).littleEndian();
 			//FIXME: need to make sure the parsing process 
 			//does't exceeds the boundry.
@@ -120,13 +120,15 @@ Hive.prototype.login = function (){
 							.int64()	//flag
 							.byte()		//has_reason
 							.unpack();
-			console.log(arr);
+			//console.log(arr);
 			var order_id = arr[1];
 			var result = arr[3];
-			console.log('order_id = '+order_id+', result type = '+result);
+			//console.log('order_id = '+order_id+', result type = '+result);
 			var user_id = that.order2user[order_id];
+            //console.log(that.order2user);
+            //console.log(that.user2cb);
 			var callback = that.user2cb[user_id];
-			console.log('user_id(order2user[order_id]) = '+user_id);
+			//console.log('user_id(order2user[order_id]) = '+user_id);
 			var code = 0;
 			if(result != HiveExecType.HiveExecDone)
 				code = -1;
@@ -145,8 +147,11 @@ Hive.prototype.login = function (){
 
 Hive.prototype.createOrder = function (param, callback){
 	//currentCallback = callback;
+    //console.log('--------hive createOrder.');
 	if(this.user2cb[param.user_id] === undefined) {
 		this.user2cb[param.user_id] = callback;
+        console.log(this.user2cb);
+        //TODO: order2user should be cleared somewhere
 		this.order2user[param.order_id] = param.user_id;
 	} else {
 		console.log('previous order in process, abort current one.');
