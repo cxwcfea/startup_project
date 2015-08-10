@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Redlock = require('redlock');
+var PPJResetRecord = require('../models/PPJResetRecord');
 
 console.log(global.redis_client);
 var redlock = new Redlock(
@@ -529,15 +530,52 @@ function createUser(data, cb) {
 }
 
 function resetUser(userID, cb) {
-    User.update({_id:userID}, {$set:{close:3000000, cash:15000000, deposit:3000000, debt:12000000, lastCash:0}}, function(err, numberAffected, raw) {
+    User.findById(userID, function(err, user) {
         if (err) {
             return cb(err);
         }
-        Portfolio.update({userId:userID}, {$set:{total_point:0, total_deposit:0, fee:0, shortQuantity:0, longQuantity:0, quantity:0}}, function(err, numberAffected, raw) {
+        if (!user) {
+            return cb('can not find the user');
+        }
+        Portfolio.findOne({userId:userID}, function(err, portfolio) {
             if (err) {
                 return cb(err);
             }
-            cb(null);
+            if (!portfolio) {
+                return cb('portfolio not found');
+            }
+            var record = new PPJResetRecord({
+                userData: {
+                    cash: user.cash,
+                    status: user.status,
+                    lastCash: user.lastCash
+                },
+                positions: {
+                    quantity: portfolio.quantity,
+                    longQuantity: portfolio.longQuantity,
+                    shortQuantity: portfolio.shortQuantity,
+                    fee: portfolio.fee,
+                    total_deposit: portfolio.total_deposit,
+                    total_point: portfolio.total_point
+                },
+                userId: userID
+            });
+            record.save(function(err) {
+                if (err) {
+                    return cb(err);
+                }
+                User.update({_id:userID}, {$set:{close:3000000, cash:15000000, deposit:3000000, debt:12000000, lastCash:0}}, function(err, numberAffected, raw) {
+                    if (err) {
+                        return cb(err);
+                    }
+                    Portfolio.update({userId:userID}, {$set:{total_point:0, total_deposit:0, fee:0, shortQuantity:0, longQuantity:0, quantity:0}}, function(err, numberAffected, raw) {
+                        if (err) {
+                            return cb(err);
+                        }
+                        cb(null);
+                    });
+                });
+            })
         });
     });
 }
