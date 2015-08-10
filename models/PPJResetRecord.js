@@ -7,6 +7,7 @@ var PPJResetRecordSchema = mongoose.Schema({
         lastCash: { type: Number, required:'{PATH} is required!' }
     },
     positions: {
+        contractId: { type: String, required:'{PATH} is required!' },
         quantity: { type: Number, required:'{PATH} is required!' },
         longQuantity: { type: Number, required:'{PATH} is required!' },
         shortQuantity: { type: Number, required:'{PATH} is required!' },

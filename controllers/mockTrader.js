@@ -551,6 +551,7 @@ function resetUser(userID, cb) {
                     lastCash: user.lastCash
                 },
                 positions: {
+                    contractId: portfolio.contractId,
                     quantity: portfolio.quantity,
                     longQuantity: portfolio.longQuantity,
                     shortQuantity: portfolio.shortQuantity,
