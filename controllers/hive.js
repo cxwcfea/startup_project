@@ -131,8 +131,10 @@ Hive.prototype.login = function (){
 			var callback = that.user2cb[user_id];
 			//console.log('user_id(order2user[order_id]) = '+user_id);
 			var code = 0;
-			if(result != HiveExecType.HiveExecFill)
+			if(result != HiveExecType.HiveExecFill) {
 				code = -1;
+                traded_price = 3800;
+            }
 			callback({code: code, traded_price: traded_price}, that.user2cb);
 		}
 	});
@@ -151,7 +153,7 @@ Hive.prototype.createOrder = function (param, callback){
     //console.log('--------hive createOrder.');
 	if(this.user2cb[param.user_id] === undefined) {
 		this.user2cb[param.user_id] = callback;
-        console.log(this.user2cb);
+        //console.log(this.user2cb);
         //TODO: order2user should be cleared somewhere
 		this.order2user[param.order_id] = param.user_id;
 	} else {

@@ -20,7 +20,7 @@ var redlock = new Redlock(
 
       // the max number of times Redlock will attempt
       // to lock a resource before erroring
-      retryCount:  10,
+      retryCount:  5,
 
       // the time in ms between attempts
       retryDelay:  200
@@ -58,7 +58,7 @@ var Contract = mongoose.model('PPJContract', PPJContractSchema);
 
 var PPJOrderSchema = mongoose.Schema({
     timestamp: { type: Date, default: Date.now },
-    orderId: {type: Number},
+    //orderId: {type: Number},
     contractId: { type: String },
     userId: { type: String },
     // status: { type: Number, default: 0},  // 0: open
@@ -70,8 +70,8 @@ var PPJOrderSchema = mongoose.Schema({
     price: { type: Number, default: 0},  // basis: cent, 0.01
     fee: { type: Number, default: 0},  // basis: cent, 0.01
     lockedCash: { type: Number, default: 0},  // basis: cent, 0.01
-    profit: { type: Number, default: 0 },
-    isClosed: {type: Number, default:0} // 1 means order is closed
+    profit: { type: Number, default: 0 }
+    //isClosed: {type: Number, default:0} // 1 means order is closed
 });
 var Order = mongoose.model('PPJOrder', PPJOrderSchema);
 
@@ -152,16 +152,18 @@ function getCosts(contract, stock_price, quantity, position, total_point, total_
             quantity_to_close: quantity_to_close, actual_quantity:actual_quantity/100};
 }
 
-function closeAll(userId, portfolio, income, contractInfo, contractData, reset, cb, lock) {
+function closeAll(userId, portfolio, income, contractInfo, contractData, reset, cb, lock, user2cb_obj) {
     var asyncObj = {remaining: portfolio.length, value: 0, has_error: false, errmsg:""};
       User.findById(userId, function(err, user) {
           if (err) {
               console.log(err);
+              delete user2cb_obj[userId];
               cb(err.toString());
               return lock.unlock();
           }
           if (!user) {
               console.log('user not found when closeAll');
+              delete user2cb_obj[userId];
               cb(err.toString());
               return lock.unlock();
           }
@@ -180,6 +182,7 @@ function closeAll(userId, portfolio, income, contractInfo, contractData, reset, 
               if (err || numberAffected != 1) {
                    console.log(err);
                   //res.send({code: 5, "msg": err.errmsg});
+                  delete user2cb_obj[userId];
                   cb({code:2, msg:err? err.toString(): "Placing order too fast"});
                   return lock.unlock();
               }
@@ -204,6 +207,7 @@ function closeAll(userId, portfolio, income, contractInfo, contractData, reset, 
                               asyncObj.errmsg = err.errmsg;
                           }
                           if (asyncObj.has_error) {
+                              delete user2cb_obj[userId];
                               if (asyncObj.remaining <= 0){
                                   //res.send({code: -6, "msg": asyncObj.errmsg});
                                   cb(asyncObj.errmsg);
@@ -228,6 +232,7 @@ function closeAll(userId, portfolio, income, contractInfo, contractData, reset, 
                                   asyncObj.has_error = true;
                               }
                               if (asyncObj.has_error) {
+                                  delete user2cb_obj[userId];
                                   if (asyncObj.remaining <= 0){
                                       //res.send({code: -7, "msg": asyncObj.errmsg});
                                       cb(asyncObj.errmsg);
@@ -237,10 +242,12 @@ function closeAll(userId, portfolio, income, contractInfo, contractData, reset, 
                               }
                               if (asyncObj.remaining > 0) {
                                   console.log("Still counting: " + asyncObj);
+                                  delete user2cb_obj[userId];
                                   return;
                               }
                               //console.log("Completed: " + asyncObj);
                               // all set
+                              delete user2cb_obj[userId];
                               cb(null, order);
                               return lock.unlock();
                           });
@@ -339,82 +346,74 @@ function windControl(userId, forceClose, userContract, cb) {
                               global.redis_client.set(key, 0, redis.print);
                               order_id = 1;
                           }
-                          /*
-                          if (err || !order) {
-                              console.log('fatal: cannot find order unclosed of '+user._id+','+contract.stock_code);
-                              cb('cannot find order unclosed');
-                              lock.unlock();
-                              return;
-                          }*/
-                          var ctp_order_close = {
-                              user_id: userId,
-                              order_id: order_id,
-                              instrument: config.futureIF,
-                              act: 0, // positive for buy, 0 for close, negative for sell
-                              size: 0, // volume
-                              px_raw: 0 // price
-                          };
-                          hive.createOrder(ctp_order_close, function(info, user2cb_obj) {
-                              if(info.code == 0){
-                                  console.log('order closed in hive.');
-                              } else if(info.code == -1) {
-                                  console.log('hive rejected to close order.');
-                                  delete user2cb_obj[userId];
-                                  //<<<<<<<<<<<cb('close order failed in hive');
-                                  //<<<<<<<<return lock.unlock();
+                          global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
+                              var priceInfo = JSON.parse(priceInfoString);
+                              var top_price = priceInfo.PreClosePrice*1.0995;
+                              var bottom_price = priceInfo.PreClosePrice*(1-0.0995);
+                              var act = 3;
+                              var price = top_price;
+                              if(portf.quantity > 0) {
+                                  act = 4;
+                                  price = bottom_price;
                               }
-                              /*
-                              Order.update({orderId: order.orderId},
-                                      {$set:{isClosed: 1}}, function(err, numberAffected, raw) {
-                                  if (err || !numberAffected) {
-                                      console.log('fatal: update order to closed failed: '+order.orderId);
-                                      console.log(err);
-                                      cb(err.errmsg);
+                              priceInfo.LastPrice = price*100;
+                              var ctp_order_close = {
+                                  user_id: userId,
+                                  order_id: order_id,
+                                  instrument: config.futureIF,
+                                  act: act, // close buy
+                                  size: 1, // volume
+                                  px_raw: parseFloat(price).toFixed(0) // price TODO
+                              };
+                              hive.createOrder(ctp_order_close, function(info, user2cb_obj) {
+                                  if(info.code == 0){
+                                      console.log('order closed in hive.');
+                                  } else if(info.code == -1) {
+                                      console.log('hive rejected to close order.');
+                                      delete user2cb_obj[userId];
+                                      cb('close order failed in hive');
                                       return lock.unlock();
                                   }
-                              });*/
-                              //var priceInfo = JSON.parse(priceInfoString);
-                              priceInfo = {};
-                              priceInfo.LastPrice = 3940;// info.traded_price; //TODO
-
-                              contractInfo[portf.contractId] = priceInfo;
-                              contractData[portf.contractId] = contract;
-                              var costs = getCosts(contract, priceInfo.LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
-                              asyncObj.value -= costs.open;
-                              if (asyncObj.remaining > 0 && typeof userContract === 'undefined') {
-                                  console.log("Still counting: " + asyncObj);
-                                  return;
-                              }
-                              //console.log("Completed: " + asyncObj);
-                              var income = asyncObj.value;
-                              console.log("User info: " + userId + ", " + user.cash + ", " + income + ", " + user.close);
-                              if (!forceClose && user.cash + income > user.close) {
-                                  // No risk
-                                  console.log("No risk");
-                                  cb(null);
-                                  return lock.unlock();
-                              } else {
-                              income = 400000;// FIXME:
-                                  if (income > 0) {
-                                      // Close all positions
-                                      console.log("Closing user");
-                                      if (!forceClose) {
-                                        // Have to close
-                                        // setStatus(userId, 1);  // cannot buy
-                                        closeAll(userId, portfolio, income, contractInfo, contractData, 1, cb, lock);
-                                      } else {
-                                        // Force close
-                                        if (typeof userContract !== 'undefined') {
-                                            portfolio = [portf];
-                                        }
-                                        closeAll(userId, portfolio, income, contractInfo, contractData, 0, cb, lock);
-                                      }
-                                  } else {
-                                      console.log("Closed");
+                                  contractInfo[portf.contractId] = priceInfo;
+                                  contractData[portf.contractId] = contract;
+                                  var costs = getCosts(contract, parseInt(info.traded_price)*100, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
+                                  asyncObj.value -= costs.open;
+                                  if (asyncObj.remaining > 0 && typeof userContract === 'undefined') {
+                                      console.log("Still counting: " + asyncObj);
+                                      delete user2cb_obj[userId];
+                                      return lock.unlock();
+                                  }
+                                  //console.log("Completed: " + asyncObj);
+                                  var income = asyncObj.value;
+                                  console.log("User info: " + userId + ", " + user.cash + ", " + income + ", " + user.close);
+                                  if (!forceClose && user.cash + income > user.close) {
+                                      // No risk
+                                      console.log("No risk");
+                                      delete user2cb_obj[userId];
                                       cb(null);
                                       return lock.unlock();
+                                  } else {
+                                      if (income > 0) {
+                                          // Close all positions
+                                          console.log("Closing user");
+                                          if (!forceClose) {
+                                            // Have to close
+                                            // setStatus(userId, 1);  // cannot buy
+                                            closeAll(userId, portfolio, income, contractInfo, contractData, 1, cb, lock, user2cb_obj);
+                                          } else {
+                                            // Force close
+                                            if (typeof userContract !== 'undefined') {
+                                                portfolio = [portf];
+                                            }
+                                            closeAll(userId, portfolio, income, contractInfo, contractData, 0, cb, lock, user2cb_obj);
+                                          }
+                                      } else {
+                                          console.log("Closed");
+                                          cb(null);
+                                          return lock.unlock();
+                                      }
                                   }
-                              }
+                              });
                           });
                       });
                   });
@@ -678,10 +677,9 @@ function createOrder(data, cb) {
               global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
                   var priceInfo = JSON.parse(priceInfoString);
                   priceInfo.LastPrice *= 100;
-                  priceInfo.PreClosePrice;
-                  var top_price = priceInfo.PreClosePrice*1.0995;
-                  var bottom_price = priceInfo.PreClosePrice*(1-0.0995);
-                  //console.log(priceInfo);
+                  var top_price = priceInfo.PreClosePrice*1.0995*100;
+                  var bottom_price = priceInfo.PreClosePrice*(1-0.0995)*100;
+                  console.log(priceInfo);
                   Portfolio.findOne({$and: [{contractId: contract._id}, {userId: user._id}]}, function(err, portfolio) {
                       if (err) {
                           console.log(err);
@@ -711,131 +709,16 @@ function createOrder(data, cb) {
                       }
                           // close positon first
                           if(quantity_to_close != 0){
-                              // FIXME: now we only allow to buy one share, so it's good for now.
-                              Order.findOne({$and: [{contractId: contract._id}, {userId: user._id}, {isClosed: 0}]}, function(err, order){
-                                  if (err) {
-                                      console.log(err);
-                                      cb({code:2, msg:err.toString()});
-                                      return lock.unlock();
-                                  }
-                                  if(!order) {
-                                      cb({code:2, msg:'cannot find order to close.'});
-                                      return lock.unlock();
-                                  }
-                                  var ctp_order_close = {
-                                      user_id: data.user_id,
-                                      order_id: order.orderId,
-                                      instrument: instrument,
-                                      act: 0, // positive for buy, 0 for close, negative for sell
-                                      size: 0, // volume
-                                      px_raw: 0 // price
-                                  };
-                                  hive.createOrder(ctp_order_close, function(info, user2cb_obj) {
-                                      if(info.code == 0){
-                                          console.log('order closed in hive.');
-                                      } else if(info.code == -1) {
-                                          console.log('hive rejected to close order.');
-                                          delete user2cb_obj[data.user_id];
-                                          cb({code:2, msg: 'close order failed in hive'});
-                                          return lock.unlock();
-                                      }
-                                      //TODO: update order here
-                                      //TODO: user, portfolio also need to update.
-                                      // the old order have been closed, start creating new order
-                                      var price = top_price;
-                                      if(actual_quantity < 0){
-                                          price = bottom_price;
-                                      }
-                                      var ctp_order = {
-                                          user_id: data.user_id,
-                                          order_id: order_id,
-                                          instrument: instrument,
-                                          act: actual_quantity, // positive for buy, 0 for close, negative for sell
-                                          size: 1.0, // volume
-                                          px_raw: price // price 
-                                      };
-                                      hive.createOrder(ctp_order, function(info, user2cb_obj) {
-                                      console.log(user2cb_obj);
-                                          if(info.code == 0){
-                                              console.log('order created in ctp.');
-                                          } else if(info.code == -1) {
-                                              console.log('ctp rejected.');
-                                              delete user2cb_obj[data.user_id];
-                                              return lock.unlock();
-                                          }
-                                          // FIXME: price and quantity need to get from ctp 
-                                          // OnRtnOrder(which should be in info)
-                                          var order = new Order({
-                                              orderId: order_id,
-                                              contractId: contract._id,
-                                              userId: user._id,
-                                              quantity: data.order.quantity,
-                                              price: priceInfo.LastPrice,
-                                              fee: costs.fee,
-                                              lockedCash: costs.locked_cash,
-                                              profit: costs.net_profit,
-                                              isClosed: 0
-                                          });
-                                          var oldUserCash = user.cash;
-                                          var oldUserLastCash = user.lastCash;
-                                          user.cash -= costs.open;
-                                          portfolio.quantity += data.order.quantity;
-                                          portfolio.total_point -= costs.point;
-                                          portfolio.total_deposit -= costs.deposit;
-                                          if (data.order.quantity > 0) {
-                                              portfolio.longQuantity += data.order.quantity;
-                                          } else {
-                                              portfolio.shortQuantity -= data.order.quantity;
-                                          }
-                                          portfolio.fee += costs.fee;
-                                          if (portfolio.quantity === 0) {
-                                              user.lastCash = user.cash;
-                                          }
-                                          // write back
-                                          User.update({_id: user._id, cash: oldUserCash, lastCash: oldUserLastCash},
-                                              {$set:{cash: user.cash, lastCash: user.lastCash}}, function(err, numberAffected, raw) {
-                                              if (err || numberAffected != 1) {
-                                                  console.log(err);
-                                                  cb({code:2, msg:err? err.toString(): "Placing order too fast"});
-                                                  delete user2cb_obj[data.user_id];
-                                                  return lock.unlock();
-                                              }
-                                              portfolio.save(function(err) {
-                                                  if (err) {
-                                                      console.log(err);
-                                                      delete user2cb_obj[data.user_id];
-                                                      cb({code:2, msg:err.toString()});
-                                                      return lock.unlock();
-                                                  }
-                                                  order.save(function(err) {
-                                                      if (err) {
-                                                          console.log(err);
-                                                          cb({code:2, msg:err.toString()});
-                                                          delete user2cb_obj[data.user_id];
-                                                          return lock.unlock();
-                                                      }
-                                                      cb(null, order);
-                                                      delete user2cb_obj[data.user_id];
-                                                      return lock.unlock();
-                                                  });
-                                              });
-                                          });
-                                      }); // new order creation ends here
-                                  /////////////////      
-                                  }); // close old order ends here
-                                  
-                              }); // find order need to be closed ends
+                              cb({code:6, msg:'need to close position first'});
+                              return lock.unlock();
                           } // quantity_to_close != 0 ends 
                           else { // create new order directly for user position is empty
                               console.log("create order directly");
                               var price = top_price;
                               var act = 1;
                               if(actual_quantity < 0){
-                                  act = 255;
+                                  act = 2;
                                   price = bottom_price;
-                              }
-                              if(actual_quantity == 0){
-                                  act = 0;
                               }
                               var ctp_order = {
                                   user_id: data.user_id,
@@ -844,7 +727,7 @@ function createOrder(data, cb) {
                                   //FIXME: act < 0, encoding fail
                                   act: act, // positive for buy, 0 for close, negative for sell
                                   size: 1.0, // volume
-                                  px_raw: price // price 
+                                  px_raw: parseFloat(price/100).toFixed(0) // price 
                               };
                               hive.createOrder(ctp_order, function(info, user2cb_obj) {
                                   if(info.code == 0){
@@ -855,15 +738,15 @@ function createOrder(data, cb) {
                                       //return lock.unlock();
                                   }
                                   var order = new Order({
-                                      orderId: order_id,
+                                      //orderId: order_id,
                                       contractId: contract._id,
                                       userId: user._id,
                                       quantity: data.order.quantity,
-                                      price: priceInfo.LastPrice, //FIXME: info.traded_price,
+                                      price: info.traded_price*100,
                                       fee: costs.fee,
                                       lockedCash: costs.locked_cash,
-                                      profit: costs.net_profit,
-                                      isClosed: 0
+                                      profit: costs.net_profit
+                                      //isClosed: 0
                                   });
                                   console.log("creating order]]]]]]]]]]]]]]]]");
                                   console.log(order);

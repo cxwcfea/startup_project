@@ -151,6 +151,9 @@ function placeOrder(req, res) {
                     case 5:
                         msg = '余额不足1手';
                         break;
+                    case 6:
+                        msg = '请先平仓';
+                        break;
                     default:
                         msg = '内部错误';
                         break;
