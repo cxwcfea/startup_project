@@ -333,8 +333,8 @@ function windControl(userId, forceClose, userContract, cb) {
                                           } else if(info.code == -1) {
                                               console.log('hive rejected to close order.');
                                               delete user2cb_obj[userId];
-                                              //cb('close order failed in hive');
-                                              //return lock.unlock();
+                                              cb('close order failed in hive');
+                                              return lock.unlock();
                                           }
                                           contractInfo[portf.contractId].LastPrice = info.traded_price*100;
                                           // Close all positions
@@ -579,7 +579,6 @@ function getInstrument(){
 
 function createOrder(data, cb) {
     //logger.debug(data);
-    console.log('================mock createOrder.');
     if (!data.order.quantity || data.order.quantity % kHand != 0) {
         console.log("invalid quantity");
         cb({code:1, msg:"invalid quantity"});
@@ -678,8 +677,9 @@ function createOrder(data, cb) {
                                       console.log('order created in ctp.');
                                   } else if(info.code == -1) {
                                       console.log('ctp rejected.');
-                                      //delete user2cb_obj[data.user_id];
-                                      //return lock.unlock();
+                                      delete user2cb_obj[data.user_id];
+                                      cb('create order failed in hive');
+                                      return lock.unlock();
                                   }
                                   costs = getCosts(contract, info.traded_price*100, data.order.quantity, portfolio.quantity, portfolio.total_point, portfolio.total_deposit);
                                   console.log(costs);
