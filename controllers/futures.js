@@ -26,7 +26,6 @@ var privateProperties = [
     'resetPasswordExpires',
     'invest',
     'finance',
-    'identity',
     'mobile',
     'wechat.wechat_uuid',
     'trader._id',
