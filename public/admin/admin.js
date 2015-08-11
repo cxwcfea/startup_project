@@ -82,6 +82,9 @@ angular.module('adminApp').config(['$routeProvider', '$locationProvider', '$http
         .when('/ppj_user_list', { templateUrl: '/admin/ppj_user_list',
             controller: 'AdminPPJUserListCtrl'
         })
+        .when('/appoint_user_list', { templateUrl: '/admin/appoint_user_list',
+            controller: 'AdminPPJUserListCtrl'
+        })
         .otherwise({
             redirectTo: '/users'
         });
