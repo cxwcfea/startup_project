@@ -1,0 +1,48 @@
+<style>
+    .modal-header .modal-title {
+        font-size: 1.8em;
+    }
+    .modal-footer .container button {
+        font-size: 1.5em;
+        height: 2em;
+    }
+    .modal-body p {
+        font-size: 1.5em;
+    }
+</style>
+<div class="modal-header">
+    <h3 class="modal-title">投资顾问协议</h3>
+</div>
+<div class="modal-body">
+    <div>
+        <p>甲方:</p>
+        <p>乙方:</p>
+        <br>
+        <p>甲方自愿成为乙方的投资顾问</p>
+        <p>约定条款如下：</p>
+        <p>1. blabla...</p>
+        <p>2. blabla...</p>
+        <p>3. blabla...</p>
+        <p>4. blabla...</p>
+    </div>
+    <div>
+        <p>实名信息</p>
+        <form>
+            <div class="form-group">
+                <label for="name">姓名</label>
+                <input type="text" class="form-control" id="name" placeholder="请输入真实姓名">
+            </div>
+            <div class="form-group">
+                <label for="user-id">身份证号码</label>
+                <input type="text" class="form-control" id="user-id" placeholder="请输入身份证号码">
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="container">
+        <div class="row">
+            <button class="col-xs-12 col-sm-9 btn btn-primary" ng-click="ok()">我已阅读并同意该协议</button>
+        </div>
+    </div>
+</div>
