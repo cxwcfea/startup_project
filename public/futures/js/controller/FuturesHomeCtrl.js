@@ -43,6 +43,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         sell: 0
     };
 
+    /*
     function showContractPopup() {
         var modalInstance = $modal.open({
             animation: true,
@@ -64,6 +65,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     if (!$scope.user.identity.id && $scope.data.real) {
         showContractPopup();
     }
+    */
 
     var delta = 0;
     function getUserPositions(init) {
