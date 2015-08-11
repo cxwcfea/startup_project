@@ -73,7 +73,8 @@ var userSchema = new mongoose.Schema({
             type: mongoose.Schema.ObjectId,
             ref: 'PPJUser'
         },
-        access_real: { type: Boolean, default: false }
+        access_real: { type: Boolean, default: false },
+        status: { type: Number, default: 0 }
     },
 
     identity: {

@@ -64,6 +64,18 @@ angular.module('adminApp').controller('AdminAppointUserListCtrl', ['$scope', '$l
         var result = prompt('确定吗');
         if (result != null) {
             console.log('yes');
+            $http.get('/futures/approve_user/?uid=' + user._id)
+                .success(function(data, status) {
+                    _.remove(users, function(u) {
+                        return u._id === user._id;
+                    });
+                    $scope.currentUsers = uses;
+                    pageReset();
+                    gbNotifier.notify('成功');
+                })
+                .error(function(data, status) {
+                    gbNotifier.notify('错误:' + data.error_msg);
+                });
         } else {
             console.log('no');
         }

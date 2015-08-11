@@ -310,6 +310,37 @@ function makeAppointment(req, res) {
     });
 }
 
+function approveUser(req, res) {
+    var uid = req.query.uid;
+    User.findById(uid, function(err, user) {
+        if (err) {
+            return res.status(500).send({error_msg:err.toString()});
+        }
+        if (!user) {
+            return res.status(500).send({error_msg:'user not found'});
+        }
+        mockTrader.createUser({
+            name: user.wechat.wechat_uuid,
+            warning: 18000000,
+            close: 17500000,
+            cash: 20000000,
+            deposit: 3000000,
+            debt: 17000000
+        }, function(err, trader) {
+            if (err) {
+                return res.status(500).send({error_msg:err.toString()});
+            }
+            if (!trader) {
+                return res.status(500).send({error_msg:'can not create trader'});
+            }
+            user.wechat.appointment = false;
+            user.access_real = true;
+            user.wechat.real_trader = trader;
+            user.wechat.status = 2;
+        });
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/api/futures/user_rank', passportConf.isWechatAuthenticated, fetchUserRankData);
@@ -329,6 +360,8 @@ module.exports = {
         app.get('/futures/reset_user', resetUser);
 
         app.post('/futures/make_appointment', passportConf.isWechatAuthenticated, makeAppointment);
+
+        app.get('/futures/approve_user', passportConf.requiresRole('admin'), approveUser);
 
         app.get('/futures/test', test);
 
