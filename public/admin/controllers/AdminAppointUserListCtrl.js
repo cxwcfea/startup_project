@@ -1,5 +1,5 @@
 'use strict';
-angular.module('adminApp').controller('AdminPPJUserListCtrl', ['$scope', '$location', '$routeParams', '$modal', '$http', 'gbNotifier', function($scope, $location, $routeParams, $modal, $http, gbNotifier) {
+angular.module('adminApp').controller('AdminAppointUserListCtrl', ['$scope', '$location', '$routeParams', '$modal', '$http', 'gbNotifier', function($scope, $location, $routeParams, $modal, $http, gbNotifier) {
     var users = {};
     $scope.currentUsers;
     $scope.itemsPerPage = 15;
