@@ -123,19 +123,7 @@
 <div class="form-box" ng-show="user.identity.id">
     <p>姓名：\{{user.identity.name}}</p>
     <p>身份证：\{{user.identity.id}}</p>
-    <p>手机号：\{{user.mobile}}</p>
-</div>
-
-<div class="form-box" ng-hide="user.identity.id">
-    <form name="identityForm" novalidate>
-        <div class="form-item">
-            <input name="user_name" type="text" placeholder="姓名" ng-model="userName" maxlength="16" required autofocus>
-        </div>
-        <div class="form-item">
-            <input name="user_id" type="text" placeholder="身份证号码" ng-model="userID" pattern="^\d{15}$|^\d{18}$|^\d{17}(\d|X|x)$" required>
-        </div>
-        <button type="submit" class="submit-btn" ng-click="verifyUserIdentity()">提交身份信息</button>
-    </form>
+    <p>手机号：\{{user.wechat.mobile}}</p>
 </div>
 
 <div class="ui-tip" ng-show="inputError">\{{errorMsg}}</div>

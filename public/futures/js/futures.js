@@ -35,7 +35,7 @@ angular.module('futuresApp').config(['$routeProvider', '$httpProvider', function
             controller: 'FuturesAppointmentCtrl'
         })
         .when('/user_info', { templateUrl: '/futures/user_info',
-            controller: 'FuturesUserInfoCtrl'
+            controller: 'FuturesContractCtrl'
         })
         .when('/apply_close', { templateUrl: '/futures/apply_close',
             controller: 'FuturesApplyCloseCtrl'
