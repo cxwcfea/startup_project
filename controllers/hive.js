@@ -133,7 +133,7 @@ Hive.prototype.login = function (){
 			var code = 0;
 			if(result != HiveExecType.HiveExecFill) {
 				code = -1;
-                traded_price = 3800;
+                traded_price = 4030;
             }
             if(callback === undefined)
                 return;
