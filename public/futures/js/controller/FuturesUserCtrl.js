@@ -44,7 +44,24 @@ angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window',
         $location.path('/contract');
     };
 
+    function showRealTradePopup() {
+        var modalInstance = $modal.open({
+            animation: true,
+            backdrop: 'static',
+            windowClass: 'xx-dialog',
+            templateUrl: 'views/real_trade_popup.html',
+            controller: 'InfoModalCtrl',
+            size: 'lg',
+            resolve: {}
+        });
+
+        modalInstance.result.then(function () {
+        }, function () {
+        });
+    }
+
     $scope.gotoReal = function() {
         $scope.data.real = true;
+        showRealTradePopup();
     };
 }]);
