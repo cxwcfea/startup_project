@@ -61,7 +61,11 @@ angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window',
     }
 
     $scope.gotoReal = function() {
-        $scope.data.real = true;
-        showRealTradePopup();
+        if (!$scope.user.identity.id) {
+            $location.path('/contract');
+        } else {
+            $scope.data.real = true;
+            showRealTradePopup();
+        }
     };
 }]);

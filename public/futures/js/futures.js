@@ -40,6 +40,8 @@ angular.module('futuresApp').config(['$routeProvider', '$httpProvider', function
         .when('/apply_close', { templateUrl: '/futures/apply_close',
             controller: 'FuturesApplyCloseCtrl'
         })
+        .when('/contract', { templateUrl: '/futures/contract'
+        })
         .otherwise({
             redirectTo: '/home'
         });

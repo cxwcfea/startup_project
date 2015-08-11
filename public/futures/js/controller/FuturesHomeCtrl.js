@@ -61,10 +61,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         });
     }
 
-    if (!$scope.user.identity.id && $scope.data.real) {
-        showContractPopup();
-    }
-
     var delta = 0;
     function getUserPositions(init) {
         $http.get('/api/futures/get_positions')

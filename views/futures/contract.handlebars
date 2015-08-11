@@ -1,0 +1,150 @@
+<style>
+    /* =登录&注册&找回密码 login.html&sign.up&forget.html
+-------------------------------------------------------------- */
+    .form-box {
+        padding: 20px 10px 10px;
+    }
+    .form-box button, input[type='button'] {
+        border: none;
+        width: 90%;
+        background: #FFF;
+        height: 30px;
+        line-height: 30px;
+        font-size:16px;
+        font-weight:500;
+    }
+    .form-box .submit-btn {
+        width: 100%;
+        height: 43px;
+        line-height: 43px;
+        margin-bottom: 15px;
+        color: #fff;
+        text-align: center;
+        font-size: 18px;
+        border-radius: 3px;
+        background-color: #e30a20;
+    }
+    .form-box .form-item {
+        border: 1px solid #c9c9c9;
+        padding: 5px 10px;
+        margin-bottom: 15px;
+        background: #fff;
+    }
+    .form-box .form-item label {
+        padding-right: 10px;
+    }
+    .form-box .form-item .ui-switch {
+        float: right;
+        top: 5px;
+        padding-right: 0;
+    }
+    .form-box p {
+        margin-bottom: 15px;
+    }
+    .form-box form a {
+        color: #a40000;
+    }
+    .form-box .form-item input {
+        border: none;
+        width: 80%;
+        background-color: #fff;
+        height: 30px;
+        line-height: 30px;
+        font-size: 12px;
+    }
+    .form-box .signup-btn {
+        display: block;
+        height: 43px;
+        line-height: 43px;
+        color: #e30a20;
+        text-align: center;
+        font-size: 18px;
+        border: 2px solid #e30a20;
+        border-radius: 3px;
+        background-color: #fff;
+    }
+    .form-box .ipt-txt {
+        background-color: #fff;
+    }
+
+    .form-box .verify-ipt {
+        overflow: hidden;
+        margin-bottom: 15px;
+    }
+    .form-box .verify-ipt .ipt-txt {
+        float: left;
+        width: 45%;
+        height: 30px;
+        line-height: 30px;
+        padding: 5px 10px;
+        border: 1px solid #c9c9c9;
+    }
+    .form-box .verify-ipt .get-verify {
+        float: right;
+        width: 45%;
+        height: 40px;
+        line-height: 40px;
+        color: #e30a20;
+        font-size: 16px;
+        text-align: center;
+        border: 1px solid #e30a20;
+        background-color: #fff;
+    }
+    .form-box .verify-ipt .get-verify.disabled {
+        background-color: #eee;
+        border: 1px solid #eee;
+        color: #aaa;
+    }
+
+    .agree-box {
+        padding: 15px;
+    }
+    .agree-box p {
+        padding: 4px 0;
+    }
+    .agree-box h5 {
+        font-size: 14px;
+        font-weight: 700;
+        padding: 10px 0 5px;
+    }
+    .agree-box .warn {
+        color: #a40000;
+    }
+</style>
+
+<section>
+    <!--#S header-->
+    <header id="header">
+        <div class="header-box">
+            <h1>投资顾问协议</h1>
+            <a class="back" href="" onclick="history.back();  return false;"></a>
+        </div>
+    </header><!--#E header-->
+
+    <div>
+        <p>甲方:</p>
+        <p>乙方:</p>
+        <br>
+        <p>甲方自愿成为乙方的投资顾问</p>
+        <p>约定条款如下：</p>
+        <p>1. blabla...</p>
+        <p>2. blabla...</p>
+        <p>3. blabla...</p>
+        <p>4. blabla...</p>
+    </div>
+
+    <div class="form-box">
+        <p>实名信息</p>
+        <form name="identityForm" novalidate>
+            <div class="form-item">
+                <input name="user_name" type="text" placeholder="请输入真实姓名" ng-model="userName" maxlength="16" required autofocus>
+            </div>
+            <div class="form-item">
+                <input name="user_id" type="text" placeholder="请输入身份证号码" ng-model="userID" pattern="^\d{15}$|^\d{18}$|^\d{17}(\d|X|x)$" required>
+            </div>
+        </form>
+        <button type="submit" class="submit-btn" ng-click="verifyUserIdentity()">我已阅读并同意该协议</button>
+    </div>
+
+    <div class="ui-tip" ng-show="inputError">\{{errorMsg}}</div>
+</section>
