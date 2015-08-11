@@ -44,4 +44,7 @@ angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window',
         $location.path('/contract');
     };
 
+    $scope.gotoReal = function() {
+        $scope.data.real = true;
+    };
 }]);

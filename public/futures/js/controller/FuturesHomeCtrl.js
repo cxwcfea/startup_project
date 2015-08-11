@@ -317,8 +317,5 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         openResetPopup();
     };
 
-    $scope.gotoReal = function() {
-        $scope.data.real = true;
-    };
 }]);
 
