@@ -1,5 +1,5 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesContractCtrl', ['$scope', '$window', '$http', '$timeout', function($scope, $window, $http, $timeout) {
+angular.module('futuresApp').controller('FuturesContractCtrl', ['$scope', '$window', '$http', '$timeout', '$location', function($scope, $window, $http, $timeout, $location) {
     $scope.user = $scope.data.currentUser;
 
     $scope.verifyUserIdentity = function() {
@@ -15,7 +15,8 @@ angular.module('futuresApp').controller('FuturesContractCtrl', ['$scope', '$wind
             .success(function(data, status) {
                 $scope.user.identity.name = $scope.userName;
                 $scope.user.identity.id = $scope.userID;
-                $scope.success = true;
+                //$scope.success = true;
+                $location.path('/user');
             })
             .error(function(data, status) {
                 $scope.errorMsg = data.error_msg;
