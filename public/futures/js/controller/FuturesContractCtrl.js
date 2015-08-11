@@ -1,5 +1,5 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesUserInfoCtrl', ['$scope', '$window', '$http', '$timeout', function($scope, $window, $http, $timeout) {
+angular.module('futuresApp').controller('FuturesContractCtrl', ['$scope', '$window', '$http', '$timeout', function($scope, $window, $http, $timeout) {
     $scope.user = $scope.data.currentUser;
 
     $scope.verifyUserIdentity = function() {
