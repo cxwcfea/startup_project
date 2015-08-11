@@ -61,6 +61,11 @@ angular.module('adminApp').controller('AdminAppointUserListCtrl', ['$scope', '$l
     };
 
     $scope.approveRealTrade = function(user) {
-        alert('approve');
+        var result = prompt('确定吗');
+        if (result != null) {
+            console.log('yes');
+        } else {
+            console.log('no');
+        }
     };
 }]);
