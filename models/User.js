@@ -72,7 +72,8 @@ var userSchema = new mongoose.Schema({
         real_trader: {
             type: mongoose.Schema.ObjectId,
             ref: 'PPJUser'
-        }
+        },
+        access_real: { type: Boolean, default: false }
     },
 
     identity: {
