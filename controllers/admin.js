@@ -2354,6 +2354,19 @@ function getAppointPPJUser(req, res) {
     });
 }
 
+function getPPJTradeUser(req, res) {
+    var query = User.find({});
+    query.find({'wechat.status':2});
+    query.populate('wechat.trader');
+    query.select('wechat identity');
+    query.exec(function (err, users) {
+        if (err) {
+            return res.status(500).send(err.toString());
+        }
+        res.send(users);
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -2543,6 +2556,8 @@ module.exports = {
         app.get('/admin/api/get_all_ppj_user', passportConf.requiresRole('admin'), getAllPPJUser);
 
         app.get('/admin/api/get_appoint_ppj_user', passportConf.requiresRole('admin'), getAppointPPJUser);
+
+        app.get('/admin/api/get_ppj_trade_user', passportConf.requiresRole('admin'), getPPJTradeUser);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {
             res.render('admin/' + req.params[0], {layout:null});

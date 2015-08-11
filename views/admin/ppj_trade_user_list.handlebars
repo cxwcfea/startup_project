@@ -1,0 +1,55 @@
+<div class="am-cf am-padding">
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">拍拍机实盘中用户列表</strong> / <small>PPJ Users</small></div>
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12">
+        <div class="am-btn-toolbar">
+            <div class="am-btn-group am-btn-group-xs">
+                <!--
+                <button ng-repeat="item in queryItems" type="button" class="am-btn am-btn-default" ng-click="queryItem(item)"> \{{item.name}}</button>
+                -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12">
+        <form class="am-form">
+            <div class="am-scrollable-horizontal">
+                <table class="am-table am-table-striped am-table-hover table-main">
+                    <thead>
+                    <tr>
+                        <th class="">头像</th><th class="">微信名</th><th class="">手机号</th><th>平仓盈亏</th><th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="user in showingItems">
+                        <td><img ng-src="\{{user.wechat.wechat_img}}" width="50" height="50"></td>
+                        <td>\{{user.wechat.wechat_name || 'N/A'}}</td>
+                        <td>\{{user.wechat.mobile}}</td>
+                        <td>\{{user.wechat.trader.lastCash == 0 ? 0 : user.wechat.trader.lastCash/100-1000000 | number:2}}</td>
+                        <td>
+                            <div class="am-btn-toolbar">
+                                <div class="am-btn-group am-btn-group-xs">
+                                    {{#unless watcher}}
+                                        <button class="am-btn am-btn-default am-btn-xs am-text-warning" ng-click="approveRealTrade(user)"><span class="am-icon-pencil"></span> 批准实盘</button>
+                                    {{/unless}}
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="am-cf">
+                共 \{{currentUsers.length}} 条记录
+                <div class="am-fr">
+                    <pagination previous-text="&lsaquo;" next-text="&rsaquo;" max-size="maxSize" rotate="false" items-per-page="itemsPerPage" total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></pagination>
+                </div>
+            </div>
+            <hr />
+        </form>
+    </div>
+</div>
