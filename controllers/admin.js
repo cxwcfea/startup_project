@@ -2357,7 +2357,7 @@ function getAppointPPJUser(req, res) {
 function getPPJTradeUser(req, res) {
     var query = User.find({});
     query.find({'wechat.status':2});
-    query.populate('wechat.trader');
+    query.populate('wechat.real_trader');
     query.select('wechat identity');
     query.exec(function (err, users) {
         if (err) {
