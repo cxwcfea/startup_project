@@ -135,6 +135,8 @@ Hive.prototype.login = function (){
 				code = -1;
                 traded_price = 3800;
             }
+            if(callback === undefined)
+                return;
 			callback({code: code, traded_price: traded_price}, that.user2cb);
 		}
 	});

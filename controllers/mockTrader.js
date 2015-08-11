@@ -335,12 +335,13 @@ function windControl(userId, forceClose, userContract, cb) {
                       }
                       global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
                           var priceInfo = JSON.parse(priceInfoString);
-                          var top_price = priceInfo.PreClosePrice*1.0995;
-                          var bottom_price = priceInfo.PreClosePrice*(1-0.0995);
+                          var top_price = priceInfo.PreSettlementPrice*1.0995;
+                          var bottom_price = priceInfo.PreSettlementPrice*(1-0.0995);
                           contractInfo[portf.contractId] = priceInfo;
                           contractData[portf.contractId] = contract;
                           var costs = getCosts(contract, priceInfo.LastPrice*100, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
                           asyncObj.value -= costs.open;
+                          console.log(costs);
                           if (asyncObj.remaining > 0 && typeof userContract === 'undefined') {
                               console.log("Still counting: " + asyncObj);
                               delete user2cb_obj[userId];
@@ -540,7 +541,6 @@ function getProfitImpl(req, res, user, contractId) {
                     }
                     var priceInfo = JSON.parse(priceInfoString);
                     priceInfo.LastPrice *= 100;
-                    console.log(priceInfo.LastPrice);
 
                     contractInfo[portf.contractId] = priceInfo;
                     var costs = getCosts(contract, priceInfo.LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
@@ -673,8 +673,8 @@ function createOrder(data, cb) {
               global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
                   var priceInfo = JSON.parse(priceInfoString);
                   priceInfo.LastPrice *= 100;
-                  var top_price = priceInfo.PreClosePrice*1.0995*100;
-                  var bottom_price = priceInfo.PreClosePrice*(1-0.0995)*100;
+                  var top_price = priceInfo.PreSettlementPrice*1.0995*100;
+                  var bottom_price = priceInfo.PreSettlementPrice*(1-0.0995)*100;
                   //console.log(priceInfo);
                   Portfolio.findOne({$and: [{contractId: contract._id}, {userId: user._id}]}, function(err, portfolio) {
                       if (err) {
