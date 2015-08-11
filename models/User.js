@@ -68,6 +68,10 @@ var userSchema = new mongoose.Schema({
         trader: {
             type: mongoose.Schema.ObjectId,
             ref: 'PPJUser'
+        },
+        real_trader: {
+            type: mongoose.Schema.ObjectId,
+            ref: 'PPJUser'
         }
     },
 

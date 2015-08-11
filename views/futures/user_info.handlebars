@@ -1,0 +1,141 @@
+<style>
+    /* =登录&注册&找回密码 login.html&sign.up&forget.html
+-------------------------------------------------------------- */
+    .form-box {
+        padding: 20px 10px 10px;
+    }
+    .form-box button, input[type='button'] {
+        border: none;
+        width: 90%;
+        background: #FFF;
+        height: 30px;
+        line-height: 30px;
+        font-size:16px;
+        font-weight:500;
+    }
+    .form-box .submit-btn {
+        width: 100%;
+        height: 43px;
+        line-height: 43px;
+        margin-bottom: 15px;
+        color: #fff;
+        text-align: center;
+        font-size: 18px;
+        border-radius: 3px;
+        background-color: #e30a20;
+    }
+    .form-box .form-item {
+        border: 1px solid #c9c9c9;
+        padding: 5px 10px;
+        margin-bottom: 15px;
+        background: #fff;
+    }
+    .form-box .form-item label {
+        padding-right: 10px;
+    }
+    .form-box .form-item .ui-switch {
+        float: right;
+        top: 5px;
+        padding-right: 0;
+    }
+    .form-box p {
+        margin-bottom: 15px;
+    }
+    .form-box form a {
+        color: #a40000;
+    }
+    .form-box .form-item input {
+        border: none;
+        width: 80%;
+        background-color: #fff;
+        height: 30px;
+        line-height: 30px;
+        font-size: 12px;
+    }
+    .form-box .signup-btn {
+        display: block;
+        height: 43px;
+        line-height: 43px;
+        color: #e30a20;
+        text-align: center;
+        font-size: 18px;
+        border: 2px solid #e30a20;
+        border-radius: 3px;
+        background-color: #fff;
+    }
+    .form-box .ipt-txt {
+        background-color: #fff;
+    }
+
+    .form-box .verify-ipt {
+        overflow: hidden;
+        margin-bottom: 15px;
+    }
+    .form-box .verify-ipt .ipt-txt {
+        float: left;
+        width: 45%;
+        height: 30px;
+        line-height: 30px;
+        padding: 5px 10px;
+        border: 1px solid #c9c9c9;
+    }
+    .form-box .verify-ipt .get-verify {
+        float: right;
+        width: 45%;
+        height: 40px;
+        line-height: 40px;
+        color: #e30a20;
+        font-size: 16px;
+        text-align: center;
+        border: 1px solid #e30a20;
+        background-color: #fff;
+    }
+    .form-box .verify-ipt .get-verify.disabled {
+        background-color: #eee;
+        border: 1px solid #eee;
+        color: #aaa;
+    }
+
+    .agree-box {
+        padding: 15px;
+    }
+    .agree-box p {
+        padding: 4px 0;
+    }
+    .agree-box h5 {
+        font-size: 14px;
+        font-weight: 700;
+        padding: 10px 0 5px;
+    }
+    .agree-box .warn {
+        color: #a40000;
+    }
+</style>
+
+<!--#S header-->
+<header id="header">
+    <div class="header-box">
+        <h1>个人信息</h1>
+        <a class="back" href="" onclick="history.back();  return false;"></a>
+    </div>
+</header><!--#E header-->
+
+<div class="form-box" ng-show="user.identity.id">
+    <p>姓名：\{{user.identity.name}}</p>
+    <p>身份证：\{{user.identity.id}}</p>
+    <p>手机号：\{{user.mobile}}</p>
+</div>
+
+<div class="form-box" ng-hide="user.identity.id">
+    <form name="identityForm" novalidate>
+        <div class="form-item">
+            <input name="user_name" type="text" placeholder="姓名" ng-model="userName" maxlength="16" required autofocus>
+        </div>
+        <div class="form-item">
+            <input name="user_id" type="text" placeholder="身份证号码" ng-model="userID" pattern="^\d{15}$|^\d{18}$|^\d{17}(\d|X|x)$" required>
+        </div>
+        <button type="submit" class="submit-btn" ng-click="verifyUserIdentity()">提交身份信息</button>
+    </form>
+</div>
+
+<div class="ui-tip" ng-show="inputError">\{{errorMsg}}</div>

@@ -32,4 +32,16 @@ angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window',
         $location.path('/orders');
     };
 
+    $scope.showUserInfo = function() {
+        $location.path('/user_info');
+    };
+
+    $scope.showApplyClose = function() {
+        $location.path('/apply_close');
+    };
+
+    $scope.showContract = function() {
+        $location.path('/contract');
+    };
+
 }]);

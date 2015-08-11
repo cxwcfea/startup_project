@@ -1,7 +1,5 @@
 'use strict';
 angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window', '$location', '$modal', '$http', '$timeout', '$interval', function($scope, $window, $location, $modal, $http, $timeout, $interval) {
-    $scope.chartLabels = ["9:15", "10:15", "11:15", "13:45", "14:45", "15:15"];
-    $scope.chartData = [4188.57, 4040.48, 4053.70, 4182.93, 4023.93, 3872.15, 4188.57, 4040.48, 4053.70, 4182.93, 4023.93, 3872.15, 4053.70, 4182.93, 4023.93, 3872.15, 4188.57, 4040.48];
     $scope.user = $scope.data.currentUser;
     var HAND = 100;
     var InitCapital = 150000;
@@ -317,6 +315,10 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
 
     $scope.resetCapital = function() {
         openResetPopup();
+    };
+
+    $scope.gotoReal = function() {
+        $scope.data.real = true;
     };
 }]);
 

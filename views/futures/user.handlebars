@@ -116,16 +116,23 @@
     <div class="user-items">
         <div class="item-list">
             <div class="item" ng-click="showOrders()">
-				<img src="/futures/images/go.png" class="chevron-right" />
-				<p>交易记录</p>
-                <!--<i class="glyphicon glyphicon-chevron-right"></i>-->
-            </div>
-            <!--
-            <div class="item" ng-click="resetCapital()">
                 <img src="/futures/images/go.png" class="chevron-right" />
-                资金重置
+                <p>交易记录</p>
             </div>
-            -->
+            <div ng-show="data.real">
+                <div class="item" ng-click="showUserInfo()">
+                    <img src="/futures/images/go.png" class="chevron-right" />
+                    <p>个人信息</p>
+                </div>
+                <div class="item" ng-click="showApplyClose()">
+                    <img src="/futures/images/go.png" class="chevron-right" />
+                    <p>申请结算</p>
+                </div>
+                <div class="item" ng-click="showContract()">
+                    <img src="/futures/images/go.png" class="chevron-right" />
+                    <p>协议</p>
+                </div>
+            </div>
         </div>
     </div>
     <div ng-show="showError">

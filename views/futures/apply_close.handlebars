@@ -1,0 +1,32 @@
+<style>
+    .apply-close-box .intro-box {
+        margin: 50px 10px 200px 10px;
+    }
+</style>
+<section class="apply-close-box">
+    <!--#S header-->
+    <header id="header">
+        <div class="header-box">
+            <h1>申请结算</h1>
+            <a class="back" href="" onclick="history.back();  return false;"></a>
+        </div>
+    </header><!--#E header-->
+
+    <div class="container">
+        <div class="row">
+            <div class="intro-box">
+                <p>结算规则</p>
+                <ol>
+                    <li>1.申请结算账户，账户将不能进行交易!!</li>
+                    <li>2.申请前您需要平仓，否则系统会强制平仓!!</li>
+                    <li>3.结算申请将会在一个工作日内处理完，节假日顺延!!</li>
+                    <li>4.结算完成后，将不能登录使用实盘交易!!</li>
+                    <li>5.结算金额将会进入您入资的银行账户</li>
+                </ol>
+            </div>
+            <button class="btn btn-primary col-xs-12" ng-click="closeApply()">\{{btn_text}}</button>
+        </div>
+    </div>
+
+    <div class="ui-tip" ng-show="inputError">\{{errorMsg}}</div>
+</section>
