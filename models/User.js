@@ -74,7 +74,7 @@ var userSchema = new mongoose.Schema({
             ref: 'PPJUser'
         },
         access_real: { type: Boolean, default: false },
-        status: { type: Number, default: 0 }
+        status: { type: Number, default: 0 } // 2 mean trading
     },
 
     identity: {

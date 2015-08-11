@@ -7,6 +7,7 @@ var User = require('../models/User'),
     yeepay = require('../lib/yeepay'),
     util = require('../lib/util'),
     mockTrader = require('./mockTrader'),
+    ctpTrader = require('./ctpTrader'),
     useragent = require('useragent'),
     _ = require('lodash'),
     moment = require('moment'),
@@ -94,6 +95,31 @@ function fetchUserRankData(req, res) {
     });
 }
 
+function getErrorMessage(err) {
+    var msg;
+    switch (err.code) {
+        case 1:
+            msg = '无效的购买数量';
+            break;
+        case 3:
+            msg = '账户已被冻结';
+            break;
+        case 4:
+            msg = '请稍后再试';
+            break;
+        case 5:
+            msg = '余额不足1手';
+            break;
+        case 6:
+            msg = '请先平仓';
+            break;
+        default:
+            msg = '内部错误';
+            break;
+    }
+    return msg;
+}
+
 function placeOrder(req, res) {
     if (!req.user || !req.user.wechat || !req.user.wechat.wechat_uuid) {
         return res.status(403).send({error_msg:'user need log in'});
@@ -104,7 +130,11 @@ function placeOrder(req, res) {
     if (forceClose) {
         req.body.user_id = req.user.wechat.trader;
         req.body.force_close = 1;
-        mockTrader.riskControl(req, res);
+        if (req.body.type == 1 && req.user.wechat.status === 2) {
+            ctpTrader.riskControl(req, res);
+        } else {
+            mockTrader.riskControl(req, res);
+        }
     } else {
         var obj = {
             order: {
@@ -113,8 +143,7 @@ function placeOrder(req, res) {
                     stock_code: 'IFCURR',
                     exchange: 'future'
                 }
-            },
-            user_id: req.user.wechat.trader
+            }
         };
 
         switch (parseInt(req.body.product)) {
@@ -134,33 +163,25 @@ function placeOrder(req, res) {
                 obj.order.contract = {exchange:'future', stock_code:'IFCURR'};
         }
 
-        mockTrader.createOrder(obj, function(err, order) {
-            if (err) {
-                var msg;
-                switch (err.code) {
-                    case 1:
-                        msg = '无效的购买数量';
-                        break;
-                    case 3:
-                        msg = '账户已被冻结';
-                        break;
-                    case 4:
-                        msg = '请稍后再试';
-                        break;
-                    case 5:
-                        msg = '余额不足1手';
-                        break;
-                    case 6:
-                        msg = '请先平仓';
-                        break;
-                    default:
-                        msg = '内部错误';
-                        break;
+        if (req.body.type == 1 && req.user.wechat.status === 2) {
+            obj.user_id = req.user.wechat.real_trader;
+            ctpTrader.createOrder(obj, function(err, order) {
+                if (err) {
+                    var msg = getErrorMessage(err);
+                    return res.status(500).send({error_msg:msg});
                 }
-                return res.status(500).send({error_msg:msg});
-            }
-            res.send(order);
-        });
+                res.send(order);
+            });
+        } else {
+            obj.user_id = req.user.wechat.trader;
+            mockTrader.createOrder(obj, function(err, order) {
+                if (err) {
+                    var msg = getErrorMessage(err);
+                    return res.status(500).send({error_msg:msg});
+                }
+                res.send(order);
+            });
+        }
     }
 }
 
@@ -168,54 +189,31 @@ function getPositions(req, res) {
     if (!req.user || !req.user.wechat || !req.user.wechat.wechat_uuid) {
         return res.status(403).send({error_msg:'user need log in'});
     }
-    mockTrader.getPositions({user_id:req.user.wechat.trader}, function(err, positions) {
-        if (err) {
-            return res.status(500).send({error_msg:err.toString()});
-        }
-        mockTrader.getUserInfo({user_id:req.user.wechat.trader}, function(err, user) {
+    if (req.query.type == 1 && req.user.wechat.status === 2) {
+        ctpTrader.getPositions({user_id:req.user.wechat.real_trader}, function(err, positions) {
             if (err) {
                 return res.status(500).send({error_msg:err.toString()});
             }
-            res.send({position:positions[0], user:user});
+            ctpTrader.getUserInfo({user_id:req.user.wechat.real_trader}, function(err, user) {
+                if (err) {
+                    return res.status(500).send({error_msg:err.toString()});
+                }
+                res.send({position:positions[0], user:user});
+            });
         });
-    });
-}
-
-function deposit(req, res) {
-	/*
-    if (!req.user || !req.user.wechat || !req.user.wechat.wechat_uuid) {
-        return res.status(403).send({error_msg:'user need log in'});
+    } else {
+        mockTrader.getPositions({user_id:req.user.wechat.trader}, function(err, positions) {
+            if (err) {
+                return res.status(500).send({error_msg:err.toString()});
+            }
+            mockTrader.getUserInfo({user_id:req.user.wechat.trader}, function(err, user) {
+                if (err) {
+                    return res.status(500).send({error_msg:err.toString()});
+                }
+                res.send({position:positions[0], user:user});
+            });
+        });
     }
-    var initConfig = {
-	   partnerKey: "QWWEasdaaQW2EQWE1231234KOIJJD999",
-	   appId: "wx8e029a336ad0a880",
-	   mchId: "1260898201",
-	   notifyUrl: "http://server2.niujinwang.com/futures/notify",
-	   pfx: fs.readFileSync("/home/zhaoguojie/ppj/niujinwang-website/cert/apiclient_cert.p12")
-	};
-	var payment = new Payment(initConfig);
-	var order = {
-	   body: '拍拍机点卡 * 1',
-	   attach: '{"部位":"三角"}',
-	   out_trade_no: 'kfc001',
-	   total_fee: 10 * 100,
-	   spbill_create_ip: "127.0.0.1",
-	   product_id: "123",
-	   trade_type: "NATIVE"
-	};
-	payment.getBrandWCPayRequestParams(order, function(err, payargs){
-		 console.log(err, payargs);
-		 res.send(payargs);
-	});
-	*/
-	res.send({});
-}
-
-function getRedEnvelop(req, res) {
-    if (!req.user || !req.user.wechat || !req.user.wechat.wechat_uuid) {
-        return res.status(403).send({error_msg:'user need log in'});
-    }
-	redEnvelope.sendRE(req.user.wechat.wechat_openid, 100, 1, "恭喜您获得提现资格", "提现", "祝您操盘顺利。", 0, res);
 }
 
 function getOrders(req, res) {
@@ -223,18 +221,22 @@ function getOrders(req, res) {
         return res.status(403).send({error_msg:'user need log in'});
     }
     var page = req.page;
-    req.body.user_id = req.user.wechat.trader;
     req.body.date_begin = 0;
     req.body.date_end = Date.now();
     req.body.page = page;
-    mockTrader.getHistoryOrders(req, res);
+    if (req.query.type == 1 && req.user.wechat.status === 2) {
+        req.body.user_id = req.user.wechat.real_trader;
+        ctpTrader.getHistoryOrders(req, res);
+    } else {
+        req.body.user_id = req.user.wechat.trader;
+        mockTrader.getHistoryOrders(req, res);
+    }
 }
 
 function getUserProfit(req, res) {
     if (!req.user || !req.user.wechat || !req.user.wechat.wechat_uuid) {
         return res.status(403).send({error_msg:'user need log in'});
     }
-    req.body.user_id = req.user.wechat.trader;
     switch (req.query.product) {
         case '0': // IF
             req.body.contract = {exchange:'future', stock_code:'IFCURR'};
@@ -251,7 +253,13 @@ function getUserProfit(req, res) {
         default :
             req.body.contract = {exchange:'future', stock_code:'IFCURR'};
     }
-    mockTrader.getProfit(req, res);
+    if (req.query.type == 1 && req.user.wechat.status === 2) {
+        req.body.user_id = req.user.wechat.real_trader;
+        ctpTrader.getProfit(req, res);
+    } else {
+        req.body.user_id = req.user.wechat.trader;
+        mockTrader.getProfit(req, res);
+    }
 }
 
 function test(req, res) {
@@ -278,15 +286,30 @@ function getOrderCount(fn) {
 }
 
 function getUserInfo(req, res) {
-    mockTrader.getUserInfo({user_id:req.user.wechat.trader}, function(err, user) {
-        if (err) {
-            return res.status(500).send({error_msg:err.toString()});
-        }
-        res.send(user);
-    });
+    if (req.query.type == 1 && req.user.wechat.status === 2) {
+        ctpTrader.getUserInfo({user_id:req.user.wechat.real_trader}, function(err, user) {
+            if (err) {
+                return res.status(500).send({error_msg:err.toString()});
+            }
+            if (!user) {
+                return res.status(500).send({error_msg:'user not found'});
+            }
+            res.send(user);
+        });
+    } else {
+        mockTrader.getUserInfo({user_id:req.user.wechat.trader}, function(err, user) {
+            if (err) {
+                return res.status(500).send({error_msg:err.toString()});
+            }
+            res.send(user);
+        });
+    }
 }
 
 function resetUser(req, res) {
+    if (req.user.wechat.status === 2) {
+        return res.status(401).send({error_msg:'user not allow reset'});
+    }
     mockTrader.resetUser(req.user.wechat.trader, function(err) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});

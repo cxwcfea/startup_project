@@ -63,7 +63,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
 
     var delta = 0;
     function getUserPositions(init) {
-        $http.get('/api/futures/get_positions')
+        $http.get('/api/futures/get_positions?type=' + ($scope.data.real ? 1 : 0))
             .success(function (data, status) {
                 var position = data.position;
                 if (position) {
@@ -95,7 +95,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     }
 
     function fetchUserProfit() {
-        $http.get('/api/futures/get_user_profit?product=' + $scope.data.productID)
+        $http.get('/api/futures/get_user_profit?product=' + $scope.data.productID + '&type=' + (data.real ? 1 : 0))
             .success(function(data, status) {
                 if (data.result != null && data.result != undefined) {
                     $scope.profit = data.result / 100;
@@ -304,7 +304,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         if (type === 0) {
             forceClose = true;
         }
-        $http.post('/api/futures/create_order', {quantity:quantity, forceClose:forceClose, product:$scope.data.productID})
+        $http.post('/api/futures/create_order', {quantity:quantity, forceClose:forceClose, product:$scope.data.productID, type:(data.real ? 1 : 0)})
             .success(function(data, status) {
                 getUserPositions();
                 var orderType = data.quantity > 0 ? '涨' : '跌';
