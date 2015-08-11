@@ -311,6 +311,7 @@ function makeAppointment(req, res) {
 }
 
 function approveUser(req, res) {
+    console.log('approveUser ' + req.body);
     var uid = req.query.uid;
     User.findById(uid, function(err, user) {
         if (err) {
