@@ -338,7 +338,12 @@ function approveUser(req, res) {
             user.access_real = true;
             user.wechat.real_trader = trader;
             user.wechat.status = 2;
-            res.send({});
+            user.save(function(err) {
+                if (err) {
+                    return res.status(500).send({error_msg:err.toString()});
+                }
+                res.send({});
+            });
         });
     });
 }
