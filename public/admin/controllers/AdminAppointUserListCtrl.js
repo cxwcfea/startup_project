@@ -69,7 +69,7 @@ angular.module('adminApp').controller('AdminAppointUserListCtrl', ['$scope', '$l
                     _.remove(users, function(u) {
                         return u._id === user._id;
                     });
-                    $scope.currentUsers = uses;
+                    $scope.currentUsers = users;
                     pageReset();
                     gbNotifier.notify('成功');
                 })
