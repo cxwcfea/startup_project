@@ -26,6 +26,10 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
         {
             name: '交易中',
             value: 4
+        },
+        {
+            name: '结算中',
+            value: 5
         }
     ];
 

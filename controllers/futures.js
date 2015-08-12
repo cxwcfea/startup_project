@@ -460,6 +460,8 @@ module.exports = {
 
         app.post('/futures/change_user_access', passportConf.requiresRole('admin'), changeTraderStatus);
 
+        app.post('/futures/trade_close', passportConf.isWechatAuthenticated, changeTraderStatus);
+
         app.get('/futures/test', test);
 
         app.get('/futures/*', function(req, res, next) {

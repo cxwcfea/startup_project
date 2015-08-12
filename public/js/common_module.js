@@ -417,6 +417,8 @@
                     return "交易未开通";
                 case 4:
                     return "交易中";
+                case 5:
+                    return "结算中";
                 default:
                     return "未知";
             }
