@@ -114,10 +114,11 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
     $scope.addMoney = function(user) {
         $http.get('/futures/add_money/?uid=' + user._id)
             .success(function(data, status) {
-                gbNotifier
+                user.wechat.status = 3;
+                gbNotifier.notify('入资成功');
             })
             .error(function(data, status) {
-
+                gbNotifier.error('入资失败:' + data.error_msg);
             });
     };
 }]);
