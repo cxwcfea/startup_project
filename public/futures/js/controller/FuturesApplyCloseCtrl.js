@@ -27,7 +27,7 @@ angular.module('futuresApp').controller('FuturesApplyCloseCtrl', ['$scope', '$wi
         modalInstance.result.then(function () {
             $http.post('/futures/trade_close', {uid:$scope.user._id, user_status:5, trader_status:1})
                 .success(function(data, status) {
-                    user.wechat.status = 5;
+                    $scope.user.wechat.status = 5;
                     //displayError('结算申请已提交');
                     $scope.btn_text = TEXT2;
                 })
