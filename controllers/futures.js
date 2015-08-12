@@ -439,7 +439,7 @@ module.exports = {
         var today = moment().startOf('day');
         async.waterfall([
             function(callback) {
-                var Capital = 15000000;
+                var Capital = 20000000;
                 var query = User.find({});
                 query.exists('wechat.wechat_uuid');
                 query.populate('wechat.trader');
