@@ -37,6 +37,10 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
 		}
 	}
 
+    if ($scope.data.real && $scope.user.wechat.status < 3) {
+        $scope.tradeClose = true;
+    }
+
     $scope.tradeData = {
         up: 0,
         down: 0,
