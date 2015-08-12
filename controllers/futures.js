@@ -128,7 +128,7 @@ function placeOrder(req, res) {
 
     if (forceClose) {
         req.body.force_close = 1;
-        if (req.body.type == 1 && req.user.wechat.status === 2) {
+        if (req.body.type == 1 && req.user.wechat.status === 4) {
             req.body.user_id = req.user.wechat.real_trader;
             ctpTrader.riskControl(req, res);
         } else {
@@ -163,7 +163,7 @@ function placeOrder(req, res) {
                 obj.order.contract = {exchange:'future', stock_code:'IFCURR'};
         }
 
-        if (req.body.type == 1 && req.user.wechat.status === 2) {
+        if (req.body.type == 1 && req.user.wechat.status === 4) {
             obj.user_id = req.user.wechat.real_trader;
             ctpTrader.createOrder(obj, function(err, order) {
                 if (err) {
@@ -189,7 +189,7 @@ function getPositions(req, res) {
     if (!req.user || !req.user.wechat || !req.user.wechat.wechat_uuid) {
         return res.status(403).send({error_msg:'user need log in'});
     }
-    if (req.query.type == 1 && req.user.wechat.status === 2) {
+    if (req.query.type == 1 && req.user.wechat.status === 4) {
         ctpTrader.getPositions({user_id:req.user.wechat.real_trader}, function(err, positions) {
             if (err) {
                 return res.status(500).send({error_msg:err.toString()});
@@ -224,7 +224,7 @@ function getOrders(req, res) {
     req.body.date_begin = 0;
     req.body.date_end = Date.now();
     req.body.page = page;
-    if (req.query.type == 1 && req.user.wechat.status === 2) {
+    if (req.query.type == 1 && req.user.wechat.status === 4) {
         req.body.user_id = req.user.wechat.real_trader;
         ctpTrader.getHistoryOrders(req, res);
     } else {
@@ -253,7 +253,7 @@ function getUserProfit(req, res) {
         default :
             req.body.contract = {exchange:'future', stock_code:'IFCURR'};
     }
-    if (req.query.type == 1 && req.user.wechat.status === 2) {
+    if (req.query.type == 1 && req.user.wechat.status === 4) {
         req.body.user_id = req.user.wechat.real_trader;
         ctpTrader.getProfit(req, res);
     } else {
@@ -286,7 +286,7 @@ function getOrderCount(fn) {
 }
 
 function getUserInfo(req, res) {
-    if (req.query.type == 1 && req.user.wechat.status === 2) {
+    if (req.query.type == 1 && req.user.wechat.status === 4) {
         ctpTrader.getUserInfo({user_id:req.user.wechat.real_trader}, function(err, user) {
             if (err) {
                 return res.status(500).send({error_msg:err.toString()});
@@ -307,7 +307,7 @@ function getUserInfo(req, res) {
 }
 
 function resetUser(req, res) {
-    if (req.user.wechat.status === 2) {
+    if (req.user.wechat.status !== 0) {
         return res.status(401).send({error_msg:'user not allow reset'});
     }
     mockTrader.resetUser(req.user.wechat.trader, function(err) {
@@ -409,6 +409,30 @@ function addMoney(req, res) {
     });
 }
 
+function changeTraderStatus(req, res) {
+    User.findByIdAndUpdate(req.body.uid, {status:res.body.user_status}, function(err, user) {
+        if (err) {
+            return res.status(500).send({error_msg:err.toString()});
+        }
+        if (!user) {
+            return res.status(400).send({error_msg:'用户不存在'});
+        }
+        if (req.body.trader_status !== null && req.body.trader_status != undefined) {
+            mockTrader.User.update({_id:user.wechat.real_trader}, {status:req.body.trader_status}, function(err, numberAffected, raw) {
+                if (err) {
+                    return res.status(500).send({error_msg:err.toString()});
+                }
+                if (!numberAffected) {
+                    return res.status(400).send({error_msg:'更新失败'});
+                }
+                res.send({});
+            });
+        } else {
+            res.send({});
+        }
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/api/futures/user_rank', passportConf.isWechatAuthenticated, fetchUserRankData);
@@ -432,6 +456,8 @@ module.exports = {
         app.get('/futures/approve_user', passportConf.requiresRole('admin'), approveUser);
 
         app.get('/futures/add_money', passportConf.requiresRole('admin'), addMoney);
+
+        app.post('/futures/change_user_access', passportConf.requiresRole('admin'), changeTraderStatus);
 
         app.get('/futures/test', test);
 

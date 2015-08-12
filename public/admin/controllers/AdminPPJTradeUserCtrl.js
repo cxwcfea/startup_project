@@ -22,6 +22,10 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
         {
             name: '交易未开通',
             value: 3
+        },
+        {
+            name: '交易中',
+            value: 4
         }
     ];
 
@@ -120,6 +124,17 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
             })
             .error(function(data, status) {
                 gbNotifier.error('入资失败:' + data.error_msg);
+            });
+    };
+
+    $scope.approveToTrade = function(user) {
+        $http.post('/futures/change_user_access', {uid:user._id, user_status:4, trader_status:0})
+            .success(function(data, status) {
+                user.wechat.status = 4;
+                gbNotifier.notify('操作成功');
+            })
+            .error(function(data, status) {
+                gbNotifier.error('操作失败:' + data.error_msg);
             });
     };
 }]);

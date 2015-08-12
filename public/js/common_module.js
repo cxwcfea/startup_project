@@ -415,6 +415,8 @@
                     return "未分配账户";
                 case 3:
                     return "交易未开通";
+                case 4:
+                    return "交易中";
                 default:
                     return "未知";
             }

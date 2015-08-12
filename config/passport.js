@@ -53,7 +53,8 @@ passport.use(new wechatStrategy({
                 close: 17500000,
                 cash: 20000000,
                 deposit: 3000000,
-                debt: 17000000
+                debt: 17000000,
+                status: 0
             }, function(err, trader) {
                 if (err) {
                     done(err);
