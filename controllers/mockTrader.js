@@ -461,9 +461,9 @@ function getProfitImpl(req, res, user, contractId) {
             Contract.findOne({_id: portf.contractId}, function(err, contract) {
                 asyncObj.remaining -= 1;
                 if (err || !contract) {
-                    console.log(err);
-                    console.log(contract);
-                    console.log(portf);
+                    //console.log(err);
+                    //console.log(contract);
+                    //console.log(portf);
                     asyncObj.has_error = true;
                     if (err) asyncObj.errmsg = err.errmsg;
                 }
