@@ -1,7 +1,7 @@
 'use strict';
 angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window', '$http', '$location', '$timeout', '$modal', function($scope, $window, $http, $location, $timeout, $modal) {
     $scope.user = $scope.data.currentUser;
-    $scope.originCapital = 150000;
+    $scope.originCapital = 200000;
 	$scope.data.selectedItem = 3;
 
     function displayError(msg) {

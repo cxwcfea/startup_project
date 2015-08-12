@@ -2,7 +2,7 @@
 angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window', '$location', '$modal', '$http', '$timeout', '$interval', function($scope, $window, $location, $modal, $http, $timeout, $interval) {
     $scope.user = $scope.data.currentUser;
     var HAND = 100;
-    var InitCapital = 150000;
+    var InitCapital = 200000;
     var Deposit = 30000;
     $scope.data.selectedItem = 1;
     $scope.tradeClose = false;
