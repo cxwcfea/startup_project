@@ -35,7 +35,7 @@
 <div class="container ppj-footer" ng-hide="data.status != 0">
 	<table class="foot-table">
 		<tr>
-            <td ng-repeat="item in items">
+            <td ng-repeat="item in items" ng-hide="$index === 2 && data.real">
                 <a ng-click="switchPage(item)">
                     <div class="url-content">
                         <img ng-src="\{{item.img}}" style="width:28px" ng-show="data.selectedItem !== item.value" >
