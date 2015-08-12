@@ -55,7 +55,7 @@ angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window'
         },
         {
             value: 3,
-            name: '我的',
+            name: '我的账户',
             img: '/futures/images/foot4.png',
             selectedImg: '/futures/images/foot4-dark.png',
             page: '/user'
@@ -63,6 +63,9 @@ angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window'
     ];
 
     $scope.switchPage = function(item) {
+        if ($scope.data.real && item.value === 2) {
+            return;
+        }
         $location.path(item.page);
     };
 }]);

@@ -9,7 +9,6 @@ angular.module('futuresApp').controller('FuturesApplyCloseCtrl', ['$scope', '$wi
     function showCloseApplyPopup() {
         var modalInstance = $modal.open({
             animation: true,
-            backdrop: 'static',
             windowClass: 'xx-dialog',
             templateUrl: 'views/apply_close_popup.html',
             controller: 'InfoModalCtrl',

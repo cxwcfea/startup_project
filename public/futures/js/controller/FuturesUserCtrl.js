@@ -20,23 +20,6 @@ angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window',
     var delta = balance - $scope.originCapital;
     $scope.profit = delta > 0 ? delta : 0;
     $scope.loss = delta < 0 ? delta : 0;
-    /*
-    $http.get('/api/futures/user_info')
-        .success(function(data, status) {
-            $window.njPersonChart($scope.originCapital, (data.lastCash/100));
-            if (!data.lastCash) {
-                $scope.profit = 0;
-                $scope.loss = 0;
-            } else {
-                var delta = data.lastCash/100 - $scope.originCapital;
-                $scope.profit = delta > 0 ? delta : 0;
-                $scope.loss = delta < 0 ? delta : 0;
-            }
-        })
-        .error(function(data, status) {
-            alert('load user info error');
-        });
-    */
 
     $scope.showOrders = function() {
         $location.path('/orders');
@@ -57,7 +40,6 @@ angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window',
     function showRealTradePopup() {
         var modalInstance = $modal.open({
             animation: true,
-            backdrop: 'static',
             windowClass: 'xx-dialog',
             templateUrl: 'views/real_trade_popup.html',
             controller: 'InfoModalCtrl',
@@ -66,6 +48,8 @@ angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window',
         });
 
         modalInstance.result.then(function () {
+            $scope.data.real = true;
+            $location.path('/home');
         }, function () {
         });
     }
@@ -74,7 +58,6 @@ angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window',
         if (!$scope.user.identity.id) {
             $location.path('/contract');
         } else {
-            $scope.data.real = true;
             showRealTradePopup();
         }
     };
