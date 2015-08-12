@@ -404,6 +404,19 @@
                     return "无";
             }
         };
+    }).filter("ppjUserType", function() {
+        return function(input) {
+            switch (input) {
+                case 0:
+                    return "模拟";
+                case 1:
+                    return "未签署协议";
+                case 2:
+                    return "未分配账户";
+                default:
+                    return "未知";
+            }
+        };
     }).filter("displayAccountType", function() {
         return function(input) {
             switch (input) {

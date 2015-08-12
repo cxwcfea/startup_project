@@ -1854,7 +1854,14 @@ function setIdentity(req, res) {
                 res.status(403);
                 return res.send({error_msg:'认证失败 ' + err.toString()});
             }
-            User.update({mobile:req.user.mobile}, {$set:{'identity.name':name, 'identity.id':ID}}, function(err, numberAffected, raw) {
+            var obj = {
+                'identity.name':name,
+                'identity.id':ID
+            };
+            if (req.body.ppj) {
+                obj['wechat.status'] = 2;
+            }
+            User.update({mobile:req.user.mobile}, {$set:obj}, function(err, numberAffected, raw) {
                 if (err) {
                     logger.error('setIdentity error:' + err.toString());
                     res.status(500);

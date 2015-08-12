@@ -6,9 +6,7 @@
     <div class="am-u-sm-12">
         <div class="am-btn-toolbar">
             <div class="am-btn-group am-btn-group-xs">
-                <!--
                 <button ng-repeat="item in queryItems" type="button" class="am-btn am-btn-default" ng-click="queryItem(item)"> \{{item.name}}</button>
-                -->
             </div>
         </div>
     </div>
@@ -32,7 +30,7 @@
                         <td>\{{user.wechat.mobile}}</td>
                         <td>\{{user.wechat.real_trader.lastCash == 0 ? 0 : user.wechat.real_trader.lastCash/100-200000 | number:2}}</td>
                         <td>\{{user.finance.balance | number:2}}</td>
-                        <td>\{{user.wechat.status}}</td>
+                        <td>\{{user.wechat.status | ppjUserType}}</td>
                         <td>
                             <div class="am-btn-toolbar">
                                 <div class="am-btn-group am-btn-group-xs">

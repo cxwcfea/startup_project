@@ -12,24 +12,21 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
             value: 0
         },
         {
-            name: '无操作',
+            name: '还未签署协议的',
             value: 1
-        },
+        }
+        /*
         {
             name: '今日登陆的',
             value: 2
         }
+        */
     ];
 
     $scope.queryItem = function(item) {
         $scope.currentUsers = users.filter(function (user) {
             if (!item.value) return true;
-            if (item.value === 2) {
-                return user.wechat.logged;
-            }
-            if (item.value === 1) {
-                return user.wechat.trader.lastCash === 0;
-            }
+            return user.wechat.status === item.value;
         });
         pageReset();
     };

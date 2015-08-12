@@ -11,7 +11,7 @@ angular.module('futuresApp').controller('FuturesContractCtrl', ['$scope', '$wind
             }, 1500);
             return;
         }
-        $http.post('/user/set_identity', {userName:$scope.userName, userID:$scope.userID})
+        $http.post('/user/set_identity', {userName:$scope.userName, userID:$scope.userID, ppj:true})
             .success(function(data, status) {
                 $scope.user.identity.name = $scope.userName;
                 $scope.user.identity.id = $scope.userID;
