@@ -1,12 +1,15 @@
 'use strict';
 angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window', '$location', '$modal', '$http', '$timeout', '$interval', function($scope, $window, $location, $modal, $http, $timeout, $interval) {
     $scope.user = $scope.data.currentUser;
+    var TEXT = '现在是非交易时间';
+    var REAL_TEXT = '您的账户还未开通';
     var HAND = 100;
     var InitCapital = 200000;
     var Deposit = 30000;
     $scope.data.selectedItem = 1;
     $scope.tradeClose = false;
 	$scope.browserHeight = document.documentElement.clientHeight;
+    $scope.closeText = TEXT;
 
     if (!$scope.data.timeoutSet) {
         $scope.data.timeoutSet = true;
@@ -39,6 +42,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
 
     if ($scope.data.real && $scope.user.wechat.status < 3) {
         $scope.tradeClose = true;
+        $scope.closeText = REAL_TEXT;
     }
 
     $scope.tradeData = {

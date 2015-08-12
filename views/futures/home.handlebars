@@ -110,7 +110,7 @@
             </div>
         </div>
         {{#unless tradeTime}}
-            <p class="trader-time-hint text-danger">现在是非交易时间</p>
+            <p class="trader-time-hint text-danger">\{{closeText}}</p>
         {{else}}
             <p class="trader-time-hint text-danger" ng-show="tradeClose">现在是非交易时间</p>
         {{/unless}}
