@@ -323,6 +323,7 @@ function updateOrder(req, res) {
 }
 
 function createPPJOrder(req, res) {
+    logger.debug('createPPJOrder', req.body);
     if (!req.body || !req.body.userID || !req.body.userMobile || !req.body.order_type || !req.body.order_amount) {
         res.status(400);
         return res.send({});
