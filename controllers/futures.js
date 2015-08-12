@@ -336,6 +336,19 @@ function makeAppointment(req, res) {
 }
 
 function approveUser(req, res) {
+    var uid = req.query.uid;
+    User.update({_id:uid}, {'wechat.appointment':false, 'wechat.access_real':true, 'wechat.status':1}, function(err, numberAffected, raw) {
+        if (err) {
+            return res.status(500).send({error_msg:err.toString()});
+        }
+        if (!numberAffected) {
+            return res.status(500).send({error_msg:'无法更新用户'});
+        }
+        res.send({});
+    });
+}
+
+function approveUser2(req, res) {
     console.log('approveUser ' + req.body);
     var uid = req.query.uid;
     User.findById(uid, function(err, user) {
@@ -345,31 +358,33 @@ function approveUser(req, res) {
         if (!user) {
             return res.status(500).send({error_msg:'user not found'});
         }
-        mockTrader.createUser({
-            name: user.wechat.wechat_uuid,
-            warning: 18000000,
-            close: 17500000,
-            cash: 20000000,
-            deposit: 3000000,
-            debt: 17000000
-        }, function(err, trader) {
-            if (err) {
-                return res.status(500).send({error_msg:err.toString()});
-            }
-            if (!trader) {
-                return res.status(500).send({error_msg:'can not create trader'});
-            }
-            user.wechat.appointment = false;
-            user.wechat.access_real = true;
-            user.wechat.real_trader = trader;
-            user.wechat.status = 2;
-            user.save(function(err) {
+        if (!user.wechat.real_trader) {
+            mockTrader.createUser({
+                name: user.wechat.wechat_uuid,
+                warning: 18000000,
+                close: 17500000,
+                cash: 20000000,
+                deposit: 3000000,
+                debt: 17000000
+            }, function(err, trader) {
                 if (err) {
                     return res.status(500).send({error_msg:err.toString()});
                 }
-                res.send({});
+                if (!trader) {
+                    return res.status(500).send({error_msg:'can not create trader'});
+                }
+                user.wechat.appointment = false;
+                user.wechat.access_real = true;
+                user.wechat.real_trader = trader;
+                user.wechat.status = 2;
+                user.save(function(err) {
+                    if (err) {
+                        return res.status(500).send({error_msg:err.toString()});
+                    }
+                    res.send({});
+                });
             });
-        });
+        }
     });
 }
 

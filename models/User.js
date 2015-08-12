@@ -62,7 +62,6 @@ var userSchema = new mongoose.Schema({
         wechat_img: String,
         wechat_openid: String,
         logged: { type: Boolean, default: true },
-        profit: { type: Number, default: 0 },
         appointment: { type: Boolean, default: false },
         appointmentAt: Date,
         mobile: String,

@@ -21,15 +21,15 @@
                 <table class="am-table am-table-striped am-table-hover table-main">
                     <thead>
                     <tr>
-                        <th class="">姓名</th><th class="">微信名</th><th class="">手机号</th><th>平仓盈亏</th><th>操作</th>
+                        <th class="">头像</th><th class="">微信名</th><th class="">手机号</th><th>平仓盈亏</th><th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="user in showingItems">
-                        <td>\{{user.identity.name}}</td>
+                        <td><img ng-src="\{{user.wechat.wechat_img}}" width="50" height="50"></td>
                         <td>\{{user.wechat.wechat_name || 'N/A'}}</td>
                         <td>\{{user.wechat.mobile}}</td>
-                        <td>\{{user.wechat.trader.lastCash == 0 ? 0 : user.wechat.trader.lastCash/100-1000000 | number:2}}</td>
+                        <td>\{{user.wechat.trader.lastCash == 0 ? 0 : user.wechat.trader.lastCash/100-200000 | number:2}}</td>
                         <td>
                             <div class="am-btn-toolbar">
                                 <div class="am-btn-group am-btn-group-xs">
