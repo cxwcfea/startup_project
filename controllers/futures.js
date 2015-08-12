@@ -405,7 +405,7 @@ module.exports = {
 
             var endTime = moment();
             endTime.hour(15);
-            endTime.minute(15);
+            endTime.minute(12);
             endTime.second(00);
 
             var now = moment();

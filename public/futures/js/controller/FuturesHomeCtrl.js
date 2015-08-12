@@ -26,7 +26,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
 
         var secondEnd = moment();
         secondEnd.hour(15);
-        secondEnd.minute(15);
+        secondEnd.minute(12);
         secondEnd.second(0);
 
 		if (now < secondEnd) {
