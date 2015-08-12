@@ -358,7 +358,7 @@ function approveUser(req, res) {
                 return res.status(500).send({error_msg:'can not create trader'});
             }
             user.wechat.appointment = false;
-            user.access_real = true;
+            user.wechat.access_real = true;
             user.wechat.real_trader = trader;
             user.wechat.status = 2;
             user.save(function(err) {
