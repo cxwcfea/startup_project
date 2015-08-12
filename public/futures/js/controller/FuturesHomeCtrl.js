@@ -102,11 +102,13 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                     $scope.lastProfit = data.lastProfit / 100;
                     $scope.currentPrice = data.lastPrice / 100;
                     $scope.balance = Deposit + $scope.profit + $scope.lastProfit;
+                    $scope.data.balance = $scope.balance;
                 } else {
                     $scope.profit = 0;
                     $scope.lastProfit = 0;
                     $scope.currentPrice = $scope.data.lastPoint;
                     $scope.balance = Deposit;
+                    $scope.data.balance = $scope.balance;
                 }
             })
             .error(function(data, status) {
@@ -114,6 +116,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                 $scope.lastProfit = 0;
                 $scope.currentPrice = $scope.data.lastPoint;
                 $scope.balance = Deposit;
+                $scope.data.balance = $scope.balance;
             });
     }
 

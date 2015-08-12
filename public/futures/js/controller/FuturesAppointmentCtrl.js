@@ -1,5 +1,5 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesAppointmentCtrl', ['$scope', '$window', '$http', '$timeout', function($scope, $window, $http, $timeout) {
+angular.module('futuresApp').controller('FuturesAppointmentCtrl', ['$scope', '$modal', '$http', '$timeout', '$location', function($scope, $modal, $http, $timeout, $location) {
     $scope.user = $scope.data.currentUser;
 
     function displayError(msg) {
@@ -17,7 +17,22 @@ angular.module('futuresApp').controller('FuturesAppointmentCtrl', ['$scope', '$w
         }
         $http.post('/futures/make_appointment', {mobile:$scope.mobile})
             .success(function(data, status) {
-                displayError('预约成功');
+                (function () {
+                    var modalInstance = $modal.open({
+                        animation: true,
+                        backdrop: 'static',
+                        windowClass: 'xx-dialog',
+                        templateUrl: 'views/appointment_done_popup.html',
+                        controller: 'InfoModalCtrl',
+                        size: 'lg',
+                        resolve: {}
+                    });
+
+                    modalInstance.result.then(function () {
+                        $location.path('/home');
+                    }, function () {
+                    });
+                })();
             })
             .error(function(data, status) {
                 displayError('预约失败');

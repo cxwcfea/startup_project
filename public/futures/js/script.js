@@ -118,7 +118,7 @@ $(function () {
         }
         wx.onMenuShareAppMessage({
             title: '股指拍拍机',
-            desc: '我玩股指拍拍机获得100万交易本金，快来一起成为交易高手吧！',
+            desc: '我玩股指拍拍机获得3万交易本金，快来一起成为交易高手吧！',
             link: 'http://www.niujin.cn/futures/',
             imgUrl: 'http://www.niujin.cn/futures/images/logo.png',
             type: 'link',
@@ -132,7 +132,7 @@ $(function () {
         });
 
         wx.onMenuShareTimeline({
-            title: '现在玩拍拍机可获得100万本金，快来一起成为交易高手吧！',
+            title: '现在玩拍拍机可获得3万本金，快来一起成为交易高手吧！',
             link: 'http://www.niujin.cn/futures',
             imgUrl: 'http://www.niujin.cn/futures/images/logo.png',
             success: function () {

@@ -326,6 +326,7 @@ function makeAppointment(req, res) {
     }
     req.user.wechat.mobile = req.body.mobile;
     req.user.wechat.appointment = true;
+    req.user.wechat.appointmentAt = Date.now();
     req.user.save(function(err) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
@@ -432,6 +433,75 @@ module.exports = {
                 layout:null,
                 tradeTime: true
             });
+        });
+    },
+    collectStatisticData: function(cb) {
+        var today = moment().startOf('day');
+        async.waterfall([
+            function(callback) {
+                var Capital = 15000000;
+                var query = User.find({});
+                query.exists('wechat.wechat_uuid');
+                query.populate('wechat.trader');
+                query.exec(function(err, users) {
+                    if (err) {
+                        return callback(err);
+                    }
+                    var userCount = users.length;
+                    var newUserCount = 0;
+                    var winUserCount = 0;
+                    var canAppointmentUserCount = 0;
+                    var appointmentUserCount = 0;
+                    var todayAppointmentCount = 0;
+                    var totalProfit = 0;
+                    for (var i = 0; i < users.length; ++i) {
+                        if (users[i].registerAt > today) {
+                            ++newUserCount;
+                        }
+                        var profit = (users[i].wechat.trader.lastCash - Capital) / 100;
+                        if (profit > 0) {
+                            ++winUserCount;
+                            totalProfit += profit;
+                            if (profit > 3000) {
+                                ++canAppointmentUserCount;
+                            }
+                        }
+                        if (users[i].wechat.appointment) {
+                            ++appointmentUserCount;
+                            if (users[i].wechat.appointmentAt > today) {
+                                ++todayAppointmentCount;
+                            }
+                        }
+                    }
+                    var aveProfit = totalProfit / userCount;
+
+                    var obj = {
+                        userCount: userCount,
+                        newUserCount: newUserCount,
+                        winUserCount: winUserCount,
+                        canAppointmentUserCount: canAppointmentUserCount,
+                        appointmentUserCount: appointmentUserCount,
+                        todayAppointmentCount: todayAppointmentCount,
+                        totalProfit: totalProfit.toFixed(2),
+                        aveProfit: aveProfit.toFixed(2)
+                    };
+                    callback(null, obj);
+                });
+            },
+            function(data, callback) {
+                mockTrader.Order.count({timestamp:{$gte:today}}, function (err, count) {
+                    if (err) {
+                        return callback(err);
+                    }
+                    data.totalHands = count;
+                    callback(null, data);
+                });
+            }
+        ], function(err, data) {
+            if (err) {
+                return cb(err);
+            }
+            cb(null, data);
         });
     }
 };

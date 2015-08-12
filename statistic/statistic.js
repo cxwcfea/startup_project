@@ -698,15 +698,15 @@ var getUserData = function(callback) {
             return callback(err);
         }
         var options = { encoding: 'utf8', flag: 'w' };
-        var fileWriteStream = fs.createWriteStream("UserDataTill-" + moment().format("YYYY-MM-DD") + ".csv",  options);
+        var fileWriteStream = fs.createWriteStream("UserData.csv",  options);
         fileWriteStream.on("close", function() {
             console.log("File Closed.");
         });
-        var data = '手机号, 免费配资, 注册日, 历史配资额, 历史投资额, 当前配资额, 当前投资额\r\n';
+        var data = '手机号, 免费配资, 注册日, 历史配资额, 历史投资额, 当前配资额, 当前投资额, 渠道\r\n';
         fileWriteStream.write(data);
         users.forEach(function (user) {
             data = user.mobile + ', ' + (user.freeApply ? '是' : '否') + ', ' + moment(user.registerAt).format('YYYYMMDDHHmmss') + ', ' + user.finance.history_capital + ', '
-            + user.invest.history_invest_amount + ', ' + user.finance.total_capital + ', ' + user.invest.occupiedAmount + '\r\n';
+            + user.invest.history_invest_amount + ', ' + user.finance.total_capital + ', ' + user.invest.occupiedAmount + ', ' + user.refer + '\r\n';
             fileWriteStream.write(data);
         });
         fileWriteStream.end();
@@ -1436,7 +1436,7 @@ db.once('open', function callback() {
              */
 
             function(callback) {
-                getDailyData(function(err) {
+                getUserData(function(err) {
                     callback(err);
                 });
             }
