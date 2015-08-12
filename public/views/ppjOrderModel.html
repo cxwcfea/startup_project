@@ -1,0 +1,30 @@
+<div class="modal-header">
+    <h3 class="modal-title">创建拍拍机订单</h3>
+</div>
+<div class="modal-body">
+    <div class="am-form-group">
+        <label>用户手机号:</label>
+        {{userMobile}}
+    </div>
+    <div class="am-form-group">
+        <label>订单金额</label>
+        <input type="number" min="0" ng-model="data.order_amount">
+    </div>
+    <div class="am-form-group">
+        <label>转账单号</label>
+        <input type="text" ng-model="data.order_bank_trans_id">
+    </div>
+    <div class="am-form-group">
+        <label for="order-type-1">订单类型</label>
+        <select id="order-type-1" ng-model="data.order_type">
+            <option value="1">充值</option>
+            <option value="2">结算</option>
+        </select>
+    </div>
+    <label for="order-info-1">订单描述</label>
+    <textarea class="" rows="4" id="order-info-1" ng-model="data.order_description"></textarea>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">创建</button>
+    <button class="btn btn-warning" ng-click="cancel()">取消</button>
+</div>

@@ -94,3 +94,18 @@ angular.module('adminApp').config(['$routeProvider', '$locationProvider', '$http
             redirectTo: '/users'
         });
 }]);
+
+angular.module('adminApp').controller('CreatePPJOrderModalCtrl', ['$scope', '$modalInstance', 'user', function ($scope, $modalInstance, user) {
+    $scope.userMobile = user.wechat.mobile;
+    $scope.data = {};
+    $scope.data.order_type = 1;
+    $scope.data.order_amount = 30000;
+
+    $scope.ok = function () {
+        $modalInstance.close($scope.data);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+}]);

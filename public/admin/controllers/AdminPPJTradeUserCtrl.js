@@ -12,15 +12,13 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
             value: 0
         },
         {
-            name: '还未签署协议的',
+            name: '未签署协议',
             value: 1
-        }
-        /*
+        },
         {
-            name: '今日登陆的',
+            name: '未分配账户',
             value: 2
         }
-        */
     ];
 
     $scope.queryItem = function(item) {
@@ -76,5 +74,34 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
         } else {
             console.log('no');
         }
+    };
+
+    $scope.createOrder = function(user) {
+        var modalInstance = $modal.open({
+            templateUrl: 'views/ppjOrderModel.html',
+            controller: 'CreatePPJOrderModalCtrl',
+            resolve: {
+                user: function () {
+                    return user;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (result) {
+            if (!result.order_amount || result.order_amount < 0) {
+                gbNotifier.error('请输入有效的订单金额！应填3万');
+            } else {
+                result.userMobile = user.mobile;
+                result.userID = user._id;
+                $http.post('/admin/api/create/ppj_order', result)
+                    .success(function(data, status) {
+                        gbNotifier.notify('订单创建成功！');
+                    })
+                    .error(function(data, status) {
+                        gbNotifier.error('订单创建失败:' + data.error_msg);
+                    });
+            }
+        }, function () {
+        });
     };
 }]);

@@ -2371,7 +2371,7 @@ function getPPJTradeUser(req, res) {
     var query = User.find({});
     query.find({'wechat.status':{$gt:0}});
     query.populate('wechat.real_trader');
-    query.select('wechat identity');
+    query.select('wechat identity finance');
     query.exec(function (err, users) {
         if (err) {
             return res.status(500).send(err.toString());
