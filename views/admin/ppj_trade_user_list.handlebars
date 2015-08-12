@@ -37,7 +37,7 @@
                                     {{#unless watcher}}
                                         <button class="am-btn am-btn-default am-btn-xs am-text-primary" ng-click="createOrder(user)"><span class="am-icon-pencil"></span> 创建充值订单</button>
                                         <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-click="addMoney(user)"><span class="am-icon-pencil"></span> 入资</button>
-                                        <button class="am-btn am-btn-default am-btn-xs am-text-warning" ng-click="a(user)"><span class="am-icon-pencil"></span> 结算</button>
+                                        <button class="am-btn am-btn-default am-btn-xs am-text-warning" ng-click="a(user)" ng-show="user.wechat.status === 4"><span class="am-icon-pencil"></span> 结算</button>
                                         <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="a(user)"><span class="am-icon-pencil"></span> 提现</button>
                                         <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="approveToTrade(user)" ng-show="user.wechat.status === 3"><span class="am-icon-pencil"></span> 开通交易权限</button>
                                     {{/unless}}
