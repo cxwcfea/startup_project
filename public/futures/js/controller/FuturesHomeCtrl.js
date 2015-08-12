@@ -11,36 +11,51 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
 	$scope.browserHeight = document.documentElement.clientHeight;
     $scope.closeText = TEXT;
 
-    if (!$scope.data.timeoutSet) {
-        $scope.data.timeoutSet = true;
-        var now = moment();
+    var now = moment();
 
-        var firstEnd = moment();
-        firstEnd.hour(11);
-        firstEnd.minute(30);
-        firstEnd.second(0);
+    var firstStart = moment();
+    firstStart.hour(9);
+    firstStart.minute(15);
+    firstStart.second(0);
 
-		if (now < firstEnd) {
-			$timeout(function() {
-				$scope.tradeClose = true;
-                $scope.closeText = TEXT;
-				$scope.openTimeHintPopup('lg');
-			}, firstEnd-now);
-		}
+    var secondStart = moment();
+    secondStart.hour(13);
+    secondStart.minute(0);
+    secondStart.second(0);
 
-        var secondEnd = moment();
-        secondEnd.hour(15);
-        secondEnd.minute(12);
-        secondEnd.second(0);
+    var firstEnd = moment();
+    firstEnd.hour(11);
+    firstEnd.minute(30);
+    firstEnd.second(0);
 
-		if (now < secondEnd) {
-			$timeout(function() {
-				$scope.tradeClose = true;
-                $scope.closeText = TEXT;
-				$scope.openTimeHintPopup('lg');
-			}, secondEnd-now);
-		}
-	}
+    var secondEnd = moment();
+    secondEnd.hour(15);
+    secondEnd.minute(12);
+    secondEnd.second(0);
+
+    if ((now >= firstStart && now <= firstEnd) || (now >= secondStart && now <= secondEnd)) {
+        if (!$scope.data.timeoutSet) {
+            $scope.data.timeoutSet = true;
+
+            if (now < firstEnd) {
+                $timeout(function() {
+                    $scope.tradeClose = true;
+                    $scope.closeText = TEXT;
+                    $scope.openTimeHintPopup('lg');
+                }, firstEnd-now);
+            }
+
+            if (now < secondEnd) {
+                $timeout(function() {
+                    $scope.tradeClose = true;
+                    $scope.closeText = TEXT;
+                    $scope.openTimeHintPopup('lg');
+                }, secondEnd-now);
+            }
+        }
+    } else {
+        $scope.tradeClose = true;
+    }
 
     if ($scope.data.real && $scope.user.wechat.status !== 4) {
         $scope.tradeClose = true;
