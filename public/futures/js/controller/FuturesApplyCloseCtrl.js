@@ -5,6 +5,7 @@ angular.module('futuresApp').controller('FuturesApplyCloseCtrl', ['$scope', '$wi
     var TEXT1 = '申请结算';
     var TEXT2 = '结算已受理，请等待短信通知';
     $scope.btn_text = TEXT1;
+    var buttonEnable = true;
 
     function displayError(msg) {
         $scope.errorMsg = msg;
@@ -25,6 +26,7 @@ angular.module('futuresApp').controller('FuturesApplyCloseCtrl', ['$scope', '$wi
         });
 
         modalInstance.result.then(function () {
+            buttonEnable = false;
             $http.post('/futures/trade_close', {uid:$scope.user._id, user_status:5, trader_status:1})
                 .success(function(data, status) {
                     $scope.user.wechat.status = 5;
@@ -33,12 +35,14 @@ angular.module('futuresApp').controller('FuturesApplyCloseCtrl', ['$scope', '$wi
                 })
                 .error(function(data, status) {
                     displayError('结算申请提交失败:' + data.error_msg);
+                    buttonEnable = true;
                 });
         }, function () {
         });
     }
 
     $scope.closeApply = function() {
+        if (!buttonEnable) return;
         showCloseApplyPopup();
     };
 }]);
