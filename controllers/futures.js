@@ -411,7 +411,7 @@ function addMoney(req, res) {
 
 function changeTraderStatus(req, res) {
     logger.info('changeTraderStatus', req.body);
-    User.findByIdAndUpdate(req.body.uid, {status:req.body.user_status}, function(err, user) {
+    User.findByIdAndUpdate(req.body.uid, {'wechat.status':req.body.user_status}, function(err, user) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
         }
