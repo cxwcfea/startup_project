@@ -1,5 +1,5 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window', '$location', function($scope, $window, $location) {
+angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window', '$location', '$timeout', function($scope, $window, $location, $timeout) {
     $scope.data = {};
     $scope.data.currentUser = $window.bootstrappedUserObject;
     /*
@@ -62,8 +62,17 @@ angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window'
         }
     ];
 
+    function displayError(msg) {
+        $scope.errorMsg = msg;
+        $scope.showError = true;
+        $timeout(function() {
+            $scope.showError = false;
+        }, 2000);
+    }
+
     $scope.switchPage = function(item) {
         if ($scope.data.real && item.value === 2) {
+            displayError('实盘用户不做排名');
             return;
         }
         $location.path(item.page);
