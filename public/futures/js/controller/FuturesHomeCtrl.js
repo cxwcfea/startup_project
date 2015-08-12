@@ -103,12 +103,14 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                     $scope.currentPrice = data.lastPrice / 100;
                     $scope.balance = Deposit + $scope.profit + $scope.lastProfit;
                     $scope.data.balance = $scope.balance;
+                    $scope.yesterdayClose = data.yesterdayClose;
                 } else {
                     $scope.profit = 0;
                     $scope.lastProfit = 0;
                     $scope.currentPrice = $scope.data.lastPoint;
                     $scope.balance = Deposit;
                     $scope.data.balance = $scope.balance;
+                    $scope.yesterdayClose = 0;
                 }
             })
             .error(function(data, status) {
@@ -117,13 +119,14 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                 $scope.currentPrice = $scope.data.lastPoint;
                 $scope.balance = Deposit;
                 $scope.data.balance = $scope.balance;
+                $scope.yesterdayClose = 0;
             });
     }
 
     fetchUserProfit();
     $interval(function() {
         fetchUserProfit();
-    }, 2000);
+    }, 1000);
 
     $scope.showShareHint = false;
     $scope.openIntroPopup = function (size) {
