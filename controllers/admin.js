@@ -328,7 +328,6 @@ function createPPJOrder(req, res) {
         res.status(400);
         return res.send({});
     }
-    logger.debug('createPPJOrder', req.body);
     if (req.body.order_type < 1 || req.body.order_amount < 0) {
         res.status(400);
         return res.send({});
@@ -2430,7 +2429,7 @@ function getPPJTradeUser(req, res) {
     var query = User.find({});
     query.find({'wechat.status':{$gt:0}});
     query.populate('wechat.real_trader');
-    query.select('wechat identity finance');
+    query.select('wechat identity finance mobile');
     query.exec(function (err, users) {
         if (err) {
             return res.status(500).send(err.toString());
