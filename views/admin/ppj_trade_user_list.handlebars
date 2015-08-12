@@ -31,14 +31,16 @@
                         <td>\{{user.wechat.wechat_name || 'N/A'}}</td>
                         <td>\{{user.wechat.mobile}}</td>
                         <td>\{{user.wechat.real_trader.lastCash == 0 ? 0 : user.wechat.real_trader.lastCash/100-200000 | number:2}}</td>
+                        <td>\{{user.finance.balance | number:2}}</td>
                         <td>\{{user.wechat.status}}</td>
                         <td>
                             <div class="am-btn-toolbar">
                                 <div class="am-btn-group am-btn-group-xs">
                                     {{#unless watcher}}
-                                        <button class="am-btn am-btn-default am-btn-xs am-text-warning" ng-click="approveRealTrade(user)"><span class="am-icon-pencil"></span> 创建充值订单</button>
+                                        <button class="am-btn am-btn-default am-btn-xs am-text-primary" ng-click="approveRealTrade(user)"><span class="am-icon-pencil"></span> 创建充值订单</button>
+                                        <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-click="approveRealTrade(user)"><span class="am-icon-pencil"></span> 入资</button>
                                         <button class="am-btn am-btn-default am-btn-xs am-text-warning" ng-click="approveRealTrade(user)"><span class="am-icon-pencil"></span> 结算</button>
-                                        <button class="am-btn am-btn-default am-btn-xs am-text-warning" ng-click="approveRealTrade(user)"><span class="am-icon-pencil"></span> 提现</button>
+                                        <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="approveRealTrade(user)"><span class="am-icon-pencil"></span> 提现</button>
                                     {{/unless}}
                                 </div>
                             </div>
