@@ -42,7 +42,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
 		}
 	}
 
-    if ($scope.data.real && $scope.user.wechat.status < 3) {
+    if ($scope.data.real && $scope.user.wechat.status < 4) {
         $scope.tradeClose = true;
         $scope.closeText = REAL_TEXT;
     }
