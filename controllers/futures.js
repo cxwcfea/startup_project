@@ -128,11 +128,12 @@ function placeOrder(req, res) {
     var forceClose = req.body.forceClose;
 
     if (forceClose) {
-        req.body.user_id = req.user.wechat.trader;
         req.body.force_close = 1;
         if (req.body.type == 1 && req.user.wechat.status === 2) {
+            req.body.user_id = req.user.wechat.real_trader;
             ctpTrader.riskControl(req, res);
         } else {
+            req.body.user_id = req.user.wechat.trader;
             mockTrader.riskControl(req, res);
         }
     } else {
