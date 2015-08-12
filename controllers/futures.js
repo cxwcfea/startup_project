@@ -357,6 +357,9 @@ function addMoney(req, res) {
         if (!user) {
             return res.status(500).send({error_msg:'user not found'});
         }
+        if (user.finance.balance < 30000) {
+            return res.status(403).send({error_msg:'用户余额不足'});
+        }
         if (!user.wechat.real_trader) {
             mockTrader.createUser({
                 name: user.wechat.wechat_uuid,
@@ -376,6 +379,7 @@ function addMoney(req, res) {
                 user.wechat.appointment = false;
                 user.wechat.real_trader = trader;
                 user.wechat.status = 3;
+                user.finance.balance -= 30000;
                 user.save(function(err) {
                     if (err) {
                         return res.status(500).send({error_msg:err.toString()});
@@ -393,6 +397,7 @@ function addMoney(req, res) {
                 }
                 user.wechat.appointment = false;
                 user.wechat.status = 3;
+                user.finance.balance -= 30000;
                 user.save(function(err) {
                     if (err) {
                         return res.status(500).send({error_msg:err.toString()});

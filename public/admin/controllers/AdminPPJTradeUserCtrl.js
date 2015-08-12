@@ -115,6 +115,7 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
         $http.get('/futures/add_money/?uid=' + user._id)
             .success(function(data, status) {
                 user.wechat.status = 3;
+                user.finance.balance -= 30000;
                 gbNotifier.notify('入资成功');
             })
             .error(function(data, status) {
