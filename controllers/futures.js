@@ -13,7 +13,6 @@ var User = require('../models/User'),
     moment = require('moment'),
     async = require('async'),
     log4js = require('log4js'),
-	redEnvelope = require('../lib/redEnvelopes'),
     logger = log4js.getLogger('futures');
 
 var privateProperties = [
@@ -348,8 +347,8 @@ function approveUser(req, res) {
     });
 }
 
-function approveUser2(req, res) {
-    console.log('approveUser ' + req.body);
+function addMoney(req, res) {
+    logger.debug('addMoney', req.body);
     var uid = req.query.uid;
     User.findById(uid, function(err, user) {
         if (err) {
@@ -365,7 +364,8 @@ function approveUser2(req, res) {
                 close: 17500000,
                 cash: 20000000,
                 deposit: 3000000,
-                debt: 17000000
+                debt: 17000000,
+                status: 1
             }, function(err, trader) {
                 if (err) {
                     return res.status(500).send({error_msg:err.toString()});
@@ -374,9 +374,25 @@ function approveUser2(req, res) {
                     return res.status(500).send({error_msg:'can not create trader'});
                 }
                 user.wechat.appointment = false;
-                user.wechat.access_real = true;
                 user.wechat.real_trader = trader;
-                user.wechat.status = 2;
+                user.wechat.status = 3;
+                user.save(function(err) {
+                    if (err) {
+                        return res.status(500).send({error_msg:err.toString()});
+                    }
+                    res.send({});
+                });
+            });
+        } else {
+            mockTrader.User.update({_id:user.wechat.real_trader}, {$set:{close:17500000, warning:18000000, cash:20000000, deposit:3000000, debt:17000000, lastCash:0, status:1}}, function(err, numberAffected, raw) {
+                if (err) {
+                    return res.status(500).send({error_msg:err.toString()});
+                }
+                if (!numberAffected) {
+                    return res.status(500).send({error_msg:'无法更新用户'});
+                }
+                user.wechat.appointment = false;
+                user.wechat.status = 3;
                 user.save(function(err) {
                     if (err) {
                         return res.status(500).send({error_msg:err.toString()});
@@ -409,6 +425,8 @@ module.exports = {
         app.post('/futures/make_appointment', passportConf.isWechatAuthenticated, makeAppointment);
 
         app.get('/futures/approve_user', passportConf.requiresRole('admin'), approveUser);
+
+        app.get('/futures/add_money', passportConf.requiresRole('admin'), addMoney);
 
         app.get('/futures/test', test);
 

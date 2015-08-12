@@ -18,6 +18,10 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
         {
             name: '未分配账户',
             value: 2
+        },
+        {
+            name: '交易未开通',
+            value: 3
         }
     ];
 
@@ -96,6 +100,7 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
                 result.mobile = user.wechat.mobile;
                 $http.post('/admin/api/create/ppj_order', result)
                     .success(function(data, status) {
+                        user.finance.balance = result.order_amount;
                         gbNotifier.notify('订单创建成功！');
                     })
                     .error(function(data, status) {
@@ -104,5 +109,15 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
             }
         }, function () {
         });
+    };
+
+    $scope.addMoney = function(user) {
+        $http.get('/futures/add_money/?uid=' + user._id)
+            .success(function(data, status) {
+                gbNotifier
+            })
+            .error(function(data, status) {
+
+            });
     };
 }]);

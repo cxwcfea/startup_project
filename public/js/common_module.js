@@ -413,6 +413,8 @@
                     return "未签署协议";
                 case 2:
                     return "未分配账户";
+                case 3:
+                    return "交易未开通";
                 default:
                     return "未知";
             }
