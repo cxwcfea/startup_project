@@ -85,7 +85,7 @@
 
 <div class="index-box">
     <div class="chart-box">
-        <h4>\{{data.productType}}走势图 <span class="current-price">昨收盘:<em>\{{yesterdayClose}}</em></span> <span class="current-price">涨跌:<em>\{{pointDelta | number:2}}</em>%</span> <span class="order-list pull-right" ng-click="help()">帮助</span></h4>
+        <h4>\{{data.productType}}走势图 <span class="current-price">昨收盘: <em>\{{yesterdayClose}}</em></span> <span class="current-price">涨跌: <em>\{{pointDelta | number:2}}</em>%</span> <span class="order-list pull-right" ng-click="help()">帮助</span></h4>
         <div class="chart">
             <div id="container" style="height:230px" futures-chart="chartLabels" chart-data="chartData"></div>
         </div>
