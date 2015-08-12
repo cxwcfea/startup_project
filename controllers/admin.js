@@ -322,6 +322,64 @@ function updateOrder(req, res) {
     }
 }
 
+function createPPJOrder(req, res) {
+    if (!req.body || !req.body.userID || !req.body.userMobile || !req.body.order_type || !req.body.order_amount) {
+        res.status(400);
+        return res.send({});
+    }
+    logger.debug('createPPJOrder', req.body);
+    if (req.body.order_type < 1 || req.body.order_amount < 0) {
+        res.status(400);
+        return res.send({});
+    }
+    var trans_id = req.body.order_bank_trans_id ? req.body.order_bank_trans_id : '';
+    Order.findOne({bankTransID:trans_id}, function(err, order) {
+        if (err) {
+            logger.warn('create order error:' + err.toString());
+            res.status(500);
+            return res.send({error_msg: err.toString()});
+        }
+        if (order && order.dealType === 1) {
+            logger.warn('create order error: the order already confirmed');
+            res.status(403);
+            return res.send({error_msg:'the recharge order already confirmed'});
+        }
+        logger.info('createOrder operator:' + req.user.mobile);
+        var orderData = {
+            userID: req.body.userID,
+            userMobile: req.body.userMobile,
+            dealType: req.body.order_type,
+            amount: req.body.order_amount,
+            status: 0,
+            otherInfo: req.body.mobile,
+            description: req.body.order_description ? req.body.order_description : '',
+            bankTransID: req.body.order_bank_trans_id ? req.body.order_bank_trans_id : ''
+        };
+        orderData.payType = 4; // 银行转账
+        orderData.status = 1;
+        Order.create(orderData, function(err, order) {
+            if (err) {
+                logger.debug('createOrder error:' + err.toString());
+                res.status(500);
+                return res.send({error_msg:err.toString()});
+            }
+            if (order.dealType === 1) {
+                User.update({_id:req.body.userID}, {$inc:{'finance.balance':order.amount}}, function(err, numberAffected, raw) {
+                    if (err) {
+                        return res.status(500).send({error_msg:err.toString()});
+                    }
+                    if (!numberAffected) {
+                        return res.status(500).send({error_msg:'用户没有更新'});
+                    }
+                    res.send({});
+                });
+            } else {
+                res.send({});
+            }
+        });
+    });
+}
+
 function createOrder(req, res) {
     if (!req.body || !req.body.userID || !req.body.userMobile || !req.body.order_type || !req.body.order_amount) {
         res.status(400);
@@ -2475,6 +2533,8 @@ module.exports = {
         app.get('/api/auto_confirm_add_deposit_order', passportConf.requiresRole('admin'), autoConfirmAddDepositOrder);
 
         app.post('/admin/api/create/order', passportConf.requiresRole('admin|support'), createOrder);
+
+        app.post('/admin/api/create/ppj_order', passportConf.requiresRole('admin'), createPPJOrder);
 
         app.post('/admin/api/take_customer', passportConf.requiresRole('admin|support'), takeCustomer);
 

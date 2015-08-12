@@ -110,9 +110,9 @@
             </div>
         </div>
         {{#unless tradeTime}}
-            <p class="trader-time-hint text-danger">\{{closeText}}</p>
+            <p class="trader-time-hint text-danger">现在是非交易时间</p>
         {{else}}
-            <p class="trader-time-hint text-danger" ng-show="tradeClose">现在是非交易时间</p>
+            <p class="trader-time-hint text-danger" ng-show="tradeClose">\{{closeText}}</p>
         {{/unless}}
         <div class="opt-btns">
             <div class="btns three" id="J_btns">

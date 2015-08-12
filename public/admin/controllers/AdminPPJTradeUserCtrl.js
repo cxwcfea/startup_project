@@ -93,6 +93,7 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
             } else {
                 result.userMobile = user.mobile;
                 result.userID = user._id;
+                result.mobile = user.wechat.mobile;
                 $http.post('/admin/api/create/ppj_order', result)
                     .success(function(data, status) {
                         gbNotifier.notify('订单创建成功！');

@@ -23,6 +23,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
 		if (now < firstEnd) {
 			$timeout(function() {
 				$scope.tradeClose = true;
+                $scope.closeText = TEXT;
 				$scope.openTimeHintPopup('lg');
 			}, firstEnd-now);
 		}
@@ -35,6 +36,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
 		if (now < secondEnd) {
 			$timeout(function() {
 				$scope.tradeClose = true;
+                $scope.closeText = TEXT;
 				$scope.openTimeHintPopup('lg');
 			}, secondEnd-now);
 		}
