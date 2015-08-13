@@ -795,6 +795,10 @@ function initHive() {
 	hive.login();
 }
 
+function destroyHive() {
+    hive.destroy();
+}
+
 module.exports = {
     User: User,
     Contract: Contract,
@@ -811,5 +815,6 @@ module.exports = {
     getLastFuturesPrice: getLastFuturesPrice,
     getProfit: getProfit,
     resetUser: resetUser,
-	initHive: initHive
+	initHive: initHive,
+    destroyHive: destroyHive
 };

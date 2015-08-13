@@ -51,6 +51,11 @@ function Hive(config) {
 	this.isLogin = false;
 }
 
+Hive.prototype.destroy = function() {
+    this.socket_client.end();
+    this.socket_client.destroy();
+}
+
 Hive.prototype._delay = function(time) {
 	for(var start = +new Date; +new Date - start <= time; ) { }
 }

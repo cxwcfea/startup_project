@@ -18,6 +18,7 @@ if(cluster.isMaster){
             //task.scheduleContractCheckJob();
             //task.scheduleOperationDataCollectJob();
             task.scheduleFuturesRiskControlJob();
+            task.scheduleHiveControlJob();
             task.scheduleFuturesForceCloseJob();
             task.scheduleResetWechatUserJob();
         }
