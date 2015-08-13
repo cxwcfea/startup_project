@@ -434,6 +434,37 @@ function changeTraderStatus(req, res) {
     });
 }
 
+function finishTrade(req, res) {
+    var query = User.findById(req.body.uid);
+    query.populate('wechat.real_trader');
+    query.exec(function(err, user) {
+        if (err) {
+            return res.status(500).send({error_msg:err.toString()});
+        }
+        if (!user) {
+            return res.status(500).send({error_msg:'用户不存在'});
+        }
+        var profit = parseFloat(req.body.profit);
+        if (!profit) {
+            return res.status(500).send({error_msg:'无效的盈利金额'});
+        }
+        var balance = profit + user.wechat.real_trader.deposit;
+        if (balance > 0) {
+            user.finance.balance += balance;
+        }
+        user.wechat.real_trader.cash = 0;
+        user.wechat.real_trader.lashCash = 0;
+        user.wechat.real_trader.status = 1;
+        user.wechat.status = 3;
+        user.save(function(err) {
+            if (err) {
+                return res.status(500).send({error_msg:err.toString()});
+            }
+            res.send({});
+        });
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/api/futures/user_rank', passportConf.isWechatAuthenticated, fetchUserRankData);
@@ -461,6 +492,8 @@ module.exports = {
         app.post('/futures/change_user_access', passportConf.requiresRole('admin'), changeTraderStatus);
 
         app.post('/futures/trade_close', passportConf.isWechatAuthenticated, changeTraderStatus);
+
+        app.post('/futures/finish_trade', passportConf.requiresRole('admin'), finishTrade);
 
         app.get('/futures/test', test);
 

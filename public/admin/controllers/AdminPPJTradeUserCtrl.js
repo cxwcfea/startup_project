@@ -165,19 +165,17 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
                 gbNotifier.error('必须输入盈亏金额');
                 return;
             }
-            /*
-            var data = {
-                apply_serial_id: apply.serialID,
+            var postData = {
+                uid: user._id,
                 profit: result.profit
             };
-            $http.post('/admin/api/close_apply', data)
+            $http.post('/futures/finish_trade', postData)
                 .success(function(data, status, headers, config) {
                     gbNotifier.notify('结算成功');
                 }).
                 error(function(data, status, headers, config) {
                     gbNotifier.error('结算失败:' + data.error_msg);
                 });
-                */
         }, function () {
         });
     };
