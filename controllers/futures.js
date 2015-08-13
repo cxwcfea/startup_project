@@ -368,6 +368,7 @@ function addMoney(req, res) {
             dealType: 9,
             amount: DepositAmount,
             status: 1,
+            description: '股指拍拍机保证金',
             userBalance: user.finance.balance
         };
         Order.create(orderData, function(err, order) {
@@ -477,6 +478,7 @@ function finishTrade(req, res) {
                     dealType: 4,
                     amount: profit,
                     status: 1,
+                    description: '股指拍拍机盈利',
                     userBalance: user.finance.balance
                 };
                 Order.create(orderData, function(err, order) {
@@ -500,6 +502,7 @@ function finishTrade(req, res) {
                     dealType: 5,
                     amount: amount,
                     status: 1,
+                    description: '股指拍拍机保证金返还',
                     userBalance: user.finance.balance
                 };
                 Order.create(orderData, function(err, order) {
