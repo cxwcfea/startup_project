@@ -83,7 +83,9 @@ function realHome(req, res, next) {
             });
         });
     } else {
-        res.redirect('/futures');
+        res.render('not_valid_trader', {
+            layout: null
+        });
     }
 }
 
