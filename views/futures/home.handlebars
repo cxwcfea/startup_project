@@ -130,7 +130,7 @@
                             涨
                         </div>
                     </div>
-                    <p class="log-label">做多\{{tradeData.up}}手</p>
+                    <p class="log-label">买涨\{{tradeData.up}}手</p>
                 </div>
                 <div class="circle-btn d {{#unless tradeTime}}circle-btn-disable{{/unless}}" ng-class="{'circle-btn-disable':close}">
                     <div {{#if tradeTime}}ng-class="{'d-outer-btn-pressed':DButtonPressed, 'd-outer-btn':!DButtonPressed, 'outer-btn-disable':tradeClose}"{{/if}} class="ex-btn {{#unless tradeTime}}outer-btn-disable{{/unless}}">
@@ -138,7 +138,7 @@
                             跌
                         </div>
                     </div>
-                    <p class="log-label">做空\{{tradeData.down}}手</p>
+                    <p class="log-label">买跌\{{tradeData.down}}手</p>
                 </div>
             </div>
         </div>

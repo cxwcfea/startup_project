@@ -523,7 +523,9 @@ function finishTrade(req, res) {
             trader.cash = 0;
             trader.lashCash = 0;
             trader.status = 1;
+            logger.warn('finishTrade', trader);
             trader.save(function(err) {
+                logger.warn('finishTrade after save', trader);
                 callback(err, user);
             });
         },
