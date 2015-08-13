@@ -555,15 +555,13 @@ function withdraw(req, res) {
         if (user.finance.balance <= 0) {
             return res.status(400).send({error_msg:'用户余额不足'});
         }
-        Card.find({userID:user._id}, function(err, card) {
+        Card.findOne({userID:user._id}, function(err, card) {
             if (err) {
                 return res.status(500).send({error_msg:err.toString()});
             }
             if (!card) {
                 return res.status(400).send({error_msg:'找不到银行卡'});
             }
-            logger.warn('ppj with draw', card);
-            logger.warn('ppj with draw', card.bankID, card.bankName, card.cardID, card.userName);
             var orderData = {
                 userID: user._id,
                 userMobile: user.mobile,
@@ -573,10 +571,10 @@ function withdraw(req, res) {
                 description: '股指拍拍机提现',
                 userBalance: 0,
                 cardInfo: {
-                    bank: 'ab', //util.bankNameFromNJBankID[parseInt(card.bankID)],
-                    bankName: 'cd', //card.bankName,
-                    cardID: 'ef',//card.cardID,
-                    userName: 'oq'//card.userName
+                    bank: util.bankNameFromNJBankID[parseInt(card.bankID)],
+                    bankName: card.bankName,
+                    cardID: card.cardID,
+                    userName: card.userName
                 }
             };
             logger.error('ppj with draw', orderData);
