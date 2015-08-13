@@ -141,5 +141,5 @@ module.exports = function(io) {
             }
             io.sockets.emit('new_data', {productID:productIndex, data:data});
         });
-    }, 8000);
+    }, 10000);
 };

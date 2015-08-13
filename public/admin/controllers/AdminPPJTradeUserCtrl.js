@@ -141,4 +141,15 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
                 gbNotifier.error('操作失败:' + data.error_msg);
             });
     };
+
+    $scope.disallowTrade = function(user) {
+        $http.post('/futures/change_user_access', {uid:user._id, user_status:3, trader_status:1})
+            .success(function(data, status) {
+                user.wechat.status = 3;
+                gbNotifier.notify('操作成功');
+            })
+            .error(function(data, status) {
+                gbNotifier.error('操作失败:' + data.error_msg);
+            });
+    };
 }]);
