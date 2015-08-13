@@ -349,6 +349,7 @@ function approveUser(req, res) {
 
 function addMoney(req, res) {
     logger.debug('addMoney', req.body);
+    var DepositAmount = 30000;
     var uid = req.query.uid;
     User.findById(uid, function(err, user) {
         if (err) {
@@ -357,55 +358,67 @@ function addMoney(req, res) {
         if (!user) {
             return res.status(500).send({error_msg:'user not found'});
         }
-        if (user.finance.balance < 30000) {
+        if (user.finance.balance < DepositAmount) {
             return res.status(403).send({error_msg:'用户余额不足'});
         }
-        if (!user.wechat.real_trader) {
-            mockTrader.createUser({
-                name: user.wechat.wechat_uuid,
-                warning: 18000000,
-                close: 17500000,
-                cash: 20000000,
-                deposit: 3000000,
-                debt: 17000000,
-                status: 1
-            }, function(err, trader) {
-                if (err) {
-                    return res.status(500).send({error_msg:err.toString()});
-                }
-                if (!trader) {
-                    return res.status(500).send({error_msg:'can not create trader'});
-                }
-                user.wechat.appointment = false;
-                user.wechat.real_trader = trader;
-                user.wechat.status = 3;
-                user.finance.balance -= 30000;
-                user.save(function(err) {
+        user.finance.balance -= DepositAmount;
+        var orderData = {
+            userID: user._id,
+            userMobile: user.mobile,
+            dealType: 9,
+            amount: DepositAmount,
+            status: 1,
+            userBalance: user.finance.balance
+        };
+        Order.create(orderData, function(err, order) {
+            if (err) {
+                return res.status(500).send({error_msg:err.toString()});
+            }
+            if (!user.wechat.real_trader) {
+                mockTrader.createUser({
+                    name: user.wechat.wechat_uuid,
+                    warning: 18000000,
+                    close: 17500000,
+                    cash: 20000000,
+                    deposit: DepositAmount * 100,
+                    debt: 17000000,
+                    status: 1
+                }, function(err, trader) {
                     if (err) {
                         return res.status(500).send({error_msg:err.toString()});
                     }
-                    res.send({});
+                    if (!trader) {
+                        return res.status(500).send({error_msg:'can not create trader'});
+                    }
+                    user.wechat.appointment = false;
+                    user.wechat.real_trader = trader;
+                    user.wechat.status = 3;
+                    user.save(function(err) {
+                        if (err) {
+                            return res.status(500).send({error_msg:err.toString()});
+                        }
+                        res.send({});
+                    });
                 });
-            });
-        } else {
-            mockTrader.User.update({_id:user.wechat.real_trader}, {$set:{close:17500000, warning:18000000, cash:20000000, deposit:3000000, debt:17000000, lastCash:0, status:1}}, function(err, numberAffected, raw) {
-                if (err) {
-                    return res.status(500).send({error_msg:err.toString()});
-                }
-                if (!numberAffected) {
-                    return res.status(500).send({error_msg:'无法更新用户'});
-                }
-                user.wechat.appointment = false;
-                user.wechat.status = 3;
-                user.finance.balance -= 30000;
-                user.save(function(err) {
+            } else {
+                mockTrader.User.update({_id:user.wechat.real_trader}, {$set:{close:17500000, warning:18000000, cash:20000000, deposit:3000000, debt:17000000, lastCash:0, status:1}}, function(err, numberAffected, raw) {
                     if (err) {
                         return res.status(500).send({error_msg:err.toString()});
                     }
-                    res.send({});
+                    if (!numberAffected) {
+                        return res.status(500).send({error_msg:'无法更新用户'});
+                    }
+                    user.wechat.appointment = false;
+                    user.wechat.status = 3;
+                    user.save(function(err) {
+                        if (err) {
+                            return res.status(500).send({error_msg:err.toString()});
+                        }
+                        res.send({});
+                    });
                 });
-            });
-        }
+            }
+        });
     });
 }
 
@@ -435,33 +448,82 @@ function changeTraderStatus(req, res) {
 }
 
 function finishTrade(req, res) {
-    var query = User.findById(req.body.uid);
-    query.populate('wechat.real_trader');
-    query.exec(function(err, user) {
+    logger.info('finishTrade', req.body);
+    async.waterfall([
+        function(callback) {
+            var query = User.findById(req.body.uid);
+            query.populate('wechat.real_trader');
+            query.exec(function(err, user) {
+                if (!err && !user) {
+                    err = '用户不存在';
+                }
+                callback(err, user);
+            });
+        },
+        function(user, callback) {
+            var profit = parseFloat(req.body.profit);
+            var err = null;
+            if (!profit) {
+                err = '无效的盈利金额';
+            }
+            callback(err, profit, user);
+        },
+        function(profit, user, callback) {
+            if (profit > 0) {
+                user.finance.balance += profit;
+                var orderData = {
+                    userID: user._id,
+                    userMobile: user.mobile,
+                    dealType: 4,
+                    amount: profit,
+                    status: 1,
+                    userBalance: user.finance.balance
+                };
+                Order.create(orderData, function(err, order) {
+                    callback(err, profit, user);
+                });
+            } else {
+                callback(null, profit, user);
+            }
+        },
+        function(profit, user, callback) {
+            var balance = profit + user.wechat.real_trader.deposit;
+            if (balance > 0) {
+                var amount = balance;
+                if (profit > 0) {
+                    amount = user.wechat.real_trader.deposit;
+                }
+                user.finance.balance += amount;
+                var orderData = {
+                    userID: user._id,
+                    userMobile: user.mobile,
+                    dealType: 5,
+                    amount: amount,
+                    status: 1,
+                    userBalance: user.finance.balance
+                };
+                Order.create(orderData, function(err, order) {
+                    callback(err, user);
+                });
+            } else {
+                callback(err, user);
+            }
+        },
+        function(user, callback) {
+            user.wechat.real_trader.cash = 0;
+            user.wechat.real_trader.lashCash = 0;
+            user.wechat.real_trader.status = 1;
+            user.wechat.status = 3;
+            user.save(function(err) {
+                callback(err);
+            });
+        }
+    ], function(err) {
         if (err) {
+            logger.error('finishOrder err', err);
             return res.status(500).send({error_msg:err.toString()});
         }
-        if (!user) {
-            return res.status(500).send({error_msg:'用户不存在'});
-        }
-        var profit = parseFloat(req.body.profit);
-        if (!profit) {
-            return res.status(500).send({error_msg:'无效的盈利金额'});
-        }
-        var balance = profit + user.wechat.real_trader.deposit;
-        if (balance > 0) {
-            user.finance.balance += balance;
-        }
-        user.wechat.real_trader.cash = 0;
-        user.wechat.real_trader.lashCash = 0;
-        user.wechat.real_trader.status = 1;
-        user.wechat.status = 3;
-        user.save(function(err) {
-            if (err) {
-                return res.status(500).send({error_msg:err.toString()});
-            }
-            res.send({});
-        });
+        res.send({});
     });
 }
 

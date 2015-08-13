@@ -358,10 +358,12 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     };
 
     $scope.makeAppointment = function() {
+        /*
         if ($scope.lastProfit <= 3000) {
             openProfitHintPopup();
             return;
         }
+        */
         $location.path('/appointment');
     };
 
