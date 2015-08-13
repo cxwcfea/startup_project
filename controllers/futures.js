@@ -83,7 +83,7 @@ function realHome(req, res, next) {
             });
         });
     } else {
-        res.redirectTo('/futures');
+        res.redirect('/futures');
     }
 }
 
