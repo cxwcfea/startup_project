@@ -782,7 +782,8 @@ function getLastFuturesPrice(cb) {
 var hive;
 function initHive() {
 	var initConfig = {
-		ip: '218.241.142.230',
+		//ip: '218.241.142.230',
+		ip: '127.0.0.1',
 		port: 7777,
 		investor: '851710073',
 		password: '283715',
