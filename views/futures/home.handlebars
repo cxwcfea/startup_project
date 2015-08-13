@@ -85,7 +85,7 @@
 
 <div class="index-box">
     <div class="chart-box">
-        <h4>\{{data.productType}}走势图 <span class="current-price">昨收盘: <em>\{{yesterdayClose}}</em></span> <span class="current-price">涨跌: <em>\{{pointDelta | number:2}}</em>%</span> <span class="order-list pull-right" ng-click="help()">帮助</span></h4>
+        <h4>\{{data.productType}}走势图 <span class="current-price">昨收盘: <em>\{{yesterdayClose}}</em></span> <span class="current-price">涨跌: <em>\{{pointDelta | number:2}}</em>%</span> <span class="order-list pull-right" ng-click="help()" ng-hide="data.real">帮助</span></h4>
         <div class="chart">
             <div id="container" style="height:230px" futures-chart="chartLabels" chart-data="chartData"></div>
         </div>
@@ -130,7 +130,7 @@
                             涨
                         </div>
                     </div>
-                    <p class="log-label">\{{tradeData.up}}手</p>
+                    <p class="log-label">买涨\{{tradeData.up}}手</p>
                 </div>
                 <div class="circle-btn d {{#unless tradeTime}}circle-btn-disable{{/unless}}" ng-class="{'circle-btn-disable':close}">
                     <div {{#if tradeTime}}ng-class="{'d-outer-btn-pressed':DButtonPressed, 'd-outer-btn':!DButtonPressed, 'outer-btn-disable':tradeClose}"{{/if}} class="ex-btn {{#unless tradeTime}}outer-btn-disable{{/unless}}">
@@ -138,7 +138,7 @@
                             跌
                         </div>
                     </div>
-                    <p class="log-label">\{{tradeData.down}}手</p>
+                    <p class="log-label">买跌\{{tradeData.down}}手</p>
                 </div>
             </div>
         </div>

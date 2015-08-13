@@ -54,6 +54,7 @@ var PPJOrderSchema = mongoose.Schema({
     timestamp: { type: Date, default: Date.now },
     contractId: { type: String },
     userId: { type: String },
+    cash: {type: Number, default: 0},
     // status: { type: Number, default: 0},  // 0: open
     quantity: { type: Number, default: 0},  // basis: 0.01, positive means buy, negative means sell
     // filledQuantity: { type: Number, default: 0},  // basis: 0.01
@@ -487,7 +488,7 @@ function getProfitImpl(req, res, user, contractId) {
                     }
                     var priceInfo = JSON.parse(priceInfoString);
                     priceInfo.LastPrice *= 100;
-                    console.log(priceInfo.LastPrice);
+                    //console.log(priceInfo.LastPrice);
 
                     contractInfo[portf.contractId] = priceInfo;
                     var costs = getCosts(contract, priceInfo.LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
@@ -498,7 +499,7 @@ function getProfitImpl(req, res, user, contractId) {
                     }
                     //console.log("Completed: " + asyncObj);
                     var income = asyncObj.value;
-                    console.log("User info: " + req.body.user_id + ", " + user.cash + ", " + income + ", " + user.close);
+                    //console.log("User info: " + req.body.user_id + ", " + user.cash + ", " + income + ", " + user.close);
                     var lastProfit = user.lastCash ? user.lastCash - kInitialCapital : 0;
                     res.send({result: user.cash + income - user.deposit - user.debt - lastProfit, lastProfit:lastProfit, lastPrice:priceInfo.LastPrice, yesterdayClose:priceInfo.PreSettlementPrice});
                     return;

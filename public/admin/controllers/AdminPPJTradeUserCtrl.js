@@ -120,25 +120,136 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
     };
 
     $scope.addMoney = function(user) {
-        $http.get('/futures/add_money/?uid=' + user._id)
-            .success(function(data, status) {
-                user.wechat.status = 3;
-                user.finance.balance -= 30000;
-                gbNotifier.notify('入资成功');
-            })
-            .error(function(data, status) {
-                gbNotifier.error('入资失败:' + data.error_msg);
-            });
+        var result = prompt('确定入资吗, 3万元本金将打入交易账户');
+        if (result != null) {
+            $http.get('/futures/add_money/?uid=' + user._id)
+                .success(function(data, status) {
+                    user.wechat.status = 3;
+                    user.finance.balance -= 30000;
+                    gbNotifier.notify('入资成功');
+                })
+                .error(function(data, status) {
+                    gbNotifier.error('入资失败:' + data.error_msg);
+                });
+        } else {
+            console.log('no');
+        }
     };
 
     $scope.approveToTrade = function(user) {
-        $http.post('/futures/change_user_access', {uid:user._id, user_status:4, trader_status:0})
-            .success(function(data, status) {
-                user.wechat.status = 4;
-                gbNotifier.notify('操作成功');
-            })
-            .error(function(data, status) {
-                gbNotifier.error('操作失败:' + data.error_msg);
-            });
+        var result = prompt('确定开通交易权限吗');
+        if (result != null) {
+            $http.post('/futures/change_user_access', {uid:user._id, user_status:4, trader_status:0})
+                .success(function(data, status) {
+                    user.wechat.status = 4;
+                    gbNotifier.notify('操作成功');
+                })
+                .error(function(data, status) {
+                    gbNotifier.error('操作失败:' + data.error_msg);
+                });
+        } else {
+            console.log('no');
+        }
+    };
+
+    $scope.disallowTrade = function(user) {
+        var result = prompt('确定冻结账户吗');
+        if (result != null) {
+            $http.post('/futures/change_user_access', {uid:user._id, user_status:3, trader_status:1})
+                .success(function(data, status) {
+                    user.wechat.status = 3;
+                    gbNotifier.notify('操作成功');
+                })
+                .error(function(data, status) {
+                    gbNotifier.error('操作失败:' + data.error_msg);
+                });
+        } else {
+            console.log('no');
+        }
+    };
+
+    $scope.closeTrade = function(user) {
+        var modalInstance = $modal.open({
+            templateUrl: 'views/applyClosingModal.html',
+            controller: 'ApplyClosingModalCtrl',
+            resolve: {}
+        });
+
+        modalInstance.result.then(function (result) {
+            if (result.profit === null || result.profit === undefined) {
+                gbNotifier.error('必须输入盈亏金额');
+                return;
+            }
+            var postData = {
+                uid: user._id,
+                profit: result.profit
+            };
+            $http.post('/futures/finish_trade', postData)
+                .success(function(data, status, headers, config) {
+                    user.finance.balance = data.balance;
+                    user.wechat.real_trader.lastCash = 0;
+                    user.wechat.deposit = 0;
+                    user.wechat.real_trader.cash = 0;
+                    gbNotifier.notify('结算成功');
+                }).
+                error(function(data, status, headers, config) {
+                    gbNotifier.error('结算失败:' + data.error_msg);
+                });
+        }, function () {
+        });
+    };
+
+    $scope.withdraw = function(user) {
+        var result = prompt('确定所有余额提现吗');
+        if (result != null) {
+            $http.post('/futures/withdraw', {uid:user._id})
+                .success(function(data, status) {
+                    user.finance.balance = 0;
+                    gbNotifier.notify('成功');
+                })
+                .error(function(data, status) {
+                    gbNotifier.notify('失败:' + data.error_msg);
+                });
+        } else {
+            console.log('no');
+        }
+    };
+
+    $scope.addCard = function(user) {
+        var modalInstance = $modal.open({
+            templateUrl: 'views/addCardModal.html',
+            controller: 'AddCardModalCtrl',
+            resolve: {
+                user: function () {
+                    return user;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (result) {
+            if (!result.cardID) {
+                gbNotifier.error('必须输入银行卡信息');
+                return;
+            }
+            var regex = /^(\d{12}|\d{16}|\d{17}|\d{18}|\d{19})$/;
+            if (!regex.test(result.cardID)) {
+                gbNotifier.error('银行卡号格式不正确');
+                return;
+            }
+            if (!result.name) {
+                gbNotifier.error('必须输入持卡人信息');
+                return;
+            }
+            result.uid = user._id;
+            result.userMobile = user.wechat.mobile;
+            $http.post('/futures/addCard', result)
+                .success(function(data, status) {
+                    gbNotifier.notify('添加成功');
+                })
+                .error(function(data, status) {
+                    gbNotifier.notify('添加失败');
+                });
+        }, function () {
+        });
     };
 }]);

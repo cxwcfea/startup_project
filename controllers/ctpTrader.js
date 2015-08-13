@@ -163,6 +163,7 @@ function closeAll(userId, portfolio, income, contractInfo, contractData, reset, 
                           var order = new Order({
                               contractId: portf.contractId,
                               userId: userId,
+                              cash: user.cash + income,
                               quantity: -portf.quantity,
                               price: contractInfo[portf.contractId].LastPrice,
                               fee: costs.fee,
@@ -461,9 +462,9 @@ function getProfitImpl(req, res, user, contractId) {
             Contract.findOne({_id: portf.contractId}, function(err, contract) {
                 asyncObj.remaining -= 1;
                 if (err || !contract) {
-                    console.log(err);
-                    console.log(contract);
-                    console.log(portf);
+                    //console.log(err);
+                    //console.log(contract);
+                    //console.log(portf);
                     asyncObj.has_error = true;
                     if (err) asyncObj.errmsg = err.errmsg;
                 }
@@ -497,7 +498,7 @@ function getProfitImpl(req, res, user, contractId) {
                     }
                     //console.log("Completed: " + asyncObj);
                     var income = asyncObj.value;
-                    console.log("User info: " + req.body.user_id + ", " + user.cash + ", " + income + ", " + user.close);
+                    //console.log("User info: " + req.body.user_id + ", " + user.cash + ", " + income + ", " + user.close);
                     var lastProfit = user.lastCash ? user.lastCash - kInitialCapital : 0;
                     res.send({result: user.cash + income - user.deposit - user.debt - lastProfit, lastProfit:lastProfit, lastPrice:priceInfo.LastPrice, yesterdayClose:priceInfo.PreSettlementPrice});
                     return;
@@ -690,6 +691,7 @@ function createOrder(data, cb) {
                                       quantity: data.order.quantity,
                                       price: info.traded_price*100,
                                       fee: costs.fee,
+                                      cash: user.cash - costs.open,
                                       lockedCash: costs.locked_cash,
                                       profit: costs.net_profit
                                       //isClosed: 0
@@ -782,7 +784,8 @@ function getLastFuturesPrice(cb) {
 var hive;
 function initHive() {
 	var initConfig = {
-		ip: '218.241.142.230',
+		//ip: '218.241.142.230',
+		ip: '127.0.0.1',
 		port: 7777,
 		investor: '851710073',
 		password: '283715',
@@ -793,6 +796,12 @@ function initHive() {
 	};
 	hive = new Hive(initConfig);
 	hive.login();
+}
+
+function destroyHive() {
+    hive.destroy();
+    hive.order2user = null;
+    hive.user2cb = null;
 }
 
 module.exports = {
@@ -811,5 +820,6 @@ module.exports = {
     getLastFuturesPrice: getLastFuturesPrice,
     getProfit: getProfit,
     resetUser: resetUser,
-	initHive: initHive
+	initHive: initHive,
+    destroyHive: destroyHive
 };

@@ -42,7 +42,7 @@ angular.module('adminApp').controller('AdminClosingApplyCtrl', ['$scope', '$http
 
     vm.manageApply = function(apply) {
         var modalInstance = $modal.open({
-            templateUrl: 'applyClosingModal.html',
+            templateUrl: 'views/applyClosingModal.html',
             controller: 'ApplyClosingModalCtrl',
             resolve: {}
         });
@@ -67,15 +67,3 @@ angular.module('adminApp').controller('AdminClosingApplyCtrl', ['$scope', '$http
         });
     };
 }]);
-
-angular.module('adminApp').controller('ApplyClosingModalCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-    $scope.data = {};
-    $scope.ok = function () {
-        $modalInstance.close($scope.data);
-    };
-
-    $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
-    };
-}]);
-
