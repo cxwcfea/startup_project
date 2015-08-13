@@ -109,3 +109,14 @@ angular.module('adminApp').controller('CreatePPJOrderModalCtrl', ['$scope', '$mo
         $modalInstance.dismiss('cancel');
     };
 }]);
+
+angular.module('adminApp').controller('ApplyClosingModalCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+    $scope.data = {};
+    $scope.ok = function () {
+        $modalInstance.close($scope.data);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+}]);

@@ -152,4 +152,33 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
                 gbNotifier.error('操作失败:' + data.error_msg);
             });
     };
+
+    $scope.closeTrade = function(user) {
+        var modalInstance = $modal.open({
+            templateUrl: 'views/applyClosingModal.html',
+            controller: 'ApplyClosingModalCtrl',
+            resolve: {}
+        });
+
+        modalInstance.result.then(function (result) {
+            if (result.profit === null || result.profit === undefined) {
+                gbNotifier.error('必须输入盈亏金额');
+                return;
+            }
+            /*
+            var data = {
+                apply_serial_id: apply.serialID,
+                profit: result.profit
+            };
+            $http.post('/admin/api/close_apply', data)
+                .success(function(data, status, headers, config) {
+                    gbNotifier.notify('结算成功');
+                }).
+                error(function(data, status, headers, config) {
+                    gbNotifier.error('结算失败:' + data.error_msg);
+                });
+                */
+        }, function () {
+        });
+    };
 }]);
