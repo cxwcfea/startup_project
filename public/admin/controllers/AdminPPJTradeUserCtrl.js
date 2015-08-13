@@ -207,4 +207,29 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
             console.log('no');
         }
     };
+
+    $scope.addCard = function(user) {
+        var modalInstance = $modal.open({
+            templateUrl: 'views/addCardModal.html',
+            controller: 'AddCardModalCtrl',
+            resolve: {
+                user: function () {
+                    return user;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (result) {
+            var regex = /^(\d{12}|\d{16}|\d{17}|\d{18}|\d{19})$/;
+            if (!regex.test($scope.cardID)) {
+                //addAlert('danger', '银行卡号格式不正确');
+                return;
+            }
+            if (!$scope.bankUserName) {
+                //addAlert('danger', '请输入持卡人姓名');
+                return;
+            }
+        }, function () {
+        });
+    };
 }]);

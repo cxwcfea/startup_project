@@ -1,0 +1,44 @@
+<div class="modal-header">
+    <h3 class="modal-title">添加银行卡信息</h3>
+</div>
+<div class="modal-body">
+    <div class="am-form-group">
+        <label>用户:</label>
+        {{::userName}}
+    </div>
+    <div class="am-form-group">
+        <label>银行卡号</label>
+        <input type="text" ng-model="data.cardID">
+    </div>
+    <div class="am-form-group">
+        <label>持卡人姓名</label>
+        <input type="text" ng-model="data.name">
+    </div>
+    <div class="am-form-group">
+        <label for="order-type-1">银行</label>
+        <select id="order-type-1" ng-model="data.bankID">
+            <option value="0">工商银行</option>
+            <option value="1">建设银行</option>
+            <option value="2">农业银行</option>
+            <option value="3">中国银行</option>
+            <option value="4">招商银行</option>
+            <option value="5">交通银行</option>
+            <option value="6">邮政储蓄银行</option>
+            <option value="7">广发银行</option>
+            <option value="8">光大银行</option>
+            <option value="9">兴业银行</option>
+            <option value="10">北京银行</option>
+            <option value="11">浦发银行</option>
+            <option value="12">民生银行</option>
+            <option value="13">中信银行</option>
+            <option value="14">华夏银行</option>
+            <option value="15">平安银行</option>
+            <option value="16">宁波银行</option>
+            <option value="17">上海银行</option>
+        </select>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">创建</button>
+    <button class="btn btn-warning" ng-click="cancel()">取消</button>
+</div>
