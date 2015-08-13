@@ -562,7 +562,8 @@ function withdraw(req, res) {
             amount: user.finance.balance,
             status: 0,
             description: '股指拍拍机提现',
-            userBalance: 0
+            userBalance: 0,
+            cardInfo: {}
         };
         Card.find({userID:user._id}, function(err, card) {
             if (err) {
@@ -572,12 +573,10 @@ function withdraw(req, res) {
                 return res.status(400).send({error_msg:'找不到银行卡'});
             }
             logger.error('ppj with draw', card);
-            orderData.cardInfo = {
-                bank: util.bankNameFromNJBankID[parseInt(card.bankID)],
-                bankName: card.bankName,
-                cardID: card.cardID,
-                userName: card.userName
-            };
+            orderData.cardInfo.bank = util.bankNameFromNJBankID[parseInt(card.bankID)];
+            orderData.cardInfo.bankName = card.bankName;
+            orderData.cardInfo.cardID = card.cardID;
+            orderData.cardInfo.userName = card.userName;
             logger.error('ppj with draw', orderData);
             Order.create(orderData, function(err, order) {
                 if (err) {
