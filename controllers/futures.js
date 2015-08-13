@@ -571,6 +571,7 @@ function withdraw(req, res) {
             if (!card) {
                 return res.status(400).send({error_msg:'找不到银行卡'});
             }
+            logger.error('ppj with draw', card);
             orderData.cardInfo = {
                 bank: util.bankNameFromNJBankID[parseInt(card.bankID)],
                 bankName: card.bankName,
