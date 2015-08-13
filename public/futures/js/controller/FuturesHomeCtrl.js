@@ -1,5 +1,6 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window', '$location', '$modal', '$http', '$timeout', '$interval', function($scope, $window, $location, $modal, $http, $timeout, $interval) {
+angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window', '$location', '$modal', '$http', '$timeout', '$interval', '$routeParams', function($scope, $window, $location, $modal, $http, $timeout, $interval, $routeParams) {
+    alert($routeParams.search);
     $scope.user = $scope.data.currentUser;
     var TEXT = '现在是非交易时间';
     var REAL_TEXT = '您的账户不能交易';
