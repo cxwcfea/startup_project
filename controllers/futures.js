@@ -564,16 +564,30 @@ function withdraw(req, res) {
             description: '股指拍拍机提现',
             userBalance: 0
         };
-        Order.create(orderData, function(err, order) {
+        Card.find({userID:user._id}, function(err, card) {
             if (err) {
                 return res.status(500).send({error_msg:err.toString()});
             }
-            user.finance.balance = 0;
-            user.save(function(err) {
+            if (!card) {
+                return res.status(400).send({error_msg:'找不到银行卡'});
+            }
+            orderData.cardInfo = {
+                bank: util.bankNameFromNJBankID[card.bankID],
+                bankName: card.bankName,
+                cardID: card.cardID,
+                userName: card.userName
+            };
+            Order.create(orderData, function(err, order) {
                 if (err) {
                     return res.status(500).send({error_msg:err.toString()});
                 }
-                res.send({});
+                user.finance.balance = 0;
+                user.save(function(err) {
+                    if (err) {
+                        return res.status(500).send({error_msg:err.toString()});
+                    }
+                    res.send({});
+                });
             });
         });
     });
