@@ -461,7 +461,7 @@ function finishTrade(req, res) {
         },
         function(user, callback) {
             mockTrader.User.findById(user.real_trader, function(err, trader) {
-                if (!err && !user) {
+                if (!err && !trader) {
                     err = '交易用户不存在';
                 }
                 callback(err, trader, user);
