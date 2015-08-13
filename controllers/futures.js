@@ -452,9 +452,7 @@ function finishTrade(req, res) {
     logger.info('finishTrade', req.body);
     async.waterfall([
         function(callback) {
-            var query = User.findById(req.body.uid);
-            query.populate('wechat.real_trader');
-            query.exec(function(err, user) {
+            User.findById(req.body.uid, function(err, user) {
                 if (!err && !user) {
                     err = '用户不存在';
                 }
@@ -462,14 +460,22 @@ function finishTrade(req, res) {
             });
         },
         function(user, callback) {
+            mockTrader.User.findById(user.real_trader, function(err, trader) {
+                if (!err && !user) {
+                    err = '交易用户不存在';
+                }
+                callback(err, trader, user);
+            });
+        },
+        function(trader, user, callback) {
             var profit = parseFloat(req.body.profit);
             var err = null;
             if (!profit) {
                 err = '无效的盈利金额';
             }
-            callback(err, profit, user);
+            callback(err, profit, trader, user);
         },
-        function(profit, user, callback) {
+        function(profit, trader, user, callback) {
             if (profit > 0) {
                 user.finance.balance += profit;
                 var orderData = {
@@ -482,14 +488,14 @@ function finishTrade(req, res) {
                     userBalance: user.finance.balance
                 };
                 Order.create(orderData, function(err, order) {
-                    callback(err, profit, user);
+                    callback(err, profit, trader, user);
                 });
             } else {
-                callback(null, profit, user);
+                callback(null, profit, trader, user);
             }
         },
-        function(profit, user, callback) {
-            var deposit = user.wechat.real_trader.deposit/100;
+        function(profit, trader, user, callback) {
+            var deposit = trader.deposit/100;
             var balance = profit + deposit;
             if (balance > 0) {
                 var amount = balance;
@@ -507,17 +513,17 @@ function finishTrade(req, res) {
                     userBalance: user.finance.balance
                 };
                 Order.create(orderData, function(err, order) {
-                    callback(err, user);
+                    callback(err, trader, user);
                 });
             } else {
-                callback(err, user);
+                callback(err, trader, user);
             }
         },
-        function(user, callback) {
-            user.wechat.real_trader.cash = 0;
-            user.wechat.real_trader.lashCash = 0;
-            user.wechat.real_trader.status = 1;
-            user.wechat.real_trader.save(function(err) {
+        function(trader, user, callback) {
+            trader.cash = 0;
+            trader.lashCash = 0;
+            trader.status = 1;
+            trader.save(function(err) {
                 callback(err, user);
             });
         },
