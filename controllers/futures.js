@@ -53,7 +53,6 @@ function populatePPJUser(user, cb) {
 }
 
 function home(req, res, next) {
-    logger.debug('access home');
     if (req.user) {
         populatePPJUser(req.user, function(err, user) {
             if (err) {
@@ -68,6 +67,23 @@ function home(req, res, next) {
         res.render('futures/index', {
             layout:null
         });
+    }
+}
+
+function realHome(req, res, next) {
+    if (req.user.wechat.status > 0) {
+        populatePPJUser(req.user, function(err, user) {
+            if (err) {
+                return next();
+            }
+            user.real = true;
+            res.render('futures/index', {
+                layout:null,
+                bootstrappedUserObject: JSON.stringify(user)
+            });
+        });
+    } else {
+        res.redirectTo('/futures');
     }
 }
 
@@ -646,6 +662,8 @@ module.exports = {
         app.post('/futures/withdraw', passportConf.requiresRole('admin'), withdraw);
 
         app.post('/futures/addCard', passportConf.requiresRole('admin'), addCard);
+
+        app.get('/futures/real', passportConf.isWechatAuthenticated, realHome);
 
         app.get('/futures/test', test);
 
