@@ -10,7 +10,7 @@ angular.module('futuresApp').config(['$routeProvider', '$httpProvider', function
     $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
 
     $routeProvider
-        .when('/home', { templateUrl: '/futures/home',
+        .when('/home', { templateUrl: function(params) { return params.type ? '/futures/home?type=' + params.type : '/futures/home'; },
             controller: 'FuturesHomeCtrl'
         })
         .when('/orders', { templateUrl: '/futures/orders',
