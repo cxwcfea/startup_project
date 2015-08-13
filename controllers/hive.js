@@ -156,21 +156,19 @@ Hive.prototype.login = function (){
 
 
 Hive.prototype.createOrder = function (param, callback){
-	//currentCallback = callback;
-    //console.log('--------hive createOrder.');
-	if(this.user2cb[param.user_id] === undefined) {
-		this.user2cb[param.user_id] = callback;
-        //console.log(this.user2cb);
-        //TODO: order2user should be cleared somewhere
-		this.order2user[param.order_id] = param.user_id;
-	} else {
-		console.log('previous order in process, abort current one.');
-		return;
-	}
 	console.log('in createOrder, login '+this.isLogin);
 	if(!this.isLogin){
         return;
 		//callback({code:-1, msg:'No login.'}, {});
+	}
+    //console.log('--------hive createOrder.');
+	if(this.user2cb[param.user_id] === undefined) {
+		this.user2cb[param.user_id] = callback;
+        //console.log(this.user2cb);
+		this.order2user[param.order_id] = param.user_id;
+	} else {
+		console.log('previous order in process, abort current one.');
+		return;
 	}
 	console.log(param);
 	param.mtype = HIVE_MSG_TYPE.HiveMsgOrder;
