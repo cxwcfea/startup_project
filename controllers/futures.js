@@ -562,6 +562,7 @@ function withdraw(req, res) {
             if (!card) {
                 return res.status(400).send({error_msg:'找不到银行卡'});
             }
+            logger.warn('ppj with draw', card.bankID, card.bankName, card.cardID, card.userName);
             var orderData = {
                 userID: user._id,
                 userMobile: user.mobile,
