@@ -173,6 +173,7 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
                 .success(function(data, status, headers, config) {
                     user.finance.balance = data.balance;
                     user.wechat.real_trader.lastCash = 0;
+                    user.wechat.deposit = 0;
                     user.wechat.real_trader.cash = 0;
                     gbNotifier.notify('结算成功');
                 }).
@@ -181,5 +182,14 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
                 });
         }, function () {
         });
+    };
+
+    $scope.withdraw = function(user) {
+        var result = prompt('确定所有余额提现吗');
+        if (result != null) {
+
+        } else {
+            console.log('no');
+        }
     };
 }]);

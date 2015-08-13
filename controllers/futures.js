@@ -522,6 +522,7 @@ function finishTrade(req, res) {
         function(trader, user, callback) {
             trader.cash = 0;
             trader.lastCash = 0;
+            trader.deposit = 0;
             trader.status = 1;
             trader.save(function(err) {
                 callback(err, user);
@@ -539,6 +540,41 @@ function finishTrade(req, res) {
             return res.status(500).send({error_msg:err.toString()});
         }
         res.send({balance:user.finance.balance});
+    });
+}
+
+function withdraw(req, res) {
+    User.findById(req.body.uid, function(err, user) {
+        if (err) {
+            return res.status(500).send({error_msg:err.toString()});
+        }
+        if (!user) {
+            return res.status(400).send({error_msg:'用户不存在'});
+        }
+        if (user.finance.balance <= 0) {
+            return res.status(400).send({error_msg:'用户余额不足'});
+        }
+        var orderData = {
+            userID: user._id,
+            userMobile: user.mobile,
+            dealType: 2,
+            amount: user.finance.balance,
+            status: 0,
+            description: '股指拍拍机提现',
+            userBalance: 0
+        };
+        Order.create(orderData, function(err, order) {
+            if (err) {
+                return res.status(500).send({error_msg:err.toString()});
+            }
+            user.finance.balance = 0;
+            user.save(function(err) {
+                if (err) {
+                    return res.status(500).send({error_msg:err.toString()});
+                }
+                res.send({});
+            });
+        });
     });
 }
 
@@ -571,6 +607,8 @@ module.exports = {
         app.post('/futures/trade_close', passportConf.isWechatAuthenticated, changeTraderStatus);
 
         app.post('/futures/finish_trade', passportConf.requiresRole('admin'), finishTrade);
+
+        app.post('/futures/withdraw', passportConf.requiresRole('admin'), withdraw);
 
         app.get('/futures/test', test);
 
