@@ -572,11 +572,12 @@ function withdraw(req, res) {
                 return res.status(400).send({error_msg:'找不到银行卡'});
             }
             orderData.cardInfo = {
-                bank: util.bankNameFromNJBankID[card.bankID],
+                bank: util.bankNameFromNJBankID[parseInt(card.bankID)],
                 bankName: card.bankName,
                 cardID: card.cardID,
                 userName: card.userName
             };
+            logger.error('ppj with draw', orderData);
             Order.create(orderData, function(err, order) {
                 if (err) {
                     return res.status(500).send({error_msg:err.toString()});
