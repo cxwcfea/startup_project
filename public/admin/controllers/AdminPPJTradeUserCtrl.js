@@ -202,7 +202,13 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
     $scope.withdraw = function(user) {
         var result = prompt('确定所有余额提现吗');
         if (result != null) {
-
+            $http.post('/futures/withdraw', {uid:user._id})
+                .success(function(data, status) {
+                    gbNotifier.notify('成功');
+                })
+                .error(function(data, status) {
+                    gbNotifier.notify('失败:' + data.error_msg);
+                });
         } else {
             console.log('no');
         }
