@@ -120,37 +120,52 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
     };
 
     $scope.addMoney = function(user) {
-        $http.get('/futures/add_money/?uid=' + user._id)
-            .success(function(data, status) {
-                user.wechat.status = 3;
-                user.finance.balance -= 30000;
-                gbNotifier.notify('入资成功');
-            })
-            .error(function(data, status) {
-                gbNotifier.error('入资失败:' + data.error_msg);
-            });
+        var result = prompt('确定入资吗, 3万元本金将打入交易账户');
+        if (result != null) {
+            $http.get('/futures/add_money/?uid=' + user._id)
+                .success(function(data, status) {
+                    user.wechat.status = 3;
+                    user.finance.balance -= 30000;
+                    gbNotifier.notify('入资成功');
+                })
+                .error(function(data, status) {
+                    gbNotifier.error('入资失败:' + data.error_msg);
+                });
+        } else {
+            console.log('no');
+        }
     };
 
     $scope.approveToTrade = function(user) {
-        $http.post('/futures/change_user_access', {uid:user._id, user_status:4, trader_status:0})
-            .success(function(data, status) {
-                user.wechat.status = 4;
-                gbNotifier.notify('操作成功');
-            })
-            .error(function(data, status) {
-                gbNotifier.error('操作失败:' + data.error_msg);
-            });
+        var result = prompt('确定开通交易权限吗');
+        if (result != null) {
+            $http.post('/futures/change_user_access', {uid:user._id, user_status:4, trader_status:0})
+                .success(function(data, status) {
+                    user.wechat.status = 4;
+                    gbNotifier.notify('操作成功');
+                })
+                .error(function(data, status) {
+                    gbNotifier.error('操作失败:' + data.error_msg);
+                });
+        } else {
+            console.log('no');
+        }
     };
 
     $scope.disallowTrade = function(user) {
-        $http.post('/futures/change_user_access', {uid:user._id, user_status:3, trader_status:1})
-            .success(function(data, status) {
-                user.wechat.status = 3;
-                gbNotifier.notify('操作成功');
-            })
-            .error(function(data, status) {
-                gbNotifier.error('操作失败:' + data.error_msg);
-            });
+        var result = prompt('确定冻结账户吗');
+        if (result != null) {
+            $http.post('/futures/change_user_access', {uid:user._id, user_status:3, trader_status:1})
+                .success(function(data, status) {
+                    user.wechat.status = 3;
+                    gbNotifier.notify('操作成功');
+                })
+                .error(function(data, status) {
+                    gbNotifier.error('操作失败:' + data.error_msg);
+                });
+        } else {
+            console.log('no');
+        }
     };
 
     $scope.closeTrade = function(user) {
