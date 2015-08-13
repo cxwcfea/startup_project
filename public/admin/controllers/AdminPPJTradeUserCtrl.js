@@ -204,6 +204,7 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
         if (result != null) {
             $http.post('/futures/withdraw', {uid:user._id})
                 .success(function(data, status) {
+                    user.finance.balance = 0;
                     gbNotifier.notify('成功');
                 })
                 .error(function(data, status) {
