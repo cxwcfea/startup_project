@@ -2,6 +2,7 @@ var User = require('../models/User'),
     Apply = require('../models/Apply'),
     Order = require('../models/Order'),
     PayInfo = require('../models/PayInfo'),
+    Card = require('../models/Card'),
     DailyData = require('../models/DailyData'),
     applies = require('../controllers/apply'),
     yeepay = require('../lib/yeepay'),
@@ -578,6 +579,25 @@ function withdraw(req, res) {
     });
 }
 
+function addCard(req, res) {
+    if (!req.body.uid || !req.body.cardID || !req.body.name || !req.body.bankID || !req.body.userMobile) {
+        return res.status(403).send({error_msg:'无效的请求'});
+    }
+    var card = new Card({
+        userID: req.body.uid,
+        bankID: req.body.bankID,
+        bankName: 'no name',
+        cardID: req.body.cardID,
+        userName: req.body.name
+    });
+    card.save(function(err) {
+        if (err) {
+            return res.status(500).send({error_msg:err.toString()});
+        }
+        res.send({});
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/api/futures/user_rank', passportConf.isWechatAuthenticated, fetchUserRankData);
@@ -609,6 +629,8 @@ module.exports = {
         app.post('/futures/finish_trade', passportConf.requiresRole('admin'), finishTrade);
 
         app.post('/futures/withdraw', passportConf.requiresRole('admin'), withdraw);
+
+        app.post('/futures/addCard', passportConf.requiresRole('admin'), addCard);
 
         app.get('/futures/test', test);
 

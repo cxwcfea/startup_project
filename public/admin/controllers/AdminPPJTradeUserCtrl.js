@@ -233,6 +233,15 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
                 gbNotifier.error('必须输入持卡人信息');
                 return;
             }
+            result.uid = user._id;
+            result.userMobile = user.wechat.mobile;
+            $http.post('/futures/addCard', result)
+                .success(function(data, status) {
+                    gbNotifier.notify('添加成功');
+                })
+                .error(function(data, status) {
+                    gbNotifier.notify('添加失败');
+                });
         }, function () {
         });
     };
