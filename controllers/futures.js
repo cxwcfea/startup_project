@@ -521,26 +521,24 @@ function finishTrade(req, res) {
         },
         function(trader, user, callback) {
             trader.cash = 0;
-            trader.lashCash = 0;
+            trader.lastCash = 0;
             trader.status = 1;
-            logger.warn('finishTrade', trader);
             trader.save(function(err) {
-                logger.warn('finishTrade after save', trader);
                 callback(err, user);
             });
         },
         function(user, callback) {
             user.wechat.status = 3;
             user.save(function(err) {
-                callback(err);
+                callback(err, user);
             });
         }
-    ], function(err) {
+    ], function(err, user) {
         if (err) {
             logger.error('finishOrder err', err);
             return res.status(500).send({error_msg:err.toString()});
         }
-        res.send({});
+        res.send({balance:user.finance.balance});
     });
 }
 
