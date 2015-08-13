@@ -571,10 +571,10 @@ function withdraw(req, res) {
                 description: '股指拍拍机提现',
                 userBalance: 0,
                 cardInfo: {
-                    bank: util.bankNameFromNJBankID[parseInt(card.bankID)],
-                    bankName: card.bankName,
-                    cardID: card.cardID,
-                    userName: card.userName
+                    bank: 'ab', //util.bankNameFromNJBankID[parseInt(card.bankID)],
+                    bankName: 'cd', //card.bankName,
+                    cardID: 'ef',//card.cardID,
+                    userName: 'oq'//card.userName
                 }
             };
             logger.error('ppj with draw', orderData);
