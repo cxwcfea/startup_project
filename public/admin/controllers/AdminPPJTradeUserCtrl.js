@@ -220,13 +220,17 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
         });
 
         modalInstance.result.then(function (result) {
-            var regex = /^(\d{12}|\d{16}|\d{17}|\d{18}|\d{19})$/;
-            if (!regex.test($scope.cardID)) {
-                //addAlert('danger', '银行卡号格式不正确');
+            if (!result.cardID) {
+                gbNotifier.error('必须输入银行卡信息');
                 return;
             }
-            if (!$scope.bankUserName) {
-                //addAlert('danger', '请输入持卡人姓名');
+            var regex = /^(\d{12}|\d{16}|\d{17}|\d{18}|\d{19})$/;
+            if (!regex.test(result.cardID)) {
+                gbNotifier.error('银行卡号格式不正确');
+                return;
+            }
+            if (!result.name) {
+                gbNotifier.error('必须输入持卡人信息');
                 return;
             }
         }, function () {
