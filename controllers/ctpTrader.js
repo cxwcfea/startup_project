@@ -461,9 +461,9 @@ function getProfitImpl(req, res, user, contractId) {
             Contract.findOne({_id: portf.contractId}, function(err, contract) {
                 asyncObj.remaining -= 1;
                 if (err || !contract) {
-                    console.log(err);
-                    console.log(contract);
-                    console.log(portf);
+                    //console.log(err);
+                    //console.log(contract);
+                    //console.log(portf);
                     asyncObj.has_error = true;
                     if (err) asyncObj.errmsg = err.errmsg;
                 }
@@ -497,7 +497,7 @@ function getProfitImpl(req, res, user, contractId) {
                     }
                     //console.log("Completed: " + asyncObj);
                     var income = asyncObj.value;
-                    console.log("User info: " + req.body.user_id + ", " + user.cash + ", " + income + ", " + user.close);
+                    //console.log("User info: " + req.body.user_id + ", " + user.cash + ", " + income + ", " + user.close);
                     var lastProfit = user.lastCash ? user.lastCash - kInitialCapital : 0;
                     res.send({result: user.cash + income - user.deposit - user.debt - lastProfit, lastProfit:lastProfit, lastPrice:priceInfo.LastPrice, yesterdayClose:priceInfo.PreSettlementPrice});
                     return;
