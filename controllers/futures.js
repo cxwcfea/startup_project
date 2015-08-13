@@ -489,11 +489,12 @@ function finishTrade(req, res) {
             }
         },
         function(profit, user, callback) {
-            var balance = profit + user.wechat.real_trader.deposit;
+            var deposit = user.wechat.real_trader.deposit/100;
+            var balance = profit + deposit;
             if (balance > 0) {
                 var amount = balance;
                 if (profit > 0) {
-                    amount = user.wechat.real_trader.deposit;
+                    amount = deposit;
                 }
                 user.finance.balance += amount;
                 var orderData = {
@@ -516,6 +517,11 @@ function finishTrade(req, res) {
             user.wechat.real_trader.cash = 0;
             user.wechat.real_trader.lashCash = 0;
             user.wechat.real_trader.status = 1;
+            user.wechat.real_trader.save(function(err) {
+                callback(err, user);
+            });
+        },
+        function(user, callback) {
             user.wechat.status = 3;
             user.save(function(err) {
                 callback(err);
