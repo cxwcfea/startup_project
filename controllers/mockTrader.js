@@ -54,6 +54,7 @@ var PPJOrderSchema = mongoose.Schema({
     timestamp: { type: Date, default: Date.now },
     contractId: { type: String },
     userId: { type: String },
+    cash: {type: Number, default: 0},
     // status: { type: Number, default: 0},  // 0: open
     quantity: { type: Number, default: 0},  // basis: 0.01, positive means buy, negative means sell
     // filledQuantity: { type: Number, default: 0},  // basis: 0.01

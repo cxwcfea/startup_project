@@ -163,6 +163,7 @@ function closeAll(userId, portfolio, income, contractInfo, contractData, reset, 
                           var order = new Order({
                               contractId: portf.contractId,
                               userId: userId,
+                              cash: user.cash + income,
                               quantity: -portf.quantity,
                               price: contractInfo[portf.contractId].LastPrice,
                               fee: costs.fee,
@@ -690,6 +691,7 @@ function createOrder(data, cb) {
                                       quantity: data.order.quantity,
                                       price: info.traded_price*100,
                                       fee: costs.fee,
+                                      cash: user.cash - costs.open,
                                       lockedCash: costs.locked_cash,
                                       profit: costs.net_profit
                                       //isClosed: 0
@@ -782,7 +784,8 @@ function getLastFuturesPrice(cb) {
 var hive;
 function initHive() {
 	var initConfig = {
-		ip: '218.241.142.230',
+		//ip: '218.241.142.230',
+		ip: '127.0.0.1',
 		port: 7777,
 		investor: '851710073',
 		password: '283715',
@@ -797,6 +800,8 @@ function initHive() {
 
 function destroyHive() {
     hive.destroy();
+    hive.order2user = null;
+    hive.user2cb = null;
 }
 
 module.exports = {
