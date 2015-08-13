@@ -460,7 +460,7 @@ function finishTrade(req, res) {
             });
         },
         function(user, callback) {
-            mockTrader.User.findById(user.real_trader, function(err, trader) {
+            mockTrader.User.findById(user.wechat.real_trader, function(err, trader) {
                 if (!err && !trader) {
                     err = '交易用户不存在';
                 }
