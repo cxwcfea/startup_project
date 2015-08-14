@@ -33,6 +33,7 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
         if ($scope.open === undefined || $scope.open === null) {
             $scope.open = false;
         }
+        $scope.toggleSetting();
     };
 
     $scope.changeSetting = function() {
@@ -89,7 +90,4 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
             $scope.titleText = OPEN_TEXT;
         }
     };
-
-    $scope.toggleSetting();
-    alert($scope.open);
 }]);
