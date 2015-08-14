@@ -45,6 +45,7 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
             }
         } else {
             setDefaultPoint();
+            $scope.open = false;
         }
         var type = 0;
         if ($scope.data.real) {
