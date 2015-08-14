@@ -298,7 +298,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     };
 
     $scope.setting = function() {
-
+        $location.path('/trade_setting');
     };
 
     $scope.currentOrder = null;
