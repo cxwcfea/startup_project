@@ -91,4 +91,5 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
     };
 
     $scope.toggleSetting();
+    alert($scope.open);
 }]);
