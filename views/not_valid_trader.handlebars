@@ -1,19 +1,27 @@
+<!DOCTYPE html>
 <html>
 <head>
     <link rel="stylesheet" href="{{static '/vendor/bootstrap/dist/css/bootstrap.min.css'}}">
     <script src="{{static '/vendor/jquery/dist/jquery.min.js'}}"></script>
+    <style>
+        .middel-page-body p {
+            text-align: center;
+            font-size: large;
+        }
+    </style>
 </head>
 <body>
-<section class="content">
-    <div class="row">
-        <h2>您还没有开通实盘权限</h2>
-        <h2>您可以:</h2>
-        <a href="" class="btn btn-primary col-xs-6">进入虚拟盘</a>
-        <a href="" class="btn btn-primary col-xs-6">预约实盘</a>
-    </div>
-</section>
-<script>
- //       window.location.assign('/futures');
-</script>
+    <section class="middel-page-body">
+        <div class="content">
+            <div class="row">
+                <p>您还没有开通实盘权限</p>
+                <h2>您可以:</h2>
+            </div>
+            <div class="row">
+                <a href="" class="btn btn-primary col-xs-6">进入虚拟盘</a>
+                <a href="" class="btn btn-primary col-xs-6">预约实盘</a>
+            </div>
+        </div>
+    </section>
 </body>
 </html>
