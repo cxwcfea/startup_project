@@ -69,24 +69,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         sell: 0
     };
 
-    function showContractPopup() {
-        var modalInstance = $modal.open({
-            animation: true,
-            backdrop: 'static',
-            windowClass: 'xx-dialog',
-            templateUrl: 'views/contract_popup.html',
-            controller: 'InfoModalCtrl',
-            size: 'lg',
-            resolve: {}
-        });
-
-        modalInstance.result.then(function (data) {
-            alert(data.name + ' ' + data.userID);
-        }, function () {
-            console.log('Modal dismissed at: ' + new Date());
-        });
-    }
-
     var delta = 0;
     function getUserPositions(init) {
         $http.get('/api/futures/get_positions?type=' + ($scope.data.real ? 1 : 0))
