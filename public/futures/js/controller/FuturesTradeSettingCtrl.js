@@ -12,6 +12,8 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
     }
 
     $scope.changeSetting = function() {
+        alert($scope.open);
+        /*
         if (!$scope.winPoint) {
             displayError('请输入有效手机号');
             return;
@@ -38,5 +40,6 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
             .error(function(data, status) {
                 displayError('预约失败');
             });
+            */
     };
 }]);
