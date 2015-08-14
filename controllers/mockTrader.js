@@ -243,6 +243,9 @@ function setStatus(userId, status) {
     });
 }
 
+function portfolioCheckForWindControl(portfolio, callback) {
+}
+
 function windControl(userId, forceClose, userContract, cb) {
     var resource = 'mt://lock/user/' + userId;
     var ttl = 10000;
