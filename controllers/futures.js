@@ -402,7 +402,8 @@ function addMoney(req, res) {
                     cash: 20000000,
                     deposit: DepositAmount * 100,
                     debt: 17000000,
-                    status: 1
+                    status: 1,
+                    real: true
                 }, function(err, trader) {
                     if (err) {
                         return res.status(500).send({error_msg:err.toString()});
