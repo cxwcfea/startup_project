@@ -14,6 +14,17 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
     var OPEN_TEXT = '开启设置';
     var CLOSE_TEXT = '关闭设置';
 
+    function setDefaultPoint() {
+        if (data.real) {
+            $scope.winPoint = $scope.user.wechat.real_trader.winPoint;
+            $scope.winPoint = $scope.user.wechat.real_trader.lossPoint;
+        } else {
+            $scope.winPoint = $scope.user.wechat.trader.winPoint;
+            $scope.winPoint = $scope.user.wechat.trader.lossPoint;
+        }
+    }
+    setDefaultPoint();
+
     $scope.titleText = OPEN_TEXT;
     $scope.open = false;
     $scope.changeSetting = function() {
@@ -23,13 +34,7 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
                 return;
             }
         } else {
-            if (data.real) {
-                $scope.winPoint = $scope.user.wechat.real_trader.winPoint;
-                $scope.winPoint = $scope.user.wechat.real_trader.lossPoint;
-            } else {
-                $scope.winPoint = $scope.user.wechat.trader.winPoint;
-                $scope.winPoint = $scope.user.wechat.trader.lossPoint;
-            }
+            setDefaultPoint();
         }
         var type = 0;
         if (data.real) {
