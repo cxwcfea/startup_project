@@ -43,6 +43,9 @@ angular.module('futuresApp').config(['$routeProvider', '$httpProvider', function
         .when('/contract', { templateUrl: '/futures/contract',
             controller: 'FuturesContractCtrl'
         })
+        .when('/trade_setting', { templateUrl: '/futures/trade_setting',
+            controller: 'FuturesTradeSettingCtrl'
+        })
         .otherwise({
             redirectTo: '/home'
         });

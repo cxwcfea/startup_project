@@ -1,0 +1,45 @@
+<style>
+    .info {
+        margin-top: 20px;
+    }
+    .info p {
+        text-align: center;
+    }
+    .info .confirm {
+        margin-top: 10px;
+    }
+    .info .confirm p {
+        margin-top: 5px;
+    }
+</style>
+
+<header id="header">
+    <div class="header-box">
+        <h1><span>交易设置</span></h1>
+        <a href="" class="back" onclick="history.back(); return false;"></a>
+    </div>
+</header>
+<div class="container">
+    <div class="row">
+        <div class="info">
+            <form class="form-inline">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">止损点</div>
+                        <input type="number" class="form-control" ng-model="winPoint" min="1" max="100" placeholder="" required>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-addon">止盈点</div>
+                        <input type="number" class="form-control" ng-model="lossPoint" min="1" max="100" placeholder="" required>
+                    </div>
+                </div>
+            </form>
+            <div class="confirm">
+                <button type="button" class="btn btn-primary col-xs-offset-1 col-xs-10" ng-click="appoint()">设置</button>
+                <p class="col-xs-12">我们将尽快联系您</p>
+                <p class="col-xs-12">盈利能力优秀的用户预约成功的概率更大</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ui-tip" ng-show="showError">\{{errorMsg}}</div>
