@@ -13,10 +13,7 @@ if(cluster.isMaster){
 
     cluster.on('online', function(worker) {
         if (worker.id === 1) {
-            //task.scheduleAutoPostponeJob();
             task.scheduleDailyDataJob();
-            //task.scheduleContractCheckJob();
-            //task.scheduleOperationDataCollectJob();
             task.scheduleFuturesRiskControlJob();
             task.scheduleHiveControlJob();
             task.scheduleFuturesForceCloseJob();
