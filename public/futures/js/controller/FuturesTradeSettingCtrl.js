@@ -35,7 +35,7 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
         }
     };
 
-    $scope.titleText = OPEN_TEXT;
+    $scope.toggleSetting();
     $scope.changeSetting = function() {
         if (!$scope.open) {
             if (!$scope.winPoint && !$scope.lossPoint) {
