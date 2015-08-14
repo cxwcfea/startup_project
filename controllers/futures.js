@@ -632,9 +632,9 @@ function addCard(req, res) {
 }
 
 function changeTradeSetting(req, res) {
-    var userID = req.body.user.wechat.trader;
+    var userID = req.user.wechat.trader;
     if (req.body.type == 1) {
-        userID = req.body.user.wechat.real_trader;
+        userID = req.user.wechat.real_trader;
     }
     mockTrader.User.update({_id:userID}, {tradeControl:req.body.open, winPoint:req.body.win, lossPoint:req.body.loss}, function(err, numberAffected, raw) {
         if (err) {
