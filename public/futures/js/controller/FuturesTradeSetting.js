@@ -11,6 +11,7 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
         }, 2000);
     }
 
+    /*
     $scope.appoint = function() {
         if (!$scope.mobile) {
             displayError('请输入有效手机号');
@@ -39,4 +40,5 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
                 displayError('预约失败');
             });
     };
+    */
 }]);
