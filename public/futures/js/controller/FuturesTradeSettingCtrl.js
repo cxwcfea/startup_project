@@ -64,6 +64,15 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
                     });
 
                     modalInstance.result.then(function () {
+                        if ($scope.data.real) {
+                            $scope.user.wechat.real_trader.winPoint = $scope.winPoint;
+                            $scope.user.wechat.real_trader.lossPoint = $scope.lossPoint;
+                            $scope.user.wechat.real_trader.tradeControl = $scope.open;
+                        } else {
+                            $scope.user.wechat.trader.winPoint = $scope.winPoint;
+                            $scope.user.wechat.trader.lossPoint = $scope.lossPoint;
+                            $scope.user.wechat.trader.tradeControl = $scope.open;
+                        }
                         $location.path('/home');
                     }, function () {
                     });
