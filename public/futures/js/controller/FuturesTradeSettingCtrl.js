@@ -11,6 +11,11 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
         }, 2000);
     }
 
+    var OPEN_TEXT = '开启设置';
+    var CLOSE_TEXT = '关闭设置';
+
+    $scope.titleText = OPEN_TEXT;
+    $scope.open = false;
     $scope.changeSetting = function() {
         alert($scope.open);
         /*
@@ -41,5 +46,13 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
                 displayError('预约失败');
             });
             */
+    };
+
+    $scope.toggleSetting = function() {
+        if ($scope.open) {
+            $scope.titleText = CLOSE_TEXT;
+        } else {
+            $scope.titleText = OPEN_TEXT;
+        }
     };
 }]);
