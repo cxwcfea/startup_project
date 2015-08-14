@@ -27,6 +27,10 @@
     <div class="container">
         <div class="row">
             <div class="info">
+                <label class="ui-switch">
+                    <input type="checkbox" ng-model="open" ng-change="toggleSetting()">
+                    <i></i>
+                </label>
                 <form class="form-inline">
                     <div class="form-group">
                         <div class="input-group">
@@ -41,7 +45,7 @@
                     </div>
                 </form>
                 <div class="confirm">
-                    <button type="button" class="btn btn-primary col-xs-offset-1 col-xs-10" ng-click="appoint()">设置</button>
+                    <button type="button" class="btn btn-primary col-xs-offset-1 col-xs-10" ng-click="changeSetting()">设置</button>
                     <p class="col-xs-12">我们将尽快联系您</p>
                     <p class="col-xs-12">盈利能力优秀的用户预约成功的概率更大</p>
                 </div>
