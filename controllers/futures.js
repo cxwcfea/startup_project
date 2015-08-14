@@ -632,9 +632,18 @@ function addCard(req, res) {
 }
 
 function changeTradeSetting(req, res) {
+    if (req.body.open === undefined || req.body.open === null) {
+        return res.status(403).send({error_msg:'参数无效'});
+    }
     var userID = req.user.wechat.trader;
     if (req.body.type == 1) {
         userID = req.user.wechat.real_trader;
+    }
+    if (req.body.win === undefined || req.body.win === null) {
+        req.body.win = 0;
+    }
+    if (req.body.loss === undefined || req.body.loss === null) {
+        req.body.loss = 0;
     }
     mockTrader.User.update({_id:userID}, {tradeControl:req.body.open, winPoint:req.body.win, lossPoint:req.body.loss}, function(err, numberAffected, raw) {
         if (err) {
