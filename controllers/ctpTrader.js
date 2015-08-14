@@ -157,7 +157,7 @@ function closeAll(userId, portfolio, income, contractInfo, contractData, reset, 
                           var order = new Order({
                               contractId: portf.contractId,
                               userId: userId,
-                              cash: user.cash + income,
+                              cash: user.cash,
                               quantity: -portf.quantity,
                               price: contractInfo[portf.contractId].LastPrice,
                               fee: costs.fee,
@@ -332,6 +332,8 @@ function windControl(userId, forceClose, userContract, cb) {
                                               return lock.unlock();
                                           }
                                           contractInfo[portf.contractId].LastPrice = info.traded_price*100;
+                                          costs = getCosts(contract, info.traded_price*100, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
+                                          income = -costs.open;
                                           // Close all positions
                                           console.log("Closing user");
                                           if (!forceClose) {
