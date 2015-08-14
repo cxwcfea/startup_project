@@ -14,7 +14,7 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
     var OPEN_TEXT = '开启设置';
     var CLOSE_TEXT = '关闭设置';
 
-    function setDefaultPoint() {
+    var setDefaultPoint = $scope.setDefaultPoint = function() {
         if ($scope.data.real) {
             $scope.winPoint = $scope.user.wechat.real_trader.winPoint;
             alert($scope.winPoint);
@@ -37,7 +37,7 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
         if ($scope.open === undefined || $scope.open === null) {
             $scope.open = false;
         }
-    }
+    };
     setDefaultPoint();
 
     $scope.titleText = OPEN_TEXT;
