@@ -17,7 +17,7 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
     $scope.setDefaultPoint = function() {
         if ($scope.data.real) {
             $scope.winPoint = $scope.user.wechat.real_trader.winPoint;
-            $scope.winPoint = $scope.user.wechat.real_trader.lossPoint;
+            $scope.lossPoint = $scope.user.wechat.real_trader.lossPoint;
             $scope.open = $scope.user.wechat.real_trader.tradeControl;
         } else {
             $scope.winPoint = $scope.user.wechat.trader.winPoint;
