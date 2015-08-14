@@ -638,9 +638,11 @@ function changeTradeSetting(req, res) {
     }
     mockTrader.User.update({_id:userID}, {tradeControl:req.body.open, winPoint:req.body.win, lossPoint:req.body.loss}, function(err, numberAffected, raw) {
         if (err) {
+            logger.warn(err);
             return res.status(500).send({error_msg:err.toString()});
         }
         if (!numberAffected) {
+            logger.warn('无法更新设置');
             return res.status(503).send({error_msg:'无法更新设置'});
         }
         res.send({});
