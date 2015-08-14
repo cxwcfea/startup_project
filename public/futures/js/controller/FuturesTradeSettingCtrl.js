@@ -17,13 +17,25 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
     $scope.titleText = OPEN_TEXT;
     $scope.open = false;
     $scope.changeSetting = function() {
-        alert($scope.open);
-        /*
-        if (!$scope.winPoint) {
-            displayError('请输入有效手机号');
-            return;
+        if ($scope.open) {
+            if (!$scope.winPoint && !$scope.lossPoint) {
+                displayError('止损点，止盈点请至少输入一个');
+                return;
+            }
+        } else {
+            if (data.real) {
+                $scope.winPoint = $scope.user.wechat.real_trader.winPoint;
+                $scope.winPoint = $scope.user.wechat.real_trader.lossPoint;
+            } else {
+                $scope.winPoint = $scope.user.wechat.trader.winPoint;
+                $scope.winPoint = $scope.user.wechat.trader.lossPoint;
+            }
         }
-        $http.post('/futures/make_appointment', {mobile:$scope.mobile})
+        var type = 0;
+        if (data.real) {
+            type = 1;
+        }
+        $http.post('/futures/change_trade_setting', {open:$scope.open, win:$scope.winPoint, loss:$scope.lossPoint, type:type})
             .success(function(data, status) {
                 (function () {
                     var modalInstance = $modal.open({
@@ -43,9 +55,8 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
                 })();
             })
             .error(function(data, status) {
-                displayError('预约失败');
+                displayError('设置失败');
             });
-            */
     };
 
     $scope.toggleSetting = function() {

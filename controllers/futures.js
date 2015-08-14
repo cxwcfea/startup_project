@@ -42,6 +42,7 @@ var getUserViewModel = function (user) {
 function populatePPJUser(user, cb) {
     var query = User.findById(user._id);
     query.populate('wechat.trader');
+    query.populate('wechat.real_trader');
     query.exec(function(err, u) {
         if (err) {
             cb(err);
@@ -327,9 +328,6 @@ function getUserInfo(req, res) {
 }
 
 function resetUser(req, res) {
-    if (req.user.wechat.status !== 0) {
-        return res.status(401).send({error_msg:'user not allow reset'});
-    }
     mockTrader.resetUser(req.user.wechat.trader, function(err) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
@@ -633,6 +631,22 @@ function addCard(req, res) {
     });
 }
 
+function changeTradeSetting(req, res) {
+    var userID = req.body.user.wechat.trader;
+    if (req.body.type == 1) {
+        userID = req.body.user.wechat.real_trader;
+    }
+    mockTrader.User.update({_id:userID}, {tradeControl:req.body.open, winPoint:req.body.win, lossPoint:req.body.loss}, function(err, numberAffected, raw) {
+        if (err) {
+            return res.status(500).send({error_msg:err.toString()});
+        }
+        if (!numberAffected) {
+            return res.status(503).send({error_msg:'无法更新设置'});
+        }
+        res.send({});
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/api/futures/user_rank', passportConf.isWechatAuthenticated, fetchUserRankData);
@@ -668,6 +682,8 @@ module.exports = {
         app.post('/futures/addCard', passportConf.requiresRole('admin'), addCard);
 
         app.get('/futures/real', passportConf.isWechatAuthenticated, realHome);
+
+        app.post('/futures/change_trade_setting', passportConf.isWechatAuthenticated, changeTradeSetting);
 
         app.get('/futures/test', test);
 
