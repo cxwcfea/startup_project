@@ -1,12 +1,19 @@
 <html>
 <head>
+    <link rel="stylesheet" href="{{static '/vendor/bootstrap/dist/css/bootstrap.min.css'}}">
+    <script src="{{static '/vendor/jquery/dist/jquery.min.js'}}"></script>
 </head>
 <body>
-<h2>您还没有开通实盘权限，即将跳转到虚拟交易页面...</h2>
+<section class="content">
+    <div class="row">
+        <h2>您还没有开通实盘权限</h2>
+        <h2>您可以:</h2>
+        <a href="" class="btn btn-primary col-xs-6">进入虚拟盘</a>
+        <a href="" class="btn btn-primary col-xs-6">预约实盘</a>
+    </div>
+</section>
 <script>
-    setTimeout(function() {
-        window.location.assign('/futures');
-    }, 3000);
+ //       window.location.assign('/futures');
 </script>
 </body>
 </html>
