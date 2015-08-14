@@ -17,7 +17,7 @@
     }
     .setting-box .info .title {
         position: relative;
-        display: block;
+        display: inline-block;
         width: 35px;
         height: 20px;
     }
@@ -33,15 +33,17 @@
     <div class="container">
         <div class="row">
             <div class="info">
-                <div class="pull-right">
-                    <label class="title">开启设置</label>
-                    <label class="ui-switch">
-                        <input type="checkbox" ng-model="open" ng-change="toggleSetting()">
-                        <i></i>
-                    </label>
-                </div>
                 <form class="form-inline">
                     <div class="form-group">
+                        <div class="input-group">
+                            <div class="pull-right">
+                                <label class="title">开启设置</label>
+                                <label class="ui-switch">
+                                    <input type="checkbox" ng-model="open" ng-change="toggleSetting()">
+                                    <i></i>
+                                </label>
+                            </div>
+                        </div>
                         <div class="input-group">
                             <div class="input-group-addon">止损点</div>
                             <input type="number" class="form-control" ng-model="winPoint" min="1" max="100" placeholder="" required>
