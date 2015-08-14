@@ -17,11 +17,15 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
     function setDefaultPoint() {
         if ($scope.data.real) {
             $scope.winPoint = $scope.user.wechat.real_trader.winPoint;
+            alert($scope.winPoint);
             $scope.winPoint = $scope.user.wechat.real_trader.lossPoint;
+            alert($scope.lossPoint);
             $scope.open = $scope.user.wechat.real_trader.tradeControl;
         } else {
             $scope.winPoint = $scope.user.wechat.trader.winPoint;
+            alert($scope.winPoint);
             $scope.winPoint = $scope.user.wechat.trader.lossPoint;
+            alert($scope.lossPoint);
             $scope.open = $scope.user.wechat.trader.tradeControl;
         }
         if ($scope.winPoint === undefined || $scope.winPoint === null) {
