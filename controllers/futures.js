@@ -145,6 +145,7 @@ function placeOrder(req, res) {
     var quantity = req.body.quantity;
     var forceClose = req.body.forceClose;
 
+    req.body.contract = {exchange:'future', stock_code:'IFCURR'};
     if (forceClose) {
         req.body.force_close = 1;
         if (req.body.type == 1 && req.user.wechat.status === 4) {
