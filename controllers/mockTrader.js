@@ -243,96 +243,6 @@ function setStatus(userId, status) {
     });
 }
 
-function portfolioCheckForWindControl(portfolio, callback) {
-    var contractInfo = {};
-    var contractData = {};
-
-    var portf = portfolio[p];
-    Contract.findOne({_id: portf.contractId}, function(err, contract) {
-        asyncObj.remaining -= 1;
-        if (err || !contract) {
-            console.log(err);
-            console.log(contract);
-            console.log(portf);
-            asyncObj.has_error = true;
-            if (err) asyncObj.errmsg = err.errmsg;
-        }
-        if (asyncObj.has_error) {
-            if (asyncObj.remaining <= 0){
-                //res.send({code: -3, "msg": asyncObj.errmsg});
-                cb(asyncObj.errmsg);
-                lock.unlock();
-            }
-            return;
-        }
-        if (typeof userContract !== 'undefined') {
-            if (!(contract.exchange === userContract.exchange &&
-                contract.stock_code === userContract.stock_code)) {
-                if (asyncObj.remaining <= 0){
-                    cb("No stock matching request");
-                    lock.unlock();
-                }
-                return;
-            }
-        }
-        global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
-            if (err || !priceInfoString) {
-                console.log(err);
-                asyncObj.has_error = true;
-                if (err) asyncObj.errmsg = err.errmsg;
-            }
-            if (asyncObj.has_error) {
-                if (asyncObj.remaining <= 0){
-                    //res.send({code: -4, "msg": asyncObj.errmsg});
-                    cb(asyncObj.errmsg);
-                    lock.unlock();
-                }
-                return;
-            }
-            var priceInfo = JSON.parse(priceInfoString);
-            priceInfo.LastPrice *= 100;
-
-            contractInfo[portf.contractId] = priceInfo;
-            contractData[portf.contractId] = contract;
-            var costs = getCosts(contract, priceInfo.LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
-            asyncObj.value -= costs.open;
-            if (asyncObj.remaining > 0 && typeof userContract === 'undefined') {
-                console.log("Still counting: " + asyncObj);
-                return;
-            }
-            //console.log("Completed: " + asyncObj);
-            var income = asyncObj.value;
-            console.log("User info: " + userId + ", " + user.cash + ", " + income + ", " + user.close);
-            if (!forceClose && user.cash + income > user.close) {
-                // No risk
-                console.log("No risk");
-                cb(null);
-                return lock.unlock();
-            } else {
-                if (income > 0) {
-                    // Close all positions
-                    console.log("Closing user");
-                    if (!forceClose) {
-                        // Have to close
-                        // setStatus(userId, 1);  // cannot buy
-                        closeAll(userId, portfolio, income, contractInfo, contractData, 1, cb, lock);
-                    } else {
-                        // Force close
-                        if (typeof userContract !== 'undefined') {
-                            portfolio = [portf];
-                        }
-                        closeAll(userId, portfolio, income, contractInfo, contractData, 0, cb, lock);
-                    }
-                } else {
-                    console.log("Closed");
-                    cb(null);
-                    return lock.unlock();
-                }
-            }
-        });
-    });
-}
-
 function windControl(userId, forceClose, userContract, cb) {
     var resource = 'mt://lock/user/' + userId;
     var ttl = 10000;
@@ -364,7 +274,95 @@ function windControl(userId, forceClose, userContract, cb) {
                   return lock.unlock();
               }
               var asyncObj = {remaining: portfolio.length, value: 0, has_error: false, errmsg:""};
+              var contractInfo = {};
+              var contractData = {};
 
+              for (var p in portfolio) {
+                  var portf = portfolio[p];
+                  Contract.findOne({_id: portf.contractId}, function(err, contract) {
+                      asyncObj.remaining -= 1;
+                      if (err || !contract) {
+                          console.log(err);
+                          console.log(contract);
+                          console.log(portf);
+                          asyncObj.has_error = true;
+                          if (err) asyncObj.errmsg = err.errmsg;
+                      }
+                      if (asyncObj.has_error) {
+                          if (asyncObj.remaining <= 0){
+                              //res.send({code: -3, "msg": asyncObj.errmsg});
+                              cb(asyncObj.errmsg);
+                              lock.unlock();
+                          }
+                          return;
+                      }
+                      if (typeof userContract !== 'undefined') {
+                        if (!(contract.exchange === userContract.exchange &&
+                            contract.stock_code === userContract.stock_code)) {
+                          if (asyncObj.remaining <= 0){
+                              cb("No stock matching request");
+                              lock.unlock();
+                          }
+                          return;
+                        }
+                      }
+                      global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
+                          if (err || !priceInfoString) {
+                              console.log(err);
+                              asyncObj.has_error = true;
+                              if (err) asyncObj.errmsg = err.errmsg;
+                          }
+                          if (asyncObj.has_error) {
+                              if (asyncObj.remaining <= 0){
+                                  //res.send({code: -4, "msg": asyncObj.errmsg});
+                                  cb(asyncObj.errmsg);
+                                  lock.unlock();
+                              }
+                              return;
+                          }
+                          var priceInfo = JSON.parse(priceInfoString);
+                          priceInfo.LastPrice *= 100;
+
+                          contractInfo[portf.contractId] = priceInfo;
+                          contractData[portf.contractId] = contract;
+                          var costs = getCosts(contract, priceInfo.LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
+                          asyncObj.value -= costs.open;
+                          if (asyncObj.remaining > 0 && typeof userContract === 'undefined') {
+                              console.log("Still counting: " + asyncObj);
+                              return;
+                          }
+                          //console.log("Completed: " + asyncObj);
+                          var income = asyncObj.value;
+                          console.log("User info: " + userId + ", " + user.cash + ", " + income + ", " + user.close);
+                          if (!forceClose && user.cash + income > user.close) {
+                              // No risk
+                              console.log("No risk");
+                              cb(null);
+                              return lock.unlock();
+                          } else {
+                              if (income > 0) {
+                                  // Close all positions
+                                  console.log("Closing user");
+                                  if (!forceClose) {
+                                    // Have to close
+                                    // setStatus(userId, 1);  // cannot buy
+                                    closeAll(userId, portfolio, income, contractInfo, contractData, 1, cb, lock);
+                                  } else {
+                                    // Force close
+                                    if (typeof userContract !== 'undefined') {
+                                        portfolio = [portf];
+                                    }
+                                    closeAll(userId, portfolio, income, contractInfo, contractData, 0, cb, lock);
+                                  }
+                              } else {
+                                  console.log("Closed");
+                                  cb(null);
+                                  return lock.unlock();
+                              }
+                          }
+                      });
+                  });
+              }
           });
       });
     }, function(){
