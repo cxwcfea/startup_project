@@ -15,6 +15,12 @@
         margin-left: 10px;
         margin-right: 10px;
     }
+    .setting-box .info .title {
+        position: relative;
+        display: inline-block;
+        width: 35px;
+        height: 20px;
+    }
 </style>
 
 <section class="setting-box">
@@ -27,11 +33,13 @@
     <div class="container">
         <div class="row">
             <div class="info">
-                <label>开启设置</label>
-                <label class="ui-switch">
-                    <input type="checkbox" ng-model="open" ng-change="toggleSetting()">
-                    <i></i>
-                </label>
+                <div class="pull-right">
+                    <label class="title">开启设置</label>
+                    <label class="ui-switch">
+                        <input type="checkbox" ng-model="open" ng-change="toggleSetting()">
+                        <i></i>
+                    </label>
+                </div>
                 <form class="form-inline">
                     <div class="form-group">
                         <div class="input-group">
