@@ -113,14 +113,14 @@ function closeAll(userId, portfolio, income, contractInfo, contractData, reset, 
           var oldUserCash = user.cash;
           var oldUserLastCash = user.lastCash;
           // FIXME: should not reset user.cash in ctp trader
-          /*
+          
           if (reset == 1) {
             // Reset user
-            user.cash = user.deposit + user.debt;
+            //user.cash = user.deposit + user.debt;
           } else {
             // Close user
             user.cash += income;
-          }*/
+          }
           user.lastCash = user.cash;
           User.update({_id: user._id, cash: oldUserCash, lastCash: oldUserLastCash},
               {$set:{cash: user.cash, lastCash: user.lastCash}}, function(err, numberAffected, raw) {
