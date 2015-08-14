@@ -37,7 +37,7 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
 
     $scope.titleText = OPEN_TEXT;
     $scope.changeSetting = function() {
-        if ($scope.open) {
+        if (!$scope.open) {
             if (!$scope.winPoint && !$scope.lossPoint) {
                 displayError('止损点，止盈点请至少输入一个');
                 return;

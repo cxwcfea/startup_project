@@ -35,6 +35,7 @@
             <div class="info">
                 <form class="form-inline">
                     <div class="form-group">
+                        <!--
                         <div class="input-group">
                             <div class="pull-right">
                                 <label class="title">\{{titleText}}</label>
@@ -45,6 +46,7 @@
                             </div>
                         </div>
                         <br>
+                        -->
                         <div class="input-group">
                             <div class="input-group-addon">自动止损点</div>
                             <input type="number" class="form-control" ng-model="winPoint" min="0" max="100" placeholder="" required>
@@ -57,7 +59,7 @@
                     </div>
                 </form>
                 <div class="confirm">
-                    <button type="button" class="btn btn-primary col-xs-offset-1 col-xs-10" ng-click="changeSetting()">设置</button>
+                    <button type="button" class="btn btn-primary col-xs-offset-1 col-xs-10" ng-click="changeSetting()">\{{titleText}}</button>
                     <p class="col-xs-12">自动止损点：</p>
                     <p class="col-xs-12">当您的一手持仓亏损n个点（每亏1个点对应亏损300元）时，系统会帮你自动平仓。</p>
                     <p class="col-xs-12">比如您持一手多仓，点位是4000，当指数下跌至(4000-n)时，会触发系统平仓。 </p>
