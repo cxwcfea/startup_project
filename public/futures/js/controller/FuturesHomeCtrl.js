@@ -158,6 +158,24 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     }, 500);
 
     $scope.showShareHint = false;
+    $scope.openIntroPopup = function (size) {
+        var modalInstance = $modal.open({
+            animation: true,
+            backdrop: 'static',
+            windowClass: 'xx-dialog',
+            templateUrl: 'views/intro_popup.html',
+            controller: 'IntroModalCtrl',
+            size: size,
+            resolve: {}
+        });
+
+        modalInstance.result.then(function () {
+            console.log('Modal dismissed at: ' + new Date());
+			$scope.data.status = 1;
+        }, function () {
+            console.log('Modal dismissed at: ' + new Date());
+        });
+    };
 
     $scope.openGainPopup = function (size) {
         var modalInstance = $modal.open({
@@ -279,7 +297,8 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         $location.path('/profit_exchange');
     };
 
-    $scope.setting = function() {
+    $scope.help = function() {
+        $scope.openIntroPopup('lg');
     };
 
     $scope.currentOrder = null;
