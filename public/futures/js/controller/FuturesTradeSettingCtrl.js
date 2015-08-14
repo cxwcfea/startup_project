@@ -15,7 +15,7 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
     var CLOSE_TEXT = '关闭设置';
 
     function setDefaultPoint() {
-        if (data.real) {
+        if ($scope.data.real) {
             $scope.winPoint = $scope.user.wechat.real_trader.winPoint;
             $scope.winPoint = $scope.user.wechat.real_trader.lossPoint;
         } else {
@@ -37,7 +37,7 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
             setDefaultPoint();
         }
         var type = 0;
-        if (data.real) {
+        if ($scope.data.real) {
             type = 1;
         }
         $http.post('/futures/change_trade_setting', {open:$scope.open, win:$scope.winPoint, loss:$scope.lossPoint, type:type})
