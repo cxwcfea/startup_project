@@ -777,6 +777,34 @@ function getLastFuturesPrice(cb) {
         cb(null, {ts:priceInfo.ts, lastPrice:priceInfo.LastPrice});
     });
 }
+var user_with_trigger;
+function loadDBData() {
+	user_with_trigger = new Array();
+	User.find({tradeControl: true}, function(err, users){
+		if(err){
+			console.log('get user from db failed in loadDBData');
+			return;
+		}
+		if(!users){
+			console.log('no available user');
+			return;
+		}
+		for (var i in users) {
+			var user = users[1];
+			var user_trigger = {
+				id: user._id,
+				real: user.real,
+				winPoint: user.winPoint,
+				lossPoint: user.lossPoint
+			};
+			//var user_trigger = new Array();
+			//user_trigger['winPoint'] = user.winPoint;
+			//user_trigger['lossPoint'] = user.lossPoint;
+			user_with_trigger.push(user_triggerr);
+		}
+	});
+}
+
 var hive;
 function initHive() {
 	var initConfig = {
@@ -792,6 +820,7 @@ function initHive() {
 	};
 	hive = new Hive(initConfig);
 	hive.login();
+	loadDBData();
 }
 
 function destroyHive() {
@@ -817,5 +846,6 @@ module.exports = {
     getProfit: getProfit,
     resetUser: resetUser,
 	initHive: initHive,
-    destroyHive: destroyHive
+    destroyHive: destroyHive,
+	loadDBData: loadDBData
 };
