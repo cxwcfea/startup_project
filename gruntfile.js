@@ -27,7 +27,21 @@ module.exports = function (grunt) {
                     'public/js.min/niujinwang-recharge.min.js': ['public/app/controllers/RechargeCtrl.js'],
                     'public/js.min/niujinwang-mobile.min.js': ['public/mobile/js/controller/*.js', 'public/js/common_module.js'],
                     'public/js.min/niujinwang-admin.min.js': ['public/admin/admin.js', 'public/admin/controllers/*.js', 'public/admin/resources/*.js', 'public/admin/services/*.js', 'public/js/common_module.js'],
-                    'public/js.min/niujinwang-ppj.min.js': ['public/js/highstock.js', 'public/futures/js/script.js', 'public/futures/js/futures.js', 'public/futures/js/lib/*.js', 'public/futures/js/controller/*.js', 'public/js/common_module.js']
+                    'public/js.min/niujinwang-ppj.min.js': [
+                        'public/vendor/angular-touch/angular-touch.js',
+                        'public/vendor/angular-route/angular-route.js',
+                        'public/vendor/angular-resource/angular-resource.js',
+                        'public/vendor/angular-bootstrap/ui-bootstrap-tpls.js',
+                        'public/vendor/bootstrap/dist/js/bootstrap.js',
+                        'public/vendor/toastr/toastr.js',
+                        'public/vendor/moment/moment.js',
+                        'public/vendor/moment/locale/zh-cn.js',
+                        'public/js/highstock.js',
+                        'public/futures/js/script.js',
+                        'public/futures/js/futures.js',
+                        'public/futures/js/lib/*.js',
+                        'public/futures/js/controller/*.js',
+                        'public/js/common_module.js']
                 }
             }
         },
