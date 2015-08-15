@@ -64,10 +64,12 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
         if (processing) {
             return;
         }
+        processing = true;
         var open = !$scope.open;
         if (open) {
             if (!$scope.winPoint && !$scope.lossPoint) {
                 displayError('止损点，止盈点请至少输入一个');
+                processing = false;
                 return;
             }
             (function () {
@@ -83,7 +85,7 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
                 modalInstance.result.then(function () {
                     makeSettingRequest(open);
                 }, function () {
-                    alert('cancel');
+                    processing = false;
                 });
             })();
         } else {
@@ -101,13 +103,17 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
                 modalInstance.result.then(function () {
                     makeSettingRequest(open);
                 }, function () {
-                    alert('cancel');
+                    processing = false;
                 });
             })();
         }
     };
 
     $scope.toggleSetting = function() {
+        if (processing) {
+            $scope.titleText = SETTING_TEXT;
+            return;
+        }
         if ($scope.open) {
             $scope.titleText = CLOSE_TEXT;
         } else {
