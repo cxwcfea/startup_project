@@ -1,0 +1,28 @@
+<style>
+    .modal-header .modal-title {
+        font-size: 1.8em;
+    }
+    .modal-footer .container button {
+        width: 100%;
+        font-size: 1.5em;
+        height: 2em;
+    }
+    .modal-body p {
+        font-size: 1.5em;
+    }
+</style>
+<div class="modal-header">
+    <h3 class="modal-title">提示</h3>
+</div>
+<div class="modal-body">
+    <div>
+        <p>系统交易（平仓）由程序自动执行,实际成交取决于交易所交易状况，不保证时间平仓点与您设置的止盈点,止损点完全一致。</p>
+        <p>开启“交易设置”代表您已经完全知悉和愿意承担自动平仓带来的不确定性。</p>
+        <p>确定要打开交易设置吗？</p>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="container">
+        <button class="btn btn-primary" ng-click="ok()">我明白，确认开始交易设置</button>
+    </div>
+</div>
