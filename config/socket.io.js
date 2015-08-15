@@ -10,7 +10,8 @@ var products = [
         historyKey: 'mt://future/IFHIST',
         currKey: 'mt://future/IFCURR',
         historyData: []
-    },
+    }
+    /*
     {
         name: 'EURUSD',
         historyKey: 'mt://forex/EURUSDHIST',
@@ -29,6 +30,7 @@ var products = [
         currKey: 'mt://stock/BABA',
         historyData: []
     }
+    */
 ];
 
 function fetchHistoryData(cb) {
