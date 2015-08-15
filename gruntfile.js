@@ -26,7 +26,8 @@ module.exports = function (grunt) {
                     'public/js.min/niujinwang-user.min.js': ['public/user/user.js', 'public/user/controllers/*.js', 'public/js/user.js', 'public/js/jquery.zclip.min.js'],
                     'public/js.min/niujinwang-recharge.min.js': ['public/app/controllers/RechargeCtrl.js'],
                     'public/js.min/niujinwang-mobile.min.js': ['public/mobile/js/controller/*.js', 'public/js/common_module.js'],
-                    'public/js.min/niujinwang-admin.min.js': ['public/admin/admin.js', 'public/admin/controllers/*.js', 'public/admin/resources/*.js', 'public/admin/services/*.js', 'public/js/common_module.js']
+                    'public/js.min/niujinwang-admin.min.js': ['public/admin/admin.js', 'public/admin/controllers/*.js', 'public/admin/resources/*.js', 'public/admin/services/*.js', 'public/js/common_module.js'],
+                    'public/js.min/niujinwang-ppj.min.js': ['public/futures/js/script.js', 'public/futures/js/futures.js', 'public/futures/js/lib/*.js', 'public/futures/js/controller/*.js', 'public/js/common_module.js']
                 }
             }
         },
@@ -64,11 +65,13 @@ module.exports = function (grunt) {
                     'public/js.min/niujinwang-recharge.min.js',
                     'public/js.min/niujinwang-mobile.min.js',
                     'public/js.min/niujinwang-admin.min.js',
+                    'public/js.min/niujinwang-ppj.min.js',
                     'public/mobile/css/niujinwang-mobile.min.css'
                 ],
                 dest: [
                     'views/layouts/*.handlebars',
-                    'views/admin/main.handlebars'
+                    'views/admin/main.handlebars',
+                    'views/futures/index.handlebars'
                 ]
             }
         }
