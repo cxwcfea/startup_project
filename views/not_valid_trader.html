@@ -3,8 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, minimal-ui" />
-    <link rel="stylesheet" href="/vendor/bootstrap/dist/css/bootstrap.min.css">
-    <script src="/vendor/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="bootstrap.min.css">
     <style>
         .middel-page-body {
             margin-top: 80px;
@@ -32,6 +31,15 @@
             margin-left:5px;
             margin-right:10px;
         }
+        .divide-two .button-style {
+            font-size:15px;
+            color:#ffffff;
+            text-align:center;
+            line-height:46px;
+            background-color:#448aca;
+            border-radius:5px;
+            height:46px;
+        }
     </style>
 </head>
 <body>
@@ -41,12 +49,12 @@
                 <p>您还没有开通实盘权限</p>
                 <p>您可以:</p>
             </div>
-            <div class="row">
+            <div>
                 <div class="divide-two">
-                    <a href="/futures" class="btn btn-primary btn-lg button-area-left">进入虚拟盘</a>
+                    <a href="/futures"><div class="button-style button-area-left">进入虚拟盘</div></a>
                 </div>
                 <div class="divide-two">
-                    <a href="/futures/#/appointment" class="btn btn-primary btn-lg button-area-right">预约实盘</a>
+                    <a href="/futures/#/appointment"><div  class="button-style button-area-right">预约实盘</div></a>
                 </div>
             </div>
         </div>

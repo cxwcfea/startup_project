@@ -20,20 +20,26 @@
             text-align: center;
             font-size: x-large;
         }
-        .button-area {
-            margin-top:10px;
-        }
-        .button-area .divide-two {
+        .divide-two {
             float:left;
             width:50%;
         }
-        .button-area .divide-two .button-area-left {
+        .divide-two .button-area-left {
             margin-left:10px;
             margin-right:5px;
         }
-        .button-area .divide-two .button-area-right {
+        .divide-two .button-area-right {
             margin-left:5px;
             margin-right:10px;
+        }
+        .divide-two .button-style {
+            font-size:15px;
+            color:#ffffff;
+            text-align:center;
+            line-height:46px;
+            background-color:#448aca;
+            border-radius:5px;
+            height:46px;
         }
     </style>
 </head>
@@ -44,12 +50,12 @@
                 <p>您还没有开通实盘权限</p>
                 <p>您可以:</p>
             </div>
-            <div class="button-area">
+            <div>
                 <div class="divide-two">
-                    <a href="/futures" class="btn btn-primary btn-lg button-area-left">进入虚拟盘</a>
+                    <a href="/futures"><div class="button-style button-area-left">进入虚拟盘</div></a>
                 </div>
                 <div class="divide-two">
-                    <a href="/futures/#/appointment" class="btn btn-primary btn-lg button-area-right">预约实盘</a>
+                    <a href="/futures/#/appointment"><div  class="button-style button-area-right">预约实盘</div></a>
                 </div>
             </div>
         </div>
