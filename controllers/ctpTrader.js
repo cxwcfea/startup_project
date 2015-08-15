@@ -847,5 +847,6 @@ module.exports = {
     resetUser: resetUser,
 	initHive: initHive,
     destroyHive: destroyHive,
-	loadDBData: loadDBData
+	loadDBData: loadDBData,
+    makeRedisKey: makeRedisKey
 };
