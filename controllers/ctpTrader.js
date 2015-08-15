@@ -842,5 +842,6 @@ module.exports = {
 	initHive: initHive,
     destroyHive: destroyHive,
 	loadDBData: loadDBData,
+    user_with_trigger: user_with_trigger,
     makeRedisKey: makeRedisKey
 };
