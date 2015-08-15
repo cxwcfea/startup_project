@@ -33,22 +33,22 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
         $scope.toggleSetting();
     };
 
-    function makeSettingRequest() {
+    function makeSettingRequest(open) {
         var type = 0;
         if ($scope.data.real) {
             type = 1;
         }
-        $http.post('/futures/change_trade_setting', {open:$scope.open, win:$scope.winPoint, loss:$scope.lossPoint, type:type})
+        $http.post('/futures/change_trade_setting', {open:open, win:$scope.winPoint, loss:$scope.lossPoint, type:type})
             .success(function(data, status) {
                 displayError('设置成功', true);
                 if ($scope.data.real) {
                     $scope.user.wechat.real_trader.winPoint = $scope.winPoint;
                     $scope.user.wechat.real_trader.lossPoint = $scope.lossPoint;
-                    $scope.user.wechat.real_trader.tradeControl = $scope.open;
+                    $scope.user.wechat.real_trader.tradeControl = open;
                 } else {
                     $scope.user.wechat.trader.winPoint = $scope.winPoint;
                     $scope.user.wechat.trader.lossPoint = $scope.lossPoint;
-                    $scope.user.wechat.trader.tradeControl = $scope.open;
+                    $scope.user.wechat.trader.tradeControl = open;
                 }
             })
             .error(function(data, status) {
@@ -57,16 +57,12 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
     }
 
     $scope.changeSetting = function() {
-        if (!$scope.open) {
+        var open = !$scope.open;
+        if (open) {
             if (!$scope.winPoint && !$scope.lossPoint) {
                 displayError('止损点，止盈点请至少输入一个');
                 return;
             }
-        } else {
-            $scope.setDefaultPoint();
-            $scope.open = false;
-        }
-        if ($scope.open === true) {
             (function () {
                 var modalInstance = $modal.open({
                     animation: true,
@@ -78,12 +74,13 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
                 });
 
                 modalInstance.result.then(function () {
-                    makeSettingRequest();
+                    makeSettingRequest(open);
                 }, function () {
                 });
             })();
         } else {
-            makeSettingRequest();
+            $scope.setDefaultPoint();
+            makeSettingRequest(open);
         }
     };
 
