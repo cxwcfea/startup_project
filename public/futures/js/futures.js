@@ -75,6 +75,7 @@ angular.module('futuresApp').controller('GainModalCtrl', ['$scope', '$modalInsta
 
 angular.module('futuresApp').controller('InfoModalCtrl', ['$scope', '$modalInstance', 'info', function ($scope, $modalInstance, info) {
     $scope.data = {};
+    $scope.info = info;
     $scope.ok = function () {
         $modalInstance.close($scope.data);
     };

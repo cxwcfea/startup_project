@@ -779,7 +779,6 @@ function getLastFuturesPrice(cb) {
 }
 var user_with_trigger;
 function loadDBData() {
-	user_with_trigger = new Array();
 	User.find({tradeControl: true}, function(err, users){
 		if(err){
 			console.log('get user from db failed in loadDBData');
@@ -789,19 +788,14 @@ function loadDBData() {
 			console.log('no available user');
 			return;
 		}
-		for (var i in users) {
-			var user = users[1];
-			var user_trigger = {
-				id: user._id,
-				real: user.real,
-				winPoint: user.winPoint,
-				lossPoint: user.lossPoint
-			};
-			//var user_trigger = new Array();
-			//user_trigger['winPoint'] = user.winPoint;
-			//user_trigger['lossPoint'] = user.lossPoint;
-			user_with_trigger.push(user_triggerr);
-		}
+        user_with_trigger = users.map(function(user) {
+            return {
+                id: user._id,
+                real: user.real,
+                winPoint: user.winPoint,
+                lossPoint: user.lossPoint
+            };
+        });
 	});
 }
 
