@@ -20,7 +20,7 @@
             text-align: center;
             font-size: x-large;
         }
-        .divide-two {
+        /*.divide-two {
             float:left;
             width:50%;
         }
@@ -40,6 +40,21 @@
             background-color:#448aca;
             border-radius:5px;
             height:46px;
+        }*/
+        .button-area {
+            margin-top:10px;
+        }
+        .button-style {
+            font-size:20px;
+            color:#ffffff;
+            text-align:center;
+            line-height:46px;
+            background-color:#4b90f7;
+            border-radius:5px;
+            height:46px;
+            margin-right:10px;
+            margin-left:10px;
+            margin-top:10px;
         }
     </style>
 </head>
@@ -47,16 +62,12 @@
     <div class="middel-page-body">
         <div class="content">
             <div class="row">
-                <p>您还没有开通实盘权限</p>
-                <p>您可以:</p>
+                <p>您没有开通实盘权限，</p>
+                <p>如需要实盘交易请先预约</p>
             </div>
-            <div>
-                <div class="divide-two">
-                    <a href="/futures"><div class="button-style button-area-left">进入虚拟盘</div></a>
-                </div>
-                <div class="divide-two">
-                    <a href="/futures/#/appointment"><div  class="button-style button-area-right">预约实盘</div></a>
-                </div>
+            <div class="button-area">
+                <a href="/futures"><div class="button-style button-area-left">进入虚拟交易</div></a>
+                <a href="/futures/#/appointment"><div  class="button-style button-area-right">立即预约实盘</div></a>
             </div>
         </div>
     </div>
