@@ -654,9 +654,9 @@ function changeTradeSetting(req, res) {
             logger.warn('无法更新设置');
             return res.status(503).send({error_msg:'无法更新设置'});
         }
+        ctpTrader.loadDBData();
         res.send({});
     });
-	ctpTrader.loadDBData();
 }
 
 module.exports = {
