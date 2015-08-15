@@ -16,8 +16,6 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
 
     var OPEN_TEXT = '开启设置';
     var CLOSE_TEXT = '关闭设置';
-    var OPEN_WARN = '系统交易（平仓）由程序自动执行，实际成交取决于交易所交易状况，不保证时间平仓点与您设置的止盈点，止损点完全一致。开启“交易设置”代表您已经完全知悉和愿意承担自动平仓带来的不确定性。确定要打开交易设置吗？';
-    var CLOSE_WARN = '关闭后，系统将不再为您在相应点位自动平仓，确认吗？';
 
     $scope.setDefaultPoint = function() {
         if ($scope.data.real) {
@@ -69,18 +67,10 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
                 var modalInstance = $modal.open({
                     animation: true,
                     windowClass: 'xx-dialog',
-                    templateUrl: 'views/trade_setting_popup.html',
+                    templateUrl: 'views/trade_setting_open_popup.html',
                     controller: 'InfoModalCtrl',
                     size: 'lg',
-                    resolve: {
-                        info: function() {
-                            if (open) {
-                                return CLOSE_WARN;
-                            } else {
-                                return OPEN_WARN;
-                            }
-                        }
-                    }
+                    resolve: {}
                 });
 
                 modalInstance.result.then(function () {
@@ -90,7 +80,21 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
             })();
         } else {
             $scope.setDefaultPoint();
-            makeSettingRequest(open);
+            (function () {
+                var modalInstance = $modal.open({
+                    animation: true,
+                    windowClass: 'xx-dialog',
+                    templateUrl: 'views/trade_setting_close_popup.html',
+                    controller: 'InfoModalCtrl',
+                    size: 'lg',
+                    resolve: {}
+                });
+
+                modalInstance.result.then(function () {
+                    makeSettingRequest(open);
+                }, function () {
+                });
+            })();
         }
     };
 
