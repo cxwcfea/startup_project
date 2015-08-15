@@ -74,7 +74,7 @@ angular.module('futuresApp').controller('GainModalCtrl', ['$scope', '$modalInsta
     };
 }]);
 
-angular.module('futuresApp').controller('InfoModalCtrl', function ($scope, $modalInstance) {
+angular.module('futuresApp').controller('InfoModalCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
     $scope.data = {};
     $scope.ok = function () {
         $modalInstance.close($scope.data);
@@ -83,7 +83,7 @@ angular.module('futuresApp').controller('InfoModalCtrl', function ($scope, $moda
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
-});
+}]);
 
 angular.module("futuresApp")
     .service("util", [function () {
