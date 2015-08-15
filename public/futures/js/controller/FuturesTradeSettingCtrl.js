@@ -86,6 +86,7 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
                     makeSettingRequest(open);
                 }, function () {
                     processing = false;
+                    $scope.toggleSetting();
                 });
             })();
         } else {
@@ -104,6 +105,7 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
                     makeSettingRequest(open);
                 }, function () {
                     processing = false;
+                    $scope.toggleSetting();
                 });
             })();
         }
