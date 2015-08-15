@@ -1,7 +1,6 @@
 angular.module('futuresApp', ['ngResource', 'ngRoute', 'ui.bootstrap', 'commonApp', 'ngTouch']);
 
 angular.module('futuresApp').config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
-    /*
     // Initialize get if not there
     if (!$httpProvider.defaults.headers.get) {
         $httpProvider.defaults.headers.get = {};
@@ -9,7 +8,6 @@ angular.module('futuresApp').config(['$routeProvider', '$httpProvider', function
     // Disable IE ajax request caching
     $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
     $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
-    */
     $routeProvider
         .when('/home', { templateUrl: '/futures/home',
             controller: 'FuturesHomeCtrl'
