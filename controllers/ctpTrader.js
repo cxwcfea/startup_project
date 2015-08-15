@@ -777,15 +777,11 @@ function getLastFuturesPrice(cb) {
         cb(null, {ts:priceInfo.ts, lastPrice:priceInfo.LastPrice});
     });
 }
-var user_with_trigger;
+var user_with_trigger = [];
 function loadDBData() {
 	User.find({tradeControl: true}, function(err, users){
 		if(err){
 			console.log('get user from db failed in loadDBData');
-			return;
-		}
-		if(!users){
-			console.log('no available user');
 			return;
 		}
         user_with_trigger = users.map(function(user) {
