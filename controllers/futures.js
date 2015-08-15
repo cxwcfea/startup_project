@@ -656,6 +656,7 @@ function changeTradeSetting(req, res) {
         }
         res.send({});
     });
+	ctpTrader.loadDBData();
 }
 
 module.exports = {
