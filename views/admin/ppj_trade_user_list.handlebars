@@ -27,7 +27,7 @@
                         <td><a href="" ng-click="showUserDetail(user.mobile)">\{{user.identity.name}}</a></td>
                         <td>\{{user.identity.id}}</td>
                         <td>\{{user.wechat.wechat_name || 'N/A'}}</td>
-                        <td>\{{user.wechat.mobile}}</td>
+                        <td><a href="" ng-click="showUserDetail(user.mobile)">\{{user.wechat.mobile}}</a></td>
                         <td>\{{user.wechat.real_trader.lastCash == 0 ? 0 : user.wechat.real_trader.lastCash/100-200000 | number:2}}</td>
                         <td>\{{user.finance.balance | number:2}}</td>
                         <td>\{{user.wechat.real_trader.deposit/100 | number:2}}</td>
