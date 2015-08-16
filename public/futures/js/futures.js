@@ -91,7 +91,7 @@ angular.module("futuresApp")
             var ret = [];
             var startTime = lastPoint[0];
             while (startTime < endTime) {
-                startTime += 1000;
+                startTime += 300000;
                 ret.push([startTime, null]);
             }
             return ret;
