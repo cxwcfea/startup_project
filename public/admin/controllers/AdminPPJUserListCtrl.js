@@ -66,4 +66,9 @@ angular.module('adminApp').controller('AdminPPJUserListCtrl', ['$scope', '$locat
         }
         $scope.showingItems = $scope.currentUsers.slice(start, end);
     };
+
+    $scope.showUserDetail = function(mobile) {
+        $scope.data.searchKey = mobile;
+        $location.path('user_page');
+    };
 }]);
