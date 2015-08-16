@@ -68,6 +68,7 @@ angular.module('adminApp').controller('AdminPPJUserListCtrl', ['$scope', '$locat
     };
 
     $scope.showUserDetail = function(mobile) {
+        alert(mobile);
         $scope.data.searchKey = mobile;
         $location.path('user_page');
     };
