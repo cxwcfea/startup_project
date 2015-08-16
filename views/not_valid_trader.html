@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html class="bg">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, minimal-ui" />
     <link rel="stylesheet" href="bootstrap.min.css">
     <style>
+        .bg {
+            background-color: #e8ebf2;
+        }
         .middel-page-body {
             margin-top: 80px;
         }
@@ -17,7 +20,7 @@
         }
         .middel-page-body p {
             text-align: center;
-            font-size: x-large;
+            font-size: 20px;
         }
         /*.divide-two {
             float:left;
@@ -53,20 +56,20 @@
             height:46px;
             margin-right:10px;
             margin-left:10px;
-            margin-top:10px;
+            margin-top:20px;
         }
     </style>
 </head>
 <body>
-    <div class="middel-page-body">
+    <div class="middel-page-body bg">
         <div class="content">
             <div class="row">
                 <p>您没有开通实盘权限，</p>
                 <p>如需要实盘交易请先预约</p>
             </div>
             <div class="button-area">
-                <a href="/futures"><div class="button-style button-area-left">进入虚拟交易</div></a>
                 <a href="/futures/#/appointment"><div  class="button-style button-area-right">立即预约实盘</div></a>
+                <a href="/futures"><div class="button-style button-area-left">进入虚拟交易</div></a>
             </div>
         </div>
     </div>
