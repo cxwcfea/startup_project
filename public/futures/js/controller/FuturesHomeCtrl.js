@@ -1,7 +1,9 @@
 'use strict';
 angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window', '$location', '$modal', '$http', '$timeout', '$interval', function($scope, $window, $location, $modal, $http, $timeout, $interval) {
     $scope.user = $scope.data.currentUser;
-    $scope.data.real = $scope.user.real;
+    if ($scope.user.real === true) {
+        $scope.data.real = true;
+    }
     var TEXT = '现在是非交易时间';
     var REAL_TEXT = '您的账户不能交易';
     var HAND = 100;
