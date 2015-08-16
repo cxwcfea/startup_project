@@ -98,6 +98,35 @@ angular.module("futuresApp")
         }
     }]);
 
+angular.module('futuresApp')
+    .service('Socket', ['$timeout',
+        function($timeout) {
+            this.socket = io();
+
+            this.on = function(eventName, callback) {
+                if (this.socket) {
+                    this.socket.on(eventName, function(data) {
+                        $timeout(function() {
+                            callback(data);
+                        });
+                    });
+                }
+            };
+
+            this.emit = function(eventName, data) {
+                if (this.socket) {
+                    this.socket.emit(eventName, data);
+                }
+            };
+
+            this.removeListener = function(eventName) {
+                if (this.socket) {
+                    this.socket.removeListener(eventName);
+                }
+            };
+        }
+    ]);
+
 angular.module("futuresApp")
     .directive("futuresChart", ['util', 'Socket', function (util, Socket) {
         function updateData(root, newData, blankData, addFlag) {

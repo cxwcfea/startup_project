@@ -36,7 +36,6 @@ module.exports = function (grunt) {
                         'public/vendor/toastr/toastr.js',
                         'public/js/highstock.js',
                         'public/futures/js/script.js',
-                        'public/futures/js/services/*.js',
                         'public/futures/js/futures.js',
                         'public/futures/js/lib/*.js',
                         'public/futures/js/controller/*.js',
