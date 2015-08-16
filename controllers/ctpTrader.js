@@ -779,11 +779,13 @@ function getLastFuturesPrice(cb) {
 }
 var user_with_trigger = [];
 function loadDBData() {
+    console.log('loadDBData.        ');
 	User.find({tradeControl: true}, function(err, users){
 		if(err){
 			console.log('get user from db failed in loadDBData');
 			return;
 		}
+        console.log(users);
         user_with_trigger = users.map(function(user) {
             return {
                 id: user._id,
@@ -792,6 +794,7 @@ function loadDBData() {
                 lossPoint: user.lossPoint
             };
         });
+        console.log(user_with_trigger);
 	});
 }
 
