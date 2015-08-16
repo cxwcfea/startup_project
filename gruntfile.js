@@ -39,6 +39,7 @@ module.exports = function (grunt) {
                         'public/futures/js/futures.js',
                         'public/futures/js/lib/*.js',
                         'public/futures/js/controller/*.js',
+                        'public/futures/js/services/*.js',
                         'public/js/common_module.js']
                 }
             }

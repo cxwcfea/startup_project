@@ -99,7 +99,7 @@ angular.module("futuresApp")
     }]);
 
 angular.module("futuresApp")
-    .directive("futuresChart", ['util', function (util) {
+    .directive("futuresChart", ['util', 'Socket', function (util, Socket) {
         function updateData(root, newData, blankData, addFlag) {
             if (addFlag) {
                 root.series.addPoint(newData, true, true);
@@ -129,12 +129,13 @@ angular.module("futuresApp")
             }
             var firstPoint;
             if (!scope.data.socket) {
-                var socket = scope.data.socket = io.connect();
-                socket.on('connect', function () {
+                //var socket = scope.data.socket = io.connect();
+                scope.data.socket = true;
+                Socket.on('connect', function () {
                     // send a join event with your name
-                    socket.emit('join', {name:scope.data.currentUser._id, room:0});
+                    Socket.emit('join', {name:scope.data.currentUser._id, room:0});
                 });
-                socket.on('history_data', function(historyData) {
+                Socket.on('history_data', function(historyData) {
                     //series.addPoint(newData, true, true);
                     if (historyData.productID == scope.data.productID) {
                         firstPoint = historyData.data[0][0];
@@ -146,7 +147,7 @@ angular.module("futuresApp")
                     scope.data.flags_series.setData(scope.data.flags_data, true, true);
                     */
                 });
-                socket.on('new_data', function(newData) {
+                Socket.on('new_data', function(newData) {
                     if (newData.productID == scope.data.productID) {
                         scope.data.historyData.push(newData.data);
                         scope.data.lastPoint = newData.data[1];
