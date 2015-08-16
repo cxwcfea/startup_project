@@ -1,7 +1,9 @@
 'use strict';
 angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window', '$location', '$modal', '$http', '$timeout', '$interval', function($scope, $window, $location, $modal, $http, $timeout, $interval) {
     $scope.user = $scope.data.currentUser;
-    $scope.data.real = $scope.user.real;
+    if ($scope.user.real === true) {
+        $scope.data.real = true;
+    }
     var TEXT = '现在是非交易时间';
     var REAL_TEXT = '您的账户不能交易';
     var HAND = 100;
@@ -68,24 +70,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         down: 0,
         sell: 0
     };
-
-    function showContractPopup() {
-        var modalInstance = $modal.open({
-            animation: true,
-            backdrop: 'static',
-            windowClass: 'xx-dialog',
-            templateUrl: 'views/contract_popup.html',
-            controller: 'InfoModalCtrl',
-            size: 'lg',
-            resolve: {}
-        });
-
-        modalInstance.result.then(function (data) {
-            alert(data.name + ' ' + data.userID);
-        }, function () {
-            console.log('Modal dismissed at: ' + new Date());
-        });
-    }
 
     var delta = 0;
     function getUserPositions(init) {
@@ -158,14 +142,14 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     }, 500);
 
     $scope.showShareHint = false;
-    $scope.openIntroPopup = function (size) {
+    $scope.openIntroPopup = function () {
         var modalInstance = $modal.open({
             animation: true,
             backdrop: 'static',
             windowClass: 'xx-dialog',
             templateUrl: 'views/intro_popup.html',
             controller: 'IntroModalCtrl',
-            size: size,
+            size: 'lg',
             resolve: {}
         });
 
@@ -297,8 +281,8 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         $location.path('/profit_exchange');
     };
 
-    $scope.help = function() {
-        $scope.openIntroPopup('lg');
+    $scope.setting = function() {
+        $location.path('/trade_setting');
     };
 
     $scope.currentOrder = null;

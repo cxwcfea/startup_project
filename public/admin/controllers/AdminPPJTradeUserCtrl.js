@@ -252,4 +252,9 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
         }, function () {
         });
     };
+
+    $scope.showUserDetail = function(mobile) {
+        $scope.data.searchKey = mobile;
+        $location.path('user_page');
+    };
 }]);

@@ -37,6 +37,29 @@ angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window',
         $location.path('/contract');
     };
 
+    $scope.showHelp = function() {
+        openIntroPopup();
+    };
+
+    function openIntroPopup() {
+        var modalInstance = $modal.open({
+            animation: true,
+            backdrop: 'static',
+            windowClass: 'xx-dialog',
+            templateUrl: 'views/intro_popup.html',
+            controller: 'IntroModalCtrl',
+            size: 'lg',
+            resolve: {}
+        });
+
+        modalInstance.result.then(function () {
+            console.log('Modal dismissed at: ' + new Date());
+            $scope.data.status = 1;
+        }, function () {
+            console.log('Modal dismissed at: ' + new Date());
+        });
+    };
+
     function showRealTradePopup() {
         var modalInstance = $modal.open({
             animation: true,

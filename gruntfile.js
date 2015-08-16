@@ -4,7 +4,7 @@ module.exports = function (grunt) {
         'grunt-nodemon',
         'grunt-contrib-cssmin',
         'grunt-contrib-uglify',
-        'grunt-hashres',
+        'grunt-hashres'
     ].forEach(function(task){
         grunt.loadNpmTasks(task);
     });
@@ -26,7 +26,20 @@ module.exports = function (grunt) {
                     'public/js.min/niujinwang-user.min.js': ['public/user/user.js', 'public/user/controllers/*.js', 'public/js/user.js', 'public/js/jquery.zclip.min.js'],
                     'public/js.min/niujinwang-recharge.min.js': ['public/app/controllers/RechargeCtrl.js'],
                     'public/js.min/niujinwang-mobile.min.js': ['public/mobile/js/controller/*.js', 'public/js/common_module.js'],
-                    'public/js.min/niujinwang-admin.min.js': ['public/admin/admin.js', 'public/admin/controllers/*.js', 'public/admin/resources/*.js', 'public/admin/services/*.js', 'public/js/common_module.js']
+                    'public/js.min/niujinwang-admin.min.js': ['public/admin/admin.js', 'public/admin/controllers/*.js', 'public/admin/resources/*.js', 'public/admin/services/*.js', 'public/js/common_module.js'],
+                    'public/js.min/niujinwang-ppj.min.js': [
+                        'public/vendor/angular-touch/angular-touch.js',
+                        'public/vendor/angular-route/angular-route.js',
+                        'public/vendor/angular-resource/angular-resource.js',
+                        'public/vendor/angular-bootstrap/ui-bootstrap-tpls.js',
+                        'public/vendor/bootstrap/dist/js/bootstrap.js',
+                        'public/vendor/toastr/toastr.js',
+                        'public/js/highstock.js',
+                        'public/futures/js/script.js',
+                        'public/futures/js/futures.js',
+                        'public/futures/js/lib/*.js',
+                        'public/futures/js/controller/*.js',
+                        'public/js/common_module.js']
                 }
             }
         },
@@ -45,12 +58,19 @@ module.exports = function (grunt) {
                         'public/mobile/css/swiper.css',
                         'public/mobile/css/pages.css',
                         'public/mobile/css/site.css'
+                    ],
+                    'public/futures/css/niujinwang-ppj.css': ['public/vendor/bootstrap/dist/css/bootstrap.css',
+                        'public/futures/css/reset.css',
+                        'public/futures/css/base.css',
+                        'public/futures/css/common.css',
+                        'public/futures/css/pages.css',
+                        'public/futures/css/site.css'
                     ]
                 }
             },
             minify: {
-                src: 'public/mobile/css/niujinwang-mobile.css',
-                dest: 'public/mobile/css/niujinwang-mobile.min.css'
+                src: 'public/futures/css/niujinwang-ppj.css',
+                dest: 'public/futures/css/niujinwang-ppj.min.css'
             }
         },
         hashres: {
@@ -64,11 +84,13 @@ module.exports = function (grunt) {
                     'public/js.min/niujinwang-recharge.min.js',
                     'public/js.min/niujinwang-mobile.min.js',
                     'public/js.min/niujinwang-admin.min.js',
-                    'public/mobile/css/niujinwang-mobile.min.css'
+                    'public/js.min/niujinwang-ppj.min.js',
+                    'public/futures/css/niujinwang-ppj.min.css'
                 ],
                 dest: [
                     'views/layouts/*.handlebars',
-                    'views/admin/main.handlebars'
+                    'views/admin/main.handlebars',
+                    'views/futures/index.handlebars'
                 ]
             }
         }

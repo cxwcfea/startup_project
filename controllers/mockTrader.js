@@ -33,6 +33,9 @@ var PPJUserSchema = mongoose.Schema({
     status: { type: Number, default: 0 },  // 0: Normal, 1: Cannot buy, 2: Forbidden
     lastCash: { type: Number, default: 0 },  // basis: cent, 0.01, the cash of the last time when user have no position
     real: { type: Boolean, default: false },
+    winPoint: { type: Number, default: 0 },
+    lossPoint: { type: Number, default: 0 },
+    tradeControl: { type: Boolean, default: false },
     timestamp: { type: Date, default: Date.now }
 });
 var User = mongoose.model('PPJUser', PPJUserSchema);
@@ -250,30 +253,26 @@ function windControl(userId, forceClose, userContract, cb) {
       User.findOne({$and: [{_id: userId}, {status: 0}]}, function(err, user) {
           if (err) {
               console.log(err);
-              //res.send({code: -1, "msg": err.errmsg});
               cb(err.toString());
               return lock.unlock();
           }
           if (!user) {
               console.log('no available user');
-              //res.send({code: -1, "msg": err.errmsg});
               cb('no available user');
               return lock.unlock();
           }
           Portfolio.find({userId: userId}, function(err, portfolio) {
               if (err) {
                   console.log(err);
-                  //res.send({code: -2, "msg": err.errmsg});
                   cb(err.toString());
                   return lock.unlock();
               }
               if (!portfolio) {
                   console.log('no available portfolio');
-                  //res.send({code: -2, "msg": err.errmsg});
                   cb('no available portfolio');
                   return lock.unlock();
               }
-              var asyncObj = {remaining: portfolio.length, value: 0, has_error: false, errmsg:""};
+              var asyncObj = {remaining: portfolio.length, value: 0, has_error: false, errmsg:"", callbackInvoke:false};
               var contractInfo = {};
               var contractData = {};
 
@@ -289,22 +288,21 @@ function windControl(userId, forceClose, userContract, cb) {
                           if (err) asyncObj.errmsg = err.errmsg;
                       }
                       if (asyncObj.has_error) {
-                          if (asyncObj.remaining <= 0){
-                              //res.send({code: -3, "msg": asyncObj.errmsg});
+                          if (asyncObj.remaining <= 0 && !asyncObj.callbackInvoke){
+                              asyncObj.callbackInvoke = true;
                               cb(asyncObj.errmsg);
                               lock.unlock();
                           }
                           return;
                       }
-                      if (typeof userContract !== 'undefined') {
-                        if (!(contract.exchange === userContract.exchange &&
-                            contract.stock_code === userContract.stock_code)) {
-                          if (asyncObj.remaining <= 0){
+                      if (!(contract.exchange === userContract.exchange &&
+                          contract.stock_code === userContract.stock_code)) {
+                          if (asyncObj.remaining <= 0 && !asyncObj.callbackInvoke){
+                              asyncObj.callbackInvoke = true;
                               cb("No stock matching request");
                               lock.unlock();
                           }
                           return;
-                        }
                       }
                       global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
                           if (err || !priceInfoString) {
@@ -313,8 +311,8 @@ function windControl(userId, forceClose, userContract, cb) {
                               if (err) asyncObj.errmsg = err.errmsg;
                           }
                           if (asyncObj.has_error) {
-                              if (asyncObj.remaining <= 0){
-                                  //res.send({code: -4, "msg": asyncObj.errmsg});
+                              if (asyncObj.remaining <= 0 && !asyncObj.callbackInvoke){
+                                  asyncObj.callbackInvoke = true;
                                   cb(asyncObj.errmsg);
                                   lock.unlock();
                               }
@@ -327,10 +325,6 @@ function windControl(userId, forceClose, userContract, cb) {
                           contractData[portf.contractId] = contract;
                           var costs = getCosts(contract, priceInfo.LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
                           asyncObj.value -= costs.open;
-                          if (asyncObj.remaining > 0 && typeof userContract === 'undefined') {
-                              console.log("Still counting: " + asyncObj);
-                              return;
-                          }
                           //console.log("Completed: " + asyncObj);
                           var income = asyncObj.value;
                           console.log("User info: " + userId + ", " + user.cash + ", " + income + ", " + user.close);

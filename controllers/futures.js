@@ -42,6 +42,7 @@ var getUserViewModel = function (user) {
 function populatePPJUser(user, cb) {
     var query = User.findById(user._id);
     query.populate('wechat.trader');
+    query.populate('wechat.real_trader');
     query.exec(function(err, u) {
         if (err) {
             cb(err);
@@ -145,6 +146,7 @@ function placeOrder(req, res) {
     var quantity = req.body.quantity;
     var forceClose = req.body.forceClose;
 
+    req.body.contract = {exchange:'future', stock_code:'IFCURR'};
     if (forceClose) {
         req.body.force_close = 1;
         if (req.body.type == 1 && req.user.wechat.status === 4) {
@@ -326,9 +328,6 @@ function getUserInfo(req, res) {
 }
 
 function resetUser(req, res) {
-    if (req.user.wechat.status !== 0) {
-        return res.status(401).send({error_msg:'user not allow reset'});
-    }
     mockTrader.resetUser(req.user.wechat.trader, function(err) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
@@ -632,6 +631,34 @@ function addCard(req, res) {
     });
 }
 
+function changeTradeSetting(req, res) {
+    if (req.body.open === undefined || req.body.open === null) {
+        return res.status(403).send({error_msg:'参数无效'});
+    }
+    var userID = req.user.wechat.trader;
+    if (req.body.type == 1) {
+        userID = req.user.wechat.real_trader;
+    }
+    if (req.body.win === undefined || req.body.win === null) {
+        req.body.win = 0;
+    }
+    if (req.body.loss === undefined || req.body.loss === null) {
+        req.body.loss = 0;
+    }
+    mockTrader.User.update({_id:userID}, {tradeControl:req.body.open, winPoint:req.body.win, lossPoint:req.body.loss}, function(err, numberAffected, raw) {
+        if (err) {
+            logger.warn(err);
+            return res.status(500).send({error_msg:err.toString()});
+        }
+        if (!numberAffected) {
+            logger.warn('无法更新设置');
+            return res.status(503).send({error_msg:'无法更新设置'});
+        }
+        ctpTrader.loadDBData();
+        res.send({});
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/api/futures/user_rank', passportConf.isWechatAuthenticated, fetchUserRankData);
@@ -667,6 +694,8 @@ module.exports = {
         app.post('/futures/addCard', passportConf.requiresRole('admin'), addCard);
 
         app.get('/futures/real', passportConf.isWechatAuthenticated, realHome);
+
+        app.post('/futures/change_trade_setting', passportConf.isWechatAuthenticated, changeTradeSetting);
 
         app.get('/futures/test', test);
 

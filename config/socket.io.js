@@ -10,7 +10,8 @@ var products = [
         historyKey: 'mt://future/IFHIST',
         currKey: 'mt://future/IFCURR',
         historyData: []
-    },
+    }
+    /*
     {
         name: 'EURUSD',
         historyKey: 'mt://forex/EURUSDHIST',
@@ -29,6 +30,7 @@ var products = [
         currKey: 'mt://stock/BABA',
         historyData: []
     }
+    */
 ];
 
 function fetchHistoryData(cb) {
@@ -141,5 +143,5 @@ module.exports = function(io) {
             }
             io.sockets.emit('new_data', {productID:productIndex, data:data});
         });
-    }, 10000);
+    }, 5000);
 };

@@ -73,6 +73,9 @@
         text-align: center;
         font-size: large;
     }
+    .index-box .chart-box .chart #container {
+        height: 230px
+    }
 </style>
 <!--#S header-->
 <!--
@@ -85,18 +88,9 @@
 
 <div class="index-box">
     <div class="chart-box">
-        <h4>\{{data.productType}}走势图 <span class="current-price">昨收盘: <em>\{{yesterdayClose}}</em></span> <span class="current-price">涨跌: <em>\{{pointDelta | number:2}}</em>%</span> <span class="order-list pull-right" ng-click="help()" ng-hide="data.real">帮助</span></h4>
+        <h4><span class="text-danger" ng-click="setting()">自动平仓设置</span> <span class="current-price">昨收盘: <em>\{{yesterdayClose}}</em></span> <span class="current-price">涨跌: <em>\{{pointDelta | number:2}}</em>%</span> <span class="text-success pull-right" ng-click="openIntroPopup()">帮助</span></h4>
         <div class="chart">
-            <div id="container" style="height:230px" futures-chart="chartLabels" chart-data="chartData"></div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <!--
-                <span class="col-xs-offset-3 col-xs-7">当前价 <em class="text-success">\{{currentPrice | number:1}}元</em> 每手</span>
-                <span class="col-xs-6">卖价 <em class="text-success">4138.90</em> 2手</span>
-                <span class="col-xs-6">买价 <em class="text-danger">4136.50</em> 21手</span>
-                -->
-            </div>
+            <div id="container" futures-chart="chartLabels" chart-data="chartData"></div>
         </div>
     </div>
     <div class="opt-box">

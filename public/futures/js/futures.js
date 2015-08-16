@@ -8,7 +8,6 @@ angular.module('futuresApp').config(['$routeProvider', '$httpProvider', function
     // Disable IE ajax request caching
     $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
     $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
-
     $routeProvider
         .when('/home', { templateUrl: '/futures/home',
             controller: 'FuturesHomeCtrl'
@@ -43,6 +42,9 @@ angular.module('futuresApp').config(['$routeProvider', '$httpProvider', function
         .when('/contract', { templateUrl: '/futures/contract',
             controller: 'FuturesContractCtrl'
         })
+        .when('/trade_setting', { templateUrl: '/futures/trade_setting',
+            controller: 'FuturesTradeSettingCtrl'
+        })
         .otherwise({
             redirectTo: '/home'
         });
@@ -71,7 +73,7 @@ angular.module('futuresApp').controller('GainModalCtrl', ['$scope', '$modalInsta
     };
 }]);
 
-angular.module('futuresApp').controller('InfoModalCtrl', function ($scope, $modalInstance) {
+angular.module('futuresApp').controller('InfoModalCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
     $scope.data = {};
     $scope.ok = function () {
         $modalInstance.close($scope.data);
@@ -80,7 +82,7 @@ angular.module('futuresApp').controller('InfoModalCtrl', function ($scope, $moda
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
-});
+}]);
 
 angular.module("futuresApp")
     .service("util", [function () {
@@ -89,15 +91,44 @@ angular.module("futuresApp")
             var ret = [];
             var startTime = lastPoint[0];
             while (startTime < endTime) {
-                startTime += 1000;
+                startTime += 60000;
                 ret.push([startTime, null]);
             }
             return ret;
         }
     }]);
 
+angular.module('futuresApp')
+    .service('Socket', ['$timeout',
+        function($timeout) {
+            this.socket = io();
+
+            this.on = function(eventName, callback) {
+                if (this.socket) {
+                    this.socket.on(eventName, function(data) {
+                        $timeout(function() {
+                            callback(data);
+                        });
+                    });
+                }
+            };
+
+            this.emit = function(eventName, data) {
+                if (this.socket) {
+                    this.socket.emit(eventName, data);
+                }
+            };
+
+            this.removeListener = function(eventName) {
+                if (this.socket) {
+                    this.socket.removeListener(eventName);
+                }
+            };
+        }
+    ]);
+
 angular.module("futuresApp")
-    .directive("futuresChart", ['util', function (util) {
+    .directive("futuresChart", ['util', 'Socket', function (util, Socket) {
         function updateData(root, newData, blankData, addFlag) {
             if (addFlag) {
                 root.series.addPoint(newData, true, true);
@@ -127,12 +158,13 @@ angular.module("futuresApp")
             }
             var firstPoint;
             if (!scope.data.socket) {
-                var socket = scope.data.socket = io.connect();
-                socket.on('connect', function () {
+                //var socket = scope.data.socket = io.connect();
+                scope.data.socket = true;
+                Socket.on('connect', function () {
                     // send a join event with your name
-                    socket.emit('join', {name:scope.data.currentUser._id, room:0});
+                    Socket.emit('join', {name:scope.data.currentUser._id, room:0});
                 });
-                socket.on('history_data', function(historyData) {
+                Socket.on('history_data', function(historyData) {
                     //series.addPoint(newData, true, true);
                     if (historyData.productID == scope.data.productID) {
                         firstPoint = historyData.data[0][0];
@@ -144,7 +176,7 @@ angular.module("futuresApp")
                     scope.data.flags_series.setData(scope.data.flags_data, true, true);
                     */
                 });
-                socket.on('new_data', function(newData) {
+                Socket.on('new_data', function(newData) {
                     if (newData.productID == scope.data.productID) {
                         scope.data.historyData.push(newData.data);
                         scope.data.lastPoint = newData.data[1];
