@@ -254,7 +254,6 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
     };
 
     $scope.showUserDetail = function(mobile) {
-        alert(mobile);
         $scope.data.searchKey = mobile;
         $location.path('user_page');
     };
