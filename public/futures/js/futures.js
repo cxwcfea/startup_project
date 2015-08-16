@@ -167,6 +167,7 @@ angular.module("futuresApp")
                 Socket.on('history_data', function(historyData) {
                     //series.addPoint(newData, true, true);
                     if (historyData.productID == scope.data.productID) {
+                        if (!historyData.data || !historyData.data[0]) return;
                         firstPoint = historyData.data[0][0];
                         fillWholeData(historyData.data, scope.data, firstPoint);
                     }
