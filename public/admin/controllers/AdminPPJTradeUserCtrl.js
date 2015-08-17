@@ -124,12 +124,20 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
     };
 
     $scope.addMoney = function(user) {
-        var result = prompt('确定入资吗, 3万元本金将打入交易账户');
+        var result = prompt('确定入资吗, 请输入要入资的金额');
         if (result != null) {
-            $http.get('/futures/add_money/?uid=' + user._id)
+            result = parseInt(result);
+            if (result < 30000) {
+                return gbNotifier.error('入资金额必须大于3万元');
+            }
+            var postData = {
+                uid: user._id,
+                amount: result
+            };
+            $http.post('/futures/add_money', postData)
                 .success(function(data, status) {
                     user.wechat.status = 3;
-                    user.finance.balance -= 30000;
+                    user.finance.balance -= result;
                     gbNotifier.notify('入资成功');
                 })
                 .error(function(data, status) {

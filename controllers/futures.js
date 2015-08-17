@@ -404,7 +404,7 @@ function createAccount(req, res) {
 }
 
 function addMoney(req, res) {
-    logger.debug('addMoney operate by ', req.query);
+    logger.debug('addMoney operate by ', req.body);
     var depositAmount = req.body.amount;
     if (!depositAmount || depositAmount < 0) {
         return res.status(403).send({error_msg:'无效的金额'});
