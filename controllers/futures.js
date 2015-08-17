@@ -499,7 +499,7 @@ function addDeposit(req, res) {
                 return res.status(500).send({error_msg:err.toString()});
             }
             depositAmount *= 100;
-            mockTrader.User.update({_id:user.wechat.real_trader}, {$inc:{cash:depositAmount, deposit:depositAmount}}, function(err, numberAffected, raw) {
+            mockTrader.User.update({_id:user.wechat.real_trader}, {$inc:{cash:depositAmount, lastCash:depositAmount, deposit:depositAmount}}, function(err, numberAffected, raw) {
                 if (err) {
                     return res.status(500).send({error_msg:err.toString()});
                 }
