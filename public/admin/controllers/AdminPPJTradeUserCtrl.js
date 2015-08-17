@@ -176,7 +176,7 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
         var result = prompt('请输入要提取的金额');
         if (result != null) {
             result = parseInt(result);
-            if (!result || result > user.wechat.real_trader.lastCash - (user.wechat.real_trader.deposit + user.wechat.real_trader.debt)) {
+            if (!result || result > (user.wechat.real_trader.lastCash - (user.wechat.real_trader.deposit + user.wechat.real_trader.debt)) / 100) {
                 return gbNotifier.error('金额无效');
             }
             var postData = {
