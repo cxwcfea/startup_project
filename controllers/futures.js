@@ -353,6 +353,7 @@ function makeAppointment(req, res) {
 }
 
 function approveUser(req, res) {
+    logger.info('approveUser operate by ' + req.user.mobile, req.query);
     var uid = req.query.uid;
     User.update({_id:uid}, {'wechat.appointment':false, 'wechat.access_real':true, 'wechat.status':1}, function(err, numberAffected, raw) {
         if (err) {
@@ -366,7 +367,7 @@ function approveUser(req, res) {
 }
 
 function addMoney(req, res) {
-    logger.debug('addMoney', req.body);
+    logger.debug('addMoney operate by ', req.query);
     var DepositAmount = 30000;
     var uid = req.query.uid;
     User.findById(uid, function(err, user) {
@@ -387,7 +388,9 @@ function addMoney(req, res) {
             amount: DepositAmount,
             status: 1,
             description: '股指拍拍机保证金',
-            userBalance: user.finance.balance
+            userBalance: user.finance.balance,
+            approvedBy: req.user.mobile,
+            approvedAt: Date.now()
         };
         Order.create(orderData, function(err, order) {
             if (err) {
@@ -443,7 +446,7 @@ function addMoney(req, res) {
 }
 
 function changeTraderStatus(req, res) {
-    logger.info('changeTraderStatus', req.body);
+    logger.info('changeTraderStatus operate by ' + req.user.mobile, req.body);
     User.findByIdAndUpdate(req.body.uid, {'wechat.status':req.body.user_status}, function(err, user) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
@@ -468,7 +471,7 @@ function changeTraderStatus(req, res) {
 }
 
 function finishTrade(req, res) {
-    logger.info('finishTrade', req.body);
+    logger.info('finishTrade operate by ' + req.user.mobile, req.body);
     async.waterfall([
         function(callback) {
             User.findById(req.body.uid, function(err, user) {
@@ -504,7 +507,9 @@ function finishTrade(req, res) {
                     amount: profit,
                     status: 1,
                     description: '股指拍拍机盈利',
-                    userBalance: user.finance.balance
+                    userBalance: user.finance.balance,
+                    approvedBy: req.user.mobile,
+                    approvedAt: Date.now()
                 };
                 Order.create(orderData, function(err, order) {
                     callback(err, profit, trader, user);
@@ -529,7 +534,9 @@ function finishTrade(req, res) {
                     amount: amount,
                     status: 1,
                     description: '股指拍拍机保证金返还',
-                    userBalance: user.finance.balance
+                    userBalance: user.finance.balance,
+                    approvedBy: req.user.mobile,
+                    approvedAt: Date.now()
                 };
                 Order.create(orderData, function(err, order) {
                     callback(err, trader, user);
@@ -563,6 +570,7 @@ function finishTrade(req, res) {
 }
 
 function withdraw(req, res) {
+    logger.info('withdraw operate by ' + req.user.mobile, req.body);
     User.findById(req.body.uid, function(err, user) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
@@ -616,6 +624,7 @@ function addCard(req, res) {
     if (!req.body.uid || !req.body.cardID || !req.body.name || !req.body.bankID || !req.body.userMobile) {
         return res.status(403).send({error_msg:'无效的请求'});
     }
+    logger.info('addCard operate by ' + req.user.mobile, req.body);
     var card = new Card({
         userID: req.body.uid,
         bankID: req.body.bankID,
