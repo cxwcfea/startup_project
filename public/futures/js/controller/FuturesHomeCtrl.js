@@ -57,7 +57,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             }
         }
     } else {
-        $scope.tradeClose = true;
+        //$scope.tradeClose = true;
     }
 
     if ($scope.data.real && $scope.user.wechat.status !== 4) {
