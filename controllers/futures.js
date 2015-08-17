@@ -557,12 +557,11 @@ function getProfit(req, res) {
                 if (!trader) {
                     return res.status(500).send({error_msg:'找不到交易用户'});
                 }
-                var profit = (trader.cash - (trader.deposit + trader.debt)) / 100;
-                logger.debug('getProfit ', profit, profitAmount);
+                var profit = trader.cash - (trader.deposit + trader.debt);
                 if (profitAmount > profit) {
                     return res.status(500).send({error_msg:'无效的盈利金额'});
                 }
-                trader.cash -= profitAmount * 100;
+                trader.cash -= profitAmount;
                 trader.lashCash = trader.cash;
                 trader.save(function(err) {
                     if (err) {
