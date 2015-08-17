@@ -4,11 +4,17 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     if ($scope.user.real === true) {
         $scope.data.real = true;
     }
+    if ($scope.data.real) {
+        $scope.data.deposit = $scope.user.wechat.real_trader.deposit / 100;
+        $scope.data.cash = $scope.user.wechat.real_trader.cash;
+    } else {
+        $scope.data.deposit = 30000;
+        $scope.data.cash = 20000000;
+    }
     var TEXT = '现在是非交易时间';
     var REAL_TEXT = '您的账户不能交易';
     var HAND = 100;
     var InitCapital = 200000;
-    var Deposit = 30000;
     $scope.data.selectedItem = 1;
     $scope.tradeClose = false;
 	$scope.browserHeight = document.documentElement.clientHeight;
@@ -111,7 +117,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                     $scope.profit = data.result / 100;
                     $scope.lastProfit = data.lastProfit / 100;
                     $scope.currentPrice = data.lastPrice / 100;
-                    $scope.balance = Deposit + $scope.profit + $scope.lastProfit;
+                    $scope.balance = $scope.data.deposit + $scope.profit + $scope.lastProfit;
                     $scope.data.balance = $scope.balance;
                     $scope.yesterdayClose = data.yesterdayClose;
                     $scope.pointDelta = ($scope.currentPrice - $scope.yesterdayClose) / $scope.yesterdayClose * 100;
@@ -119,7 +125,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                     $scope.profit = 0;
                     $scope.lastProfit = 0;
                     $scope.currentPrice = $scope.data.lastPoint;
-                    $scope.balance = Deposit;
+                    $scope.balance = $scope.data.deposit;
                     $scope.data.balance = $scope.balance;
                     $scope.yesterdayClose = 0;
                     $scope.pointDelta = 0;

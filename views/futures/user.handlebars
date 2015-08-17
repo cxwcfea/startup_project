@@ -100,11 +100,11 @@
             </div>
             <div ng-show="loss == 0" class="color-example-base color-example"></div>
             <div ng-show="loss == 0" class="example">
-                <p>本金:\{{originCapital | number:0}}</p>
+                <p>本金:\{{data.cash / 100 | number:0}}</p>
             </div>
             <div ng-show="loss < 0" class="color-example-base color-example"></div>
             <div ng-show="loss < 0" class="example">
-                <p>总资产:\{{originCapital + loss | number:0}}</p>
+                <p>总资产:\{{data.cash / 100 + loss | number:0}}</p>
             </div>
             <div ng-show="loss < 0" class="color-example-lose color-example"></div>
             <div ng-show="loss < 0" class="example">

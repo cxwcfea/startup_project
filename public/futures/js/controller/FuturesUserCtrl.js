@@ -1,7 +1,6 @@
 'use strict';
 angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window', '$http', '$location', '$timeout', '$modal', function($scope, $window, $http, $location, $timeout, $modal) {
     $scope.user = $scope.data.currentUser;
-    $scope.originCapital = 30000;
 	$scope.data.selectedItem = 3;
 
     function displayError(msg) {
@@ -16,8 +15,8 @@ angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window',
     if (!balance) {
         balance = 0;
     }
-    $window.njPersonChart($scope.originCapital, balance);
-    var delta = balance - $scope.originCapital;
+    $window.njPersonChart($scope.data.deposit, balance);
+    var delta = balance - $scope.data.deposit;
     $scope.profit = delta > 0 ? delta : 0;
     $scope.loss = delta < 0 ? delta : 0;
 

@@ -370,7 +370,7 @@ function approveUser(req, res) {
 }
 
 function createAccount(req, res) {
-    logger.debug('createAccount operate by ', req.query);
+    logger.debug('createAccount operate by ' + req.user.mobile, req.query);
     var uid = req.query.uid;
     User.findById(uid, function(err, user) {
         if (err) {
@@ -404,7 +404,7 @@ function createAccount(req, res) {
 }
 
 function addMoney(req, res) {
-    logger.debug('addMoney operate by ', req.body);
+    logger.debug('addMoney operate by ' + req.user.mobile, req.body);
     var depositAmount = req.body.amount;
     if (!depositAmount || depositAmount < 0) {
         return res.status(403).send({error_msg:'无效的金额'});
@@ -451,6 +451,61 @@ function addMoney(req, res) {
                     return res.status(500).send({error_msg:'无法更新用户'});
                 }
                 user.wechat.status = 3;
+                user.save(function(err) {
+                    if (err) {
+                        return res.status(500).send({error_msg:err.toString()});
+                    }
+                    res.send({});
+                });
+            });
+        });
+    });
+}
+
+function addDeposit(req, res) {
+    logger.debug('addDeposit operate by ' + req.user.mobile, req.body);
+    var depositAmount = req.body.amount;
+    if (!depositAmount || depositAmount < 0) {
+        return res.status(403).send({error_msg:'无效的金额'});
+    }
+    var uid = req.body.uid;
+    User.findById(uid, function(err, user) {
+        if (err) {
+            return res.status(500).send({error_msg:err.toString()});
+        }
+        if (!user) {
+            return res.status(500).send({error_msg:'user not found'});
+        }
+        if (user.finance.balance < depositAmount) {
+            return res.status(403).send({error_msg:'用户余额不足'});
+        }
+        if (user.wechat.status != 4) {
+            return res.status(403).send({error_msg:'用户不处于交易状态'});
+        }
+        user.finance.balance -= depositAmount;
+        var orderData = {
+            userID: user._id,
+            userMobile: user.mobile,
+            dealType: 6,
+            amount: depositAmount,
+            status: 1,
+            description: '股指拍拍机追加保证金',
+            userBalance: user.finance.balance,
+            approvedBy: req.user.mobile,
+            approvedAt: Date.now()
+        };
+        Order.create(orderData, function(err, order) {
+            if (err) {
+                return res.status(500).send({error_msg:err.toString()});
+            }
+            depositAmount *= 100;
+            mockTrader.User.update({_id:user.wechat.real_trader}, {$inc:{cash:depositAmount, deposit:depositAmount}}, function(err, numberAffected, raw) {
+                if (err) {
+                    return res.status(500).send({error_msg:err.toString()});
+                }
+                if (!numberAffected) {
+                    return res.status(500).send({error_msg:'无法更新用户'});
+                }
                 user.save(function(err) {
                     if (err) {
                         return res.status(500).send({error_msg:err.toString()});
@@ -721,6 +776,8 @@ module.exports = {
         app.post('/futures/withdraw', passportConf.requiresRole('admin'), withdraw);
 
         app.post('/futures/addCard', passportConf.requiresRole('admin'), addCard);
+
+        app.post('/futures/add_deposit', passportConf.requiresRole('admin'), addDeposit);
 
         app.get('/futures/real', passportConf.isWechatAuthenticated, realHome);
 

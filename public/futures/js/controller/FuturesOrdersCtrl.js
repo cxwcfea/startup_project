@@ -2,7 +2,6 @@
 angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window', '$http', '$filter', '$location', function($scope, $window, $http, $filter, $location) {
     $scope.user = $scope.data.currentUser;
     $scope.data.selectedItem = 3;
-    $scope.originCapital = 200000;
     var pageCount = 1;
     var currentPage = 1;
     $scope.orders = [];

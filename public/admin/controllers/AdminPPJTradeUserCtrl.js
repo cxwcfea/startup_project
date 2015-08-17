@@ -148,6 +148,31 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
         }
     };
 
+    $scope.addDeposit = function(user) {
+        var result = prompt('请输入保证金的金额');
+        if (result != null) {
+            result = parseInt(result);
+            if (!result || result < 0) {
+                return gbNotifier.error('金额无效');
+            }
+            var postData = {
+                uid: user._id,
+                amount: result
+            };
+            $http.post('/futures/add_deposit', postData)
+                .success(function(data, status) {
+                    user.wechat.status = 3;
+                    user.finance.balance -= result;
+                    gbNotifier.notify('入资成功');
+                })
+                .error(function(data, status) {
+                    gbNotifier.error('入资失败:' + data.error_msg);
+                });
+        } else {
+            console.log('no');
+        }
+    };
+
     $scope.approveToTrade = function(user) {
         var result = prompt('确定开通交易权限吗');
         if (result != null) {

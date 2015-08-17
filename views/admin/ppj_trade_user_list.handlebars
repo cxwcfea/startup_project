@@ -39,6 +39,8 @@
                                         <button class="am-btn am-btn-default am-btn-xs am-text-primary" ng-click="createTradeAccount(user)" ng-show="user.wechat.status === 2"><span class="am-icon-pencil"></span> 创建交易账户</button>
                                         <button class="am-btn am-btn-default am-btn-xs am-text-primary" ng-click="createOrder(user)" ng-show="user.wechat.status > 1"><span class="am-icon-pencil"></span> 创建充值订单</button>
                                         <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-click="addMoney(user)" ng-show="user.wechat.status === 6"><span class="am-icon-pencil"></span> 入资</button>
+                                        <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-click="addDeposit(user)" ng-show="user.wechat.status === 4"><span class="am-icon-pencil"></span> 加保证金</button>
+                                        <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-click="getProfit(user)" ng-show="user.wechat.status === 4"><span class="am-icon-pencil"></span> 提取盈利</button>
                                         <button class="am-btn am-btn-default am-btn-xs am-text-warning" ng-click="closeTrade(user)" ng-show="user.wechat.status === 5"><span class="am-icon-pencil"></span> 结算</button>
                                         <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="withdraw(user)" ng-show="user.wechat.status > 2"><span class="am-icon-pencil"></span> 提现</button>
                                         <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="approveToTrade(user)" ng-show="user.wechat.status === 3 || user.wechat.status === 5"><span class="am-icon-pencil"></span> 开通交易权限</button>
