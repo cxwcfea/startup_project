@@ -366,6 +366,40 @@ function approveUser(req, res) {
     });
 }
 
+function createAccount(req, res) {
+    logger.debug('addMoney operate by ', req.query);
+    var uid = req.query.uid;
+    User.findById(uid, function(err, user) {
+        if (err) {
+            return res.status(500).send({error_msg:err.toString()});
+        }
+        if (!user) {
+            return res.status(500).send({error_msg:'user not found'});
+        }
+        mockTrader.createUser({
+            name: user.wechat.wechat_uuid,
+            status: 1,
+            real: true
+        }, function(err, trader) {
+            if (err) {
+                return res.status(500).send({error_msg:err.toString()});
+            }
+            if (!trader) {
+                return res.status(500).send({error_msg:'can not create trader'});
+            }
+            user.wechat.appointment = false;
+            user.wechat.real_trader = trader;
+            user.wechat.status = 3;
+            user.save(function(err) {
+                if (err) {
+                    return res.status(500).send({error_msg:err.toString()});
+                }
+                res.send({});
+            });
+        });
+    });
+}
+
 function addMoney(req, res) {
     logger.debug('addMoney operate by ', req.query);
     var DepositAmount = 30000;
@@ -692,6 +726,8 @@ module.exports = {
         app.get('/futures/approve_user', passportConf.requiresRole('admin'), approveUser);
 
         app.get('/futures/add_money', passportConf.requiresRole('admin'), addMoney);
+
+        app.get('/futures/create_account', passportConf.requiresRole('admin'), createAccount);
 
         app.post('/futures/change_user_access', passportConf.requiresRole('admin'), changeTraderStatus);
 
