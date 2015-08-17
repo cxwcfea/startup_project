@@ -621,6 +621,9 @@ function finishTrade(req, res) {
             trader.cash = 0;
             trader.lastCash = 0;
             trader.deposit = 0;
+            trader.waring = 0;
+            trader.close = 0;
+            trader.debt = 0;
             trader.status = 1;
             trader.save(function(err) {
                 callback(err, user);
