@@ -5,7 +5,7 @@ angular.module('futuresApp').controller('FuturesApplyCloseCtrl', ['$scope', '$wi
     var TEXT1 = '申请结算';
     var TEXT2 = '结算已受理，请等待短信通知';
     var buttonEnable = true;
-    if ($scope.user.wechat.real_trader.status === 5) {
+    if ($scope.user.wechat.status === 5) {
         $scope.btn_text = TEXT2;
         buttonEnable = false;
     } else {
