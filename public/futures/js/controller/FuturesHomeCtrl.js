@@ -4,7 +4,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     if ($scope.user.real === true) {
         $scope.data.real = true;
     }
-    if ($scope.data.real) {
+    if ($scope.data.real && $scope.user.wechat.real_trader) {
         $scope.data.deposit = $scope.user.wechat.real_trader.deposit / 100;
         $scope.data.cash = $scope.user.wechat.real_trader.cash;
     } else {
