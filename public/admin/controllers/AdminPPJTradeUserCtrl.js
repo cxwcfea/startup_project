@@ -263,8 +263,7 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
         if (result != null) {
             $http.get('/futures/create_account/?uid=' + user._id)
                 .success(function(data, status) {
-                    //user.wechat.status = 3;
-                    //user.finance.balance -= 30000;
+                    user.wechat.status = 3;
                     gbNotifier.notify('创建成功');
                 })
                 .error(function(data, status) {
