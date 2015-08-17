@@ -29,6 +29,12 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
             $scope.lossPoint = $scope.user.wechat.trader.lossPoint;
             $scope.open = $scope.user.wechat.trader.tradeControl;
         }
+        if ($scope.winPoint === 0) {
+            $scope.winPoint = null;
+        }
+        if ($scope.lossPoint === 0) {
+            $scope.lossPoint = null;
+        }
         if ($scope.open === undefined || $scope.open === null) {
             $scope.open = false;
         }

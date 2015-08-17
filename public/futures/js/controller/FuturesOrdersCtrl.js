@@ -35,7 +35,8 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
                 pageCount = data.pageCount;
             })
             .error(function(data, status) {
-                alert('load order error');
+                //alert('load order error');
+                $scope.orders = [];
             });
     }
 

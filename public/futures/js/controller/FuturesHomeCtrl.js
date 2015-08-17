@@ -129,7 +129,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                 $scope.profit = 0;
                 $scope.lastProfit = 0;
                 $scope.currentPrice = $scope.data.lastPoint;
-                $scope.balance = Deposit;
+                $scope.balance = 0;
                 $scope.data.balance = $scope.balance;
                 $scope.yesterdayClose = 0;
                 $scope.pointDelta = 0;

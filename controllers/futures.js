@@ -94,7 +94,7 @@ function fetchUserRankData(req, res) {
     var query = User.find({});
     query.exists('wechat.wechat_uuid');
     query.populate('wechat.trader');
-    query.sort({'wechat.trader.cash':1}).select('wechat identity');
+    query.select('wechat identity');
     query.exec(function(err, users) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
@@ -210,7 +210,7 @@ function getPositions(req, res) {
     if (!req.user || !req.user.wechat || !req.user.wechat.wechat_uuid) {
         return res.status(403).send({error_msg:'user need log in'});
     }
-    if (req.query.type == 1 && req.user.wechat.status === 4) {
+    if (req.query.type == 1 && req.user.wechat.real_trader) {
         ctpTrader.getPositions({user_id:req.user.wechat.real_trader}, function(err, positions) {
             if (err) {
                 return res.status(500).send({error_msg:err.toString()});
@@ -245,7 +245,7 @@ function getOrders(req, res) {
     req.body.date_begin = 0;
     req.body.date_end = Date.now();
     req.body.page = page;
-    if (req.query.type == 1 && req.user.wechat.status === 4) {
+    if (req.query.type == 1 && req.user.wechat.real_trader) {
         req.body.user_id = req.user.wechat.real_trader;
         ctpTrader.getHistoryOrders(req, res);
     } else {
@@ -274,7 +274,7 @@ function getUserProfit(req, res) {
         default :
             req.body.contract = {exchange:'future', stock_code:'IFCURR'};
     }
-    if (req.query.type == 1 && req.user.wechat.status === 4) {
+    if (req.query.type == 1 && req.user.wechat.real_trader) {
         req.body.user_id = req.user.wechat.real_trader;
         ctpTrader.getProfit(req, res);
     } else {
@@ -307,7 +307,7 @@ function getOrderCount(fn) {
 }
 
 function getUserInfo(req, res) {
-    if (req.query.type == 1 && req.user.wechat.status === 4) {
+    if (req.query.type == 1 && req.user.wechat.real_trader) {
         ctpTrader.getUserInfo({user_id:req.user.wechat.real_trader}, function(err, user) {
             if (err) {
                 return res.status(500).send({error_msg:err.toString()});
