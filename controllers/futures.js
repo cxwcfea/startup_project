@@ -562,12 +562,12 @@ function getProfit(req, res) {
                     return res.status(500).send({error_msg:'无效的盈利金额'});
                 }
                 trader.cash -= profitAmount;
-                trader.lashCash = trader.cash;
+                trader.lastCash = trader.cash;
                 trader.save(function(err) {
                     if (err) {
                         return res.status(500).send({error_msg:err.toString()});
                     }
-                    user.finance.balance += profitAmount;
+                    user.finance.balance += profitAmount/100;
                     user.save(function(err) {
                         if (err) {
                             return res.status(500).send({error_msg:err.toString()});
