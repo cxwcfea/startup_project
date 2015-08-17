@@ -420,7 +420,7 @@ function addMoney(req, res) {
         if (user.finance.balance < depositAmount) {
             return res.status(403).send({error_msg:'用户余额不足'});
         }
-        if (user.status != 6) {
+        if (user.wechat.status != 6) {
             return res.status(403).send({error_msg:'用户不处于未入资状态'});
         }
         user.finance.balance -= depositAmount;
