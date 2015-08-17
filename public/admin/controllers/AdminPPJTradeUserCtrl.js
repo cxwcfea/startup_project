@@ -257,4 +257,8 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
         $scope.data.searchKey = mobile;
         $location.path('user_page');
     };
+
+    $scope.createTradeAccount = function(user) {
+
+    };
 }]);
