@@ -127,7 +127,6 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
         var result = prompt('确定入资吗, 请输入要入资的金额');
         if (result != null) {
             result = parseInt(result);
-            console.log(result);
             if (!result || result < 30000) {
                 return gbNotifier.error('入资金额必须大于3万元');
             }

@@ -370,7 +370,7 @@ function approveUser(req, res) {
 }
 
 function createAccount(req, res) {
-    logger.debug('addMoney operate by ', req.query);
+    logger.debug('createAccount operate by ', req.query);
     var uid = req.query.uid;
     User.findById(uid, function(err, user) {
         if (err) {
@@ -708,7 +708,7 @@ module.exports = {
 
         app.get('/futures/approve_user', passportConf.requiresRole('admin'), approveUser);
 
-        app.get('/futures/add_money', passportConf.requiresRole('admin'), addMoney);
+        app.post('/futures/add_money', passportConf.requiresRole('admin'), addMoney);
 
         app.get('/futures/create_account', passportConf.requiresRole('admin'), createAccount);
 
