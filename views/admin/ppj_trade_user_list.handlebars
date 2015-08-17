@@ -36,6 +36,7 @@
                             <div class="am-btn-toolbar">
                                 <div class="am-btn-group am-btn-group-xs">
                                     {{#unless watcher}}
+                                        <button class="am-btn am-btn-default am-btn-xs am-text-primary" ng-click="createTradeAccount(user)" ng-show="user.wechat.status === 2"><span class="am-icon-pencil"></span> 创建交易账户</button>
                                         <button class="am-btn am-btn-default am-btn-xs am-text-primary" ng-click="createOrder(user)" ng-show="user.wechat.status > 1"><span class="am-icon-pencil"></span> 创建充值订单</button>
                                         <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-click="addMoney(user)" ng-show="user.wechat.status === 3"><span class="am-icon-pencil"></span> 入资</button>
                                         <button class="am-btn am-btn-default am-btn-xs am-text-warning" ng-click="closeTrade(user)" ng-show="user.wechat.status === 5"><span class="am-icon-pencil"></span> 结算</button>
@@ -43,7 +44,6 @@
                                         <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="approveToTrade(user)" ng-show="user.wechat.status === 3 || user.wechat.status === 5"><span class="am-icon-pencil"></span> 开通交易权限</button>
                                         <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="disallowTrade(user)" ng-show="user.wechat.status === 4"><span class="am-icon-pencil"></span> 冻结交易</button>
                                         <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="addCard(user)" ng-show="user.wechat.status > 1"><span class="am-icon-pencil"></span> 添加银行卡</button>
-                                        <button class="am-btn am-btn-default am-btn-xs am-text-primary" ng-click="createTradeAccount(user)" ng-show="user.wechat.status === 2"><span class="am-icon-pencil"></span> 创建交易账户</button>
                                     {{/unless}}
                                 </div>
                             </div>

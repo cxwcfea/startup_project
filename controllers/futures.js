@@ -596,6 +596,7 @@ function withdraw(req, res) {
                 status: 0,
                 description: '股指拍拍机提现',
                 userBalance: 0,
+                otherInfo: util.generateSerialID(),
                 cardInfo: {
                     bank: util.bankNameFromNJBankID[parseInt(card.bankID)],
                     bankName: card.bankName,

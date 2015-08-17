@@ -259,6 +259,19 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
     };
 
     $scope.createTradeAccount = function(user) {
-
+        var result = prompt('确定为该用户创建交易账户吗?');
+        if (result != null) {
+            $http.get('/futures/create_account/?uid=' + user._id)
+                .success(function(data, status) {
+                    //user.wechat.status = 3;
+                    //user.finance.balance -= 30000;
+                    gbNotifier.notify('创建成功');
+                })
+                .error(function(data, status) {
+                    gbNotifier.error('账户创建失败:' + data.error_msg);
+                });
+        } else {
+            console.log('no');
+        }
     };
 }]);
