@@ -13,7 +13,7 @@ angular.module('futuresApp').controller('FuturesUserCtrl', ['$scope', '$window',
 
     var balance = $scope.data.balance;
     if (!balance) {
-        balance = 0;
+        balance = $scope.data.deposit;
     }
     $window.njPersonChart($scope.data.deposit, balance);
     var delta = balance - $scope.data.deposit;
