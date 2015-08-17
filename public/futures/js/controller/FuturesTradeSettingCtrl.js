@@ -48,7 +48,8 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
         }
         $http.post('/futures/change_trade_setting', {open:open, win:$scope.winPoint, loss:$scope.lossPoint, type:type})
             .success(function(data, status) {
-                displayError('设置成功', true);
+                displayError('设置成功');
+                $scope.open = open;
                 if ($scope.data.real) {
                     $scope.user.wechat.real_trader.winPoint = $scope.winPoint;
                     $scope.user.wechat.real_trader.lossPoint = $scope.lossPoint;
@@ -59,6 +60,7 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
                     $scope.user.wechat.trader.tradeControl = open;
                 }
                 processing = false;
+                $scope.toggleSetting();
             })
             .error(function(data, status) {
                 displayError('设置失败');
@@ -74,7 +76,7 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
         var open = !$scope.open;
         if (open) {
             if (!$scope.winPoint && !$scope.lossPoint) {
-                displayError('止损点，止盈点请至少输入一个');
+                displayError('止损金额，止盈金额请至少输入一个。');
                 processing = false;
                 return;
             }
@@ -127,5 +129,18 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
         } else {
             $scope.titleText = OPEN_TEXT;
         }
+    };
+
+    $scope.showLossPointHint = function() {
+        $scope.lossPointHint = true;
+    };
+
+    $scope.showWinPointHint = function() {
+        $scope.winPointHint = true;
+    };
+
+    $scope.closeDialogWindow = function() {
+        $scope.lossPointHint = false;
+        $scope.winPointHint = false;
     };
 }]);
