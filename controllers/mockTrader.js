@@ -495,7 +495,7 @@ function getProfitImpl(req, res, user, contractId) {
                     //console.log("Completed: " + asyncObj);
                     var income = asyncObj.value;
                     //console.log("User info: " + req.body.user_id + ", " + user.cash + ", " + income + ", " + user.close);
-                    var lastProfit = user.lastCash ? user.lastCash - kInitialCapital : 0;
+                    var lastProfit = user.lastCash ? user.lastCash - (user.deposit + user.debt) : 0;
                     res.send({result: user.cash + income - user.deposit - user.debt - lastProfit, lastProfit:lastProfit, lastPrice:priceInfo.LastPrice, yesterdayClose:priceInfo.PreSettlementPrice});
                     return;
                 });

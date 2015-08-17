@@ -161,12 +161,35 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
             };
             $http.post('/futures/add_deposit', postData)
                 .success(function(data, status) {
-                    user.wechat.status = 3;
                     user.finance.balance -= result;
-                    gbNotifier.notify('入资成功');
+                    gbNotifier.notify('保证金加成功');
                 })
                 .error(function(data, status) {
-                    gbNotifier.error('入资失败:' + data.error_msg);
+                    gbNotifier.error('保证金加失败:' + data.error_msg);
+                });
+        } else {
+            console.log('no');
+        }
+    };
+
+    $scope.getProfit = function(user) {
+        var result = prompt('请输入要提取的金额');
+        if (result != null) {
+            result = parseInt(result);
+            if (!result || result > user.wechat.real_trader.lastCash - (user.wechat.real_trader.deposit + user.wechat.real_trader.debt)) {
+                return gbNotifier.error('金额无效');
+            }
+            var postData = {
+                uid: user._id,
+                amount: result
+            };
+            $http.post('/futures/get_profit', postData)
+                .success(function(data, status) {
+                    user.wechat.real_trader.lasCash = user.wechat.real_trader.cash = user.wechat.real_trader.deposit + user.wechat.real_trader.debt;
+                    gbNotifier.notify('操作成功');
+                })
+                .error(function(data, status) {
+                    gbNotifier.error('操作失败:' + data.error_msg);
                 });
         } else {
             console.log('no');

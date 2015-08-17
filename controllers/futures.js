@@ -465,7 +465,7 @@ function addMoney(req, res) {
 function addDeposit(req, res) {
     logger.debug('addDeposit operate by ' + req.user.mobile, req.body);
     var depositAmount = req.body.amount;
-    if (!depositAmount || depositAmount < 0) {
+    if (!depositAmount || depositAmount <= 0) {
         return res.status(403).send({error_msg:'无效的金额'});
     }
     var uid = req.body.uid;
@@ -512,6 +512,69 @@ function addDeposit(req, res) {
                     }
                     res.send({});
                 });
+            });
+        });
+    });
+}
+
+function getProfit(req, res) {
+    logger.debug('getProfit operate by ' + req.user.mobile, req.body);
+    var profitAmount = req.body.amount;
+    if (!profitAmount || profitAmount <= 0) {
+        return res.status(403).send({error_msg:'无效的金额'});
+    }
+    var uid = req.body.uid;
+    User.findById(uid, function(err, user) {
+        if (err) {
+            return res.status(500).send({error_msg:err.toString()});
+        }
+        if (!user) {
+            return res.status(500).send({error_msg:'user not found'});
+        }
+        if (user.wechat.status != 4) {
+            return res.status(403).send({error_msg:'用户不处于交易状态'});
+        }
+        var orderData = {
+            userID: user._id,
+            userMobile: user.mobile,
+            dealType: 3,
+            amount: profitAmount,
+            status: 1,
+            description: '股指拍拍机盈利提取',
+            userBalance: user.finance.balance - profitAmount,
+            approvedBy: req.user.mobile,
+            approvedAt: Date.now()
+        };
+        Order.create(orderData, function(err, order) {
+            if (err) {
+                return res.status(500).send({error_msg:err.toString()});
+            }
+            profitAmount *= 100;
+            mockTrader.User.findById(user.wechat.real_trader, function(err, trader) {
+                if (err) {
+                    return res.status(500).send({error_msg:err.toString()});
+                }
+                if (!trader) {
+                    return res.status(500).send({error_msg:'找不到交易用户'});
+                }
+                var profit = (trader.cash - (trader.deposit + trader.debt)) / 100;
+                if (profitAmount > profit) {
+                    return res.status(500).send({error_msg:'无效的盈利金额'});
+                }
+                trader.cash -= profitAmount * 100;
+                trader.lashCash = trader.cash;
+                trader.save(function(err) {
+                    if (err) {
+                        return res.status(500).send({error_msg:err.toString()});
+                    }
+                    user.finance.balance += profitAmount;
+                    user.save(function(err) {
+                        if (err) {
+                            return res.status(500).send({error_msg:err.toString()});
+                        }
+                        res.send({});
+                    });
+                })
             });
         });
     });
@@ -781,6 +844,8 @@ module.exports = {
         app.post('/futures/addCard', passportConf.requiresRole('admin'), addCard);
 
         app.post('/futures/add_deposit', passportConf.requiresRole('admin'), addDeposit);
+
+        app.post('/futures/get_profit', passportConf.requiresRole('admin'), getProfit);
 
         app.get('/futures/real', passportConf.isWechatAuthenticated, realHome);
 
