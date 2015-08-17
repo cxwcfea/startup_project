@@ -30,6 +30,10 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
         {
             name: '结算中',
             value: 5
+        },
+        {
+            name: '账户未入资',
+            value: 6
         }
     ];
 

@@ -419,6 +419,8 @@
                     return "交易中";
                 case 5:
                     return "结算中";
+                case 6:
+                    return "账户未入资";
                 default:
                     return "未知";
             }

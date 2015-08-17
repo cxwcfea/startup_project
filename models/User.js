@@ -73,7 +73,7 @@ var userSchema = new mongoose.Schema({
             type: mongoose.Schema.ObjectId,
             ref: 'PPJUser'
         },
-        status: { type: Number, default: 0 } // 0 mock user, 1 not sign contract, 2 not assign trader account, 3 not allow trade, 4 trading, 5 closing
+        status: { type: Number, default: 0 } // 0 mock user, 1 not sign contract, 2 not assign trader account, 3 not allow trade, 4 trading, 5 closing, 6 账户未入资
     },
 
     identity: {
