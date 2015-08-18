@@ -19,19 +19,19 @@
                 <table class="am-table am-table-striped am-table-hover table-main">
                     <thead>
                     <tr>
-                        <th class="">姓名</th><th class="">身份证号</th><th class="">微信名</th><th class="">手机号</th><th>平仓盈亏</th><th>账户余额</th><th>交易本金</th><th>状态</th><th>操作</th>
+                        <th class="">姓名</th><th class="">微信名</th><th class="">手机号</th><th>平仓盈亏</th><th>账户余额</th><th>交易本金</th><th>状态</th><th>交易权限</th><th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="user in showingItems">
                         <td><a href="" ng-click="showUserDetail(user.mobile)">\{{user.identity.name}}</a></td>
-                        <td>\{{user.identity.id}}</td>
                         <td>\{{user.wechat.wechat_name || 'N/A'}}</td>
                         <td><a href="" ng-click="showUserDetail(user.mobile)">\{{user.wechat.mobile}}</a></td>
                         <td>\{{user.wechat.real_trader.lastCash == 0 ? 0 : user.wechat.real_trader.lastCash/100-200000 | number:2}}</td>
                         <td>\{{user.finance.balance | number:2}}</td>
                         <td>\{{user.wechat.real_trader.deposit/100 | number:2}}</td>
                         <td>\{{user.wechat.status | ppjUserType}}</td>
+                        <td>\{{user.wechat.real_trader.status === 0 ? '正常' : '禁买'}}</td>
                         <td>
                             <div class="am-btn-toolbar">
                                 <div class="am-btn-group am-btn-group-xs">
