@@ -87,7 +87,11 @@ function startServer(master) {
     server.listen(app.get('port'), function(){
         logger.info('Express started on ' + app.get('port') + '; press Ctrl-C to terminate.');
     });
-    require('./controllers/ctpTrader').initHive();
+    var ctpTrader = require('./controllers/ctpTrader');
+    ctpTrader.initHive();
+    setTimeout(function() {
+        ctpTrader.destroyHive();
+    }, 5000);
 }
 
 if(require.main === module){
