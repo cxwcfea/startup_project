@@ -31,6 +31,9 @@
         height:46px !important;
         line-height:46px !important;
     }
+    .higher input {
+        height:46px !important;
+    }
 </style>
 
 <section class="setting-box">
@@ -47,7 +50,7 @@
                     <div class="form-group">
                         <div class="input-group higher">
                             <div class="input-group-addon">止损金额</div>
-                            <input type="number" class="form-control higher" ng-model="winPoint" min="300" max="100000" placeholder="持仓亏损达到该金额时系统将自动平仓" required>
+                            <input type="number" class="form-control" ng-model="winPoint" min="300" max="100000" placeholder="持仓亏损达到该金额时系统将自动平仓" required>
                             <div class="input-group-addon">
                                 <span class="glyphicon glyphicon-question-sign" aria-hidden="true" ng-click="showLossPointHint()"></span>
                             </div>
@@ -55,7 +58,7 @@
                         <br>
                         <div class="input-group higher">
                             <div class="input-group-addon">止盈金额</div>
-                            <input type="number" class="form-control higher" ng-model="lossPoint" min="300" max="100000" placeholder="持仓盈利达到该金额时系统将自动平仓" required>
+                            <input type="number" class="form-control" ng-model="lossPoint" min="300" max="100000" placeholder="持仓盈利达到该金额时系统将自动平仓" required>
                             <div class="input-group-addon">
                                 <span class="glyphicon glyphicon-question-sign" aria-hidden="true" ng-click="showWinPointHint()"></span>
                             </div>
