@@ -15,17 +15,21 @@
         margin-left: 10px;
         margin-right: 10px;
     }
-    .button-style {
-        font-size:20px;
-        color:#ffffff;
-        text-align:center;
-        line-height:46px;
-        background-color:#4b90f7;
-        border-radius:5px;
-        height:46px;
-        margin-right:10px;
-        margin-left:10px;
+    .button-area {
         margin-top:20px;
+        margin-left:15px;
+        margin-right:15px;
+    }
+    .button-area button {
+        width:100%;
+        height:46px;
+        line-height:46px;
+        text-align:center;
+        background-color:#4b90f7;
+        color:#ffffff;
+        font-size:20px;
+        border-radius:5px;
+        border:none;
     }
     .higher {
         height:46px !important;
@@ -65,8 +69,10 @@
                         </div>
                     </div>
                 </form>
-                <div class="confirm">
-                    <!--<button type="button" class="btn btn-primary col-xs-offset-1 col-xs-10" ng-click="changeSetting()">\{{titleText}}</button>-->
+                <!--<div class="confirm">
+                    <button type="button" class="btn btn-primary col-xs-offset-1 col-xs-10" ng-click="changeSetting()">\{{titleText}}</button>
+                </div>-->
+                <div class="button-area">
                     <button type="button" class="button-style" ng-click="changeSetting()">\{{titleText}}</button>
                 </div>
             </div>
