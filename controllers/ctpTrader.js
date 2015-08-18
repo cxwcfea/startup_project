@@ -819,6 +819,7 @@ function initHive() {
 }
 
 function destroyHive() {
+    console.log('destroyHive ', timestamp);
     hive.destroy();
     hive.order2user = null;
     hive.user2cb = null;
