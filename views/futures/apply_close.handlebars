@@ -2,17 +2,22 @@
     .apply-close-box .intro-box {
         margin: 50px 10px 200px 10px;
     }
-    .button-style {
-        font-size:20px;
-        color:#ffffff;
-        text-align:center;
-        line-height:46px;
-        background-color:#4b90f7;
-        border-radius:5px;
-        height:46px;
-        margin-right:10px;
-        margin-left:10px;
+    .apply-close-box .intro-box p {
+        font-size:15px;
+    }
+    .apply-close-box .button-area {
         margin-top:20px;
+    }
+    .apply-close-box .button-area button {
+        width:100%;
+        height:46px;
+        line-height:46px;
+        text-align:center;
+        background-color:#4b90f7;
+        color:#ffffff;
+        font-size:20px;
+        border-radius:5px;
+        border:none;
     }
 </style>
 <section class="apply-close-box">
@@ -37,7 +42,9 @@
                 </ol>
             </div>
             <!--<button class="btn btn-primary col-xs-12" ng-click="closeApply()">\{{btn_text}}</button>-->
-            <button class="button-style" ng-click="closeApply()">\{{btn_text}}</button>
+        </div>
+        <div class="button-area">
+            <button ng-click="closeApply()">\{{btn_text}}</button>
         </div>
     </div>
 
