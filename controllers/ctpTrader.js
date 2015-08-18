@@ -799,7 +799,7 @@ function loadDBData() {
 }
 
 var hive;
-function initHive() {
+function initHive(param) {
 	var initConfig = {
 		//ip: '218.241.142.230',
 		ip: '127.0.0.1',
@@ -807,7 +807,7 @@ function initHive() {
 		investor: '851710073',
 		password: '283715',
 		front_addr: 'tcp://27.115.57.130:41205/9000',
-		client_id: 1,
+		client_id: param,
 		version: 1,
 		interval:128
 	};
