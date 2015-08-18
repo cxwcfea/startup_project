@@ -283,7 +283,9 @@ function windControl(userId, forceClose, userContract, cb) {
                           //console.log(costs);
                           if (asyncObj.remaining > 0 && typeof userContract === 'undefined') {
                               console.log("Still counting: " + asyncObj);
-                              delete user2cb_obj[userId];
+                              if (user2cb_obj) {
+                                  delete user2cb_obj[userId];
+                              }
                               return lock.unlock();
                           }
                           //console.log("Completed: " + asyncObj);
@@ -294,7 +296,9 @@ function windControl(userId, forceClose, userContract, cb) {
                           if (!forceClose && user.cash + income > user.close) {
                               // No risk
                               console.log("No risk");
-                              delete user2cb_obj[userId];
+                              if (user2cb_obj) {
+                                  delete user2cb_obj[userId];
+                              }
                               cb(null);
                               return lock.unlock();
                           } else {
