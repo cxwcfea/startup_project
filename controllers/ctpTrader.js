@@ -801,7 +801,7 @@ function loadDBData() {
 var timestamp = Date.now();
 var hive;
 function initHive() {
-    console.log('initHive ', timestamp);
+    console.log('ctpTrader initHive ', timestamp);
 	var initConfig = {
 		//ip: '218.241.142.230',
 		ip: '127.0.0.1',
@@ -819,7 +819,7 @@ function initHive() {
 }
 
 function destroyHive() {
-    console.log('destroyHive ', timestamp);
+    console.log('ctpTrader destroyHive ', timestamp);
     hive.destroy();
     hive.order2user = null;
     hive.user2cb = null;
