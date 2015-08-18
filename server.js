@@ -87,6 +87,7 @@ function startServer(master) {
     server.listen(app.get('port'), function(){
         logger.info('Express started on ' + app.get('port') + '; press Ctrl-C to terminate.');
     });
+    console.log('start server');
 	require('./controllers/ctpTrader').initHive();
 }
 
