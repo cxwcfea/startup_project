@@ -9,3 +9,5 @@ test.js
 moment_test.js
 start_database.sh
 *.swp
+module_test.js
+main_test.js

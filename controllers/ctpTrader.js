@@ -798,8 +798,10 @@ function loadDBData() {
 	});
 }
 
+var timestamp = Date.now();
 var hive;
 function initHive() {
+    console.log('initHive ', timestamp);
 	var initConfig = {
 		//ip: '218.241.142.230',
 		ip: '127.0.0.1',
