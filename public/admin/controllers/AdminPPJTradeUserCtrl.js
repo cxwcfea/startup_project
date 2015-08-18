@@ -335,4 +335,14 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
             console.log('no');
         }
     };
+
+    $scope.searchUser = function() {
+        if (searchKey) {
+            return;
+        }
+        $scope.currentUsers = users.filter(function (user) {
+            return user.wechat.mobile == searchKey;
+        });
+        pageReset();
+    };
 }]);
