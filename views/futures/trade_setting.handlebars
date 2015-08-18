@@ -15,6 +15,18 @@
         margin-left: 10px;
         margin-right: 10px;
     }
+    .button-style {
+        font-size:20px;
+        color:#ffffff;
+        text-align:center;
+        line-height:46px;
+        background-color:#4b90f7;
+        border-radius:5px;
+        height:46px;
+        margin-right:10px;
+        margin-left:10px;
+        margin-top:20px;
+    }
 </style>
 
 <section class="setting-box">
@@ -47,7 +59,8 @@
                     </div>
                 </form>
                 <div class="confirm">
-                    <button type="button" class="btn btn-primary col-xs-offset-1 col-xs-10" ng-click="changeSetting()">\{{titleText}}</button>
+                    <!--<button type="button" class="btn btn-primary col-xs-offset-1 col-xs-10" ng-click="changeSetting()">\{{titleText}}</button>-->
+                    <button type="button" class="button-style" ng-click="changeSetting()">\{{titleText}}</button>
                 </div>
             </div>
         </div>

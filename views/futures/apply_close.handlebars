@@ -2,6 +2,18 @@
     .apply-close-box .intro-box {
         margin: 50px 10px 200px 10px;
     }
+    .button-style {
+        font-size:20px;
+        color:#ffffff;
+        text-align:center;
+        line-height:46px;
+        background-color:#4b90f7;
+        border-radius:5px;
+        height:46px;
+        margin-right:10px;
+        margin-left:10px;
+        margin-top:20px;
+    }
 </style>
 <section class="apply-close-box">
     <!--#S header-->
@@ -24,7 +36,8 @@
                     <li>5.结算金额将会进入您入资的银行账户</li>
                 </ol>
             </div>
-            <button class="btn btn-primary col-xs-12" ng-click="closeApply()">\{{btn_text}}</button>
+            <!--<button class="btn btn-primary col-xs-12" ng-click="closeApply()">\{{btn_text}}</button>-->
+            <button class="button-style" ng-click="closeApply()">\{{btn_text}}</button>
         </div>
     </div>
 
