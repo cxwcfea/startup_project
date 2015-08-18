@@ -1,15 +1,10 @@
 var User = require('../models/User'),
-    Apply = require('../models/Apply'),
     Order = require('../models/Order'),
-    PayInfo = require('../models/PayInfo'),
     Card = require('../models/Card'),
-    DailyData = require('../models/DailyData'),
-    applies = require('../controllers/apply'),
-    yeepay = require('../lib/yeepay'),
     util = require('../lib/util'),
+    sms = require('../lib/sms'),
     mockTrader = require('./mockTrader'),
     ctpTrader = require('./ctpTrader'),
-    useragent = require('useragent'),
     _ = require('lodash'),
     moment = require('moment'),
     async = require('async'),
@@ -18,6 +13,10 @@ var User = require('../models/User'),
 
 var CLOSE_LINE = 5000;
 var WARN_LINE = 10000;
+var SUPPORT_NUM = '15811087507';
+var RISKCONTROL_NUM = '18911468685';
+var FINANCE_NUM1 = '13641012331';
+var FINANCE_NUM2 = '13811226078';
 
 var privateProperties = [
     '__v',
@@ -351,6 +350,7 @@ function makeAppointment(req, res) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
         }
+        sms.sendSMS(SUPPORT_NUM, null, '客户（' + req.user.wechat.mobile + '）刚刚预约了实盘');
         res.send({});
     });
 }
@@ -358,14 +358,23 @@ function makeAppointment(req, res) {
 function approveUser(req, res) {
     logger.info('approveUser operate by ' + req.user.mobile, req.query);
     var uid = req.query.uid;
-    User.update({_id:uid}, {'wechat.appointment':false, 'wechat.access_real':true, 'wechat.status':1}, function(err, numberAffected, raw) {
+    User.findById(uid, function(err, user) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
         }
         if (!numberAffected) {
             return res.status(500).send({error_msg:'无法更新用户'});
         }
-        res.send({});
+        user.wechat.appointment = false;
+        if (user.wechat.status === 0) {
+            user.wechat.status = 1;
+        }
+        user.save(function(err) {
+            if (err) {
+                return res.status(500).send({error_msg:err.toString()});
+            }
+            res.send({});
+        })
     });
 }
 
@@ -455,6 +464,9 @@ function addMoney(req, res) {
                     if (err) {
                         return res.status(500).send({error_msg:err.toString()});
                     }
+                    var content = '用户(' + user.identity.name + ',' + user.wechat.mobile + ')本金入资已经完成';
+                    sms.sendSMS(RISKCONTROL_NUM, null, content);
+                    sms.sendSMS(SUPPORT_NUM, null, content);
                     res.send({});
                 });
             });
@@ -499,17 +511,21 @@ function addDeposit(req, res) {
                 return res.status(500).send({error_msg:err.toString()});
             }
             depositAmount *= 100;
-            mockTrader.User.update({_id:user.wechat.real_trader}, {$inc:{cash:depositAmount, lastCash:depositAmount, deposit:depositAmount}}, function(err, numberAffected, raw) {
+            mockTrader.User.findById(user.wechat.real_trader, function (err, trader) {
                 if (err) {
                     return res.status(500).send({error_msg:err.toString()});
                 }
-                if (!numberAffected) {
+                if (!trader) {
                     return res.status(500).send({error_msg:'无法更新用户'});
                 }
-                user.save(function(err) {
+                logger.info('addDeposit before change', trader);
+                trader.cash += depositAmount;
+                trader.lastCash += depositAmount;
+                trader.save(function(err) {
                     if (err) {
                         return res.status(500).send({error_msg:err.toString()});
                     }
+                    logger.info('addDeposit after change', trader);
                     res.send({});
                 });
             });
@@ -588,6 +604,13 @@ function changeTraderStatus(req, res) {
         }
         if (!user) {
             return res.status(400).send({error_msg:'用户不存在'});
+        }
+        if (req.body.user_status === 4) {
+            var content = '用户(' + user.identity.name + ',' + user.wechat.mobile + ')交易权限已经开通';
+            sms.sendSMS(SUPPORT_NUM, '', content);
+        } else if (req.body.user_status === 5) {
+            var content = '用户(' + user.identity.name + ',' + user.wechat.mobile + ')刚刚申请了结算，请及时对账和处理';
+            sms.sendSMS(RISKCONTROL_NUM, '', content);
         }
         if (req.body.trader_status !== null && req.body.trader_status != undefined) {
             mockTrader.User.update({_id:user.wechat.real_trader}, {status:req.body.trader_status}, function(err, numberAffected, raw) {
@@ -703,6 +726,9 @@ function finishTrade(req, res) {
             logger.error('finishOrder err', err);
             return res.status(500).send({error_msg:err.toString()});
         }
+        var content = '用户(' + user.identity.name + ',' + user.wechat.mobile + ')风控结算已完成，可以进行提现。';
+        sms.sendSMS(FINANCE_NUM1, null, content);
+        sms.sendSMS(FINANCE_NUM2, null, content);
         res.send({balance:user.finance.balance});
     });
 }
