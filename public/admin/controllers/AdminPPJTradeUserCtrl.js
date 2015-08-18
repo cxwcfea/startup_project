@@ -337,11 +337,9 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
     };
 
     $scope.searchUser = function() {
-        alert('run');
-        if ($scope.searchKey) {
+        if (!$scope.searchKey) {
             return;
         }
-        console.log($scope.searchKey);
         $scope.currentUsers = users.filter(function (user) {
             return user.wechat.mobile == $scope.searchKey;
         });
