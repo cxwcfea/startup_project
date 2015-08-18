@@ -89,9 +89,6 @@ function startServer(master) {
     });
     var ctpTrader = require('./controllers/ctpTrader');
     ctpTrader.initHive();
-    setTimeout(function() {
-        ctpTrader.destroyHive();
-    }, 5000);
 }
 
 if(require.main === module){
