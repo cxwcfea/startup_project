@@ -188,7 +188,7 @@ function placeOrder(req, res) {
 
         if (req.body.type == 1 && req.user.wechat.status === 4) {
             obj.user_id = req.user.wechat.real_trader;
-            ctpTrader.createOrder(obj, function(err, order) {
+            ctpTrader.createOrder(obj, false, function(err, order) {
                 if (err) {
                     var msg = getErrorMessage(err);
                     return res.status(500).send({error_msg:msg});

@@ -326,7 +326,7 @@ function windControl(userId, forceClose, userContract, cb) {
                                           size: 1, // volume
                                           px_raw: parseFloat(price).toFixed(0)
                                       };
-                                      hive.createOrder(ctp_order_close, function(info, user2cb_obj) {
+                                      hive.createOrder(ctp_order_close, true, function(info, user2cb_obj) {
                                           if(info.code == 0){
                                               console.log('order closed in hive.');
                                           } else if(info.code == -1) {
@@ -578,7 +578,7 @@ function getInstrument(){
 	return "IF" + (d.getYear()-100) + month;
 }
 
-function createOrder(data, cb) {
+function createOrder(data, isRiskControl, cb) {
     //logger.debug(data);
     if (!data.order.quantity || data.order.quantity % kHand != 0) {
         console.log("invalid quantity");
@@ -595,7 +595,7 @@ function createOrder(data, cb) {
               cb(err.toString());
               return lock.unlock();
           }
-          if (user.status != 0) {
+          if (!isRiskControl && user.status != 0) {
               cb({code:3, msg:'Account status is not normal.'});
               return lock.unlock();
           }
