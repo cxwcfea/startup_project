@@ -55,6 +55,7 @@
                                         <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="approveToTrade(user)" ng-show="user.wechat.status === 3 || user.wechat.status === 5"><span class="am-icon-pencil"></span> 开通交易权限</button>
                                         <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="disallowTrade(user)" ng-show="user.wechat.status === 4"><span class="am-icon-pencil"></span> 冻结交易</button>
                                         <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="addCard(user)" ng-show="user.wechat.status > 1"><span class="am-icon-pencil"></span> 添加银行卡</button>
+                                        <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="releaseUser(user)" ng-show="user.wechat.status === 4 && user.wechat.real_trader.status === 1"><span class="am-icon-pencil"></span> 解除禁买</button>
                                     {{/unless}}
                                 </div>
                             </div>

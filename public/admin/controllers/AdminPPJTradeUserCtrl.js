@@ -345,4 +345,20 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
         });
         pageReset();
     };
+
+    $scope.releaseUser = function(user) {
+        var result = prompt('确定解除禁买吗');
+        if (result != null) {
+            $http.post('/futures/change_user_access', {uid:user._id, user_status:4, trader_status:0})
+                .success(function(data, status) {
+                    user.wechat.real_trader.status = 0;
+                    gbNotifier.notify('操作成功');
+                })
+                .error(function(data, status) {
+                    gbNotifier.error('操作失败:' + data.error_msg);
+                });
+        } else {
+            console.log('no');
+        }
+    };
 }]);
