@@ -12,6 +12,7 @@ var mongoose = require('mongoose'),
     User = require('../models/User'),
     Contract = require('../models/Contract'),
     DailyData = require('../models/DailyData'),
+    mockTrader = require('../controllers/mockTrader'),
     config = require('../config/config')['production'];
 
 var referNameMap = {};
@@ -1197,6 +1198,35 @@ function lossApplyData(callback) {
     });
 }
 
+function calculateOrderNum(user, callback) {
+    var today = moment().startOf('day');
+    mockTrader.Order.count({$and:[{userId:user._id}, {timestamp:{$gte:today.toDate()}}]}, function(err, count) {
+        if (err) {
+            callback(0);
+        } else {
+            callback(count);
+        }
+    });
+}
+
+function ppjRealOrderPerDay(callback) {
+    mockTrader.User.find({real:true}, function(err, users) {
+        if (err) {
+            return callback(err);
+        }
+        async.map(users, calculateOrderNum, function(err, results) {
+            if (err) {
+                return callback(err);
+            }
+            var count = 0;
+            for (var i in results) {
+                count += results[i];
+            }
+            console.log('today order ' + count);
+        })
+    });
+}
+
 var options = {};
 mongoose.connect(config.db, options);
 var db = mongoose.connection;
@@ -1436,7 +1466,7 @@ db.once('open', function callback() {
              */
 
             function(callback) {
-                getUserData(function(err) {
+                ppjRealOrderPerDay(function(err) {
                     callback(err);
                 });
             }
