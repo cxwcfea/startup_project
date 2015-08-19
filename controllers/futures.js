@@ -102,7 +102,10 @@ function fetchUserRankData(req, res) {
             return res.status(500).send({error_msg:err.toString()});
         }
         users.sort(function(x, y) {
-            return y.wechat.trader.lastCash - x.wechat.trader.lastCash;
+            if (y.wechat.trader && x.wechat.trader) {
+                return y.wechat.trader.lastCash - x.wechat.trader.lastCash;
+            }
+            return true;
         });
         users = users.slice(0, 20);
         var userInRank = false;
@@ -913,7 +916,7 @@ module.exports = {
 
             res.render('futures/' + req.params[0], {
                 layout:null,
-                tradeTime: tradeTime
+                tradeTime: true
             });
         });
     },
