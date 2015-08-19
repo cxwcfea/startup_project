@@ -557,7 +557,7 @@ function getProfit(req, res) {
             amount: profitAmount,
             status: 1,
             description: '股指拍拍机盈利提取',
-            userBalance: user.finance.balance - profitAmount,
+            userBalance: user.finance.balance + profitAmount,
             approvedBy: req.user.mobile,
             approvedAt: Date.now()
         };
