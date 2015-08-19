@@ -578,7 +578,7 @@ function getInstrument(){
 	return "IF" + (d.getYear()-100) + month;
 }
 
-function createOrder(data, isRiskControl, cb) {
+function createOrder(data, cb) {
     //logger.debug(data);
     if (!data.order.quantity || data.order.quantity % kHand != 0) {
         console.log("invalid quantity");
@@ -595,7 +595,7 @@ function createOrder(data, isRiskControl, cb) {
               cb(err.toString());
               return lock.unlock();
           }
-          if (!isRiskControl && user.status != 0) {
+          if (user.status != 0) {
               cb({code:3, msg:'Account status is not normal.'});
               return lock.unlock();
           }
