@@ -1215,7 +1215,6 @@ function ppjRealOrderPerDay(callback) {
             return callback(err);
         }
         console.log('real user count:' + users.length);
-        /*
         async.map(users, calculateOrderNum, function(err, results) {
             if (err) {
                 return callback(err);
@@ -1225,8 +1224,8 @@ function ppjRealOrderPerDay(callback) {
                 count += results[i];
             }
             console.log('today order ' + count);
+            callback(null);
         })
-        */
     });
 }
 
