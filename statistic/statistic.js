@@ -1202,9 +1202,9 @@ function calculateOrderNum(user, callback) {
     var today = moment().startOf('day');
     mockTrader.Order.count({$and:[{userId:user._id}, {timestamp:{$gte:today.toDate()}}]}, function(err, count) {
         if (err) {
-            callback(0);
+            callback(null, 0);
         } else {
-            callback(count);
+            callback(null, count);
         }
     });
 }
