@@ -6,6 +6,7 @@ var mongoose = require('mongoose'),
     util = require('../lib/util'),
     invest = require('../lib/invest'),
     sms = require('../lib/sms'),
+    mockTrader = require('../controllers/mockTrader'),
     Apply = require('../models/Apply'),
     Card = require('../models/Card'),
     Order = require('../models/Order'),
@@ -1197,6 +1198,42 @@ function lossApplyData(callback) {
     });
 }
 
+function calculateOrderNum(user, callback) {
+    var today = moment().startOf('day');
+    mockTrader.Order.count({$and:[{userId:user._id}, {timestamp:{$gte:today.toDate()}}]}, function(err, count) {
+        if (err) {
+            callback(null, 0);
+        } else {
+            callback(null, count);
+        }
+    });
+}
+
+function ppjRealOrderPerDay(callback) {
+    mockTrader.User.find({real:true}, function(err, users) {
+        if (err) {
+            return callback(err);
+        }
+        console.log('操盘手个数:' + users.length);
+        async.map(users, calculateOrderNum, function(err, results) {
+            if (err) {
+                return callback(err);
+            }
+            var todayTrader = 0;
+            var count = 0;
+            for (var i in results) {
+                if (results[i] > 0) {
+                    todayTrader++;
+                }
+                count += results[i];
+            }
+            console.log('今日操盘手个数:' + users.length);
+            console.log('今日用户交易手数: ' + count);
+            callback(null);
+        })
+    });
+}
+
 var options = {};
 mongoose.connect(config.db, options);
 var db = mongoose.connection;
@@ -1436,7 +1473,7 @@ db.once('open', function callback() {
              */
 
             function(callback) {
-                getUserData(function(err) {
+                ppjRealOrderPerDay(function(err) {
                     callback(err);
                 });
             }
