@@ -181,13 +181,13 @@
 }
 .options .divide-three {
     float:left;
-    width:33.3%;
+    width:33.33%;
     height:100%;
     text-align:center;
 }
-.option .divide-three.right {
+.options .divide-three.right {
     float:right;
-    width:33.3%;
+    width:33.33%;
     height:100%;
     text-align:center;
 }
@@ -202,20 +202,30 @@
 .options .show-box .line .divide-three .value {
     font-weight:bold;
     color:#ff0000;
+    font-size:1.3em;
+}
+.options .buttons {
+    height:200px;
+    width:100%;
+    padding-top:20px;
+    /*border-top:1px solid #999;*/
 }
 .options .buttons .divide-three .circle-btn {
     position:relative;
     width:72px;
     height:72px;
     border-radius:100px;
+    margin:0 auto;
 }
-.option .buttons .divide-three .circle-btn .in {
+.options .buttons .divide-three .circle-btn .in {
     position:absolute;
     top:2px;
     left:2px;
     right:2px;
     bottom:2px;
     line-height:64px;
+    border-radius:100px;
+    color:#ffffff;
 }
 .options .buttons .divide-three .btn-z {
     border:2px solid #eb6877;
@@ -247,10 +257,15 @@
 }
 .options .buttons .divide-three .btn-pall {
     border:2px solid #f19149;
+    margin-top:50px;
 }
 .options .buttons .divide-three .btn-pall .in {
     background-color:#f19149;
     font-size:20px;
+}
+.options .buttons .divide-three p {
+    line-height:25px;
+    font-size:12px;
 }
 
 /*
