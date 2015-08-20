@@ -687,22 +687,20 @@ function createOrder(data, cb) {
                                   px_raw: parseFloat(price/100).toFixed(0) // price 
                               };
                               hive.createOrder(ctp_order, function(err, info) {
-                                  if(err){
+                                  if (err) {
                                       console.log(err);
                                       cb(err);
                                       return lock.unlock();
                                   }
-                                  if(info.code == 0){
-                                      console.log('order created in ctp.');
-                                  } else if(info.code == -1) {
+                                  if (info.code == -1) {
                                       console.log('ctp rejected.');
                                       cb('交易所拒绝访问');
                                       return lock.unlock();
                                   }
+                                  console.log('order created in ctp.');
                                   costs = getCosts(contract, info.traded_price*100, data.order.quantity, portfolio.quantity, portfolio.total_point, portfolio.total_deposit);
                                   console.log(costs);
                                   var order = new Order({
-                                      //orderId: order_id,
                                       contractId: contract._id,
                                       userId: user._id,
                                       quantity: data.order.quantity,
@@ -734,7 +732,7 @@ function createOrder(data, cb) {
                                       {$set:{cash: user.cash, lastCash: user.lastCash}}, function(err, numberAffected, raw) {
                                       if (err || numberAffected != 1) {
                                           console.log(err);
-                                          cb({code:2, msg:err? err.toString(): "Placing order too fast"});
+                                          cb({code:2, msg:err? err.toString(): "can not update user"});
                                           return lock.unlock();
                                       }
                                       portfolio.save(function(err) {
@@ -756,7 +754,6 @@ function createOrder(data, cb) {
                                   });
                               }); // new order creation ends here
                           }
-
                       }); // get new order id from redis ends here
                   }); //get portfolio
 /*********create order in ctp ends in here************/

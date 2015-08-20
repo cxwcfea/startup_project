@@ -54,11 +54,7 @@ function Hive(config) {
 Hive.prototype.destroy = function() {
     this.socket_client.end();
     this.socket_client.destroy();
-}
-
-Hive.prototype._delay = function(time) {
-	for(var start = +new Date; +new Date - start <= time; ) { }
-}
+};
 
 Hive.prototype.login = function (){
 	var param = {};
@@ -90,8 +86,8 @@ Hive.prototype.login = function (){
 		console.log('login send req');
 	});
 	var that = this;
-	client.on('data',function(data){
-		if(that.isLogin == false){
+	client.on('data',function(data) {
+		if (that.isLogin == false) {
 			console.log('login recv response ');
 			var buff = new bytebuffer(data).littleEndian();
 			//FIXME: need to make sure the parsing process 
@@ -103,8 +99,9 @@ Hive.prototype.login = function (){
 							.byte()
 							.vstring(null, HIVE_REASON_LEN)
 							.unpack();
-			if(arr[0] == HIVE_MSG_TYPE.HiveMsgLoginRsp && arr[1] == 0)
-				that.isLogin = true;
+			if (arr[0] == HIVE_MSG_TYPE.HiveMsgLoginRsp && arr[1] == 0) {
+                that.isLogin = true;
+            }
 			console.log('login '+that.isLogin);
 		} else {
 			//console.log('++++++recv order response ');
@@ -148,25 +145,19 @@ Hive.prototype.login = function (){
 	client.on('close',function(){
 		console.log('Connection closed');
 	});
-}
-
+};
 
 Hive.prototype.createOrder = function (param, callback){
-	console.log('in createOrder, login '+this.isLogin);
-	if(!this.isLogin){
-        return;
-		//callback({code:-1, msg:'No login.'}, {});
+    console.log('in createOrder, login ' + this.isLogin);
+	if (!this.isLogin) {
+        return callback('Not logged in');
 	}
-    //console.log('--------hive createOrder.');
-	if(this.user2cb[param.user_id] === undefined) {
-		this.user2cb[param.user_id] = callback;
-        //console.log(this.user2cb);
-		this.order2user[param.order_id] = param.user_id;
-	} else {
+	if (this.user2cb[param.user_id]) {
 		console.log('previous order in process, abort current one.');
-        callback('请稍等再试');
-		return;
+        return callback('订单处理中，请稍后再试');
 	}
+    this.user2cb[param.user_id] = callback;
+    this.order2user[param.order_id] = param.user_id;
 	console.log(param);
 	param.mtype = HIVE_MSG_TYPE.HiveMsgOrder;
 	// param.order_id uint64
@@ -197,5 +188,6 @@ Hive.prototype.createOrder = function (param, callback){
 	client.write(req);
 	console.log('createOrder send req');
 	//callback({code:0, msg:'success'});
-}
+};
+
 exports.Hive = Hive;
