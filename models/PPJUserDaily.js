@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var PPJUserDailySchema = mongoose.Schema({
-    userId: {type:Number, required:'{PATH} is required!'},
+    userId: {type:String, required:'{PATH} is required!'},
     wechat_uuid: {type:String, required:'{PATH} is required!'},
     hands: {type:Number, required:'{PATH} is required!'},
     profit: {type:Number, required:'{PATH} is required!'},
