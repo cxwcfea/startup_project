@@ -365,7 +365,7 @@ function approveUser(req, res) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
         }
-        if (!numberAffected) {
+        if (!user) {
             return res.status(500).send({error_msg:'无法更新用户'});
         }
         user.wechat.appointment = false;
