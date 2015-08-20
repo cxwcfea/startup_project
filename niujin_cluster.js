@@ -14,12 +14,12 @@ if(cluster.isMaster){
     cluster.on('online', function(worker) {
         if (worker.id === 1) {
             //task.initHive();
-            task.scheduleDailyDataJob();
+            //task.scheduleDailyDataJob();
             //task.scheduleFuturesRiskControlJob();
             //task.scheduleHiveControlJob();
             //task.scheduleTriggeredJob();
             //task.scheduleFuturesForceCloseJob();
-            task.scheduleResetWechatUserJob();
+            //task.scheduleResetWechatUserJob();
         }
     });
 

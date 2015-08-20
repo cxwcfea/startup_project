@@ -4,6 +4,8 @@ var express = require('express'),
     env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
     log4js = require('log4js'),
     logger = log4js.getLogger(),
+    task = require('./lib/task'),
+    ctpTrader = require('./controllers/ctpTrader'),
     config = require('./config/config')[env];
 
 /*
@@ -86,15 +88,13 @@ function startServer(master) {
     }
     server.listen(app.get('port'), function(){
         logger.info('Express started on ' + app.get('port') + '; press Ctrl-C to terminate.');
+        ctpTrader.initHive(1);
+        task.scheduleFuturesRiskControlJob();
+        task.scheduleHiveControlJob();
+        task.scheduleFuturesForceCloseJob();
+        task.schedulePPJUserDailyJob();
+        //task.scheduleTriggeredJob();
     });
-    var ctpTrader = require('./controllers/ctpTrader');
-    var task = require('./lib/task');
-    ctpTrader.initHive(1);
-    task.scheduleFuturesRiskControlJob();
-    task.scheduleHiveControlJob();
-    //task.scheduleTriggeredJob();
-    task.scheduleFuturesForceCloseJob();
-    task.scheduleHiveControlJob();
 }
 
 if(require.main === module){

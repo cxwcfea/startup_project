@@ -335,14 +335,13 @@ function windControl(userId, forceClose, userContract, cb) {
                                               cb(err);
                                               return lock.unlock();
                                           }
-                                          if(info.code == 0){
-                                              console.log('order closed in hive.');
-                                          } else if(info.code == -1) {
+                                          if(info.code == -1) {
                                               console.log('hive rejected to close order.');
                                               //delete user2cb_obj[userId];
                                               cb('交易所拒绝访问');
                                               return lock.unlock();
                                           }
+                                          console.log('order closed in hive.');
                                           contractInfo[portf.contractId].LastPrice = info.traded_price*100;
                                           costs = getCosts(contract, info.traded_price*100, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
                                           income = -costs.open;
@@ -816,36 +815,35 @@ function loadDBData() {
 var hive;
 var is_login = false;
 function initHive(param) {
-	var initConfig = {
-		//ip: '218.241.142.230',
-		ip: '127.0.0.1',
-		port: 7777,
-		investor: '851710073',
-		password: '283715',
-		front_addr: 'tcp://27.115.57.130:41205/9000',
-		//investor: '00001',
-		//password: '123456',
-		//front_addr: 'tcp://180.168.146.181:10000/0096',
-		client_id: param,
-		version: 1,
-		interval:128
-	};
+    console.log('init Hive');
+    var initConfig = {
+        //ip: '218.241.142.230',
+        ip: '127.0.0.1',
+        port: 7777,
+        investor: '851710073',
+        password: '283715',
+        front_addr: 'tcp://27.115.57.130:41205/9000',
+        //investor: '00001',
+        //password: '123456',
+        //front_addr: 'tcp://180.168.146.181:10000/0096',
+        client_id: param,
+        version: 1,
+        interval:128
+    };
     if(is_login == false){
-        console.log('socket connect.');
-	    hive = new Hive(initConfig);
-	    hive.login();
+        is_login = true;
+        hive = new Hive(initConfig);
+        hive.login();
     }
-    is_login = true;
-	//loadDBData();
 }
 
 function destroyHive() {
-    console.log('in destroyHive.');
+    console.log('destroyHive.');
     if(is_login == true){
         console.log('closing socket.');
+        is_login = false;
         hive.destroy();
     }
-    is_login = false;
 }
 
 module.exports = {
