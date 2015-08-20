@@ -645,13 +645,19 @@ function createOrder(data, cb) {
                       var quantity_to_close = costs.quantity_to_close;
                       var actual_quantity = costs.actual_quantity;
 					  global.redis_client.get(key, function(err, order_id){
-                      if (!err && order_id) {
-                          global.redis_client.set(key, parseInt(order_id)+1, redis.print);
-                          order_id = parseInt(order_id)+1;
-                      } else {
-                          global.redis_client.set(key, 0, redis.print);
-                          order_id = 1;
-                      }
+                          if (err) {
+                              console.log(err);
+                              cb({code:2, msg:err.toString()});
+                              return lock.unlock();
+                          }
+                          if (order_id) {
+                              var newId = parseInt(order_id) + 1;
+                              global.redis_client.set(key, newId, redis.print);
+                              order_id = newId;
+                          } else {
+                              global.redis_client.set(key, 0, redis.print);
+                              order_id = 1;
+                          }
                           // close positon first
                           if(quantity_to_close != 0){
                               cb({code:6, msg:'need to close position first'});
