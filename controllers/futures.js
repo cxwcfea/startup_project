@@ -836,6 +836,16 @@ function changeTradeSetting(req, res) {
     });
 }
 
+function startCtp(req, res) {
+    ctpTrader.initHive(1);
+    res.send({});
+}
+
+function stopCtp(req, res) {
+    ctpTrader.destroyHive(1);
+    res.send({});
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/api/futures/user_rank', passportConf.isWechatAuthenticated, fetchUserRankData);
@@ -877,6 +887,10 @@ module.exports = {
         app.post('/futures/get_profit', passportConf.requiresRole('admin'), getProfit);
 
         app.get('/futures/real', passportConf.isWechatAuthenticated, realHome);
+
+        app.get('/futures/start_ctp', passportConf.requiresRole('admin'), startCtp);
+
+        app.get('/futures/stop_ctp', passportConf.requiresRole('admin'), stopCtp);
 
         app.post('/futures/change_trade_setting', passportConf.isWechatAuthenticated, changeTradeSetting);
 
