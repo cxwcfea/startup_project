@@ -619,6 +619,11 @@ function createOrder(data, cb) {
               cb(err.toString());
               return lock.unlock();
           }
+          if (!user) {
+              console.log('user not found when create Order');
+              cb(err.toString());
+              return lock.unlock();
+          }
           if (user.status != 0) {
               cb({code:3, msg:'Account status is not normal.'});
               return lock.unlock();
