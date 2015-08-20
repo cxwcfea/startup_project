@@ -1474,6 +1474,7 @@ db.once('open', function callback() {
 
             function(callback) {
                 ppjRealOrderPerDay(function(err) {
+                    console.log('ppjRealOrderPerDay end:' + err);
                     callback(err);
                 });
             }
