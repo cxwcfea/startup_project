@@ -187,9 +187,6 @@
 }
 .options .divide-three.right {
     float:right;
-    width:33.33%;
-    height:100%;
-    text-align:center;
 }
 .options .show-box .line {
     height:50px;
@@ -207,7 +204,7 @@
 .options .buttons {
     height:200px;
     width:100%;
-    padding-top:20px;
+    padding-top:10px;
     /*border-top:1px solid #999;*/
 }
 .options .buttons .divide-three .circle-btn {
