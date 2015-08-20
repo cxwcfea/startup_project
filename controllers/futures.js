@@ -513,23 +513,28 @@ function addDeposit(req, res) {
             if (err) {
                 return res.status(500).send({error_msg:err.toString()});
             }
-            depositAmount *= 100;
-            mockTrader.User.findById(user.wechat.real_trader, function (err, trader) {
+            user.save(function(err) {
                 if (err) {
                     return res.status(500).send({error_msg:err.toString()});
                 }
-                if (!trader) {
-                    return res.status(500).send({error_msg:'无法更新用户'});
-                }
-                logger.info('addDeposit before change', trader);
-                trader.cash += depositAmount;
-                trader.lastCash += depositAmount;
-                trader.save(function(err) {
+                depositAmount *= 100;
+                mockTrader.User.findById(user.wechat.real_trader, function (err, trader) {
                     if (err) {
                         return res.status(500).send({error_msg:err.toString()});
                     }
-                    logger.info('addDeposit after change', trader);
-                    res.send({});
+                    if (!trader) {
+                        return res.status(500).send({error_msg:'无法更新用户'});
+                    }
+                    logger.info('addDeposit before change', trader);
+                    trader.cash += depositAmount;
+                    trader.lastCash += depositAmount;
+                    trader.save(function(err) {
+                        if (err) {
+                            return res.status(500).send({error_msg:err.toString()});
+                        }
+                        logger.info('addDeposit after change', trader);
+                        res.send({});
+                    });
                 });
             });
         });
