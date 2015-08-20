@@ -207,8 +207,8 @@
 .options .buttons {
     height:200px;
     width:100%;
-    padding-top:25px;
-    border-top:1px solid #999;
+    padding-top:20px;
+    /*border-top:1px solid #999;*/
 }
 .options .buttons .divide-three .circle-btn {
     position:relative;
@@ -265,6 +265,7 @@
 }
 .options .buttons .divide-three p {
     line-height:25px;
+    font-size:12px;
 }
 
 /*
