@@ -5,6 +5,7 @@ var PPJUserDailySchema = mongoose.Schema({
     wechat_uuid: {type:String, required:'{PATH} is required!'},
     hands: {type:Number, required:'{PATH} is required!'},
     profit: {type:Number, required:'{PATH} is required!'},
+    cash: {type:Number, required:'{PATH} is required!'},
     date: {type:Date, default:Date.now}
 });
 
