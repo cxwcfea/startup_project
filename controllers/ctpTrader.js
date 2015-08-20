@@ -41,8 +41,8 @@ var kHand = 100;
 var kUSDCNY = 620;  // 6.20 exchange rate
 // util.js
 function makeTimestamp() { return Date.now();}
-//function makeRedisKey(contract) { return "mt://" + contract.exchange + "/" + contract.stock_code; }
-function makeRedisKey(contract) { return "mt://" + contract.exchange + "/" + config.futureIF; }
+function makeRedisKey(contract) { return "mt://" + contract.exchange + "/" + contract.stock_code; }
+//function makeRedisKey(contract) { return "mt://" + contract.exchange + "/" + config.futureIF; }
 function getCosts(contract, stock_price, quantity, position, total_point, total_deposit) {
     var raw = 0;
     var fee = 0;
@@ -95,18 +95,18 @@ function getCosts(contract, stock_price, quantity, position, total_point, total_
             quantity_to_close: quantity_to_close, actual_quantity:actual_quantity};
 }
 
-function closeAll(userId, portfolio, income, contractInfo, contractData, reset, cb, lock, user2cb_obj) {
+function closeAll(userId, portfolio, income, contractInfo, contractData, reset, cb, lock) {
     var asyncObj = {remaining: portfolio.length, value: 0, has_error: false, errmsg:""};
       User.findById(userId, function(err, user) {
           if (err) {
               console.log(err);
-              delete user2cb_obj[userId];
+              //delete user2cb_obj[userId];
               cb(err.toString());
               return lock.unlock();
           }
           if (!user) {
               console.log('user not found when closeAll');
-              delete user2cb_obj[userId];
+              //delete user2cb_obj[userId];
               cb(err.toString());
               return lock.unlock();
           }
@@ -114,13 +114,16 @@ function closeAll(userId, portfolio, income, contractInfo, contractData, reset, 
           var oldUserLastCash = user.lastCash;
             // Close user
           user.cash += income;
+          if(user.cash > user.warning){
+              setStatus(userId, 0);
+          }
           user.lastCash = user.cash;
           User.update({_id: user._id, cash: oldUserCash, lastCash: oldUserLastCash},
               {$set:{cash: user.cash, lastCash: user.lastCash}}, function(err, numberAffected, raw) {
               if (err || numberAffected != 1) {
                    console.log(err);
                   //res.send({code: 5, "msg": err.errmsg});
-                  delete user2cb_obj[userId];
+                  //delete user2cb_obj[userId];
                   cb({code:2, msg:err? err.toString(): "Placing order too fast"});
                   return lock.unlock();
               }
@@ -145,7 +148,7 @@ function closeAll(userId, portfolio, income, contractInfo, contractData, reset, 
                               asyncObj.errmsg = err.errmsg;
                           }
                           if (asyncObj.has_error) {
-                              delete user2cb_obj[userId];
+                              //delete user2cb_obj[userId];
                               if (asyncObj.remaining <= 0){
                                   //res.send({code: -6, "msg": asyncObj.errmsg});
                                   cb(asyncObj.errmsg);
@@ -171,7 +174,7 @@ function closeAll(userId, portfolio, income, contractInfo, contractData, reset, 
                                   asyncObj.has_error = true;
                               }
                               if (asyncObj.has_error) {
-                                  delete user2cb_obj[userId];
+                                  //delete user2cb_obj[userId];
                                   if (asyncObj.remaining <= 0){
                                       //res.send({code: -7, "msg": asyncObj.errmsg});
                                       cb(asyncObj.errmsg);
@@ -181,12 +184,12 @@ function closeAll(userId, portfolio, income, contractInfo, contractData, reset, 
                               }
                               if (asyncObj.remaining > 0) {
                                   console.log("Still counting: " + asyncObj);
-                                  delete user2cb_obj[userId];
+                                  //delete user2cb_obj[userId];
                                   return;
                               }
                               //console.log("Completed: " + asyncObj);
                               // all set
-                              delete user2cb_obj[userId];
+                              //delete user2cb_obj[userId];
                               cb(null, order);
                               return lock.unlock();
                           });
@@ -213,7 +216,7 @@ function windControl(userId, forceClose, userContract, cb) {
     var resource = 'mt://lock/user/' + userId;
     var ttl = 10000;
     redlock.lock(resource, ttl).then(function(lock) {
-      User.findOne({$and: [{_id: userId}, {status: 0}]}, function(err, user) {
+      User.findById(userId, function(err, user) {
           if (err) {
               console.log(err);
               //res.send({code: -1, "msg": err.errmsg});
@@ -283,9 +286,9 @@ function windControl(userId, forceClose, userContract, cb) {
                           //console.log(costs);
                           if (asyncObj.remaining > 0 && typeof userContract === 'undefined') {
                               console.log("Still counting: " + asyncObj);
-                              if (typeof user2cb_obj !== 'undefined') {
-                                  delete user2cb_obj[userId];
-                              }
+                              //if (typeof user2cb_obj !== 'undefined') {
+                              //    delete user2cb_obj[userId];
+                              //}
                               return lock.unlock();
                           }
                           //console.log("Completed: " + asyncObj);
@@ -296,9 +299,9 @@ function windControl(userId, forceClose, userContract, cb) {
                           if (!forceClose && user.cash + income > user.close) {
                               // No risk
                               console.log("No risk");
-                              if (typeof user2cb_obj !== 'undefined') {
-                                  delete user2cb_obj[userId];
-                              }
+                              //if (typeof user2cb_obj !== 'undefined') {
+                              //    delete user2cb_obj[userId];
+                             //}
                               cb(null);
                               return lock.unlock();
                           } else {
@@ -326,13 +329,18 @@ function windControl(userId, forceClose, userContract, cb) {
                                           size: 1, // volume
                                           px_raw: parseFloat(price).toFixed(0)
                                       };
-                                      hive.createOrder(ctp_order_close, function(info, user2cb_obj) {
+                                      hive.createOrder(ctp_order_close, function(err, info) {
+                                          if(err){
+                                              console.log(err);
+                                              cb(err);
+                                              return lock.unlock();
+                                          }
                                           if(info.code == 0){
                                               console.log('order closed in hive.');
                                           } else if(info.code == -1) {
                                               console.log('hive rejected to close order.');
-                                              delete user2cb_obj[userId];
-                                              cb('close order failed in hive');
+                                              //delete user2cb_obj[userId];
+                                              cb('交易所拒绝访问');
                                               return lock.unlock();
                                           }
                                           contractInfo[portf.contractId].LastPrice = info.traded_price*100;
@@ -343,13 +351,13 @@ function windControl(userId, forceClose, userContract, cb) {
                                           if (!forceClose) {
                                               // Have to close
                                               setStatus(userId, 1);  // cannot buy
-                                              closeAll(userId, portfolio, income, contractInfo, contractData, 1, cb, lock, user2cb_obj);
+                                              closeAll(userId, portfolio, income, contractInfo, contractData, 1, cb, lock);
                                           } else {
                                               // Force close
                                               if (typeof userContract !== 'undefined') {
                                                   portfolio = [portf];
                                               }
-                                              closeAll(userId, portfolio, income, contractInfo, contractData, 0, cb, lock, user2cb_obj);
+                                              closeAll(userId, portfolio, income, contractInfo, contractData, 0, cb, lock);
                                           }
                                       });
                                   });
@@ -679,13 +687,17 @@ function createOrder(data, cb) {
                                   size: 1.0, // volume
                                   px_raw: parseFloat(price/100).toFixed(0) // price 
                               };
-                              hive.createOrder(ctp_order, function(info, user2cb_obj) {
+                              hive.createOrder(ctp_order, function(err, info) {
+                                  if(err){
+                                      console.log(err);
+                                      cb(err);
+                                      return lock.unlock();
+                                  }
                                   if(info.code == 0){
                                       console.log('order created in ctp.');
                                   } else if(info.code == -1) {
                                       console.log('ctp rejected.');
-                                      delete user2cb_obj[data.user_id];
-                                      cb('create order failed in hive');
+                                      cb('交易所拒绝访问');
                                       return lock.unlock();
                                   }
                                   costs = getCosts(contract, info.traded_price*100, data.order.quantity, portfolio.quantity, portfolio.total_point, portfolio.total_deposit);
@@ -702,10 +714,7 @@ function createOrder(data, cb) {
                                       profit: costs.net_profit
                                       //isClosed: 0
                                   });
-                                  console.log("creating order]]]]]]]]]]]]]]]]");
                                   console.log(order);
-                                  console.log(user.cash);
-                                  console.log(user.lastCash);
                                   var oldUserCash = user.cash;
                                   var oldUserLastCash = user.lastCash;
                                   user.cash -= costs.open;
@@ -727,24 +736,20 @@ function createOrder(data, cb) {
                                       if (err || numberAffected != 1) {
                                           console.log(err);
                                           cb({code:2, msg:err? err.toString(): "Placing order too fast"});
-                                          delete user2cb_obj[data.user_id];
                                           return lock.unlock();
                                       }
                                       portfolio.save(function(err) {
                                           if (err) {
                                               console.log(err);
                                               cb({code:2, msg:err.toString()});
-                                              delete user2cb_obj[data.user_id];
                                               return lock.unlock();
                                           }
                                           order.save(function(err) {
                                               if (err) {
                                                   console.log(err);
                                                   cb({code:2, msg:err.toString()});
-                                                  delete user2cb_obj[data.user_id];
                                                   return lock.unlock();
                                               }
-                                              delete user2cb_obj[data.user_id];
                                               cb(null, order);
                                               return lock.unlock();
                                           });
@@ -817,13 +822,16 @@ function initHive(param) {
 		investor: '851710073',
 		password: '283715',
 		front_addr: 'tcp://27.115.57.130:41205/9000',
+		//investor: '00001',
+		//password: '123456',
+		//front_addr: 'tcp://180.168.146.181:10000/0096',
 		client_id: param,
 		version: 1,
 		interval:128
 	};
 	hive = new Hive(initConfig);
 	hive.login();
-	loadDBData();
+	//loadDBData();
 }
 
 function destroyHive() {

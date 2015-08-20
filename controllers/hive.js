@@ -125,16 +125,11 @@ Hive.prototype.login = function (){
 							.int64()	//flag
 							.byte()		//has_reason
 							.unpack();
-			//console.log(arr);
 			var order_id = arr[1];
 			var result = arr[3];
             var traded_price = arr[6];
-			//console.log('order_id = '+order_id+', result type = '+result);
 			var user_id = that.order2user[order_id];
-            //console.log(that.order2user);
-            //console.log(that.user2cb);
 			var callback = that.user2cb[user_id];
-			//console.log('user_id(order2user[order_id]) = '+user_id);
 			var code = 0;
 			if(result != HiveExecType.HiveExecFill) {
 				code = -1;
@@ -142,12 +137,13 @@ Hive.prototype.login = function (){
             }
             if(callback === undefined)
                 return;
-			callback({code: code, traded_price: traded_price}, that.user2cb);
+			callback(null, {code: code, traded_price: traded_price});
+            delete that.order2user[order_id];
+            delete that.user2cb[user_id];
 		}
 	});
 	client.on('error',function(error){
 		console.log('error:'+error);
-		//that.socket_client.destory();
 	});
 	client.on('close',function(){
 		console.log('Connection closed');
@@ -168,6 +164,7 @@ Hive.prototype.createOrder = function (param, callback){
 		this.order2user[param.order_id] = param.user_id;
 	} else {
 		console.log('previous order in process, abort current one.');
+        callback('请稍等再试');
 		return;
 	}
 	console.log(param);
