@@ -203,6 +203,11 @@
     font-weight:bold;
     color:#ff0000;
 }
+.options .buttons {
+    height:200px;
+    width:100%;
+    margin-top:25px;
+}
 .options .buttons .divide-three .circle-btn {
     position:relative;
     width:72px;
@@ -216,6 +221,7 @@
     right:2px;
     bottom:2px;
     line-height:64px;
+    border-radius:100px;
 }
 .options .buttons .divide-three .btn-z {
     border:2px solid #eb6877;
