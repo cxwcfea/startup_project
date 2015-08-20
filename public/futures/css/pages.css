@@ -181,13 +181,13 @@
 }
 .options .divide-three {
     float:left;
-    width:33.3%;
+    width:33.33%;
     height:100%;
     text-align:center;
 }
 .options .divide-three.right {
     float:right;
-    width:33.3%;
+    width:33.33%;
     height:100%;
     text-align:center;
 }
@@ -202,6 +202,7 @@
 .options .show-box .line .divide-three .value {
     font-weight:bold;
     color:#ff0000;
+    font-size:15px;
 }
 .options .buttons {
     height:200px;
@@ -213,6 +214,7 @@
     width:72px;
     height:72px;
     border-radius:100px;
+    margin:0 auto;
 }
 .options .buttons .divide-three .circle-btn .in {
     position:absolute;
