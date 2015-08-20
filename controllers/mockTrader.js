@@ -621,7 +621,7 @@ function createOrder(data, cb) {
           }
           if (!user) {
               console.log('user not found when create Order');
-              cb(err.toString());
+              cb({code:2, msg:'user not found when create Order'});
               return lock.unlock();
           }
           if (user.status != 0) {
