@@ -202,7 +202,7 @@
 .options .show-box .line .divide-three .value {
     font-weight:bold;
     color:#ff0000;
-    font-size:15px;
+    font-size:1.3em;
 }
 .options .buttons {
     height:200px;
@@ -257,6 +257,7 @@
 }
 .options .buttons .divide-three .btn-pall {
     border:2px solid #f19149;
+    margin-top:50px;
 }
 .options .buttons .divide-three .btn-pall .in {
     background-color:#f19149;
