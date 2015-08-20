@@ -1200,12 +1200,18 @@ function lossApplyData(callback) {
 
 function calculateOrderNum(user, callback) {
     var today = moment().startOf('day');
-    mockTrader.Order.count({$and:[{userId:user._id}, {timestamp:{$gte:today.toDate()}}]}, function(err, count) {
+    mockTrader.Order.find({$and:[{userId:user._id}, {timestamp:{$gte:today.toDate()}}]}, function(err, orders) {
         if (err) {
+            console.log('error when xxxx', user._id);
             callback(null, 0);
-        } else {
-            callback(null, count);
         }
+        var count = orders.length;
+        var profit = 0;
+        orders.forEach(function(elem) {
+            profit += elem.profit;
+        });
+        console.log('user ' + user.name + ' profit ' + profit);
+        callback(null, count);
     });
 }
 
