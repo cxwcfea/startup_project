@@ -1224,9 +1224,10 @@ function calculateOrderNum(user, callback) {
         console.log('user ' + user.name + ' 操作 ' + quantity);
         obj.save(function(err) {
             if (err) {
+                console.log(err);
                 quantity = 0;
             }
-            callback(null, quantity);
+            callback(null, quantity/2);
         })
     });
 }
