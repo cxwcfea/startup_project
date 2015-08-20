@@ -1221,6 +1221,7 @@ function calculateOrderNum(user, callback) {
             profit: profit / 100,
             cash: user.cash
         });
+        console.log('user ' + user.name + ' 操作 ' + quantity);
         obj.save(function(err) {
             if (err) {
                 quantity = 0;
