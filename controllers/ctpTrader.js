@@ -628,7 +628,7 @@ function createOrder(data, cb) {
                   priceInfo.LastPrice *= 100;
                   var top_price = priceInfo.PreSettlementPrice*1.0995*100;
                   var bottom_price = priceInfo.PreSettlementPrice*(1-0.0995)*100;
-                  //console.log(priceInfo);
+                  console.log(priceInfo);
                   Portfolio.findOne({$and: [{contractId: contract._id}, {userId: user._id}]}, function(err, portfolio) {
                       if (err) {
                           console.log(err);
@@ -814,6 +814,7 @@ function loadDBData() {
 }
 
 var hive;
+var is_login = false;
 function initHive(param) {
 	var initConfig = {
 		//ip: '218.241.142.230',
@@ -829,15 +830,22 @@ function initHive(param) {
 		version: 1,
 		interval:128
 	};
-	hive = new Hive(initConfig);
-	hive.login();
+    if(is_login == false){
+        console.log('socket connect.');
+	    hive = new Hive(initConfig);
+	    hive.login();
+    }
+    is_login = true;
 	//loadDBData();
 }
 
 function destroyHive() {
-    hive.destroy();
-    hive.order2user = null;
-    hive.user2cb = null;
+    console.log('in destroyHive.');
+    if(is_login == true){
+        console.log('closing socket.');
+        hive.destroy();
+    }
+    is_login = false;
 }
 
 module.exports = {
