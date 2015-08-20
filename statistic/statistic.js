@@ -10,6 +10,7 @@ var mongoose = require('mongoose'),
     Apply = require('../models/Apply'),
     Card = require('../models/Card'),
     Order = require('../models/Order'),
+    PPJUserDaily = require('../models/PPJUserDaily'),
     User = require('../models/User'),
     Contract = require('../models/Contract'),
     DailyData = require('../models/DailyData'),
@@ -1205,13 +1206,27 @@ function calculateOrderNum(user, callback) {
             console.log('error when xxxx', user._id);
             callback(null, 0);
         }
-        var count = orders.length;
         var profit = 0;
+        var quantity = 0;
         orders.forEach(function(elem) {
             profit += elem.profit;
+            quantity += Math.abs(elem.quantity);
         });
+        quantity /= 100;
         console.log('user ' + user.name + ' profit ' + profit);
-        callback(null, count);
+        var obj = new PPJUserDaily({
+            userId: user._id,
+            wechat_uuid: user.name,
+            hands: quantity,
+            profit: profit / 100,
+            cash: user.cash
+        });
+        obj.save(function(err) {
+            if (err) {
+                quantity = 0;
+            }
+            callback(null, quantity);
+        })
     });
 }
 
