@@ -172,6 +172,99 @@
     box-shadow:0px 0px 10px #ff0000;
 }
 
+/*five button style*/
+.options {
+    margin:0 0 10px;
+    padding:10px 18px;
+    background-color:#ffffff;
+    border-radius:4px;
+}
+.options .divide-three {
+    float:left;
+    width:33.33%;
+    height:100%;
+    text-align:center;
+}
+.options .divide-three.right {
+    float:right;
+}
+.options .show-box .line {
+    height:50px;
+    width:100%;
+    font-size:12px;
+}
+.options .show-box .line .divide-three .name {
+    margin-top:5px;
+}
+.options .show-box .line .divide-three .value {
+    font-weight:bold;
+    color:#ff0000;
+    font-size:1.3em;
+}
+.options .buttons {
+    height:200px;
+    width:100%;
+    padding-top:10px;
+    /*border-top:1px solid #999;*/
+}
+.options .buttons .divide-three .circle-btn {
+    position:relative;
+    width:72px;
+    height:72px;
+    border-radius:100px;
+    margin:0 auto;
+}
+.options .buttons .divide-three .circle-btn .in {
+    position:absolute;
+    top:2px;
+    left:2px;
+    right:2px;
+    bottom:2px;
+    line-height:64px;
+    border-radius:100px;
+    color:#ffffff;
+}
+.options .buttons .divide-three .btn-z {
+    border:2px solid #eb6877;
+}
+.options .buttons .divide-three .btn-z .in {
+    background-color:#eb6877;
+    font-size:30px;
+}
+.options .buttons .divide-three .btn-d {
+    border:2px solid #36cc68;
+}
+.options .buttons .divide-three .btn-d .in {
+    background-color:#36cc68;
+    font-size:30px;
+}
+.options .buttons .divide-three .btn-pz {
+    border:2px solid #f19149;
+}
+.options .buttons .divide-three .btn-pz .in {
+    background-color:#f19149;
+    font-size:20px;
+}
+.options .buttons .divide-three .btn-pd {
+    border:2px solid #f19149;
+}
+.options .buttons .divide-three .btn-pd .in {
+    background-color:#f19149;
+    font-size:20px;
+}
+.options .buttons .divide-three .btn-pall {
+    border:2px solid #f19149;
+    margin-top:50px;
+}
+.options .buttons .divide-three .btn-pall .in {
+    background-color:#f19149;
+    font-size:20px;
+}
+.options .buttons .divide-three p {
+    line-height:25px;
+    font-size:12px;
+}
+
 /*
 .opt-btns .btns.three .pd,
 .opt-btns .btns.three .pz {

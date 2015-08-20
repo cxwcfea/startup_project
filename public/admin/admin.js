@@ -90,6 +90,9 @@ angular.module('adminApp').config(['$routeProvider', '$locationProvider', '$http
 		})
         .when('/ppj_statistics', { templateUrl: '/admin/ppj_statistics'
         })
+        .when('/ppj_control_panel', { templateUrl: '/admin/ppj_control_panel',
+            controller: 'AdminPPJControlPanelCtrl'
+        })
         .otherwise({
             redirectTo: '/users'
         });

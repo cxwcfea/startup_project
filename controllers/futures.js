@@ -365,7 +365,7 @@ function approveUser(req, res) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
         }
-        if (!numberAffected) {
+        if (!user) {
             return res.status(500).send({error_msg:'无法更新用户'});
         }
         user.wechat.appointment = false;
@@ -513,23 +513,28 @@ function addDeposit(req, res) {
             if (err) {
                 return res.status(500).send({error_msg:err.toString()});
             }
-            depositAmount *= 100;
-            mockTrader.User.findById(user.wechat.real_trader, function (err, trader) {
+            user.save(function(err) {
                 if (err) {
                     return res.status(500).send({error_msg:err.toString()});
                 }
-                if (!trader) {
-                    return res.status(500).send({error_msg:'无法更新用户'});
-                }
-                logger.info('addDeposit before change', trader);
-                trader.cash += depositAmount;
-                trader.lastCash += depositAmount;
-                trader.save(function(err) {
+                depositAmount *= 100;
+                mockTrader.User.findById(user.wechat.real_trader, function (err, trader) {
                     if (err) {
                         return res.status(500).send({error_msg:err.toString()});
                     }
-                    logger.info('addDeposit after change', trader);
-                    res.send({});
+                    if (!trader) {
+                        return res.status(500).send({error_msg:'无法更新用户'});
+                    }
+                    logger.info('addDeposit before change', trader);
+                    trader.cash += depositAmount;
+                    trader.lastCash += depositAmount;
+                    trader.save(function(err) {
+                        if (err) {
+                            return res.status(500).send({error_msg:err.toString()});
+                        }
+                        logger.info('addDeposit after change', trader);
+                        res.send({});
+                    });
                 });
             });
         });
@@ -831,9 +836,19 @@ function changeTradeSetting(req, res) {
             logger.warn('无法更新设置');
             return res.status(503).send({error_msg:'无法更新设置'});
         }
-        ctpTrader.loadDBData();
+        //ctpTrader.loadDBData();
         res.send({});
     });
+}
+
+function startCtp(req, res) {
+    ctpTrader.initHive(1);
+    res.send({});
+}
+
+function stopCtp(req, res) {
+    ctpTrader.destroyHive(1);
+    res.send({});
 }
 
 module.exports = {
@@ -877,6 +892,10 @@ module.exports = {
         app.post('/futures/get_profit', passportConf.requiresRole('admin'), getProfit);
 
         app.get('/futures/real', passportConf.isWechatAuthenticated, realHome);
+
+        app.get('/futures/start_ctp', passportConf.requiresRole('admin'), startCtp);
+
+        app.get('/futures/stop_ctp', passportConf.requiresRole('admin'), stopCtp);
 
         app.post('/futures/change_trade_setting', passportConf.isWechatAuthenticated, changeTradeSetting);
 

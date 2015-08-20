@@ -6,9 +6,11 @@ var mongoose = require('mongoose'),
     util = require('../lib/util'),
     invest = require('../lib/invest'),
     sms = require('../lib/sms'),
+    mockTrader = require('../controllers/mockTrader'),
     Apply = require('../models/Apply'),
     Card = require('../models/Card'),
     Order = require('../models/Order'),
+    PPJUserDaily = require('../models/PPJUserDaily'),
     User = require('../models/User'),
     Contract = require('../models/Contract'),
     DailyData = require('../models/DailyData'),
@@ -1200,12 +1202,34 @@ function lossApplyData(callback) {
 
 function calculateOrderNum(user, callback) {
     var today = moment().startOf('day');
-    mockTrader.Order.count({$and:[{userId:user._id}, {timestamp:{$gte:today.toDate()}}]}, function(err, count) {
+    mockTrader.Order.find({$and:[{userId:user._id}, {timestamp:{$gte:today.toDate()}}]}, function(err, orders) {
         if (err) {
+            console.log('error when xxxx', user._id);
             callback(null, 0);
-        } else {
-            callback(null, count);
         }
+        var profit = 0;
+        var quantity = 0;
+        orders.forEach(function(elem) {
+            profit += elem.profit;
+            quantity += Math.abs(elem.quantity);
+        });
+        quantity /= 100;
+        console.log('user ' + user.name + ' profit ' + profit);
+        var obj = new PPJUserDaily({
+            userId: user._id,
+            wechat_uuid: user.name,
+            hands: quantity,
+            profit: profit / 100,
+            cash: user.cash
+        });
+        console.log('user ' + user.name + ' 操作 ' + quantity);
+        obj.save(function(err) {
+            if (err) {
+                console.log(err);
+                quantity = 0;
+            }
+            callback(null, quantity/2);
+        })
     });
 }
 
@@ -1214,7 +1238,7 @@ function ppjRealOrderPerDay(callback) {
         if (err) {
             return callback(err);
         }
-        console.log('real user count:' + users.length);
+        console.log('操盘手个数:' + users.length);
         async.map(users, calculateOrderNum, function(err, results) {
             if (err) {
                 return callback(err);
@@ -1224,6 +1248,16 @@ function ppjRealOrderPerDay(callback) {
                 count += results[i];
             }
             console.log('today order ' + count);
+            var todayTrader = 0;
+            var count = 0;
+            for (var i in results) {
+                if (results[i] > 0) {
+                    todayTrader++;
+                }
+                count += results[i];
+            }
+            console.log('今日操盘手个数:' + users.length);
+            console.log('今日用户交易手数: ' + count);
             callback(null);
         })
     });
@@ -1509,6 +1543,7 @@ db.once('open', function callback() {
             if (err) {
                 console.log(err.toString());
             }
+            console.log('series end:' + err);
             db.close();
         });
 });
