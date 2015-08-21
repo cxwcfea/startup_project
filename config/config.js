@@ -26,7 +26,7 @@ module.exports = {
         ppj_callback_domain: 'http://www.niujin.cn',
         wechatAppId: 'wx93316d2e330a4d21',
         wechatSecret: '2fc6cd4d6bb198ece969664509562e02',
-        futureIF: 'IF1508',
+        futureIF: 'IF1509',
         investor: '851710073',
         password: '283715',
         front_addr: 'tcp://27.115.57.130:41205/9000',

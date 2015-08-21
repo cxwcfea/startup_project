@@ -647,7 +647,6 @@ function createOrder(data, cb) {
                           return lock.unlock();
                       }
 /*********create order in ctp************/
-					  var instrument = getInstrument();
 					  var key = 'IF-OrderID';
                       var quantity_to_close = costs.quantity_to_close;
                       var actual_quantity = costs.actual_quantity;
@@ -680,7 +679,8 @@ function createOrder(data, cb) {
                               var ctp_order = {
                                   user_id: data.user_id,
                                   order_id: order_id,
-                                  instrument: instrument,
+                                  //instrument: instrument,
+				  instrument: config.futureIF,
                                   //FIXME: act < 0, encoding fail
                                   act: act, // positive for buy, 0 for close, negative for sell
                                   size: 1.0, // volume
