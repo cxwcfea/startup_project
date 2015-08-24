@@ -250,7 +250,7 @@ angular.module("futuresApp")
                         onSeries: 'stock_data',
                         data: [],
                         id: 'stock_data_flags',
-                        y: -100,
+                        y: -60,
                         showInLegend: false
                     }
                 ]
