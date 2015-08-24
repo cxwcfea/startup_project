@@ -1,5 +1,5 @@
 'use strict';
-angular.module('adminApp').controller('AdminAppointUserListCtrl', ['$scope', '$location', '$routeParams', '$modal', '$http', 'gbNotifier', function($scope, $location, $routeParams, $modal, $http, gbNotifier) {
+angular.module('adminApp').controller('AdminAppointUserListCtrl', ['$scope', '$location', '$routeParams', '$modal', '$http', 'gbNotifier', '$filter', function($scope, $location, $routeParams, $modal, $http, gbNotifier, $filter) {
     var users = {};
     $scope.currentUsers;
     $scope.itemsPerPage = 15;
@@ -37,7 +37,8 @@ angular.module('adminApp').controller('AdminAppointUserListCtrl', ['$scope', '$l
     function initData() {
         $http.get('/admin/api/get_appoint_ppj_user')
             .success(function(data, status) {
-                $scope.currentUsers = users = data;
+                users = $filter('orderBy')(data, 'wechat.appointmentAt', true);
+                $scope.currentUsers = users;
                 pageReset();
             })
             .error(function(data, status) {
