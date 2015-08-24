@@ -268,8 +268,13 @@ angular.module("futuresApp")
                         y: value,
                         color:'#000000',
                         fillColor: color,
-                        text: '',
-                        title: ''
+                        text: '.',
+                        title: '',
+                        style: {
+                            fontSize: '1px',
+                            fontWeight: 'bold',
+                            textAlign: 'center'
+                        }
                     });
                 } else {
                     scope.data.flags_data = [];
