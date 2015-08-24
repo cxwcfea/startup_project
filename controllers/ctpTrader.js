@@ -458,7 +458,13 @@ function getProfitImpl(req, res, user, contractId) {
             return;
         }
         if (!portfolio.length) {
-            res.status(400).send({error_msg:'portfolio not found'});
+            console.log('portfolio not found');
+            mockTrader.getLastFuturesPrice(function(err, data) {
+                if (err) {
+                    return res.status(400).send({error_msg:err.toString()});
+                }
+                res.send({result: 0, lastProfit:0, lastPrice:data.lastPrice, yesterdayClose:data.yesterdayClose, portfolio:null});
+            });
             return;
         }
         var asyncObj = {remaining: portfolio.length, value: 0, has_error: false, errmsg:""};
@@ -507,7 +513,7 @@ function getProfitImpl(req, res, user, contractId) {
                     var income = asyncObj.value;
                     //console.log("User info: " + req.body.user_id + ", " + user.cash + ", " + income + ", " + user.close);
                     var lastProfit = user.lastCash ? user.lastCash - (user.deposit + user.debt) : 0;
-                    res.send({result: user.cash + income - user.deposit - user.debt - lastProfit, lastProfit:lastProfit, lastPrice:priceInfo.LastPrice, yesterdayClose:priceInfo.PreSettlementPrice});
+                    res.send({result: user.cash + income - user.deposit - user.debt - lastProfit, lastProfit:lastProfit, lastPrice:priceInfo.LastPrice, yesterdayClose:priceInfo.PreSettlementPrice, portfolio:portf});
                     return;
                 });
             });
@@ -776,18 +782,6 @@ function getStockCode() {
     return "IFCURR";
 }
 
-function getLastFuturesPrice(cb) {
-    global.redis_client.get('mt://future/IFCURR', function(err, priceInfoString) {
-        if (err) {
-            cb(err);
-        }
-        if (!priceInfoString) {
-            cb('the value not found in redis');
-        }
-        var priceInfo = JSON.parse(priceInfoString);
-        cb(null, {ts:priceInfo.ts, lastPrice:priceInfo.LastPrice});
-    });
-}
 var user_with_trigger = [];
 function loadDBData() {
     console.log('loadDBData.        ');
@@ -814,15 +808,15 @@ var is_login = false;
 function initHive(param) {
     console.log('init Hive');
     var initConfig = {
-        //ip: '218.241.142.230',
-        ip: '127.0.0.1',
+        ip: '218.241.142.230',
+        //ip: '127.0.0.1',
         port: 7777,
-        investor: '851710073',
-        password: '283715',
-        front_addr: 'tcp://27.115.57.130:41205/9000',
-        //investor: '00001',
-        //password: '123456',
-        //front_addr: 'tcp://180.168.146.181:10000/0096',
+        //investor: '851710073',
+        //password: '283715',
+        //front_addr: 'tcp://27.115.57.130:41205/9000',
+        investor: '00001',
+        password: '123456',
+        front_addr: 'tcp://180.168.146.181:10000/0096',
         client_id: param,
         version: 1,
         interval:128
@@ -856,7 +850,7 @@ module.exports = {
     getHistoryOrders: getHistoryOrders,
     getUserInfo: getUserInfo,
     windControl: windControl,
-    getLastFuturesPrice: getLastFuturesPrice,
+    getLastFuturesPrice: mockTrader.getLastFuturesPrice,
     getProfit: getProfit,
     resetUser: resetUser,
 	initHive: initHive,

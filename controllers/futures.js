@@ -137,6 +137,9 @@ function getErrorMessage(err) {
         case 6:
             msg = '请先平仓';
             break;
+        case 7:
+            msg = '同方向持仓不能多于1手';
+            break;
         default:
             msg = '内部错误';
             break;
@@ -148,6 +151,7 @@ function placeOrder(req, res) {
     if (!req.user || !req.user.wechat || !req.user.wechat.wechat_uuid) {
         return res.status(403).send({error_msg:'user need log in'});
     }
+    logger.info('placeOrder', req.user, req.body);
     var quantity = req.body.quantity;
     var forceClose = req.body.forceClose;
 
@@ -202,6 +206,7 @@ function placeOrder(req, res) {
             obj.user_id = req.user.wechat.trader;
             mockTrader.createOrder(obj, function(err, order) {
                 if (err) {
+                    logger.error('placeOrder error:' + err.msg);
                     var msg = getErrorMessage(err);
                     return res.status(500).send({error_msg:msg});
                 }
@@ -935,7 +940,7 @@ module.exports = {
 
             res.render('futures/' + req.params[0], {
                 layout:null,
-                tradeTime: tradeTime
+                tradeTime: true
             });
         });
     },

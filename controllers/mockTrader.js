@@ -446,7 +446,13 @@ function getProfitImpl(req, res, user, contractId) {
             return;
         }
         if (!portfolio.length) {
-            res.status(400).send({error_msg:'portfolio not found'});
+            console.log('portfolio not found');
+            getLastFuturesPrice(function(err, data) {
+                if (err) {
+                    return res.status(400).send({error_msg:err.toString()});
+                }
+                res.send({result: 0, lastProfit:0, lastPrice:data.lastPrice, yesterdayClose:data.yesterdayClose, portfolio:null});
+            });
             return;
         }
         var asyncObj = {remaining: portfolio.length, value: 0, has_error: false, errmsg:""};
@@ -496,7 +502,7 @@ function getProfitImpl(req, res, user, contractId) {
                     var income = asyncObj.value;
                     //console.log("User info: " + req.body.user_id + ", " + user.cash + ", " + income + ", " + user.close);
                     var lastProfit = user.lastCash ? user.lastCash - (user.deposit + user.debt) : 0;
-                    res.send({result: user.cash + income - user.deposit - user.debt - lastProfit, lastProfit:lastProfit, lastPrice:priceInfo.LastPrice, yesterdayClose:priceInfo.PreSettlementPrice});
+                    res.send({result: user.cash + income - user.deposit - user.debt - lastProfit, lastProfit:lastProfit, lastPrice:priceInfo.LastPrice, yesterdayClose:priceInfo.PreSettlementPrice, portfolio:portf});
                     return;
                 });
             });
@@ -519,7 +525,6 @@ function getProfit(req, res) {
                     return;
                 }
                 getProfitImpl(req, res, user, contract._id);
-                
             });
         } else {
             getProfitImpl(req, res, user, null);
@@ -656,6 +661,12 @@ function createOrder(data, cb) {
                       if (!portfolio) {
                           portfolio = new Portfolio({contractId: contract._id, userId: user._id});
                       }
+
+                      if ((data.order.quantity < 0 && portfolio.quantity < 0) || (data.order.quantity > 0 && portfolio.quantity > 0)) {
+                          cb({code:7, msg:'can not buy more than 1 hand for the same type'});
+                          return lock.unlock();
+                      }
+
                       var costs = getCosts(contract, priceInfo.LastPrice, data.order.quantity, portfolio.quantity, portfolio.total_point, portfolio.total_deposit);
                       if (user.cash < costs.open) {
                           cb({code:5, msg:'user.cash < costs.open'});
@@ -690,7 +701,7 @@ function createOrder(data, cb) {
                           {$set:{cash: user.cash, lastCash: user.lastCash}}, function(err, numberAffected, raw) {
                           if (err || numberAffected != 1) {
                               console.log(err);
-                              cb({code:2, msg:err? err.toString(): "Placing order too fast"});
+                              cb({code:2, msg:err? err.toString(): "Can not update user"});
                               return lock.unlock();
                           }
                           portfolio.save(function(err) {
@@ -739,7 +750,8 @@ function getLastFuturesPrice(cb) {
             cb('the value not found in redis');
         }
         var priceInfo = JSON.parse(priceInfoString);
-        cb(null, {ts:priceInfo.ts, lastPrice:priceInfo.LastPrice});
+        priceInfo.LastPrice *= 100;
+        cb(null, {ts:priceInfo.ts, lastPrice:priceInfo.LastPrice, yesterdayClose:priceInfo.PreSettlementPrice});
     });
 }
 

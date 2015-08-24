@@ -34,7 +34,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
     $scope.products = [
         {
             value: 0,
-            name: 'IF1508',
+            name: 'IF1509',
             type: '股 指',
             intro: '沪深300指数，涨跌均可买',
             status: tradeTime ? 1 : 0,

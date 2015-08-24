@@ -48,7 +48,7 @@ angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window'
         },
         {
             value: 2,
-            name: '股神榜',
+            name: '排行榜',
             img: '/futures/images/foot3.png',
             selectedImg: '/futures/images/foot3-dark.png',
             page: '/user_rank'
@@ -71,10 +71,6 @@ angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window'
     }
 
     $scope.switchPage = function(item) {
-        if ($scope.data.real && item.value === 2) {
-            displayError('实盘用户不做排名');
-            return;
-        }
         $location.path(item.page);
     };
 }]);

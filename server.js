@@ -93,7 +93,7 @@ function startServer(master) {
         task.scheduleHiveControlJob();
         task.scheduleFuturesForceCloseJob();
         task.schedulePPJUserDailyJob();
-        //task.scheduleTriggeredJob();
+        task.scheduleTriggeredJob();
     });
 }
 

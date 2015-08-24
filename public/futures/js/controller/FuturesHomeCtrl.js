@@ -63,11 +63,11 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             }
         }
     } else {
-        $scope.tradeClose = true;
+        //$scope.tradeClose = true;
     }
 
     if ($scope.data.real && $scope.user.wechat.status !== 4) {
-        $scope.tradeClose = true;
+        //$scope.tradeClose = true;
         $scope.closeText = REAL_TEXT;
     }
 
@@ -77,22 +77,29 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         sell: 0
     };
 
+    function undatePosition(position) {
+        if (position) {
+            $scope.tradeData.down = $scope.tradeData.up = $scope.tradeData.sell = 0;
+            if (position.quantity) {
+                if (position.longQuantity > position.shortQuantity) {
+                    $scope.tradeData.up = (position.longQuantity - position.shortQuantity) / HAND;
+                    $scope.tradeData.down = 0;
+                    $scope.tradeData.sell = $scope.tradeData.up;
+                } else {
+                    $scope.tradeData.down = (position.shortQuantity - position.longQuantity) / HAND;
+                    $scope.tradeData.up = 0;
+                    $scope.tradeData.sell = $scope.tradeData.down;
+                }
+            }
+        }
+    }
+
     var delta = 0;
     function getUserPositions(init) {
         $http.get('/api/futures/get_positions?type=' + ($scope.data.real ? 1 : 0))
             .success(function (data, status) {
                 var position = data.position;
-                if (position) {
-                    if (position.longQuantity > position.shortQuantity) {
-                        $scope.tradeData.up = (position.longQuantity - position.shortQuantity) / HAND;
-                        $scope.tradeData.down = 0;
-                        $scope.tradeData.sell = $scope.tradeData.up;
-                    } else {
-                        $scope.tradeData.down = (position.shortQuantity - position.longQuantity) / HAND;
-                        $scope.tradeData.up = 0;
-                        $scope.tradeData.sell = $scope.tradeData.down;
-                    }
-                }
+                undatePosition(position);
                 $scope.cash = data.user.cash/100;
             })
             .error(function(data, status) {
@@ -107,7 +114,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         $scope.showError = true;
         $timeout(function() {
             $scope.showError = false;
-        }, 2000);
+        }, 1000);
     }
 
     function fetchUserProfit() {
@@ -121,6 +128,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                     $scope.data.balance = $scope.balance;
                     $scope.yesterdayClose = data.yesterdayClose;
                     $scope.pointDelta = ($scope.currentPrice - $scope.yesterdayClose) / $scope.yesterdayClose * 100;
+                    undatePosition(data.portfolio);
                 } else {
                     $scope.profit = 0;
                     $scope.lastProfit = 0;
@@ -317,7 +325,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         }
 
         if ($scope.tradeData.sell === 0 && type === 0) {
-            displayError('您当前没有持仓');
+            //displayError('您当前没有持仓');
             return;
         }
 
@@ -331,9 +339,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         }
         $http.post('/api/futures/create_order', {quantity:quantity, forceClose:forceClose, product:$scope.data.productID, type:($scope.data.real ? 1 : 0)})
             .success(function(data, status) {
-                getUserPositions();
-                var orderType = data.quantity > 0 ? '涨' : '跌';
-
                 if (type != 0) {
                     //displayError('您成功买' + orderType + Math.abs(data.quantity/100) + '手,价格' + (data.price/100).toFixed(1) + '元');
                     $scope.currentOrder = data;

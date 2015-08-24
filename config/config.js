@@ -11,7 +11,7 @@ module.exports = {
         ppj_callback_domain: 'http://test2.niujinwang.com',
         wechatAppId: 'wxc68d861f37a6f4ca',
         wechatSecret: '91bfa82c41555da23f03fc7fc049f0b1',
-        futureIF: 'IF1508',
+        futureIF: 'IF1509',
         serviceCharge: 19.9,
         warnFactor: 0.4,
         sellFactor: 0.6,

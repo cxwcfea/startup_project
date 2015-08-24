@@ -1,5 +1,7 @@
 var net = require("net"),
 	_ = require('underscore'),
+    log4js = require('log4js'),
+    logger = log4js.getLogger('hive'),
 	bytebuffer = require("ByteBuffer");
 var HIVE_USERNAME_LEN = 32,
 	HIVE_PASSWORD_LEN = 32,
@@ -140,20 +142,21 @@ Hive.prototype.login = function (){
 		}
 	});
 	client.on('error',function(error){
-		console.log('error:'+error);
+        logger.debug('socket error.', error);
 	});
 	client.on('close',function(){
-		console.log('Connection closed');
+        logger.debug('Connection closed');
 	});
 };
 
 Hive.prototype.createOrder = function (param, callback){
-    console.log('in createOrder, login ' + this.isLogin);
+    //console.log('in createOrder, login ' + this.isLogin);
 	if (!this.isLogin) {
+        logger.debug('hive not login.');
         return callback('Not logged in');
 	}
 	if (this.user2cb[param.user_id]) {
-		console.log('previous order in process, abort current one.');
+        logger.debug('previous order in process, abort current one.');
         return callback('订单处理中，请稍后再试');
 	}
     this.user2cb[param.user_id] = callback;
@@ -186,7 +189,7 @@ Hive.prototype.createOrder = function (param, callback){
 					.pack();
 	// console.log(req);
 	client.write(req);
-	console.log('createOrder send req');
+	//console.log('createOrder send req');
 	//callback({code:0, msg:'success'});
 };
 
