@@ -125,6 +125,15 @@ module.exports = function(io) {
             console.log(user.name + ' joined room ' + user.room);
             socket.emit('history_data', {productID:user.room, data:products[user.room].historyData});
         });
+        socket.on('getData', function (data) {
+            fetchNewData(function(err, data, productIndex) {
+                if (err) {
+                    console.log(err.toString());
+                    return;
+                }
+                socket.emit('new_data', {productID:productIndex, data:data});
+            });
+        });
     });
     setInterval(function() {
         fetchHistoryData(function(err, productIndex) {
