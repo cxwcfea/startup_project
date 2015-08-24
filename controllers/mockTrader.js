@@ -132,7 +132,7 @@ function getCosts(contract, stock_price, quantity, position, total_point, total_
     var point_diff = point_released - q * stock_price / 100;
     var deposit_diff = deposit_released - raw;
     var locked_cash = raw-profit+fee;
-    console.log(q, pos_released, raw, profit, fee, point_diff, deposit_diff);
+    //console.log(q, pos_released, raw, profit, fee, point_diff, deposit_diff);
     return {raw: raw, fee: fee, open: locked_cash, locked_cash: locked_cash, point:point_diff, deposit:deposit_diff, profit:profit, net_profit:net_profit};
 }
 

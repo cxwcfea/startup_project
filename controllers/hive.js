@@ -65,7 +65,7 @@ Hive.prototype.login = function (){
 	var that = this;
 	var client = this.socket_client;
 	client.connect(that.port, that.ip, function(){
-		logger.debug('connect to '+ param.ip);
+		logger.debug('connect to '+ that.ip);
 		var sbuf = new bytebuffer().littleEndian();
 		var req = sbuf.byte(param.mtype)
 						.vstring(that.investor, HIVE_USERNAME_LEN)
