@@ -146,7 +146,7 @@ Hive.prototype.createOrder = function (param, callback){
 	if (!this.isLogin) {
         logger.debug('hive not login....start relogin...');
         this.login();
-        return callback('Not logged in');
+        return callback({code:8, msg:'connecting hive'});
 	}
 	if (this.user2cb[param.user_id]) {
         logger.debug('previous order in process, abort current one.');
