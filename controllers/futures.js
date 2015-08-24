@@ -140,6 +140,8 @@ function getErrorMessage(err) {
         case 7:
             msg = '同方向持仓不能多于1手';
             break;
+        case 8:
+            msg = '正在连接交易所，请稍后';
         default:
             msg = '内部错误';
             break;
@@ -151,7 +153,7 @@ function placeOrder(req, res) {
     if (!req.user || !req.user.wechat || !req.user.wechat.wechat_uuid) {
         return res.status(403).send({error_msg:'user need log in'});
     }
-    logger.info('placeOrder', req.user, req.body);
+    //logger.info('placeOrder', req.user, req.body);
     var quantity = req.body.quantity;
     var forceClose = req.body.forceClose;
 
