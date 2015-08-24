@@ -303,6 +303,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     $scope.currentOrder = null;
 
     $scope.placeOrder = function(type) {
+        console.log('placeOrder');
         if ($scope.tradeClose) {
             return;
         }
