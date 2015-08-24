@@ -252,8 +252,8 @@ angular.module("futuresApp")
                         id: 'stock_data_flags',
                         y: 0,
                         style: {
-                            fontSize: '1px',
-                            fontWeight: 'bold',
+                            fontSize: 'xx-small',
+                            fontWeight: '100',
                             textAlign: 'center'
                         },
                         showInLegend: false
