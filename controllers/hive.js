@@ -61,36 +61,27 @@ Hive.prototype.destroy = function() {
 Hive.prototype.login = function (){
 	var param = {};
 	param.mtype = HIVE_MSG_TYPE.HiveMsgLoginReq;
-	param.ip = this.ip;
-	param.port = this.port;
-	param.investor = this.investor;
-	param.password = this.password;
-	param.front_addr = this.front_addr;
-	param.client_id = this.client_id;
-	param.version = this.version;
-	param.interval = this.interval;
 	// socket_client.setEncoding('binary');
-	console.log(param);
+	var that = this;
 	var client = this.socket_client;
 	client.connect(param.port, param.ip, function(){
-		console.log('connect to '+ param.ip);
+		logger.debug('connect to '+ param.ip);
 		var sbuf = new bytebuffer().littleEndian();
 		var req = sbuf.byte(param.mtype)
-						.vstring(param.investor, HIVE_USERNAME_LEN)
-						.vstring(param.password, HIVE_PASSWORD_LEN)
-						.vstring(param.front_addr, HIVE_HOSTADDR_LEN)
-						.uint32(param.client_id)
-						.byte(param.version)
-						.byte(param.interval)
+						.vstring(that.investor, HIVE_USERNAME_LEN)
+						.vstring(that.password, HIVE_PASSWORD_LEN)
+						.vstring(that.front_addr, HIVE_HOSTADDR_LEN)
+						.uint32(that.client_id)
+						.byte(that.version)
+						.byte(that.interval)
 						.pack();
 		// console.log(req);
 		client.write(req);
-		console.log('login send req');
+		// console.log('login send req');
 	});
-	var that = this;
 	client.on('data',function(data) {
 		if (that.isLogin == false) {
-			console.log('login recv response ');
+			logger.debug('login recv response ');
 			var buff = new bytebuffer(data).littleEndian();
 			//FIXME: need to make sure the parsing process 
 			//does't exceeds the boundry.
@@ -103,8 +94,8 @@ Hive.prototype.login = function (){
 							.unpack();
 			if (arr[0] == HIVE_MSG_TYPE.HiveMsgLoginRsp && arr[1] == 0) {
                 that.isLogin = true;
+                logger.debug('login to Hive SUCCESS.');
             }
-			console.log('login '+that.isLogin);
 		} else {
 			//console.log('++++++recv order response ');
 			var buff = new bytebuffer(data).littleEndian();
@@ -146,13 +137,15 @@ Hive.prototype.login = function (){
 	});
 	client.on('close',function(){
         logger.debug('Connection closed');
+        that.isLogin = false;
 	});
 };
 
 Hive.prototype.createOrder = function (param, callback){
     //console.log('in createOrder, login ' + this.isLogin);
 	if (!this.isLogin) {
-        logger.debug('hive not login.');
+        logger.debug('hive not login....start relogin...');
+        login();
         return callback('Not logged in');
 	}
 	if (this.user2cb[param.user_id]) {
@@ -187,9 +180,7 @@ Hive.prototype.createOrder = function (param, callback){
 					.uint32(0)
 					.int64(0)
 					.pack();
-	// console.log(req);
 	client.write(req);
-	//console.log('createOrder send req');
 	//callback({code:0, msg:'success'});
 };
 

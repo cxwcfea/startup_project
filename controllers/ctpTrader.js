@@ -804,7 +804,6 @@ function loadDBData() {
 }
 
 var hive;
-var is_login = false;
 function initHive(param) {
     console.log('init Hive');
     var initConfig = {
@@ -821,8 +820,7 @@ function initHive(param) {
         version: 1,
         interval:128
     };
-    if(is_login == false){
-        is_login = true;
+    if(hive.isLogin == false){
         hive = new Hive(initConfig);
         hive.login();
     }
@@ -830,9 +828,9 @@ function initHive(param) {
 
 function destroyHive() {
     console.log('destroyHive.');
-    if(is_login == true){
+    if(hive.isLogin == true){
         console.log('closing socket.');
-        is_login = false;
+        hive.isLogin = false;
         hive.destroy();
     }
 }
