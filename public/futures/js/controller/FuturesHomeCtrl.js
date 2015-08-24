@@ -302,8 +302,8 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
 
     $scope.currentOrder = null;
 
+    var orderProcessing = false;
     $scope.placeOrder = function(type) {
-        alert('placeOrder');
         if ($scope.tradeClose) {
             return;
         }
@@ -326,6 +326,11 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             }, 500);
         }
 
+        if (orderProcessing) {
+            return;
+        }
+
+        orderProcessing = true;
         if ($scope.tradeData.sell === 0 && type === 0) {
             //displayError('您当前没有持仓');
             return;
@@ -341,6 +346,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         }
         $http.post('/api/futures/create_order', {quantity:quantity, forceClose:forceClose, product:$scope.data.productID, type:($scope.data.real ? 1 : 0)})
             .success(function(data, status) {
+                orderProcessing = false;
                 if (type != 0) {
                     //displayError('您成功买' + orderType + Math.abs(data.quantity/100) + '手,价格' + (data.price/100).toFixed(1) + '元');
                     $scope.currentOrder = data;
@@ -351,6 +357,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                 }
             })
             .error(function(data, status) {
+                orderProcessing = false;
                 displayError(data.error_msg);
             });
     };
