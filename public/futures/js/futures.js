@@ -246,7 +246,7 @@ angular.module("futuresApp")
                     {
                         type: 'flags',
                         shape : 'circlepin',
-                        width : 10,
+                        width : 5,
                         onSeries: 'stock_data',
                         data: [],
                         id: 'stock_data_flags',
@@ -273,7 +273,7 @@ angular.module("futuresApp")
                         y: value,
                         color:'#000000',
                         fillColor: color,
-                        text: '.',
+                        text: ' ',
                         title: ''
                     });
                 } else {
