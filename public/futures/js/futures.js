@@ -269,7 +269,7 @@ angular.module("futuresApp")
                         color:'#000000',
                         fillColor: color,
                         text: '',
-                        title: value.toFixed(0)
+                        title: ''
                     });
                 } else {
                     scope.data.flags_data = [];
