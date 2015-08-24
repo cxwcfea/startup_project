@@ -142,6 +142,7 @@ function getErrorMessage(err) {
             break;
         case 8:
             msg = '正在连接交易所，请稍后';
+            break;
         default:
             msg = '内部错误';
             break;

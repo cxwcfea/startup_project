@@ -805,7 +805,7 @@ function loadDBData() {
 
 var hive;
 function initHive(param) {
-    console.log('init Hive');
+    logger.debug('init Hive**************************');
     var initConfig = {
         ip: '218.241.142.230',
         //ip: '127.0.0.1',
