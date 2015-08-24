@@ -245,11 +245,12 @@ angular.module("futuresApp")
                     },
                     {
                         type: 'flags',
-                        shape : 'squarepin',
-                        width : 20,
+                        shape : 'circlepin',
+                        width : 5,
                         onSeries: 'stock_data',
                         data: [],
                         id: 'stock_data_flags',
+                        y: -10,
                         showInLegend: false
                     }
                 ]
