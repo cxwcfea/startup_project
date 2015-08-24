@@ -51,6 +51,7 @@ function Hive(config) {
 	this.order2user = {};
 	this.user2cb = {};
 	this.isLogin = false;
+    this.login_in_process = false;
 }
 
 Hive.prototype.destroy = function() {
@@ -59,6 +60,11 @@ Hive.prototype.destroy = function() {
 };
 
 Hive.prototype.login = function (){
+    if(this.login_in_process == true){
+        logger.debug('login in process, please wait..');
+        return;
+    }
+    this.login_in_process = true;
 	var param = {};
 	param.mtype = HIVE_MSG_TYPE.HiveMsgLoginReq;
 	// socket_client.setEncoding('binary');
@@ -75,9 +81,7 @@ Hive.prototype.login = function (){
 						.byte(that.version)
 						.byte(that.interval)
 						.pack();
-		// console.log(req);
 		client.write(req);
-		// console.log('login send req');
 	});
 	client.on('data',function(data) {
 		if (that.isLogin == false) {
@@ -94,6 +98,7 @@ Hive.prototype.login = function (){
 							.unpack();
 			if (arr[0] == HIVE_MSG_TYPE.HiveMsgLoginRsp && arr[1] == 0) {
                 that.isLogin = true;
+                that.login_in_process = false;
                 logger.debug('login to Hive SUCCESS.');
             }
 		} else {
