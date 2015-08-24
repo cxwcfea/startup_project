@@ -246,16 +246,11 @@ angular.module("futuresApp")
                     {
                         type: 'flags',
                         shape : 'circlepin',
-                        width : 5,
+                        width : 2,
                         onSeries: 'stock_data',
                         data: [],
                         id: 'stock_data_flags',
-                        y: 0,
-                        style: {
-                            fontSize: 'xx-small',
-                            fontWeight: '100',
-                            textAlign: 'center'
-                        },
+                        y: -5,
                         showInLegend: false
                     }
                 ]
@@ -273,8 +268,8 @@ angular.module("futuresApp")
                         y: value,
                         color:'#000000',
                         fillColor: color,
-                        text: ' ',
-                        title: ''
+                        text: '',
+                        title: '     '
                     });
                 } else {
                     scope.data.flags_data = [];
