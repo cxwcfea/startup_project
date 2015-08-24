@@ -64,7 +64,7 @@ Hive.prototype.login = function (){
 	// socket_client.setEncoding('binary');
 	var that = this;
 	var client = this.socket_client;
-	client.connect(param.port, param.ip, function(){
+	client.connect(that.port, that.ip, function(){
 		logger.debug('connect to '+ param.ip);
 		var sbuf = new bytebuffer().littleEndian();
 		var req = sbuf.byte(param.mtype)
@@ -145,7 +145,7 @@ Hive.prototype.createOrder = function (param, callback){
     //console.log('in createOrder, login ' + this.isLogin);
 	if (!this.isLogin) {
         logger.debug('hive not login....start relogin...');
-        login();
+        this.login();
         return callback('Not logged in');
 	}
 	if (this.user2cb[param.user_id]) {

@@ -820,10 +820,10 @@ function initHive(param) {
         version: 1,
         interval:128
     };
-    if(hive.isLogin == false){
+    //if(hive.isLogin == false){
         hive = new Hive(initConfig);
-        hive.login();
-    }
+        //hive.login();
+    //}
 }
 
 function destroyHive() {
