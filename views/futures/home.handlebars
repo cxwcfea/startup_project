@@ -116,13 +116,18 @@
         margin-left:-40px;
     }
     .black-cover .profit {
-        width:25%;
+        position:absolute;
+        top:275px;
+        margin-left:28px;
+        margin-right:28px;
         height:45px;
+    }
+    .black-cover .profit .in {
+        width:25%;
+        height:100%;
         border-radius:5px;
         left:25%;
-        top:275px;
         background-color:#ffffff;
-        position:absolute;
     }
     .note-area {
         width:100%;
@@ -216,8 +221,7 @@
     .note-area .note-profit {
         top:160px;
         position:absolute;
-        margin-left:28px;
-        margin-right:28px;
+        width:100%;
     }
     .note-area .note-profit .in {
         width:220px;
@@ -359,7 +363,9 @@
 	</div>
 	<div ng-show="data.status == 1" class="btn z"></div>
 	<div ng-show="data.status == 2" class="btn d"></div>
-	<div ng-show="data.status == 3" class="profit"></div>
+	<div ng-show="data.status == 3" class="profit">
+        <div class="in"></div>
+    </div>
 	<div ng-show="data.status == 4" class="btn p"></div>
 </div>
 <div ng-show="data.status != 0" class="note-area" ng-class="{'black-height-full':(browserHeight > 557), 'black-height-max':(browserHeight <= 557)}">
