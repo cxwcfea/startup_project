@@ -490,7 +490,7 @@ function addMoney(req, res) {
             var close = cash - (depositAmount - CLOSE_LINE);
             var warning = cash - (depositAmount - WARN_LINE);
             var debt = cash - depositAmount;
-            mockTrader.User.update({_id:user.wechat.real_trader}, {$set:{close:close * 100, warning:warning * 100, cash:cash * 100, deposit:depositAmount * 100, debt:debt * 100, lastCash:0, status:1}}, function(err, numberAffected, raw) {
+            mockTrader.User.update({_id:user.wechat.real_trader}, {$set:{close:close * 100, warning:warning * 100, cash:cash * 100, deposit:depositAmount * 100, debt:debt * 100, lastCash:cash * 100, status:1}}, function(err, numberAffected, raw) {
                 if (err) {
                     return res.status(500).send({error_msg:err.toString()});
                 }
