@@ -272,12 +272,7 @@ function getNearestOrders(req, res) {
         return res.status(403).send({error_msg:'user need log in'});
     }
 
-    var now = moment();
-    var orderStartTime = now.subtract(2.5, 'hours');
-    var date_begin = orderStartTime.toDate();
-    var date_end = Date.now();
-
-    console.log('getNearestOrders ', orderStartTime.toDate(), date_end);
+    var orderStartTime = moment().subtract(2.5, 'hours').toDate();
 
     var userID;
     if (req.query.type == 1 && req.user.wechat.real_trader) {
@@ -288,7 +283,7 @@ function getNearestOrders(req, res) {
 
     var query = mockTrader.Order.find({$and: [
         {userId: userID},
-        {timestamp: {$gte: date_begin}}
+        {timestamp: {$gte: orderStartTime}}
     ]});
     query.exec(function(err, orders) {
         if (err) {
