@@ -72,7 +72,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     }
 
     {
-        $http.get('/futures/get_nearest_orders')
+        $http.get('/futures/get_nearest_orders?type=' + ($scope.data.real ? 1 : 0))
             .success(function(data, status) {
                 for (var i = 0; i < data.length; ++i) {
                     var order = data[i];
