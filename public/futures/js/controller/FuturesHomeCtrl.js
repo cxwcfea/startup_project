@@ -75,6 +75,9 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         $http.get('/futures/get_nearest_orders')
             .success(function(data, status) {
                 console.log(data);
+                for (var i = 0; i < data.length; ++i) {
+                    $scope.currentOrder = data[i];
+                }
             })
             .error(function(data, status) {
                 console.log(data.error_msg);
