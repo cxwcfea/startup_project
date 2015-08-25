@@ -362,6 +362,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             .error(function(data, status) {
                 //orderProcessing = false;
                 //displayError(data.error_msg);
+                console.log(data.error_msg);
             });
     };
 
