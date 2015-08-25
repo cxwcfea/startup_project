@@ -708,6 +708,7 @@ function createOrder(data, cb) {
                                   var order = new Order({
                                       contractId: contract._id,
                                       userId: user._id,
+                                      entrustId: order_id,
                                       quantity: data.order.quantity,
                                       price: info.traded_price*100,
                                       fee: costs.fee,
