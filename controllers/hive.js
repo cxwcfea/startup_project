@@ -86,6 +86,11 @@ Hive.prototype.login = function (){
 						.pack();
 		client.write(req);
 	});
+};
+
+Hive.prototype.addListener = function(){
+	var client = this.socket_client;
+    var that = this;
 	client.on('data',function(data) {
 		if (that.isLogin == false) {
 			logger.debug('login recv response ');
@@ -147,7 +152,7 @@ Hive.prototype.login = function (){
         logger.debug('Connection closed');
         that.isLogin = false;
 	});
-};
+}
 
 Hive.prototype.createOrder = function (param, callback){
     //console.log('in createOrder, login ' + this.isLogin);
