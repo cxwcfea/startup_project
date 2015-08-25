@@ -90,7 +90,6 @@ function startServer(master) {
         logger.info('Express started on ' + app.get('port') + '; press Ctrl-C to terminate.');
         ctpTrader.initHive(1);
         task.scheduleFuturesRiskControlJob();
-        task.scheduleHiveControlJob();
         task.scheduleFuturesForceCloseJob();
         task.schedulePPJUserDailyJob();
         task.scheduleTriggeredJob();

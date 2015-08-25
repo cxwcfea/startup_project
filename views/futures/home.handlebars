@@ -88,7 +88,7 @@
 
 <div class="index-box">
     <div class="chart-box">
-        <h4><span class="text-danger" ng-click="setting()">自动平仓设置</span><!--<span>股指图</span>--> <span class="current-price">昨收盘: <em>\{{yesterdayClose}}</em></span> <span class="current-price">涨跌: <em>\{{pointDelta | number:2}}</em>%</span> <span class="text-success pull-right" ng-click="openIntroPopup()">帮助</span></h4>
+        <h4><span class="text-danger" ng-click="setting()" ng-show="data.real">自动平仓设置</span><span ng-hide="data.real">股指图</span> <span class="current-price">昨收盘: <em>\{{yesterdayClose}}</em></span> <span class="current-price">涨跌: <em>\{{pointDelta | number:2}}</em>%</span> <span class="text-success pull-right" ng-click="openIntroPopup()">帮助</span></h4>
         <div class="chart">
             <div id="container" futures-chart="chartLabels" chart-data="chartData"></div>
         </div>
