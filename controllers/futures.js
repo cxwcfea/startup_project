@@ -288,8 +288,7 @@ function getNearestOrders(req, res) {
 
     var query = Order.find({$and: [
         {userId: userID},
-        {timestamp: {$gte: date_begin + 8*3600*1000}},
-        {timestamp: {$lt: date_end + 8*3600*1000}}
+        {timestamp: {$gte: date_begin}}
     ]});
     query.exec(function(err, orders) {
         if (err) {
