@@ -118,9 +118,10 @@
     .black-cover .profit {
         position:absolute;
         top:275px;
-        margin-left:28px;
-        margin-right:28px;
+        padding-left:28px;
+        padding-right:28px;
         height:45px;
+        width:100%;
     }
     .black-cover .profit .in {
         width:25%;
@@ -211,12 +212,18 @@
         top:440px;
     }
     .note-area .profit-click {
-        width:25%;
+        width:100%;
+        padding-left:28px;
+        padding-right:28px;
+        top:275px;
         height:45px;
+        position:absolute;
+    }
+    .note-area .profit-click .in {
+        width:25%;
         border-radius:5px;
         left:25%;
-        top:275px;
-        position:absolute;
+        height:100%;
     }
     .note-area .note-profit {
         top:160px;
@@ -386,7 +393,9 @@
 		<img src="/futures/images/mark-jt.png">
 		<p>点我继续</p>
 	</div>
-	<div ng-show="data.status == 3" ng-click="data.status = 4" class="profit-click"></div>
+	<div ng-show="data.status == 3" ng-click="data.status = 4" class="profit-click">
+        <div class="in"></div>
+    </div>
 	<div ng-show="data.status == 3" class="note-profit">
 		<div class="in">
 			<p>若您涨跌预测准确，“持仓盈亏”会为正值，代表您有盈利<p>
