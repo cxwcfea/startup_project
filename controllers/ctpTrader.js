@@ -691,7 +691,6 @@ function createOrder(data, cb) {
                                   size: 1.0, // volume
                                   px_raw: parseFloat(price/100).toFixed(0) // price 
                               };
-                              logger.debug(price);
                               hive.createOrder(ctp_order, function(err, info) {
                                   if (err) {
                                       console.log(err);
