@@ -822,6 +822,7 @@ function initHive(param) {
     };
     if(!hive || hive.isLogin == 'undefined' || hive.isLogin == false){
         hive = new Hive(initConfig);
+        hive.addListener();
         hive.login();
     }
 }
