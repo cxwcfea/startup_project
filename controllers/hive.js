@@ -60,15 +60,18 @@ Hive.prototype.destroy = function() {
 };
 
 Hive.prototype.login = function (){
+	var that = this;
     if(this.login_in_process == true){
         logger.debug('login in process, please wait..');
+        setTimeout(function(){
+            that.login_in_process = false;
+        }, 2*1000);
         return;
     }
     this.login_in_process = true;
 	var param = {};
 	param.mtype = HIVE_MSG_TYPE.HiveMsgLoginReq;
 	// socket_client.setEncoding('binary');
-	var that = this;
 	var client = this.socket_client;
 	client.connect(that.port, that.ip, function(){
 		logger.debug('connect to '+ that.ip);
@@ -153,10 +156,11 @@ Hive.prototype.createOrder = function (param, callback){
         this.login();
         return callback({code:8, msg:'connecting hive'});
 	}
+    var that = this;
 	if (this.user2cb[param.user_id]) {
         logger.debug('previous order in process, abort current one.');
         setTimeout(function(){
-            delete this.user2cb[param.user_id];
+            delete that.user2cb[param.user_id];
         }, 3*1000);
         return callback('订单处理中，请稍后再试');
 	}
