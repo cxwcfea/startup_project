@@ -75,8 +75,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         $http.get('/futures/get_nearest_orders')
             .success(function(data, status) {
                 for (var i = 0; i < data.length; ++i) {
-                //    (function(i) {
-                //        $timeout(function() {
                     var order = data[i];
                     var value = order.price/100;
                     var color = '#FF0000';
@@ -93,9 +91,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                             title: ' '
                         });
                     }
-                            //$scope.currentOrder = data[i];
-                //        });
-                //    })(i);
                 }
             })
             .error(function(data, status) {
