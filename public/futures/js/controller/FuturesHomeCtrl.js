@@ -71,7 +71,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         $scope.closeText = REAL_TEXT;
     }
 
-    {
+    $timeout(function() {
         $http.get('/futures/get_nearest_orders?type=' + ($scope.data.real ? 1 : 0))
             .success(function(data, status) {
                 for (var i = 0; i < data.length; ++i) {
@@ -96,7 +96,8 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             .error(function(data, status) {
                 console.log(data.error_msg);
             });
-    }
+    }, 1000);
+
 
     $scope.tradeData = {
         up: 0,
