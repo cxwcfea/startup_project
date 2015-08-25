@@ -294,7 +294,7 @@ function getNearestOrders(req, res) {
             console.log(err);
             return res.status(500).send({error_msg: err.errmsg});
         }
-        return orders;
+        res.send(orders);
     });
 }
 
