@@ -561,6 +561,7 @@ function addDeposit(req, res) {
                         return res.status(500).send({error_msg:'无法更新用户'});
                     }
                     logger.info('addDeposit before change', trader);
+                    trader.deposit += depositAmount;
                     trader.cash += depositAmount;
                     trader.lastCash += depositAmount;
                     trader.save(function(err) {
