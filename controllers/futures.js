@@ -743,7 +743,20 @@ function finishTrade(req, res) {
                     callback(err, trader, user);
                 });
             } else {
-                callback(null, trader, user);
+                var orderData = {
+                    userID: user._id,
+                    userMobile: user.mobile,
+                    dealType: 5,
+                    amount: 0,
+                    status: 1,
+                    description: '股指拍拍机保证金返还 用户穿仓',
+                    userBalance: user.finance.balance,
+                    approvedBy: req.user.mobile,
+                    approvedAt: Date.now()
+                };
+                Order.create(orderData, function(err, order) {
+                    callback(err, trader, user);
+                });
             }
         },
         function(trader, user, callback) {
