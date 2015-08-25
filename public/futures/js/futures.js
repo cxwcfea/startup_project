@@ -262,14 +262,16 @@ angular.module("futuresApp")
                     if (newValue.quantity < 0) {
                         color = '#00FF00';
                     }
-                    scope.data.flags_data.push({
-                        x: Date.parse(newValue.timestamp),
-                        y: value,
-                        color:'#000000',
-                        fillColor: color,
-                        text: '',
-                        title: ' '
-                    });
+                    if (scope.data.flags_data) {
+                        scope.data.flags_data.push({
+                            x: Date.parse(newValue.timestamp),
+                            y: value,
+                            color:'#000000',
+                            fillColor: color,
+                            text: '',
+                            title: ' '
+                        });
+                    }
                 } else {
                     //scope.data.flags_data = [];
                 }
