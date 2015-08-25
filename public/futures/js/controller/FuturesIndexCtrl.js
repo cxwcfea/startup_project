@@ -25,7 +25,8 @@ angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window'
     };
     */
 
-	$scope.data.status = 0;
+    $scope.data.flags_data = [];
+    $scope.data.status = 0;
 	
     $scope.data.productID = 0;
     $scope.data.selectedItem = 1;
