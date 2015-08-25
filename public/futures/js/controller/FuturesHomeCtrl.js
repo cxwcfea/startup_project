@@ -76,7 +76,11 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             .success(function(data, status) {
                 console.log(data);
                 for (var i = 0; i < data.length; ++i) {
-                    $scope.currentOrder = data[i];
+                    (function(i) {
+                        $timeout(function() {
+                            $scope.currentOrder = data[i];
+                        });
+                    })(i);
                 }
             })
             .error(function(data, status) {
