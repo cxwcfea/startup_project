@@ -76,6 +76,158 @@
     .index-box .chart-box .chart #container {
         height: 230px
     }
+    .black-cover {
+        background-color:#000000;
+        width:100%;
+        opacity:0.5;
+        position:absolute;
+        top:0;
+        left:0;
+    }
+    .black-cover .chart-area {
+        height:210px;
+        margin-left:15px;
+        margin-right:15px;
+        margin-top:37px;
+        overflow:hide;
+    }
+    .black-cover .chart-area .in {
+        height:100%;
+        width:100%;
+        background-color:#ffffff;
+        border-radius:5px;
+    }
+    .black-cover .btn {
+        width:80px;
+        height:80px;
+        border-radius:100px;
+        top:351px;
+        background-color:#ffffff;
+        position:absolute;
+    }
+    .black-cover .btn.z {
+        left:33px;
+    }
+    .black-cover .btn.d {
+        right:33px;
+    }
+    .black-cover .btn.p {
+        left:50%;
+        margin-left:-40px;
+    }
+    .black-cover .profit {
+        width:80px;
+        height:45px;
+        border-radius:5px;
+        left:50%;
+        top:275px;
+        margin-left:-40px;
+        background-color:#ffffff;
+        position:absolute;
+    }
+    .note-area {
+        width:100%;
+        position:absolute;
+        top:0;
+        left:0;
+        opacity:0.8;
+        color:#ffffff;
+        font-size:16px;
+    }
+    .note-area .btn-click {
+        width:80px;
+        height:80px;
+        border-radius:100px;
+        top:351px;
+        position:absolute;
+    }
+    .note-area .btn-click.z {
+        left:33px;
+    }
+    .note-area .btn-click.d {
+        right:33px;
+    }
+    .note-area .btn-click.p {
+        left:50%;
+        margin-left:-40px;
+    }
+    .note-area .note-z {
+        left:130px;
+        top:360px;
+        width:155px;
+        background-color:#000000;
+        position:absolute;
+        border-radius:5px;
+        padding:5px;
+    }
+    .note-area .note-d {
+        right:130px;
+        top:380px;
+        width:155px;
+        background-color:#000000;
+        position:absolute;
+        border-radius:5px;
+        padding:5px;
+    }
+    .note-area .note-p {
+        top:240px;
+        position:absolute;
+        width:100%;
+    }
+    .note-area .note-p .in {
+        width:220px;
+        margin:0 auto;
+        background-color:#000000;
+        border-radius:5px;
+        padding:5px;
+    }
+    .note-area .go-on {
+        position:absolute;
+        width:80px;
+        text-align:center;
+    }
+    .note-area .go-on img {
+        width:18px;
+    }
+    .note-area .go-on.z {
+        left:33px;
+        top:440px;
+    }
+    .note-area .go-on.d {
+        right:33px;
+        top:440px;
+    }
+    .note-area .go-on.profit{
+        left:50%;
+        margin-left:-40px;
+        top:325px;
+    }
+    .note-area .go-on.p{
+        left:50%;
+        margin-left:-40px;
+        top:440px;
+    }
+    .note-area .profit-click {
+        width:80px;
+        height:45px;
+        border-radius:5px;
+        left:50%;
+        top:275px;
+        margin-left:-40px;
+        position:absolute;
+    }
+    .note-area .note-profit {
+        top:160px;
+        position:absolute;
+        width:100%;
+    }
+    .note-area .note-profit .in {
+        width:220px;
+        margin:0 auto;
+        background-color:#000000;
+        border-radius:5px;
+        padding:5px;
+    }
 </style>
 <!--#S header-->
 <!--
@@ -203,53 +355,53 @@
 </div>
 
 <div class="ui-tip" ng-show="showError">\{{errorMsg}}</div>
-<div ng-show="data.status != 0" style="background-color:#000000;width:100%;opacity:0.5;position:absolute;top:0;left:0" ng-class="{'black-height-full':(browserHeight > 557), 'black-height-max':(browserHeight <= 557)}">
-	<div ng-show="data.status == 1 || data.status == 2" style="height:210px;margin-left:15px;margin-right:15px;margin-top:37px;overflow:hide">
-		<div style="height:100%;width:100%;background-color:#ffffff;border-radius:5px"></div>
+<div ng-show="data.status != 0" class="black-cover" ng-class="{'black-height-full':(browserHeight > 557), 'black-height-max':(browserHeight <= 557)}">
+	<div ng-show="data.status == 1 || data.status == 2" class="chart-area">
+		<div class="in"></div>
 	</div>
-	<div ng-show="data.status == 1" style="width:80px;height:80px;border-radius:100px;left:33px;top:356px;background-color:#ffffff;position:absolute"></div>
-	<div ng-show="data.status == 2" style="width:80px;height:80px;border-radius:100px;right:33px;top:356px;background-color:#ffffff;position:absolute"></div>
-	<div ng-show="data.status == 3" style="width:80px;height:45px;border-radius:5px;left:50%;top:275px;margin-left:-40px;background-color:#ffffff;position:absolute"></div>
-	<div ng-show="data.status == 4" style="width:80px;height:80px;border-radius:100px;left:50%;top:356px;margin-left:-40px;background-color:#ffffff;position:absolute"></div>
+	<div ng-show="data.status == 1" class="btn z"></div>
+	<div ng-show="data.status == 2" class="btn d"></div>
+	<div ng-show="data.status == 3" class="profit"></div>
+	<div ng-show="data.status == 4" class="btn p"></div>
 </div>
-<div ng-show="data.status != 0" style="width:100%;position:absolute;top:0;left:0;opacity:0.8" ng-class="{'black-height-full':(browserHeight > 557), 'black-height-max':(browserHeight <= 557)}">
-	<div ng-show="data.status == 1" ng-click="data.status = 2" style="width:80px;height:80px;border-radius:100px;left:33px;top:356px;position:absolute"></div>
-	<div ng-show="data.status == 1" style="left:130px;top:360px;width:155px;background-color:#000000;color:#ffffff;position:absolute;font-size:16px;border-radius:5px;padding:5px">
+<div ng-show="data.status != 0" class="note-area" ng-class="{'black-height-full':(browserHeight > 557), 'black-height-max':(browserHeight <= 557)}">
+	<div ng-show="data.status == 1" ng-click="data.status = 2" class="btn-click z"></div>
+	<div ng-show="data.status == 1" class="note-z">
 		<p>预测曲线涨跌，觉得曲线会上涨，就点击“涨”按钮<p>
 		<p>可点击多次购买多手</p>
 	</div>
-	<div ng-show="data.status == 1" style="left:33px;top:440px;position:absolute;color:#ffffff;font-size:16px;width:80px;text-align:center">
-		<img src="/futures/images/mark-jt.png" style="width:18px" />
+	<div ng-show="data.status == 1" class="go-on z">
+		<img src="/futures/images/mark-jt.png">
 		<p>点我继续</p>
 	</div>
-	<div ng-show="data.status == 2" ng-click="data.status = 3" style="width:80px;height:80px;border-radius:100px;right:33px;top:356px;position:absolute"></div>
-	<div ng-show="data.status == 2" style="right:130px;top:380px;width:155px;background-color:#000000;color:#ffffff;position:absolute;font-size:16px;border-radius:5px;padding:5px">
+	<div ng-show="data.status == 2" ng-click="data.status = 3" class="btn-click d"></div>
+	<div ng-show="data.status == 2" class="note-d">
 		<p>若觉得曲线会下跌，就点“跌”按钮<p>
 	</div>
-	<div ng-show="data.status == 2" style="right:33px;top:440px;position:absolute;color:#ffffff;font-size:16px;width:80px;text-align:center">
-		<img src="/futures/images/mark-jt.png" style="width:18px" />
+	<div ng-show="data.status == 2" class="go-on d">
+		<img src="/futures/images/mark-jt.png">
 		<p>点我继续</p>
 	</div>
-	<div ng-show="data.status == 3" ng-click="data.status = 4" style="width:80px;height:45px;border-radius:5px;left:50%;top:275px;margin-left:-40px;position:absolute"></div>
-	<div ng-show="data.status == 3" style="top:160px;color:#ffffff;position:absolute;font-size:16px;width:100%">
-		<div style="width:220px;margin:0 auto;background-color:#000000;border-radius:5px;padding:5px">
+	<div ng-show="data.status == 3" ng-click="data.status = 4" class="profit-click"></div>
+	<div ng-show="data.status == 3" class="note-profit">
+		<div class="in">
 			<p>若您涨跌预测准确，“持仓盈亏”会为正值，代表您有盈利<p>
 			<p>如预测错误，则会亏损</p>
 		</div>
 	</div>
-	<div ng-show="data.status == 3" style="left:50%;margin-left:-40px;top:325px;position:absolute;color:#ffffff;font-size:16px;width:80px;text-align:center">
-		<img src="/futures/images/mark-jt.png" style="width:18px" />
+	<div ng-show="data.status == 3" class="go-on profit">
+		<img src="/futures/images/mark-jt.png">
 		<p>点我继续</p>
 	</div>
-	<div ng-show="data.status == 4" ng-click="data.status = 0" style="width:80px;height:80px;border-radius:100px;left:50%;top:356px;margin-left:-40px;position:absolute"></div>
-	<div ng-show="data.status == 4" style="top:240px;color:#ffffff;position:absolute;font-size:16px;width:100%">
-		<div style="width:220px;margin:0 auto;background-color:#000000;border-radius:5px;padding:5px">
+	<div ng-show="data.status == 4" ng-click="data.status = 0" class="btn-click p"></div>
+	<div ng-show="data.status == 4" class="note-p">
+		<div class="in">
 			<p>盈利时您可以点击“平”按钮将盈利转移至本金账户<p>
 			<p>亏损时您也可以择时平仓及时止损</p>
 		</div>
 	</div>
-	<div ng-show="data.status == 4" style="left:50%;margin-left:-40px;top:440px;position:absolute;color:#ffffff;font-size:16px;width:80px;text-align:center">
-		<img src="/futures/images/mark-jt.png" style="width:18px" />
+	<div ng-show="data.status == 4" class="go-on p">
+		<img src="/futures/images/mark-jt.png">
 		<p>点我继续</p>
 	</div>
 </div>
