@@ -156,7 +156,7 @@ Hive.prototype.createOrder = function (param, callback){
 	if (this.user2cb[param.user_id]) {
         logger.debug('previous order in process, abort current one.');
         setTimeout(function(){
-            delete user2cb[param.user_id];
+            delete this.user2cb[param.user_id];
         }, 3*1000);
         return callback('订单处理中，请稍后再试');
 	}
