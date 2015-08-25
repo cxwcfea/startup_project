@@ -60,13 +60,18 @@ function fetchHistoryData(cb) {
                     return;
                 }
                 var ret = [];
+                var map = {};
                 for (var i in data) {
                     var line = data[i];
                     line = JSON.parse(line.replace(/'/g, ''))[0];
-                    if (index === 0) {
-                        ret.unshift([parseInt(line.ts/1000), parseInt(line.LastPrice)]);
-                    } else {
-                        ret.unshift([parseInt(line.ts/1000), parseFloat(line.LastPrice)]);
+                    var key = parseInt(line.ts/1000);
+                    if (!map[key]) {
+                        map[key] = true;
+                        if (index === 0) {
+                            ret.unshift([key, parseInt(line.LastPrice)]);
+                        } else {
+                            ret.unshift([key, parseFloat(line.LastPrice)]);
+                        }
                     }
                 }
                 products[index].historyData = ret;
