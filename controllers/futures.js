@@ -274,19 +274,28 @@ function getNearestOrders(req, res) {
 
     var now = moment();
     var orderStartTime = now.subtract(2.5, 'hours');
-    req.body.date_begin = orderStartTime.toDate().valueOf();
-    req.body.date_end = now.toDate().valueOf();
-    req.body.page = {
-        from: 0,
-        perpage: 100
-    };
+    var date_begin = orderStartTime.toDate().valueOf();
+    var date_end = Date.now();
+
+    var userID;
     if (req.query.type == 1 && req.user.wechat.real_trader) {
-        req.body.user_id = req.user.wechat.real_trader;
-        ctpTrader.getHistoryOrders(req, res);
+        userID = req.user.wechat.real_trader;
     } else {
-        req.body.user_id = req.user.wechat.trader;
-        mockTrader.getHistoryOrders(req, res);
+        userID = req.user.wechat.trader;
     }
+
+    var query = Order.find({$and: [
+        {userId: userID},
+        {timestamp: {$gte: date_begin + 8*3600*1000}},
+        {timestamp: {$lt: date_end + 8*3600*1000}}
+    ]});
+    query.exec(function(err, orders) {
+        if (err) {
+            console.log(err);
+            return res.status(500).send({error_msg: err.errmsg});
+        }
+        return orders;
+    });
 }
 
 function getUserProfit(req, res) {
