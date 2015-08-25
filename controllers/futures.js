@@ -490,7 +490,7 @@ function addMoney(req, res) {
             var close = cash - (depositAmount - CLOSE_LINE);
             var warning = cash - (depositAmount - WARN_LINE);
             var debt = cash - depositAmount;
-            mockTrader.User.update({_id:user.wechat.real_trader}, {$set:{close:close * 100, warning:warning * 100, cash:cash * 100, deposit:depositAmount * 100, debt:debt * 100, lastCash:0, status:1}}, function(err, numberAffected, raw) {
+            mockTrader.User.update({_id:user.wechat.real_trader}, {$set:{close:close * 100, warning:warning * 100, cash:cash * 100, deposit:depositAmount * 100, debt:debt * 100, lastCash:cash * 100, status:1}}, function(err, numberAffected, raw) {
                 if (err) {
                     return res.status(500).send({error_msg:err.toString()});
                 }
@@ -561,6 +561,7 @@ function addDeposit(req, res) {
                         return res.status(500).send({error_msg:'无法更新用户'});
                     }
                     logger.info('addDeposit before change', trader);
+                    trader.deposit += depositAmount;
                     trader.cash += depositAmount;
                     trader.lastCash += depositAmount;
                     trader.save(function(err) {
@@ -743,7 +744,20 @@ function finishTrade(req, res) {
                     callback(err, trader, user);
                 });
             } else {
-                callback(null, trader, user);
+                var orderData = {
+                    userID: user._id,
+                    userMobile: user.mobile,
+                    dealType: 5,
+                    amount: 0,
+                    status: 1,
+                    description: '股指拍拍机保证金返还 用户穿仓',
+                    userBalance: user.finance.balance,
+                    approvedBy: req.user.mobile,
+                    approvedAt: Date.now()
+                };
+                Order.create(orderData, function(err, order) {
+                    callback(err, trader, user);
+                });
             }
         },
         function(trader, user, callback) {

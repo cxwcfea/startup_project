@@ -328,7 +328,7 @@ function windControl(userId, forceClose, userContract, cb) {
                           asyncObj.value -= costs.open;
                           //console.log("Completed: " + asyncObj);
                           var income = asyncObj.value;
-                          console.log("User info: " + userId + ", " + user.cash + ", " + income + ", " + user.close);
+                          //console.log("User info: " + userId + ", " + user.cash + ", " + income + ", " + user.close);
                           if (!forceClose && user.cash + income > user.close) {
                               // No risk
                               console.log("No risk");
