@@ -74,13 +74,13 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     {
         $http.get('/futures/get_nearest_orders')
             .success(function(data, status) {
-                //for (var i = 0; i < data.length; ++i) {
+                for (var i = 0; i < data.length; ++i) {
                 //    (function(i) {
                 //        $timeout(function() {
                             $scope.currentOrder = data[i];
                 //        });
                 //    })(i);
-                //}
+                }
             })
             .error(function(data, status) {
                 console.log(data.error_msg);
