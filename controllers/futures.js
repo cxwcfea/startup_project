@@ -274,7 +274,7 @@ function getNearestOrders(req, res) {
 
     var now = moment();
     var orderStartTime = now.subtract(2.5, 'hours');
-    var date_begin = orderStartTime.toDate().valueOf();
+    var date_begin = orderStartTime.toDate();
     var date_end = Date.now();
 
     console.log('getNearestOrders ', orderStartTime.toDate(), date_end);
