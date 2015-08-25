@@ -96,7 +96,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             .error(function(data, status) {
                 console.log(data.error_msg);
             });
-    }, 1500);
+    }, 1000);
 
 
     $scope.tradeData = {
