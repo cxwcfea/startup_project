@@ -77,7 +77,23 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                 for (var i = 0; i < data.length; ++i) {
                 //    (function(i) {
                 //        $timeout(function() {
-                            $scope.currentOrder = data[i];
+                    var order = data[i];
+                    var value = order.price/100;
+                    var color = '#FF0000';
+                    if (order.quantity < 0) {
+                        color = '#00FF00';
+                    }
+                    if ($scope.data.flags_data) {
+                        $scope.data.flags_data.push({
+                            x: Date.parse(order.timestamp),
+                            y: value,
+                            color:'#000000',
+                            fillColor: color,
+                            text: '',
+                            title: ' '
+                        });
+                    }
+                            //$scope.currentOrder = data[i];
                 //        });
                 //    })(i);
                 }
