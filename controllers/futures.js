@@ -277,6 +277,8 @@ function getNearestOrders(req, res) {
     var date_begin = orderStartTime.toDate().valueOf();
     var date_end = Date.now();
 
+    console.log('getNearestOrders ', orderStartTime.toDate(), date_end);
+
     var userID;
     if (req.query.type == 1 && req.user.wechat.real_trader) {
         userID = req.user.wechat.real_trader;
