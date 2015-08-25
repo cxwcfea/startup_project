@@ -286,7 +286,7 @@ function getNearestOrders(req, res) {
         userID = req.user.wechat.trader;
     }
 
-    var query = Order.find({$and: [
+    var query = mockTrader.Order.find({$and: [
         {userId: userID},
         {timestamp: {$gte: date_begin}}
     ]});
