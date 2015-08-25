@@ -154,7 +154,7 @@ function placeOrder(req, res) {
     if (!req.user || !req.user.wechat || !req.user.wechat.wechat_uuid) {
         return res.status(403).send({error_msg:'user need log in'});
     }
-    //logger.info('placeOrder', req.user, req.body);
+    logger.info('placeOrder', req.user, req.body);
     var quantity = req.body.quantity;
     var forceClose = req.body.forceClose;
 
