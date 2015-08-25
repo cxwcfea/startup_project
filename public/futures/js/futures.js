@@ -271,7 +271,7 @@ angular.module("futuresApp")
                         title: ' '
                     });
                 } else {
-                    scope.data.flags_data = [];
+                    //scope.data.flags_data = [];
                 }
             });
         }
