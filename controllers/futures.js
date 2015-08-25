@@ -206,6 +206,7 @@ function placeOrder(req, res) {
                 res.send(order);
             });
         } else {
+            return res.status(500).send({error_msg:'test'});
             obj.user_id = req.user.wechat.trader;
             mockTrader.createOrder(obj, function(err, order) {
                 if (err) {
