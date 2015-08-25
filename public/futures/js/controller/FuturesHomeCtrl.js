@@ -71,6 +71,16 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         $scope.closeText = REAL_TEXT;
     }
 
+    {
+        $http.get('/futures/get_nearest_orders')
+            .success(function(data, status) {
+                console.log(data);
+            })
+            .error(function(data, status) {
+                console.log(data.error_msg);
+            });
+    }
+
     $scope.tradeData = {
         up: 0,
         down: 0,

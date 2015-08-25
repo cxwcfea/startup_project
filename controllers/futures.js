@@ -267,6 +267,28 @@ function getOrders(req, res) {
     }
 }
 
+function getNearestOrders(req, res) {
+    if (!req.user || !req.user.wechat || !req.user.wechat.wechat_uuid) {
+        return res.status(403).send({error_msg:'user need log in'});
+    }
+
+    var now = moment();
+    var orderStartTime = now.subtract(2.5, 'hours');
+    req.body.date_begin = orderStartTime.toDate().valueOf();
+    req.body.date_end = now.toDate().valueOf();
+    req.body.page = {
+        from: 0,
+        perpage: 100
+    };
+    if (req.query.type == 1 && req.user.wechat.real_trader) {
+        req.body.user_id = req.user.wechat.real_trader;
+        ctpTrader.getHistoryOrders(req, res);
+    } else {
+        req.body.user_id = req.user.wechat.trader;
+        mockTrader.getHistoryOrders(req, res);
+    }
+}
+
 function getUserProfit(req, res) {
     if (!req.user || !req.user.wechat || !req.user.wechat.wechat_uuid) {
         return res.status(403).send({error_msg:'user need log in'});
@@ -716,7 +738,7 @@ function finishTrade(req, res) {
                     callback(err, trader, user);
                 });
             } else {
-                callback(err, trader, user);
+                callback(null, trader, user);
             }
         },
         function(trader, user, callback) {
@@ -868,6 +890,8 @@ module.exports = {
         app.get('/api/futures/get_positions', passportConf.isWechatAuthenticated, getPositions);
 
         app.get('/api/futures/get_orders', passportConf.isWechatAuthenticated, util.page(getOrderCount, 15), getOrders);
+
+        app.get('/futures/get_nearest_orders', passportConf.isWechatAuthenticated, getNearestOrders);
 
         app.get('/api/futures/get_user_profit', passportConf.isWechatAuthenticated, getUserProfit);
 
