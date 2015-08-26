@@ -99,7 +99,8 @@ function startServer() {
         var server = http.createServer(app);
         //io = io.listen(server);
         var io = require('socket.io')(server);
-        require('./config/socket.io')(io);
+        console.log('socket on ' + io.on);
+        //require('./config/socket.io')(io);
 
         return server;
     }).listen(app.get('port'), function() {
