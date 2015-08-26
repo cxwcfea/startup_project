@@ -65,10 +65,11 @@ function fetchHistoryData(cb) {
                     var line = data[i];
                     line = JSON.parse(line.replace(/'/g, ''))[0];
                     var key = parseInt(line.ts/1000);
+                    var value = parseFloat(line.LastPrice).toPrecision(5);
                     if (!map[key]) {
                         map[key] = true;
                         if (index === 0) {
-                            ret.unshift([key, parseFloat(line.LastPrice)]);
+                            ret.unshift([key, value]);
                         } else {
                             ret.unshift([key, parseFloat(line.LastPrice)]);
                         }
@@ -107,7 +108,8 @@ function fetchNewData(cb) {
                     var historyData = products[index].historyData;
                     data = JSON.parse(data);
                     if (index === 0) {
-                        ret = [parseInt(data.ts/1000), parseFloat(data.LastPrice)];
+                        var value = parseFloat(data.LastPrice).toPrecision(5);
+                        ret = [parseInt(data.ts/1000), value];
                     } else {
                         ret = [parseInt(data.ts/1000), parseFloat(data.LastPrice)];
                     }
