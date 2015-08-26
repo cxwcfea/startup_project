@@ -94,13 +94,13 @@ function startServer() {
     }
 
     sticky(function() {
-        //var io = require('socket.io');
+        var io = require('socket.io');
 
         var server = http.createServer(app);
-        //io = io.listen(server);
-        var io = require('socket.io')(server);
-        console.log('socket on ' + io.on);
+        io = io.listen(server);
+        //var io = require('socket.io')(server);
         //require('./config/socket.io')(io);
+        console.log('socket on ' + io.on);
 
         return server;
     }).listen(app.get('port'), function() {
