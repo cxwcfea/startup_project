@@ -85,6 +85,7 @@ function startServer() {
     var server = http.createServer(app);
 
     if (cluster.worker.id === 1) {
+        global.text = "from worker 1";
         logger.info('Master start');
         var io = require('socket.io')(server);
         require('./config/socket.io')(io);
@@ -92,6 +93,8 @@ function startServer() {
         task.scheduleFuturesForceCloseJob();
         task.schedulePPJUserDailyJob();
         task.scheduleTriggeredJob();
+    } else {
+        logger.debug(global.text);
     }
 
     ctpTrader.initHive(cluster.worker.id);
