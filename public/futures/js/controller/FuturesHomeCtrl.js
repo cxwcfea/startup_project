@@ -76,6 +76,9 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             .success(function(data, status) {
                 for (var i = 0; i < data.length; ++i) {
                     var order = data[i];
+                    if (order.lockedCash < 0) {
+                        continue;
+                    }
                     var value = order.price/100;
                     var color = '#FF0000';
                     if (order.quantity < 0) {

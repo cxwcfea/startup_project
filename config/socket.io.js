@@ -115,6 +115,7 @@ function fetchNewData(cb) {
                         historyData.push(ret);
                     }
                 }
+                console.log('newData ', ret);
                 cb(err, ret, index);
             });
         })();
