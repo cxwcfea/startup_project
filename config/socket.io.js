@@ -68,7 +68,7 @@ function fetchHistoryData(cb) {
                     if (!map[key]) {
                         map[key] = true;
                         if (index === 0) {
-                            ret.unshift([key, parseInt(line.LastPrice)]);
+                            ret.unshift([key, parseFloat(line.LastPrice).toFixed(1)]);
                         } else {
                             ret.unshift([key, parseFloat(line.LastPrice)]);
                         }
@@ -107,7 +107,7 @@ function fetchNewData(cb) {
                     var historyData = products[index].historyData;
                     data = JSON.parse(data);
                     if (index === 0) {
-                        ret = [parseInt(data.ts/1000), parseInt(data.LastPrice)];
+                        ret = [parseInt(data.ts/1000), parseFloat(data.LastPrice).toFixed(1)];
                     } else {
                         ret = [parseInt(data.ts/1000), parseFloat(data.LastPrice)];
                     }
