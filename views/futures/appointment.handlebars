@@ -54,13 +54,13 @@
 		text-align:center;
 		font-size:15px;
 	}
-    .note .intro-box {
+    .apply-close-box .intro-box {
         margin: 50px 10px 50px 10px;
     }
-    .note .intro-box p {
+    .apply-close-box .intro-box p {
         font-size:15px;
     }
-    .note .intro-box ol li {
+    .apply-close-box .intro-box ol li {
         font-size:15px;
     }
 </style>
@@ -80,6 +80,9 @@
 	<button type="button" class="button-style" ng-click="appoint()">立即申请</button>
 </div>
 <div class="note">
+	<p>我们将尽快联系您</p>
+</div>
+<div class="apply-close-box">
     <div class="intro-box">
         <p>实盘申请条件：</p>
         <ol>
@@ -89,6 +92,5 @@
             <li>4.自愿承担操盘的盈亏风险；</li>
         </ol>
     </div>
-	<p>我们将尽快联系您</p>
 </div>
 <div class="ui-tip" ng-show="showError">\{{errorMsg}}</div>
