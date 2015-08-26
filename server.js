@@ -83,18 +83,20 @@ app.use(function(err, req, res, next){
 
 function startServer() {
     var server = http.createServer(app);
+
+    if (cluster.isMaster) {
+        logger.info('Master start');
+        var io = require('socket.io')(server);
+        require('./config/socket.io')(io);
+        ctpTrader.initHive(1);
+        task.scheduleFuturesRiskControlJob();
+        task.scheduleFuturesForceCloseJob();
+        task.schedulePPJUserDailyJob();
+        task.scheduleTriggeredJob();
+    }
+
     server.listen(app.get('port'), function() {
         logger.info('Express started on ' + app.get('port') + '; press Ctrl-C to terminate.');
-        if (cluster.isMaster) {
-            logger.info('Master start');
-            var io = require('socket.io')(server);
-            require('./config/socket.io')(io);
-            ctpTrader.initHive(1);
-            task.scheduleFuturesRiskControlJob();
-            task.scheduleFuturesForceCloseJob();
-            task.schedulePPJUserDailyJob();
-            task.scheduleTriggeredJob();
-        }
     });
 }
 
