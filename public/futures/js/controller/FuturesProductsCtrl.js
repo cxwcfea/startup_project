@@ -32,6 +32,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
     }
 
     $scope.products = [
+        /*
         {
             value: 0,
             name: 'IF1509',
@@ -41,6 +42,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             alias: '股指',
             time: '工作日09:15-11:30  13:00-15:15'
         },
+        */
         {
             value: 1,
             name: 'EURUSD',

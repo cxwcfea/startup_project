@@ -188,6 +188,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
 
     $scope.showShareHint = false;
     $scope.openIntroPopup = function () {
+        return;
         var modalInstance = $modal.open({
             animation: true,
             backdrop: 'static',
