@@ -71,6 +71,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         $scope.closeText = REAL_TEXT;
     }
 
+    $scope.data.flags_data = [];
     $timeout(function() {
         $http.get('/futures/get_nearest_orders?type=' + ($scope.data.real ? 1 : 0))
             .success(function(data, status) {
