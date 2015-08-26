@@ -6,7 +6,7 @@ var express = require('express'),
     logger = log4js.getLogger(),
     task = require('./lib/task'),
     ctpTrader = require('./controllers/ctpTrader'),
-    cluster = require('cluster'),
+    //cluster = require('cluster'),
     config = require('./config/config')[env];
 
 /*
