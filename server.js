@@ -92,7 +92,7 @@ function startServer(master) {
         task.scheduleFuturesRiskControlJob();
         task.scheduleFuturesForceCloseJob();
         task.schedulePPJUserDailyJob();
-        task.scheduleTriggeredJob();
+        //task.scheduleTriggeredJob();
     });
 }
 
