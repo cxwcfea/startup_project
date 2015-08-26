@@ -40,7 +40,5 @@ if(cluster.isMaster){
 
 } else {
     // start our app on worker; see server.js
-    if (cluster.worker.id === 2) {
-        require('./server.js')(true);
-    }
+    require('./server.js')();
 }
