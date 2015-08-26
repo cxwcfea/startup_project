@@ -252,7 +252,10 @@ angular.module("futuresApp")
                         id: 'stock_data_flags',
                         showInLegend: false
                     }
-                ]
+                ],
+                tooltip: {
+                    valueDecimals: 2
+                }
             });
 
             scope.$watch('currentOrder', function(newValue, oldValue) {
