@@ -84,6 +84,7 @@ app.use(function(err, req, res, next){
 function startServer() {
     var server = http.createServer(app);
 
+    /*
     if (cluster.worker.id === 1) {
         logger.info('Master start');
         var io = require('socket.io')(server);
@@ -95,6 +96,7 @@ function startServer() {
     }
 
     ctpTrader.initHive(cluster.worker.id);
+     */
 
     server.listen(app.get('port'), function() {
         logger.info('Express started on ' + app.get('port') + '; press Ctrl-C to terminate.');
