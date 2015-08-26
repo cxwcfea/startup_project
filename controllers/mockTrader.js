@@ -331,7 +331,7 @@ function windControl(userId, forceClose, userContract, cb) {
                           //console.log("User info: " + userId + ", " + user.cash + ", " + income + ", " + user.close);
                           if (!forceClose && user.cash + income > user.close) {
                               // No risk
-                              console.log("No risk");
+                              //console.log("No risk");
                               cb(null);
                               return lock.unlock();
                           } else {
@@ -350,7 +350,7 @@ function windControl(userId, forceClose, userContract, cb) {
                                     closeAll(userId, portfolio, income, contractInfo, contractData, 0, cb, lock);
                                   }
                               } else {
-                                  console.log("Closed");
+                                  //console.log("Closed");
                                   cb(null);
                                   return lock.unlock();
                               }

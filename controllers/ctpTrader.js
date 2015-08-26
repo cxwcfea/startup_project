@@ -356,7 +356,7 @@ function windControl(userId, forceClose, userContract, cb) {
                                       });
                                   });
                               } else {
-                                  console.log("Closed");
+                                  //console.log("Closed");
                                   cb(null);
                                   return lock.unlock();
                               }
