@@ -87,7 +87,7 @@ function startServer() {
     var io = require('socket.io')(server);
     require('./config/socket.io')(io);
 
-    ctpTrader.initHive(cluster.worker.id);
+    ctpTrader.initHive(1);
     task.scheduleFuturesRiskControlJob();
     task.scheduleFuturesForceCloseJob();
     task.schedulePPJUserDailyJob();
