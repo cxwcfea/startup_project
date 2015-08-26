@@ -7,6 +7,7 @@ var express = require('express'),
     task = require('./lib/task'),
     ctpTrader = require('./controllers/ctpTrader'),
     cluster = require('cluster'),
+    io = require('socket.io')(),
     config = require('./config/config')[env];
 
 /*
@@ -92,7 +93,7 @@ function startServer() {
         task.scheduleTriggeredJob();
     }
 
-    var io = require('socket.io')(server);
+    io = io.listen(server, {});//require('socket.io')(server);
     require('./config/socket.io')(io);
     ctpTrader.initHive(cluster.worker.id);
 
