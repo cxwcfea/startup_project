@@ -97,7 +97,7 @@ function startServer() {
         var io = require('socket.io');
 
         var server = http.createServer(app);
-        io.listen(server);
+        io = io.listen(server);
         //var io = require('socket.io')(server);
         require('./config/socket.io')(io);
 
@@ -122,5 +122,3 @@ if(require.main === module){
     // application imported as a module via "require": export function to create server
     module.exports = startServer;
 }
-
-
