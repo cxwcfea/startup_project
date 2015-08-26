@@ -85,18 +85,15 @@ function startServer() {
     var server = http.createServer(app);
 
     if (cluster.worker.id === 1) {
-        global.text = "from worker 1";
-        logger.info('Master start');
-        var io = require('socket.io')(server);
-        require('./config/socket.io')(io);
+        logger.info('task init');
         task.scheduleFuturesRiskControlJob();
         task.scheduleFuturesForceCloseJob();
         task.schedulePPJUserDailyJob();
         task.scheduleTriggeredJob();
-    } else {
-        logger.debug(global.text);
     }
 
+    var io = require('socket.io')(server);
+    require('./config/socket.io')(io);
     ctpTrader.initHive(cluster.worker.id);
 
     server.listen(app.get('port'), function() {
