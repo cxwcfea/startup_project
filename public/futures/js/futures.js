@@ -135,7 +135,6 @@ angular.module("futuresApp")
             } else {
                 root.series.setData(newData, true, false);
             }
-            console.log(blankData);
             root.fake_series.setData(blankData, true, false);
             root.flags_series.setData(root.flags_data, true, false);
         }
@@ -180,10 +179,6 @@ angular.module("futuresApp")
                 });
                 Socket.on('new_data', function(newData) {
                     if (newData.productID == scope.data.productID) {
-
-                        var lastPoint = scope.data.historyData[scope.data.historyData.length-1];
-                        console.log(lastPoint, newData.data[0]);
-
                         scope.data.historyData.push(newData.data);
                         scope.data.lastPoint = newData.data[1];
                         var blankData = util.generateBlankData(scope.data.firstPoint, newData.data);
