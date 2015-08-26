@@ -87,7 +87,6 @@ angular.module('futuresApp').controller('InfoModalCtrl', ['$scope', '$modalInsta
 angular.module("futuresApp")
     .service("util", [function () {
         this.generateBlankData = function(timestamp, lastPoint) {
-            console.log(timestamp, lastPoint[0]);
             var endTime = timestamp + 2 * 3600 * 1000 + 15 * 60000;
             var ret = [];
             var startTime = lastPoint[0];
@@ -144,8 +143,8 @@ angular.module("futuresApp")
             var lastIndex = historyData.length - 1;
             var blankData = util.generateBlankData(firstPoint, historyData[lastIndex]);
             root.lastPoint = historyData[lastIndex][1];
-            updateData(root, historyData, blankData, false);
             root.historyData = historyData;
+            updateData(root, historyData, blankData, false);
         }
 
         return function (scope, element, attrs) {
