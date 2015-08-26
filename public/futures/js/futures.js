@@ -136,7 +136,7 @@ angular.module("futuresApp")
                 root.series.setData(newData, true, false);
             }
             root.fake_series.setData(blankData, true, false);
-            root.flags_series.setData(root.flags_data, true, false);
+            //root.flags_series.setData(root.flags_data, true, false);
         }
 
         function fillWholeData(historyData, root, firstPoint) {
