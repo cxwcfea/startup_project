@@ -7,7 +7,7 @@ var express = require('express'),
     task = require('./lib/task'),
     ctpTrader = require('./controllers/ctpTrader'),
     cluster = require('cluster'),
-    io = require('socket.io')(),
+    sticky = require('sticky-session'),
     config = require('./config/config')[env];
 
 /*
@@ -83,7 +83,7 @@ app.use(function(err, req, res, next){
 });
 
 function startServer() {
-    var server = http.createServer(app);
+    //var server = http.createServer(app);
 
     if (cluster.worker.id === 1) {
         logger.info('task init');
@@ -93,13 +93,26 @@ function startServer() {
         task.scheduleTriggeredJob();
     }
 
-    io = io.listen(server, {});//require('socket.io')(server);
-    require('./config/socket.io')(io);
+    sticky(function() {
+        var io = require('socket.io');
+
+        var server = http.createServer(app);
+        io.listen(server);
+        //var io = require('socket.io')(server);
+        require('./config/socket.io')(io);
+
+        return server;
+    }).listen(app.get('port'), function() {
+        console.log('Express started on ' + app.get('port') + '; press Ctrl-C to terminate.');
+    });
+
     ctpTrader.initHive(cluster.worker.id);
 
+    /*
     server.listen(app.get('port'), function() {
         logger.info('Express started on ' + app.get('port') + '; press Ctrl-C to terminate.');
     });
+    */
 }
 
 if(require.main === module){
