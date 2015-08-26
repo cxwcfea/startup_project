@@ -125,7 +125,6 @@ function fetchNewData(cb) {
 
 // Define the Socket.io configuration method
 module.exports = function(io) {
-    console.log('socket init');
     fetchHistoryData();
     io.on('connection', function(socket) {
         console.log(socket.id + ' connected');

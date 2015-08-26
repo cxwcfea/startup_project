@@ -200,13 +200,10 @@ angular.module("futuresApp")
                     events : {
                         load : function () {
                             // set up the updating of the chart each second
-                            console.log('load');
                             scope.data.series = this.series[0];
                             scope.data.fake_series = this.series[1];
                             scope.data.flags_series = this.series[2];
                             if (scope.data.historyData.length) {
-                                //console.log(scope.data.historyData);
-                                //console.log(scope.data.firstPoint);
                                 fillWholeData(scope.data.historyData, scope.data, scope.data.firstPoint);
                             }
                         }

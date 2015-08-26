@@ -72,34 +72,35 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     }
 
     $scope.data.flags_data = [];
-    $http.get('/futures/get_nearest_orders?type=' + ($scope.data.real ? 1 : 0))
-        .success(function(data, status) {
-            for (var i = 0; i < data.length; ++i) {
-                var order = data[i];
-                if (order.lockedCash < 0) {
-                    continue;
+    if (!$scope.data.flags_data.length) {
+        $http.get('/futures/get_nearest_orders?type=' + ($scope.data.real ? 1 : 0))
+            .success(function(data, status) {
+                for (var i = 0; i < data.length; ++i) {
+                    var order = data[i];
+                    if (order.lockedCash < 0) {
+                        continue;
+                    }
+                    var value = parseInt(order.price/100);
+                    var color = '#FF0000';
+                    if (order.quantity < 0) {
+                        color = '#00FF00';
+                    }
+                    if ($scope.data.flags_data) {
+                        $scope.data.flags_data.push({
+                            x: Date.parse(order.timestamp),
+                            y: value,
+                            color:'#000000',
+                            fillColor: color,
+                            text: '',
+                            title: ' '
+                        });
+                    }
                 }
-                var value = parseInt(order.price/100);
-                var color = '#FF0000';
-                if (order.quantity < 0) {
-                    color = '#00FF00';
-                }
-                if ($scope.data.flags_data) {
-                    $scope.data.flags_data.push({
-                        x: Date.parse(order.timestamp),
-                        y: value,
-                        color:'#000000',
-                        fillColor: color,
-                        text: '',
-                        title: ' '
-                    });
-                }
-            }
-        })
-        .error(function(data, status) {
-            console.log(data.error_msg);
-        });
-
+            })
+            .error(function(data, status) {
+                console.log(data.error_msg);
+            });
+    }
 
     $scope.tradeData = {
         up: 0,
