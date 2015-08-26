@@ -156,7 +156,7 @@ angular.module("futuresApp")
             if (!scope.data.historyData) {
                 scope.data.historyData = [];
             }
-            var firstPoint;
+            scope.data.firstPoint;
             if (!scope.data.socket) {
                 //var socket = scope.data.socket = io.connect();
                 scope.data.socket = true;
@@ -168,8 +168,8 @@ angular.module("futuresApp")
                     //series.addPoint(newData, true, true);
                     if (historyData.productID == scope.data.productID) {
                         if (!historyData.data || !historyData.data[0]) return;
-                        firstPoint = historyData.data[0][0];
-                        fillWholeData(historyData.data, scope.data, firstPoint);
+                        scope.data.firstPoint = historyData.data[0][0];
+                        fillWholeData(historyData.data, scope.data, scope.data.firstPoint);
                     }
                     /*
                     scope.data.series.setData(newData, true, true);
@@ -181,7 +181,7 @@ angular.module("futuresApp")
                     if (newData.productID == scope.data.productID) {
                         scope.data.historyData.push(newData.data);
                         scope.data.lastPoint = newData.data[1];
-                        var blankData = util.generateBlankData(firstPoint, newData.data);
+                        var blankData = util.generateBlankData(scope.data.firstPoint, newData.data);
                         updateData(scope.data, newData.data, blankData, true);
                     }
                 });
@@ -202,8 +202,8 @@ angular.module("futuresApp")
                             scope.data.flags_series = this.series[2];
                             if (scope.data.historyData.length) {
                                 console.log(scope.data.historyData);
-                                console.log(firstPoint);
-                                fillWholeData(scope.data.historyData, scope.data, firstPoint);
+                                console.log(scope.data.firstPoint);
+                                fillWholeData(scope.data.historyData, scope.data, scope.data.firstPoint);
                             }
                         }
                     }
