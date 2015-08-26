@@ -75,7 +75,6 @@ function fetchHistoryData(cb) {
                     }
                 }
                 products[index].historyData = ret;
-                console.log('historyData ', ret);
                 if (cb) {
                     cb(null, index);
                 }
