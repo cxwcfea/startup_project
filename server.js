@@ -84,7 +84,7 @@ app.use(function(err, req, res, next){
 function startServer() {
     var server = http.createServer(app);
 
-    if (cluster.isMaster) {
+    if (cluster.worker.id === 1) {
         logger.info('Master start');
         var io = require('socket.io')(server);
         require('./config/socket.io')(io);
