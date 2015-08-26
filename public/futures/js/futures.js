@@ -131,13 +131,13 @@ angular.module("futuresApp")
     .directive("futuresChart", ['util', 'Socket', function (util, Socket) {
         function updateData(root, newData, blankData, addFlag) {
             if (addFlag) {
-                root.series.addPoint(newData, true, true);
+                root.series.addPoint(newData, true, false);
             } else {
-                root.series.setData(newData, true, true);
+                root.series.setData(newData, true, false);
             }
             console.log(blankData);
-            root.fake_series.setData(blankData, true, true);
-            root.flags_series.setData(root.flags_data, true, true);
+            root.fake_series.setData(blankData, true, false);
+            root.flags_series.setData(root.flags_data, true, false);
         }
 
         function fillWholeData(historyData, root, firstPoint) {
