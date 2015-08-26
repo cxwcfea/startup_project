@@ -5,11 +5,9 @@
     .setting-box .info p {
         text-align: center;
     }
-    .setting-box .info .confirm {
+    .setting-box .confirm p {
         margin-top: 10px;
-    }
-    .setting-box .info .confirm p {
-        margin-top: 5px;
+        text-align: center;
     }
     .setting-box .info {
         margin-left: 10px;
@@ -67,13 +65,13 @@
                         </div>
                     </div>
                 </form>
-                <!--<div class="confirm">
-                    <button type="button" class="btn btn-primary col-xs-offset-1 col-xs-10" ng-click="changeSetting()">\{{titleText}}</button>
-                </div>-->
             </div>
         </div>
         <div class="button-area">
             <button type="button" class="button-style" ng-click="changeSetting()">\{{titleText}}</button>
+        </div>
+        <div class="confirm" ng-show="open">
+            <p>设置已开启，更改请先关闭</p>
         </div>
     </div>
     <div class="ui-tip" ng-show="showError">\{{errorMsg}}</div>
