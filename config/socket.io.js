@@ -75,6 +75,7 @@ function fetchHistoryData(cb) {
                     }
                 }
                 products[index].historyData = ret;
+                console.log('historyData ', ret);
                 if (cb) {
                     cb(null, index);
                 }
@@ -115,7 +116,6 @@ function fetchNewData(cb) {
                         historyData.push(ret);
                     }
                 }
-                console.log('newData ', ret);
                 cb(err, ret, index);
             });
         })();
