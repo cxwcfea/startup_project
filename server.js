@@ -94,11 +94,11 @@ function startServer() {
     }
 
     sticky(function() {
-        var io = require('socket.io');
+        //var io = require('socket.io');
 
         var server = http.createServer(app);
-        io = io.listen(server);
-        //var io = require('socket.io')(server);
+        //io = io.listen(server);
+        var io = require('socket.io')(server);
         require('./config/socket.io')(io);
 
         return server;
