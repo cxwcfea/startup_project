@@ -615,7 +615,6 @@ function generateOrderID(callback){
 }
 
 function createOrder(data, cb) {
-    logger.debug('process.pid', process.pid);
     if (!data.order.quantity || data.order.quantity % kHand != 0) {
         console.log("invalid quantity");
         cb({code:1, msg:"invalid quantity"});
