@@ -183,15 +183,17 @@ function placeOrder(req, res) {
             case 0: // IF
                 obj.order.contract = {exchange:'future', stock_code:'IFCURR'};
                 break;
-            case 1: // EURUSD
-                obj.order.contract = {exchange:'forex', stock_code:'EURUSD'};
+            case 1: // AG
+                obj.order.contract = {exchange:'commodity', stock_code:'AGCURR'};
                 break;
+            /*
             case 2: // XAUUSD
                 obj.order.contract = {exchange:'commodity', stock_code:'XAUUSD'};
                 break;
             case 3: // BABA
                 obj.order.contract = {exchange:'stock', stock_code:'BABA'};
                 break;
+                */
             default :
                 obj.order.contract = {exchange:'future', stock_code:'IFCURR'};
         }
@@ -302,15 +304,17 @@ function getUserProfit(req, res) {
         case '0': // IF
             req.body.contract = {exchange:'future', stock_code:'IFCURR'};
             break;
-        case '1': // EURUSD
-            req.body.contract = {exchange:'forex', stock_code:'EURUSD'};
+        case 1: // AG
+            obj.order.contract = {exchange:'commodity', stock_code:'AGCURR'};
             break;
+        /*
         case '2': // XAUUSD
             req.body.contract = {exchange:'commodity', stock_code:'XAUUSD'};
             break;
         case '3': // BABA
             req.body.contract = {exchange:'stock', stock_code:'BABA'};
             break;
+            */
         default :
             req.body.contract = {exchange:'future', stock_code:'IFCURR'};
     }

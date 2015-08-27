@@ -46,7 +46,7 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
         if ($scope.data.real) {
             type = 1;
         }
-        $http.post('/futures/change_trade_setting', {open:open, win:$scope.winPoint, loss:$scope.lossPoint, type:type})
+        $http.post('/futures/change_trade_setting', {open:open, win:$scope.winPoint, loss:$scope.lossPoint, type:type, product:$scope.data.productID})
             .success(function(data, status) {
                 displayError('设置成功');
                 $scope.open = open;

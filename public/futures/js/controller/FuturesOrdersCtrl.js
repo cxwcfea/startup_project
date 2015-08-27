@@ -25,7 +25,7 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
 
     function getOrderForPage(pageNum) {
         loading = true;
-        $http.get('/api/futures/get_orders?page=' + pageNum + '&type=' + ($scope.data.real ? 1 : 0))
+        $http.get('/api/futures/get_orders?page=' + pageNum + '&type=' + ($scope.data.real ? 1 : 0) + '&product=' + $scope.data.productID)
             .success(function(data, status) {
                 ++currentPage;
                 loading = false;

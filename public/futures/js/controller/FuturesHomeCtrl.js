@@ -128,7 +128,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
 
     var delta = 0;
     function getUserPositions(init) {
-        $http.get('/api/futures/get_positions?type=' + ($scope.data.real ? 1 : 0))
+        $http.get('/api/futures/get_positions?type=' + ($scope.data.real ? 1 : 0) + '&product=' + $scope.data.productID)
             .success(function (data, status) {
                 var position = data.position;
                 undatePosition(position);
