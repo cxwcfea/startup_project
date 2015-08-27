@@ -50,6 +50,7 @@ var PPJContractSchema = mongoose.Schema({
     fee_per_ten_thousand: { type: Number, default: 25 },  // basis: cent, 0.01
     deposit_percentage: { type: Number, default: 1200 },  // basis: 0.01
     point_value: { type: Number, default: 30000 },  // basis: cent, 0.01
+    stop_percentage: { type: Number, default: 10 },  // IF:10%   ag:7%
     cash: { type: String, default: "CNY" }  // CNY/USD
 });
 PPJContractSchema.index({exchange: 1, stock_code: -1}, {unique: true});
@@ -491,7 +492,6 @@ function getProfitImpl(req, res, user, contractId) {
                     }
                     var priceInfo = JSON.parse(priceInfoString);
                     priceInfo.LastPrice *= 100;
-                    //console.log(priceInfo.LastPrice);
 
                     contractInfo[portf.contractId] = priceInfo;
                     var costs = getCosts(contract, priceInfo.LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
