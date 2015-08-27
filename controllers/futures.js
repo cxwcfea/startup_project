@@ -164,46 +164,52 @@ function placeOrder(req, res) {
     logger.info('placeOrder', req.user, req.body);
     var quantity = req.body.quantity;
     var forceClose = req.body.forceClose;
+    var productID = req.body.product;
 
-    req.body.contract = {exchange:'future', stock_code:'IFCURR'};
+    var contract;
+    switch (parseInt(req.body.product)) {
+        case 0: // IF
+            contract = {exchange:'future', stock_code:'IFCURR'};
+            break;
+        case 1: // AG
+            contract = {exchange:'commodity', stock_code:'AGCURR'};
+            break;
+        /*
+         case 2: // XAUUSD
+         obj.order.contract = {exchange:'commodity', stock_code:'XAUUSD'};
+         break;
+         case 3: // BABA
+         obj.order.contract = {exchange:'stock', stock_code:'BABA'};
+         break;
+         */
+        default :
+            contract = {exchange:'future', stock_code:'IFCURR'};
+    }
+    req.body.contract = contract;
     if (forceClose) {
         req.body.force_close = 1;
         if (req.body.type == 1 && req.user.wechat.status === 4) {
-            req.body.user_id = req.user.wechat.real_trader;
+            if (productID == 0) {
+                req.body.user_id = req.user.wechat.real_trader;
+            } else if (productID == 1) {
+                req.body.user_id = req.user.wechat.real_silverTrader;
+            }
             ctpTrader.riskControl(req, res);
         } else {
-            req.body.user_id = req.user.wechat.trader;
+            if (productID == 0) {
+                req.body.user_id = req.user.wechat.trader;
+            } else if (productID == 1) {
+                req.body.user_id = req.user.wechat.silverTrader;
+            }
             mockTrader.riskControl(req, res);
         }
     } else {
         var obj = {
             order: {
                 quantity: quantity,
-                contract: {
-                    stock_code: 'IFCURR',
-                    exchange: 'future'
-                }
+                contract: contract
             }
         };
-
-        switch (parseInt(req.body.product)) {
-            case 0: // IF
-                obj.order.contract = {exchange:'future', stock_code:'IFCURR'};
-                break;
-            case 1: // AG
-                obj.order.contract = {exchange:'commodity', stock_code:'AGCURR'};
-                break;
-            /*
-            case 2: // XAUUSD
-                obj.order.contract = {exchange:'commodity', stock_code:'XAUUSD'};
-                break;
-            case 3: // BABA
-                obj.order.contract = {exchange:'stock', stock_code:'BABA'};
-                break;
-                */
-            default :
-                obj.order.contract = {exchange:'future', stock_code:'IFCURR'};
-        }
 
         if (req.body.type == 1 && req.user.wechat.status === 4) {
             obj.user_id = req.user.wechat.real_trader;
