@@ -63,11 +63,11 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             }
         }
     } else {
-        //$scope.tradeClose = true;
+        $scope.tradeClose = true;
     }
 
     if ($scope.data.real && $scope.user.wechat.status !== 4) {
-        //$scope.tradeClose = true;
+        $scope.tradeClose = true;
         $scope.closeText = REAL_TEXT;
     }
 
@@ -405,7 +405,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             return;
         }
         */
-        return;
         $location.path('/appointment');
     };
 
