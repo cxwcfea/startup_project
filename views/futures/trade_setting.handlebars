@@ -48,16 +48,19 @@
         width:28px;
         position:absolute;
         border-radius:50px;
-        background-color:#d6d6d6;
         border:1px solid #ccc;
-        left:0;
         top:0;
     }
-    .setting-box .slide-button.current {
+    .setting-box .slide-button.off {
+        background-color:#d6d6d6;
+    }
+    .setting-box .slide-button.on {
         background-color:#00ff00;
     }
-    .setting-box .slide-button.current .in {
-        top:0;
+    .setting-box .slide-button.off .in {
+        left:0;
+    }
+    .setting-box .slide-button.on .in {
         right:0;
     }
     .setting-box .input-group-addon {
@@ -84,7 +87,7 @@
                             <!--
                                 <span class="glyphicon glyphicon-question-sign" aria-hidden="true" ng-click="showLossPointHint()"></span>
                             -->
-                                <div class="slide-button current">
+                                <div class="slide-button on">
                                     <div class="in"></div>
                                 </div>
                             </div>
@@ -97,7 +100,7 @@
                             <!--
                                 <span class="glyphicon glyphicon-question-sign" aria-hidden="true" ng-click="showWinPointHint()"></span>
                             -->
-                                <div class="slide-button">
+                                <div class="slide-button off">
                                     <div class="in"></div>
                                 </div>
                             </div>
