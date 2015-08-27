@@ -182,6 +182,28 @@
 		height:92px;
 		border-top:1px solid #e5e5e5;
 	}
+	.user-rank-wrapper .wall-paper .switch button {
+		position:absolute;
+		top:9px;
+		width:43px;
+		height:14px;
+		border-radius:7px;
+		border:1px solid #ffffff;
+		color:#ffffff;
+		font-size:12px;
+		text-align:center;
+		margin-left:-21px;
+	}
+	.user-rank-wrapper .wall-paper .switch button.left {
+		left:33.33%;
+	}
+	.user-rank-wrapper .wall-paper .switch button.right {
+		right:33.33%;
+	}
+	.user-rank-wrapper .wall-paper .switch button.current {
+		color:#3aaaf6;
+		background-color:#ffffff;
+	}
 </style>
 
 <!--
@@ -195,6 +217,10 @@
 <div class="user-rank-wrapper" ng-cloak>
 	<div class="wall-paper">
 	<!--<div style="width:100%;height:200px;background-color:#0cbef8">-->
+		<div class="switch">
+			<button class="left current">日榜</button>
+			<button class="right">总榜</button>
+		</div>
         <table class="basic-table">
             <tr>
                 <td>
