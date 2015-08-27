@@ -372,27 +372,6 @@ function windControl(userId, forceClose, userContract, cb) {
     });
 }
 
-function getUserInfo(data, cb) {
-    console.log(data);
-    // find user
-    User.findOne({_id: data.user_id}, function(err, user) {
-        if (err) {
-            console.log(err);
-            //res.send({code: 1, "msg": err.errmsg});
-            cb(err.errmsg);
-            return;
-        }
-        if (!user) {
-            console.log('user not found');
-            //res.send({code: 1, "msg": err.errmsg});
-            cb('user not found');
-            return;
-        }
-        //res.send({code: 0, result:user});
-        cb(null, user);
-    });
-}
-
 function getHistoryOrders(req, res) {
     console.log(req.body);
     // find user
@@ -420,24 +399,6 @@ function getHistoryOrders(req, res) {
             }
             res.send({user:user, orders:collection, pageCount:req.body.page.count});
         });
-    });
-}
-
-function getPositions(data, cb) {
-    console.log(data);
-    // find user
-    var findings = Portfolio.find({userId: data.user_id});
-    findings.exec(function(err, collection) {
-        if (err) {
-            console.log(err);
-            cb(err.toString());
-            return;
-        }
-        if (!collection) {
-            console.log('position not found');
-            return cb('position not found');
-        }
-        cb(null, collection);
     });
 }
 
@@ -861,9 +822,7 @@ module.exports = {
     createOrder: createOrder,
     getStockCode: getStockCode,
     riskControl: riskControl,
-    getPositions: getPositions,
     getHistoryOrders: getHistoryOrders,
-    getUserInfo: getUserInfo,
     windControl: windControl,
     getLastFuturesPrice: mockTrader.getLastFuturesPrice,
     getProfit: getProfit,
