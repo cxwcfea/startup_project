@@ -583,7 +583,20 @@ function resetUser(userID, cb) {
                 if (err) {
                     return cb(err);
                 }
-                User.update({_id:userID}, {$set:{close:17500000, warning:18000000, cash:20000000, deposit:3000000, debt:17000000, lastCash:0, status:0}}, function(err, numberAffected, raw) {
+
+                var close = 17500000;
+                var warning = 18000000;
+                var cash = 20000000;
+                var deposit = 3000000;
+                var debt = 17000000;
+                if (user.productType === 1) {
+                    close = 7050000;
+                    warning = 7100000;
+                    cash = 7300000;
+                    deposit = 300000;
+                    debt = 7000000;
+                }
+                User.update({_id:userID}, {$set:{close:close, warning:warning, cash:cash, deposit:deposit, debt:debt, lastCash:0, status:0}}, function(err, numberAffected, raw) {
                     if (err) {
                         return cb(err);
                     }

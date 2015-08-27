@@ -292,7 +292,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         });
 
         modalInstance.result.then(function () {
-            $http.get('/futures/reset_user')
+            $http.get('/futures/reset_user?product=' + $scope.data.productID)
                 .success(function(data, status) {
                     $scope.cash = InitCapital;
                     displayError('重置成功');
