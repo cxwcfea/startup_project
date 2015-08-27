@@ -164,46 +164,52 @@ function placeOrder(req, res) {
     logger.info('placeOrder', req.user, req.body);
     var quantity = req.body.quantity;
     var forceClose = req.body.forceClose;
+    var productID = req.body.product;
 
-    req.body.contract = {exchange:'future', stock_code:'IFCURR'};
+    var contract;
+    switch (parseInt(req.body.product)) {
+        case 0: // IF
+            contract = {exchange:'future', stock_code:'IFCURR'};
+            break;
+        case 1: // AG
+            contract = {exchange:'commodity', stock_code:'AGCURR'};
+            break;
+        /*
+         case 2: // XAUUSD
+         obj.order.contract = {exchange:'commodity', stock_code:'XAUUSD'};
+         break;
+         case 3: // BABA
+         obj.order.contract = {exchange:'stock', stock_code:'BABA'};
+         break;
+         */
+        default :
+            contract = {exchange:'future', stock_code:'IFCURR'};
+    }
+    req.body.contract = contract;
     if (forceClose) {
         req.body.force_close = 1;
         if (req.body.type == 1 && req.user.wechat.status === 4) {
-            req.body.user_id = req.user.wechat.real_trader;
+            if (productID == 0) {
+                req.body.user_id = req.user.wechat.real_trader;
+            } else if (productID == 1) {
+                req.body.user_id = req.user.wechat.real_silverTrader;
+            }
             ctpTrader.riskControl(req, res);
         } else {
-            req.body.user_id = req.user.wechat.trader;
+            if (productID == 0) {
+                req.body.user_id = req.user.wechat.trader;
+            } else if (productID == 1) {
+                req.body.user_id = req.user.wechat.silverTrader;
+            }
             mockTrader.riskControl(req, res);
         }
     } else {
         var obj = {
             order: {
                 quantity: quantity,
-                contract: {
-                    stock_code: 'IFCURR',
-                    exchange: 'future'
-                }
+                contract: contract
             }
         };
-
-        switch (parseInt(req.body.product)) {
-            case 0: // IF
-                obj.order.contract = {exchange:'future', stock_code:'IFCURR'};
-                break;
-            case 1: // AG
-                obj.order.contract = {exchange:'commodity', stock_code:'AGCURR'};
-                break;
-            /*
-            case 2: // XAUUSD
-                obj.order.contract = {exchange:'commodity', stock_code:'XAUUSD'};
-                break;
-            case 3: // BABA
-                obj.order.contract = {exchange:'stock', stock_code:'BABA'};
-                break;
-                */
-            default :
-                obj.order.contract = {exchange:'future', stock_code:'IFCURR'};
-        }
 
         if (req.body.type == 1 && req.user.wechat.status === 4) {
             obj.user_id = req.user.wechat.real_trader;
@@ -228,35 +234,41 @@ function placeOrder(req, res) {
     }
 }
 
+// requestType 0 means mock, 1 means real
+function fetchTraderID(user, requestType, product) {
+    var trader = user.wechat.trader;
+    if (requestType == 1) {
+        if (product == 0) {
+            trader = user.wechat.real_trader ? user.wechat.real_trader : user.wechat.trader;
+        } else if (product == 1) {
+            trader = user.wechat.real_silverTrader ? user.wechat.real_silverTrader : user.wechat.silverTrader;
+        }
+    } else {
+        if (product == 0) {
+            trader = user.wechat.trader;
+        } else if (product == 1) {
+            trader = user.wechat.silverTrader;
+        }
+    }
+    return trader;
+}
+
 function getPositions(req, res) {
     if (!req.user || !req.user.wechat || !req.user.wechat.wechat_uuid) {
         return res.status(403).send({error_msg:'user need log in'});
     }
-    if (req.query.type == 1 && req.user.wechat.real_trader) {
-        ctpTrader.getPositions({user_id:req.user.wechat.real_trader}, function(err, positions) {
+    var trader = fetchTraderID(req.user, req.query.type, req.query.product);
+    mockTrader.getPositions({user_id:trader}, function(err, positions) {
+        if (err) {
+            return res.status(500).send({error_msg:err.toString()});
+        }
+        mockTrader.getUserInfo({user_id:trader}, function(err, user) {
             if (err) {
                 return res.status(500).send({error_msg:err.toString()});
             }
-            ctpTrader.getUserInfo({user_id:req.user.wechat.real_trader}, function(err, user) {
-                if (err) {
-                    return res.status(500).send({error_msg:err.toString()});
-                }
-                res.send({position:positions[0], user:user});
-            });
+            res.send({position:positions[0], user:user});
         });
-    } else {
-        mockTrader.getPositions({user_id:req.user.wechat.trader}, function(err, positions) {
-            if (err) {
-                return res.status(500).send({error_msg:err.toString()});
-            }
-            mockTrader.getUserInfo({user_id:req.user.wechat.trader}, function(err, user) {
-                if (err) {
-                    return res.status(500).send({error_msg:err.toString()});
-                }
-                res.send({position:positions[0], user:user});
-            });
-        });
-    }
+    });
 }
 
 function getOrders(req, res) {
@@ -267,13 +279,8 @@ function getOrders(req, res) {
     req.body.date_begin = 0;
     req.body.date_end = Date.now();
     req.body.page = page;
-    if (req.query.type == 1 && req.user.wechat.real_trader) {
-        req.body.user_id = req.user.wechat.real_trader;
-        ctpTrader.getHistoryOrders(req, res);
-    } else {
-        req.body.user_id = req.user.wechat.trader;
-        mockTrader.getHistoryOrders(req, res);
-    }
+    req.body.user_id = fetchTraderID(req.user, req.query.type, req.query.product);
+    mockTrader.getHistoryOrders(req, res);
 }
 
 function getNearestOrders(req, res) {
@@ -283,12 +290,7 @@ function getNearestOrders(req, res) {
 
     var orderStartTime = moment().subtract(2.5, 'hours').toDate();
 
-    var userID;
-    if (req.query.type == 1 && req.user.wechat.real_trader) {
-        userID = req.user.wechat.real_trader;
-    } else {
-        userID = req.user.wechat.trader;
-    }
+    var userID = fetchTraderID(req.user, req.query.type, req.query.product);
 
     var query = mockTrader.Order.find({$and: [
         {userId: userID},
@@ -325,13 +327,8 @@ function getUserProfit(req, res) {
         default :
             req.body.contract = {exchange:'future', stock_code:'IFCURR'};
     }
-    if (req.query.type == 1 && req.user.wechat.real_trader) {
-        req.body.user_id = req.user.wechat.real_trader;
-        ctpTrader.getProfit(req, res);
-    } else {
-        req.body.user_id = req.user.wechat.trader;
-        mockTrader.getProfit(req, res);
-    }
+    req.body.user_id = fetchTraderID(req.user, req.query.type, req.query.product);
+    mockTrader.getProfit(req, res);
 }
 
 function test(req, res) {
@@ -358,24 +355,16 @@ function getOrderCount(fn) {
 }
 
 function getUserInfo(req, res) {
-    if (req.query.type == 1 && req.user.wechat.real_trader) {
-        ctpTrader.getUserInfo({user_id:req.user.wechat.real_trader}, function(err, user) {
-            if (err) {
-                return res.status(500).send({error_msg:err.toString()});
-            }
-            if (!user) {
-                return res.status(500).send({error_msg:'user not found'});
-            }
-            res.send(user);
-        });
-    } else {
-        mockTrader.getUserInfo({user_id:req.user.wechat.trader}, function(err, user) {
-            if (err) {
-                return res.status(500).send({error_msg:err.toString()});
-            }
-            res.send(user);
-        });
-    }
+    var trader = fetchTraderID(req.user, req.query.type, req.query.product);
+    mockTrader.getUserInfo({user_id:trader}, function(err, user) {
+        if (err) {
+            return res.status(500).send({error_msg:err.toString()});
+        }
+        if (!user) {
+            return res.status(500).send({error_msg:'user not found'});
+        }
+        res.send(user);
+    });
 }
 
 function resetUser(req, res) {
@@ -448,14 +437,28 @@ function createAccount(req, res) {
             if (!trader) {
                 return res.status(500).send({error_msg:'can not create trader'});
             }
-            user.wechat.appointment = false;
-            user.wechat.real_trader = trader;
-            user.wechat.status = 6;
-            user.save(function(err) {
+            mockTrader.createUser({
+                name: user.wechat.wechat_uuid,
+                status: 1,
+                productType: 1,
+                real: true
+            }, function(err, trader2) {
                 if (err) {
                     return res.status(500).send({error_msg:err.toString()});
                 }
-                res.send({});
+                if (!trader) {
+                    return res.status(500).send({error_msg:'can not create trader'});
+                }
+                user.wechat.appointment = false;
+                user.wechat.real_trader = trader;
+                user.wechat.real_silverTrader = trader2;
+                user.wechat.status = 6;
+                user.save(function(err) {
+                    if (err) {
+                        return res.status(500).send({error_msg:err.toString()});
+                    }
+                    res.send({});
+                });
             });
         });
     });
