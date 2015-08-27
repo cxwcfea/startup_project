@@ -2438,6 +2438,19 @@ function getPPJTradeUser(req, res) {
     });
 }
 
+function getPPJSilverTradeUser(req, res) {
+    var query = User.find({});
+    query.find({'wechat.silverStatus':{$gt:0}});
+    query.populate('wechat.real_silverTrader');
+    query.select('wechat identity finance mobile');
+    query.exec(function (err, users) {
+        if (err) {
+            return res.status(500).send(err.toString());
+        }
+        res.send(users);
+    });
+}
+
 module.exports = {
     registerRoutes: function(app, passportConf) {
         app.get('/admin', passportConf.requiresRole('admin|support'), main);
@@ -2631,7 +2644,9 @@ module.exports = {
         app.get('/admin/api/get_appoint_ppj_user', passportConf.requiresRole('admin'), getAppointPPJUser);
 
         app.get('/admin/api/get_ppj_trade_user', passportConf.requiresRole('admin'), getPPJTradeUser);
-		
+
+        app.get('/admin/api/get_ppj_silver_trade_user', passportConf.requiresRole('admin'), getPPJSilverTradeUser);
+
         app.get('/admin/ppj_statistics', passportConf.requiresRole('admin'), getPPJStatisticsPage);
 
         app.get('/admin/*', passportConf.requiresRole('admin'), function(req, res, next) {

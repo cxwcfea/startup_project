@@ -13,6 +13,10 @@ var User = require('../models/User'),
 
 var CLOSE_LINE = 5000;
 var WARN_LINE = 10000;
+
+var SILVER_CLOSE_LINE = 500;
+var SILVER_WARN_LINE = 1000;
+
 var SUPPORT_NUM = '15811087507';
 var RISKCONTROL_NUM = '18911468685';
 var FINANCE_NUM1 = '13641012331';
@@ -408,6 +412,9 @@ function approveUser(req, res) {
         if (user.wechat.status === 0) {
             user.wechat.status = 1;
         }
+        if (user.wechat.silverStatus === 0) {
+            user.wechat.silverStatus = 1;
+        }
         user.save(function(err) {
             if (err) {
                 return res.status(500).send({error_msg:err.toString()});
@@ -472,6 +479,7 @@ function addMoney(req, res) {
         return res.status(403).send({error_msg:'无效的金额'});
     }
     var uid = req.body.uid;
+    var productID = req.body.product;
     User.findById(uid, function(err, user) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
@@ -502,17 +510,30 @@ function addMoney(req, res) {
                 return res.status(500).send({error_msg:err.toString()});
             }
             var cash = 200000;
-            var close = cash - (depositAmount - CLOSE_LINE);
-            var warning = cash - (depositAmount - WARN_LINE);
+            var closeLine = CLOSE_LINE;
+            var warnLine = WARN_LINE;
+            var trader = user.wechat.real_trader;
+            if (productID == 1) {
+                cash = 70000;
+                closeLine = SILVER_CLOSE_LINE;
+                warnLine = SILVER_WARN_LINE;
+                trader = user.wechat.real_silverTrader;
+            }
+            var close = cash - (depositAmount - closeLine);
+            var warning = cash - (depositAmount - warnLine);
             var debt = cash - depositAmount;
-            mockTrader.User.update({_id:user.wechat.real_trader}, {$set:{close:close * 100, warning:warning * 100, cash:cash * 100, deposit:depositAmount * 100, debt:debt * 100, lastCash:cash * 100, status:1}}, function(err, numberAffected, raw) {
+            mockTrader.User.update({_id:trader}, {$set:{close:close * 100, warning:warning * 100, cash:cash * 100, deposit:depositAmount * 100, debt:debt * 100, lastCash:cash * 100, status:1}}, function(err, numberAffected, raw) {
                 if (err) {
                     return res.status(500).send({error_msg:err.toString()});
                 }
                 if (!numberAffected) {
                     return res.status(500).send({error_msg:'无法更新用户'});
                 }
-                user.wechat.status = 3;
+                if (productID == 1) {
+                    user.wechat.silverStatus = 3;
+                } else {
+                    user.wechat.status = 3;
+                }
                 user.save(function(err) {
                     if (err) {
                         return res.status(500).send({error_msg:err.toString()});
@@ -534,6 +555,7 @@ function addDeposit(req, res) {
         return res.status(403).send({error_msg:'无效的金额'});
     }
     var uid = req.body.uid;
+    var productID = req.body.product;
     User.findById(uid, function(err, user) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
@@ -568,7 +590,11 @@ function addDeposit(req, res) {
                     return res.status(500).send({error_msg:err.toString()});
                 }
                 depositAmount *= 100;
-                mockTrader.User.findById(user.wechat.real_trader, function (err, trader) {
+                var trader = user.wechat.real_trader;
+                if (productID == 1) {
+                    trader = user.wechat.real_silverTrader;
+                }
+                mockTrader.User.findById(trader, function (err, trader) {
                     if (err) {
                         return res.status(500).send({error_msg:err.toString()});
                     }
@@ -672,7 +698,12 @@ function changeTraderStatus(req, res) {
             sms.sendSMS(RISKCONTROL_NUM, '', content);
         }
         if (req.body.trader_status !== null && req.body.trader_status != undefined) {
-            mockTrader.User.update({_id:user.wechat.real_trader}, {status:req.body.trader_status}, function(err, numberAffected, raw) {
+            var productID = req.body.product;
+            var trader = user.wechat.real_trader;
+            if (productID == 1) {
+                trader = user.wechat.real_silverTrader;
+            }
+            mockTrader.User.update({_id:trader}, {status:req.body.trader_status}, function(err, numberAffected, raw) {
                 if (err) {
                     return res.status(500).send({error_msg:err.toString()});
                 }
@@ -689,6 +720,7 @@ function changeTraderStatus(req, res) {
 
 function finishTrade(req, res) {
     logger.info('finishTrade operate by ' + req.user.mobile, req.body);
+    var productID = req.body.product;
     async.waterfall([
         function(callback) {
             User.findById(req.body.uid, function(err, user) {
@@ -699,7 +731,11 @@ function finishTrade(req, res) {
             });
         },
         function(user, callback) {
-            mockTrader.User.findById(user.wechat.real_trader, function(err, trader) {
+            var trader = user.wechat.real_trader;
+            if (productID == 1) {
+                trader = user.wechat.real_silverTrader;
+            }
+            mockTrader.User.findById(trader, function(err, trader) {
                 if (!err && !trader) {
                     err = '交易用户不存在';
                 }
@@ -788,7 +824,11 @@ function finishTrade(req, res) {
             });
         },
         function(user, callback) {
-            user.wechat.status = 6;
+            if (productID == 1) {
+                user.wechat.silverStatus = 6;
+            } else {
+                user.wechat.status = 6;
+            }
             user.save(function(err) {
                 callback(err, user);
             });
@@ -881,10 +921,7 @@ function changeTradeSetting(req, res) {
     if (req.body.open === undefined || req.body.open === null) {
         return res.status(403).send({error_msg:'参数无效'});
     }
-    var userID = req.user.wechat.trader;
-    if (req.body.type == 1) {
-        userID = req.user.wechat.real_trader;
-    }
+    var userID = fetchTraderID(req.user, req.body.type, req.body.product);
     if (req.body.win === undefined || req.body.win === null) {
         req.body.win = 0;
     }

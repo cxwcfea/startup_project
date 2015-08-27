@@ -405,7 +405,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             return;
         }
         */
-        return;
         $location.path('/appointment');
     };
 
