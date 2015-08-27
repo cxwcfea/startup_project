@@ -33,6 +33,7 @@ var PPJUserSchema = mongoose.Schema({
     status: { type: Number, default: 0 },  // 0: Normal, 1: Cannot buy, 2: Forbidden
     lastCash: { type: Number, default: 0 },  // basis: cent, 0.01, the cash of the last time when user have no position
     real: { type: Boolean, default: false },
+    productType: { type: Number, default: 0 }, // 0 or null means future, 1 means silver
     winPoint: { type: Number, default: 0 },
     lossPoint: { type: Number, default: 0 },
     tradeControl: { type: Boolean, default: false },
