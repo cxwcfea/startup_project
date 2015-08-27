@@ -33,7 +33,7 @@
     }
     .setting-box .higher input {
         height:46px !important;
-        border-right:none !important;
+        /*border-right:none !important;*/
     }
     .setting-box .slide-button {
         height:30px;
@@ -41,7 +41,6 @@
         position:relative;
         border-radius:15px;
         border:1px solid #ccc;
-        background-color:#ebebf4;
     }
     .setting-box .slide-button .in {
         height:28px;
@@ -50,9 +49,10 @@
         border-radius:50px;
         border:1px solid #ccc;
         top:0;
+        background-color:#d6d6d6;
     }
     .setting-box .slide-button.off {
-        background-color:#d6d6d6;
+        background-color:#ebebf4;
     }
     .setting-box .slide-button.on {
         background-color:#00ff00;
@@ -63,7 +63,7 @@
     .setting-box .slide-button.on .in {
         right:0;
     }
-    .setting-box .input-group-addon {
+    .setting-box .input-group-addon.rewrite {
         background-color:#ffffff;
     }
 </style>
@@ -84,12 +84,12 @@
                             <div class="input-group-addon">止损金额</div>
                             <input type="number" class="form-control" ng-model="lossPoint" min="600" max="100000" placeholder="持仓亏损达到该金额时系统将自动平仓" required>
                             <div class="input-group-addon">
-                            <!--
                                 <span class="glyphicon glyphicon-question-sign" aria-hidden="true" ng-click="showLossPointHint()"></span>
-                            -->
+                            <!--
                                 <div class="slide-button on">
                                     <div class="in"></div>
                                 </div>
+                            -->
                             </div>
                         </div>
                         <br>
@@ -97,12 +97,12 @@
                             <div class="input-group-addon">止盈金额</div>
                             <input type="number" class="form-control" ng-model="winPoint" min="600" max="100000" placeholder="持仓盈利达到该金额时系统将自动平仓" required>
                             <div class="input-group-addon">
-                            <!--
                                 <span class="glyphicon glyphicon-question-sign" aria-hidden="true" ng-click="showWinPointHint()"></span>
-                            -->
+                            <!--
                                 <div class="slide-button off">
                                     <div class="in"></div>
                                 </div>
+                            -->
                             </div>
                         </div>
                     </div>
