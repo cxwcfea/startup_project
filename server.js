@@ -6,6 +6,7 @@ var express = require('express'),
     logger = log4js.getLogger(),
     task = require('./lib/task'),
     ctpTrader = require('./controllers/ctpTrader'),
+    //cluster = require('cluster'),
     config = require('./config/config')[env];
 
 /*
@@ -80,28 +81,39 @@ app.use(function(err, req, res, next){
 	res.render('server_error');
 });
 
-function startServer(master) {
+function startServer() {
     var server = http.createServer(app);
-    if (master) {
-        var io = require('socket.io')(server);
-        require('./config/socket.io')(io);
-    }
-    server.listen(app.get('port'), function(){
-        logger.info('Express started on ' + app.get('port') + '; press Ctrl-C to terminate.');
-        ctpTrader.initHive(1);
+
+    var io = require('socket.io')(server);
+    require('./config/socket.io')(io);
+
+    ctpTrader.initHive(1);
+    task.scheduleFuturesRiskControlJob();
+    task.scheduleFuturesForceCloseJob();
+    task.schedulePPJUserDailyJob();
+    task.scheduleTriggeredJob();
+    /*
+    if (cluster.worker.id === 1) {
+        logger.info('task init');
         task.scheduleFuturesRiskControlJob();
         task.scheduleFuturesForceCloseJob();
         task.schedulePPJUserDailyJob();
-        //task.scheduleTriggeredJob();
+        task.scheduleTriggeredJob();
+    }
+    */
+
+    //var io = require('socket.io')(server);
+    //require('./config/socket.io')(io);
+
+    server.listen(app.get('port'), function() {
+        logger.info('Express started on ' + app.get('port') + '; press Ctrl-C to terminate.');
     });
 }
 
 if(require.main === module){
     // application run directly; start app server
-    startServer(true);
+    startServer();
 } else {
     // application imported as a module via "require": export function to create server
     module.exports = startServer;
 }
-
-

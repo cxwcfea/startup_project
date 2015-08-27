@@ -63,43 +63,44 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             }
         }
     } else {
-        $scope.tradeClose = true;
+        //$scope.tradeClose = true;
     }
 
     if ($scope.data.real && $scope.user.wechat.status !== 4) {
-        $scope.tradeClose = true;
+        //$scope.tradeClose = true;
         $scope.closeText = REAL_TEXT;
     }
 
-    $scope.data.flags_data = [];
-    $http.get('/futures/get_nearest_orders?type=' + ($scope.data.real ? 1 : 0))
-        .success(function(data, status) {
-            for (var i = 0; i < data.length; ++i) {
-                var order = data[i];
-                if (order.lockedCash < 0) {
-                    continue;
+    if (!$scope.data.flags_data.length) {
+        //$scope.data.flags_data = [];
+        $http.get('/futures/get_nearest_orders?type=' + ($scope.data.real ? 1 : 0))
+            .success(function(data, status) {
+                for (var i = 0; i < data.length; ++i) {
+                    var order = data[i];
+                    if (order.lockedCash < 0) {
+                        continue;
+                    }
+                    var value = parseInt(order.price/100);
+                    var color = '#FF0000';
+                    if (order.quantity < 0) {
+                        color = '#00FF00';
+                    }
+                    if ($scope.data.flags_data) {
+                        $scope.data.flags_data.push({
+                            x: Date.parse(order.timestamp),
+                            y: value,
+                            color:'#000000',
+                            fillColor: color,
+                            text: '',
+                            title: ' '
+                        });
+                    }
                 }
-                var value = parseInt(order.price/100);
-                var color = '#FF0000';
-                if (order.quantity < 0) {
-                    color = '#00FF00';
-                }
-                if ($scope.data.flags_data) {
-                    $scope.data.flags_data.push({
-                        x: Date.parse(order.timestamp),
-                        y: value,
-                        color:'#000000',
-                        fillColor: color,
-                        text: '',
-                        title: ' '
-                    });
-                }
-            }
-        })
-        .error(function(data, status) {
-            console.log(data.error_msg);
-        });
-
+            })
+            .error(function(data, status) {
+                console.log(data.error_msg);
+            });
+    }
 
     $scope.tradeData = {
         up: 0,

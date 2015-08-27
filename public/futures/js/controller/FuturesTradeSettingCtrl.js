@@ -76,7 +76,7 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
         var open = !$scope.open;
         if (open) {
             if (!$scope.winPoint && !$scope.lossPoint) {
-                displayError('止损金额，止盈金额请至少输入一个。');
+                displayError('金额不低于600元');
                 processing = false;
                 return;
             }

@@ -12,15 +12,6 @@ if(cluster.isMaster){
     });
 
     cluster.on('online', function(worker) {
-        if (worker.id === 1) {
-            //task.initHive();
-            //task.scheduleDailyDataJob();
-            //task.scheduleFuturesRiskControlJob();
-            //task.scheduleHiveControlJob();
-            //task.scheduleTriggeredJob();
-            //task.scheduleFuturesForceCloseJob();
-            //task.scheduleResetWechatUserJob();
-        }
     });
 
     // log any workers that disconnect; if a worker disconnects, it
@@ -37,10 +28,7 @@ if(cluster.isMaster){
             worker.id, code, signal);
         startWorker();
     });
-
 } else {
     // start our app on worker; see server.js
-    if (cluster.worker.id === 2) {
-        require('./server.js')(true);
-    }
+    require('./server.js')();
 }

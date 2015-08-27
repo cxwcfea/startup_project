@@ -298,22 +298,17 @@ function windControl(userId, forceClose, userContract, cb) {
                           }
                           if (!forceClose && user.cash + income > user.close) {
                               // No risk
-                              console.log("No risk");
-                              //if (typeof user2cb_obj !== 'undefined') {
-                              //    delete user2cb_obj[userId];
-                             //}
                               cb(null);
                               return lock.unlock();
                           } else {
                               if (income > 0) {
                                   var key = 'IF-OrderID';
-                                  global.redis_client.get(key, function(err, order_id){
-                                      if (!err && order_id) {
-                                          global.redis_client.set(key, parseInt(order_id)+1, redis.print);
-                                          order_id = parseInt(order_id)+1;
-                                      } else {
-                                          global.redis_client.set(key, 0, redis.print);
-                                          order_id = 1;
+                                  //global.redis_client.get(key, function(err, order_id){
+                                  generateOrderID(function(err, order_id){
+                                      if (err) {
+                                          console.log(err);
+                                          cb({code:2, msg:err.toString()});
+                                          return lock.unlock();
                                       }
                                       var act = 3;
                                       var price = top_price;
@@ -361,7 +356,7 @@ function windControl(userId, forceClose, userContract, cb) {
                                       });
                                   });
                               } else {
-                                  console.log("Closed");
+                                  //console.log("Closed");
                                   cb(null);
                                   return lock.unlock();
                               }
@@ -591,8 +586,36 @@ function getInstrument(){
 	return "IF" + (d.getYear()-100) + month;
 }
 
+function generateOrderID(callback){
+    var resource = 'mt://lock/order_id/ctp';
+    var ttl = 10000;
+    
+    redlock.lock(resource, ttl).then(function(outer_lock) {
+        var key = 'IF-OrderID';
+        global.redis_client.get(key, function(err, order_id){
+            if (err) {
+                console.log(err);
+                callback({code: -1, msg: 'redis failed.'});
+                return outer_lock.unlock();
+            }
+            if (order_id) {
+                var newId = parseInt(order_id) + 1;
+                global.redis_client.set(key, newId, redis.print); // FIXME: async set might have problems
+                order_id = newId;
+            } else {
+                global.redis_client.set(key, 0, redis.print);
+                order_id = 1;
+            }
+            callback(null, order_id);
+        });
+    }, function(){
+        console.log("fail to lock resource: " + resource);
+        callback({code:-2, msg:"fail to lock resource: " + resource});
+    });
+}
+
 function createOrder(data, cb) {
-    //logger.debug(data);
+    logger.debug('process.pid', process.pid);
     if (!data.order.quantity || data.order.quantity % kHand != 0) {
         console.log("invalid quantity");
         cb({code:1, msg:"invalid quantity"});
@@ -633,7 +656,7 @@ function createOrder(data, cb) {
                   priceInfo.LastPrice *= 100;
                   var top_price = priceInfo.PreSettlementPrice*1.0995*100;
                   var bottom_price = priceInfo.PreSettlementPrice*(1-0.0995)*100;
-                  console.log(priceInfo);
+                  //console.log(priceInfo);
                   Portfolio.findOne({$and: [{contractId: contract._id}, {userId: user._id}]}, function(err, portfolio) {
                       if (err) {
                           console.log(err);
@@ -656,19 +679,12 @@ function createOrder(data, cb) {
 					  var key = 'IF-OrderID';
                       var quantity_to_close = costs.quantity_to_close;
                       var actual_quantity = costs.actual_quantity;
-					  global.redis_client.get(key, function(err, order_id){
+					  //global.redis_client.get(key, function(err, order_id){
+                      generateOrderID(function(err, order_id){
                           if (err) {
                               console.log(err);
                               cb({code:2, msg:err.toString()});
                               return lock.unlock();
-                          }
-                          if (order_id) {
-                              var newId = parseInt(order_id) + 1;
-                              global.redis_client.set(key, newId, redis.print);
-                              order_id = newId;
-                          } else {
-                              global.redis_client.set(key, 0, redis.print);
-                              order_id = 1;
                           }
                           // close positon first
                           if(quantity_to_close != 0){
@@ -717,7 +733,7 @@ function createOrder(data, cb) {
                                       profit: costs.net_profit
                                       //isClosed: 0
                                   });
-                                  console.log(order);
+                                  //console.log(order);
                                   var oldUserCash = user.cash;
                                   var oldUserLastCash = user.lastCash;
                                   user.cash -= costs.open;
@@ -807,15 +823,15 @@ var hive;
 function initHive(param) {
     logger.debug('init Hive**************************');
     var initConfig = {
-        //ip: '218.241.142.230',
-        ip: '127.0.0.1',
+        ip: '218.241.142.230',
+        //ip: '127.0.0.1',
         port: 7777,
-        investor: '851710073',
-        password: '283715',
-        front_addr: 'tcp://27.115.57.130:41205/9000',
-        //investor: '00001',
-        //password: '123456',
-        //front_addr: 'tcp://180.168.146.181:10000/0096',
+        //investor: '851710073',
+        //password: '283715',
+        //front_addr: 'tcp://27.115.57.130:41205/9000',
+        investor: '00001',
+        password: '123456',
+        front_addr: 'tcp://180.168.146.181:10000/0096',
         client_id: param,
         version: 1,
         interval:128

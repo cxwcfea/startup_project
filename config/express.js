@@ -129,5 +129,15 @@ module.exports = function(app, config) {
     app.use(passport.initialize());
     app.use(passport.session());
     app.use(flash());
+
+    /*
+    app.use(function(req,res,next){
+        var cluster = require('cluster');
+        if(cluster.isWorker)
+            console.log('Worker %d received request', cluster.worker.id);
+        next();
+    });
+    */
+
     app.use(express.static(config.rootPath + '/public'));
 };
