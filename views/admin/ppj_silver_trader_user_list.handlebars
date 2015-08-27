@@ -1,0 +1,76 @@
+<div class="am-cf am-padding">
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">拍拍机实盘中用户列表</strong> / <small>PPJ Users</small></div>
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12 am-u-md-3">
+        <div class="am-input-group am-input-group-sm">
+            <input type="text" class="am-form-field" placeholder="输入用户手机号" ng-model="searchKey">
+            <span class="am-input-group-btn">
+                <button class="am-btn am-btn-default" type="button" ng-click="searchUser()">搜索</button>
+            </span>
+        </div>
+    </div>
+    <br/>
+    <div class="am-u-sm-12">
+        <div class="am-btn-toolbar">
+            <div class="am-btn-group am-btn-group-xs">
+                <button ng-repeat="item in queryItems" type="button" class="am-btn am-btn-default" ng-click="queryItem(item)"> \{{item.name}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="am-g">
+    <div class="am-u-sm-12">
+        <form class="am-form">
+            <div class="am-scrollable-horizontal">
+                <table class="am-table am-table-striped am-table-hover table-main">
+                    <thead>
+                    <tr>
+                        <th class="">姓名</th><th class="">微信名</th><th class="">手机号</th><th>平仓盈亏</th><th>账户余额</th><th>交易本金</th><th>状态</th><th>交易权限</th><th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="user in showingItems">
+                        <td><a href="" ng-click="showUserDetail(user.mobile)">\{{user.identity.name}}</a></td>
+                        <td>\{{user.wechat.wechat_name || 'N/A'}}</td>
+                        <td><a href="" ng-click="showUserDetail(user.mobile)">\{{user.wechat.mobile}}</a></td>
+                        <td>\{{user.wechat.real_silverTrader.lastCash == 0 ? 0 : (user.wechat.real_silverTrader.lastCash - user.wechat.real_silverTrader.deposit - user.wechat.real_silverTrader.debt)/100 | number:2}}</td>
+                        <td>\{{user.finance.balance | number:2}}</td>
+                        <td>\{{user.wechat.real_silverTrader.deposit/100 | number:2}}</td>
+                        <td>\{{user.wechat.silverStatus | ppjUserType}}</td>
+                        <td>\{{user.wechat.real_silverTrader.status === 0 ? '正常' : '禁买'}}</td>
+                        <td>
+                            <div class="am-btn-toolbar">
+                                <div class="am-btn-group am-btn-group-xs">
+                                    {{#unless watcher}}
+                                        <button class="am-btn am-btn-default am-btn-xs am-text-primary" ng-click="createTradeAccount(user)" ng-show="user.wechat.silverStatus === 2"><span class="am-icon-pencil"></span> 创建交易账户</button>
+                                        <button class="am-btn am-btn-default am-btn-xs am-text-primary" ng-click="createOrder(user)" ng-show="user.wechat.silverStatus > 1"><span class="am-icon-pencil"></span> 创建充值订单</button>
+                                        <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-click="addMoney(user)" ng-show="user.wechat.silverStatus === 6"><span class="am-icon-pencil"></span> 入资</button>
+                                        <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-click="addDeposit(user)" ng-show="user.wechat.silverStatus === 4"><span class="am-icon-pencil"></span> 加保证金</button>
+                                        <button class="am-btn am-btn-default am-btn-xs am-text-success" ng-click="getProfit(user)" ng-show="user.wechat.silverStatus === 4"><span class="am-icon-pencil"></span> 提取盈利</button>
+                                        <button class="am-btn am-btn-default am-btn-xs am-text-warning" ng-click="closeTrade(user)" ng-show="user.wechat.silverStatus === 5"><span class="am-icon-pencil"></span> 结算</button>
+                                        <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="withdraw(user)" ng-show="user.wechat.silverStatus > 2"><span class="am-icon-pencil"></span> 提现</button>
+                                        <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="approveToTrade(user)" ng-show="user.wechat.silverStatus === 3 || user.wechat.silverStatus === 5"><span class="am-icon-pencil"></span> 开通交易权限</button>
+                                        <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="disallowTrade(user)" ng-show="user.wechat.silverStatus === 4"><span class="am-icon-pencil"></span> 冻结交易</button>
+                                        <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="addCard(user)" ng-show="user.wechat.silverStatus > 1"><span class="am-icon-pencil"></span> 添加银行卡</button>
+                                        <button class="am-btn am-btn-default am-btn-xs am-text-danger" ng-click="releaseUser(user)" ng-show="user.wechat.silverStatus === 4 && user.wechat.real_silverTrader.silverStatus === 1"><span class="am-icon-pencil"></span> 解除禁买</button>
+                                    {{/unless}}
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="am-cf">
+                共 \{{currentUsers.length}} 条记录
+                <div class="am-fr">
+                    <pagination previous-text="&lsaquo;" next-text="&rsaquo;" max-size="maxSize" rotate="false" items-per-page="itemsPerPage" total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></pagination>
+                </div>
+            </div>
+            <hr />
+        </form>
+    </div>
+</div>

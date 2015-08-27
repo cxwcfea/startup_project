@@ -88,6 +88,9 @@ angular.module('adminApp').config(['$routeProvider', '$locationProvider', '$http
         .when('/ppj_trade_user_list', { templateUrl: '/admin/ppj_trade_user_list',
             controller: 'AdminPPJTradeUserCtrl'
 		})
+        .when('/ppj_silver_trader_user_list', { templateUrl: '/admin/ppj_silver_trader_user_list',
+            controller: 'AdminPPJSilverTraderUserCtrl'
+        })
         .when('/ppj_statistics', { templateUrl: '/admin/ppj_statistics'
         })
         .when('/ppj_control_panel', { templateUrl: '/admin/ppj_control_panel',
