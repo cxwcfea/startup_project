@@ -410,10 +410,26 @@ function approveUser(req, res) {
         }
         user.wechat.appointment = false;
         if (user.wechat.status === 0) {
-            user.wechat.status = 1;
+            if (user.identity.id) {
+                if (user.wechat.real_trader) {
+                    user.wechat.status = 6;
+                } else {
+                    user.wechat.status = 2;
+                }
+            } else {
+                user.wechat.status = 1;
+            }
         }
         if (user.wechat.silverStatus === 0) {
-            user.wechat.silverStatus = 1;
+            if (user.identity.id) {
+                if (user.wechat.real_silverTrader) {
+                    user.wechat.silverStatus = 6;
+                } else {
+                    user.wechat.silverStatus = 2;
+                }
+            } else {
+                user.wechat.silverStatus = 1;
+            }
         }
         user.save(function(err) {
             if (err) {
