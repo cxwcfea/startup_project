@@ -368,7 +368,8 @@ function getUserInfo(req, res) {
 }
 
 function resetUser(req, res) {
-    mockTrader.resetUser(req.user.wechat.trader, function(err) {
+    var trader = fetchTraderID(req.user, 0, req.query.product);
+    mockTrader.resetUser(trader, function(err) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
         }

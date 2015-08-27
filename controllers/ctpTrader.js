@@ -372,34 +372,6 @@ function windControl(userId, forceClose, userContract, cb) {
     });
 }
 
-function createUser(data, cb) {
-    console.log(data);
-    var user = new User(data);
-    user.save(function(err) {
-        if (err) {
-            console.log(err);
-            cb(err.toString());
-            return;
-        }
-        cb(null, user);
-    });
-}
-
-function resetUser(userID, cb) {
-    //User.update({_id:userID}, {$set:{close:12500000, cash:15000000, deposit:3000000, debt:12000000, lastCash:0}}, function(err, numberAffected, raw) {
-    User.update({_id:userID}, {$set:{close:17500000, warning:18000000, cash:20000000, deposit:3000000, debt:17000000, lastCash:0}}, function(err, numberAffected, raw) {
-        if (err) {
-            return cb(err);
-        }
-        Portfolio.update({userId:userID}, {$set:{total_point:0, total_deposit:0, fee:0, shortQuantity:0, longQuantity:0, quantity:0}}, function(err, numberAffected, raw) {
-            if (err) {
-                return cb(err);
-            }
-            cb(null);
-        });
-    });
-}
-
 function riskControl(req, res) {
     //console.log(req.body);
     windControl(req.body.user_id, req.body.force_close, req.body.contract, function(err, order) {
@@ -690,16 +662,13 @@ module.exports = {
     Contract: Contract,
     Order: Order,
     Portfolio: Portfolio,
-    createUser: createUser,
     createOrder: createOrder,
     getStockCode: getStockCode,
     riskControl: riskControl,
     windControl: windControl,
-    getLastFuturesPrice: mockTrader.getLastFuturesPrice,
-    resetUser: resetUser,
-	initHive: initHive,
+    initHive: initHive,
     destroyHive: destroyHive,
-	loadDBData: loadDBData,
+    loadDBData: loadDBData,
     user_with_trigger: user_with_trigger,
     makeRedisKey: makeRedisKey
 };
