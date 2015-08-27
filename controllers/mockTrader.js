@@ -491,7 +491,6 @@ function getProfitImpl(req, res, user, contractId) {
                     }
                     var priceInfo = JSON.parse(priceInfoString);
                     priceInfo.LastPrice *= 100;
-                    //console.log(priceInfo.LastPrice);
 
                     contractInfo[portf.contractId] = priceInfo;
                     var costs = getCosts(contract, priceInfo.LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);

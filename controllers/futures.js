@@ -327,13 +327,8 @@ function getUserProfit(req, res) {
         default :
             req.body.contract = {exchange:'future', stock_code:'IFCURR'};
     }
-    if (req.query.type == 1 && req.user.wechat.real_trader) {
-        req.body.user_id = req.user.wechat.real_trader;
-        ctpTrader.getProfit(req, res);
-    } else {
-        req.body.user_id = req.user.wechat.trader;
-        mockTrader.getProfit(req, res);
-    }
+    req.body.user_id = fetchTraderID(req.user, req.query.type, req.query.product);
+    mockTrader.getProfit(req, res);
 }
 
 function test(req, res) {
@@ -360,24 +355,16 @@ function getOrderCount(fn) {
 }
 
 function getUserInfo(req, res) {
-    if (req.query.type == 1 && req.user.wechat.real_trader) {
-        ctpTrader.getUserInfo({user_id:req.user.wechat.real_trader}, function(err, user) {
-            if (err) {
-                return res.status(500).send({error_msg:err.toString()});
-            }
-            if (!user) {
-                return res.status(500).send({error_msg:'user not found'});
-            }
-            res.send(user);
-        });
-    } else {
-        mockTrader.getUserInfo({user_id:req.user.wechat.trader}, function(err, user) {
-            if (err) {
-                return res.status(500).send({error_msg:err.toString()});
-            }
-            res.send(user);
-        });
-    }
+    var trader = fetchTraderID(req.user, req.query.type, req.query.product);
+    mockTrader.getUserInfo({user_id:trader}, function(err, user) {
+        if (err) {
+            return res.status(500).send({error_msg:err.toString()});
+        }
+        if (!user) {
+            return res.status(500).send({error_msg:'user not found'});
+        }
+        res.send(user);
+    });
 }
 
 function resetUser(req, res) {
@@ -450,14 +437,28 @@ function createAccount(req, res) {
             if (!trader) {
                 return res.status(500).send({error_msg:'can not create trader'});
             }
-            user.wechat.appointment = false;
-            user.wechat.real_trader = trader;
-            user.wechat.status = 6;
-            user.save(function(err) {
+            mockTrader.createUser({
+                name: user.wechat.wechat_uuid,
+                status: 1,
+                productType: 1,
+                real: true
+            }, function(err, trader2) {
                 if (err) {
                     return res.status(500).send({error_msg:err.toString()});
                 }
-                res.send({});
+                if (!trader) {
+                    return res.status(500).send({error_msg:'can not create trader'});
+                }
+                user.wechat.appointment = false;
+                user.wechat.real_trader = trader;
+                user.wechat.real_silverTrader = trader2;
+                user.wechat.status = 6;
+                user.save(function(err) {
+                    if (err) {
+                        return res.status(500).send({error_msg:err.toString()});
+                    }
+                    res.send({});
+                });
             });
         });
     });

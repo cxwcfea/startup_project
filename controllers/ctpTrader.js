@@ -372,104 +372,6 @@ function windControl(userId, forceClose, userContract, cb) {
     });
 }
 
-function getProfitImpl(req, res, user, contractId) {
-    var query = {userId: req.body.user_id};
-    if (contractId !== null) {
-      query = {userId: req.body.user_id, contractId: contractId};
-    }
-    Portfolio.find(query, function(err, portfolio) {
-        if (err) {
-            console.log(err);
-            res.status(500).send({error_msg: err.errmsg});
-            return;
-        }
-        if (!portfolio.length) {
-            console.log('portfolio not found');
-            mockTrader.getLastFuturesPrice(function(err, data) {
-                if (err) {
-                    return res.status(400).send({error_msg:err.toString()});
-                }
-                res.send({result: 0, lastProfit:0, lastPrice:data.lastPrice, yesterdayClose:data.yesterdayClose, portfolio:null});
-            });
-            return;
-        }
-        var asyncObj = {remaining: portfolio.length, value: 0, has_error: false, errmsg:""};
-        var contractInfo = {};
-
-        for (var p in portfolio) {
-            var portf = portfolio[p];
-            Contract.findOne({_id: portf.contractId}, function(err, contract) {
-                asyncObj.remaining -= 1;
-                if (err || !contract) {
-                    //console.log(err);
-                    //console.log(contract);
-                    //console.log(portf);
-                    asyncObj.has_error = true;
-                    if (err) asyncObj.errmsg = err.errmsg;
-                }
-                if (asyncObj.has_error) {
-                    if (asyncObj.remaining <= 0){
-                        res.status(500).send({error_msg: asyncObj.errmsg});
-                    }
-                    return;
-                }
-                global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
-                    if (err || !priceInfoString) {
-                        console.log(err);
-                        asyncObj.has_error = true;
-                        if (err) asyncObj.errmsg = err.errmsg;
-                    }
-                    if (asyncObj.has_error) {
-                        if (asyncObj.remaining <= 0){
-                            res.status(500).send({error_msg: asyncObj.errmsg});
-                        }
-                        return;
-                    }
-                    var priceInfo = JSON.parse(priceInfoString);
-                    priceInfo.LastPrice *= 100;
-
-                    contractInfo[portf.contractId] = priceInfo;
-                    var costs = getCosts(contract, priceInfo.LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
-                    asyncObj.value -= costs.open;
-                    if (asyncObj.remaining > 0) {
-                        console.log("Still counting: " + asyncObj);
-                        return;
-                    }
-                    //console.log("Completed: " + asyncObj);
-                    var income = asyncObj.value;
-                    //console.log("User info: " + req.body.user_id + ", " + user.cash + ", " + income + ", " + user.close);
-                    var lastProfit = user.lastCash ? user.lastCash - (user.deposit + user.debt) : 0;
-                    res.send({result: user.cash + income - user.deposit - user.debt - lastProfit, lastProfit:lastProfit, lastPrice:priceInfo.LastPrice, yesterdayClose:priceInfo.PreSettlementPrice, portfolio:portf});
-                    return;
-                });
-            });
-        }
-    });
-}
-function getProfit(req, res) {
-    User.findOne({_id: req.body.user_id}, function(err, user) {
-        if (err || !user) {
-            console.log(err);
-            res.status(500).send({error_msg: err? err.errmsg: "no available user"});
-            return;
-        }
-        if (typeof req.body.contract !== 'undefined') {
-            Contract.findOne({exchange: req.body.contract.exchange,
-                              stock_code: req.body.contract.stock_code}, function(err, contract) {
-                if (err || !contract) {
-                    console.log(err);
-                    res.status(500).send({error_msg: err? err.errmsg: "no available contract"});
-                    return;
-                }
-                getProfitImpl(req, res, user, contract._id);
-                
-            });
-        } else {
-            getProfitImpl(req, res, user, null);
-        }
-    });
-}
-
 function createUser(data, cb) {
     console.log(data);
     var user = new User(data);
@@ -794,7 +696,6 @@ module.exports = {
     riskControl: riskControl,
     windControl: windControl,
     getLastFuturesPrice: mockTrader.getLastFuturesPrice,
-    getProfit: getProfit,
     resetUser: resetUser,
 	initHive: initHive,
     destroyHive: destroyHive,
