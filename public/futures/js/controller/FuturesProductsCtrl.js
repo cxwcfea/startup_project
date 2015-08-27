@@ -42,7 +42,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             time: '工作日09:15-11:30  13:00-15:15'
         },
         {
-            value: 4,
+            value: 1,
             name: 'AG1512',
             type: '沪 银',
             intro: '白银期货',
