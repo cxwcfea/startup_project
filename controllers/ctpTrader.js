@@ -372,36 +372,6 @@ function windControl(userId, forceClose, userContract, cb) {
     });
 }
 
-function getHistoryOrders(req, res) {
-    console.log(req.body);
-    // find user
-    var findings = Order.find({$and: [
-        {userId: req.body.user_id},
-        {timestamp: {$gte: req.body.date_begin + 8*3600*1000}},
-        {timestamp: {$lt: req.body.date_end + 8*3600*1000}}
-    ]}).sort({timestamp: -1}).skip(req.body.page.from).limit(req.body.page.perpage);
-    findings.exec(function(err, collection) {
-        if (err) {
-            console.log(err);
-            res.status(500).send({error_msg: err.errmsg});
-            return;
-        }
-        if (!collection) {
-            console.log('order not found');
-            res.status(400).send({error_msg: 'order not found'});
-            return;
-        }
-        getUserInfo({user_id:req.body.user_id}, function(err, user) {
-            if (err) {
-                console.log(err);
-                res.status(500).send({error_msg: err.errmsg});
-                return;
-            }
-            res.send({user:user, orders:collection, pageCount:req.body.page.count});
-        });
-    });
-}
-
 function getProfitImpl(req, res, user, contractId) {
     var query = {userId: req.body.user_id};
     if (contractId !== null) {
@@ -822,7 +792,6 @@ module.exports = {
     createOrder: createOrder,
     getStockCode: getStockCode,
     riskControl: riskControl,
-    getHistoryOrders: getHistoryOrders,
     windControl: windControl,
     getLastFuturesPrice: mockTrader.getLastFuturesPrice,
     getProfit: getProfit,

@@ -273,13 +273,21 @@ function getOrders(req, res) {
     req.body.date_begin = 0;
     req.body.date_end = Date.now();
     req.body.page = page;
-    if (req.query.type == 1 && req.user.wechat.real_trader) {
-        req.body.user_id = req.user.wechat.real_trader;
-        ctpTrader.getHistoryOrders(req, res);
+    req.body.user_id = req.user.wechat.trader;
+    if (req.query.type == 1) {
+        if (req.query.product == 0) {
+            req.body.user_id = req.user.wechat.real_trader ? req.user.wechat.real_trader : req.user.wechat.trader;
+        } else if (req.query.product == 1) {
+            req.body.user_id = req.user.wechat.real_silverTrader ? req.user.wechat.real_silverTrader : req.user.wechat.silverTrader;
+        }
     } else {
-        req.body.user_id = req.user.wechat.trader;
-        mockTrader.getHistoryOrders(req, res);
+        if (req.query.product == 0) {
+            req.body.user_id = req.user.wechat.trader;
+        } else if (req.query.product == 1) {
+            req.body.user_id = req.user.wechat.silverTrader;
+        }
     }
+    mockTrader.getHistoryOrders(req, res);
 }
 
 function getNearestOrders(req, res) {
