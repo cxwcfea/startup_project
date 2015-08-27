@@ -32,7 +32,6 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
     }
 
     $scope.products = [
-        /*
         {
             value: 0,
             name: 'IF1509',
@@ -42,7 +41,16 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             alias: '股指',
             time: '工作日09:15-11:30  13:00-15:15'
         },
-        */
+        {
+            value: 4,
+            name: 'AG1512',
+            type: '沪 银',
+            intro: '白银期货',
+            status: 0,
+            alias: '白银',
+            time: '工作日09:00-10:05 10:30-11:20 13:30-14:50 21:00-02:20'
+        }
+        /*
         {
             value: 1,
             name: 'EURUSD',
@@ -70,6 +78,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             alias: 'BABA',
             time: '工作日09:15-11:30  13:00-15:15'
         }
+        */
     ];
 	
 	$scope.openQrcodePopup = function (size) {
