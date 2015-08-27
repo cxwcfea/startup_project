@@ -234,24 +234,30 @@ function placeOrder(req, res) {
     }
 }
 
+// requestType 0 means mock, 1 means real
+function fetchTraderID(user, requestType, product) {
+    var trader = user.wechat.trader;
+    if (requestType == 1) {
+        if (product == 0) {
+            trader = user.wechat.real_trader ? user.wechat.real_trader : user.wechat.trader;
+        } else if (product == 1) {
+            trader = user.wechat.real_silverTrader ? user.wechat.real_silverTrader : user.wechat.silverTrader;
+        }
+    } else {
+        if (product == 0) {
+            trader = user.wechat.trader;
+        } else if (product == 1) {
+            trader = user.wechat.silverTrader;
+        }
+    }
+    return trader;
+}
+
 function getPositions(req, res) {
     if (!req.user || !req.user.wechat || !req.user.wechat.wechat_uuid) {
         return res.status(403).send({error_msg:'user need log in'});
     }
-    var trader = req.user.wechat.trader;
-    if (req.query.type == 1) {
-        if (req.query.product == 0) {
-            trader = req.user.wechat.real_trader ? req.user.wechat.real_trader : req.user.wechat.trader;
-        } else if (req.query.product == 1) {
-            trader = req.user.wechat.real_silverTrader ? req.user.wechat.real_silverTrader : req.user.wechat.silverTrader;
-        }
-    } else {
-        if (req.query.product == 0) {
-            trader = req.user.wechat.trader;
-        } else if (req.query.product == 1) {
-            trader = req.user.wechat.silverTrader;
-        }
-    }
+    var trader = fetchTraderID(req.user, req.query.type, req.query.product);
     mockTrader.getPositions({user_id:trader}, function(err, positions) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
@@ -273,20 +279,7 @@ function getOrders(req, res) {
     req.body.date_begin = 0;
     req.body.date_end = Date.now();
     req.body.page = page;
-    req.body.user_id = req.user.wechat.trader;
-    if (req.query.type == 1) {
-        if (req.query.product == 0) {
-            req.body.user_id = req.user.wechat.real_trader ? req.user.wechat.real_trader : req.user.wechat.trader;
-        } else if (req.query.product == 1) {
-            req.body.user_id = req.user.wechat.real_silverTrader ? req.user.wechat.real_silverTrader : req.user.wechat.silverTrader;
-        }
-    } else {
-        if (req.query.product == 0) {
-            req.body.user_id = req.user.wechat.trader;
-        } else if (req.query.product == 1) {
-            req.body.user_id = req.user.wechat.silverTrader;
-        }
-    }
+    req.body.user_id = fetchTraderID(req.user, req.query.type, req.query.product);
     mockTrader.getHistoryOrders(req, res);
 }
 
@@ -297,12 +290,7 @@ function getNearestOrders(req, res) {
 
     var orderStartTime = moment().subtract(2.5, 'hours').toDate();
 
-    var userID;
-    if (req.query.type == 1 && req.user.wechat.real_trader) {
-        userID = req.user.wechat.real_trader;
-    } else {
-        userID = req.user.wechat.trader;
-    }
+    var userID = fetchTraderID(req.user, req.query.type, req.query.product);
 
     var query = mockTrader.Order.find({$and: [
         {userId: userID},
