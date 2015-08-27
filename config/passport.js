@@ -59,7 +59,7 @@ passport.use(new wechatStrategy({
                 if (err) {
                     done(err);
                 }
-                mockTrader.createOrder({
+                mockTrader.createUser({
                     name: profile.unionid,
                     warning: 7100000,
                     close: 7050000,
@@ -94,7 +94,7 @@ passport.use(new wechatStrategy({
         } else {
             console.log('wechat login found user with unionid:' + profile.unionid);
             if (!user.wechat.silverTrader) {
-                mockTrader.createOrder({
+                mockTrader.createUser({
                     name: profile.unionid,
                     warning: 7100000,
                     close: 7050000,
