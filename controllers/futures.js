@@ -45,6 +45,8 @@ function populatePPJUser(user, cb) {
     var query = User.findById(user._id);
     query.populate('wechat.trader');
     query.populate('wechat.real_trader');
+    query.populate('wechat.silverTrader');
+    query.populate('wechat.real_silverTrader');
     query.exec(function(err, u) {
         if (err) {
             cb(err);
@@ -889,7 +891,6 @@ function changeTradeSetting(req, res) {
             logger.warn('无法更新设置');
             return res.status(503).send({error_msg:'无法更新设置'});
         }
-        //ctpTrader.loadDBData();
         res.send({});
     });
 }
