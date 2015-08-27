@@ -98,9 +98,11 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
 	};
 
     $scope.selectProduct = function (index) {
+        /*
         if (index) {
             return;
         }
+        */
         var oldIndex = $scope.data.selectedProduct;
         $scope.data.selectedProduct = index;
         if (oldIndex != index) {
