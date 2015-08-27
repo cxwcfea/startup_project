@@ -176,7 +176,7 @@ function placeOrder(req, res) {
             contract = {exchange:'future', stock_code:'IFCURR'};
             break;
         case 1: // AG
-            contract = {exchange:'commodity', stock_code:'AGCURR'};
+            contract = {exchange:'future', stock_code:'agCURR'};
             break;
         /*
          case 2: // XAUUSD
@@ -318,7 +318,7 @@ function getUserProfit(req, res) {
             req.body.contract = {exchange:'future', stock_code:'IFCURR'};
             break;
         case 1: // AG
-            obj.order.contract = {exchange:'commodity', stock_code:'AGCURR'};
+            obj.order.contract = {exchange:'future', stock_code:'agCURR'};
             break;
         /*
         case '2': // XAUUSD

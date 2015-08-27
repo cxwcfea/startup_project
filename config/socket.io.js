@@ -10,14 +10,20 @@ var products = [
         historyKey: 'mt://future/IFHIST',
         currKey: 'mt://future/IFCURR',
         historyData: []
+    },
+    {
+        name: 'ag',
+        historyKey: 'mt://future/agHIST',
+        currKey: 'mt://future/agCURR',
+        historyData: []
     }
     /*
-    {
-        name: 'EURUSD',
-        historyKey: 'mt://forex/EURUSDHIST',
-        currKey: 'mt://forex/EURUSD',
-        historyData: []
-    },
+     {
+     name: 'EURUSD',
+     historyKey: 'mt://forex/EURUSDHIST',
+     currKey: 'mt://forex/EURUSD',
+     historyData: []
+     },
     {
         name: 'XAUUSD',
         historyKey: 'mt://commodity/XAUUSDHIST',
