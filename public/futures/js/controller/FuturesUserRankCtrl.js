@@ -3,7 +3,7 @@ angular.module('futuresApp').controller('FuturesUserRankCtrl', ['$scope', '$wind
     $scope.user = $scope.data.currentUser;
     $scope.data.selectedItem = 2;
 
-    $http.get('/api/futures/user_rank')
+    $http.get('/api/futures/user_rank?product=' + $scope.data.productID)
         .success(function(data, status) {
             var users = data.users;
             $scope.goldUser = users.shift();

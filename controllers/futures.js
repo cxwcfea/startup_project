@@ -95,9 +95,14 @@ function realHome(req, res, next) {
 }
 
 function fetchUserRankData(req, res) {
+    var productID = req.query.product;
     var query = User.find({});
     query.exists('wechat.wechat_uuid');
-    query.populate('wechat.trader');
+    if (productID == 0) {
+        query.populate('wechat.trader');
+    } else if (productID == 1) {
+        query.populate('wechat.silverTrader');
+    }
     query.select('wechat identity');
     query.exec(function(err, users) {
         if (err) {
