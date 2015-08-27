@@ -34,6 +34,24 @@
     .setting-box .higher input {
         height:46px !important;
     }
+    .slide-button {
+        height:40px;
+        width:60px;
+        position:relative;
+        border-radius:20px;
+        border:1px solid #ccc;
+        background-color:#ebebf4;
+    }
+    .slide-button .in {
+        height:40px;
+        width:40px;
+        position:absolute;
+        border-radius:50px;
+        background-color:#ebebf4;
+        border:1px solid #eee;
+        right:0;
+        top:0;
+    }
 </style>
 
 <section class="setting-box">
@@ -52,7 +70,12 @@
                             <div class="input-group-addon">止损金额</div>
                             <input type="number" class="form-control" ng-model="lossPoint" min="600" max="100000" placeholder="持仓亏损达到该金额时系统将自动平仓" required>
                             <div class="input-group-addon">
+                            <!--
                                 <span class="glyphicon glyphicon-question-sign" aria-hidden="true" ng-click="showLossPointHint()"></span>
+                            -->
+                                <div class="slide-button current">
+                                    <div class="in"></div>
+                                </div>
                             </div>
                         </div>
                         <br>
