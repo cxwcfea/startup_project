@@ -187,7 +187,7 @@ module.exports.requiresRole = function(role) {
 };
 
 module.exports.isWechatAuthenticated = function(req, res, next) {
-    if (!req.isAuthenticated() || !req.user.wechat.wechat_uuid) {
+    if (!req.isAuthenticated() || !req.user.wechat.wechat_uuid || !req.user.wechat.silverTrader) {
         res.redirect('/auth/wechat');
     } else {
         next();
