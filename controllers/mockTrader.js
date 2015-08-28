@@ -650,6 +650,7 @@ function createOrder(data, cb) {
               cb({code:2, msg:'user not found when create Order'});
               return lock.unlock();
           }
+          console.log('createOrder found user');
           if (user.status != 0) {
               cb({code:3, msg:'Account status is not normal.'});
               return lock.unlock();
@@ -669,10 +670,17 @@ function createOrder(data, cb) {
                   cb({code:2, msg:'failed to create contract'});
                   return lock.unlock();
               }
+              console.log('createOrder found contract');
               // find contract price info
               global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
+                  if (err) {
+                      console.log(err);
+                      cb({code:2, msg:err.toString()});
+                      return lock.unlock();
+                  }
                   var priceInfo = JSON.parse(priceInfoString);
                   priceInfo.LastPrice *= 100;
+                  console.log('createOrder got priceInfo');
                   Portfolio.findOne({$and: [{contractId: contract._id}, {userId: user._id}]}, function(err, portfolio) {
                       if (err) {
                           console.log(err);
@@ -680,6 +688,7 @@ function createOrder(data, cb) {
                           return lock.unlock();
                       }
                       if (!portfolio) {
+                          console.log('createOrder create portfolio');
                           portfolio = new Portfolio({contractId: contract._id, userId: user._id});
                       }
 
@@ -688,11 +697,13 @@ function createOrder(data, cb) {
                           return lock.unlock();
                       }
 
+                      console.log('createOrder getCosts');
                       var costs = getCosts(contract, priceInfo.LastPrice, data.order.quantity, portfolio.quantity, portfolio.total_point, portfolio.total_deposit);
                       if (user.cash < costs.open) {
                           cb({code:5, msg:'user.cash < costs.open'});
                           return lock.unlock();
                       }
+                      console.log('createOrder will createOrder');
                       var order = new Order({
                           contractId: contract._id,
                           userId: user._id,
