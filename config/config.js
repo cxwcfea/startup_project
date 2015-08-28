@@ -12,7 +12,7 @@ module.exports = {
         wechatAppId: 'wxc68d861f37a6f4ca',
         wechatSecret: '91bfa82c41555da23f03fc7fc049f0b1',
         futureIF: 'IF1509',
-        futureag: 'ag1512'
+        futureag: 'ag1512',
         ctpAccount: '00001',
         ctpPassword: '123456',
         ctpFrontAddr: 'tcp://180.168.146.181:10000/0096',
@@ -32,7 +32,7 @@ module.exports = {
         wechatAppId: 'wx93316d2e330a4d21',
         wechatSecret: '2fc6cd4d6bb198ece969664509562e02',
         futureIF: 'IF1509',
-        futureag: 'ag1512'
+        futureag: 'ag1512',
         ctpAccount: '851710073',
         ctpPassword: '283715',
         ctpFrontAddr: 'tcp://27.115.57.130:41205/9000',

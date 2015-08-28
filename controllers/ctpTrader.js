@@ -505,20 +505,20 @@ function createOrder(data, cb) {
                                   act = 2;
                                   price = bottom_price;
                               }
+                              var instrument = config.futureIF;
+                              if(user.productType == 1)
+                                  instrument = config.futureag;
                               if(instrument[0] == 'I' && instrument[1] == 'F' && Math.abs(data.order.quantity) != 100){
                                   cb('FATAL, quantity error, instrument might CROSS');
                                   logger.debug('FATAL, quantity error, instrument might CROSS');
                                   return lock.unlock();
                               }
-                              var instrument = config.futureIF;
-                              if(user.productType == 1)
-                                  instrument = config.futureag;
                               var ctp_order = {
                                   user_id: data.user_id,
                                   order_id: order_id,
                                   instrument: instrument,
                                   act: act, // positive for buy, 0 for close, negative for sell
-                                  size: Math.abs(data.order.quantity), // volume
+                                  size: Math.abs(data.order.quantity/100), // volume
                                   px_raw: parseFloat(price/100).toFixed(0) // price 
                               };
                               hive.createOrder(ctp_order, function(err, info) {
