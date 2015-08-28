@@ -6,7 +6,6 @@ var mongoose = require('mongoose');
     log4js = require('log4js'),
     env = process.env.NODE_ENV,
     config = require('../config/config')[env],
-	redEnvelope = require('../lib/redEnvelopes'),
     logger = log4js.getLogger('futures');
 
 var User = mockTrader.User,
@@ -628,15 +627,11 @@ var hive;
 function initHive(param) {
     logger.debug('init Hive**************************');
     var initConfig = {
-        ip: '218.241.142.230',
-        //ip: '127.0.0.1',
+        ip: config.ctpIP,
         port: 7777,
-        //investor: '851710073',
-        //password: '283715',
-        //front_addr: 'tcp://27.115.57.130:41205/9000',
-        investor: '00001',
-        password: '123456',
-        front_addr: 'tcp://180.168.146.181:10000/0096',
+        investor: config.ctpAccount,
+        password: config.ctpPassword,
+        front_addr: config.ctpFrontAddr,
         client_id: param,
         version: 1,
         interval:128
