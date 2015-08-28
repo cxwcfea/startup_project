@@ -334,8 +334,11 @@ function windControl(userId, forceClose, userContract, cb) {
                           if (!forceClose && user.cash + income > user.close) {
                               // No risk
                               //console.log("No risk");
-                              cb(null);
-                              return lock.unlock();
+                              if (asyncObj.remaining <= 0 && !asyncObj.callbackInvoke){
+                                  asyncObj.callbackInvoke = true;
+                                  lock.unlock();
+                                  return cb(null);
+                              }
                           } else {
                               if (income > 0) {
                                   // Close all positions
