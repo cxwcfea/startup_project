@@ -254,7 +254,7 @@ angular.module("futuresApp")
                     }
                 ],
                 tooltip: {
-                    valueDecimals: 1
+                    valueDecimals: 0
                 }
             });
 
