@@ -437,10 +437,10 @@ function getPositions(data, cb) {
     });
 }
 
-function getProfitImpl(req, res, user, contractId) {
+function getProfitImpl(req, res, user, contract) {
     var query = {userId: req.body.user_id};
-    if (contractId !== null) {
-      query = {userId: req.body.user_id, contractId: contractId};
+    if (contract !== null) {
+      query = {userId: req.body.user_id, contractId: contract._id};
     }
     Portfolio.find(query, function(err, portfolio) {
         if (err) {
@@ -450,7 +450,7 @@ function getProfitImpl(req, res, user, contractId) {
         }
         if (!portfolio.length) {
             console.log('portfolio not found');
-            getLastFuturesPrice(function(err, data) {
+            getLastFuturesPrice(contract, function(err, data) {
                 if (err) {
                     return res.status(400).send({error_msg:err.toString()});
                 }
@@ -526,7 +526,7 @@ function getProfit(req, res) {
                     res.status(500).send({error_msg: err? err.errmsg: "no available contract"});
                     return;
                 }
-                getProfitImpl(req, res, user, contract._id);
+                getProfitImpl(req, res, user, contract);
             });
         } else {
             getProfitImpl(req, res, user, null);
@@ -756,8 +756,8 @@ function getStockCode() {
     return "IFCURR";
 }
 
-function getLastFuturesPrice(cb) {
-    global.redis_client.get('mt://future/IFCURR', function(err, priceInfoString) {
+function getLastFuturesPrice(contract, cb) {
+    global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
         if (err) {
             cb(err);
         }
