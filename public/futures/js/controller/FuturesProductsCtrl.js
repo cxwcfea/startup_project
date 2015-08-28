@@ -109,6 +109,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             $scope.data.productID = index;
             $scope.data.productType = $scope.products[index].alias;
             Socket.emit('join', {name:$scope.data.currentUser._id, room:index});
+            $scope.data.flags_data = [];
         }
         $location.path('/home');
     };
