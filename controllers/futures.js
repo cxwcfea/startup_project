@@ -113,8 +113,14 @@ function fetchUserRankData(req, res) {
             return res.status(500).send({error_msg:err.toString()});
         }
         users.sort(function(x, y) {
-            if (y.wechat.trader && x.wechat.trader) {
-                return y.wechat.trader.lastCash - x.wechat.trader.lastCash;
+            if (productID == 0) {
+                if (y.wechat.trader && x.wechat.trader) {
+                    return y.wechat.trader.lastCash - x.wechat.trader.lastCash;
+                }
+            } else if (productID == 1) {
+                if (y.wechat.silverTrader && x.wechat.silverTrader) {
+                    return y.wechat.silverTrader.lastCash - x.wechat.silverTrader.lastCash;
+                }
             }
             return true;
         });

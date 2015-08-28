@@ -52,6 +52,7 @@ passport.use(new wechatStrategy({
                 warning: 18000000,
                 close: 17500000,
                 cash: 20000000,
+                lastCash: 20000000,
                 deposit: 3000000,
                 debt: 17000000,
                 status: 0
@@ -64,6 +65,7 @@ passport.use(new wechatStrategy({
                     warning: 7100000,
                     close: 7050000,
                     cash: 7300000,
+                    lastCash: 7300000,
                     deposit: 300000,
                     debt: 7000000,
                     productType: 1,
@@ -99,6 +101,7 @@ passport.use(new wechatStrategy({
                     warning: 7100000,
                     close: 7050000,
                     cash: 7300000,
+                    lastCash: 7300000,
                     deposit: 300000,
                     debt: 7000000,
                     productType: 1,
