@@ -10,7 +10,7 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
     $scope.currentItem = 0;
     $scope.items = [
         {
-            name: '股指',
+            name: '交易',
             value: 0
         },
         {
