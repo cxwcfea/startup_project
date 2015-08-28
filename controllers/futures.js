@@ -216,8 +216,9 @@ function placeOrder(req, res) {
             }
         };
 
+        var trader = fetchTraderID(req.user, req.body.type, productID);
         if (req.body.type == 1 && req.user.wechat.status === 4) {
-            obj.user_id = req.user.wechat.real_trader;
+            obj.user_id = trader;
             ctpTrader.createOrder(obj, function(err, order) {
                 if (err) {
                     var msg = getErrorMessage(err);
@@ -226,7 +227,7 @@ function placeOrder(req, res) {
                 res.send(order);
             });
         } else {
-            obj.user_id = req.user.wechat.trader;
+            obj.user_id = trader;
             mockTrader.createOrder(obj, function(err, order) {
                 if (err) {
                     logger.error('placeOrder error:' + err.msg);
