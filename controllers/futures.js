@@ -176,6 +176,7 @@ function placeOrder(req, res) {
             contract = {exchange:'future', stock_code:'IFCURR'};
             break;
         case 1: // AG
+            quantity *= 10;
             contract = {exchange:'future', stock_code:'agCURR'};
             break;
         /*
