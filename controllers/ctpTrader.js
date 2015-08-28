@@ -389,8 +389,12 @@ function getInstrument(){
 	if (month < 10) month = "0" + month;
 	return "IF" + (d.getYear()-100) + month;
 }
-
+var orderID = 0;
 function generateOrderID(callback){
+    orderID += 1;
+    callback(null, orderID);
+}
+function generateOrderIDFromRedis(callback){
     var resource = 'mt://lock/order_id/ctp';
     var ttl = 10000;
     
