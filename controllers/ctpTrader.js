@@ -285,9 +285,6 @@ function windControl(userId, forceClose, userContract, cb) {
                           //console.log(costs);
                           if (asyncObj.remaining > 0 && typeof userContract === 'undefined') {
                               console.log("Still counting: " + asyncObj);
-                              //if (typeof user2cb_obj !== 'undefined') {
-                              //    delete user2cb_obj[userId];
-                              //}
                               return lock.unlock();
                           }
                           //console.log("Completed: " + asyncObj);
@@ -301,7 +298,7 @@ function windControl(userId, forceClose, userContract, cb) {
                               return lock.unlock();
                           } else {
                               if (income > 0) {
-                                  var key = 'IF-OrderID';
+                                  var key = 'FUTURE-OrderID';
                                   //global.redis_client.get(key, function(err, order_id){
                                   generateOrderID(function(err, order_id){
                                       if (err) {
@@ -315,12 +312,15 @@ function windControl(userId, forceClose, userContract, cb) {
                                           act = 4;
                                           price = bottom_price;
                                       }
+                                      var instrument = config.futureIF;
+                                      if(user.productType == 1)
+                                          instrument = config.futureag;
                                       var ctp_order_close = {
                                           user_id: userId,
                                           order_id: order_id,
-                                          instrument: config.futureIF,
+                                          instrument: config.instrument,
                                           act: act, // close buy
-                                          size: 1, // volume
+                                          size: Math.abs(portf.quantity)/100, // volume
                                           px_raw: parseFloat(price).toFixed(0)
                                       };
                                       hive.createOrder(ctp_order_close, function(err, info) {
@@ -389,13 +389,17 @@ function getInstrument(){
 	if (month < 10) month = "0" + month;
 	return "IF" + (d.getYear()-100) + month;
 }
-
+var orderID = 0;
 function generateOrderID(callback){
+    orderID += 1;
+    callback(null, orderID);
+}
+function generateOrderIDFromRedis(callback){
     var resource = 'mt://lock/order_id/ctp';
     var ttl = 10000;
     
     redlock.lock(resource, ttl).then(function(outer_lock) {
-        var key = 'IF-OrderID';
+        var key = 'FUTURE-OrderID';
         global.redis_client.get(key, function(err, order_id){
             if (err) {
                 console.log(err);
@@ -483,7 +487,7 @@ function createOrder(data, cb) {
                           return lock.unlock();
                       }
 /*********create order in ctp************/
-					  var key = 'IF-OrderID';
+					  var key = 'FUTURE-OrderID';
                       var quantity_to_close = costs.quantity_to_close;
                       var actual_quantity = costs.actual_quantity;
 					  //global.redis_client.get(key, function(err, order_id){
@@ -505,13 +509,20 @@ function createOrder(data, cb) {
                                   act = 2;
                                   price = bottom_price;
                               }
+                              var instrument = config.futureIF;
+                              if(user.productType == 1)
+                                  instrument = config.futureag;
+                              if(instrument[0] == 'I' && instrument[1] == 'F' && Math.abs(data.order.quantity) != 100){
+                                  cb('FATAL, quantity error, instrument might CROSS');
+                                  logger.debug('FATAL, quantity error, instrument might CROSS');
+                                  return lock.unlock();
+                              }
                               var ctp_order = {
                                   user_id: data.user_id,
                                   order_id: order_id,
-                                  //instrument: instrument,
-                                  instrument: config.futureIF,
+                                  instrument: instrument,
                                   act: act, // positive for buy, 0 for close, negative for sell
-                                  size: 1.0, // volume
+                                  size: Math.abs(data.order.quantity/100), // volume
                                   px_raw: parseFloat(price/100).toFixed(0) // price 
                               };
                               hive.createOrder(ctp_order, function(err, info) {
