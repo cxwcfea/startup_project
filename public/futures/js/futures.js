@@ -169,6 +169,8 @@ angular.module("futuresApp")
                     if (historyData.productID == scope.data.productID) {
                         if (!historyData.data || !historyData.data[0]) return;
                         scope.data.firstPoint = historyData.data[0][0];
+                        console.log('productID:' + historyData.productID);
+                        console.log(historyData.data);
                         fillWholeData(historyData.data, scope.data, scope.data.firstPoint);
                     }
                     /*

@@ -74,11 +74,7 @@ function fetchHistoryData(cb) {
                     var value = Number(parseFloat(line.LastPrice).toPrecision(5));
                     if (!map[key]) {
                         map[key] = true;
-                        if (index === 0) {
-                            ret.unshift([key, value]);
-                        } else {
-                            ret.unshift([key, parseFloat(line.LastPrice)]);
-                        }
+                        ret.unshift([key, value]);
                     }
                 }
                 if (index === 1) {
