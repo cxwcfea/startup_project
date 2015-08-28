@@ -769,7 +769,6 @@ function getLastFuturesPrice(contract, cb) {
         }
         var priceInfo = JSON.parse(priceInfoString);
         priceInfo.LastPrice *= 100;
-        console.log('getLastFuturesPrice with contract', contract, priceInfo);
         cb(null, {ts:priceInfo.ts, lastPrice:priceInfo.LastPrice, yesterdayClose:priceInfo.PreSettlementPrice});
     });
 }

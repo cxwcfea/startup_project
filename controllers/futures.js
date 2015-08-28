@@ -313,18 +313,18 @@ function getUserProfit(req, res) {
     if (!req.user || !req.user.wechat || !req.user.wechat.wechat_uuid) {
         return res.status(403).send({error_msg:'user need log in'});
     }
-    switch (req.query.product) {
-        case '0': // IF
+    switch (parseInt(req.query.product)) {
+        case 0: // IF
             req.body.contract = {exchange:'future', stock_code:'IFCURR'};
             break;
         case 1: // AG
             obj.order.contract = {exchange:'future', stock_code:'agCURR'};
             break;
         /*
-        case '2': // XAUUSD
+        case 2: // XAUUSD
             req.body.contract = {exchange:'commodity', stock_code:'XAUUSD'};
             break;
-        case '3': // BABA
+        case 3: // BABA
             req.body.contract = {exchange:'stock', stock_code:'BABA'};
             break;
             */
