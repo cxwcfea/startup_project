@@ -458,8 +458,11 @@ function createOrder(data, cb) {
               global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
                   var priceInfo = JSON.parse(priceInfoString);
                   priceInfo.LastPrice *= 100;
-                  var top_price = priceInfo.PreSettlementPrice*1.0995*100;
-                  var bottom_price = priceInfo.PreSettlementPrice*(1-0.0995)*100;
+                  var stop_percentage = contract.stop_percentage;
+                  if(stop_percentage == 0)
+                      stop_percentage = 10;
+                  var top_price = priceInfo.PreSettlementPrice*(1 + stop_percentage/100)*100;
+                  var bottom_price = priceInfo.PreSettlementPrice*(1 - stop_percentage/100)*100;
                   //console.log(priceInfo);
                   Portfolio.findOne({$and: [{contractId: contract._id}, {userId: user._id}]}, function(err, portfolio) {
                       if (err) {
