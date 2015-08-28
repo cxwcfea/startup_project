@@ -353,8 +353,11 @@ function windControl(userId, forceClose, userContract, cb) {
                                   }
                               } else {
                                   //console.log("Closed");
-                                  cb(null);
-                                  return lock.unlock();
+                                  if (asyncObj.remaining <= 0 && !asyncObj.callbackInvoke){
+                                      asyncObj.callbackInvoke = true;
+                                      lock.unlock();
+                                      cb(null);
+                                  }
                               }
                           }
                       });
