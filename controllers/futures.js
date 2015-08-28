@@ -318,7 +318,7 @@ function getUserProfit(req, res) {
             req.body.contract = {exchange:'future', stock_code:'IFCURR'};
             break;
         case 1: // AG
-            obj.order.contract = {exchange:'future', stock_code:'agCURR'};
+            req.body.contract = {exchange:'future', stock_code:'agCURR'};
             break;
         /*
         case 2: // XAUUSD
