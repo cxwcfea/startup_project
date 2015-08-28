@@ -355,6 +355,12 @@
         </div>
     </div>
     -->
+    <div class="appoint">
+        <div class="row">
+            <p class="col-xs-6 text-danger">\{{data.productType}}</p>
+            <p class="col-xs-6 text-success">\{{data.real ? '实盘' : '虚拟盘'}}</p>
+        </div>
+    </div>
     <div class="appoint" ng-hide="data.real">
         <div class="row">
             <p class="col-xs-6" ng-click="resetCapital()">资金重置</p>
