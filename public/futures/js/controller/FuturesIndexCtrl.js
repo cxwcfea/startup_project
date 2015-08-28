@@ -31,7 +31,7 @@ angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window'
     $scope.data.productID = 0;
     $scope.data.selectedItem = 1;
     $scope.data.selectedProduct = 0;
-    $scope.data.productType = '股指';
+    $scope.data.productType = 'IF1509';
     $scope.items = [
         {
             value: 0,
