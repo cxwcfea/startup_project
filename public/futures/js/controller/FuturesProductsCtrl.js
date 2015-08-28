@@ -38,7 +38,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             type: '股 指',
             intro: '沪深300指数，涨跌均可买',
             status: tradeTime ? 1 : 0,
-            alias: '股指',
+            alias: 'IF1509',
             time: '工作日09:15-11:30  13:00-15:15'
         },
         {
@@ -47,7 +47,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             type: '沪 银',
             intro: '白银期货',
             status: 0,
-            alias: '白银',
+            alias: 'AG1512',
             time: '工作日09:00-11:30 13:30-13:00 21:00-02:30'
         }
         /*

@@ -235,12 +235,12 @@ angular.module("futuresApp")
                 },
                 series : [
                     {
-                        name : '股指',
+                        name : '指数',
                         data: [],
                         id: 'stock_data'
                     },
                     {
-                        name : '股指2',
+                        name : '指数2',
                         data: []
                     },
                     {
