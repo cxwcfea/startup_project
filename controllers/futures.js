@@ -479,6 +479,7 @@ function createAccount(req, res) {
                 user.wechat.real_trader = trader;
                 user.wechat.real_silverTrader = trader2;
                 user.wechat.status = 6;
+                user.wechat.silverStatus = 6;
                 user.save(function(err) {
                     if (err) {
                         return res.status(500).send({error_msg:err.toString()});
@@ -701,7 +702,12 @@ function getProfit(req, res) {
 
 function changeTraderStatus(req, res) {
     logger.info('changeTraderStatus operate by ' + req.user.mobile, req.body);
-    User.findByIdAndUpdate(req.body.uid, {'wechat.status':req.body.user_status}, function(err, user) {
+    var path = 'wechat.status';
+    var productID = req.body.product;
+    if (productID == 1) {
+        path = 'wechat.silverStatus';
+    }
+    User.findByIdAndUpdate(req.body.uid, {path:req.body.user_status}, function(err, user) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
         }
@@ -716,7 +722,6 @@ function changeTraderStatus(req, res) {
             sms.sendSMS(RISKCONTROL_NUM, '', content);
         }
         if (req.body.trader_status !== null && req.body.trader_status != undefined) {
-            var productID = req.body.product;
             var trader = user.wechat.real_trader;
             if (productID == 1) {
                 trader = user.wechat.real_silverTrader;

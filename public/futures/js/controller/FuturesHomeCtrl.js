@@ -4,12 +4,32 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     if ($scope.user.real === true) {
         $scope.data.real = true;
     }
-    if ($scope.data.real && $scope.user.wechat.real_trader) {
-        $scope.data.deposit = $scope.user.wechat.real_trader.deposit / 100;
-        $scope.data.cash = $scope.user.wechat.real_trader.cash;
+    if ($scope.data.real) {
+        if ($scope.data.productID == 1) {
+            if ($scope.user.wechat.real_silverTrader) {
+                $scope.data.deposit = $scope.user.wechat.real_silverTrader.deposit / 100;
+                $scope.data.cash = $scope.user.wechat.real_silverTrader.cash;
+            } else {
+                $scope.data.deposit = 3000;
+                $scope.data.cash = 7000000;
+            }
+        } else {
+            if ($scope.user.wechat.real_trader) {
+                $scope.data.deposit = $scope.user.wechat.real_trader.deposit / 100;
+                $scope.data.cash = $scope.user.wechat.real_trader.cash;
+            } else {
+                $scope.data.deposit = 30000;
+                $scope.data.cash = 20000000;
+            }
+        }
     } else {
-        $scope.data.deposit = 30000;
-        $scope.data.cash = 20000000;
+        if ($scope.data.productID == 1) {
+            $scope.data.deposit = 3000;
+            $scope.data.cash = 7000000;
+        } else {
+            $scope.data.deposit = 30000;
+            $scope.data.cash = 20000000;
+        }
     }
     var TEXT = '现在是非交易时间';
     var REAL_TEXT = '您的账户不能交易';
