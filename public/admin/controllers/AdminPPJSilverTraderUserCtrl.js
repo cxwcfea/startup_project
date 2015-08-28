@@ -127,8 +127,8 @@ angular.module('adminApp').controller('AdminPPJSilverTraderUserCtrl', ['$scope',
         var result = prompt('确定入资吗, 请输入要入资的金额');
         if (result != null) {
             result = parseInt(result);
-            if (!result || result < 30000) {
-                return gbNotifier.error('入资金额必须大于3万元');
+            if (!result || result < 3000) {
+                return gbNotifier.error('入资金额必须大于3千元');
             }
             var postData = {
                 uid: user._id,
