@@ -1,5 +1,5 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$window', '$modal', '$location', function($scope, $window, $modal, $location) {
+angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$window', '$modal', '$location', 'Socket', function($scope, $window, $modal, $location, Socket) {
     $scope.data.selectedItem = 0;
 
     var startTime = moment();
@@ -108,9 +108,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
         if (oldIndex != index) {
             $scope.data.productID = index;
             $scope.data.productType = $scope.products[index].alias;
-            if ($scope.data.socket) {
-                $scope.data.socket.emit('join', {name:$scope.data.currentUser._id, room:index});
-            }
+            Socket.emit('join', {name:$scope.data.currentUser._id, room:index});
         }
         $location.path('/home');
     };
