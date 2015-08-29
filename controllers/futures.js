@@ -121,8 +121,6 @@ function fetchUserRankData(req, res) {
                 if (y.wechat.silverTrader && x.wechat.silverTrader) {
                     return y.wechat.silverTrader.lastCash - x.wechat.silverTrader.lastCash;
                 } else if (x.silverTrader) {
-                    return true;
-                } else {
                     return false;
                 }
             }
