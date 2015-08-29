@@ -55,6 +55,7 @@ function fetchHistoryData(cb) {
     });
     */
     for (var j = 0; j < products.length; ++j) {
+        if (j === 0) continue;
         (function(){
             var index = j;
             global.redis_client.lrange(products[index].historyKey, 0, -1, function(err, data) {
@@ -103,6 +104,7 @@ function fetchNewData(cb) {
         if (!products[j].historyData.length) {
             continue;
         }
+        if (j === 0) continue;
         (function () {
             var index = j;
             global.redis_client.get(products[index].currKey, function(err, data) {

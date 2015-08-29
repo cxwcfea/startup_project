@@ -37,7 +37,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             name: 'A50',
             type: '指 数',
             intro: '开发中',
-            status: tradeTime ? 1 : 0,
+            status: 0,
             alias: 'A50',
             time: '工作日'
         },
