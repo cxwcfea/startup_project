@@ -318,7 +318,7 @@ function windControl(userId, forceClose, userContract, cb) {
                                       var ctp_order_close = {
                                           user_id: userId,
                                           order_id: order_id,
-                                          instrument: config.instrument,
+                                          instrument: instrument,
                                           act: act, // close buy
                                           size: Math.abs(portf.quantity)/100, // volume
                                           px_raw: parseFloat(price).toFixed(0)
@@ -368,6 +368,94 @@ function windControl(userId, forceClose, userContract, cb) {
     }, function(){
       console.log("fail to lock resource: " + resource);
       cb("fail to lock resource: " + resource);
+    });
+}
+
+function closeOne(mongo_user, mongo_portfolio, contract, top_price, bottom_price, cb) {
+    generateOrderID(function(err, order_id){
+        if (err) {
+            console.log(err);
+            cb({code:2, msg:err.toString()});
+            return;
+        }
+        var act = 3;
+        var price = top_price;
+        if(mongo_portfolio.quantity > 0) {
+            act = 4;
+            price = bottom_price;
+        }
+        var instrument = config.futureIF;
+        if(mongo_user.productType == 1)
+        instrument = config.futureag;
+        var ctp_order_close = {
+            user_id: mongo_user._id,
+            order_id: order_id,
+            instrument: instrument,
+            act: act,
+            size: Math.abs(portf.quantity)/100, // volume
+            px_raw: parseFloat(price).toFixed(0)
+        };
+        hive.createOrder(ctp_order_close, function(err, info) {
+            if(err){
+                console.log(err);
+                cb(err);
+                return;
+            }
+            if(info.code == -1) {
+                console.log('hive rejected to close order.');
+                cb('交易所拒绝访问');
+                return;
+            }
+            console.log('order closed in hive.');
+            var q = mongo_portfolio.quantity>0 ? -100 : 100;
+            var costs = getCosts(contract, info.traded_price*100, q, mongo_portfolio.quantity, mongo_portfolio.total_point, mongo_portfolio.total_deposit);
+            var oldUserCash = user.cash;
+            var oldUserLastCash = user.lastCash;
+            // Close user
+            user.cash -= cost.open;
+            user.lastCash = user.cash;
+            User.update({_id: mongo_user._id},
+                {$set:{cash: mongo_user.cash, lastCash: mongo_user.lastCash}}, function(err, numberAffected, raw) {
+                if (err || numberAffected != 1) {
+                    console.log(err);
+                    cb(err.toString());
+                    return;
+                }
+                Portfolio.update({_id: mongo_portfolio._id},
+                    {
+                        $set:{quantity: mongo_portfolio+q, total_point: mongo_portfolio-costs.point, total_deposit: mongo_portfolio-costs.deposit},
+                        $inc:{fee: costs.fee}
+                    },
+                    function(err, numberAffected, raw) {
+                        if (err || !numberAffected) {
+                            console.log(err);
+                            cb(err.toString());
+                            return;
+                        }
+                        var order = new Order({
+                            contractId: mongo_portfolio.contractId,
+                            userId: mongo_user._id,
+                            cash: mongo_user.cash,
+                            entrustId: order_id,
+                            quantity: q,
+                            price: info.traded_price*100,
+                            fee: costs.fee,
+                            lockedCash: costs.locked_cash,
+                            profit: costs.net_profit
+                        });
+                        order.save(function(err) {
+                            if (err) {
+                                console.log(err);
+                                cb('order save failed.');
+                                return;
+                            }
+                        });
+                        cb(null, order);
+                        return;
+                    }
+                );
+            });
+        });
     });
 }
 
@@ -464,9 +552,9 @@ function createOrder(data, cb) {
                   priceInfo.LastPrice *= 100;
                   var stop_percentage = contract.stop_percentage;
                   if(stop_percentage == 0)
-                      stop_percentage = 10;
-                  var top_price = priceInfo.PreSettlementPrice*(1 + stop_percentage/100)*100;
-                  var bottom_price = priceInfo.PreSettlementPrice*(1 - stop_percentage/100)*100;
+                      stop_percentage = 10.0;
+                  var top_price = priceInfo.PreSettlementPrice*(1 + parseFloat(stop_percentage)/100)*100;
+                  var bottom_price = priceInfo.PreSettlementPrice*(1 - parseFloat(stop_percentage)/100)*100;
                   //console.log(priceInfo);
                   Portfolio.findOne({$and: [{contractId: contract._id}, {userId: user._id}]}, function(err, portfolio) {
                       if (err) {
@@ -477,10 +565,13 @@ function createOrder(data, cb) {
                       if (!portfolio) {
                           portfolio = new Portfolio({contractId: contract._id, userId: user._id});
                       }
+                      /*
                       if (portfolio.quantity != 0) {
                           cb({code:6, msg:'position exist.'});
                           return lock.unlock();
                       }
+                      */
+                      
                       var costs = getCosts(contract, priceInfo.LastPrice, data.order.quantity, portfolio.quantity, portfolio.total_point, portfolio.total_deposit);
                       if (user.cash < costs.open) {
                           cb({code:5, msg:'user.cash < costs.open'});
@@ -499,8 +590,16 @@ function createOrder(data, cb) {
                           }
                           // close positon first
                           if(quantity_to_close != 0){
-                              cb({code:6, msg:'need to close position first'});
-                              return lock.unlock();
+                              //cb({code:6, msg:'need to close position first'});
+                              //return lock.unlock();
+                              closeOne(user, portfolio, top_price, bottom_price, function(err, info, order){
+                                  if(err){
+                                      cb({code:2, msg: err.toString()});
+                                      return lock.unlock();
+                                  }
+                                  cb(null, order);
+                                  return lock.unlock();
+                              });
                           } else { // create new order directly for user position is empty
                               console.log("create order directly");
                               var price = top_price;

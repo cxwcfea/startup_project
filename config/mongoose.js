@@ -41,6 +41,7 @@ function createDefaultPPJContract() {
                     deposit_percentage:1200,
                     point_value:30000,
                     stop_percentage:10,
+                    volume_limit:1,
                     cash:'CNY'
                 },
                 {
@@ -85,6 +86,7 @@ function createDefaultPPJContract() {
                     fee_per_ten_thousand:0,
                     deposit_percentage:400,
                     stop_percentage:6, // 6,9,11
+                    volume_limit:10,
                     point_value:1500,
                     cash:'CNY'
                 }
