@@ -692,7 +692,7 @@ function createOrder(data, cb) {
                           portfolio = new Portfolio({contractId: contract._id, userId: user._id});
                       }
 
-                      if ((data.order.quantity < 0 && portfolio.quantity < 0) || (data.order.quantity > 0 && portfolio.quantity > 0)) {
+                      if ((data.order.quantity < 0 && portfolio.quantity <= -1000) || (data.order.quantity > 0 && portfolio.quantity >= 1000)) {
                           cb({code:7, msg:'can not buy more than 1 hand for the same type'});
                           return lock.unlock();
                       }
