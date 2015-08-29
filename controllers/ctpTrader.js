@@ -323,7 +323,12 @@ function windControl(userId, forceClose, userContract, cb) {
                                           size: Math.abs(portf.quantity)/100, // volume
                                           px_raw: parseFloat(price).toFixed(0)
                                       };
-                                      hive.createOrder(ctp_order_close, function(err, info) {
+                                      //hive.createOrder(ctp_order_close, function(err, info) {
+                                      {
+                                          var info = {};
+                                          info.traded_price = priceInfo.LastPrice;
+                                          info.code = 0;
+                                          var err = null;
                                           if(err){
                                               console.log(err);
                                               cb(err);
@@ -352,7 +357,7 @@ function windControl(userId, forceClose, userContract, cb) {
                                               }
                                               closeAll(userId, portfolio, income, contractInfo, contractData, 0, cb, lock);
                                           }
-                                      });
+                                      }//);
                                   });
                               } else {
                                   //console.log("Closed");
@@ -371,7 +376,7 @@ function windControl(userId, forceClose, userContract, cb) {
     });
 }
 
-function closeOne(mongo_user, mongo_portfolio, contract, top_price, bottom_price, cb) {
+function closeOne(mongo_user, mongo_portfolio, curr_price, contract, top_price, bottom_price, cb) {
     generateOrderID(function(err, order_id){
         if (err) {
             console.log(err);
@@ -395,7 +400,12 @@ function closeOne(mongo_user, mongo_portfolio, contract, top_price, bottom_price
             size: Math.abs(portf.quantity)/100, // volume
             px_raw: parseFloat(price).toFixed(0)
         };
-        hive.createOrder(ctp_order_close, function(err, info) {
+        //hive.createOrder(ctp_order_close, function(err, info) {
+        {
+            var info = {};
+            info.traded_price =  priceInfo.LastPrice/100;
+            info.code = 0;
+            var err = null;
             if(err){
                 console.log(err);
                 cb(err);
@@ -455,7 +465,7 @@ function closeOne(mongo_user, mongo_portfolio, contract, top_price, bottom_price
                     }
                 );
             });
-        });
+        }// );
     });
 }
 
@@ -565,7 +575,7 @@ function createOrder(data, cb) {
                       if (!portfolio) {
                           portfolio = new Portfolio({contractId: contract._id, userId: user._id});
                       }
-                      /*
+                      /* // TODO: maximum 10 hands for ag1512
                       if (portfolio.quantity != 0) {
                           cb({code:6, msg:'position exist.'});
                           return lock.unlock();
@@ -590,9 +600,7 @@ function createOrder(data, cb) {
                           }
                           // close positon first
                           if(quantity_to_close != 0){
-                              //cb({code:6, msg:'need to close position first'});
-                              //return lock.unlock();
-                              closeOne(user, portfolio, top_price, bottom_price, function(err, info, order){
+                              closeOne(user, portfolio, priceInfo.LastPrice, top_price, bottom_price, function(err, info, order){
                                   if(err){
                                       cb({code:2, msg: err.toString()});
                                       return lock.unlock();
@@ -624,7 +632,12 @@ function createOrder(data, cb) {
                                   size: Math.abs(data.order.quantity/100), // volume
                                   px_raw: parseFloat(price/100).toFixed(0) // price 
                               };
-                              hive.createOrder(ctp_order, function(err, info) {
+                              //hive.createOrder(ctp_order, function(err, info) {
+                              {
+                                  var info = {};
+                                  info.traded_price = priceInfo.LastPrice/100;
+                                  info.code = 0;
+                                  var err = null;
                                   if (err) {
                                       console.log(err);
                                       cb(err);
@@ -691,7 +704,7 @@ function createOrder(data, cb) {
                                           });
                                       });
                                   });
-                              }); // new order creation ends here
+                              }//); // new order creation ends here
                           }
                       }); // get new order id from redis ends here
                   }); //get portfolio
