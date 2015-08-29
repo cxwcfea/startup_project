@@ -397,13 +397,13 @@ function closeOne(mongo_user, mongo_portfolio, curr_price, contract, top_price, 
             order_id: order_id,
             instrument: instrument,
             act: act,
-            size: Math.abs(portf.quantity)/100, // volume
+            size: Math.abs(mongo_portfolio.quantity)/100, // volume
             px_raw: parseFloat(price).toFixed(0)
         };
         //hive.createOrder(ctp_order_close, function(err, info) {
         {
             var info = {};
-            info.traded_price =  priceInfo.LastPrice/100;
+            info.traded_price =  curr_price/100;
             info.code = 0;
             var err = null;
             if(err){
@@ -419,11 +419,11 @@ function closeOne(mongo_user, mongo_portfolio, curr_price, contract, top_price, 
             console.log('order closed in hive.');
             var q = mongo_portfolio.quantity>0 ? -100 : 100;
             var costs = getCosts(contract, info.traded_price*100, q, mongo_portfolio.quantity, mongo_portfolio.total_point, mongo_portfolio.total_deposit);
-            var oldUserCash = user.cash;
-            var oldUserLastCash = user.lastCash;
+            var oldUserCash = mongo_user.cash;
+            var oldUserLastCash = mongo_user.lastCash;
             // Close user
-            user.cash -= cost.open;
-            user.lastCash = user.cash;
+            mongo_user.cash -= costs.open;
+            mongo_user.lastCash = mongo_user.cash;
             User.update({_id: mongo_user._id},
                 {$set:{cash: mongo_user.cash, lastCash: mongo_user.lastCash}}, function(err, numberAffected, raw) {
                 if (err || numberAffected != 1) {
@@ -431,9 +431,12 @@ function closeOne(mongo_user, mongo_portfolio, curr_price, contract, top_price, 
                     cb(err.toString());
                     return;
                 }
+                console.log(mongo_portfolio);
+                console.log(costs);
                 Portfolio.update({_id: mongo_portfolio._id},
                     {
-                        $set:{quantity: mongo_portfolio+q, total_point: mongo_portfolio-costs.point, total_deposit: mongo_portfolio-costs.deposit},
+                        $set:{quantity: mongo_portfolio.quantity+q, total_point: mongo_portfolio.total_point-costs.point, 
+                                total_deposit: mongo_portfolio.total_deposit-costs.deposit},
                         $inc:{fee: costs.fee}
                     },
                     function(err, numberAffected, raw) {
@@ -600,7 +603,7 @@ function createOrder(data, cb) {
                           }
                           // close positon first
                           if(quantity_to_close != 0){
-                              closeOne(user, portfolio, priceInfo.LastPrice, top_price, bottom_price, function(err, info, order){
+                              closeOne(user, portfolio, priceInfo.LastPrice, contract, top_price, bottom_price, function(err, order){
                                   if(err){
                                       cb({code:2, msg: err.toString()});
                                       return lock.unlock();
