@@ -28,10 +28,10 @@ angular.module('futuresApp').controller('FuturesIndexCtrl', ['$scope', '$window'
     $scope.data.flags_data = [];
     $scope.data.status = 0;
 	
-    $scope.data.productID = 0;
+    $scope.data.productID = 1;
     $scope.data.selectedItem = 1;
-    $scope.data.selectedProduct = 0;
-    $scope.data.productType = 'IF1509';
+    $scope.data.selectedProduct = 1;
+    $scope.data.productType = 'AG1512';
     $scope.items = [
         {
             value: 0,

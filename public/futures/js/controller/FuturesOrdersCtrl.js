@@ -10,9 +10,10 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
     $scope.currentItem = 0;
     $scope.items = [
         {
-            name: '股指',
+            name: '交易记录',
             value: 0
-        },
+        }
+        /*
         {
             name: '美元',
             value: 1
@@ -21,6 +22,7 @@ angular.module('futuresApp').controller('FuturesOrdersCtrl', ['$scope', '$window
             name: '欧元',
             value: 2
         }
+        */
     ];
 
     function getOrderForPage(pageNum) {

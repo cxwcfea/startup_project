@@ -34,12 +34,12 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
     $scope.products = [
         {
             value: 0,
-            name: 'IF1509',
-            type: '股 指',
-            intro: '沪深300指数，涨跌均可买',
+            name: 'A50',
+            type: '指 数',
+            intro: '开发中',
             status: tradeTime ? 1 : 0,
-            alias: 'IF1509',
-            time: '工作日09:15-11:30  13:00-15:15'
+            alias: 'A50',
+            time: '工作日'
         },
         {
             value: 1,
@@ -98,11 +98,9 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
 	};
 
     $scope.selectProduct = function (index) {
-        /*
-        if (index) {
+        if (index != 1) {
             return;
         }
-        */
         var oldIndex = $scope.data.selectedProduct;
         $scope.data.selectedProduct = index;
         if (oldIndex != index) {
