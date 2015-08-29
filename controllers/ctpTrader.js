@@ -433,10 +433,16 @@ function closeOne(mongo_user, mongo_portfolio, curr_price, contract, top_price, 
                 }
                 console.log(mongo_portfolio);
                 console.log(costs);
+                var lq = mongo_portfolio.longQuantity;
+                var sq = mongo_portfolio.shortQuantity;
+                if(mongo_portfolio.quantity > 0)
+                    lq -= 100;
+                if(mongo_portfolio.quantity < 0)
+                    sq -= 100;
                 Portfolio.update({_id: mongo_portfolio._id},
                     {
                         $set:{quantity: mongo_portfolio.quantity+q, total_point: mongo_portfolio.total_point-costs.point, 
-                                total_deposit: mongo_portfolio.total_deposit-costs.deposit},
+                                total_deposit: mongo_portfolio.total_deposit-costs.deposit, longQuantity: lq, shortQuantity: sq},
                         $inc:{fee: costs.fee}
                     },
                     function(err, numberAffected, raw) {
