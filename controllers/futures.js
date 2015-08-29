@@ -105,6 +105,7 @@ function fetchUserRankData(req, res) {
     if (productID == 0) {
         query.populate('wechat.trader');
     } else if (productID == 1) {
+        query.exists('wechat.silverTrader');
         query.populate('wechat.silverTrader');
     }
     query.select('wechat identity');
