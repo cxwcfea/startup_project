@@ -33,6 +33,38 @@
     }
     .setting-box .higher input {
         height:46px !important;
+        /*border-right:none !important;*/
+    }
+    .setting-box .slide-button {
+        height:30px;
+        width:50px;
+        position:relative;
+        border-radius:15px;
+        border:1px solid #ccc;
+    }
+    .setting-box .slide-button .in {
+        height:28px;
+        width:28px;
+        position:absolute;
+        border-radius:50px;
+        border:1px solid #ccc;
+        top:0;
+        background-color:#d6d6d6;
+    }
+    .setting-box .slide-button.off {
+        background-color:#ebebf4;
+    }
+    .setting-box .slide-button.on {
+        background-color:#00ff00;
+    }
+    .setting-box .slide-button.off .in {
+        left:0;
+    }
+    .setting-box .slide-button.on .in {
+        right:0;
+    }
+    .setting-box .input-group-addon.rewrite {
+        background-color:#ffffff;
     }
 </style>
 
@@ -53,6 +85,11 @@
                             <input type="number" class="form-control" ng-model="lossPoint" min="600" max="100000" placeholder="持仓亏损达到该金额时系统将自动平仓" required>
                             <div class="input-group-addon">
                                 <span class="glyphicon glyphicon-question-sign" aria-hidden="true" ng-click="showLossPointHint()"></span>
+                            <!--
+                                <div class="slide-button on">
+                                    <div class="in"></div>
+                                </div>
+                            -->
                             </div>
                         </div>
                         <br>
@@ -61,6 +98,11 @@
                             <input type="number" class="form-control" ng-model="winPoint" min="600" max="100000" placeholder="持仓盈利达到该金额时系统将自动平仓" required>
                             <div class="input-group-addon">
                                 <span class="glyphicon glyphicon-question-sign" aria-hidden="true" ng-click="showWinPointHint()"></span>
+                            <!--
+                                <div class="slide-button off">
+                                    <div class="in"></div>
+                                </div>
+                            -->
                             </div>
                         </div>
                     </div>

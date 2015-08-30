@@ -52,6 +52,7 @@ passport.use(new wechatStrategy({
                 warning: 18000000,
                 close: 17500000,
                 cash: 20000000,
+                lastCash: 20000000,
                 deposit: 3000000,
                 debt: 17000000,
                 status: 0
@@ -59,26 +60,62 @@ passport.use(new wechatStrategy({
                 if (err) {
                     done(err);
                 }
-                var userObj = {
-                    mobile: generateRandomMobile(10),
-                    password: 'xxxxxx',
-                    score: 5,
-                    roles: ['wechat'],
-                    wechat: {
-                        wechat_uuid: profile.unionid,
-                        wechat_name: profile.nickname,
-                        wechat_img: profile.headimgurl,
-                        wechat_openid: openid,
-                        trader: trader
+                mockTrader.createUser({
+                    name: profile.unionid,
+                    warning: 7100000,
+                    close: 7050000,
+                    cash: 7300000,
+                    lastCash: 7300000,
+                    deposit: 300000,
+                    debt: 7000000,
+                    productType: 1,
+                    status: 0
+                }, function(err, trader2) {
+                    if (err) {
+                        done(err);
                     }
-                };
-                User.create(userObj, function(err, user) {
-                    done(err, user, profile);
+                    var userObj = {
+                        mobile: generateRandomMobile(10),
+                        password: 'xxxxxx',
+                        score: 5,
+                        roles: ['wechat'],
+                        wechat: {
+                            wechat_uuid: profile.unionid,
+                            wechat_name: profile.nickname,
+                            wechat_img: profile.headimgurl,
+                            wechat_openid: openid,
+                            trader: trader,
+                            silverTrader: trader2
+                        }
+                    };
+                    User.create(userObj, function(err, user) {
+                        done(err, user, profile);
+                    });
                 });
             });
         } else {
             console.log('wechat login found user with unionid:' + profile.unionid);
-            if (!user.wechat.logged) {
+            if (!user.wechat.silverTrader) {
+                mockTrader.createUser({
+                    name: profile.unionid,
+                    warning: 7100000,
+                    close: 7050000,
+                    cash: 7300000,
+                    lastCash: 7300000,
+                    deposit: 300000,
+                    debt: 7000000,
+                    productType: 1,
+                    status: 0
+                }, function(err, trader) {
+                    if (err) {
+                        done(err, user, profile);
+                    }
+                    user.wechat.silverTrader = trader;
+                    user.save(function(err) {
+                        done(err, user, profile);
+                    });
+                });
+            } else if (!user.wechat.logged) {
                 user.wechat.logged = true;
                 user.score += 5;
                 user.wechat.wechat_name = profile.nickname;
@@ -153,7 +190,7 @@ module.exports.requiresRole = function(role) {
 };
 
 module.exports.isWechatAuthenticated = function(req, res, next) {
-    if (!req.isAuthenticated() || !req.user.wechat.wechat_uuid) {
+    if (!req.isAuthenticated() || !req.user.wechat.wechat_uuid || !req.user.wechat.silverTrader) {
         res.redirect('/auth/wechat');
     } else {
         next();

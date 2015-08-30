@@ -10,14 +10,20 @@ var products = [
         historyKey: 'mt://future/IFHIST',
         currKey: 'mt://future/IFCURR',
         historyData: []
+    },
+    {
+        name: 'ag',
+        historyKey: 'mt://future/agHIST',
+        currKey: 'mt://future/agCURR',
+        historyData: []
     }
     /*
-    {
-        name: 'EURUSD',
-        historyKey: 'mt://forex/EURUSDHIST',
-        currKey: 'mt://forex/EURUSD',
-        historyData: []
-    },
+     {
+     name: 'EURUSD',
+     historyKey: 'mt://forex/EURUSDHIST',
+     currKey: 'mt://forex/EURUSD',
+     historyData: []
+     },
     {
         name: 'XAUUSD',
         historyKey: 'mt://commodity/XAUUSDHIST',
@@ -49,6 +55,7 @@ function fetchHistoryData(cb) {
     });
     */
     for (var j = 0; j < products.length; ++j) {
+        if (j === 0) continue;
         (function(){
             var index = j;
             global.redis_client.lrange(products[index].historyKey, 0, -1, function(err, data) {
@@ -65,14 +72,11 @@ function fetchHistoryData(cb) {
                     var line = data[i];
                     line = JSON.parse(line.replace(/'/g, ''))[0];
                     var key = parseInt(line.ts/1000);
-                    var value = Number(parseFloat(line.LastPrice).toPrecision(5));
+                    //var value = Number(parseFloat(line.LastPrice).toPrecision(5));
+                    var value = parseInt(line.LastPrice);
                     if (!map[key]) {
                         map[key] = true;
-                        if (index === 0) {
-                            ret.unshift([key, value]);
-                        } else {
-                            ret.unshift([key, parseFloat(line.LastPrice)]);
-                        }
+                        ret.unshift([key, value]);
                     }
                 }
                 products[index].historyData = ret;
@@ -100,6 +104,7 @@ function fetchNewData(cb) {
         if (!products[j].historyData.length) {
             continue;
         }
+        if (j === 0) continue;
         (function () {
             var index = j;
             global.redis_client.get(products[index].currKey, function(err, data) {
@@ -107,12 +112,15 @@ function fetchNewData(cb) {
                 if (!err) {
                     var historyData = products[index].historyData;
                     data = JSON.parse(data);
+                    /*
                     if (index === 0) {
                         var value = Number(parseFloat(data.LastPrice).toPrecision(5));
                         ret = [parseInt(data.ts/1000), value];
                     } else {
                         ret = [parseInt(data.ts/1000), parseFloat(data.LastPrice)];
                     }
+                    */
+                    ret = [parseInt(data.ts/1000), parseInt(data.LastPrice)];
                     if (ret[0] > historyData[historyData.length-1][0]) {
                         historyData.push(ret);
                     }

@@ -33,6 +33,7 @@ var PPJUserSchema = mongoose.Schema({
     status: { type: Number, default: 0 },  // 0: Normal, 1: Cannot buy, 2: Forbidden
     lastCash: { type: Number, default: 0 },  // basis: cent, 0.01, the cash of the last time when user have no position
     real: { type: Boolean, default: false },
+    productType: { type: Number, default: 0 }, // 0 or null means future, 1 means silver
     winPoint: { type: Number, default: 0 },
     lossPoint: { type: Number, default: 0 },
     tradeControl: { type: Boolean, default: false },
@@ -49,6 +50,7 @@ var PPJContractSchema = mongoose.Schema({
     fee_per_ten_thousand: { type: Number, default: 25 },  // basis: cent, 0.01
     deposit_percentage: { type: Number, default: 1200 },  // basis: 0.01
     point_value: { type: Number, default: 30000 },  // basis: cent, 0.01
+    stop_percentage: { type: Number, default: 10 },  // IF:10%   ag:7%
     cash: { type: String, default: "CNY" }  // CNY/USD
 });
 PPJContractSchema.index({exchange: 1, stock_code: -1}, {unique: true});
@@ -332,8 +334,11 @@ function windControl(userId, forceClose, userContract, cb) {
                           if (!forceClose && user.cash + income > user.close) {
                               // No risk
                               //console.log("No risk");
-                              cb(null);
-                              return lock.unlock();
+                              if (asyncObj.remaining <= 0 && !asyncObj.callbackInvoke){
+                                  asyncObj.callbackInvoke = true;
+                                  lock.unlock();
+                                  return cb(null);
+                              }
                           } else {
                               if (income > 0) {
                                   // Close all positions
@@ -351,8 +356,11 @@ function windControl(userId, forceClose, userContract, cb) {
                                   }
                               } else {
                                   //console.log("Closed");
-                                  cb(null);
-                                  return lock.unlock();
+                                  if (asyncObj.remaining <= 0 && !asyncObj.callbackInvoke){
+                                      asyncObj.callbackInvoke = true;
+                                      lock.unlock();
+                                      cb(null);
+                                  }
                               }
                           }
                       });
@@ -435,10 +443,10 @@ function getPositions(data, cb) {
     });
 }
 
-function getProfitImpl(req, res, user, contractId) {
+function getProfitImpl(req, res, user, contract) {
     var query = {userId: req.body.user_id};
-    if (contractId !== null) {
-      query = {userId: req.body.user_id, contractId: contractId};
+    if (contract !== null) {
+      query = {userId: req.body.user_id, contractId: contract._id};
     }
     Portfolio.find(query, function(err, portfolio) {
         if (err) {
@@ -448,7 +456,7 @@ function getProfitImpl(req, res, user, contractId) {
         }
         if (!portfolio.length) {
             console.log('portfolio not found');
-            getLastFuturesPrice(function(err, data) {
+            getLastFuturesPrice(contract, function(err, data) {
                 if (err) {
                     return res.status(400).send({error_msg:err.toString()});
                 }
@@ -490,7 +498,6 @@ function getProfitImpl(req, res, user, contractId) {
                     }
                     var priceInfo = JSON.parse(priceInfoString);
                     priceInfo.LastPrice *= 100;
-                    //console.log(priceInfo.LastPrice);
 
                     contractInfo[portf.contractId] = priceInfo;
                     var costs = getCosts(contract, priceInfo.LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
@@ -525,7 +532,7 @@ function getProfit(req, res) {
                     res.status(500).send({error_msg: err? err.errmsg: "no available contract"});
                     return;
                 }
-                getProfitImpl(req, res, user, contract._id);
+                getProfitImpl(req, res, user, contract);
             });
         } else {
             getProfitImpl(req, res, user, null);
@@ -582,7 +589,20 @@ function resetUser(userID, cb) {
                 if (err) {
                     return cb(err);
                 }
-                User.update({_id:userID}, {$set:{close:17500000, warning:18000000, cash:20000000, deposit:3000000, debt:17000000, lastCash:0, status:0}}, function(err, numberAffected, raw) {
+
+                var close = 17500000;
+                var warning = 18000000;
+                var cash = 20000000;
+                var deposit = 3000000;
+                var debt = 17000000;
+                if (user.productType === 1) {
+                    close = 7050000;
+                    warning = 7100000;
+                    cash = 7300000;
+                    deposit = 300000;
+                    debt = 7000000;
+                }
+                User.update({_id:userID}, {$set:{close:close, warning:warning, cash:cash, deposit:deposit, debt:debt, lastCash:0, status:0}}, function(err, numberAffected, raw) {
                     if (err) {
                         return cb(err);
                     }
@@ -630,6 +650,7 @@ function createOrder(data, cb) {
               cb({code:2, msg:'user not found when create Order'});
               return lock.unlock();
           }
+          console.log('createOrder found user');
           if (user.status != 0) {
               cb({code:3, msg:'Account status is not normal.'});
               return lock.unlock();
@@ -649,10 +670,17 @@ function createOrder(data, cb) {
                   cb({code:2, msg:'failed to create contract'});
                   return lock.unlock();
               }
+              console.log('createOrder found contract');
               // find contract price info
               global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
+                  if (err) {
+                      console.log(err);
+                      cb({code:2, msg:err.toString()});
+                      return lock.unlock();
+                  }
                   var priceInfo = JSON.parse(priceInfoString);
                   priceInfo.LastPrice *= 100;
+                  console.log('createOrder got priceInfo');
                   Portfolio.findOne({$and: [{contractId: contract._id}, {userId: user._id}]}, function(err, portfolio) {
                       if (err) {
                           console.log(err);
@@ -660,19 +688,22 @@ function createOrder(data, cb) {
                           return lock.unlock();
                       }
                       if (!portfolio) {
+                          console.log('createOrder create portfolio');
                           portfolio = new Portfolio({contractId: contract._id, userId: user._id});
                       }
 
-                      if ((data.order.quantity < 0 && portfolio.quantity < 0) || (data.order.quantity > 0 && portfolio.quantity > 0)) {
+                      if ((data.order.quantity < 0 && portfolio.quantity <= -1000) || (data.order.quantity > 0 && portfolio.quantity >= 1000)) {
                           cb({code:7, msg:'can not buy more than 1 hand for the same type'});
                           return lock.unlock();
                       }
 
+                      console.log('createOrder getCosts');
                       var costs = getCosts(contract, priceInfo.LastPrice, data.order.quantity, portfolio.quantity, portfolio.total_point, portfolio.total_deposit);
                       if (user.cash < costs.open) {
                           cb({code:5, msg:'user.cash < costs.open'});
                           return lock.unlock();
                       }
+                      console.log('createOrder will createOrder');
                       var order = new Order({
                           contractId: contract._id,
                           userId: user._id,
@@ -742,8 +773,8 @@ function getStockCode() {
     return "IFCURR";
 }
 
-function getLastFuturesPrice(cb) {
-    global.redis_client.get('mt://future/IFCURR', function(err, priceInfoString) {
+function getLastFuturesPrice(contract, cb) {
+    global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
         if (err) {
             cb(err);
         }

@@ -6,7 +6,6 @@ var mongoose = require('mongoose');
     log4js = require('log4js'),
     env = process.env.NODE_ENV,
     config = require('../config/config')[env],
-	redEnvelope = require('../lib/redEnvelopes'),
     logger = log4js.getLogger('futures');
 
 var User = mockTrader.User,
@@ -286,9 +285,6 @@ function windControl(userId, forceClose, userContract, cb) {
                           //console.log(costs);
                           if (asyncObj.remaining > 0 && typeof userContract === 'undefined') {
                               console.log("Still counting: " + asyncObj);
-                              //if (typeof user2cb_obj !== 'undefined') {
-                              //    delete user2cb_obj[userId];
-                              //}
                               return lock.unlock();
                           }
                           //console.log("Completed: " + asyncObj);
@@ -302,7 +298,7 @@ function windControl(userId, forceClose, userContract, cb) {
                               return lock.unlock();
                           } else {
                               if (income > 0) {
-                                  var key = 'IF-OrderID';
+                                  var key = 'FUTURE-OrderID';
                                   //global.redis_client.get(key, function(err, order_id){
                                   generateOrderID(function(err, order_id){
                                       if (err) {
@@ -316,15 +312,23 @@ function windControl(userId, forceClose, userContract, cb) {
                                           act = 4;
                                           price = bottom_price;
                                       }
+                                      var instrument = config.futureIF;
+                                      if(user.productType == 1)
+                                          instrument = config.futureag;
                                       var ctp_order_close = {
                                           user_id: userId,
                                           order_id: order_id,
-                                          instrument: config.futureIF,
+                                          instrument: instrument,
                                           act: act, // close buy
-                                          size: 1, // volume
+                                          size: Math.abs(portf.quantity)/100, // volume
                                           px_raw: parseFloat(price).toFixed(0)
                                       };
-                                      hive.createOrder(ctp_order_close, function(err, info) {
+                                      //hive.createOrder(ctp_order_close, function(err, info) {
+                                      {
+                                          var info = {};
+                                          info.traded_price = priceInfo.LastPrice;
+                                          info.code = 0;
+                                          var err = null;
                                           if(err){
                                               console.log(err);
                                               cb(err);
@@ -353,7 +357,7 @@ function windControl(userId, forceClose, userContract, cb) {
                                               }
                                               closeAll(userId, portfolio, income, contractInfo, contractData, 0, cb, lock);
                                           }
-                                      });
+                                      }//);
                                   });
                               } else {
                                   //console.log("Closed");
@@ -372,198 +376,105 @@ function windControl(userId, forceClose, userContract, cb) {
     });
 }
 
-function getUserInfo(data, cb) {
-    console.log(data);
-    // find user
-    User.findOne({_id: data.user_id}, function(err, user) {
+function closeOne(mongo_user, mongo_portfolio, curr_price, contract, top_price, bottom_price, cb) {
+    generateOrderID(function(err, order_id){
         if (err) {
             console.log(err);
-            //res.send({code: 1, "msg": err.errmsg});
-            cb(err.errmsg);
+            cb({code:2, msg:err.toString()});
             return;
         }
-        if (!user) {
-            console.log('user not found');
-            //res.send({code: 1, "msg": err.errmsg});
-            cb('user not found');
-            return;
+        var act = 3;
+        var price = top_price;
+        if(mongo_portfolio.quantity > 0) {
+            act = 4;
+            price = bottom_price;
         }
-        //res.send({code: 0, result:user});
-        cb(null, user);
-    });
-}
-
-function getHistoryOrders(req, res) {
-    console.log(req.body);
-    // find user
-    var findings = Order.find({$and: [
-        {userId: req.body.user_id},
-        {timestamp: {$gte: req.body.date_begin + 8*3600*1000}},
-        {timestamp: {$lt: req.body.date_end + 8*3600*1000}}
-    ]}).sort({timestamp: -1}).skip(req.body.page.from).limit(req.body.page.perpage);
-    findings.exec(function(err, collection) {
-        if (err) {
-            console.log(err);
-            res.status(500).send({error_msg: err.errmsg});
-            return;
-        }
-        if (!collection) {
-            console.log('order not found');
-            res.status(400).send({error_msg: 'order not found'});
-            return;
-        }
-        getUserInfo({user_id:req.body.user_id}, function(err, user) {
-            if (err) {
+        var instrument = config.futureIF;
+        if(mongo_user.productType == 1)
+        instrument = config.futureag;
+        var ctp_order_close = {
+            user_id: mongo_user._id,
+            order_id: order_id,
+            instrument: instrument,
+            act: act,
+            size: Math.abs(mongo_portfolio.quantity)/100, // volume
+            px_raw: parseFloat(price).toFixed(0)
+        };
+        //hive.createOrder(ctp_order_close, function(err, info) {
+        {
+            var info = {};
+            info.traded_price =  curr_price/100;
+            info.code = 0;
+            var err = null;
+            if(err){
                 console.log(err);
-                res.status(500).send({error_msg: err.errmsg});
+                cb(err);
                 return;
             }
-            res.send({user:user, orders:collection, pageCount:req.body.page.count});
-        });
-    });
-}
-
-function getPositions(data, cb) {
-    console.log(data);
-    // find user
-    var findings = Portfolio.find({userId: data.user_id});
-    findings.exec(function(err, collection) {
-        if (err) {
-            console.log(err);
-            cb(err.toString());
-            return;
-        }
-        if (!collection) {
-            console.log('position not found');
-            return cb('position not found');
-        }
-        cb(null, collection);
-    });
-}
-
-function getProfitImpl(req, res, user, contractId) {
-    var query = {userId: req.body.user_id};
-    if (contractId !== null) {
-      query = {userId: req.body.user_id, contractId: contractId};
-    }
-    Portfolio.find(query, function(err, portfolio) {
-        if (err) {
-            console.log(err);
-            res.status(500).send({error_msg: err.errmsg});
-            return;
-        }
-        if (!portfolio.length) {
-            console.log('portfolio not found');
-            mockTrader.getLastFuturesPrice(function(err, data) {
-                if (err) {
-                    return res.status(400).send({error_msg:err.toString()});
-                }
-                res.send({result: 0, lastProfit:0, lastPrice:data.lastPrice, yesterdayClose:data.yesterdayClose, portfolio:null});
-            });
-            return;
-        }
-        var asyncObj = {remaining: portfolio.length, value: 0, has_error: false, errmsg:""};
-        var contractInfo = {};
-
-        for (var p in portfolio) {
-            var portf = portfolio[p];
-            Contract.findOne({_id: portf.contractId}, function(err, contract) {
-                asyncObj.remaining -= 1;
-                if (err || !contract) {
-                    //console.log(err);
-                    //console.log(contract);
-                    //console.log(portf);
-                    asyncObj.has_error = true;
-                    if (err) asyncObj.errmsg = err.errmsg;
-                }
-                if (asyncObj.has_error) {
-                    if (asyncObj.remaining <= 0){
-                        res.status(500).send({error_msg: asyncObj.errmsg});
-                    }
-                    return;
-                }
-                global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
-                    if (err || !priceInfoString) {
-                        console.log(err);
-                        asyncObj.has_error = true;
-                        if (err) asyncObj.errmsg = err.errmsg;
-                    }
-                    if (asyncObj.has_error) {
-                        if (asyncObj.remaining <= 0){
-                            res.status(500).send({error_msg: asyncObj.errmsg});
-                        }
-                        return;
-                    }
-                    var priceInfo = JSON.parse(priceInfoString);
-                    priceInfo.LastPrice *= 100;
-
-                    contractInfo[portf.contractId] = priceInfo;
-                    var costs = getCosts(contract, priceInfo.LastPrice, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
-                    asyncObj.value -= costs.open;
-                    if (asyncObj.remaining > 0) {
-                        console.log("Still counting: " + asyncObj);
-                        return;
-                    }
-                    //console.log("Completed: " + asyncObj);
-                    var income = asyncObj.value;
-                    //console.log("User info: " + req.body.user_id + ", " + user.cash + ", " + income + ", " + user.close);
-                    var lastProfit = user.lastCash ? user.lastCash - (user.deposit + user.debt) : 0;
-                    res.send({result: user.cash + income - user.deposit - user.debt - lastProfit, lastProfit:lastProfit, lastPrice:priceInfo.LastPrice, yesterdayClose:priceInfo.PreSettlementPrice, portfolio:portf});
-                    return;
-                });
-            });
-        }
-    });
-}
-function getProfit(req, res) {
-    User.findOne({_id: req.body.user_id}, function(err, user) {
-        if (err || !user) {
-            console.log(err);
-            res.status(500).send({error_msg: err? err.errmsg: "no available user"});
-            return;
-        }
-        if (typeof req.body.contract !== 'undefined') {
-            Contract.findOne({exchange: req.body.contract.exchange,
-                              stock_code: req.body.contract.stock_code}, function(err, contract) {
-                if (err || !contract) {
-                    console.log(err);
-                    res.status(500).send({error_msg: err? err.errmsg: "no available contract"});
-                    return;
-                }
-                getProfitImpl(req, res, user, contract._id);
-                
-            });
-        } else {
-            getProfitImpl(req, res, user, null);
-        }
-    });
-}
-
-function createUser(data, cb) {
-    console.log(data);
-    var user = new User(data);
-    user.save(function(err) {
-        if (err) {
-            console.log(err);
-            cb(err.toString());
-            return;
-        }
-        cb(null, user);
-    });
-}
-
-function resetUser(userID, cb) {
-    //User.update({_id:userID}, {$set:{close:12500000, cash:15000000, deposit:3000000, debt:12000000, lastCash:0}}, function(err, numberAffected, raw) {
-    User.update({_id:userID}, {$set:{close:17500000, warning:18000000, cash:20000000, deposit:3000000, debt:17000000, lastCash:0}}, function(err, numberAffected, raw) {
-        if (err) {
-            return cb(err);
-        }
-        Portfolio.update({userId:userID}, {$set:{total_point:0, total_deposit:0, fee:0, shortQuantity:0, longQuantity:0, quantity:0}}, function(err, numberAffected, raw) {
-            if (err) {
-                return cb(err);
+            if(info.code == -1) {
+                console.log('hive rejected to close order.');
+                cb('交易所拒绝访问');
+                return;
             }
-            cb(null);
-        });
+            console.log('order closed in hive.');
+            var q = mongo_portfolio.quantity>0 ? -100 : 100;
+            var costs = getCosts(contract, info.traded_price*100, q, mongo_portfolio.quantity, mongo_portfolio.total_point, mongo_portfolio.total_deposit);
+            var oldUserCash = mongo_user.cash;
+            var oldUserLastCash = mongo_user.lastCash;
+            // Close user
+            mongo_user.cash -= costs.open;
+            mongo_user.lastCash = mongo_user.cash;
+            User.update({_id: mongo_user._id},
+                {$set:{cash: mongo_user.cash, lastCash: mongo_user.lastCash}}, function(err, numberAffected, raw) {
+                if (err || numberAffected != 1) {
+                    console.log(err);
+                    cb(err.toString());
+                    return;
+                }
+                console.log(mongo_portfolio);
+                console.log(costs);
+                var lq = mongo_portfolio.longQuantity;
+                var sq = mongo_portfolio.shortQuantity;
+                if(mongo_portfolio.quantity > 0)
+                    lq -= 100;
+                if(mongo_portfolio.quantity < 0)
+                    sq -= 100;
+                Portfolio.update({_id: mongo_portfolio._id},
+                    {
+                        $set:{quantity: mongo_portfolio.quantity+q, total_point: mongo_portfolio.total_point-costs.point, 
+                                total_deposit: mongo_portfolio.total_deposit-costs.deposit, longQuantity: lq, shortQuantity: sq},
+                        $inc:{fee: costs.fee}
+                    },
+                    function(err, numberAffected, raw) {
+                        if (err || !numberAffected) {
+                            console.log(err);
+                            cb(err.toString());
+                            return;
+                        }
+                        var order = new Order({
+                            contractId: mongo_portfolio.contractId,
+                            userId: mongo_user._id,
+                            cash: mongo_user.cash,
+                            entrustId: order_id,
+                            quantity: q,
+                            price: info.traded_price*100,
+                            fee: costs.fee,
+                            lockedCash: costs.locked_cash,
+                            profit: costs.net_profit
+                        });
+                        order.save(function(err) {
+                            if (err) {
+                                console.log(err);
+                                cb('order save failed.');
+                                return;
+                            }
+                        });
+                        cb(null, order);
+                        return;
+                    }
+                );
+            });
+        }// );
     });
 }
 
@@ -585,13 +496,17 @@ function getInstrument(){
 	if (month < 10) month = "0" + month;
 	return "IF" + (d.getYear()-100) + month;
 }
-
+var orderID = 0;
 function generateOrderID(callback){
+    orderID += 1;
+    callback(null, orderID);
+}
+function generateOrderIDFromRedis(callback){
     var resource = 'mt://lock/order_id/ctp';
     var ttl = 10000;
     
     redlock.lock(resource, ttl).then(function(outer_lock) {
-        var key = 'IF-OrderID';
+        var key = 'FUTURE-OrderID';
         global.redis_client.get(key, function(err, order_id){
             if (err) {
                 console.log(err);
@@ -653,8 +568,11 @@ function createOrder(data, cb) {
               global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
                   var priceInfo = JSON.parse(priceInfoString);
                   priceInfo.LastPrice *= 100;
-                  var top_price = priceInfo.PreSettlementPrice*1.0995*100;
-                  var bottom_price = priceInfo.PreSettlementPrice*(1-0.0995)*100;
+                  var stop_percentage = contract.stop_percentage;
+                  if(stop_percentage == 0)
+                      stop_percentage = 10.0;
+                  var top_price = priceInfo.PreSettlementPrice*(1 + parseFloat(stop_percentage)/100)*100;
+                  var bottom_price = priceInfo.PreSettlementPrice*(1 - parseFloat(stop_percentage)/100)*100;
                   //console.log(priceInfo);
                   Portfolio.findOne({$and: [{contractId: contract._id}, {userId: user._id}]}, function(err, portfolio) {
                       if (err) {
@@ -665,17 +583,20 @@ function createOrder(data, cb) {
                       if (!portfolio) {
                           portfolio = new Portfolio({contractId: contract._id, userId: user._id});
                       }
+                      /* // TODO: maximum 10 hands for ag1512
                       if (portfolio.quantity != 0) {
                           cb({code:6, msg:'position exist.'});
                           return lock.unlock();
                       }
+                      */
+                      
                       var costs = getCosts(contract, priceInfo.LastPrice, data.order.quantity, portfolio.quantity, portfolio.total_point, portfolio.total_deposit);
                       if (user.cash < costs.open) {
                           cb({code:5, msg:'user.cash < costs.open'});
                           return lock.unlock();
                       }
 /*********create order in ctp************/
-					  var key = 'IF-OrderID';
+					  var key = 'FUTURE-OrderID';
                       var quantity_to_close = costs.quantity_to_close;
                       var actual_quantity = costs.actual_quantity;
 					  //global.redis_client.get(key, function(err, order_id){
@@ -687,8 +608,14 @@ function createOrder(data, cb) {
                           }
                           // close positon first
                           if(quantity_to_close != 0){
-                              cb({code:6, msg:'need to close position first'});
-                              return lock.unlock();
+                              closeOne(user, portfolio, priceInfo.LastPrice, contract, top_price, bottom_price, function(err, order){
+                                  if(err){
+                                      cb({code:2, msg: err.toString()});
+                                      return lock.unlock();
+                                  }
+                                  cb(null, order);
+                                  return lock.unlock();
+                              });
                           } else { // create new order directly for user position is empty
                               console.log("create order directly");
                               var price = top_price;
@@ -697,16 +624,28 @@ function createOrder(data, cb) {
                                   act = 2;
                                   price = bottom_price;
                               }
+                              var instrument = config.futureIF;
+                              if(user.productType == 1)
+                                  instrument = config.futureag;
+                              if(instrument[0] == 'I' && instrument[1] == 'F' && Math.abs(data.order.quantity) != 100){
+                                  cb('FATAL, quantity error, instrument might CROSS');
+                                  logger.debug('FATAL, quantity error, instrument might CROSS');
+                                  return lock.unlock();
+                              }
                               var ctp_order = {
                                   user_id: data.user_id,
                                   order_id: order_id,
-                                  //instrument: instrument,
-                                  instrument: config.futureIF,
+                                  instrument: instrument,
                                   act: act, // positive for buy, 0 for close, negative for sell
-                                  size: 1.0, // volume
+                                  size: Math.abs(data.order.quantity/100), // volume
                                   px_raw: parseFloat(price/100).toFixed(0) // price 
                               };
-                              hive.createOrder(ctp_order, function(err, info) {
+                              //hive.createOrder(ctp_order, function(err, info) {
+                              {
+                                  var info = {};
+                                  info.traded_price = priceInfo.LastPrice/100;
+                                  info.code = 0;
+                                  var err = null;
                                   if (err) {
                                       console.log(err);
                                       cb(err);
@@ -773,7 +712,7 @@ function createOrder(data, cb) {
                                           });
                                       });
                                   });
-                              }); // new order creation ends here
+                              }//); // new order creation ends here
                           }
                       }); // get new order id from redis ends here
                   }); //get portfolio
@@ -822,15 +761,11 @@ var hive;
 function initHive(param) {
     logger.debug('init Hive**************************');
     var initConfig = {
-        //ip: '218.241.142.230',
-        ip: '127.0.0.1',
+        ip: config.ctpIP,
         port: 7777,
-        investor: '851710073',
-        password: '283715',
-        front_addr: 'tcp://27.115.57.130:41205/9000',
-        //investor: '00001',
-        //password: '123456',
-        //front_addr: 'tcp://180.168.146.181:10000/0096',
+        investor: config.ctpAccount,
+        password: config.ctpPassword,
+        front_addr: config.ctpFrontAddr,
         client_id: param,
         version: 1,
         interval:128
@@ -856,20 +791,13 @@ module.exports = {
     Contract: Contract,
     Order: Order,
     Portfolio: Portfolio,
-    createUser: createUser,
     createOrder: createOrder,
     getStockCode: getStockCode,
     riskControl: riskControl,
-    getPositions: getPositions,
-    getHistoryOrders: getHistoryOrders,
-    getUserInfo: getUserInfo,
     windControl: windControl,
-    getLastFuturesPrice: mockTrader.getLastFuturesPrice,
-    getProfit: getProfit,
-    resetUser: resetUser,
-	initHive: initHive,
+    initHive: initHive,
     destroyHive: destroyHive,
-	loadDBData: loadDBData,
+    loadDBData: loadDBData,
     user_with_trigger: user_with_trigger,
     makeRedisKey: makeRedisKey
 };

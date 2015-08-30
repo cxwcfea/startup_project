@@ -1,5 +1,5 @@
 'use strict';
-angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$location', '$routeParams', '$modal', '$http', 'gbNotifier', function($scope, $location, $routeParams, $modal, $http, gbNotifier) {
+angular.module('adminApp').controller('AdminPPJSilverTraderUserCtrl', ['$scope', '$location', '$routeParams', '$modal', '$http', 'gbNotifier', function($scope, $location, $routeParams, $modal, $http, gbNotifier) {
     var users = {};
     $scope.currentUsers;
     $scope.itemsPerPage = 15;
@@ -46,7 +46,7 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
     };
 
     function initData() {
-        $http.get('/admin/api/get_ppj_trade_user')
+        $http.get('/admin/api/get_ppj_silver_trade_user')
             .success(function(data, status) {
                 $scope.currentUsers = users = data;
                 pageReset();
@@ -132,7 +132,8 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
             }
             var postData = {
                 uid: user._id,
-                amount: result
+                amount: result,
+                product: 1
             };
             $http.post('/futures/add_money', postData)
                 .success(function(data, status) {
@@ -157,7 +158,8 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
             }
             var postData = {
                 uid: user._id,
-                amount: result
+                amount: result,
+                product: 1
             };
             $http.post('/futures/add_deposit', postData)
                 .success(function(data, status) {
@@ -201,7 +203,7 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
     $scope.approveToTrade = function(user) {
         var result = prompt('确定开通交易权限吗');
         if (result != null) {
-            $http.post('/futures/change_user_access', {uid:user._id, user_status:4, trader_status:0})
+            $http.post('/futures/change_user_access', {uid:user._id, user_status:4, trader_status:0, product:1})
                 .success(function(data, status) {
                     user.wechat.status = 4;
                     gbNotifier.notify('操作成功');
@@ -217,7 +219,7 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
     $scope.disallowTrade = function(user) {
         var result = prompt('确定冻结账户吗');
         if (result != null) {
-            $http.post('/futures/change_user_access', {uid:user._id, user_status:3, trader_status:1})
+            $http.post('/futures/change_user_access', {uid:user._id, user_status:3, trader_status:1, product:1})
                 .success(function(data, status) {
                     user.wechat.status = 3;
                     gbNotifier.notify('操作成功');
@@ -244,7 +246,8 @@ angular.module('adminApp').controller('AdminPPJTradeUserCtrl', ['$scope', '$loca
             }
             var postData = {
                 uid: user._id,
-                profit: result.profit
+                profit: result.profit,
+                product: 1
             };
             $http.post('/futures/finish_trade', postData)
                 .success(function(data, status, headers, config) {

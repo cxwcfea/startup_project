@@ -1,5 +1,5 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$window', '$modal', '$location', function($scope, $window, $modal, $location) {
+angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$window', '$modal', '$location', 'Socket', function($scope, $window, $modal, $location, Socket) {
     $scope.data.selectedItem = 0;
 
     var startTime = moment();
@@ -32,17 +32,25 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
     }
 
     $scope.products = [
-        /*
         {
             value: 0,
-            name: 'IF1509',
-            type: '股 指',
-            intro: '沪深300指数，涨跌均可买',
-            status: tradeTime ? 1 : 0,
-            alias: '股指',
-            time: '工作日09:15-11:30  13:00-15:15'
+            name: 'A50',
+            type: '指 数',
+            intro: '开发中',
+            status: 0,
+            alias: 'A50',
+            time: '工作日'
         },
-        */
+        {
+            value: 1,
+            name: 'AG1512',
+            type: '沪 银',
+            intro: '白银期货',
+            status: 0,
+            alias: 'AG1512',
+            time: '工作日09:00-11:30 13:30-15:00 21:00-02:30'
+        }
+        /*
         {
             value: 1,
             name: 'EURUSD',
@@ -70,6 +78,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             alias: 'BABA',
             time: '工作日09:15-11:30  13:00-15:15'
         }
+        */
     ];
 	
 	$scope.openQrcodePopup = function (size) {
@@ -89,7 +98,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
 	};
 
     $scope.selectProduct = function (index) {
-        if (index) {
+        if (index != 1) {
             return;
         }
         var oldIndex = $scope.data.selectedProduct;
@@ -97,9 +106,8 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
         if (oldIndex != index) {
             $scope.data.productID = index;
             $scope.data.productType = $scope.products[index].alias;
-            if ($scope.data.socket) {
-                $scope.data.socket.emit('join', {name:$scope.data.currentUser._id, room:index});
-            }
+            Socket.emit('join', {name:$scope.data.currentUser._id, room:index});
+            $scope.data.flags_data = [];
         }
         $location.path('/home');
     };

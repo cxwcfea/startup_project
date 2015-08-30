@@ -130,6 +130,8 @@ Hive.prototype.addListener = function(){
 							.unpack();
 			var order_id = arr[1];
 			var result = arr[3];
+            var act = arr[4];
+            var volume = arr[5];
             var traded_price = arr[6];
 			var user_id = that.order2user[order_id];
 			var callback = that.user2cb[user_id];

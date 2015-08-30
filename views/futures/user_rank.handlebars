@@ -182,6 +182,34 @@
 		height:92px;
 		border-top:1px solid #e5e5e5;
 	}
+	.user-rank-wrapper .wall-paper .switch {
+		position:absolute;
+		top:9px;
+		width:100px;
+		height:22px;
+		left:50%;
+		margin-left:-50px;
+	}
+	.user-rank-wrapper .wall-paper .switch button {
+		width:43px;
+		height:20px;
+		border-radius:10px;
+		border:1px solid #ffffff;
+		color:#ffffff;
+		font-size:12px;
+		text-align:center;
+		background-color:transparent;
+	}
+	.user-rank-wrapper .wall-paper .switch button.left {
+		float:left;
+	}
+	.user-rank-wrapper .wall-paper .switch button.right {
+		float:right;
+	}
+	.user-rank-wrapper .wall-paper .switch button.current {
+		color:#3aaaf6;
+		background-color:#ffffff;
+	}
 </style>
 
 <!--
@@ -195,6 +223,12 @@
 <div class="user-rank-wrapper" ng-cloak>
 	<div class="wall-paper">
 	<!--<div style="width:100%;height:200px;background-color:#0cbef8">-->
+        <!--
+        <div class="switch">
+            <button class="left current">日榜</button>
+            <button class="right">总榜</button>
+        </div>
+        -->
         <table class="basic-table">
             <tr>
                 <td>
@@ -205,7 +239,8 @@
 						<img src="/futures/images/second.png" class="medal" />
 						<div class="data-second data">
 							<p>\{{silverUser.wechat.wechat_name}}</p>
-							<p>\{{silverUser.wechat.trader.lastCash ? (silverUser.wechat.trader.lastCash-silverUser.wechat.trader.deposit-silverUser.wechat.trader.debt)/100 : 0 | number:0}}</p>
+							<p ng-show="data.productID == 0">\{{silverUser.wechat.trader.lastCash ? (silverUser.wechat.trader.lastCash-silverUser.wechat.trader.deposit-silverUser.wechat.trader.debt)/100 : 0 | number:0}}</p>
+                            <p ng-show="data.productID == 1">\{{silverUser.wechat.silverTrader.lastCash ? (silverUser.wechat.silverTrader.lastCash-silverUser.wechat.silverTrader.deposit-silverUser.wechat.silverTrader.debt)/100 : 0 | number:0}}</p>
 						</div>
 					</div>
 				</td>
@@ -217,7 +252,8 @@
 						<img src="/futures/images/first.png" class="medal" />
 						<div class="data-first data">
 							<p>\{{goldUser.wechat.wechat_name}}</p>
-							<p>\{{goldUser.wechat.trader.lastCash ? (goldUser.wechat.trader.lastCash-goldUser.wechat.trader.deposit-goldUser.wechat.trader.debt)/100 : 0 | number:0}}</p>
+							<p ng-show="data.productID == 0">\{{goldUser.wechat.trader.lastCash ? (goldUser.wechat.trader.lastCash-goldUser.wechat.trader.deposit-goldUser.wechat.trader.debt)/100 : 0 | number:0}}</p>
+                            <p ng-show="data.productID == 1">\{{goldUser.wechat.silverTrader.lastCash ? (goldUser.wechat.silverTrader.lastCash-goldUser.wechat.silverTrader.deposit-goldUser.wechat.silverTrader.debt)/100 : 0 | number:0}}</p>
 						</div>
 					</div>
 				</td>
@@ -229,7 +265,8 @@
 						<img src="/futures/images/third.png" class="medal" />
 						<div class="data-third data">
 							<p>\{{copperUser.wechat.wechat_name}}</p>
-							<p>\{{copperUser.wechat.trader.lastCash ? (copperUser.wechat.trader.lastCash-copperUser.wechat.trader.deposit-copperUser.wechat.trader.debt)/100 : 0 | number:0}}</p>
+							<p ng-show="data.productID == 0">\{{copperUser.wechat.trader.lastCash ? (copperUser.wechat.trader.lastCash-copperUser.wechat.trader.deposit-copperUser.wechat.trader.debt)/100 : 0 | number:0}}</p>
+                            <p ng-show="data.productID == 1">\{{copperUser.wechat.silverTrader.lastCash ? (copperUser.wechat.silverTrader.lastCash-copperUser.wechat.silverTrader.deposit-copperUser.wechat.silverTrader.debt)/100 : 0 | number:0}}</p>
 						</div>
 					</div>
 				</td>
@@ -263,7 +300,8 @@
 				<td style="text-align:left">
 					<p>\{{theUser.wechat.wechat_name}}</p>
 				</td>
-				<td class="text-danger">\{{theUser.wechat.trader.lastCash ? (theUser.wechat.trader.lastCash-theUser.wechat.trader.deposit-theUser.wechat.trader.debt)/100 : 0 | number:0}}</td>
+				<td class="text-danger" ng-show="data.productID == 0">\{{theUser.wechat.trader.lastCash ? (theUser.wechat.trader.lastCash-theUser.wechat.trader.deposit-theUser.wechat.trader.debt)/100 : 0 | number:0}}</td>
+                <td class="text-danger" ng-show="data.productID == 1">\{{theUser.wechat.silverTrader.lastCash ? (theUser.wechat.silverTrader.lastCash-theUser.wechat.silverTrader.deposit-theUser.wechat.silverTrader.debt)/100 : 0 | number:0}}</td>
 			</tr>
 		</table>
 	</div>

@@ -4,12 +4,32 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     if ($scope.user.real === true) {
         $scope.data.real = true;
     }
-    if ($scope.data.real && $scope.user.wechat.real_trader) {
-        $scope.data.deposit = $scope.user.wechat.real_trader.deposit / 100;
-        $scope.data.cash = $scope.user.wechat.real_trader.cash;
+    if ($scope.data.real) {
+        if ($scope.data.productID == 1) {
+            if ($scope.user.wechat.real_silverTrader) {
+                $scope.data.deposit = $scope.user.wechat.real_silverTrader.deposit / 100;
+                $scope.data.cash = $scope.user.wechat.real_silverTrader.cash;
+            } else {
+                $scope.data.deposit = 3000;
+                $scope.data.cash = 7000000;
+            }
+        } else {
+            if ($scope.user.wechat.real_trader) {
+                $scope.data.deposit = $scope.user.wechat.real_trader.deposit / 100;
+                $scope.data.cash = $scope.user.wechat.real_trader.cash;
+            } else {
+                $scope.data.deposit = 30000;
+                $scope.data.cash = 20000000;
+            }
+        }
     } else {
-        $scope.data.deposit = 30000;
-        $scope.data.cash = 20000000;
+        if ($scope.data.productID == 1) {
+            $scope.data.deposit = 3000;
+            $scope.data.cash = 7000000;
+        } else {
+            $scope.data.deposit = 30000;
+            $scope.data.cash = 20000000;
+        }
     }
     var TEXT = '现在是非交易时间';
     var REAL_TEXT = '您的账户不能交易';
@@ -22,27 +42,34 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
 
     var now = moment();
 
-    var firstStart = moment();
-    firstStart.hour(9);
-    firstStart.minute(15);
-    firstStart.second(0);
+    var firstStart = moment().startOf('day');
+
+    var firstEnd = moment();
+    firstEnd.hour(2);
+    firstEnd.minute(27);
+    firstEnd.second(0);
 
     var secondStart = moment();
-    secondStart.hour(13);
+    secondStart.hour(9);
     secondStart.minute(0);
     secondStart.second(0);
 
-    var firstEnd = moment();
-    firstEnd.hour(11);
-    firstEnd.minute(30);
-    firstEnd.second(0);
-
     var secondEnd = moment();
-    secondEnd.hour(15);
-    secondEnd.minute(12);
+    secondEnd.hour(11);
+    secondEnd.minute(30);
     secondEnd.second(0);
 
-    if ((now >= firstStart && now <= firstEnd) || (now >= secondStart && now <= secondEnd)) {
+    var thirdStart = moment();
+    thirdStart.hour(13);
+    thirdStart.minute(30);
+    thirdStart.second(0);
+
+    var thirdEnd = moment();
+    thirdStart.hour(14);
+    thirdStart.minute(57);
+    thirdStart.second(0);
+
+    if ((now >= firstStart && now <= firstEnd) || (now >= secondStart && now <= secondEnd) || (now >= thirdStart && now <= thirdEnd)) {
         if (!$scope.data.timeoutSet) {
             $scope.data.timeoutSet = true;
 
@@ -52,14 +79,18 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                     $scope.closeText = TEXT;
                     $scope.openTimeHintPopup('lg');
                 }, firstEnd-now);
-            }
-
-            if (now < secondEnd) {
+            } else if (now < secondEnd) {
                 $timeout(function() {
                     $scope.tradeClose = true;
                     $scope.closeText = TEXT;
                     $scope.openTimeHintPopup('lg');
                 }, secondEnd-now);
+            } else if (now < thirdEnd) {
+                $timeout(function() {
+                    $scope.tradeClose = true;
+                    $scope.closeText = TEXT;
+                    $scope.openTimeHintPopup('lg');
+                }, thirdEnd-now);
             }
         }
     } else {
@@ -73,7 +104,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
 
     if (!$scope.data.flags_data.length) {
         //$scope.data.flags_data = [];
-        $http.get('/futures/get_nearest_orders?type=' + ($scope.data.real ? 1 : 0))
+        $http.get('/futures/get_nearest_orders?type=' + ($scope.data.real ? 1 : 0) + '&product=' + $scope.data.productID)
             .success(function(data, status) {
                 for (var i = 0; i < data.length; ++i) {
                     var order = data[i];
@@ -111,6 +142,9 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     function undatePosition(position) {
         if (position) {
             $scope.openPrice = position.total_point;
+            if ($scope.data.productID == 1) {
+                $scope.openPrice /= 10;  // silver will open 10 hands
+            }
             $scope.tradeData.down = $scope.tradeData.up = $scope.tradeData.sell = 0;
             if (position.quantity) {
                 if (position.longQuantity > position.shortQuantity) {
@@ -128,7 +162,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
 
     var delta = 0;
     function getUserPositions(init) {
-        $http.get('/api/futures/get_positions?type=' + ($scope.data.real ? 1 : 0))
+        $http.get('/api/futures/get_positions?type=' + ($scope.data.real ? 1 : 0) + '&product=' + $scope.data.productID)
             .success(function (data, status) {
                 var position = data.position;
                 undatePosition(position);
@@ -292,7 +326,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         });
 
         modalInstance.result.then(function () {
-            $http.get('/futures/reset_user')
+            $http.get('/futures/reset_user?product=' + $scope.data.productID)
                 .success(function(data, status) {
                     $scope.cash = InitCapital;
                     displayError('重置成功');

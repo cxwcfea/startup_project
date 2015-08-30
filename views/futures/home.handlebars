@@ -249,7 +249,7 @@
 
 <div class="index-box">
     <div class="chart-box">
-        <h4><span class="text-danger" ng-click="setting()">自动平仓设置</span><!--<span>走势图</span>--> <span class="current-price">昨收盘: <em>\{{yesterdayClose}}</em></span> <span class="current-price">涨跌: <em>\{{pointDelta | number:2}}</em>%</span> <span class="text-success pull-right" ng-click="openIntroPopup()">帮助</span></h4>
+        <h4><span class="text-danger" ng-click="setting()">自动平仓设置</span> <span class="current-price">昨收盘: <em>\{{yesterdayClose}}</em></span> <span class="current-price">涨跌: <em>\{{pointDelta | number:2}}</em>%</span> <span class="text-success pull-right" ng-click="openIntroPopup()">帮助</span></h4>
         <div class="chart">
             <div id="container" futures-chart="chartLabels" chart-data="chartData"></div>
         </div>
@@ -356,13 +356,19 @@
     </div>
     -->
     <!--
+    <div class="appoint">
+        <div class="row">
+            <p class="col-xs-6 text-danger">\{{data.productType}}</p>
+            <p class="col-xs-6 text-success">\{{data.real ? '实盘' : '虚拟盘'}}</p>
+        </div>
+    </div>
+    -->
     <div class="appoint" ng-hide="data.real">
         <div class="row">
             <p class="col-xs-6" ng-click="resetCapital()">资金重置</p>
             <p class="col-xs-6" ng-click="makeAppointment()">实盘申请</p>
         </div>
     </div>
-    -->
 </div>
 
 <div class="ui-tip" ng-show="showError">\{{errorMsg}}</div>
