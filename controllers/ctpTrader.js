@@ -336,7 +336,6 @@ function windControl(userId, forceClose, userContract, cb) {
                                           }
                                           if(info.code == -1) {
                                               console.log('hive rejected to close order.');
-                                              //delete user2cb_obj[userId];
                                               cb('交易所拒绝访问');
                                               return lock.unlock();
                                           }
@@ -389,9 +388,8 @@ function closeOne(mongo_user, mongo_portfolio, curr_price, contract, top_price, 
             act = 4;
             price = bottom_price;
         }
-        var instrument = config.futureIF;
+        var instrument = config.futureag;
         if(mongo_user.productType == 1)
-        instrument = config.futureag;
         var ctp_order_close = {
             user_id: mongo_user._id,
             order_id: order_id,
@@ -584,12 +582,10 @@ function createOrder(data, cb) {
                       if (!portfolio) {
                           portfolio = new Portfolio({contractId: contract._id, userId: user._id});
                       }
-                      /* // TODO: maximum 10 hands for ag1512
-                      if (portfolio.quantity != 0) {
+                      if (portfolio.quantity >= 10) {
                           cb({code:6, msg:'position exist.'});
                           return lock.unlock();
                       }
-                      */
                       
                       var costs = getCosts(contract, priceInfo.LastPrice, data.order.quantity, portfolio.quantity, portfolio.total_point, portfolio.total_deposit);
                       if (user.cash < costs.open) {
