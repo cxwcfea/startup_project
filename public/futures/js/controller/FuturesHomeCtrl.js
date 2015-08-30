@@ -142,9 +142,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     function undatePosition(position) {
         if (position) {
             $scope.openPrice = position.total_point;
-            if ($scope.data.productID == 1) {
-                $scope.openPrice /= 10;  // silver will open 10 hands
-            }
             $scope.tradeData.down = $scope.tradeData.up = $scope.tradeData.sell = 0;
             if (position.quantity) {
                 if (position.longQuantity > position.shortQuantity) {
