@@ -375,7 +375,7 @@ function windControl(userId, forceClose, userContract, cb) {
     });
 }
 
-function closeOne(mongo_user, mongo_portfolio, curr_price, contract, top_price, bottom_price, quantity, cb) {
+function close(mongo_user, mongo_portfolio, curr_price, contract, top_price, bottom_price, quantity, cb) {
     generateOrderID(function(err, order_id){
         if (err) {
             console.log(err);
@@ -606,7 +606,7 @@ function createOrder(data, cb) {
                           }
                           // close positon first
                           if(quantity_to_close != 0){
-                              closeOne(user, portfolio, priceInfo.LastPrice, contract, top_price, bottom_price, 1, function(err, order){
+                              close(user, portfolio, priceInfo.LastPrice, contract, top_price, bottom_price, 1, function(err, order){
                                   if(err){
                                       cb({code:2, msg: err.toString()});
                                       return lock.unlock();
@@ -634,7 +634,7 @@ function createOrder(data, cb) {
                                   user_id: data.user_id,
                                   order_id: order_id,
                                   instrument: instrument,
-                                  act: act, // positive for buy, 0 for close, negative for sell
+                                  act: act,
                                   size: Math.abs(data.order.quantity/100), // volume
                                   px_raw: parseFloat(price/100).toFixed(0) // price 
                               };
