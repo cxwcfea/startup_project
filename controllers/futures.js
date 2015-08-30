@@ -1062,7 +1062,7 @@ module.exports = {
             midTime4.minute(00);
             midTime4.second(00);
 
-            var firstTime = moment.startOf('day');
+            var firstTime = moment().startOf('day');
             firstTime.add(2.5, 'hours');
 
             var tradeTime = true;
