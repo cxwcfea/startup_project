@@ -582,7 +582,7 @@ function createOrder(data, cb) {
                       if (!portfolio) {
                           portfolio = new Portfolio({contractId: contract._id, userId: user._id});
                       }
-                      if (Math.abs(portfolio.quantity) >= 1000) {
+                      if (Math.abs(portfolio.quantity) >= 1000 && data.order.quantity*portfolio.quantity > 0) {
                           cb({code:6, msg:'position exist.'});
                           return lock.unlock();
                       }
