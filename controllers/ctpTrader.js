@@ -375,7 +375,7 @@ function windControl(userId, forceClose, userContract, cb) {
     });
 }
 
-function closeOne(mongo_user, mongo_portfolio, curr_price, contract, top_price, bottom_price, cb) {
+function closeOne(mongo_user, mongo_portfolio, curr_price, contract, top_price, bottom_price, quantity, cb) {
     generateOrderID(function(err, order_id){
         if (err) {
             console.log(err);
@@ -395,7 +395,7 @@ function closeOne(mongo_user, mongo_portfolio, curr_price, contract, top_price, 
             order_id: order_id,
             instrument: instrument,
             act: act,
-            size: Math.abs(mongo_portfolio.quantity)/100, // volume
+            size: Math.abs(quantity)/100, // volume
             px_raw: parseFloat(price).toFixed(0)
         };
         //hive.createOrder(ctp_order_close, function(err, info) {
@@ -416,6 +416,7 @@ function closeOne(mongo_user, mongo_portfolio, curr_price, contract, top_price, 
             }
             console.log('order closed in hive.');
             var q = mongo_portfolio.quantity>0 ? -100 : 100;
+            q = q * Math.abs(quantity);
             var costs = getCosts(contract, info.traded_price*100, q, mongo_portfolio.quantity, mongo_portfolio.total_point, mongo_portfolio.total_deposit);
             var oldUserCash = mongo_user.cash;
             var oldUserLastCash = mongo_user.lastCash;
@@ -434,9 +435,9 @@ function closeOne(mongo_user, mongo_portfolio, curr_price, contract, top_price, 
                 var lq = mongo_portfolio.longQuantity;
                 var sq = mongo_portfolio.shortQuantity;
                 if(mongo_portfolio.quantity > 0)
-                    lq -= 100;
+                    lq -= 100*Math.abs(quantity);
                 if(mongo_portfolio.quantity < 0)
-                    sq -= 100;
+                    sq -= 100*Math.abs(quantity);
                 Portfolio.update({_id: mongo_portfolio._id},
                     {
                         $set:{quantity: mongo_portfolio.quantity+q, total_point: mongo_portfolio.total_point-costs.point, 
@@ -605,7 +606,7 @@ function createOrder(data, cb) {
                           }
                           // close positon first
                           if(quantity_to_close != 0){
-                              closeOne(user, portfolio, priceInfo.LastPrice, contract, top_price, bottom_price, function(err, order){
+                              closeOne(user, portfolio, priceInfo.LastPrice, contract, top_price, bottom_price, 1, function(err, order){
                                   if(err){
                                       cb({code:2, msg: err.toString()});
                                       return lock.unlock();
