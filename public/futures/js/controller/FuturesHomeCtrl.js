@@ -42,27 +42,34 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
 
     var now = moment();
 
-    var firstStart = moment();
-    firstStart.hour(9);
-    firstStart.minute(15);
-    firstStart.second(0);
+    var firstStart = moment().startOf('day');
+
+    var firstEnd = moment();
+    firstEnd.hour(2);
+    firstEnd.minute(27);
+    firstEnd.second(0);
 
     var secondStart = moment();
-    secondStart.hour(13);
+    secondStart.hour(9);
     secondStart.minute(0);
     secondStart.second(0);
 
-    var firstEnd = moment();
-    firstEnd.hour(11);
-    firstEnd.minute(30);
-    firstEnd.second(0);
-
     var secondEnd = moment();
-    secondEnd.hour(15);
-    secondEnd.minute(12);
+    secondEnd.hour(11);
+    secondEnd.minute(30);
     secondEnd.second(0);
 
-    if ((now >= firstStart && now <= firstEnd) || (now >= secondStart && now <= secondEnd)) {
+    var thirdStart = moment();
+    thirdStart.hour(13);
+    thirdStart.minute(30);
+    thirdStart.second(0);
+
+    var thirdEnd = moment();
+    thirdStart.hour(14);
+    thirdStart.minute(57);
+    thirdStart.second(0);
+
+    if ((now >= firstStart && now <= firstEnd) || (now >= secondStart && now <= secondEnd) || (now >= thirdStart && now <= thirdEnd)) {
         if (!$scope.data.timeoutSet) {
             $scope.data.timeoutSet = true;
 
@@ -72,14 +79,18 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                     $scope.closeText = TEXT;
                     $scope.openTimeHintPopup('lg');
                 }, firstEnd-now);
-            }
-
-            if (now < secondEnd) {
+            } else if (now < secondEnd) {
                 $timeout(function() {
                     $scope.tradeClose = true;
                     $scope.closeText = TEXT;
                     $scope.openTimeHintPopup('lg');
                 }, secondEnd-now);
+            } else if (now < thirdEnd) {
+                $timeout(function() {
+                    $scope.tradeClose = true;
+                    $scope.closeText = TEXT;
+                    $scope.openTimeHintPopup('lg');
+                }, thirdEnd-now);
             }
         }
     } else {

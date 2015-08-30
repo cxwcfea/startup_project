@@ -167,4 +167,7 @@ console.log((endTime - startTime) / 3600000);
 var now = moment();
 var orderStartTime = now.subtract(2.5, 'hours');
 console.log(orderStartTime.toDate());
+now = moment();
+var otherTime = now.add(1.5, 'hours');
+console.log(otherTime.toDate());
 

@@ -48,7 +48,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             intro: '白银期货',
             status: 0,
             alias: 'AG1512',
-            time: '工作日09:00-11:30 13:30-13:00 21:00-02:30'
+            time: '工作日09:00-11:30 13:30-15:00 21:00-02:30'
         }
         /*
         {

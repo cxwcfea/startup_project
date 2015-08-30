@@ -1035,34 +1035,44 @@ module.exports = {
         app.get('/futures/test', test);
 
         app.get('/futures/*', function(req, res, next) {
+            var now = moment();
+
             var startTime = moment();
             startTime.hour(09);
-            startTime.minute(15);
+            startTime.minute(00);
             startTime.second(00);
-
-            var endTime = moment();
-            endTime.hour(15);
-            endTime.minute(12);
-            endTime.second(00);
-
-            var now = moment();
 
             var midTime1 = moment();
             midTime1.hour(11);
-            midTime1.minute(30);
-            midTime1.second(01);
+            midTime1.minute(29);
+            midTime1.second(59);
 
             var midTime2 = moment();
             midTime2.hour(13);
-            midTime2.minute(00);
+            midTime2.minute(30);
             midTime2.second(00);
+
+            var midTime3 = moment();
+            midTime3.hour(14);
+            midTime3.minute(57);
+            midTime3.second(00);
+
+            var midTime4 = moment();
+            midTime4.hour(21);
+            midTime4.minute(00);
+            midTime4.second(00);
+
+            var firstTime = moment.startOf('day');
+            firstTime.add(2.5, 'hours');
 
             var tradeTime = true;
             if (util.isHoliday(now.dayOfYear())) {
                 tradeTime = false;
-            } else if (now < startTime || now > endTime) {
+            } else if (now > firstTime && now < startTime) {
                 tradeTime = false;
             } else if (now > midTime1 && now < midTime2) {
+                tradeTime = false;
+            } else if (now > midTime3 && now < midTime4) {
                 tradeTime = false;
             }
 
