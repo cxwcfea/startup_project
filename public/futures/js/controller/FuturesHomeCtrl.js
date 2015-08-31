@@ -69,14 +69,12 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     thirdEnd.minute(57);
     thirdEnd.second(0);
 
-    console.log('now ' + now.toDate());
-    console.log('firstStart ' + firstStart.toDate());
-    console.log('firstEnd ' + firstEnd.toDate());
-    console.log('secondStart ' + secondStart.toDate());
-    console.log('secondEnd ' + secondEnd.toDate());
-    console.log('thirdStart ' + thirdStart.toDate());
-    console.log('thirdEnd ' + thirdEnd.toDate());
-    if ((now >= firstStart && now <= firstEnd) || (now >= secondStart && now <= secondEnd) || (now >= thirdStart && now <= thirdEnd)) {
+    var lastStart = moment();
+    lastStart.hour(21);
+    lastStart.minute(0);
+    lastStart.second(0);
+
+    if ((now >= firstStart && now <= firstEnd) || (now >= secondStart && now <= secondEnd) || (now >= thirdStart && now <= thirdEnd) || now >= lastStart) {
         if (!$scope.data.timeoutSet) {
             $scope.data.timeoutSet = true;
 
@@ -101,7 +99,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             }
         }
     } else {
-        console.log('else');
         $scope.tradeClose = true;
     }
 
