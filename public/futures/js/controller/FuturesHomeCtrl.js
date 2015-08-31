@@ -143,7 +143,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         if (position) {
             $scope.tradeData.down = $scope.tradeData.up = $scope.tradeData.sell = 0;
             if (position.quantity) {
-                $scope.openPrice = position.total_point / Math.abs(position.quantity);
+                $scope.openPrice = position.total_point / Math.abs(position.quantity) / 100;
                 if (position.longQuantity > position.shortQuantity) {
                     $scope.tradeData.up = (position.longQuantity - position.shortQuantity) / HAND;
                     $scope.tradeData.down = 0;
