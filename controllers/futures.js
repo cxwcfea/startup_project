@@ -776,7 +776,7 @@ function finishTrade(req, res) {
         function(trader, user, callback) {
             var profit = parseFloat(req.body.profit);
             var err = null;
-            if (!profit) {
+            if (profit === null || profit === undefined) {
                 err = '无效的盈利金额';
             }
             callback(err, profit, trader, user);
