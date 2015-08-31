@@ -162,10 +162,11 @@ angular.module("futuresApp")
                 scope.data.socket = true;
                 Socket.on('connect', function () {
                     // send a join event with your name
-                    Socket.emit('join', {name:scope.data.currentUser._id, room:0});
+                    Socket.emit('join', {name:scope.data.currentUser._id, room:1});
                 });
                 Socket.on('history_data', function(historyData) {
                     //series.addPoint(newData, true, true);
+                    //console.log(historyData);
                     if (historyData.productID == scope.data.productID) {
                         if (!historyData.data || !historyData.data[0]) return;
                         scope.data.firstPoint = historyData.data[0][0];

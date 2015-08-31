@@ -276,8 +276,11 @@ function windControl(userId, forceClose, userContract, cb) {
                       }
                       global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
                           var priceInfo = JSON.parse(priceInfoString);
-                          var top_price = priceInfo.PreSettlementPrice*1.0995;
-                          var bottom_price = priceInfo.PreSettlementPrice*(1-0.0995);
+                          var stop_percentage = contract.stop_percentage;
+                          if(stop_percentage == 0)
+                              stop_percentage = 10.0;
+                          var top_price = priceInfo.PreSettlementPrice*(1 + parseFloat(stop_percentage)/100)*100;
+                          var bottom_price = priceInfo.PreSettlementPrice*(1 - parseFloat(stop_percentage)/100)*100;
                           contractInfo[portf.contractId] = priceInfo;
                           contractData[portf.contractId] = contract;
                           var costs = getCosts(contract, priceInfo.LastPrice*100, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
@@ -321,7 +324,7 @@ function windControl(userId, forceClose, userContract, cb) {
                                           instrument: instrument,
                                           act: act, // close buy
                                           size: Math.abs(portf.quantity)/100, // volume
-                                          px_raw: parseFloat(price).toFixed(0)
+                                          px_raw: parseFloat(price/100).toFixed(0)
                                       };
                                       hive.createOrder(ctp_order_close, function(err, info) {
                                           /*
@@ -396,8 +399,8 @@ function close(mongo_user, mongo_portfolio, curr_price, contract, top_price, bot
             order_id: order_id,
             instrument: instrument,
             act: act,
-            size: Math.abs(quantity)/100, // volume
-            px_raw: parseFloat(price).toFixed(0)
+            size: Math.abs(quantity), // volume
+            px_raw: parseFloat(price/100).toFixed(0)
         };
         hive.createOrder(ctp_order_close, function(err, info) {
             /*

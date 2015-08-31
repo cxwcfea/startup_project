@@ -158,7 +158,7 @@ function getErrorMessage(err) {
             msg = '请先平仓';
             break;
         case 7:
-            msg = '同方向持仓不能多于1手';
+            msg = '同时持仓不能多于10手';
             break;
         case 8:
             msg = '正在连接交易所，请稍后';
@@ -201,7 +201,7 @@ function placeOrder(req, res) {
     req.body.contract = contract;
     if (forceClose) {
         req.body.force_close = 1;
-        if (req.body.type == 1 && req.user.wechat.status === 4) {
+        if (req.body.type == 1) {
             if (productID == 0) {
                 req.body.user_id = req.user.wechat.real_trader;
             } else if (productID == 1) {
@@ -225,7 +225,7 @@ function placeOrder(req, res) {
         };
 
         var trader = fetchTraderID(req.user, req.body.type, productID);
-        if (req.body.type == 1 && req.user.wechat.status === 4) {
+        if (req.body.type == 1) {
             obj.user_id = trader;
             ctpTrader.createOrder(obj, function(err, order) {
                 if (err) {
@@ -776,7 +776,7 @@ function finishTrade(req, res) {
         function(trader, user, callback) {
             var profit = parseFloat(req.body.profit);
             var err = null;
-            if (!profit) {
+            if (profit === null || profit === undefined) {
                 err = '无效的盈利金额';
             }
             callback(err, profit, trader, user);
