@@ -65,17 +65,10 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     thirdStart.second(0);
 
     var thirdEnd = moment();
-    thirdStart.hour(14);
-    thirdStart.minute(57);
-    thirdStart.second(0);
+    thirdEnd.hour(14);
+    thirdEnd.minute(57);
+    thirdEnd.second(0);
 
-    console.log('now ' + now.toDate());
-    console.log('firstStart ' + firstStart.toDate());
-    console.log('firstEnd ' + firstEnd.toDate());
-    console.log('secondStart ' + secondStart.toDate());
-    console.log('secondEnd ' + secondEnd.toDate());
-    console.log('thirdStart ' + thirdStart.toDate());
-    console.log('thirdEnd ' + thirdEnd.toDate());
     if ((now >= firstStart && now <= firstEnd) || (now >= secondStart && now <= secondEnd) || (now >= thirdStart && now <= thirdEnd)) {
         if (!$scope.data.timeoutSet) {
             $scope.data.timeoutSet = true;
