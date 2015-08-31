@@ -276,8 +276,11 @@ function windControl(userId, forceClose, userContract, cb) {
                       }
                       global.redis_client.get(makeRedisKey(contract), function(err, priceInfoString) {
                           var priceInfo = JSON.parse(priceInfoString);
-                          var top_price = priceInfo.PreSettlementPrice*1.0995;
-                          var bottom_price = priceInfo.PreSettlementPrice*(1-0.0995);
+                          var stop_percentage = contract.stop_percentage;
+                          if(stop_percentage == 0)
+                              stop_percentage = 10.0;
+                          var top_price = priceInfo.PreSettlementPrice*(1 + parseFloat(stop_percentage)/100)*100;
+                          var bottom_price = priceInfo.PreSettlementPrice*(1 - parseFloat(stop_percentage)/100)*100;
                           contractInfo[portf.contractId] = priceInfo;
                           contractData[portf.contractId] = contract;
                           var costs = getCosts(contract, priceInfo.LastPrice*100, -portf.quantity, portf.quantity, portf.total_point, portf.total_deposit);
@@ -321,14 +324,15 @@ function windControl(userId, forceClose, userContract, cb) {
                                           instrument: instrument,
                                           act: act, // close buy
                                           size: Math.abs(portf.quantity)/100, // volume
-                                          px_raw: parseFloat(price).toFixed(0)
+                                          px_raw: parseFloat(price/100).toFixed(0)
                                       };
-                                      //hive.createOrder(ctp_order_close, function(err, info) {
-                                      {
+                                      hive.createOrder(ctp_order_close, function(err, info) {
+                                          /*
                                           var info = {};
                                           info.traded_price = priceInfo.LastPrice;
                                           info.code = 0;
                                           var err = null;
+                                          */
                                           if(err){
                                               console.log(err);
                                               cb(err);
@@ -336,7 +340,6 @@ function windControl(userId, forceClose, userContract, cb) {
                                           }
                                           if(info.code == -1) {
                                               console.log('hive rejected to close order.');
-                                              //delete user2cb_obj[userId];
                                               cb('交易所拒绝访问');
                                               return lock.unlock();
                                           }
@@ -357,7 +360,7 @@ function windControl(userId, forceClose, userContract, cb) {
                                               }
                                               closeAll(userId, portfolio, income, contractInfo, contractData, 0, cb, lock);
                                           }
-                                      }//);
+                                      });
                                   });
                               } else {
                                   //console.log("Closed");
@@ -376,7 +379,7 @@ function windControl(userId, forceClose, userContract, cb) {
     });
 }
 
-function closeOne(mongo_user, mongo_portfolio, curr_price, contract, top_price, bottom_price, cb) {
+function close(mongo_user, mongo_portfolio, curr_price, contract, top_price, bottom_price, quantity, cb) {
     generateOrderID(function(err, order_id){
         if (err) {
             console.log(err);
@@ -389,23 +392,23 @@ function closeOne(mongo_user, mongo_portfolio, curr_price, contract, top_price, 
             act = 4;
             price = bottom_price;
         }
-        var instrument = config.futureIF;
+        var instrument = config.futureag;
         if(mongo_user.productType == 1)
-        instrument = config.futureag;
         var ctp_order_close = {
             user_id: mongo_user._id,
             order_id: order_id,
             instrument: instrument,
             act: act,
-            size: Math.abs(mongo_portfolio.quantity)/100, // volume
-            px_raw: parseFloat(price).toFixed(0)
+            size: Math.abs(quantity), // volume
+            px_raw: parseFloat(price/100).toFixed(0)
         };
-        //hive.createOrder(ctp_order_close, function(err, info) {
-        {
+        hive.createOrder(ctp_order_close, function(err, info) {
+            /*
             var info = {};
             info.traded_price =  curr_price/100;
             info.code = 0;
             var err = null;
+            */
             if(err){
                 console.log(err);
                 cb(err);
@@ -418,6 +421,7 @@ function closeOne(mongo_user, mongo_portfolio, curr_price, contract, top_price, 
             }
             console.log('order closed in hive.');
             var q = mongo_portfolio.quantity>0 ? -100 : 100;
+            q = q * Math.abs(quantity);
             var costs = getCosts(contract, info.traded_price*100, q, mongo_portfolio.quantity, mongo_portfolio.total_point, mongo_portfolio.total_deposit);
             var oldUserCash = mongo_user.cash;
             var oldUserLastCash = mongo_user.lastCash;
@@ -436,9 +440,9 @@ function closeOne(mongo_user, mongo_portfolio, curr_price, contract, top_price, 
                 var lq = mongo_portfolio.longQuantity;
                 var sq = mongo_portfolio.shortQuantity;
                 if(mongo_portfolio.quantity > 0)
-                    lq -= 100;
+                    lq -= 100*Math.abs(quantity);
                 if(mongo_portfolio.quantity < 0)
-                    sq -= 100;
+                    sq -= 100*Math.abs(quantity);
                 Portfolio.update({_id: mongo_portfolio._id},
                     {
                         $set:{quantity: mongo_portfolio.quantity+q, total_point: mongo_portfolio.total_point-costs.point, 
@@ -474,7 +478,7 @@ function closeOne(mongo_user, mongo_portfolio, curr_price, contract, top_price, 
                     }
                 );
             });
-        }// );
+        });
     });
 }
 
@@ -583,12 +587,10 @@ function createOrder(data, cb) {
                       if (!portfolio) {
                           portfolio = new Portfolio({contractId: contract._id, userId: user._id});
                       }
-                      /* // TODO: maximum 10 hands for ag1512
-                      if (portfolio.quantity != 0) {
+                      if (Math.abs(portfolio.quantity) >= 1000 && data.order.quantity*portfolio.quantity > 0) {
                           cb({code:6, msg:'position exist.'});
                           return lock.unlock();
                       }
-                      */
                       
                       var costs = getCosts(contract, priceInfo.LastPrice, data.order.quantity, portfolio.quantity, portfolio.total_point, portfolio.total_deposit);
                       if (user.cash < costs.open) {
@@ -608,7 +610,7 @@ function createOrder(data, cb) {
                           }
                           // close positon first
                           if(quantity_to_close != 0){
-                              closeOne(user, portfolio, priceInfo.LastPrice, contract, top_price, bottom_price, function(err, order){
+                              close(user, portfolio, priceInfo.LastPrice, contract, top_price, bottom_price, 1, function(err, order){
                                   if(err){
                                       cb({code:2, msg: err.toString()});
                                       return lock.unlock();
@@ -636,16 +638,17 @@ function createOrder(data, cb) {
                                   user_id: data.user_id,
                                   order_id: order_id,
                                   instrument: instrument,
-                                  act: act, // positive for buy, 0 for close, negative for sell
+                                  act: act,
                                   size: Math.abs(data.order.quantity/100), // volume
                                   px_raw: parseFloat(price/100).toFixed(0) // price 
                               };
-                              //hive.createOrder(ctp_order, function(err, info) {
-                              {
+                              hive.createOrder(ctp_order, function(err, info) {
+                                  /*
                                   var info = {};
                                   info.traded_price = priceInfo.LastPrice/100;
                                   info.code = 0;
                                   var err = null;
+                                  */
                                   if (err) {
                                       console.log(err);
                                       cb(err);
@@ -712,7 +715,7 @@ function createOrder(data, cb) {
                                           });
                                       });
                                   });
-                              }//); // new order creation ends here
+                              }); // new order creation ends here
                           }
                       }); // get new order id from redis ends here
                   }); //get portfolio

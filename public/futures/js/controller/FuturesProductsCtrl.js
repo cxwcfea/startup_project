@@ -2,32 +2,46 @@
 angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$window', '$modal', '$location', 'Socket', function($scope, $window, $modal, $location, Socket) {
     $scope.data.selectedItem = 0;
 
-    var startTime = moment();
-    startTime.hour(9);
-    startTime.minute(15);
-    startTime.second(0);
-
-    var endTime = moment();
-    endTime.hour(15);
-    endTime.minute(10);
-    endTime.second(0);
-
     var now = moment();
 
-    var midTime1 = moment();
-    midTime1.hour(11);
-    midTime1.minute(30);
-    midTime1.second(1);
+    var startTime1 = moment().startOf('day');
 
-    var midTime2 = moment();
-    midTime2.hour(13);
-    midTime2.minute(0);
-    midTime2.second(0);
+    var endTime1 = moment();
+    endTime1.hour(2);
+    endTime1.minute(57);
+    endTime1.second(0);
+
+    var startTime2 = moment();
+    startTime2.hour(9);
+    startTime2.minute(0);
+    startTime2.second(0);
+
+    var endTime2 = moment();
+    endTime2.hour(11);
+    endTime2.minute(29);
+    endTime2.second(59);
+
+    var startTime3 = moment();
+    startTime3.hour(13);
+    startTime3.minute(30);
+    startTime3.second(0);
+
+    var endTime3 = moment();
+    endTime3.hour(14);
+    endTime3.minute(57);
+    endTime3.second(0);
+
+    var startTime4 = moment();
+    startTime4.hour(21);
+    startTime4.minute(0);
+    startTime4.second(0);
 
     var tradeTime = true;
-    if (now < startTime || now > endTime) {
+    if (now > endTime1 && now < startTime2) {
         tradeTime = false;
-    } else if (now > midTime1 && now < midTime2) {
+    } else if (now > endTime2 && now < startTime3) {
+        tradeTime = false;
+    } else if (now > endTime3 && now < startTime4) {
         tradeTime = false;
     }
 
@@ -46,7 +60,7 @@ angular.module('futuresApp').controller('FuturesProductsCtrl', ['$scope', '$wind
             name: 'AG1512',
             type: '沪 银',
             intro: '白银期货',
-            status: 0,
+            status: tradeTime ? 1 : 0,
             alias: 'AG1512',
             time: '工作日09:00-11:30 13:30-15:00 21:00-02:30'
         }

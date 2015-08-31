@@ -166,6 +166,7 @@ angular.module("futuresApp")
                 });
                 Socket.on('history_data', function(historyData) {
                     //series.addPoint(newData, true, true);
+                    //console.log(historyData);
                     if (historyData.productID == scope.data.productID) {
                         if (!historyData.data || !historyData.data[0]) return;
                         scope.data.firstPoint = historyData.data[0][0];

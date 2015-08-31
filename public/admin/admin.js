@@ -105,7 +105,7 @@ angular.module('adminApp').controller('CreatePPJOrderModalCtrl', ['$scope', '$mo
     $scope.userMobile = user.wechat.mobile;
     $scope.data = {};
     $scope.data.order_type = 1;
-    $scope.data.order_amount = 30000;
+    $scope.data.order_amount = 3000;
 
     $scope.ok = function () {
         $modalInstance.close($scope.data);
