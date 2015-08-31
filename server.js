@@ -88,10 +88,10 @@ function startServer() {
     require('./config/socket.io')(io);
 
     ctpTrader.initHive(1);
-    task.scheduleFuturesRiskControlJob();
+    //task.scheduleFuturesRiskControlJob();
     task.scheduleFuturesForceCloseJob();
     task.schedulePPJUserDailyJob();
-    task.scheduleTriggeredJob();
+    //task.scheduleTriggeredJob();
     /*
     if (cluster.worker.id === 1) {
         logger.info('task init');
