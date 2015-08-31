@@ -94,9 +94,11 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             }
         }
     } else {
+        alert('not trade time');
         $scope.tradeClose = true;
     }
 
+    // TODO: consider silver trade
     if ($scope.data.real && $scope.user.wechat.status !== 4) {
         $scope.tradeClose = true;
         $scope.closeText = REAL_TEXT;
