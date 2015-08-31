@@ -117,8 +117,8 @@ $(function () {
             profit = (bootstrappedUserObject.wechat.trader.lastCash - 100000000)/100;
         }
         wx.onMenuShareAppMessage({
-            title: '股指拍拍机',
-            desc: '我玩股指拍拍机获得3万交易本金，快来一起成为交易高手吧！',
+            title: '交易快手',
+            desc: '我玩交易快手获得3万交易本金，快来一起成为交易高手吧！',
             link: 'http://www.niujin.cn/futures/',
             imgUrl: 'http://www.niujin.cn/futures/images/logo.png',
             type: 'link',
@@ -132,7 +132,7 @@ $(function () {
         });
 
         wx.onMenuShareTimeline({
-            title: '现在玩拍拍机可获得3万本金，快来一起成为交易高手吧！',
+            title: '现在玩交易快手可获得3万本金，快来一起成为交易高手吧！',
             link: 'http://www.niujin.cn/futures',
             imgUrl: 'http://www.niujin.cn/futures/images/logo.png',
             success: function () {
