@@ -158,7 +158,7 @@ function getErrorMessage(err) {
             msg = '请先平仓';
             break;
         case 7:
-            msg = '同方向持仓不能多于1手';
+            msg = '同时持仓不能多于10手';
             break;
         case 8:
             msg = '正在连接交易所，请稍后';
