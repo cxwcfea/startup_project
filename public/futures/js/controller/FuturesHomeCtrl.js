@@ -218,7 +218,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
     fetchUserProfit();
     $interval(function() {
         fetchUserProfit();
-    }, 500);
+    }, 1000);
 
     $scope.showShareHint = false;
     $scope.openIntroPopup = function () {
