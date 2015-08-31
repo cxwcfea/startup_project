@@ -141,9 +141,9 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
 
     function undatePosition(position) {
         if (position) {
-            $scope.openPrice = position.total_point;
             $scope.tradeData.down = $scope.tradeData.up = $scope.tradeData.sell = 0;
             if (position.quantity) {
+                $scope.openPrice = position.total_point / Math.abs(position.quantity);
                 if (position.longQuantity > position.shortQuantity) {
                     $scope.tradeData.up = (position.longQuantity - position.shortQuantity) / HAND;
                     $scope.tradeData.down = 0;
@@ -153,6 +153,8 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                     $scope.tradeData.up = 0;
                     $scope.tradeData.sell = $scope.tradeData.down;
                 }
+            } else {
+                $scope.openPrice = 0;
             }
         }
     }
