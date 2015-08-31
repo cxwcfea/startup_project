@@ -94,7 +94,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
             }
         }
     } else {
-        alert('not trade time');
         $scope.tradeClose = true;
     }
 
