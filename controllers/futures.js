@@ -201,7 +201,7 @@ function placeOrder(req, res) {
     req.body.contract = contract;
     if (forceClose) {
         req.body.force_close = 1;
-        if (req.body.type == 1 && req.user.wechat.status === 4) {
+        if (req.body.type == 1) {
             if (productID == 0) {
                 req.body.user_id = req.user.wechat.real_trader;
             } else if (productID == 1) {
@@ -225,7 +225,7 @@ function placeOrder(req, res) {
         };
 
         var trader = fetchTraderID(req.user, req.body.type, productID);
-        if (req.body.type == 1 && req.user.wechat.status === 4) {
+        if (req.body.type == 1) {
             obj.user_id = trader;
             ctpTrader.createOrder(obj, function(err, order) {
                 if (err) {
