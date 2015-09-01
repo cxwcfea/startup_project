@@ -256,7 +256,7 @@ function windControl(userId, forceClose, userContract, cb) {
     var resource = 'mt://lock/user/' + userId;
     var ttl = 10000;
     redlock.lock(resource, ttl).then(function(lock) {
-      User.findOne({$and: [{_id: userId}, {status: 0}]}, function(err, user) {
+      User.findById(userId, function(err, user) {
           if (err) {
               console.log(err);
               cb(err.toString());
