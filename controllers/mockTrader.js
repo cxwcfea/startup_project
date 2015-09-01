@@ -721,6 +721,7 @@ function createOrder(data, cb) {
                       });
                       var oldUserCash = user.cash;
                       var oldUserLastCash = user.lastCash;
+                      var oldQuantity = portfolio.quantity;
                       user.cash -= costs.open;
                       portfolio.quantity += data.order.quantity;
                       portfolio.total_point -= costs.point;
@@ -733,7 +734,7 @@ function createOrder(data, cb) {
                       portfolio.fee += costs.fee;
                       if (portfolio.quantity === 0) {
                           user.lastCash = user.cash;
-                      } else if ((data.order.quantity < 0 && portfolio.quantity > 0) || (data.order.quantity > 0 && portfolio.quantity < 1000)) {
+                      } else if ((data.order.quantity < 0 && oldQuantity > 0) || (data.order.quantity > 0 && oldQuantity < 0)) {
                           user.lastCash += costs.net_profit;
                       }
                       // write back
