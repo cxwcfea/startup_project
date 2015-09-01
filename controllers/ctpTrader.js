@@ -327,7 +327,7 @@ function windControl(userId, forceClose, userContract, cb) {
                                           px_raw: parseFloat(price/100).toFixed(0)
                                       };
                                       hive.createOrder(ctp_order_close, function(err, info) {
-                                          /*
+                                      /*
                                           var info = {};
                                           info.traded_price = priceInfo.LastPrice;
                                           info.code = 0;
@@ -403,7 +403,7 @@ function close(mongo_user, mongo_portfolio, curr_price, contract, top_price, bot
             px_raw: parseFloat(price/100).toFixed(0)
         };
         hive.createOrder(ctp_order_close, function(err, info) {
-            /*
+           /*
             var info = {};
             info.traded_price =  curr_price/100;
             info.code = 0;
@@ -427,7 +427,7 @@ function close(mongo_user, mongo_portfolio, curr_price, contract, top_price, bot
             var oldUserLastCash = mongo_user.lastCash;
             // Close user
             mongo_user.cash -= costs.open;
-            mongo_user.lastCash = mongo_user.cash;
+            mongo_user.lastCash += (costs.net_profit - costs.fee);
             User.update({_id: mongo_user._id},
                 {$set:{cash: mongo_user.cash, lastCash: mongo_user.lastCash}}, function(err, numberAffected, raw) {
                 if (err || numberAffected != 1) {
@@ -678,7 +678,6 @@ function createOrder(data, cb) {
                                   //console.log(order);
                                   var oldUserCash = user.cash;
                                   var oldUserLastCash = user.lastCash;
-                                  var oldQuantity = portfolio.quantity;
                                   user.cash -= costs.open;
                                   portfolio.quantity += data.order.quantity;
                                   portfolio.total_point -= costs.point;
@@ -689,9 +688,10 @@ function createOrder(data, cb) {
                                       portfolio.shortQuantity -= data.order.quantity;
                                   }
                                   portfolio.fee += costs.fee;
+                                  /*
                                   if (portfolio.quantity === 0) {
                                       user.lastCash = user.cash;
-                                  }
+                                  }*/
                                   // write back
                                   User.update({_id: user._id, cash: oldUserCash, lastCash: oldUserLastCash},
                                       {$set:{cash: user.cash, lastCash: user.lastCash}}, function(err, numberAffected, raw) {
