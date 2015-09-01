@@ -62,12 +62,12 @@ passport.use(new wechatStrategy({
                 }
                 mockTrader.createUser({
                     name: profile.unionid,
-                    warning: 7100000,
-                    close: 7050000,
-                    cash: 7300000,
-                    lastCash: 7300000,
+                    warning: 6755000,
+                    close: 6750000,
+                    cash: 7000000,
+                    lastCash: 7000000,
                     deposit: 300000,
-                    debt: 7000000,
+                    debt: 6700000,
                     productType: 1,
                     status: 0
                 }, function(err, trader2) {
@@ -98,12 +98,12 @@ passport.use(new wechatStrategy({
             if (!user.wechat.silverTrader) {
                 mockTrader.createUser({
                     name: profile.unionid,
-                    warning: 7100000,
-                    close: 7050000,
-                    cash: 7300000,
-                    lastCash: 7300000,
+                    warning: 6755000,
+                    close: 6750000,
+                    cash: 7000000,
+                    lastCash: 7000000,
                     deposit: 300000,
-                    debt: 7000000,
+                    debt: 6700000,
                     productType: 1,
                     status: 0
                 }, function(err, trader) {
