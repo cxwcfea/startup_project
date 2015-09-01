@@ -1,5 +1,5 @@
 'use strict';
-angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window', '$location', '$modal', '$http', '$timeout', '$interval', 'Socket', function($scope, $window, $location, $modal, $http, $timeout, $interval, Socket) {
+angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window', '$location', '$modal', '$http', '$timeout', '$interval', 'Socket', '$filter', function($scope, $window, $location, $modal, $http, $timeout, $interval, Socket, $filter) {
     $scope.user = $scope.data.currentUser;
     if ($scope.user.real === true) {
         $scope.data.real = true;
@@ -111,9 +111,9 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         //$scope.data.flags_data = [];
         $http.get('/futures/get_nearest_orders?type=' + ($scope.data.real ? 1 : 0) + '&product=' + $scope.data.productID)
             .success(function(data, status) {
-                console.log(data.length);
-                for (var i = 0; i < data.length; ++i) {
-                    var order = data[i];
+                var orders = $filter('orderBy')(data, 'timestamp', true);
+                for (var i = 0; i < orders.length; ++i) {
+                    var order = orders[i];
                     console.log(order);
                     if (order.lockedCash < 0) {
                         continue;
@@ -123,16 +123,14 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                     if (order.quantity < 0) {
                         color = '#00FF00';
                     }
-                    if ($scope.data.flags_data) {
-                        $scope.data.flags_data.push({
-                            x: Date.parse(order.timestamp),
-                            y: value,
-                            color:'#000000',
-                            fillColor: color,
-                            text: '',
-                            title: ' '
-                        });
-                    }
+                    $scope.data.flags_data.push({
+                        x: Date.parse(order.timestamp),
+                        y: value,
+                        color:'#000000',
+                        fillColor: color,
+                        text: '',
+                        title: ' '
+                    });
                 }
             })
             .error(function(data, status) {
