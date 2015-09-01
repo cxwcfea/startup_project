@@ -114,7 +114,6 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
                 var orders = $filter('orderBy')(data, 'timestamp', false);
                 for (var i = 0; i < orders.length; ++i) {
                     var order = orders[i];
-                    console.log(order);
                     if (order.lockedCash < 0) {
                         continue;
                     }
