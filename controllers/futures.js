@@ -710,12 +710,12 @@ function getProfit(req, res) {
 
 function changeTraderStatus(req, res) {
     logger.info('changeTraderStatus operate by ' + req.user.mobile, req.body);
-    var path = 'wechat.status';
+    var change = { 'wechat.status':req.body.user_status };
     var productID = req.body.product;
     if (productID == 1) {
-        path = 'wechat.silverStatus';
+        change = { 'wechat.silverStatus':req.body.user_status };
     }
-    User.findByIdAndUpdate(req.body.uid, {path:req.body.user_status}, function(err, user) {
+    User.findByIdAndUpdate(req.body.uid, change, function(err, user) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
         }
