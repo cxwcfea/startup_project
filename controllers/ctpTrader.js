@@ -691,8 +691,6 @@ function createOrder(data, cb) {
                                   portfolio.fee += costs.fee;
                                   if (portfolio.quantity === 0) {
                                       user.lastCash = user.cash;
-                                  } else if ((data.order.quantity < 0 && oldQuantity > 0) || (data.order.quantity > 0 && oldQuantity < 0)) {
-                                      user.lastCash += costs.net_profit;
                                   }
                                   // write back
                                   User.update({_id: user._id, cash: oldUserCash, lastCash: oldUserLastCash},
