@@ -601,12 +601,14 @@ function resetUser(userID, cb) {
                 var cash = 20000000;
                 var deposit = 3000000;
                 var debt = 17000000;
+                var lastCash = cash;
                 if (user.productType === 1) {
-                    close = 7050000;
-                    warning = 7100000;
-                    cash = 7300000;
+                    close = 6750000;
+                    warning = 6755000;
+                    cash = 7000000;
                     deposit = 300000;
-                    debt = 7000000;
+                    debt = 6700000;
+                    lastCash = cash;
                 }
                 User.update({_id:userID}, {$set:{close:close, warning:warning, cash:cash, deposit:deposit, debt:debt, lastCash:0, status:0}}, function(err, numberAffected, raw) {
                     if (err) {
