@@ -733,7 +733,7 @@ function createOrder(data, cb) {
                       portfolio.fee += costs.fee;
                       if (portfolio.quantity === 0) {
                           user.lastCash = user.cash;
-                      } else {
+                      } else if ((data.order.quantity < 0 && portfolio.quantity > 0) || (data.order.quantity > 0 && portfolio.quantity < 1000)) {
                           user.lastCash += costs.net_profit;
                       }
                       // write back
