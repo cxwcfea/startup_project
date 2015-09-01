@@ -106,8 +106,10 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         //$scope.data.flags_data = [];
         $http.get('/futures/get_nearest_orders?type=' + ($scope.data.real ? 1 : 0) + '&product=' + $scope.data.productID)
             .success(function(data, status) {
+                console.log(data.length);
                 for (var i = 0; i < data.length; ++i) {
                     var order = data[i];
+                    console.log(order);
                     if (order.lockedCash < 0) {
                         continue;
                     }
