@@ -42,7 +42,7 @@
                 </td>
                 <td align="right">
                     <strong class="text-danger">\{{(order.lockedCash > 0 ? order.lockedCash : 0 - order.lockedCash) / 100 | number:2}}</strong>
-                    <p>\{{order.price / 100 | number:1}}</p>
+                    <p>\{{order.price * 15 * 0.06 / 100 | number:1}}</p>
                 </td>
                 <td align="right">
                     <strong class="text-danger">-\{{order.fee / 100 | number:2}}</strong>
