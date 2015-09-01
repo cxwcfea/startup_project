@@ -53,6 +53,8 @@
         moment("2015-08-23").dayOfYear(),
         moment("2015-08-29").dayOfYear(),
         moment("2015-08-30").dayOfYear(),
+        moment("2015-09-03").dayOfYear(),
+        moment("2015-09-04").dayOfYear(),
         moment("2015-09-05").dayOfYear(),
         moment("2015-09-06").dayOfYear(),
         moment("2015-09-12").dayOfYear(),

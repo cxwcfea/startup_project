@@ -601,14 +601,16 @@ function resetUser(userID, cb) {
                 var cash = 20000000;
                 var deposit = 3000000;
                 var debt = 17000000;
+                var lastCash = cash;
                 if (user.productType === 1) {
-                    close = 7050000;
-                    warning = 7100000;
-                    cash = 7300000;
+                    close = 6750000;
+                    warning = 6755000;
+                    cash = 7000000;
                     deposit = 300000;
-                    debt = 7000000;
+                    debt = 6700000;
+                    lastCash = cash;
                 }
-                User.update({_id:userID}, {$set:{close:close, warning:warning, cash:cash, deposit:deposit, debt:debt, lastCash:0, status:0}}, function(err, numberAffected, raw) {
+                User.update({_id:userID}, {$set:{close:close, warning:warning, cash:cash, deposit:deposit, debt:debt, lastCash:lastCash, status:0}}, function(err, numberAffected, raw) {
                     if (err) {
                         return cb(err);
                     }
@@ -721,6 +723,7 @@ function createOrder(data, cb) {
                       });
                       var oldUserCash = user.cash;
                       var oldUserLastCash = user.lastCash;
+                      var oldQuantity = portfolio.quantity;
                       user.cash -= costs.open;
                       portfolio.quantity += data.order.quantity;
                       portfolio.total_point -= costs.point;
@@ -733,7 +736,7 @@ function createOrder(data, cb) {
                       portfolio.fee += costs.fee;
                       if (portfolio.quantity === 0) {
                           user.lastCash = user.cash;
-                      } else {
+                      } else if ((data.order.quantity < 0 && oldQuantity > 0) || (data.order.quantity > 0 && oldQuantity < 0)) {
                           user.lastCash += costs.net_profit;
                       }
                       // write back
