@@ -21,13 +21,25 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
 
     $scope.setDefaultPoint = function() {
         if ($scope.data.real) {
-            $scope.winPoint = $scope.user.wechat.real_trader.winPoint;
-            $scope.lossPoint = $scope.user.wechat.real_trader.lossPoint;
-            $scope.open = $scope.user.wechat.real_trader.tradeControl;
+            if ($scope.data.productID == 1) {
+                $scope.winPoint = $scope.user.wechat.real_silverTrader.winPoint;
+                $scope.lossPoint = $scope.user.wechat.real_silverTrader.lossPoint;
+                $scope.open = $scope.user.wechat.real_silverTrader.tradeControl;
+            } else {
+                $scope.winPoint = $scope.user.wechat.real_trader.winPoint;
+                $scope.lossPoint = $scope.user.wechat.real_trader.lossPoint;
+                $scope.open = $scope.user.wechat.real_trader.tradeControl;
+            }
         } else {
-            $scope.winPoint = $scope.user.wechat.trader.winPoint;
-            $scope.lossPoint = $scope.user.wechat.trader.lossPoint;
-            $scope.open = $scope.user.wechat.trader.tradeControl;
+            if ($scope.data.productID == 1) {
+                $scope.winPoint = $scope.user.wechat.silverTrader.winPoint;
+                $scope.lossPoint = $scope.user.wechat.silverTrader.lossPoint;
+                $scope.open = $scope.user.wechat.silverTrader.tradeControl;
+            } else {
+                $scope.winPoint = $scope.user.wechat.trader.winPoint;
+                $scope.lossPoint = $scope.user.wechat.trader.lossPoint;
+                $scope.open = $scope.user.wechat.trader.tradeControl;
+            }
         }
         if ($scope.winPoint === 0) {
             $scope.winPoint = null;
@@ -51,13 +63,25 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
                 displayError('设置成功');
                 $scope.open = open;
                 if ($scope.data.real) {
-                    $scope.user.wechat.real_trader.winPoint = $scope.winPoint;
-                    $scope.user.wechat.real_trader.lossPoint = $scope.lossPoint;
-                    $scope.user.wechat.real_trader.tradeControl = open;
+                    if ($scope.data.productID == 1) {
+                        $scope.user.wechat.real_silverTrader.winPoint = $scope.winPoint;
+                        $scope.user.wechat.real_silverTrader.lossPoint = $scope.lossPoint;
+                        $scope.user.wechat.real_silverTrader.tradeControl = open;
+                    } else {
+                        $scope.user.wechat.real_trader.winPoint = $scope.winPoint;
+                        $scope.user.wechat.real_trader.lossPoint = $scope.lossPoint;
+                        $scope.user.wechat.real_trader.tradeControl = open;
+                    }
                 } else {
-                    $scope.user.wechat.trader.winPoint = $scope.winPoint;
-                    $scope.user.wechat.trader.lossPoint = $scope.lossPoint;
-                    $scope.user.wechat.trader.tradeControl = open;
+                    if ($scope.data.productID == 1) {
+                        $scope.user.wechat.silverTrader.winPoint = $scope.winPoint;
+                        $scope.user.wechat.silverTrader.lossPoint = $scope.lossPoint;
+                        $scope.user.wechat.silverTrader.tradeControl = open;
+                    } else {
+                        $scope.user.wechat.trader.winPoint = $scope.winPoint;
+                        $scope.user.wechat.trader.lossPoint = $scope.lossPoint;
+                        $scope.user.wechat.trader.tradeControl = open;
+                    }
                 }
                 processing = false;
                 $scope.toggleSetting();
@@ -76,7 +100,7 @@ angular.module('futuresApp').controller('FuturesTradeSettingCtrl', ['$scope', '$
         var open = !$scope.open;
         if (open) {
             if (!$scope.winPoint && !$scope.lossPoint) {
-                displayError('金额不低于600元');
+                displayError('金额不低于200元');
                 processing = false;
                 return;
             }

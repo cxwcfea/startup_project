@@ -87,7 +87,7 @@ angular.module('futuresApp').controller('InfoModalCtrl', ['$scope', '$modalInsta
 angular.module("futuresApp")
     .service("util", [function () {
         this.generateBlankData = function(timestamp, lastPoint) {
-            var endTime = timestamp + 2 * 3600 * 1000 + 15 * 60000;
+            var endTime = timestamp + 2 * 3600 * 1000 + 30 * 60000;
             var ret = [];
             var startTime = lastPoint[0];
             while (startTime < endTime) {
@@ -148,17 +148,11 @@ angular.module("futuresApp")
         }
 
         return function (scope, element, attrs) {
-            /*
-            var chartLabels = scope[attrs['futuresChart']];
-            var chartData = scope[attrs['chartData']];
-            */
-
             if (!scope.data.historyData) {
                 scope.data.historyData = [];
             }
             scope.data.firstPoint;
             if (!scope.data.socket) {
-                //var socket = scope.data.socket = io.connect();
                 scope.data.socket = true;
                 Socket.on('connect', function () {
                     // send a join event with your name

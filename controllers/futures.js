@@ -15,7 +15,7 @@ var CLOSE_LINE = 5000;
 var WARN_LINE = 10000;
 
 var SILVER_CLOSE_LINE = 500;
-var SILVER_WARN_LINE = 1000;
+var SILVER_WARN_LINE = 550;
 
 var SUPPORT_NUM = '15811087507';
 var RISKCONTROL_NUM = '18911468685';
@@ -710,12 +710,12 @@ function getProfit(req, res) {
 
 function changeTraderStatus(req, res) {
     logger.info('changeTraderStatus operate by ' + req.user.mobile, req.body);
-    var path = 'wechat.status';
+    var change = { 'wechat.status':req.body.user_status };
     var productID = req.body.product;
     if (productID == 1) {
-        path = 'wechat.silverStatus';
+        change = { 'wechat.silverStatus':req.body.user_status };
     }
-    User.findByIdAndUpdate(req.body.uid, {path:req.body.user_status}, function(err, user) {
+    User.findByIdAndUpdate(req.body.uid, change, function(err, user) {
         if (err) {
             return res.status(500).send({error_msg:err.toString()});
         }
