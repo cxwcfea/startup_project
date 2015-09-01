@@ -111,7 +111,7 @@ angular.module('futuresApp').controller('FuturesHomeCtrl', ['$scope', '$window',
         //$scope.data.flags_data = [];
         $http.get('/futures/get_nearest_orders?type=' + ($scope.data.real ? 1 : 0) + '&product=' + $scope.data.productID)
             .success(function(data, status) {
-                var orders = $filter('orderBy')(data, 'timestamp', true);
+                var orders = $filter('orderBy')(data, 'timestamp', false);
                 for (var i = 0; i < orders.length; ++i) {
                     var order = orders[i];
                     console.log(order);
