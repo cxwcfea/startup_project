@@ -161,6 +161,9 @@ function closeAll(userId, portfolio, income, contractInfo, contractData, reset, 
             // Close user
             user.cash += income;
           }
+          if(user.cash > user.warning){
+              setStatus(userId, 0);
+          }
           user.lastCash = user.cash;
           User.update({_id: user._id, cash: oldUserCash, lastCash: oldUserLastCash},
               {$set:{cash: user.cash, lastCash: user.lastCash}}, function(err, numberAffected, raw) {
@@ -331,6 +334,9 @@ function windControl(userId, forceClose, userContract, cb) {
                           //console.log("Completed: " + asyncObj);
                           var income = asyncObj.value;
                           //console.log("User info: " + userId + ", " + user.cash + ", " + income + ", " + user.close);
+                          if (user.cash + income < user.warning) {
+                              setStatus(userId, 1);
+                          }
                           if (!forceClose && user.cash + income > user.close) {
                               // No risk
                               //console.log("No risk");
@@ -345,7 +351,7 @@ function windControl(userId, forceClose, userContract, cb) {
                                   console.log("Closing user");
                                   if (!forceClose) {
                                     // Have to close
-                                    // setStatus(userId, 1);  // cannot buy
+                                    setStatus(userId, 1);  // cannot buy
                                     closeAll(userId, portfolio, income, contractInfo, contractData, 1, cb, lock);
                                   } else {
                                     // Force close
