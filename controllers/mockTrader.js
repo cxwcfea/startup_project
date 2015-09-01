@@ -610,7 +610,7 @@ function resetUser(userID, cb) {
                     debt = 6700000;
                     lastCash = cash;
                 }
-                User.update({_id:userID}, {$set:{close:close, warning:warning, cash:cash, deposit:deposit, debt:debt, lastCash:0, status:0}}, function(err, numberAffected, raw) {
+                User.update({_id:userID}, {$set:{close:close, warning:warning, cash:cash, deposit:deposit, debt:debt, lastCash:lastCash, status:0}}, function(err, numberAffected, raw) {
                     if (err) {
                         return cb(err);
                     }
