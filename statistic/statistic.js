@@ -1263,6 +1263,27 @@ function ppjRealOrderPerDay(callback) {
     });
 }
 
+var currentApplyUser = function(callback) {
+    console.log('currentApplyUser');
+
+    Apply.find({$and:[{isTrial:false}, {$or:[{status:2}, {status:5}]}]}, function(err, applies) {
+        if (err) {
+            console.log(err.toString());
+            return callback(err);
+        }
+
+        var user = {};
+        for (var i = 0; i < applies.length; ++i) {
+            if (!user[applies[i].userMobile]) {
+                user[applies[i].userMobile] = true;
+                console.log('用户:' + applies[i].userMobile);
+            }
+        }
+
+        callback(null);
+    });
+};
+
 var options = {};
 mongoose.connect(config.db, options);
 var db = mongoose.connection;
@@ -1502,7 +1523,7 @@ db.once('open', function callback() {
              */
 
             function(callback) {
-                ppjRealOrderPerDay(function(err) {
+                currentApplyUser(function(err) {
                     callback(err);
                 });
             }
