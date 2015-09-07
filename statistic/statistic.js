@@ -1284,6 +1284,23 @@ var currentApplyUser = function(callback) {
     });
 };
 
+var fetchUserFutureOrder = function(callback) {
+    console.log('fetchUserFutureOrder');
+
+    User.findOne({'wechat.wechat_name':'燃烧激情'}, function(err, user) {
+        if (err) {
+            return callback(err);
+        }
+        mockTrader.Order.find({userId:user.wechat.real_trader}, function(err, orders) {
+            if (err) {
+                return callback(err);
+            }
+            console.log(JSON.stringify(orders));
+            callback(null);
+        });
+    });
+};
+
 var options = {};
 mongoose.connect(config.db, options);
 var db = mongoose.connection;
@@ -1523,7 +1540,7 @@ db.once('open', function callback() {
              */
 
             function(callback) {
-                currentApplyUser(function(err) {
+                fetchUserFutureOrder(function(err) {
                     callback(err);
                 });
             }
