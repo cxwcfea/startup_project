@@ -261,7 +261,7 @@ module.exports = function(app) {
     app.get('/auth/wechat/success', weixin.authSuccess);
     app.get('/wechat/get_jsapi_token', weixin.getJSToken);
 
-    futures.registerRoutes(app, passportConf);
+    //futures.registerRoutes(app, passportConf);
 
     /*
     app.get('/admin_test', passportConf.requiresRole('admin'), function(req, res, next) {
