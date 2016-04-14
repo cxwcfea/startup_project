@@ -152,7 +152,7 @@ var gatherApplyData = function(cb) {
         for (var i = 0; i < applies.length; ++i) {
             //var fee = getApplyServiceFee(applies[i]);
             //var loss = applies[i].profit + applies[i].deposit;
-            if (profit >= 0) continue;
+            if (applies[i].profit >= 0) continue;
             var obj = {
                 applySerialID: applies[i].serialID,
                 mobile: applies[i].userMobile,
