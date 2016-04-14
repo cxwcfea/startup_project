@@ -161,6 +161,20 @@ var gatherApplyData = function(cb) {
             };
             data.push(obj);
         }
+
+        var options = { encoding: 'utf8', flag: 'w' };
+        var fileWriteStream = fs.createWriteStream("loss.txt",  options);
+        fileWriteStream.on("close", function() {
+            console.log("File Closed.");
+        });
+        var dataStr = '配资id, 手机号, 亏损\n';
+        fileWriteStream.write(data);
+        for (var i = 0; i < dataStr.length; ++i) {
+            dataStr = data.applySerialID + ', ' + data.mobile + ", " + data.profit + '\n';
+            fileWriteStream.write(data);
+        }
+        fileWriteStream.end();
+
         cb(null, data);
     });
 };
