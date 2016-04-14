@@ -168,10 +168,10 @@ var gatherApplyData = function(cb) {
             console.log("File Closed.");
         });
         var dataStr = '配资id, 手机号, 亏损\n';
-        fileWriteStream.write(data);
+        fileWriteStream.write(dataStr);
         for (var i = 0; i < dataStr.length; ++i) {
             dataStr = data.applySerialID + ', ' + data.mobile + ", " + data.profit + '\n';
-            fileWriteStream.write(data);
+            fileWriteStream.write(dataStr);
         }
         fileWriteStream.end();
 
