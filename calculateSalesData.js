@@ -13,8 +13,8 @@ var mongoose = require('mongoose'),
 
 //var startOfMonth = moment().startOf('month').toDate();
 //var endOfMonth = moment().endOf('month').toDate();
-var startOfMonth = moment("2015-06-26").toDate();
-var endOfMonth = moment("2015-07-28").toDate();
+var startOfMonth = moment("2015-03-01").toDate();
+var endOfMonth = moment("2016-01-01").toDate();
 var month = moment().startOf('month').format('YYYYMM');
 //console.log(startOfMonth);
 //console.log(endOfMonth);
@@ -143,21 +143,21 @@ var getApplyServiceFee = function(apply) {
 };
 
 var gatherApplyData = function(cb) {
-    Apply.find({$and:[{startTime:{$lte:endOfMonth}, endTime:{$gte:startOfMonth}}, {type:{$ne:2}}, {status:{$ne:1}}, {status:{$ne:9}}, {status:{$ne:4}}, {isTrial:false}]}, function(err, applies) {
+    Apply.find({$and:[{startTime:{$lte:endOfMonth}, endTime:{$gte:startOfMonth}}, {type:{$ne:2}}, {status:{$ne:1}}, {status:{$ne:9}}, {status:{$ne:4}}, {isTrial:true}]}, function(err, applies) {
         if (err) {
             logger.debug('err when gatherApplyData' + err.toString());
             return cb(err);
         }
         var data = [];
         for (var i = 0; i < applies.length; ++i) {
-            var fee = getApplyServiceFee(applies[i]);
-            var loss = applies[i].profit + applies[i].deposit;
+            //var fee = getApplyServiceFee(applies[i]);
+            //var loss = applies[i].profit + applies[i].deposit;
+            if (profit >= 0) continue;
             var obj = {
                 applySerialID: applies[i].serialID,
                 mobile: applies[i].userMobile,
-                profitForMgm: applies[i].profitForMgm,
-                amount: fee,
-                loss: loss < 0 ? loss : 0
+                profit: applies[i].profit,
+                //loss: loss < 0 ? loss : 0
             };
             data.push(obj);
         }
@@ -271,7 +271,6 @@ db.once('open', function callback() {
             }
             callback(null, applydata);
         },
-        */
         function(data, callback) {
             async.mapSeries(data, changeApplyData, function(err, result) {
                 callback(err, result);
@@ -280,14 +279,13 @@ db.once('open', function callback() {
         function(data, callback) {
             applyData = data;
             async.mapSeries(sales, gatherData, function(err, result) {
-                /*
                 for (var i = 0; i < result.length; ++i) {
                     console.log(result[i].length);
                 }
-                */
                 callback(err);
             });
         }
+        */
     ], function(err) {
         db.close();
         console.log('done');
