@@ -169,8 +169,8 @@ var gatherApplyData = function(cb) {
         });
         var dataStr = '配资id, 手机号, 亏损\n';
         fileWriteStream.write(dataStr);
-        for (var i = 0; i < dataStr.length; ++i) {
-            dataStr = data.applySerialID + ', ' + data.mobile + ", " + data.profit + '\n';
+        for (var i = 0; i < data.length; ++i) {
+            dataStr = data[i].applySerialID + ', ' + data[i].mobile + ", " + data[i].profit + '\n';
             fileWriteStream.write(dataStr);
         }
         fileWriteStream.end();
