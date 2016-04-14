@@ -254,6 +254,7 @@ db.once('open', function callback() {
     async.waterfall([
         function(callback) {
             gatherApplyData(function(err, applyData) {
+                console.log(applyData);
                 callback(err, applyData);
             });
         },
