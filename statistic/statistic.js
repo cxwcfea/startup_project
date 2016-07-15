@@ -1540,7 +1540,7 @@ db.once('open', function callback() {
              */
 
             function(callback) {
-                fetchUserFutureOrder(function(err) {
+                getApplyUserData(function(err) {
                     callback(err);
                 });
             }
